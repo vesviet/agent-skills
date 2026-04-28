@@ -1,234 +1,221 @@
 ---
 name: troubleshoot-service
-description: Troubleshoot common service issues - build errors, runtime crashes, connection failures, and configuration problems
+description: Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the failing layer, validating assumptions, and confirming recovery
 ---
 
 # Troubleshoot Service Skill
 
+Use this skill when a service fails to build, starts incorrectly, behaves unexpectedly at runtime, or breaks because of dependency, environment, or rollout problems.
+
 ## When to Use
-- Service fails to build, crashes on startup, or has connection failures
-- Proto/Wire generation errors, config mismatches
+
+- builds fail
+- startup crashes or exits early
+- runtime behavior is incorrect
+- dependency calls fail or time out
+- configuration or environment mismatches are suspected
+- rollout succeeds technically but the service still does not behave correctly
+
+## Core Rules
+
+- capture the exact symptom before changing anything
+- isolate one failure layer at a time
+- prefer the smallest confirming check over broad guesswork
+- compare with the last known good state whenever possible
+- verify recovery after the fix, not just the absence of one error message
 
 ## Diagnostic Decision Tree
 
-```
-Service Issue
-├── Build Error?
-│   ├── Proto → Check protoc tools, third_party dir
-│   ├── Go compile → Check imports, go mod tidy
-│   └── Wire → Check provider set, interfaces
-├── Startup Crash?
-│   ├── DB connection → Check credentials, DB exists, PostgreSQL running
-│   ├── Redis → Check Redis running (docker-compose up -d redis)
-│   ├── Consul → Check Consul running (docker-compose up -d consul)
-│   └── Port in use → lsof -i :PORT, kill process
-├── Runtime Error?
-│   ├── Migration → Check SQL syntax, -- +goose Up annotations
-│   ├── Data layer → Check GORM model matches DB schema
-│   ├── Event/Dapr → Check Dapr sidecar logs
-│   └── Elasticsearch → See ES section below
-└── K8s Issue? → Use debug-k8s skill
+```text
+Service issue
+|- Build or generation failure
+|- Startup or initialization failure
+|- Runtime correctness failure
+|- Data or dependency failure
+`- Environment or rollout failure
 ```
 
-## Common Fixes
+## Suggested Troubleshooting Flow
 
-### Proto Generation (`make api`)
-```bash
-# Install tools
-go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-go install github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v2@latest
+### Step 1: Capture The Symptom
 
-# Copy third_party if missing
-cp -r user/third_party <service>/
-```
+Collect:
 
-### Wire Generation
-```bash
-cd <service>/cmd/<service> && wire
-# Common issues: missing provider, circular deps, interface not satisfied
-```
+- the exact command, request, or scenario that fails
+- the first meaningful error message
+- relevant logs or traces
+- when the issue started
+- what changed recently
 
-### Database Connection
-```bash
-# Check config
-cat <service>/configs/config.yaml | grep -A5 database
+### Step 2: Classify The Failure
 
-# Create DB if missing
-psql -h localhost -U ecommerce_user -d postgres -c "CREATE DATABASE <service>_db;"
-```
+Decide which layer is currently failing:
 
-### Run Migrations
-```bash
-DATABASE_URL="postgres://<DB_USER>:<DB_PASSWORD>@localhost:5432/<service>_db?sslmode=disable" \
-  make migrate-up
-```
+- build or code generation
+- bootstrap or initialization
+- request or job execution
+- persistence or data shape
+- dependency or network path
+- environment, config, or rollout
 
-### Access Infrastructure (K8s Dev Cluster)
+Use skill: `navigate-service` if the code path is not yet clear.
 
-> ⚠️ **NEVER use Docker locally.** Infrastructure runs in the k3d/k3s cluster. Use `kubectl port-forward` to access.
+### Step 3: Check The Simplest Explanations First
 
-```bash
-# Port-forward PostgreSQL
-$DEV_SSH "kubectl port-forward -n infrastructure svc/postgresql 5432:5432 &"
+Verify:
 
-# Port-forward Redis
-$DEV_SSH "kubectl port-forward -n infrastructure svc/redis 6379:6379 &"
+- the expected revision is actually running
+- required config and secrets are present
+- dependencies are reachable
+- generated files or migrations are current
+- the failing path can be reproduced consistently
 
-# Port-forward Consul
-$DEV_SSH "kubectl port-forward -n infrastructure svc/consul 8500:8500 &"
-```
+### Step 4: Compare With Last Known Good
 
-### Build & Run Service
-```bash
-cd <service>
-go mod tidy
-go build ./...
-go run ./cmd/<service>/...  # or: kratos run
-```
+Look for differences in:
 
-## Config.yaml Standard Structure
-```yaml
-server:
-  http:
-    addr: 0.0.0.0:80XX
-  grpc:
-    addr: 0.0.0.0:90XX
-data:
-  database:
-    driver: postgres
-    source: postgres://user:pass@localhost:5432/<service>_db?sslmode=disable
-  redis:
-    addr: localhost:6379
-consul:
-  address: localhost:8500
-```
+- recent code changes
+- dependency versions
+- schema or migration state
+- runtime config
+- deployment or release metadata
 
-## Quick Health Check
-```bash
-echo "=== PostgreSQL ===" && psql -h localhost -U ecommerce_user -d postgres -c "SELECT 1" 2>&1 | tail -1
-echo "=== Redis ===" && redis-cli ping
-echo "=== Consul ===" && curl -s http://localhost:8500/v1/status/leader
-```
+### Step 5: Isolate The Failing Slice
 
-## Elasticsearch Issues (Search Service)
+Reduce the problem to the smallest useful scope:
 
-### Common ES Errors
+- one package or build target
+- one endpoint or handler
+- one job or event consumer
+- one query or write path
+- one external dependency
 
-#### `document_parsing_exception`
-The document has a field that conflicts with the ES mapping.
-- **Cause 1**: Dotted keys in Go maps (`doc["name.suggest"]`) get interpreted as nested paths by ES
-- **Fix**: Remove dotted keys. ES auto-indexes multi-fields from the parent text field
-- **Cause 2**: New field not in mapping with `dynamic: strict`
-- **Fix**: Add field to `mapping.go` AND update live index mapping (see below)
+This usually reveals whether the root cause is in code, data, config, or environment.
 
-#### `document_missing_exception`
-The document doesn't exist in the target index.
-- **Common cause**: Writing to wrong index (`products` vs `products_search` alias)
-- All CRUD ops must use `GetIndexName("products_search")` (the alias)
-- Only `CreateProductIndex` uses `GetIndexName("products")` (creates timestamped indexes)
+### Step 6: Form And Test A Hypothesis
 
-#### `strict_dynamic_mapping_exception`
-ES rejects documents with fields not defined in the mapping.
-- **Fix**: Add field to `mapping.go` (`ProductIndexMapping`) AND update live mapping:
-```bash
-# Add new field to live ES index mapping
-kubectl run es-curl --image=curlimages/curl --rm -it --restart=Never -n search-dev -- \
-  curl -s -X PUT 'http://elasticsearch.argocd.svc.cluster.local:9200/products_search/_mapping' \
-  -H 'Content-Type: application/json' \
-  -d '{"properties":{"new_field":{"type":"boolean"}}}'
-```
+Examples:
 
-### ES Debugging Commands
+- generated artifacts are stale
+- a dependency contract changed
+- a migration and the running code are out of sync
+- a config value is missing or malformed
+- a timeout or retry policy is too aggressive
+- the wrong environment or resource revision is live
 
-```bash
-# Check index alias mapping
-kubectl exec -n search-dev deploy/search -c search -- wget -qO- \
-  'http://elasticsearch.argocd.svc.cluster.local:9200/_alias/products_search'
+Test one hypothesis at a time and record what confirmed or rejected it.
 
-# Check document by ID
-kubectl exec -n search-dev deploy/search -c search -- wget -qO- \
-  'http://elasticsearch.argocd.svc.cluster.local:9200/products_search/_doc/<product_id>'
+### Step 7: Apply The Smallest Safe Fix
 
-# Search by SKU
-kubectl exec -n search-dev deploy/search -c search -- wget -qO- \
-  'http://elasticsearch.argocd.svc.cluster.local:9200/products_search/_search?q=sku:<SKU>&size=1'
+Once the root cause is clear:
 
-# Check mapping (verify field exists)
-kubectl exec -n search-dev deploy/search -c search -- wget -qO- \
-  'http://elasticsearch.argocd.svc.cluster.local:9200/products_search/_mapping'
+- make the narrowest change that resolves the issue
+- avoid unrelated cleanup during incident handling
+- rerun the failing scenario immediately
 
-# Bulk update field for all docs (use curl pod, since BusyBox wget doesn't support PUT)
-kubectl run es-curl --image=curlimages/curl --rm -it --restart=Never -n search-dev -- \
-  curl -s -X POST 'http://elasticsearch.argocd.svc.cluster.local:9200/products_search/_update_by_query?refresh=true' \
-  -H 'Content-Type: application/json' \
-  -d '{"script":{"source":"ctx._source.has_price = true","lang":"painless"},"query":{"match_all":{}}}'
-```
+Use skill: `review-code` when the fix touches risky code paths.
 
-### ES Index Architecture (Search Service)
+### Step 8: Verify Recovery
 
-```
-products (base name)
-├── products_20260213_101251 (created by sync job)
-│   └── alias: products_search → points here
-└── products_20260213_102147 (new sync creates new index)
-    └── alias: products_search → switched here
+Confirm:
 
-All CRUD code → GetIndexName("products_search") → resolves to alias
-Sync job → GetIndexName("products") + timestamp suffix → creates new index
-```
+- the original failure is resolved
+- no nearby regressions appeared
+- logs and health signals look normal
+- dependent flows still work
 
-### Product Visibility via `has_price`
+### Step 9: Capture Follow-Up
 
-Products are **only visible** in search when `has_price: true`:
-- **Price update** → sets `has_price = true` (via `UpdateProduct` in price consumer)
-- **Price delete** → checks if any `warehouse_stock` entries still have `base_price` > 0; if none → sets `has_price = false`
-- **Search queries** → mandatory filter `{"term": {"has_price": true}}`
-- **Sync job** → sets `HasPrice: true` for all indexed products (sync already skips no-price products)
+If the issue exposed a process or design gap, note:
 
----
+- missing tests
+- missing alerts or dashboards
+- weak config validation
+- unsafe rollout assumptions
+- missing runbook or documentation updates
+
+## Common Failure Areas
+
+### Build Or Generation
+
+- stale generated artifacts
+- missing tools or wrong tool versions
+- bad imports or package references
+- incompatible dependency changes
+
+### Startup Or Initialization
+
+- missing env vars or secrets
+- invalid config values
+- bootstrap ordering problems
+- failed dependency connections
+
+### Runtime Behavior
+
+- unhandled edge cases
+- stale assumptions in business logic
+- race conditions or concurrency bugs
+- incorrect error handling
+
+### Data Or Persistence
+
+- schema drift
+- unsafe migration ordering
+- missing indexes or bad query shape
+- serialization or data-shape mismatches
+
+### Dependency Or Network
+
+- upstream contract drift
+- DNS, routing, or auth failures
+- timeout and retry misconfiguration
+- partial availability of a downstream system
+
+### Environment Or Rollout
+
+- wrong revision deployed
+- config source out of sync with code
+- incomplete rollout
+- missing runtime permissions or side resources
+
+## What To Capture In Your Output
+
+When reporting troubleshooting work, include:
+
+- symptom
+- suspected layer
+- checks performed
+- root cause
+- fix applied
+- verification result
+- follow-up items
 
 ## Checklist
 
-### Diagnosis
-- [ ] Issue type identified (build/runtime/config)
-- [ ] Error messages collected
-- [ ] Logs reviewed
-- [ ] Config checked
+- [ ] exact symptom captured
+- [ ] failure layer identified
+- [ ] logs or traces reviewed
+- [ ] recent changes compared
+- [ ] smallest failing slice isolated
+- [ ] root cause confirmed
+- [ ] fix applied
+- [ ] recovery verified
 
-### Fix
-- [ ] Root cause identified
-- [ ] Fix applied
-- [ ] Build verified
-- [ ] Service tested
-
-### Verification
-- [ ] Service starts successfully
-- [ ] No errors in logs
-- [ ] Functionality works
-
----
-
-## Quick Reference Checklist
+## Quick Reference
 
 Use this for rapid troubleshooting:
 
-### Diagnose
-- [ ] Check error type
-- [ ] Review logs
-- [ ] Check config
-
-### Fix
-- [ ] Apply fix
-- [ ] Rebuild
-- [ ] Test
-
----
+- capture the exact error
+- decide which layer is failing
+- compare against last known good
+- isolate one narrow failing path
+- test one hypothesis
+- verify the recovery
 
 ## Related Skills
 
-- **debug-k8s**: Debug Kubernetes deployment issues
-- **navigate-service**: Understand service structure
-- **review-code**: Review code for issues
-- **commit-code**: Commit fixes
-- **trace-event-flow**: Debug event issues
+- **navigate-service**: Understand the target flow before debugging
+- **review-code**: Review a risky fix before landing it
+- **commit-code**: Prepare the fix for delivery
+- **performance-profiling**: Investigate latency, memory, or load-related failures
+- **meeting-review**: Escalate for structured technical review

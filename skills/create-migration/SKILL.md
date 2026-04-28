@@ -1,284 +1,215 @@
 ---
 name: create-migration
-description: Create new database migrations for a microservice using Goose format with proper annotations and naming
+description: Create safe schema or data migrations by following the repo's local migration tool, naming rules, rollout constraints, and rollback expectations
 ---
 
 # Create Migration Skill
 
-Use this skill when the user needs to create a new database migration for any microservice.
+Use this skill when the user needs to add or review a database schema migration, backfill, or data repair step.
 
 ## When to Use
-- Adding new tables or columns
-- Modifying existing schema
-- Adding indexes or constraints
-- Data migrations
-- Any database schema change
 
-## Migration Tool: Goose
+- adding or changing tables, collections, or indexes
+- adding, removing, or renaming fields or columns
+- introducing constraints or defaults
+- performing data backfills or cleanup
+- preparing persistence changes for a feature rollout
 
-This project uses **Goose** for SQL migrations. All migration files are plain SQL with special Goose annotations.
+## Operating Assumptions
 
-## Migration File Location
+This skill is intentionally repo-agnostic.
 
-```
-<service>/migrations/<filename>.sql
-```
+- do not assume a specific migration tool
+- do not assume a specific database engine
+- do not assume SQL files are the only migration format
+- prefer the repo's existing naming, ordering, and rollback conventions
 
-## Naming Convention
+## First Questions To Answer
 
-**Format**: `<sequence_number>_<description>.sql`
+Before writing the migration, confirm:
 
-Examples:
-- `001_init_auth_schema.sql`
-- `002_add_user_preferences.sql`
-- `003_create_token_revocations_table.sql`
-- `20251103191700_init_auth_schema.sql` (timestamp-based, also accepted)
+1. What persistence system is being changed?
+2. What tool or format does this repo use for migrations?
+3. Is the change schema-only, data-only, or both?
+4. Can the change be rolled out safely while old and new code coexist?
+5. What is the rollback path if deployment must be reversed?
 
-**Rules:**
-- Use lowercase with underscores
-- Be descriptive about what the migration does
-- Check existing migrations to determine the next sequence number
+## Suggested Process
 
-## Required Annotations
+### Step 1: Inspect Existing Migrations
 
-Every migration file MUST have Goose annotations. **Without these, migrations will NOT run.**
+Find:
 
-```sql
--- +goose Up
--- SQL in this section is executed when the migration is applied.
+- migration location
+- naming pattern
+- sequencing or timestamp convention
+- whether the repo separates schema changes from data backfills
 
-CREATE TABLE example (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+Match the local pattern instead of inventing a new one.
 
--- +goose Down
--- SQL in this section is executed when the migration is rolled back.
+### Step 2: Understand Current State
 
-DROP TABLE IF EXISTS example;
-```
+Review the latest relevant migrations and the current persistence model.
 
-## Step-by-Step Process
+Check:
 
-### Step 1: Check Existing Migrations
-```bash
-ls -la <service>/migrations/
-```
-Determine the next sequence number and understand the existing schema.
+- current schema shape
+- existing indexes and constraints
+- data volume and table size if available
+- current application assumptions in code
 
-### Step 2: Read the Last Migration
-Review the most recent migration to understand current schema state and naming patterns.
+### Step 3: Design For Safe Rollout
 
-### Step 3: Create the Migration File
-Create a new file in `<service>/migrations/` following the naming convention.
+Prefer migrations that are safe across staged rollout:
 
-### Step 4: Write the SQL
+- additive changes before destructive ones
+- nullable or defaulted fields before strict enforcement
+- backfills before making new constraints mandatory
+- separate risky index builds or long-running steps when needed
 
-**Standard patterns used in this project:**
+Avoid combining multiple high-risk changes in one migration unless the repo explicitly expects it.
 
-#### UUID Primary Keys (preferred)
-```sql
--- Requires PostgreSQL 13+. For PG 12 or older, enable: CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-id UUID PRIMARY KEY DEFAULT gen_random_uuid()
-```
+### Step 4: Create The Migration
 
-#### Timestamps
-```sql
-created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-deleted_at TIMESTAMP WITH TIME ZONE  -- soft delete (nullable)
-```
+Use the repo's official mechanism, such as:
 
-#### Foreign Keys
-```sql
-customer_id UUID NOT NULL REFERENCES customers(id) ON DELETE CASCADE
-```
+- migration generator command
+- hand-written migration file
+- framework migration scaffold
 
-#### Indexes
+Follow local naming rules and keep the description precise.
 
-> ⚠️ **For large tables (10k+ rows)**: Use `CREATE INDEX CONCURRENTLY` to avoid table locks.
-> `CONCURRENTLY` cannot run inside a transaction — use `-- +goose NO TRANSACTION` annotation.
+### Step 5: Write Forward And Rollback Logic
 
-```sql
--- Standard (OK for small tables / new tables in same migration)
-CREATE INDEX idx_orders_customer_id ON orders(customer_id);
-CREATE INDEX idx_orders_status ON orders(status);
-CREATE UNIQUE INDEX idx_users_email ON users(email);
-```
+The migration should make both directions explicit whenever the repo supports rollback.
 
-**For large tables, create a separate migration file:**
-```sql
--- +goose Up
--- +goose NO TRANSACTION
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_orders_customer_id ON orders(customer_id);
+Forward logic should:
 
--- +goose Down
--- +goose NO TRANSACTION
-DROP INDEX CONCURRENTLY IF EXISTS idx_orders_customer_id;
-```
+- make the intended shape change
+- preserve data safety
+- avoid unnecessary locking or long blocking operations
 
-#### Enums (using VARCHAR with CHECK)
-```sql
-status VARCHAR(50) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'active', 'inactive', 'deleted'))
-```
+Rollback logic should:
 
-#### JSONB for flexible data
-```sql
-metadata JSONB DEFAULT '{}'::jsonb
-```
+- reverse the change cleanly when practical
+- document when reversal is partial or unsafe
+- avoid pretending a destructive data change is fully reversible when it is not
 
-#### Composite indexes
-```sql
-CREATE INDEX idx_order_items_order_product ON order_items(order_id, product_id);
-```
+### Step 6: Update The Code That Depends On The Schema
 
-### Step 5: Verify the Down Migration
-The `-- +goose Down` section must cleanly reverse everything in `-- +goose Up`:
-- `CREATE TABLE` → `DROP TABLE IF EXISTS`
-- `ALTER TABLE ADD COLUMN` → `ALTER TABLE DROP COLUMN IF EXISTS`
-- `CREATE INDEX` → `DROP INDEX IF EXISTS`
+After the migration, update the repo-local persistence code as needed:
 
-### Step 6: Update GORM Models (if applicable)
-After creating the migration, update the corresponding GORM model in:
-```
-<service>/internal/data/model/<entity>.go
-```
-or
-```
-<service>/internal/data/<entity>.go
-```
+- models or entity mappings
+- repositories or query layers
+- validation or serialization logic
+- feature flags or compatibility shims
 
-### Step 7: Update Repository Interface (if applicable)
-If new fields require new queries, update:
-```
-<service>/internal/biz/<entity>.go   → Repository interface
-<service>/internal/data/<entity>.go  → Repository implementation
-```
+Do not assume paths like `internal/data/model` or any specific layer names. Follow the local structure.
 
-## Template: New Table Migration
+### Step 7: Verify Locally
 
-```sql
--- +goose Up
--- +goose StatementBegin
-CREATE TABLE IF NOT EXISTS <table_name> (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    
-    -- Business fields
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    status VARCHAR(50) NOT NULL DEFAULT 'active',
-    
-    -- Metadata
-    metadata JSONB DEFAULT '{}'::jsonb,
-    
-    -- Audit fields
-    created_by UUID,
-    updated_by UUID,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    deleted_at TIMESTAMP WITH TIME ZONE
-);
+Run the repo's normal validation flow:
 
--- Indexes
-CREATE INDEX IF NOT EXISTS idx_<table_name>_status ON <table_name>(status);
-CREATE INDEX IF NOT EXISTS idx_<table_name>_created_at ON <table_name>(created_at);
-CREATE INDEX IF NOT EXISTS idx_<table_name>_deleted_at ON <table_name>(deleted_at) WHERE deleted_at IS NOT NULL;
--- +goose StatementEnd
+- apply the migration forward
+- run the relevant tests
+- build the affected service
+- rollback if the repo expects rollback testing
 
--- +goose Down
--- +goose StatementBegin
-DROP TABLE IF EXISTS <table_name>;
--- +goose StatementEnd
-```
+If the migration is data-sensitive or long-running, also reason through:
 
-## Template: Add Column Migration
+- ordering during deploy
+- idempotency expectations
+- impact on replicas, readers, or older code
 
-```sql
--- +goose Up
-ALTER TABLE <table_name> ADD COLUMN IF NOT EXISTS <column_name> <type> <constraints>;
-CREATE INDEX IF NOT EXISTS idx_<table_name>_<column_name> ON <table_name>(<column_name>);
+## Safety Guidelines
 
--- +goose Down
-DROP INDEX IF EXISTS idx_<table_name>_<column_name>;
-ALTER TABLE <table_name> DROP COLUMN IF EXISTS <column_name>;
-```
+- prefer additive changes over destructive changes
+- separate schema change from backfill when that reduces risk
+- index columns that will be heavily queried after rollout
+- avoid full-table rewrites in peak-risk paths when safer alternatives exist
+- document assumptions for large datasets or long-running operations
+
+## Common Migration Patterns
+
+### Additive Schema Change
+
+Best for:
+
+- new table or collection
+- new nullable field
+- new field with safe default
+- new index
+
+### Expand And Contract
+
+Best for:
+
+- renaming fields
+- changing types
+- splitting one field into several
+- removing old columns safely
+
+Typical flow:
+
+1. add new structure
+2. dual-write or backfill
+3. migrate reads
+4. remove old structure later
+
+### Data Backfill
+
+Best for:
+
+- normalizing old values
+- populating new required fields
+- repairing inconsistent records
+
+Keep the backfill restartable and observable when possible.
 
 ## Common Gotchas
 
-1. **ALWAYS include `-- +goose Up` and `-- +goose Down`** - Migration will fail without these
-2. **Use `IF NOT EXISTS` / `IF EXISTS`** for idempotency
-3. **Use `-- +goose StatementBegin` / `-- +goose StatementEnd`** for multi-statement blocks or functions/triggers
-4. **UUID is the standard PK type** in this project, NOT auto-incrementing integers
-5. **Use `TIMESTAMP WITH TIME ZONE`** not just `TIMESTAMP`
-6. **Soft delete pattern**: Use `deleted_at TIMESTAMP WITH TIME ZONE` (nullable)
-7. **Always add indexes** for foreign keys and frequently queried columns
-8. **Test the down migration** to ensure clean rollback
+1. A migration that works on an empty database may still fail on real data.
+2. Destructive changes often need a multi-step rollout, not a single migration.
+3. Large index builds or constraint changes may need special handling in the local tool.
+4. Code and schema must remain compatible during rollout, not just after rollout.
+5. Rollback may be operationally different from logical reversal when data has already changed.
 
-## Versioning Impact
+## What To Capture In Your Output
 
-Ref: [Coding Standards §3](docs/07-development/standards/coding-standards.md)
+When reporting migration work, include:
 
-| Migration Type | Version Bump | Rationale |
-|---------------|-------------|-----------|
-| New table | **MINOR** | New feature, backward compatible |
-| Add column (nullable/default) | **MINOR** | Backward compatible |
-| Add column (NOT NULL, no default) | **MAJOR** | May break existing data/queries |
-| Remove/rename column | **MAJOR** | Breaking change for existing code |
-| Add index | **PATCH** | Performance improvement, no behavior change |
-| Data migration only | **PATCH** | Bug fix or data cleanup |
-
-**Always update `CHANGELOG.md`** when adding migrations:
-```markdown
-## [Unreleased]
-### Added
-- New migration: add `preferences` column to `users` table
-```
+- what changed
+- why the change is needed
+- rollout safety notes
+- rollback notes
+- any required follow-up in code or deployment order
 
 ## Checklist
 
-- [ ] Checked existing migrations (`ls migrations/`) for sequence number
-- [ ] `-- +goose Up` and `-- +goose Down` annotations present
-- [ ] `IF NOT EXISTS` / `IF EXISTS` for idempotency
-- [ ] UUID primary keys (not auto-increment)
-- [ ] `TIMESTAMP WITH TIME ZONE` (not plain `TIMESTAMP`)
-- [ ] Indexes added for foreign keys and query columns
-- [ ] Down migration cleanly reverses Up migration
-- [ ] GORM model updated to match new schema
-- [ ] Repository interface updated if new fields need queries
-- [ ] Build passes (`go build ./...`)
-- [ ] **CHANGELOG.md updated** with migration description
-- [ ] **Version impact assessed** (add column = MINOR, remove column = MAJOR)
+- [ ] existing migration pattern inspected
+- [ ] current schema or data state understood
+- [ ] rollout safety considered
+- [ ] forward migration written
+- [ ] rollback path written or explicitly limited
+- [ ] dependent code updated
+- [ ] migration verified with repo-local commands
+- [ ] release ordering or backfill notes captured
 
----
-
-## Quick Reference Checklist
+## Quick Reference
 
 Use this for rapid migration creation:
 
-### Setup
-- [ ] Checked existing migrations
-- [ ] Determined sequence number
-- [ ] Understood current schema
-
-### Implementation
-- [ ] Migration file created
-- [ ] Up migration written
-- [ ] Down migration written
-- [ ] Annotations added
-
-### Verification
-- [ ] GORM model updated
-- [ ] Repository updated
-- [ ] CHANGELOG updated
-
----
+- inspect existing migrations
+- match naming and ordering
+- design the safest rollout shape
+- write forward and rollback steps
+- update dependent code
+- verify locally
 
 ## Related Skills
 
-- **add-api-endpoint**: Add endpoint that uses new schema
-- **troubleshoot-service**: Debug migration issues
-- **commit-code**: Commit migration changes
-- **review-code**: Review migration before commit
-- **use-common-lib**: Use common base model
+- **troubleshoot-service**: Debug migration failures and rollout issues
+- **commit-code**: Prepare migration changes for delivery
+- **review-code**: Review safety, compatibility, and rollback risk
+- **write-tests**: Add regression coverage for schema-sensitive behavior
+- **review-service**: Validate release readiness for persistence changes

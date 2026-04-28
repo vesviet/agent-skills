@@ -1,295 +1,206 @@
 ---
 name: performance-profiling
-description: Profile and optimize Go microservice performance using pprof, benchmarks, and load testing
+description: Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, and validating improvements with repo-local tools
 ---
 
 # Performance Profiling Skill
 
-Use this skill when investigating performance issues, optimizing hot paths, or conducting load tests on microservices.
+Use this skill when investigating slow paths, memory growth, concurrency bottlenecks, or capacity limits.
 
 ## When to Use
-- Service response time is slow or increasing
-- High memory usage or suspected memory leaks
+
+- latency is rising or unstable
+- throughput is lower than expected
+- memory usage keeps growing
 - CPU spikes under load
-- Before/after performance comparison for optimizations
-- Capacity planning for production
+- a change needs before/after performance comparison
+- a service is approaching scaling or capacity limits
 
----
+## Core Rules
 
-## ⚠️ CRITICAL RULES
+- baseline before optimizing
+- profile the real hot path, not an assumed one
+- prefer repo-local and language-native tooling first
+- do not profile production without explicit approval and a safety plan
+- validate improvements with repeatable measurements, not intuition
 
-1. **Profile in dev K8s first** — never profile production without approval
-2. **Use `pprof`** built into Go — don't install third-party profilers
-3. **Benchmark with `go test -bench`** — not manual timing
-4. **Load test with K6 or vegeta** — not manual curl loops
-5. **Always baseline first** — measure before optimizing
-6. **Focus on biz layer** — most bottlenecks are in business logic, not framework
+## First Questions To Answer
 
-### 🛡️ Production Profiling Safety
+1. What symptom matters most: latency, throughput, CPU, memory, or contention?
+2. Under what workload does it happen?
+3. Is the issue local to one code path, one dependency, or one environment?
+4. What is the current baseline?
+5. What metric will prove the change helped?
 
-> ⚠️ `/debug/pprof/` is exposed on the HTTP port. In production, this endpoint MUST be behind authentication or disabled.
+## Suggested Process
 
-| Rule | Guideline |
-|------|-----------|
-| **Who approves** | Tech Lead or SRE must approve production profiling |
-| **CPU overhead** | pprof CPU profiling adds ~5% CPU overhead while active |
-| **Safe duration** | Max 30 seconds for CPU profiles; longer durations impact latency |
-| **Memory profiles** | Heap snapshots are safe (point-in-time, minimal overhead) |
-| **Goroutine profiles** | Safe but may block briefly on large goroutine counts |
-| **Endpoint security** | Production pprof should require auth middleware or be on a separate admin port |
+### Step 1: Define The Baseline
 
----
+Capture the current state before changing code:
 
-## Tool 1: pprof (CPU & Memory Profiling)
+- median and tail latency
+- throughput
+- error rate
+- CPU and memory usage
+- allocation or query counts when relevant
 
-### Enable pprof on Service
+Use the repo's normal observability and benchmark tools where possible.
 
-Most Kratos services already expose pprof at `/debug/pprof/` via HTTP. If not:
+### Step 2: Reproduce The Problem
 
-```go
-// In internal/server/http.go
-import _ "net/http/pprof"
+Find the smallest repeatable workload that exposes the issue:
 
-// Or add explicit route
-import "net/http/pprof"
+- one endpoint or handler
+- one background job
+- one query-heavy path
+- one batch or import path
 
-srv.HandleFunc("/debug/pprof/", pprof.Index)
-srv.HandleFunc("/debug/pprof/profile", pprof.Profile)
-srv.HandleFunc("/debug/pprof/heap", pprof.Handler("heap").ServeHTTP)
-```
+If you cannot reproduce it, reduce the scope until you can.
 
-### Capture CPU Profile (30 seconds)
+### Step 3: Identify The Hot Path
 
-```bash
-# Port-forward the service HTTP port
-$DEV_SSH \
-  "kubectl port-forward -n <service>-dev svc/<service>-service 80XX:80XX &"
+Use the local profiling tools that fit the stack, such as:
 
-# Capture 30-second CPU profile
-go tool pprof http://localhost:80XX/debug/pprof/profile?seconds=30
+- language-native CPU or heap profilers
+- benchmark or microbenchmark tools
+- tracing or flame graphs
+- query analyzers
+- load-testing tools
 
-# Interactive mode commands:
-# top10        → top 10 functions by CPU
-# list FuncName → show line-by-line cost
-# web          → open flamegraph in browser (requires graphviz)
-```
+Look for:
 
-### Capture Memory Profile
+- expensive functions
+- repeated allocations
+- lock contention
+- chatty network calls
+- slow queries
+- repeated serialization or parsing work
 
-```bash
-# Current heap allocations
-go tool pprof http://localhost:80XX/debug/pprof/heap
+### Step 4: Form A Narrow Hypothesis
 
-# Alloc objects (total allocations, not just live)
-go tool pprof -alloc_objects http://localhost:80XX/debug/pprof/heap
+Examples:
 
-# Interactive:
-# top10 -cum    → top by cumulative allocations
-# list FuncName → line-by-line allocations
-```
+- a query pattern is causing N+1 behavior
+- repeated object allocation is driving GC pressure
+- an external dependency is dominating latency
+- a lock or queue is throttling concurrency
+- payload size is causing serialization overhead
 
-### Capture Goroutine Profile
+Test one hypothesis at a time.
 
-```bash
-# Current goroutine stack traces (detect leaks)
-go tool pprof http://localhost:80XX/debug/pprof/goroutine
+### Step 5: Apply The Smallest Meaningful Optimization
 
-# Or raw dump:
-curl http://localhost:80XX/debug/pprof/goroutine?debug=2
-```
+Prefer targeted fixes such as:
 
-### Compare Before/After
+- batching or pagination
+- caching
+- reducing duplicate work
+- narrowing lock scope
+- reusing objects where appropriate
+- improving query shape or indexing
+- moving work off the request path
 
-```bash
-# Capture baseline
-go tool pprof -proto http://localhost:80XX/debug/pprof/heap > /tmp/before.pb.gz
+Avoid broad refactors unless measurement shows they are necessary.
 
-# ... apply optimization ...
+### Step 6: Measure Again
 
-# Capture after
-go tool pprof -proto http://localhost:80XX/debug/pprof/heap > /tmp/after.pb.gz
+Re-run the same workload and compare:
 
-# Compare (shows diff)
-go tool pprof -base /tmp/before.pb.gz /tmp/after.pb.gz
-```
+- before and after latency
+- before and after throughput
+- memory and CPU changes
+- error rate impact
 
----
+If the improvement is not measurable, treat the optimization as unproven.
 
-## Tool 2: Go Benchmarks
+### Step 7: Check Secondary Effects
 
-### Write Benchmark Tests
+After optimizing, verify:
 
-```go
-// internal/biz/calculation/calculation_bench_test.go
-package calculation
+- correctness did not regress
+- tail latency did not worsen
+- memory use stayed acceptable
+- downstream systems are not now the bottleneck
 
-import "testing"
+## Tool Guidance
 
-func BenchmarkCalculatePrice(b *testing.B) {
-	uc := setupTestUsecase() // Create usecase with mock deps
-	ctx := context.Background()
-	req := &PriceCalculationRequest{
-		ProductID: "prod-1",
-		SKU:       "SKU-001",
-		Quantity:  1,
-		Currency:  "VND",
-	}
+Use the tools that match the repo and language.
 
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		_, err := uc.CalculatePrice(ctx, req)
-		if err != nil {
-			b.Fatal(err)
-		}
-	}
-}
+Examples:
 
-func BenchmarkCalculatePrice_Parallel(b *testing.B) {
-	uc := setupTestUsecase()
-	ctx := context.Background()
+- language-native profilers for CPU, memory, goroutines, threads, or heap
+- benchmark commands for hot functions or packages
+- tracing for cross-service latency
+- query plans for data bottlenecks
+- load generators for realistic traffic
 
-	b.RunParallel(func(pb *testing.PB) {
-		for pb.Next() {
-			req := &PriceCalculationRequest{
-				ProductID: "prod-1",
-				Quantity:  1,
-			}
-			uc.CalculatePrice(ctx, req)
-		}
-	})
-}
-```
+If the repo already has profiling or benchmark scripts, use those first.
 
-### Run Benchmarks
+## Production Safety
 
-```bash
-# Run all benchmarks in a package
-go test -bench=. -benchmem ./internal/biz/calculation/...
+If profiling a shared or production environment:
 
-# Run specific benchmark
-go test -bench=BenchmarkCalculatePrice -benchmem -count=5 ./internal/biz/calculation/
+- get explicit approval first
+- use the least invasive method that answers the question
+- keep profiling duration short
+- make sure profiling endpoints or admin tooling are access-controlled
+- coordinate with owners if the workload is customer-facing
 
-# Compare results (with benchstat)
-go install golang.org/x/perf/cmd/benchstat@latest
-go test -bench=. -benchmem -count=10 ./internal/biz/... > /tmp/before.txt
-# ... optimize ...
-go test -bench=. -benchmem -count=10 ./internal/biz/... > /tmp/after.txt
-benchstat /tmp/before.txt /tmp/after.txt
-```
+## Common Performance Patterns
 
-### Reading Benchmark Output
+### Request Path Bottlenecks
 
-```
-BenchmarkCalculatePrice-8    500000    2345 ns/op    1024 B/op    12 allocs/op
-│                        │    │         │              │            │
-│                        │    │         │              │            └── allocations per op
-│                        │    │         │              └── bytes allocated per op
-│                        │    │         └── nanoseconds per operation
-│                        │    └── iterations run
-│                        └── GOMAXPROCS
-└── benchmark name
-```
+- repeated downstream calls
+- repeated serialization
+- oversized payloads
+- synchronous work that could be deferred
 
----
+### Data Bottlenecks
 
-## Tool 3: Load Testing
+- N+1 reads
+- missing indexes
+- large scans
+- long transactions
 
-### Using K6
+### Memory Bottlenecks
 
-```bash
-# Install k6
-brew install k6
+- repeated allocations
+- retained references
+- goroutine or worker leaks
+- unbounded buffers or caches
 
-# Create test script
-cat > /tmp/load_test.js << 'EOF'
-import http from 'k6/http';
-import { check, sleep } from 'k6';
+### Concurrency Bottlenecks
 
-export const options = {
-  stages: [
-    { duration: '30s', target: 20 },   // Ramp up to 20 VUs
-    { duration: '1m', target: 50 },     // Stay at 50 VUs
-    { duration: '30s', target: 0 },     // Ramp down
-  ],
-  thresholds: {
-    http_req_duration: ['p(95)<500'],   // 95% under 500ms
-    http_req_failed: ['rate<0.01'],     // <1% error rate
-  },
-};
+- coarse locks
+- queue buildup
+- insufficient backpressure
+- too much parallelism on a shared dependency
 
-export default function () {
-  const res = http.get('http://localhost:80XX/api/v1/<service>/health');
-  check(res, {
-    'status is 200': (r) => r.status === 200,
-    'response time < 200ms': (r) => r.timings.duration < 200,
-  });
-  sleep(1);
-}
-EOF
+## What To Capture In Your Output
 
-# Run load test
-k6 run /tmp/load_test.js
-```
+When reporting performance work, include:
 
-### Using vegeta (simpler)
-
-```bash
-# Install
-brew install vegeta
-
-# Run 100 req/sec for 30 seconds
-echo "GET http://localhost:80XX/api/v1/<service>/health" | \
-  vegeta attack -rate=100 -duration=30s | \
-  vegeta report
-
-# With JSON output for analysis
-echo "GET http://localhost:80XX/api/v1/<service>/health" | \
-  vegeta attack -rate=100 -duration=30s | \
-  vegeta report -type=json
-```
-
----
-
-## Common Performance Issues & Fixes
-
-| Symptom | Likely Cause | How to Detect | Fix |
-|---------|-------------|---------------|-----|
-| Slow API response | N+1 queries | pprof CPU → `gorm` in top | Add `Preload()` or `Joins()` |
-| Memory grows indefinitely | Goroutine leak | pprof goroutine count growing | Add `ctx.Done()` checks, use `errgroup` |
-| CPU spike on bulk ops | Unbounded loop | pprof CPU → biz function | Add pagination/batching with LIMIT |
-| Slow under concurrent load | Lock contention | pprof block/mutex profile | Reduce lock scope, use `sync.RWMutex` |
-| High allocs/op in benchmark | Excessive object creation | `-benchmem` output | Reuse objects, use `sync.Pool` |
-| Slow JSON marshal | Large payload | pprof CPU → `encoding/json` | Use pagination, exclude unnecessary fields |
-
----
+- workload used
+- baseline metrics
+- hotspot identified
+- optimization applied
+- measured result after the change
+- remaining risks or next bottlenecks
 
 ## Checklist
 
-### Profiling
-- [ ] pprof enabled on service
-- [ ] CPU profile captured (30s under load)
-- [ ] Heap profile captured
-- [ ] Goroutine count checked (no leaks)
-- [ ] Top 5 hot functions identified
-
-### Benchmarks
-- [ ] Benchmark tests written for critical paths
-- [ ] Baseline measurements recorded
-- [ ] Optimization applied
-- [ ] Before/after comparison done (benchstat)
-
-### Load Testing
-- [ ] Load test script created
-- [ ] Baseline throughput measured (RPS)
-- [ ] P95 latency measured
-- [ ] Error rate under load checked
-
----
+- [ ] baseline recorded
+- [ ] issue reproduced
+- [ ] hot path identified with measurement
+- [ ] narrow hypothesis tested
+- [ ] optimization applied
+- [ ] before/after comparison recorded
+- [ ] correctness and secondary effects checked
 
 ## Related Skills
 
-- **troubleshoot-service**: Debug runtime issues
-- **review-code**: Review code for performance issues
-- **write-tests**: Write benchmark tests
-- **debug-k8s**: Access service for profiling
-- **meeting-review**: Review with Security/Perf agent perspective
+- **troubleshoot-service**: Debug runtime and dependency issues
+- **review-code**: Review risky optimizations and trade-offs
+- **write-tests**: Add regression or benchmark coverage
+- **navigate-service**: Map the hot path before optimizing
+- **meeting-review**: Review performance trade-offs across roles

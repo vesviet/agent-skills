@@ -1,251 +1,155 @@
 ---
-description: Complete workflow for adding a new feature to a microservice
+description: Complete workflow for adding a new feature in a reusable service-oriented repository
 ---
 
 ## Add New Feature Workflow
 
-This workflow guides you through adding a new feature from design to deployment.
+This workflow guides a feature from requirements through rollout verification without assuming a specific framework, deployment platform, or repository layout.
 
 ### Prerequisites
-- Feature requirements clearly defined
-- Service identified
-- Latest code pulled
+
+- feature requirements are clear enough to implement
+- target service or component is identified
+- repo-local standards and templates have been located
 
 ### Workflow Steps
 
-#### 1. Design Phase
+#### 1. Understand The Change
 
-**Understand the requirements:**
-- What is the business goal?
-- What API endpoints are needed?
-- What data models are required?
-- What events need to be published/consumed?
-- What external services need to be called?
+Answer these first:
 
-**Check existing patterns:**
-```bash
-# Review similar features in the service
-cd /home/user/microservices/<service>
-grep -r "similar_feature" internal/
-```
+- What user or business problem is being solved?
+- What public contract changes, if any, are required?
+- What data model changes, if any, are required?
+- What downstream services, jobs, or consumers are affected?
+- What rollout and rollback risks exist?
 
-**Review standards:**
-- [Coding Standards](../../docs/07-development/standards/coding-standards.md)
-- [Team Lead Code Review Guide](../../docs/07-development/standards/TEAM_LEAD_CODE_REVIEW_GUIDE.md)
+Use skill: `navigate-service`
 
-#### 2. Implementation Phase
+#### 2. Check Existing Patterns
 
-**2.1 Define API Contract (if new endpoint)**
+Before writing code:
 
-Use skill: `add-api-endpoint`
+- inspect similar features already present in the repo
+- reuse existing request, validation, persistence, and test patterns
+- read repo-local standards, ADRs, and service docs if available
+- note any existing migration, release, or compatibility rules
 
-```bash
-# Edit proto file
-vim api/<service>/v1/<service>.proto
+#### 3. Plan The Implementation
 
-# Generate code
-cd /home/user/microservices/<service> && make api
-```
+Break the work into the minimum set of changes needed:
 
-**2.2 Create Database Migration (if schema changes)**
+- contract changes
+- business logic
+- persistence or schema updates
+- integrations with other services or shared libraries
+- observability and documentation
 
-Use skill: `create-migration`
+If the feature changes persisted data, use skill: `create-migration`
 
-```bash
-cd /home/user/microservices/<service>
-make migration name=add_feature_table
-```
+#### 4. Implement The Change
 
-**2.3 Implement Business Logic**
+Follow the local architecture instead of inventing a new one.
 
-Follow Clean Architecture layers:
-1. Define domain entity in `internal/biz/<entity>.go`
-2. Define repository interface in `internal/biz/<entity>.go`
-3. Implement repository in `internal/data/<entity>.go`
-4. Implement use case in `internal/biz/<entity>.go`
-5. Implement service handler in `internal/service/<service>.go`
+- update contracts only if needed
+- keep validation near the boundary
+- keep business rules in the repo's expected layer
+- update persistence code in the local pattern
+- reuse shared code before creating new helpers
+- avoid hidden breaking changes in public interfaces
 
-**2.4 Add Service Client (if calling other services)**
+If the repo uses generated code, regenerate it with the local command after editing source definitions.
 
-Use skill: `add-service-client`
-
-**2.5 Add Event Handler (if consuming events)**
-
-Use skill: `add-event-handler`
-
-**2.6 Use Common Library**
-
-Use skill: `use-common-lib`
-
-Check `common/` for existing utilities before writing custom code.
-
-#### 3. Testing Phase
-
-**3.1 Write Tests**
+#### 5. Test The Change
 
 Use skill: `write-tests`
 
-```bash
-# Run tests
-cd /home/user/microservices/<service>
-go test ./internal/biz/... -v
-go test ./internal/service/... -v
-go test ./internal/data/... -v
-```
+Cover at least:
 
-**3.2 Check Coverage**
+- the happy path
+- boundary and validation failures
+- backward compatibility concerns
+- migration or data edge cases when schema changes are involved
+- the most important integration touchpoints
 
-```bash
-go test ./internal/... -cover
-```
+Run the repo's normal verification commands for:
 
-Target: ≥60% for biz layer
+- tests
+- lint or static analysis
+- build
 
-#### 4. Quality Check Phase
-
-**4.1 Lint**
-
-```bash
-cd /home/user/microservices/<service>
-golangci-lint run
-```
-
-**4.2 Build**
-
-```bash
-go build ./...
-```
-
-**4.3 Regenerate Wire (if DI changed)**
-
-```bash
-cd cmd/<service> && wire
-cd ../worker && wire  # if worker exists
-```
-
-#### 5. Documentation Phase
-
-**5.1 Update CHANGELOG.md**
-
-```markdown
-## [Unreleased]
-### Added
-- New feature: <description>
-- New API endpoint: `POST /api/v1/<service>/<resource>`
-```
-
-**5.2 Update README.md (if needed)**
-
-Add new configuration, environment variables, or usage examples.
-
-**5.3 Update Service Documentation (if significant change)**
-
-Edit `docs/03-services/<group>/<service>-service.md`
-
-#### 6. Review Phase
+#### 6. Review The Change
 
 Use skill: `review-code`
 
 Self-review checklist:
-- [ ] Architecture layers respected (service → biz → data)
-- [ ] Error handling comprehensive
-- [ ] Input validation complete
-- [ ] Context propagated through all layers
-- [ ] No hardcoded values
-- [ ] Tests written and passing
-- [ ] Documentation updated
-- [ ] No breaking changes (or versioned properly)
 
-#### 7. Commit & Deploy Phase
+- architecture boundaries are still respected
+- inputs are validated
+- errors have useful context
+- no secrets or repo-local assumptions were introduced
+- tests cover the riskier paths
+- docs or release notes are updated when needed
+
+#### 7. Prepare Delivery
 
 Use skill: `commit-code`
 
-```bash
-cd /home/user/microservices/<service>
+Before committing or pushing:
 
-# Remove bin directory
-rm -rf bin/
+- remove transient build artifacts if the repo produces them
+- verify generated files are intentionally updated
+- confirm migration ordering and rollback safety
+- confirm contract changes are versioned appropriately
+- follow the repo's release gate and approval requirements
 
-# Commit
-git add -A
-git commit -m "feat(<service>): add <feature_name>
+Do not create a commit until the user or local policy explicitly allows that commit action.
+Do not push, tag, or publish until the user or local policy explicitly allows that specific action.
 
-- Added new API endpoint for <feature>
-- Implemented business logic in biz layer
-- Added database migration for <table>
-- Updated documentation"
+#### 8. Verify Rollout
 
-# Push (CI will build and deploy)
-git push origin main
-```
+After the change is shipped:
 
-#### 8. Verification Phase
+- verify deployment or rollout status using the repo's source of truth
+- check service health, logs, and critical signals
+- run a focused smoke test for the feature
+- confirm dependent systems still behave as expected
 
-**8.1 Wait for CI/CD**
+#### 9. Capture Follow-Up
 
-```bash
-# Check if CI finished building
-cd /home/user/microservices/gitops && git pull origin main
-cat apps/<service>/base/kustomization.yaml | grep newTag
-```
+If the feature leaves known follow-up work:
 
-**8.2 Verify Deployment**
+- document deferred cleanup
+- note temporary compatibility shims
+- record rollout observations and any residual risk
 
-```bash
-# Check pods
-$DEV_SSH "kubectl get pods -n <service>-dev"
+### Common Failure Modes
 
-# Check logs
-$DEV_SSH "kubectl logs -n <service>-dev -l app=<service> --tail=50"
-```
+#### Contract changed but consumers were not considered
 
-**8.3 Test the Feature**
+- review dependent services and client code
+- check compatibility expectations before release
 
-```bash
-# Test API endpoint
-curl -X POST http://<service>-dev.tanhdev.com/api/v1/<service>/<resource> \
-  -H "Content-Type: application/json" \
-  -d '{"field": "value"}'
-```
+#### Schema changed but migrations are unsafe
 
-### Common Issues & Solutions
+- verify ordering, backfill strategy, and rollback behavior
+- avoid destructive data changes in a single risky step
 
-**Issue: Wire generation fails**
-```bash
-# Check provider set in cmd/<service>/wire.go
-# Ensure all dependencies are provided
-cd cmd/<service> && wire
-```
+#### Tests pass locally but rollout fails
 
-**Issue: Proto generation fails**
-```bash
-# Install proto tools
-go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-go install github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v2@latest
-
-# Copy third_party if missing
-cp -r /home/user/microservices/user/third_party /home/user/microservices/<service>/
-```
-
-**Issue: Tests fail**
-```bash
-# Check test setup
-# Ensure mocks are up to date
-# Verify test data is correct
-go test ./internal/... -v
-```
+- compare runtime config, env vars, and dependency availability
+- check repo-local deployment manifests or release config
 
 ### Related Workflows
+
 - [Build & Deploy](build-deploy.md)
 - [Service Review & Release](service-review-release.md)
 - [Troubleshooting](troubleshooting.md)
 
 ### Related Skills
-- add-api-endpoint
+
+- navigate-service
 - create-migration
-- add-service-client
-- add-event-handler
 - write-tests
 - review-code
 - commit-code

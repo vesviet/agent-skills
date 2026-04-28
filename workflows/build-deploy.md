@@ -1,392 +1,141 @@
 ---
-description: How to build and deploy a microservice
+description: Generic workflow for building, validating, releasing, and verifying a change
 ---
 
 ## Build & Deploy Workflow
 
-This is the standard workflow for deploying code changes to development, staging, or production environments.
+Use this workflow when a change is ready to move from local verification into a shared environment.
 
-### When to Use
-- After making code changes
-- After fixing bugs
-- After code review approval
-- For routine deployments
+### When To Use
+
+- after a feature or bug fix is complete
+- after code review approval
+- before handing a change to QA or release owners
 
 ### Prerequisites
-- Code changes completed and tested locally
-- All tests passing
-- Lint checks passing
-- No breaking changes (or properly versioned)
+
+- local implementation is complete
+- verification commands pass locally
+- release risk is understood
 
 ### Critical Rules
 
-**NEVER build Docker images locally**
-- Always commit & push
-- CI/CD builds the image automatically
-- Local builds are not pushed to registry
-
-**NEVER manually update `newTag` in gitops**
-- CI/CD pipeline automatically updates the image tag
-- Manual edits will be overwritten
-- Tag format: short git commit hash (e.g., `2c23782`)
-
-**To verify CI build is done**:
-```bash
-cd /home/user/microservices/gitops && git pull origin main
-cat apps/<service>/base/kustomization.yaml | grep newTag
-# If newTag matches your commit hash, CI has finished
-```
+- prefer the repo's official CI/CD path over ad hoc local release steps
+- do not edit generated release metadata by hand unless the repo explicitly expects that
+- do not create a commit until the user or local process explicitly allows that commit action
+- do not push, create a tag, or publish a release until the user or local process explicitly allows that specific action
 
 ### Workflow Steps
 
-#### Phase 1: Pre-Deployment Checks
+#### 1. Run Pre-Release Checks
 
-**1.1 Verify Code Quality**
+From the target repo, run the normal quality gates:
 
-```bash
-cd /home/user/microservices/<service>
+- tests
+- lint or static analysis
+- build
+- contract generation if the repo uses it
 
-# Run tests
-go test ./... -v
+Also check:
 
-# Run lint
-golangci-lint run
+- no accidental debug code
+- no transient files staged for release
+- no local-only config or credentials leaked into the change
 
-# Build
-go build ./...
-```
+#### 2. Review Release Impact
 
-All checks must pass before proceeding.
+Use skill: `review-code`
 
-**1.2 Quick Code Review**
+Confirm:
 
-> ⚠️ **Mandatory gate**: Run a quick review before deploying. Use the `review-code` skill (Mode A) to check for P0/P1 issues.
+- public contracts remain compatible unless the release is intentionally breaking
+- schema or config changes are accounted for
+- release notes or changelog entries are updated if the repo expects them
+- dependent services or clients have been considered
 
-```bash
-# Review changed files
-git diff --name-only HEAD~1
+#### 3. Prepare The Release Artifact
 
-# Check for common anti-patterns:
-# - Missing error wrapping
-# - Biz layer calling DB directly
-# - Unmanaged goroutines
-# - Missing input validation at service layer
-```
+Use skill: `commit-code`
 
-**1.2 Check for Breaking Changes**
+Depending on the repo, this may mean:
 
-If you made API changes:
-```bash
-# Check proto changes
-git diff HEAD~1 api/<service>/v1/<service>.proto
+- pushing a branch
+- opening a change request
+- creating a version tag
+- updating a release branch
+- handing the change to an automated promotion pipeline
 
-# Verify backward compatibility
-# - No removed fields
-# - No renamed RPCs
-# - New fields are optional
-```
+Follow the repo-local mechanism instead of assuming a specific Git provider or deployment repo.
+Treat each remote or release-facing action as separately gated approval.
 
-#### Phase 2: Commit Changes
+#### 4. Trigger Delivery
 
-**2.1 Remove Build Artifacts**
+Use the repository's normal release path:
 
-```bash
-cd /home/user/microservices/<service>
-rm -rf bin/
-```
+- CI pipeline
+- deployment manifest update
+- package publish
+- release promotion job
 
-**2.2 Stage Changes**
+Capture the release reference that matters locally, such as:
 
-```bash
-git add -A
-```
+- commit SHA
+- build number
+- artifact version
+- deployment revision
 
-**2.3 Commit with Conventional Format**
+#### 5. Verify Rollout
 
-```bash
-git commit -m "<type>(<service>): <description>
+After delivery starts:
 
-[Optional detailed description]
-[Optional breaking changes note]"
-```
+- confirm the rollout reached the intended environment
+- inspect logs and health checks
+- verify critical dependencies are reachable
+- run a focused smoke test on the changed path
 
-**Commit types**:
-- `feat`: New feature
-- `fix`: Bug fix
-- `refactor`: Code refactoring
-- `perf`: Performance improvement
-- `docs`: Documentation only
-- `test`: Adding tests
-- `chore`: Maintenance tasks
+Prefer repo-local dashboards, manifests, or service discovery entries over guessing direct URLs.
 
-**Examples**:
-```bash
-# Feature
-git commit -m "feat(order): add order history endpoint"
+#### 6. Monitor And Decide
 
-# Bug fix
-git commit -m "fix(payment): handle null payment method"
+For the first few minutes after rollout:
 
-# Refactoring
-git commit -m "refactor(catalog): extract price calculation logic"
+- watch error rates
+- watch latency or resource spikes
+- confirm no alerts or regressions appear
 
-# With details
-git commit -m "feat(order): add order cancellation
+If problems appear:
 
-- Added CancelOrder RPC
-- Implemented refund logic
-- Added cancellation event"
-```
+- pause further promotion
+- compare the current revision with the last known good one
+- follow the repo's rollback or recovery procedure
 
-#### Phase 3: Push & Deploy
+#### 7. Record Outcome
 
-**3.1 Push to Remote**
+Capture:
 
-```bash
-git push origin main
-```
+- what was released
+- where it was released
+- how it was verified
+- any follow-up work or residual risk
 
-This triggers:
-1. GitLab CI pipeline
-2. Docker image build
-3. Image push to registry
-4. GitOps tag update
-5. ArgoCD sync
+### Rollback Guidance
 
-**3.2 Monitor CI Pipeline**
+If rollback is needed:
 
-```bash
-# Check GitLab CI pipeline status
-# Visit: https://gitlab.com/ta-microservices/<service>/-/pipelines
-```
-
-Wait for pipeline to complete (typically 2-5 minutes).
-
-#### Phase 4: Verify Deployment
-
-**4.1 Check GitOps Update**
-
-```bash
-# Pull latest gitops
-cd /home/user/microservices/gitops && git pull origin main
-
-# Verify tag updated
-cat apps/<service>/base/kustomization.yaml | grep newTag
-
-# Should show your commit hash
-# newTag: abc1234
-```
-
-**4.2 Watch Pods Rolling Out**
-
-```bash
-# Development
-$DEV_SSH "kubectl get pods -n <service>-dev -w"
-
-# Staging
-$DEV_SSH "kubectl get pods -n <service>-staging -w"
-
-# Production
-$DEV_SSH "kubectl get pods -n <service>-prod -w"
-```
-
-Wait for:
-- Old pods terminating
-- New pods starting
-- New pods becoming Ready (2/2)
-
-**4.3 Check Logs**
-
-```bash
-# Check for errors in new pods
-$DEV_SSH "kubectl logs -n <service>-dev -l app=<service> --tail=50"
-
-# Follow logs
-$DEV_SSH "kubectl logs -n <service>-dev -l app=<service> --tail=50 -f"
-```
-
-Look for:
-- ✅ Service started successfully
-- ✅ Database connected
-- ✅ Redis connected
-- ✅ Consul registered
-- ❌ No error messages
-- ❌ No panic traces
-
-**4.4 Verify Health**
-
-```bash
-# Health check
-curl http://<service>-dev.tanhdev.com/health/live
-curl http://<service>-dev.tanhdev.com/health/ready
-
-# Should return: {"status":"ok"}
-```
-
-**4.5 Smoke Test**
-
-Test critical endpoints:
-```bash
-# Example: Test main endpoint
-curl -X POST http://<service>-dev.tanhdev.com/api/v1/<service>/<resource> \
-  -H "Content-Type: application/json" \
-  -d '{"field": "value"}'
-
-# Verify response is correct
-```
-
-#### Phase 5: Post-Deployment
-
-**5.1 Monitor for Issues**
-
-Monitor for 10-15 minutes after deployment:
-- Check error rates in logs
-- Check response times
-- Check for any alerts
-
-**5.2 Rollback if Needed**
-
-If issues detected:
-```bash
-cd /home/user/microservices/gitops
-
-# Revert to previous tag
-git log --oneline apps/<service>/base/kustomization.yaml
-git revert HEAD
-
-# Or manually update to previous tag
-vim apps/<service>/base/kustomization.yaml
-# Change newTag to previous working version
-
-git add apps/<service>/base/kustomization.yaml
-git commit -m "revert(<service>): rollback to previous version"
-git push origin main
-```
-
-**5.3 Update Documentation (if needed)**
-
-If deployment includes significant changes:
-```bash
-# Update service documentation
-vim docs/03-services/<group>/<service>-service.md
-
-# Update CHANGELOG
-vim <service>/CHANGELOG.md
-```
-
-### Deployment Targets
-
-#### Development (dev)
-- **Purpose**: Active development and testing
-- **Stability**: Unstable, frequent deployments
-- **Auto-deploy**: Yes, on every push to main
-- **Namespace**: `<service>-dev`
-
-#### Staging (staging)
-- **Purpose**: Pre-production testing
-- **Stability**: Stable, tested features
-- **Auto-deploy**: Manual promotion from dev
-- **Namespace**: `<service>-staging`
-
-#### Production (prod)
-- **Purpose**: Live customer traffic
-- **Stability**: Very stable, thoroughly tested
-- **Auto-deploy**: Manual promotion with approval
-- **Namespace**: `<service>-prod`
-
-### Troubleshooting
-
-#### Issue: CI Pipeline Fails
-
-**Check**:
-```bash
-# View pipeline logs in GitLab
-# Common causes:
-# - Tests failing
-# - Lint errors
-# - Build errors
-# - Docker build errors
-```
-
-**Solution**:
-```bash
-# Fix the issue locally
-# Run tests and lint
-go test ./... -v
-golangci-lint run
-
-# Commit fix
-git add -A
-git commit -m "fix(<service>): fix CI pipeline issue"
-git push origin main
-```
-
-#### Issue: Pods Not Starting
-
-**Check**:
-```bash
-# Describe pod
-$DEV_SSH "kubectl describe pod <pod-name> -n <service>-dev"
-
-# Common causes:
-# - Image pull error
-# - Config error
-# - Resource limits
-# - Health probe failing
-```
-
-**Solution**: See [Troubleshooting Workflow](troubleshooting.md)
-
-#### Issue: Service Not Responding
-
-**Check**:
-```bash
-# Check if pods are ready
-$DEV_SSH "kubectl get pods -n <service>-dev"
-
-# Check logs
-$DEV_SSH "kubectl logs -n <service>-dev -l app=<service> --tail=100"
-
-# Check service
-$DEV_SSH "kubectl get svc -n <service>-dev"
-```
-
-**Solution**: See [Troubleshooting Workflow](troubleshooting.md)
-
-### Checklist
-
-- [ ] Code changes completed
-- [ ] Tests passing locally
-- [ ] Lint passing (0 warnings)
-- [ ] Build successful
-- [ ] No breaking changes (or versioned)
-- [ ] Removed bin/ directory
-- [ ] Committed with conventional format
-- [ ] Pushed to remote
-- [ ] CI pipeline completed successfully
-- [ ] GitOps tag updated
-- [ ] Pods rolled out successfully
-- [ ] Logs checked (no errors)
-- [ ] Health checks passing
-- [ ] Smoke test passed
-- [ ] Monitored for 10-15 minutes
-- [ ] No issues detected
-
-### Time Estimate
-
-- **Preparation**: 5 minutes
-- **Commit & Push**: 2 minutes
-- **CI/CD**: 2-5 minutes
-- **Verification**: 5-10 minutes
-- **Total**: 15-25 minutes
+- use the repo's standard rollback path first
+- avoid manual edits that bypass the normal source of truth
+- verify recovery using the same smoke checks as the forward deploy
 
 ### Related Workflows
-- [Add New Feature](add-new-feature.md) - Before deploying new features
-- [Service Review & Release](service-review-release.md) - Before major releases
-- [Troubleshooting](troubleshooting.md) - If deployment issues occur
-- [Hotfix Production](hotfix-production.md) - For emergency fixes
+
+- [Add New Feature](add-new-feature.md)
+- [Service Review & Release](service-review-release.md)
+- [Troubleshooting](troubleshooting.md)
+- [Hotfix Production](hotfix-production.md)
 
 ### Related Skills
+
+- review-code
 - commit-code
 - troubleshoot-service
-- debug-k8s
+- review-service

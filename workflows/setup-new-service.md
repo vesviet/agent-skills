@@ -1,629 +1,168 @@
 ---
-description: Workflow for setting up a new microservice from scratch
+description: Workflow for bootstrapping a new service or bounded component in a reusable way
 ---
 
 ## Setup New Service Workflow
 
-This workflow guides you through creating a new microservice in the project.
+Use this workflow when creating a new service, worker, or bounded component from scratch.
 
 ### Prerequisites
-- Service name decided (e.g., `inventory`, `recommendation`)
-- Service purpose clearly defined
-- Port allocation determined (check PORT_ALLOCATION_STANDARD.md)
-- Database requirements identified
+
+- the service name and purpose are clear
+- ownership and dependency boundaries are known
+- repo-local templates and architectural conventions have been located
 
 ### Workflow Steps
 
-#### Phase 1: Planning
-
-**1.1 Define Service Scope**
-
-Answer these questions:
-- What is the business domain?
-- What are the main responsibilities?
-- What APIs will it expose?
-- What data will it manage?
-- What events will it publish/consume?
-- What other services will it call?
-
-**1.2 Check Port Allocation**
-
-```bash
-# Check available ports
-cat /home/user/microservices/gitops/docs/PORT_ALLOCATION_STANDARD.md
-
-# Reserve ports for new service
-# HTTP: 80XX
-# gRPC: 90XX
-```
-
-**1.3 Determine Service Group**
-
-- **core-services**: Core business logic (order, catalog, customer, payment, auth, user)
-- **operational-services**: Supporting operations (notification, analytics, search, review, warehouse, fulfillment, shipping, pricing, promotion, loyalty-rewards, location)
-- **platform-services**: Infrastructure (gateway, common-operations)
-
-#### Phase 2: Create Service Structure
-
-**2.1 Clone Template or Copy Existing Service**
-
-```bash
-cd /home/user/microservices
-
-# Option 1: Copy similar service
-cp -r user <new-service>
-cd <new-service>
-
-# Clean up
-rm -rf .git bin/ vendor/
-find . -name "*.pb.go" -delete
-find . -name "wire_gen.go" -delete
-```
-
-**2.2 Update Module Name**
-
-```bash
-# Update go.mod
-vim go.mod
-# Change: module gitlab.com/ta-microservices/<new-service>
-
-# Update all imports
-find . -type f -name "*.go" -exec sed -i 's/gitlab.com\/ta-microservices\/user/gitlab.com\/ta-microservices\/<new-service>/g' {} +
-```
-
-**2.3 Create Directory Structure**
-
-```bash
-mkdir -p api/<new-service>/v1
-mkdir -p cmd/<new-service>
-mkdir -p cmd/worker
-mkdir -p internal/biz
-mkdir -p internal/data
-mkdir -p internal/service
-mkdir -p internal/client
-mkdir -p internal/events
-mkdir -p internal/worker
-mkdir -p internal/constants
-mkdir -p internal/server
-mkdir -p internal/middleware
-mkdir -p configs
-mkdir -p migrations
-mkdir -p dapr
-mkdir -p k8s
-mkdir -p docs
-```
-
-#### Phase 3: Define API Contract
-
-**3.1 Create Proto File**
-
-```bash
-vim api/<new-service>/v1/<new-service>.proto
-```
-
-```protobuf
-syntax = "proto3";
-
-package api.<new-service>.v1;
-
-option go_package = "gitlab.com/ta-microservices/<new-service>/api/<new-service>/v1;v1";
-
-import "google/api/annotations.proto";
-import "google/protobuf/empty.proto";
-
-service <NewService>Service {
-  rpc Create<Entity> (Create<Entity>Request) returns (Create<Entity>Reply) {
-    option (google.api.http) = {
-      post: "/api/v1/<new-service>/<entities>"
-      body: "*"
-    };
-  }
-
-  rpc Get<Entity> (Get<Entity>Request) returns (Get<Entity>Reply) {
-    option (google.api.http) = {
-      get: "/api/v1/<new-service>/<entities>/{id}"
-    };
-  }
-
-  rpc List<Entities> (List<Entities>Request) returns (List<Entities>Reply) {
-    option (google.api.http) = {
-      get: "/api/v1/<new-service>/<entities>"
-    };
-  }
-}
-
-message Create<Entity>Request {
-  string name = 1;
-  string description = 2;
-}
+#### 1. Define Scope
 
-message Create<Entity>Reply {
-  <Entity>Data data = 1;
-}
+Write down:
 
-message Get<Entity>Request {
-  string id = 1;
-}
+- what the service owns
+- what contracts it exposes
+- what data it manages
+- what dependencies it needs
+- what should stay outside its boundary
 
-message Get<Entity>Reply {
-  <Entity>Data data = 1;
-}
+#### 2. Choose The Starting Point
 
-message List<Entities>Request {
-  int32 page = 1;
-  int32 page_size = 2;
-}
-
-message List<Entities>Reply {
-  repeated <Entity>Data items = 1;
-  int32 total = 2;
-}
-
-message <Entity>Data {
-  string id = 1;
-  string name = 2;
-  string description = 3;
-  string created_at = 4;
-  string updated_at = 5;
-}
-```
-
-**3.2 Create Makefile**
-
-```bash
-vim Makefile
-```
-
-```makefile
-.PHONY: api build run test migrate-up migrate-down
-
-api:
-	protoc --proto_path=. \
-		--proto_path=./third_party \
-		--go_out=paths=source_relative:. \
-		--go-grpc_out=paths=source_relative:. \
-		--go-http_out=paths=source_relative:. \
-		api/<new-service>/v1/*.proto
-
-build:
-	go build -o bin/<new-service> ./cmd/<new-service>
-	go build -o bin/worker ./cmd/worker
-
-run:
-	go run ./cmd/<new-service>
-
-test:
-	go test ./... -v
-
-migrate-up:
-	goose -dir migrations postgres "$(DATABASE_URL)" up
-
-migrate-down:
-	goose -dir migrations postgres "$(DATABASE_URL)" down
-```
-
-**3.3 Generate Proto Code**
-
-```bash
-# Copy third_party
-cp -r /home/user/microservices/user/third_party .
-
-# Generate
-make api
-```
-
-#### Phase 4: Implement Core Layers
-
-**4.1 Create Domain Entity (Biz Layer)**
-
-```bash
-vim internal/biz/<entity>.go
-```
-
-Use skill: `service-structure` for reference
-
-**4.2 Create Repository (Data Layer)**
-
-```bash
-vim internal/data/<entity>.go
-```
-
-**4.3 Create Service Handler (Service Layer)**
-
-```bash
-vim internal/service/<new-service>.go
-```
-
-**4.4 Setup Dependency Injection (Wire)**
-
-```bash
-vim cmd/<new-service>/wire.go
-```
-
-```go
-//go:build wireinject
-// +build wireinject
-
-package main
-
-import (
-	"github.com/go-kratos/kratos/v2"
-	"github.com/google/wire"
-	"gitlab.com/ta-microservices/<new-service>/internal/biz"
-	"gitlab.com/ta-microservices/<new-service>/internal/data"
-	"gitlab.com/ta-microservices/<new-service>/internal/server"
-	"gitlab.com/ta-microservices/<new-service>/internal/service"
-)
-
-func wireApp(*conf.Server, *conf.Data, log.Logger) (*kratos.App, func(), error) {
-	panic(wire.Build(
-		server.ProviderSet,
-		data.ProviderSet,
-		biz.ProviderSet,
-		service.ProviderSet,
-		newApp,
-	))
-}
-```
-
-**4.5 Generate Wire**
-
-```bash
-cd cmd/<new-service> && wire
-cd ../worker && wire  # if worker exists
-```
-
-#### Phase 5: Database Setup
-
-**5.1 Create Initial Migration**
-
-```bash
-cd /home/user/microservices/<new-service>
-make migration name=create_initial_tables
-```
-
-**5.2 Write Migration SQL**
-
-```bash
-vim migrations/<timestamp>_create_initial_tables.sql
-```
-
-```sql
--- +goose Up
-CREATE TABLE IF NOT EXISTS <entities> (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP
-);
-
-CREATE INDEX idx_<entities>_deleted_at ON <entities>(deleted_at);
-
--- +goose Down
-DROP TABLE IF EXISTS <entities>;
-```
-
-**5.3 Create Database**
+Prefer one of these, in order:
 
-```bash
-psql -h localhost -U ecommerce_user -d postgres -c "CREATE DATABASE <new-service>_db;"
-```
+- an official repo template
+- a local scaffold command
+- a nearby service that already matches the desired shape
 
-**5.4 Run Migration**
+If copying an existing service:
 
-```bash
-DATABASE_URL="postgres://<DB_USER>:<DB_PASSWORD>@localhost:5432/<new-service>_db?sslmode=disable" \
-  make migrate-up
-```
+- remove generated files that should be regenerated
+- remove transient artifacts
+- rename imports, module paths, and service identifiers carefully
 
-#### Phase 6: Configuration
+#### 3. Create The Initial Structure
 
-**6.1 Create Config File**
+Create only the directories the repo actually uses.
 
-```bash
-vim configs/config.yaml
-```
+Common examples:
 
-```yaml
-server:
-  http:
-    addr: 0.0.0.0:80XX  # Use allocated port
-    timeout: 30s
-  grpc:
-    addr: 0.0.0.0:90XX  # Use allocated port
-    timeout: 30s
+- public contract or API definitions
+- command or entrypoint packages
+- domain or business logic
+- persistence or adapters
+- configuration
+- tests
+- docs
 
-data:
-  database:
-    driver: postgres
-    source: postgres://<DB_USER>:<DB_PASSWORD>@localhost:5432/<new-service>_db?sslmode=disable
-  redis:
-    addr: localhost:6379
-    read_timeout: 0.2s
-    write_timeout: 0.2s
+Do not invent extra folders if the local template already defines the right structure.
 
-consul:
-  address: localhost:8500
-  scheme: http
+#### 4. Define Contracts And Data
 
-log:
-  level: info
-  format: json
-```
+If the service exposes an API or event contract:
 
-**6.2 Create .env File**
+- define the initial contract using the repo's normal schema format
+- generate any derived code with the repo's standard command
+- keep the first contract intentionally small
 
-```bash
-vim .env
-```
+If the service owns persistent data:
 
-```bash
-DATABASE_URL=postgres://<DB_USER>:<DB_PASSWORD>@localhost:5432/<new-service>_db?sslmode=disable
-REDIS_ADDR=localhost:6379
-CONSUL_ADDR=localhost:8500
-```
+- create an initial migration using the local migration tool
+- keep the first schema narrow and easy to evolve
+- document any ordering or rollout constraints
 
-#### Phase 7: GitOps Setup
+Use skill: `create-migration` when schema work is involved.
 
-Use skill: `setup-gitops`
+#### 5. Implement The Core Flow
 
-**7.1 Create GitOps Structure**
+Set up the smallest end-to-end path that proves the service shape:
 
-```bash
-cd /home/user/microservices/gitops
-mkdir -p apps/<new-service>/base
-mkdir -p apps/<new-service>/overlays/dev
-mkdir -p apps/<new-service>/overlays/staging
-mkdir -p apps/<new-service>/overlays/production
-```
+- boundary or handler
+- core use case
+- persistence or dependency adapter
+- basic configuration
+- health or readiness behavior if the repo uses it
 
-**7.2 Create Base Manifests**
+Use the repo's existing DI, bootstrap, and config patterns rather than inventing new ones.
 
-```bash
-# deployment.yaml
-vim apps/<new-service>/base/deployment.yaml
-
-# service.yaml
-vim apps/<new-service>/base/service.yaml
-
-# configmap.yaml
-vim apps/<new-service>/base/configmap.yaml
-
-# hpa.yaml
-vim apps/<new-service>/base/hpa.yaml
-
-# kustomization.yaml
-vim apps/<new-service>/base/kustomization.yaml
-```
-
-**7.3 Update Port Allocation Document**
-
-```bash
-vim docs/PORT_ALLOCATION_STANDARD.md
-```
-
-Add entry for new service with allocated ports.
-
-#### Phase 8: Documentation
-
-**8.1 Create Service Documentation**
-
-```bash
-vim /home/user/microservices/docs/03-services/<group>/<new-service>-service.md
-```
-
-Use template from existing service docs.
-
-**8.2 Create README.md**
-
-```bash
-vim README.md
-```
-
-Use template: `docs/templates/readme-template.md`
-
-**8.3 Create CHANGELOG.md**
-
-```bash
-vim CHANGELOG.md
-```
-
-```markdown
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-
-### Added
-- Initial service setup
-- Basic CRUD operations for <entity>
-- Database migrations
-- API documentation
-```
-
-#### Phase 9: Testing
-
-**9.1 Write Unit Tests**
+#### 6. Add Tests
 
 Use skill: `write-tests`
 
-```bash
-# Test biz layer
-vim internal/biz/<entity>_test.go
+Cover:
 
-# Test service layer
-vim internal/service/<new-service>_test.go
+- one core happy path
+- one validation or failure path
+- migration or persistence basics if applicable
 
-# Test data layer
-vim internal/data/<entity>_test.go
-```
+Run the repo's normal test, build, and lint commands.
 
-**9.2 Run Tests**
+#### 7. Add Documentation
 
-```bash
-go test ./... -v
-```
+Document at least:
 
-#### Phase 10: Build & Verify
+- service purpose
+- key dependencies
+- local setup steps
+- how to run verification
+- rollout or environment notes if they are needed
 
-**10.1 Lint**
+Use repo-local README or service-doc templates when they exist.
 
-```bash
-golangci-lint run
-```
+#### 8. Wire It Into Delivery
 
-**10.2 Build**
+Add the minimum delivery plumbing the repo expects, such as:
 
-```bash
-go build ./...
-```
+- CI checks
+- deployment manifests
+- package publishing metadata
+- ownership or alerting metadata
 
-**10.3 Run Locally**
+Follow the source of truth already used by the repo.
 
-```bash
-# Start infrastructure
-docker-compose up -d postgres redis consul
+#### 9. Verify Locally
 
-# Run service
-go run ./cmd/<new-service>/...
-```
+Before handing off:
 
-**10.4 Test Endpoints**
+- run the service locally if possible
+- exercise the core path
+- verify config loading
+- confirm generated files are current
 
-```bash
-# Health check
-curl http://localhost:80XX/health/live
+#### 10. Prepare The Initial Delivery
 
-# Create entity
-curl -X POST http://localhost:80XX/api/v1/<new-service>/<entities> \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Test", "description": "Test entity"}'
+Use skill: `commit-code`
 
-# Get entity
-curl http://localhost:80XX/api/v1/<new-service>/<entities>/<id>
+Before committing:
 
-# List entities
-curl http://localhost:80XX/api/v1/<new-service>/<entities>
-```
+- remove transient files
+- confirm templates were fully renamed
+- confirm docs and ownership info are present
+- confirm the repo-local release path is understood
 
-#### Phase 11: Initial Commit
-
-**11.1 Initialize Git**
-
-```bash
-cd /home/user/microservices/<new-service>
-git init
-git remote add origin git@gitlab.com:ta-microservices/<new-service>.git
-```
-
-**11.2 Create .gitignore**
-
-```bash
-vim .gitignore
-```
-
-```
-bin/
-vendor/
-*.log
-.env
-.DS_Store
-coverage.out
-```
-
-**11.3 Commit**
-
-```bash
-rm -rf bin/
-git add -A
-git commit -m "feat(<new-service>): initial service setup
-
-- Created service structure
-- Implemented basic CRUD operations
-- Added database migrations
-- Configured GitOps manifests
-- Added documentation"
-
-git push -u origin main
-```
-
-#### Phase 12: Deploy
-
-**12.1 Create CI/CD Pipeline**
-
-```bash
-vim .gitlab-ci.yml
-```
-
-Copy from existing service and update service name.
-
-**12.2 Push and Deploy**
-
-```bash
-git push origin main
-```
-
-**12.3 Verify Deployment**
-
-```bash
-# Wait for CI/CD
-cd /home/user/microservices/gitops && git pull origin main
-cat apps/<new-service>/base/kustomization.yaml | grep newTag
-
-# Check pods
-$DEV_SSH "kubectl get pods -n <new-service>-dev"
-
-# Check logs
-$DEV_SSH "kubectl logs -n <new-service>-dev -l app=<new-service> --tail=50"
-```
+Do not create a commit until the user or local process explicitly allows that commit action.
+Do not push, tag, or publish until the user or local process explicitly allows that specific action.
 
 ### Checklist
 
-- [ ] Service name and purpose defined
-- [ ] Ports allocated (HTTP: 80XX, gRPC: 90XX)
-- [ ] Service group determined
-- [ ] Directory structure created
-- [ ] Proto file created and generated
-- [ ] Makefile created
-- [ ] Domain entity implemented (biz layer)
-- [ ] Repository implemented (data layer)
-- [ ] Service handler implemented (service layer)
-- [ ] Wire DI configured and generated
-- [ ] Database created
-- [ ] Initial migration created and run
-- [ ] Config file created
-- [ ] .env file created
-- [ ] GitOps manifests created
-- [ ] Port allocation document updated
-- [ ] Service documentation created
-- [ ] README.md created
-- [ ] CHANGELOG.md created
-- [ ] Unit tests written
-- [ ] Lint passed (0 warnings)
-- [ ] Build successful
-- [ ] Local testing passed
-- [ ] .gitignore created
-- [ ] Git initialized and remote added
-- [ ] Initial commit made
-- [ ] CI/CD pipeline configured
-- [ ] Deployed to dev environment
-- [ ] Deployment verified
+- [ ] service name and scope defined
+- [ ] local template or scaffold chosen
+- [ ] initial structure created
+- [ ] contracts defined if needed
+- [ ] initial schema or migration added if needed
+- [ ] core flow implemented
+- [ ] tests added
+- [ ] docs added
+- [ ] delivery plumbing connected
+- [ ] local verification completed
 
 ### Related Workflows
+
 - [Add New Feature](add-new-feature.md)
 - [Service Review & Release](service-review-release.md)
 - [Build & Deploy](build-deploy.md)
 
 ### Related Skills
-- service-structure
-- add-api-endpoint
+
+- navigate-service
 - create-migration
-- setup-gitops
 - write-tests
+- review-service
 - commit-code

@@ -1,290 +1,144 @@
 ---
 name: meeting-review
-description: Simulate a multi-agent meeting review (up to 7 specialist agents) to discuss, debate, and review any codebase topic — auto-selects the best panel based on topic
+description: Run a structured multi-perspective technical review of a topic, proposal, code area, or risky change. Use when a user wants a discussion-style review that combines architecture, delivery, quality, product, security, or operations perspectives.
 ---
 
-# Meeting Review Skill — Multi-Agent Panel Discussion
+# Meeting Review
 
-Mô phỏng cuộc họp review với **4-5 chuyên gia AI** (chọn tự động từ bảng 7 agents) cùng thảo luận, tranh luận và đánh giá một chủ đề trong codebase. Mỗi agent có góc nhìn riêng biệt, tạo ra bức tranh toàn diện về vấn đề.
+Use this skill when a normal single-angle review is not enough and the user wants a broader discussion before deciding, building, or refactoring.
 
----
+This skill does not require real subagents. By default, simulate a disciplined review panel in one response. Only use delegated or parallel agents when the user explicitly asks for them.
 
-## When to Use
+## When To Use
 
-- User nói: "meeting review", "họp review", "thảo luận về...", "discuss về..."
-- Cần đánh giá đa chiều (kỹ thuật + business) cho một vấn đề
-- Trước khi bắt tay refactor/viết tính năng lớn
-- Đánh giá architecture decision hoặc tech debt
-- Review infrastructure, deployment, hoặc database design
+- architecture or design reviews
+- large refactors
+- risky implementation plans
+- release-readiness discussions
+- technical debt prioritization
+- cross-functional trade-off discussions
 
----
+## Review Perspectives
 
-## The 7 Agent Pool
+Choose only the perspectives that fit the topic.
 
-### 🔒 Core Agents (Luôn có mặt)
+### Core Perspectives
 
-| Icon | Agent | Title | Focus Area | Câu hỏi đặc trưng |
-|------|-------|-------|-----------|-------------------|
-| 📐 | **Agent A** | **System Architect** | Architecture, Clean Architecture, DDD, component boundaries, scalability, system design patterns | "Kiến trúc có đúng hướng không? Boundaries có rõ ràng không?" |
-| 🛡️ | **Agent B** | **Security & Performance Engineer** | Auth, vulnerabilities, race conditions, memory leaks, goroutine safety, OWASP, load testing, benchmarks | "Có lỗ hổng bảo mật không? Performance bottleneck ở đâu?" |
-| 💻 | **Agent C** | **Senior Go Developer (10+ YOE)** | Go idioms, Kratos best practices, testability, code quality, DRY, SOLID, concurrency patterns, error handling | "Code có clean không? Test được không? Có đúng Go conventions không?" |
+- Architecture: boundaries, coupling, long-term maintainability
+- Engineering: implementation quality, simplicity, testability
+- Risk: security, performance, reliability, rollout risk
 
-### 🔄 Contextual Agents (Chọn 1-2 theo topic)
+### Optional Perspectives
 
-| Icon | Agent | Title | Focus Area | Câu hỏi đặc trưng |
-|------|-------|-------|-----------|-------------------|
-| � | **Agent D** | **Senior Business Analyst / Domain Expert** | Business rules, edge cases, acceptance criteria, cross-domain consistency, backward compatibility, compliance (GDPR), revenue/UX impact | "Nếu coupon hết hạn giữa lúc checkout thì xử lý thế nào? Spec có ghi rõ chưa?" |
-| 🛠️ | **Agent E** | **Senior DevOps / SRE** | K8s, ArgoCD, GitOps, CI/CD, Helm, Kustomize, Observability (Prometheus/Grafana/Jaeger), Vault, KEDA, Argo Rollouts, Zero-Downtime | "Deployment có zero-downtime không? Monitoring đã cover chưa? Secret management an toàn chưa?" |
-| 🧪 | **Agent F** | **QA Lead / Test Engineer** | Test strategy, E2E coverage, edge case identification, regression planning, table-driven tests, mock strategy, integration testing | "Happy path và sad path đã đủ chưa? Concurrent edge case nào chưa có test?" |
-| 🗄️ | **Agent G** | **Database / Data Engineer** | Schema design, migrations, index strategy, query optimization (N+1), data consistency, denormalization trade-offs, partitioning | "Index có phủ query chính chưa? Denormalized field có cơ chế reconciliation không?" |
+- Product: user value, scope, and business trade-offs
+- QA: regression risk, test coverage, validation strategy
+- Operations: deployability, observability, recovery, runbook impact
+- Data: schema, migration, indexing, consistency, retention
+- UX: interaction clarity, accessibility, flow friction
 
----
+## How To Run The Review
 
-## Auto-Select Logic
+### 1. Define Scope
 
-Skill tự chọn combo agents dựa trên **topic keywords**. 3 Core agents (A, B, C) luôn có mặt:
+Identify:
 
-| Topic chứa từ khóa | Panel (Core + Contextual) |
-|---|---|
-| `service`, `logic`, `flow`, `feature`, `checkout`, `payment`, `order` | A + B + C + **📋 BA** |
-| `gitops`, `k8s`, `deploy`, `infra`, `helm`, `argocd`, `cicd` | A + B + C + **🛠️ DevOps** |
-| `test`, `coverage`, `e2e`, `tính năng mới`, `regression` | A + B + C + **🧪 QA** |
-| `schema`, `migration`, `query`, `database`, `index`, `table` | A + B + C + **🗄️ Data Engineer** |
-| `stock`, `pricing`, `promotion`, `discount` (sensitive data + complex rules) | A + B + C + **📋 BA** + **🗄️ Data Engineer** |
-| `auth`, `security`, `rbac`, `jwt`, `oauth` | A + B + C + **📋 BA** + **🛠️ DevOps** |
-| `new feature`, `chức năng mới`, `thiết kế mới` | A + B + C + **📋 BA** + **🧪 QA** |
+- the topic or decision under review
+- the files, modules, or systems in scope
+- the decision the user is trying to make
 
-> **Override**: User luôn có thể yêu cầu thêm/bớt agent. Ví dụ: "họp review gitops, thêm agent QA luôn"
+If the request is too vague, ask one narrow clarifying question. Otherwise, state the assumptions and continue.
 
----
+### 2. Gather Context
 
-## Execution Process
+Read only what is needed:
 
-### Step 1: Understand the Topic
+- the key code paths
+- related config or migration files
+- contracts or interfaces
+- docs, ADRs, or review notes if they exist
 
-1. **Parse user's request** — xác định vấn đề/module cần review
-2. **Auto-select panel** — chọn combo agents phù hợp theo bảng trên
-3. Nếu scope quá mơ hồ đến mức ảnh hưởng trực tiếp kết quả review, hỏi một câu clarify ngắn; nếu không thì tự đưa ra giả định hợp lý và tiếp tục:
-   - Review toàn bộ service hay chỉ 1 phần?
-   - Focus vào logic nào? (routing, event flow, data layer, security, performance...)
-   - Có concern cụ thể nào không?
+### 3. Select Perspectives
 
-### Step 2: Index the Codebase
+Pick the smallest useful panel. Examples:
 
-1. **Identify target files** — dùng repo search nhanh như `rg --files` hoặc directory listing để tìm các file liên quan
-2. **Read key files** — bắt đầu bằng file entry points và các file quan trọng nhất, rồi mở rộng dần theo dependency chain
-3. **Trace dependencies** — dùng `rg -n` hoặc các tìm kiếm code tương đương để hiểu data flow và dependencies
-4. **Check config** — đọc config files liên quan (yaml, proto, migrations)
-5. **Target coverage**: Đọc tối thiểu:
-   - Entry point (`cmd/*/main.go`, `cmd/*/wire.go`)
-   - Business logic (`internal/biz/`)
-   - Data layer (`internal/data/`)
-   - API layer (`internal/service/`)
-   - Event handlers (`internal/worker/`, `internal/events/`)
-   - Config (`configs/`, `api/*/v1/*.proto`)
-   - Relevant docs (`docs/`)
+- feature design: Product + Architecture + Engineering + QA
+- performance issue: Engineering + Risk + Operations + Data
+- release hardening: Engineering + Risk + QA + Operations
+- schema change: Architecture + Engineering + Data + QA
 
-### Step 3: Conduct the Meeting Review
+### 4. Run A Structured Discussion
 
-- Chỉ spawn subagents nếu user **explicitly** yêu cầu delegation / parallel agents.
-- Nếu user không yêu cầu, hãy **simulate panel discussion trong một output duy nhất** thay vì dùng subagents thật.
+For each major issue:
 
-Tạo một **Artifact (.md)** với cấu trúc sau. Mỗi section phải có **thảo luận thật sự giữa các agents** — không chỉ liệt kê issues mà phải có:
-- Agent tranh luận, phản bác nhau
-- Agent bổ sung ý cho nhau
-- Agent từ góc nhìn khác (BA vs Dev, DevOps vs Architect) đánh giá cùng 1 issue
+- present the concern
+- show where it appears in the code or plan
+- summarize each perspective briefly
+- call out disagreements or trade-offs explicitly
+- end with a recommendation
 
-#### Artifact Structure:
+### 5. Conclude With Decisions
+
+Finish with:
+
+- key findings
+- decisions or recommendations
+- open questions
+- next actions
+
+## Output Format
 
 ```markdown
-# 🏛️ [Topic] — Multi-Agent Meeting Review
+# Meeting Review: <topic>
 
-> **Date**: YYYY-MM-DD
-> **Topic**: [Mô tả ngắn chủ đề review]
-> **Scope**: [Files/modules được review]
-> **Panel**: [Danh sách agents được chọn và lý do]
+## Scope
 
----
+- what is being reviewed
+- assumptions if any
 
-## 👥 Panel Members
-[Bảng agents với vai trò — chỉ liệt kê agents ĐƯỢC CHỌN cho session này]
+## Panel
 
----
+- Architecture
+- Engineering
+- Risk
+- QA
 
-## 1. [Section Name — e.g. Architecture Overview]
+## Discussion
 
-### 📐 Agent A (Architect):
-> [Nhận xét từ góc nhìn kiến trúc]
+### Issue 1: <title>
 
-### 💻 Agent C (Senior Dev):
-> [Nhận xét từ góc nhìn code quality]
+- Architecture: concern or support
+- Engineering: implementation view
+- Risk: failure mode or safety concern
+- QA: validation impact
+- Recommendation: concrete next step
 
-### � Agent D (BA/Domain Expert):
-> [Nhận xét từ góc nhìn business rules & edge cases]
+### Issue 2: <title>
 
----
+- ...
 
-## 2. [Section Name — e.g. Core Logic Review]
+## Summary
 
-### 🚨 Issue 2.1 — [Tên Issue] (P0/P1/P2)
+- strongest reasons to proceed
+- strongest reasons to change course
+- final recommendation
 
-**Vị trí**: `file.go` (Lines X-Y)
+## Next Actions
 
-**📐 Agent A**: [Phân tích kiến trúc]
-**🛡️ Agent B**: [Phân tích security/perf]
-**💻 Agent C**: [Phân tích code, đề xuất fix cụ thể]
-**� Agent D**: [Đánh giá business impact & edge cases]
-
----
-
-## N. 🚩 PENDING ISSUES (Consolidated)
-
-### 🚨 Critical (P0)
-| # | Issue | Impact (Business) | Action Required |
-|---|---|---|---|
-
-### 🟡 High Priority (P1)
-| # | Issue | Impact (Business) |
-|---|---|---|
-
-### 🔵 Nice to Have (P2)
-| # | Issue | Value |
-|---|---|---|
-
----
-
-## 🎯 Executive Summary
-
-### Agent A (Architect): [1-2 câu kết luận]
-### Agent B (Sec/Perf): [1-2 câu kết luận]
-### Agent C (Senior Dev): [1-2 câu kết luận]
-### Agent D/E/F/G: [Kết luận từ contextual agent được chọn]
+1. action
+2. action
+3. action
 ```
 
-### Step 4: Generate Action Items (Optional)
+## Guardrails
 
-Nếu user yêu cầu, tạo thêm **task file** (`AGENT-XX-*.md`) trong:
-```
-docs/10-appendix/checklists/workflow/agent-tasks/
-```
+- do not invent disagreement when none exists
+- do not simulate fake certainty when the evidence is weak
+- do not use broad panel theater when a simple review would do
+- do not let the discussion drift away from a decision or action
 
-Task file phải có:
-- [ ] Checklist cho từng issue
-- Exact file + line locations
-- Code snippets (BEFORE → AFTER)
-- Validation commands (`go test`, `go build`, `curl`)
-- Pre-commit checklist
-- Commit message template
+## Related Skills
 
----
-
-## Agent Behavior Rules
-
-### All Agents MUST:
-1. **Reference exact file paths và line numbers** — không nói chung chung
-2. **Cite code snippets** khi chỉ ra lỗi
-3. **Disagree constructively** — agents phải tranh luận, không chỉ đồng ý
-4. **Prioritize using P0/P1/P2** severity from the project's coding standards
-
-### 📐 Agent A (Architect) MUST:
-- Đánh giá Clean Architecture boundaries (biz/data/service layers)
-- Check component coupling và dependency direction
-- Evaluate scalability implications
-- Review DDD patterns (bounded contexts, aggregates)
-
-### 🛡️ Agent B (Security/Perf) MUST:
-- Check OWASP Top 10 vulnerabilities
-- Identify race conditions, goroutine leaks, memory issues
-- Evaluate circuit breaker, retry, timeout configurations
-- Check authorization/authentication at every entry point
-- Assess performance under load (N+1, unbounded queries, cache effectiveness)
-
-### 💻 Agent C (Senior Dev) MUST:
-- Evaluate Go idioms (error handling, interfaces, context propagation)
-- Check testability (can this code be unit tested without external deps?)
-- Identify DRY violations and code duplication
-- Review Kratos framework usage (proper middleware, transport layer)
-- Check `common` library usage (don't reinvent what exists)
-- Assess code readability and maintainability
-
-### 📋 Agent D (BA / Domain Expert) MUST:
-- Phát hiện **edge cases** mà developer dễ bỏ qua (concurrent state, timeout giữa flow)
-- Kiểm tra **business rules** khớp với spec/requirements
-- Đánh giá **backward compatibility** với clients/frontends hiện tại
-- Xác định **cross-domain side effects** (e.g. stock → pricing → checkout)
-- Translate technical issues thành **revenue/UX impact**
-- Hỏi: "Nếu X xảy ra giữa chừng thì Y xử lý thế nào?" (If-then edge cases)
-
-### 🛠️ Agent E (DevOps / SRE) MUST:
-- Đánh giá deployment strategy (Rolling vs Canary vs Blue-Green)
-- Check GitOps alignment (Kustomize overlays, ArgoCD sync policies)
-- Review observability (logs structured? trace propagation? metrics exposed?)
-- Evaluate secret management (Vault, SealedSecrets, env vars)
-- Check graceful shutdown, health probes, resource limits
-- Assess disaster recovery và auto-healing mechanisms
-
-### 🧪 Agent F (QA Lead) MUST:
-- Đánh giá test coverage: unit, integration, E2E
-- Identify untested edge cases và propose test scenarios
-- Review mock strategy (proper interface mocking vs brittle mocks)
-- Check table-driven test patterns (Go convention)
-- Evaluate regression risk of proposed changes
-- Ask: "Nếu deploy bản này, test nào sẽ catch regression?"
-
-### 🗄️ Agent G (Data Engineer) MUST:
-- Review schema design (normalization vs denormalization trade-offs)
-- Check index coverage cho hot queries
-- Identify N+1 query patterns
-- Evaluate migration safety (backward compatible? rollback plan?)
-- Assess data consistency mechanisms (transactions, reconciliation jobs)
-- Review partition/sharding strategy cho large tables
-
----
-
-## Discussion Style Guide
-
-### DO:
-```markdown
-**💻 Agent C**: Tôi không đồng ý với Agent A ở điểm này. Mặc dù tách 
-module sẽ clean hơn, nhưng với codebase hiện tại chỉ có 3 developer, 
-việc tách quá nhỏ sẽ tạo overhead không cần thiết. Tôi đề xuất...
-
-**� Agent D (BA)**: Agent B, race condition này xảy ra cụ thể khi nào? 
-Nếu user checkout 2 tab cùng lúc dùng cùng coupon, system trả kết quả 
-gì? Spec hiện tại không ghi rõ case này...
-
-**🛠️ Agent E (DevOps)**: Agent A đề xuất tách service, nhưng GitOps 
-hiện tại đã có 26 apps. Thêm 1 service nữa nghĩa là thêm namespace, 
-configmap, secrets, HPA, PDB. Overhead vận hành đáng kể.
-```
-
-### DON'T:
-```markdown
-❌ Tất cả agents đồng ý đây là vấn đề. 
-❌ Agent A: Tốt. Agent B: Tốt. Agent C: Tốt. Agent D: Tốt.
-```
-
-Agents phải có **distinct voices** và **real disagreements** khi thích hợp.
-
----
-
-## Example Triggers
-
-| User says | Auto-selected Panel |
-|---|---|
-| "meeting review order service" | A + B + C + **📋 BA** |
-| "họp review về event flow" | A + B + C + **📋 BA** |
-| "discuss về payment security" | A + B + C + **📋 BA** + **🛠️ DevOps** |
-| "review kiến trúc catalog" | A + B + C + **📋 BA** |
-| "thảo luận checkout flow" | A + B + C + **📋 BA** + **🗄️ Data** |
-| "họp review gitops" | A + B + C + **🛠️ DevOps** |
-| "review DB schema warehouse" | A + B + C + **🗄️ Data Engineer** |
-| "review tính năng mới loyalty" | A + B + C + **📋 BA** + **🧪 QA** |
-| "review test coverage order" | A + B + C + **🧪 QA** |
-
----
-
-## Output Artifacts
-
-1. **Review Report** → saved to artifact directory (`gateway_logic_review.md`, `order_review.md`, etc.)
-2. **Task File** (optional) → saved to `docs/10-appendix/checklists/workflow/agent-tasks/AGENT-XX-*.md`
+- `review-code`
+- `review-service`
+- `navigate-service`
+- `troubleshoot-service`

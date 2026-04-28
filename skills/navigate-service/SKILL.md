@@ -1,220 +1,154 @@
 ---
 name: navigate-service
-description: Navigate and understand any microservice's structure, architecture layers, and key components
+description: Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries
 ---
 
 # Navigate Service Skill
 
-Use this skill when the user asks to understand, explore, or navigate a specific microservice in this project.
+Use this skill when the user asks to understand, explore, or orient within a specific service or bounded component.
 
 ## When to Use
-- User asks "how does the X service work?"
-- User wants to understand the architecture of a service
-- User needs to find where specific logic is implemented
-- User is unfamiliar with a service and needs orientation
-- Before making changes to a service (to understand context first)
 
-## Project Service Registry
+- the user asks how a service works
+- the user needs to find where a behavior is implemented
+- the user is new to a service and needs fast orientation
+- before making changes, so the local architecture is understood first
+- during review or troubleshooting, when code context is incomplete
 
-All services follow the same **Clean Architecture + DDD** pattern built with the **Go Kratos Framework**.
+## Operating Assumptions
 
-### Service Directories (relative to ``)
-| Service | Directory | HTTP Port | gRPC Port |
-|---------|-----------|-----------|-----------|
-| Auth | `auth/` | 8000 | 9000 |
-| User | `user/` | 8001 | 9001 |
-| Pricing | `pricing/` | 8002 | 9002 |
-| Customer | `customer/` | 8003 | 9003 |
-| Order | `order/` | 8004 | 9004 |
-| Payment | `payment/` | 8005 | 9005 |
-| Warehouse | `warehouse/` | 8006 | 9006 |
-| Location | `location/` | 8007 | 9007 |
-| Fulfillment | `fulfillment/` | 8008 | 9008 |
-| Notification | `notification/` | 8009 | 9009 |
-| Checkout | `checkout/` | 8010 | 9010 |
-| Promotion | `promotion/` | 8011 | 9011 |
-| Shipping | `shipping/` | 8012 | 9012 |
-| Return | `return/` | 8013 | 9013 |
-| Loyalty | `loyalty-rewards/` | 8014 | 9014 |
-| Catalog | `catalog/` | 8015 | 9015 |
-| Review | `review/` | 8016 | 9016 |
-| Search | `search/` | 8017 | 9017 |
-| Analytics | `analytics/` | 8018 | 9018 |
-| Common Ops | `common-operations/` | 8019 | 9019 |
-| Gateway | `gateway/` | 80 | - |
-| Admin | `admin/` | 3001 | - |
-| Frontend | `frontend/` | 3000 | - |
+This skill is intentionally repo-agnostic.
 
-## Standard Go Service Structure
+- assume a service-oriented codebase, but not a fixed framework
+- do not assume a fixed folder layout or service inventory
+- prefer repo-local structure over generic examples
+- discover boundaries from the codebase instead of from prior expectations
 
-Each Go microservice follows this directory layout:
+## Navigation Goals
 
-```
-<service>/
-├── cmd/
-│   ├── <service>/         # Main entry point (main.go, wire.go, wire_gen.go)
-│   ├── migrate/           # Database migration CLI
-│   └── worker/            # Background worker (if applicable)
-├── api/
-│   └── <service>/
-│       └── v1/            # Proto definitions (.proto) and generated code (.pb.go)
-├── internal/
-│   ├── biz/               # 🔴 DOMAIN LAYER - Business logic, use cases, domain entities
-│   │   ├── <entity>.go    # Domain entity + repository interface
-│   │   └── <usecase>.go   # Business use case implementation
-│   ├── data/              # 🟢 DATA LAYER - Repository implementations, database queries
-│   │   ├── data.go        # Database connection setup
-│   │   ├── <entity>.go    # Repository implementation (implements biz interfaces)
-│   │   └── model/         # Database models (GORM structs)
-│   ├── service/           # 🔵 API LAYER - gRPC/HTTP service implementation
-│   │   └── <service>.go   # Translates API requests to biz calls
-│   ├── server/            # Server configuration (HTTP, gRPC, middleware)
-│   │   ├── http.go
-│   │   ├── grpc.go
-│   │   └── middleware.go
-│   ├── client/            # gRPC clients to other services
-│   ├── model/             # Shared models/DTOs
-│   └── config/            # Configuration proto
-├── configs/
-│   └── config.yaml        # Service configuration
-├── migrations/            # SQL migration files (Goose format)
-├── Dockerfile
-├── Makefile
-├── .gitlab-ci.yml
-├── go.mod
-└── go.sum
-```
+When using this skill, answer these questions as quickly as possible:
 
-## Step-by-Step Navigation Process
+1. What does this service own?
+2. What are its public entrypoints?
+3. Where does the core business logic live?
+4. What data stores or external systems does it depend on?
+5. What other services or packages does it call?
+6. What configuration, rollout, or runtime constraints matter?
 
-When asked to navigate/understand a service, follow these steps:
+## Suggested Exploration Order
 
-### Step 1: Identify the Service
-Determine which service the user is asking about. Map their request to the service directory.
+Adapt the order to the target repo, but usually start here:
 
-### Step 2: Read the Entry Point
-```
-View: cmd/<service>/main.go
-```
-This shows how the service is bootstrapped, what dependencies are injected via Wire.
+### Step 1: Identify the Service Boundary
 
-### Step 3: Read the API Layer (Proto Definitions)
-```
-View: api/<service>/v1/*.proto
-```
-This defines all API endpoints (gRPC & HTTP), request/response messages.
+- find the service or component directory
+- check `README`, package docs, or service docs if present
+- identify the main runtime entrypoint or bootstrap path
 
-### Step 4: Read the Domain Layer (Business Logic)
-```
-View: internal/biz/*.go
-```
-This is the MOST IMPORTANT layer. Contains:
-- Domain entities and value objects
-- Repository interfaces (contracts)
-- Business use cases and rules
+### Step 2: Find Entrypoints
 
-### Step 5: Read the Data Layer (Repository Implementations)
-```
-View: internal/data/*.go
-```
-Contains database queries, GORM models, and repository implementations.
+Look for the files or packages that define how requests, jobs, or messages enter the service:
 
-### Step 6: Read the Service Layer (API Implementation)
-```
-View: internal/service/*.go
-```
-Translates gRPC/HTTP requests into domain calls.
+- HTTP or RPC handlers
+- background jobs or workers
+- event consumers or subscribers
+- CLI entrypoints or scheduled tasks
 
-### Step 7: Check Configuration
-```
-View: configs/config.yaml
-```
-Shows database connections, service ports, external dependencies.
+### Step 3: Map Core Business Flow
 
-### Step 8: Check Migrations
-```
-View: migrations/*.sql
-```
-Shows database schema and its evolution.
+Locate the path from entrypoint to decision-making logic:
 
-## Key Patterns to Explain
+- boundary or handler layer
+- use case or domain layer
+- persistence or adapter layer
 
-### Dependency Injection (Wire)
-- `cmd/<service>/wire.go` defines the dependency graph
-- `cmd/<service>/wire_gen.go` is auto-generated, never edit manually
+Do not assume the repo uses names like `service`, `biz`, or `data`. Follow the actual structure.
 
-### Event-Driven Communication
-- Services publish/subscribe events via **Dapr PubSub** (Redis Streams)
-- Event definitions: `common/events/` or in each service's `internal/biz/`
-- Look for `PublishEvent`, `SubscribeEvent`, or Dapr pub/sub references
+### Step 4: Inspect Persistence and State
 
-### Service-to-Service Communication
-- Via gRPC clients in `internal/client/`
-- Service discovery through Consul
+Check where the service reads or writes state:
 
-### Common Library
-- Shared utilities: `common/` (module: `gitlab.com/ta-microservices/common`)
-- Includes: middleware, validation, errors, events, config, security, utils
+- repositories or query packages
+- migrations or schema definitions
+- cache integrations
+- outbound storage adapters
+
+### Step 5: Identify External Dependencies
+
+Look for:
+
+- service clients
+- SDK integrations
+- event publishing
+- shared internal packages
+- environment and config dependencies
+
+### Step 6: Check Runtime and Delivery Context
+
+Review the local source of truth for:
+
+- configuration
+- environment variables
+- health or readiness behavior
+- build, generation, or release steps
+
+## What to Extract
+
+When you finish exploration, you should be able to summarize:
+
+- service purpose
+- primary user or system-facing capabilities
+- main code path for the feature in question
+- key dependencies and side effects
+- important constraints, risks, or unknowns
 
 ## Output Format
 
-When presenting a service overview, structure your response as:
+When presenting a service overview, structure the response like this:
 
-1. **Service Purpose** - What business domain it handles
-2. **API Endpoints** - Key endpoints from proto files
-3. **Domain Entities** - Core entities and their relationships
-4. **Business Rules** - Key use cases and rules
-5. **Data Model** - Database schema (from migrations)
-6. **Dependencies** - Other services it calls and infrastructure needs
-7. **Event Integration** - Events published/subscribed
+1. Service purpose
+2. Entrypoints and primary flows
+3. Core business logic location
+4. State and persistence model
+5. External dependencies
+6. Configuration and runtime considerations
+7. Risks, assumptions, and open questions
 
----
+## Exploration Checklist
 
-## Checklist
+### Initial Orientation
 
-### Service Understanding
-- [ ] Service purpose identified
-- [ ] Directory structure reviewed
-- [ ] Entry point examined
-- [ ] API contracts understood
+- [ ] service boundary identified
+- [ ] main entrypoints located
+- [ ] local docs or service notes checked
 
-### Architecture Review
-- [ ] Domain layer reviewed
-- [ ] Data layer reviewed
-- [ ] Service layer reviewed
-- [ ] Dependencies identified
+### Core Understanding
 
-### Documentation
-- [ ] Key components documented
-- [ ] Event flows understood
-- [ ] Configuration reviewed
+- [ ] main business flow mapped
+- [ ] persistence layer located
+- [ ] external dependencies identified
 
----
+### Delivery Context
 
-## Quick Reference Checklist
+- [ ] config source reviewed
+- [ ] build or generation steps noted
+- [ ] rollout or runtime constraints noted
 
-Use this for rapid service navigation:
+## Quick Reference
 
-### Initial Exploration
-- [ ] Identify service directory
-- [ ] Review README.md
-- [ ] Check proto definitions
+Use this when the request is narrow and you need fast orientation:
 
-### Deep Dive
-- [ ] Review biz layer
-- [ ] Review data layer
-- [ ] Review service layer
-
-### Understanding
-- [ ] Document key flows
-- [ ] Identify dependencies
-
----
+- identify the service directory
+- find the main entrypoint
+- trace one important request or job flow
+- note persistence touchpoints
+- note outbound dependencies
+- summarize risks or unknowns
 
 ## Related Skills
 
 - **review-service**: Full service review and release
 - **troubleshoot-service**: Debug service issues
-- **trace-event-flow**: Understand event communication
-- **add-api-endpoint**: Add new endpoints
-- **service-structure**: Understand dual-binary architecture
+- **review-code**: Inspect implementation details after exploration
+- **write-tests**: Add coverage once the target flow is understood
+- **meeting-review**: Run a structured cross-role review

@@ -1,509 +1,120 @@
 ---
-description: Emergency workflow for hotfixing production issues
+description: Emergency workflow for hotfixing production issues with minimal blast radius
 ---
 
 ## Hotfix Production Workflow
 
-This workflow is for **emergency production fixes only**. Use this when there's a critical bug in production that needs immediate attention.
+Use this workflow only for true production emergencies where delaying the fix is riskier than taking the shortest safe path to recovery.
 
-### When to Use
-- Production is down or severely degraded
-- Critical security vulnerability discovered
-- Data corruption or loss risk
-- Customer-impacting bug
+### When To Use
+
+- production is unavailable or severely degraded
+- a critical security issue needs immediate mitigation
+- there is active data corruption or a strong risk of data loss
+- the incident has meaningful customer impact
 
 ### Prerequisites
-- Issue clearly identified and reproducible
-- Root cause understood
-- Fix approach validated
-- Stakeholders notified
+
+- the incident is real and scoped enough to act on
+- stakeholders or on-call owners are aware
+- the minimal safe fix or rollback path is understood
 
 ### Workflow Steps
 
-#### Phase 1: Assessment (5-10 minutes)
+#### 1. Confirm Severity
 
-**1.1 Confirm Severity**
+Ask:
 
-Is this truly a P0 production emergency?
-- [ ] Service is down or unavailable
-- [ ] Data corruption or loss occurring
-- [ ] Security breach or vulnerability
-- [ ] Major customer impact (>50% users affected)
+- is production impact active right now?
+- is this a customer-visible outage or severe degradation?
+- can the issue be mitigated by rollback or configuration first?
 
-If NO to all above → Use normal workflow, not hotfix
+If the answer is no, use the normal delivery workflow instead.
 
-**1.2 Identify Affected Service**
+#### 2. Contain The Blast Radius
 
-```bash
-# Check which service is affected
-$DEV_SSH "kubectl get pods -A | grep -v Running"
+Choose the least risky mitigation available first:
 
-# Check logs for errors
-$DEV_SSH "kubectl logs -n <service>-prod -l app=<service> --tail=100"
-```
+- rollback to the last known good release
+- disable the failing path with config or a feature flag
+- isolate or scale down only the affected workload
+- route traffic away from the failing dependency when the platform allows it
 
-**1.3 Determine Root Cause**
+Use the repo's approved production control path.
 
-```bash
-# Check recent deployments
-cd /home/user/microservices/gitops
-git log --oneline -10 apps/<service>/
+#### 3. Identify The Smallest Valid Fix
 
-# Check recent code changes
-cd /home/user/microservices/<service>
-git log --oneline -10
-```
+Use skill: `troubleshoot-service`
 
-#### Phase 2: Immediate Mitigation (5-15 minutes)
+Rules:
 
-**Option A: Rollback to Previous Version**
+- fix only the incident, not adjacent cleanup
+- avoid opportunistic refactors
+- prefer a reversible change
+- keep the delta as small as possible
 
-If the issue was introduced in the latest deployment:
+#### 4. Verify The Fix Quickly
 
-```bash
-# Find previous working version
-cd /home/user/microservices/gitops
-git log --oneline apps/<service>/base/kustomization.yaml
+Before shipping:
 
-# Rollback to previous commit
-git revert HEAD
-git push origin main
+- run the narrowest useful test set first
+- build the changed component
+- exercise the failing path locally or in a lower environment if time allows
+- confirm the fix does not obviously expand blast radius
 
-# Or manually update to previous tag
-vim apps/<service>/base/kustomization.yaml
-# Change newTag to previous working version
+Use skill: `review-code`
 
-git add apps/<service>/base/kustomization.yaml
-git commit -m "hotfix(<service>): rollback to previous version due to <issue>"
-git push origin main
-```
+#### 5. Ship Through The Normal Emergency Path
 
-**Option B: Scale Down (if causing cascading failures)**
+Use skill: `commit-code`
 
-```bash
-# Scale down to 0 replicas temporarily
-$DEV_SSH "kubectl scale deployment <service> -n <service>-prod --replicas=0"
+Deliver using the repo's approved emergency release path:
 
-# This gives time to fix without affecting other services
-```
+- hotfix branch
+- release branch
+- rollback deployment
+- emergency config push
 
-**Option C: Apply Quick Config Fix**
+Do not create a commit until the user or local release process explicitly allows that commit action.
+Do not push, create a tag, or publish a release until the user or local release process explicitly allows that specific action.
 
-If it's a configuration issue:
+#### 6. Monitor Recovery
 
-```bash
-cd /home/user/microservices/gitops
-vim apps/<service>/overlays/production/configmap.yaml
-# Fix the config
+After deployment:
 
-git add apps/<service>/overlays/production/
-git commit -m "hotfix(<service>): fix production config for <issue>"
-git push origin main
-```
+- watch service health and key alerts
+- verify the affected path behaves correctly
+- compare error rate and latency against the incident window
+- keep monitoring until the system is stable
 
-#### Phase 3: Develop Fix (15-30 minutes)
+#### 7. Close The Incident Properly
 
-**3.1 Create Hotfix Branch**
+After stabilization:
 
-```bash
-cd /home/user/microservices/<service>
+- merge or reconcile the hotfix back into the main development line
+- update changelog or release notes if the repo expects them
+- capture an incident summary and preventive follow-up
 
-# Create hotfix branch from production tag
-git checkout -b hotfix/<issue-description> v1.x.y  # Use current prod version
+### Post-Incident Follow-Up
 
-# Or from main if prod is on main
-git checkout -b hotfix/<issue-description> main
-```
+Record:
 
-**3.2 Implement Minimal Fix**
+- root cause
+- mitigation used
+- final fix
+- missing tests, monitoring, or process gaps
 
-**CRITICAL RULES:**
-- Fix ONLY the specific issue
-- NO refactoring
-- NO new features
-- NO unrelated changes
-- Minimal code changes
-
-```bash
-# Make the fix
-vim internal/<layer>/<file>.go
-
-# Example: Fix null pointer
-# BAD: Refactor entire function
-# GOOD: Add null check only
-```
-
-**3.3 Test the Fix Locally**
-
-```bash
-# Run unit tests
-go test ./internal/<affected-package>/... -v
-
-# Build
-go build ./...
-
-# Run locally if possible
-go run ./cmd/<service>/...
-
-# Test the specific scenario
-curl -X POST http://localhost:8080/api/v1/<endpoint> \
-  -H "Content-Type: application/json" \
-  -d '<test-data>'
-```
-
-**3.4 Verify Fix Doesn't Break Anything**
-
-```bash
-# Run all tests
-go test ./... -v
-
-# Lint
-golangci-lint run
-
-# Check for regressions
-go test ./... -race
-```
-
-#### Phase 4: Deploy Fix (10-20 minutes)
-
-**4.1 Commit Hotfix**
-
-```bash
-cd /home/user/microservices/<service>
-
-# Remove bin
-rm -rf bin/
-
-# Commit with clear message
-git add -A
-git commit -m "hotfix(<service>): fix <specific-issue>
-
-Issue: <description>
-Root cause: <explanation>
-Fix: <what-was-changed>
-
-Tested: <how-it-was-tested>"
-```
-
-**4.2 Create Hotfix Tag**
-
-```bash
-# Increment patch version
-# If current prod is v1.2.3, hotfix is v1.2.4
-
-git tag -a v1.2.4 -m "v1.2.4: Hotfix for <issue>
-
-Fixed:
-- <specific-issue>
-
-Root cause: <explanation>"
-
-# Push
-git push origin hotfix/<issue-description>
-git push origin v1.2.4
-```
-
-**4.3 Deploy to Staging First (if time allows)**
-
-```bash
-# Wait for CI to build
-cd /home/user/microservices/gitops && git pull origin main
-
-# Verify staging
-$DEV_SSH "kubectl get pods -n <service>-staging"
-$DEV_SSH "kubectl logs -n <service>-staging -l app=<service> --tail=50"
-
-# Test in staging
-curl http://<service>-staging.tanhdev.com/api/v1/<endpoint>
-```
-
-**4.4 Deploy to Production**
-
-```bash
-cd /home/user/microservices/gitops
-
-# Update production kustomization
-vim apps/<service>/overlays/production/kustomization.yaml
-# Or if using base:
-vim apps/<service>/base/kustomization.yaml
-
-# Change newTag to v1.2.4
-
-git add apps/<service>/
-git commit -m "hotfix(<service>): deploy v1.2.4 to production
-
-Fixes: <issue>
-Tag: v1.2.4"
-
-git push origin main
-```
-
-#### Phase 5: Monitor (30-60 minutes)
-
-**5.1 Watch Deployment**
-
-```bash
-# Watch pods rolling out
-$DEV_SSH "kubectl rollout status deployment/<service> -n <service>-prod"
-
-# Watch pod status
-$DEV_SSH "kubectl get pods -n <service>-prod -w"
-```
-
-**5.2 Check Logs**
-
-```bash
-# Check for errors
-$DEV_SSH "kubectl logs -n <service>-prod -l app=<service> --tail=100 -f"
-
-# Check all pods
-$DEV_SSH "kubectl logs -n <service>-prod -l app=<service> --all-containers=true --tail=50"
-```
-
-**5.3 Verify Fix**
-
-```bash
-# Test the fixed endpoint
-curl http://<service>-prod.tanhdev.com/api/v1/<endpoint>
-
-# Check metrics
-# - Error rate should decrease
-# - Response time should normalize
-# - No new errors introduced
-```
-
-**5.4 Monitor for 30-60 minutes**
-
-Watch for:
-- Error rate returning to normal
-- No new errors
-- No performance degradation
-- Customer reports resolved
-
-#### Phase 6: Post-Hotfix (After stabilization)
-
-**6.1 Merge Hotfix to Main**
-
-```bash
-cd /home/user/microservices/<service>
-
-# Checkout main
-git checkout main
-git pull origin main
-
-# Merge hotfix
-git merge hotfix/<issue-description>
-
-# Push
-git push origin main
-```
-
-**6.2 Update Documentation**
-
-```bash
-# Update CHANGELOG.md
-vim CHANGELOG.md
-```
-
-```markdown
-## [1.2.4] - YYYY-MM-DD
-
-### Fixed
-- **[HOTFIX]** Fixed <specific-issue> causing <impact>
-  - Root cause: <explanation>
-  - Impact: <who-was-affected>
-  - Resolution: <what-was-done>
-```
-
-```bash
-git add CHANGELOG.md
-git commit -m "docs(<service>): update changelog for hotfix v1.2.4"
-git push origin main
-```
-
-**6.3 Create Incident Report**
-
-Document in `docs/10-appendix/incidents/`:
-
-```markdown
-# Incident Report: <Service> - <Issue>
-
-**Date**: YYYY-MM-DD
-**Severity**: P0
-**Duration**: X hours
-**Affected Users**: X%
-
-## Summary
-Brief description of what happened.
-
-## Timeline
-- HH:MM - Issue detected
-- HH:MM - Root cause identified
-- HH:MM - Mitigation applied
-- HH:MM - Fix deployed
-- HH:MM - Incident resolved
-
-## Root Cause
-Detailed explanation of what caused the issue.
-
-## Impact
-- Number of affected users
-- Duration of impact
-- Business impact
-
-## Resolution
-What was done to fix the issue.
-
-## Prevention
-What will be done to prevent this in the future:
-- [ ] Add monitoring/alerting
-- [ ] Add tests
-- [ ] Update documentation
-- [ ] Code review process improvement
-```
-
-**6.4 Schedule Post-Mortem**
-
-- Review what went wrong
-- Identify improvements
-- Update processes
-- Add preventive measures
-
-**6.5 Add Preventive Measures**
-
-```bash
-# Add test to prevent regression
-vim internal/<layer>/<file>_test.go
-
-# Add monitoring/alerting
-# Update Prometheus rules or Grafana dashboards
-
-# Update documentation
-vim docs/03-services/<group>/<service>-service.md
-```
-
-### Hotfix Checklist
-
-#### Pre-Hotfix
-- [ ] Confirmed P0 severity
-- [ ] Identified affected service
-- [ ] Determined root cause
-- [ ] Stakeholders notified
-
-#### Immediate Mitigation
-- [ ] Rollback applied (if applicable)
-- [ ] Or scale down (if applicable)
-- [ ] Or config fix (if applicable)
-- [ ] Impact contained
-
-#### Fix Development
-- [ ] Created hotfix branch
-- [ ] Implemented minimal fix
-- [ ] Tested locally
-- [ ] All tests pass
-- [ ] No regressions
-
-#### Deployment
-- [ ] Committed with clear message
-- [ ] Created hotfix tag
-- [ ] Tested in staging (if time allows)
-- [ ] Deployed to production
-- [ ] Deployment successful
-
-#### Monitoring
-- [ ] Watched rollout
-- [ ] Checked logs
-- [ ] Verified fix works
-- [ ] Monitored for 30-60 minutes
-- [ ] No new issues
-
-#### Post-Hotfix
-- [ ] Merged to main
-- [ ] Updated CHANGELOG.md
-- [ ] Created incident report
-- [ ] Scheduled post-mortem
-- [ ] Added preventive measures
-
-### Common Hotfix Scenarios
-
-#### Scenario 1: Null Pointer Exception
-
-```go
-// BAD: Causes crash
-func (s *Service) GetUser(ctx context.Context, id string) (*User, error) {
-    user := s.repo.FindByID(ctx, id)
-    return user.ToProto(), nil  // Crashes if user is nil
-}
-
-// GOOD: Hotfix
-func (s *Service) GetUser(ctx context.Context, id string) (*User, error) {
-    user := s.repo.FindByID(ctx, id)
-    if user == nil {
-        return nil, errors.NotFound("USER_NOT_FOUND", "user not found")
-    }
-    return user.ToProto(), nil
-}
-```
-
-#### Scenario 2: Database Connection Pool Exhausted
-
-```yaml
-# BAD: Too few connections
-data:
-  database:
-    max_open_conns: 10
-    max_idle_conns: 5
-
-# GOOD: Hotfix config
-data:
-  database:
-    max_open_conns: 100
-    max_idle_conns: 50
-```
-
-#### Scenario 3: Memory Leak
-
-```go
-// BAD: Goroutine leak
-func (s *Service) ProcessOrders(ctx context.Context) {
-    for {
-        orders := s.repo.GetPendingOrders(ctx)
-        for _, order := range orders {
-            go s.processOrder(order)  // Never cleaned up
-        }
-    }
-}
-
-// GOOD: Hotfix with context
-func (s *Service) ProcessOrders(ctx context.Context) {
-    for {
-        select {
-        case <-ctx.Done():
-            return
-        default:
-            orders := s.repo.GetPendingOrders(ctx)
-            for _, order := range orders {
-                go func(o *Order) {
-                    s.processOrder(ctx, o)
-                }(order)
-            }
-        }
-    }
-}
-```
-
-### Emergency Contacts
-
-- **Tech Lead**: [Contact info]
-- **DevOps**: [Contact info]
-- **On-Call Engineer**: [Contact info]
+Schedule deeper cleanup separately from the hotfix itself.
 
 ### Related Workflows
+
 - [Troubleshooting](troubleshooting.md)
 - [Service Review & Release](service-review-release.md)
 - [Build & Deploy](build-deploy.md)
 
 ### Related Skills
+
 - troubleshoot-service
-- debug-k8s
+- review-code
 - commit-code
+- meeting-review
