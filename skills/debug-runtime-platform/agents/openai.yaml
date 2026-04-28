@@ -1,0 +1,4 @@
+interface:
+  display_name: "Debug Runtime Platform"
+  short_description: "Debug rollout and environment issues"
+  default_prompt: "Use $debug-runtime-platform to investigate deployment, runtime, or environment issues beyond app code."

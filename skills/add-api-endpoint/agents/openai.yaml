@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add API Endpoint"
+  short_description: "Create or evolve service endpoints"
+  default_prompt: "Use $add-api-endpoint to add or modify an API endpoint in this codebase."

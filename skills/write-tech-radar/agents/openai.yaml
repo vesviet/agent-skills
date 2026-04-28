@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Tech Radar"
+  short_description: "Draft technology radar entries"
+  default_prompt: "Use $write-tech-radar to draft a technology radar entry or assessment."

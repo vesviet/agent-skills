@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add UI Component"
+  short_description: "Create reusable UI components"
+  default_prompt: "Use $add-ui-component to add or evolve a UI component in this codebase."
