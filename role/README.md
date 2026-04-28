@@ -94,6 +94,25 @@ Each role file describes:
 - Reviewer
 - Product Manager
 
+## Recommended Workflows Per Role
+
+| Role | Primary Workflows |
+|------|------------------|
+| Product Manager | `/add-new-feature` |
+| Project Manager | `/add-new-feature`, `/service-review-release` |
+| Business Analyst | `/add-new-feature` |
+| UI/UX Designer | `/add-new-feature` |
+| Technical Architect | `/setup-new-service`, `/refactoring` |
+| Technical Lead | `/add-new-feature`, `/service-review-release`, `/refactoring` |
+| Backend Developer | `/add-new-feature`, `/refactoring`, `/hotfix-production` |
+| Frontend Developer | `/add-new-feature`, `/refactoring` |
+| QA Engineer | `/service-review-release` |
+| Reviewer | `/service-review-release` |
+| Security Engineer | `/service-review-release`, `/hotfix-production` |
+| DevOps Engineer | `/build-deploy`, `/setup-new-service`, `/revert-deployment` |
+| SRE | `/troubleshooting`, `/hotfix-production`, `/revert-deployment` |
+| Technical Writer | `/add-new-feature`, `/service-review-release` |
+
 ## Usage Notes
 
 - Start with the smallest role set that can move the task forward.

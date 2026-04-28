@@ -42,6 +42,7 @@ These cover delivery and runtime:
 
 - `setup-deployment`
 - `debug-runtime-platform`
+- `add-telemetry-instrumentation`
 
 ### Security And Data
 
@@ -84,5 +85,5 @@ Implemented in this batch:
 ## Naming Rules
 
 - prefer generic names over stack-specific names
-- keep skills flat under `skills/` for now
+- categorize skills under their respective taxonomy folders (foundation, backend, frontend, platform, security-data, documentation)
 - move stack-specific or org-specific variants into separate packs later if needed

@@ -16,6 +16,8 @@ Use this workflow when creating a new service, worker, or bounded component from
 
 #### 1. Define Scope
 
+Role: **Technical Architect**, **Technical Lead**, **Product Manager**
+
 Write down:
 
 - what the service owns
@@ -25,6 +27,8 @@ Write down:
 - what should stay outside its boundary
 
 #### 2. Choose The Starting Point
+
+Role: **Technical Lead**, **Technical Architect**
 
 Prefer one of these, in order:
 
@@ -39,6 +43,8 @@ If copying an existing service:
 - rename imports, module paths, and service identifiers carefully
 
 #### 3. Create The Initial Structure
+
+Role: **Backend Developer**, **Frontend Developer**
 
 Create only the directories the repo actually uses.
 
@@ -56,6 +62,8 @@ Do not invent extra folders if the local template already defines the right stru
 
 #### 4. Define Contracts And Data
 
+Role: **Backend Developer**, **Technical Lead**
+
 If the service exposes an API or event contract:
 
 - define the initial contract using the repo's normal schema format
@@ -72,6 +80,8 @@ Use skill: `create-migration` when schema work is involved.
 
 #### 5. Implement The Core Flow
 
+Role: **Backend Developer**, **Frontend Developer**
+
 Set up the smallest end-to-end path that proves the service shape:
 
 - boundary or handler
@@ -83,6 +93,8 @@ Set up the smallest end-to-end path that proves the service shape:
 Use the repo's existing DI, bootstrap, and config patterns rather than inventing new ones.
 
 #### 6. Add Tests
+
+Role: **Backend Developer**, **QA Engineer**
 
 Use skill: `write-tests`
 
@@ -96,6 +108,8 @@ Run the repo's normal test, build, and lint commands.
 
 #### 7. Add Documentation
 
+Role: **Technical Writer**, **Backend Developer**
+
 Document at least:
 
 - service purpose
@@ -108,6 +122,8 @@ Use repo-local README or service-doc templates when they exist.
 
 #### 8. Wire It Into Delivery
 
+Role: **DevOps Engineer**
+
 Add the minimum delivery plumbing the repo expects, such as:
 
 - CI checks
@@ -119,6 +135,8 @@ Follow the source of truth already used by the repo.
 
 #### 9. Verify Locally
 
+Role: **Backend Developer**, **Frontend Developer**
+
 Before handing off:
 
 - run the service locally if possible
@@ -127,6 +145,8 @@ Before handing off:
 - confirm generated files are current
 
 #### 10. Prepare The Initial Delivery
+
+Role: **Backend Developer**, **Technical Lead**
 
 Use skill: `commit-code`
 

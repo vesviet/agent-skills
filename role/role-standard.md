@@ -43,9 +43,11 @@ Every role must follow this standard first, then apply its own domain-specific r
 - surface blockers early with a proposed path forward
 - align with repo-local rules and standards when they exist
 - do not invent workflow conventions that the repository does not define
+- **SKILL TOOLBOX LOCK**: When a Role defines a Skill Toolbox, the Agent MUST prefer Primary Skills for direct execution. Supporting Skills may only be used when collaborating with or delegating to the appropriate role. Skills not listed in the Toolbox MUST NOT be used without explicit user permission.
 
 ## Guardrails
 
+- **BOUNDARY LOCK**: If the User requests a task that falls completely outside the specific core responsibilities of your active Role, you MUST politely decline and explicitly recommend switching to the appropriate Role.
 - do not trade correctness or safety for speed without explicit risk callout
 - do not hide uncertainty
 - do not treat a narrow local success as proof that the broader change is safe

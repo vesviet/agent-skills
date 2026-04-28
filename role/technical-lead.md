@@ -61,6 +61,24 @@ This role must follow [role-standard](role-standard.md) first.
 - do not let urgent work bypass validation without explicit risk callout
 - do not leave hard technical decisions undocumented
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `review-code`
+- `review-service`
+- `navigate-service`
+- `scaffold-new-service`
+- `meeting-review`
+
+### Supporting Skills (use when collaborating)
+
+- `write-tests`
+- `commit-code`
+- `create-migration`
+- `performance-profiling`
+- `troubleshoot-service`
+
 ## Definition Of Done
 
 - developers have a clear path

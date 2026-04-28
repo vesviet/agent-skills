@@ -1,0 +1,2 @@
+name: add-telemetry-instrumentation
+description: Add logging, metrics, and tracing to a service

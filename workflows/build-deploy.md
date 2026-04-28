@@ -29,6 +29,8 @@ Use this workflow when a change is ready to move from local verification into a 
 
 #### 1. Run Pre-Release Checks
 
+Role: **Backend Developer**, **Frontend Developer**
+
 From the target repo, run the normal quality gates:
 
 - tests
@@ -44,6 +46,8 @@ Also check:
 
 #### 2. Review Release Impact
 
+Role: **Reviewer**, **Technical Lead**
+
 Use skill: `review-code`
 
 Confirm:
@@ -54,6 +58,8 @@ Confirm:
 - dependent services or clients have been considered
 
 #### 3. Prepare The Release Artifact
+
+Role: **Backend Developer**, **Frontend Developer**
 
 Use skill: `commit-code`
 
@@ -69,6 +75,8 @@ Follow the repo-local mechanism instead of assuming a specific Git provider or d
 Treat each remote or release-facing action as separately gated approval.
 
 #### 4. Trigger Delivery
+
+Role: **DevOps Engineer**
 
 Use the repository's normal release path:
 
@@ -86,6 +94,8 @@ Capture the release reference that matters locally, such as:
 
 #### 5. Verify Rollout
 
+Role: **DevOps Engineer**, **SRE**
+
 After delivery starts:
 
 - confirm the rollout reached the intended environment
@@ -96,6 +106,8 @@ After delivery starts:
 Prefer repo-local dashboards, manifests, or service discovery entries over guessing direct URLs.
 
 #### 6. Monitor And Decide
+
+Role: **SRE**
 
 For the first few minutes after rollout:
 
@@ -110,6 +122,8 @@ If problems appear:
 - follow the repo's rollback or recovery procedure
 
 #### 7. Record Outcome
+
+Role: **Technical Lead**, **Technical Writer**
 
 Capture:
 

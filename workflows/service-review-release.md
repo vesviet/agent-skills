@@ -23,6 +23,8 @@ Use this workflow before major releases, risky refactors, or periodic health che
 
 #### 1. Prepare The Review
 
+Role: **Technical Lead**, **Reviewer**
+
 Sync the latest local view of:
 
 - the target service repo
@@ -32,6 +34,8 @@ Sync the latest local view of:
 Read the repo-local standards, release notes format, and review checklist if present.
 
 #### 2. Understand The Service
+
+Role: **Technical Lead**, **Technical Architect**
 
 Use skill: `navigate-service`
 
@@ -45,6 +49,8 @@ Collect:
 
 #### 3. Run A Full Review
 
+Role: **Reviewer**, **Technical Lead**
+
 Use skill: `review-service`
 
 Focus on:
@@ -57,6 +63,8 @@ Focus on:
 
 #### 4. Check Cross-Service Impact
 
+Role: **Technical Architect**, **Security Engineer**
+
 Review:
 
 - consumers of the service's public APIs or events
@@ -65,6 +73,8 @@ Review:
 - migration or rollout ordering constraints
 
 #### 5. Fix Or Track Findings
+
+Role: **Backend Developer**, **Frontend Developer**
 
 Use skill: `review-code`
 
@@ -75,6 +85,8 @@ For each important issue:
 - otherwise document the risk and owner explicitly
 
 #### 6. Re-Run Quality Gates
+
+Role: **QA Engineer**, **Backend Developer**
 
 Verify with the repo's normal commands:
 
@@ -88,6 +100,8 @@ Use skill: `write-tests` if confidence is too low for the release risk.
 
 #### 7. Confirm Release Readiness
 
+Role: **Technical Lead**, **Product Manager**
+
 Check that:
 
 - config sources match the code
@@ -97,6 +111,8 @@ Check that:
 - user-facing docs or release notes are updated if required
 
 #### 8. Prepare The Release
+
+Role: **Backend Developer**, **Frontend Developer**
 
 Use skill: `commit-code`
 
@@ -111,6 +127,8 @@ Do not create a commit until the user or local process explicitly allows that co
 Do not push, create a tag, or publish a release entry until the user or local process explicitly allows that specific action.
 
 #### 9. Verify After Release
+
+Role: **DevOps Engineer**, **SRE**
 
 After the release is shipped:
 

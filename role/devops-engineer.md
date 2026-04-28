@@ -60,6 +60,22 @@ This role must follow [role-standard](role-standard.md) first.
 - do not hardcode secrets in pipelines or manifests
 - do not treat a green pipeline as full runtime proof
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `setup-deployment`
+- `debug-runtime-platform`
+- `add-telemetry-instrumentation`
+- `manage-secrets`
+
+### Supporting Skills (use when collaborating)
+
+- `navigate-service`
+- `commit-code`
+- `troubleshoot-service`
+- `database-maintenance`
+
 ## Definition Of Done
 
 - automation is repeatable

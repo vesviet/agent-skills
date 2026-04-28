@@ -62,6 +62,18 @@ This role must follow [role-standard](role-standard.md) first.
 - do not commit to deadlines without engineering input
 - do not hide trade-offs or unresolved assumptions
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `meeting-review`
+
+### Supporting Skills (use when collaborating)
+
+- `navigate-service`
+- `write-tech-radar`
+- `review-service`
+
 ## Definition Of Done
 
 - priorities are clear

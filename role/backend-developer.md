@@ -62,6 +62,24 @@ This role must follow [role-standard](role-standard.md) first.
 - do not skip tests for critical logic
 - do not break compatibility silently
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `add-api-endpoint`
+- `add-event-handler`
+- `add-service-client`
+- `create-migration`
+- `write-tests`
+
+### Supporting Skills (use when collaborating)
+
+- `navigate-service`
+- `commit-code`
+- `troubleshoot-service`
+- `performance-profiling`
+- `review-code`
+
 ## Definition Of Done
 
 - code builds

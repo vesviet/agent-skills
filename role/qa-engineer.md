@@ -60,6 +60,21 @@ This role must follow [role-standard](role-standard.md) first.
 - do not file vague bugs without reproduction details
 - do not confuse test execution with risk analysis
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `write-tests`
+- `frontend-testing`
+- `review-service`
+
+### Supporting Skills (use when collaborating)
+
+- `navigate-service`
+- `review-code`
+- `troubleshoot-service`
+- `performance-profiling`
+
 ## Definition Of Done
 
 - critical scenarios are covered

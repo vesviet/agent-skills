@@ -60,6 +60,20 @@ This role must follow [role-standard](role-standard.md) first.
 - do not give vague style feedback as if it were a defect
 - do not make review personal
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `review-code`
+- `review-service`
+
+### Supporting Skills (use when collaborating)
+
+- `navigate-service`
+- `security-audit`
+- `performance-profiling`
+- `meeting-review`
+
 ## Definition Of Done
 
 - findings are specific

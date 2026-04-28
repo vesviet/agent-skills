@@ -21,6 +21,8 @@ Issue?
 
 #### 1. Capture The Symptom
 
+Role: **SRE**, **Backend Developer**, **Frontend Developer**
+
 Write down:
 
 - the exact failing command or user-visible behavior
@@ -30,6 +32,8 @@ Write down:
 - whether the issue reproduces consistently
 
 #### 2. Determine The Failure Stage
+
+Role: **SRE**, **Backend Developer**
 
 Classify the issue first:
 
@@ -43,6 +47,8 @@ Use skill: `navigate-service` if the code path is not familiar yet.
 
 #### 3. Check The Simplest Explanations
 
+Role: **DevOps Engineer**, **SRE**
+
 Verify:
 
 - the correct branch, revision, and config are in use
@@ -52,6 +58,8 @@ Verify:
 - the failing service is actually running the revision you expect
 
 #### 4. Compare With The Last Known Good State
+
+Role: **DevOps Engineer**, **Backend Developer**
 
 Look at:
 
@@ -65,6 +73,8 @@ This often narrows the search faster than reading large parts of the codebase.
 
 #### 5. Isolate The Layer
 
+Role: **Backend Developer**, **Frontend Developer**
+
 Test the smallest meaningful slice:
 
 - build one package or target
@@ -77,6 +87,8 @@ Use skill: `troubleshoot-service`
 
 #### 6. Form And Test A Hypothesis
 
+Role: **Backend Developer**, **SRE**
+
 For each likely cause:
 
 - state the hypothesis clearly
@@ -86,6 +98,8 @@ For each likely cause:
 Avoid changing multiple things at once while investigating.
 
 #### 7. Apply The Fix
+
+Role: **Backend Developer**, **Frontend Developer**
 
 When the cause is confirmed:
 
@@ -97,6 +111,8 @@ Use skill: `review-code` if the fix touches risky code paths.
 
 #### 8. Verify Recovery
 
+Role: **SRE**, **DevOps Engineer**
+
 Confirm:
 
 - the original symptom is gone
@@ -105,6 +121,8 @@ Confirm:
 - dependent flows still work
 
 #### 9. Capture Follow-Up
+
+Role: **Technical Lead**, **Technical Writer**
 
 If the incident exposed a gap, note:
 

@@ -60,6 +60,23 @@ This role must follow [role-standard](role-standard.md) first.
 - do not ship inaccessible controls knowingly
 - do not add dependencies casually for small problems
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `add-ui-component`
+- `add-page-route`
+- `integrate-api-client`
+- `frontend-testing`
+
+### Supporting Skills (use when collaborating)
+
+- `navigate-service`
+- `commit-code`
+- `write-tests`
+- `troubleshoot-service`
+- `review-code`
+
 ## Definition Of Done
 
 - UI works across expected breakpoints

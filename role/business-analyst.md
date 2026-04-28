@@ -62,6 +62,18 @@ This role must follow [role-standard](role-standard.md) first.
 - do not mix business requirements with implementation guesses unless labeled
 - do not leave critical edge cases implicit
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `meeting-review`
+- `navigate-service`
+
+### Supporting Skills (use when collaborating)
+
+- `write-documentation`
+- `review-service`
+
 ## Definition Of Done
 
 - requirements are testable

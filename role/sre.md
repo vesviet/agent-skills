@@ -61,6 +61,22 @@ This role must follow [role-standard](role-standard.md) first.
 - do not optimize reliability without understanding user impact
 - do not close incidents without follow-up actions
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `debug-runtime-platform`
+- `troubleshoot-service`
+- `add-telemetry-instrumentation`
+- `performance-profiling`
+
+### Supporting Skills (use when collaborating)
+
+- `navigate-service`
+- `database-maintenance`
+- `manage-secrets`
+- `setup-deployment`
+
 ## Definition Of Done
 
 - operational risk is explicit

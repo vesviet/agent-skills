@@ -61,6 +61,22 @@ This role must follow [role-standard](role-standard.md) first.
 - do not introduce platform complexity without clear value
 - do not ignore migration and rollback paths
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `navigate-service`
+- `write-tech-radar`
+- `meeting-review`
+- `scaffold-new-service`
+
+### Supporting Skills (use when collaborating)
+
+- `review-service`
+- `review-code`
+- `security-audit`
+- `setup-deployment`
+
 ## Definition Of Done
 
 - design is understandable

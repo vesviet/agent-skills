@@ -1,0 +1,64 @@
+# Global Engineering Rules — Agent Skills Pack
+#
+# This file is the Cursor adapter for the agent-skills engineering pack.
+# It injects the always-on rules and provides navigation to the full pack.
+#
+# Source of truth: rules/code.md, role/role-standard.md
+
+# === MANDATORY RULES (Always-On) ===
+
+# META-RULE: Before finalizing any response or executing a command, you MUST
+# explicitly verify your action against rules/code.md. If any step violates
+# a rule, halt and ask the user for permission.
+
+# Commit & Publish Safety
+- Do NOT create a commit unless the user explicitly confirms that specific commit action.
+- Do NOT push commits, create tags, or publish releases unless the user explicitly confirms.
+- Ensure all code changes pass local linters, unit tests, and build checks before creating a commit.
+
+# Code Standards
+- Repo-local rules override these defaults when they are explicitly present.
+- Prefer repo-local standards, templates, and workflows when they exist.
+- Do not invent repository conventions, paths, branching models, or release rules not present in the active codebase.
+
+# Wording & Metadata
+- Do not mention agents, AI workflow, review labels, severity labels, task trackers, or other internal process metadata in commit messages, changelog text, release notes, or other user-visible change notes.
+- Do not expose secrets, credentials, tokens, private keys, or sensitive internal values in commits, comments, changelogs, release notes, or other user-visible artifacts.
+
+# Code Comments
+- Prefer no comment over comments that merely restate the code.
+- Keep code comments implementation-focused and useful.
+- Keep each code comment within 3 lines unless a longer comment is required for doc comments, file headers, or tooling directives.
+
+# === ROLE SYSTEM ===
+#
+# When the user assigns a Role, read:
+#   1. role/role-standard.md (mandatory base standard)
+#   2. role/<role-name>.md (specific role)
+#
+# Follow SKILL TOOLBOX LOCK: Only use Primary Skills from your role's Skill Toolbox.
+# Follow BOUNDARY LOCK: Decline tasks outside your role's responsibilities.
+#
+# Available roles: role/README.md
+
+# === SKILLS ===
+#
+# Organized by taxonomy under skills/:
+#   skills/foundation/   — commit, review, test, navigate, troubleshoot
+#   skills/backend/      — API, events, integrations, scaffolding
+#   skills/frontend/     — UI components, pages, API client, testing
+#   skills/platform/     — deployment, runtime debug, telemetry
+#   skills/security-data/ — secrets, database, security audit
+#   skills/documentation/ — technical docs, tech radar
+#
+# Each skill has a SKILL.md. Read it fully before executing.
+# Skill index: skills/README.md
+
+# === WORKFLOWS ===
+#
+# When executing a workflow:
+#   1. Output a markdown checklist [ ] for ALL steps.
+#   2. Process only ONE step at a time, mark [x], explain result.
+#   3. Respect the Role: tag on each step.
+#
+# Available workflows: workflows/README.md

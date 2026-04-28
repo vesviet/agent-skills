@@ -60,6 +60,20 @@ This role must follow [role-standard](role-standard.md) first.
 - do not normalize plaintext secret handling
 - do not leave critical issues undocumented
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `security-audit`
+- `manage-secrets`
+
+### Supporting Skills (use when collaborating)
+
+- `review-code`
+- `navigate-service`
+- `review-service`
+- `meeting-review`
+
 ## Definition Of Done
 
 - major security risks are identified

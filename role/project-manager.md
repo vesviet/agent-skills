@@ -61,6 +61,17 @@ This role must follow [role-standard](role-standard.md) first.
 - do not compress testing or rollout safety without explicit approval
 - do not treat status reporting as progress itself
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `meeting-review`
+
+### Supporting Skills (use when collaborating)
+
+- `navigate-service`
+- `review-service`
+
 ## Definition Of Done
 
 - plan is actionable

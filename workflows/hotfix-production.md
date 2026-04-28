@@ -23,6 +23,8 @@ Use this workflow only for true production emergencies where delaying the fix is
 
 #### 1. Confirm Severity
 
+Role: **SRE**, **Technical Lead**
+
 Ask:
 
 - is production impact active right now?
@@ -32,6 +34,8 @@ Ask:
 If the answer is no, use the normal delivery workflow instead.
 
 #### 2. Contain The Blast Radius
+
+Role: **SRE**, **DevOps Engineer**
 
 Choose the least risky mitigation available first:
 
@@ -44,6 +48,8 @@ Use the repo's approved production control path.
 
 #### 3. Identify The Smallest Valid Fix
 
+Role: **Backend Developer**, **Frontend Developer**
+
 Use skill: `troubleshoot-service`
 
 Rules:
@@ -55,6 +61,8 @@ Rules:
 
 #### 4. Verify The Fix Quickly
 
+Role: **Backend Developer**, **Reviewer**
+
 Before shipping:
 
 - run the narrowest useful test set first
@@ -65,6 +73,8 @@ Before shipping:
 Use skill: `review-code`
 
 #### 5. Ship Through The Normal Emergency Path
+
+Role: **Backend Developer**, **DevOps Engineer**
 
 Use skill: `commit-code`
 
@@ -80,6 +90,8 @@ Do not push, create a tag, or publish a release until the user or local release 
 
 #### 6. Monitor Recovery
 
+Role: **SRE**, **DevOps Engineer**
+
 After deployment:
 
 - watch service health and key alerts
@@ -88,6 +100,8 @@ After deployment:
 - keep monitoring until the system is stable
 
 #### 7. Close The Incident Properly
+
+Role: **Technical Lead**, **Technical Writer**
 
 After stabilization:
 

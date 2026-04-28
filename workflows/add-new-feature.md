@@ -16,6 +16,8 @@ This workflow guides a feature from requirements through rollout verification wi
 
 #### 1. Understand The Change
 
+Role: **Product Manager**, **Business Analyst**, **Technical Lead**
+
 Answer these first:
 
 - What user or business problem is being solved?
@@ -28,6 +30,8 @@ Use skill: `navigate-service`
 
 #### 2. Check Existing Patterns
 
+Role: **Technical Lead**, **Technical Architect**
+
 Before writing code:
 
 - inspect similar features already present in the repo
@@ -36,6 +40,8 @@ Before writing code:
 - note any existing migration, release, or compatibility rules
 
 #### 3. Plan The Implementation
+
+Role: **Technical Lead**
 
 Break the work into the minimum set of changes needed:
 
@@ -49,6 +55,8 @@ If the feature changes persisted data, use skill: `create-migration`
 
 #### 4. Implement The Change
 
+Role: **Backend Developer**, **Frontend Developer**
+
 Follow the local architecture instead of inventing a new one.
 
 - update contracts only if needed
@@ -61,6 +69,8 @@ Follow the local architecture instead of inventing a new one.
 If the repo uses generated code, regenerate it with the local command after editing source definitions.
 
 #### 5. Test The Change
+
+Role: **Backend Developer**, **Frontend Developer**, **QA Engineer**
 
 Use skill: `write-tests`
 
@@ -80,6 +90,8 @@ Run the repo's normal verification commands for:
 
 #### 6. Review The Change
 
+Role: **Reviewer**, **Technical Lead**
+
 Use skill: `review-code`
 
 Self-review checklist:
@@ -92,6 +104,8 @@ Self-review checklist:
 - docs or release notes are updated when needed
 
 #### 7. Prepare Delivery
+
+Role: **Backend Developer**, **Frontend Developer**
 
 Use skill: `commit-code`
 
@@ -108,6 +122,8 @@ Do not push, tag, or publish until the user or local policy explicitly allows th
 
 #### 8. Verify Rollout
 
+Role: **DevOps Engineer**, **SRE**
+
 After the change is shipped:
 
 - verify deployment or rollout status using the repo's source of truth
@@ -116,6 +132,8 @@ After the change is shipped:
 - confirm dependent systems still behave as expected
 
 #### 9. Capture Follow-Up
+
+Role: **Technical Lead**, **Technical Writer**
 
 If the feature leaves known follow-up work:
 

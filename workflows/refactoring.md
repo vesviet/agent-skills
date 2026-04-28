@@ -16,6 +16,8 @@ Use this workflow when improving structure, readability, modularity, or maintain
 
 #### 1. Define The Goal
 
+Role: **Technical Lead**, **Technical Architect**
+
 State the narrow objective:
 
 - split a large file or function
@@ -28,6 +30,8 @@ If the goal includes behavior change, use a feature workflow instead.
 
 #### 2. Establish A Safety Net
 
+Role: **Backend Developer**, **Frontend Developer**
+
 Use skill: `write-tests`
 
 Before moving code:
@@ -37,6 +41,8 @@ Before moving code:
 - record performance-sensitive paths if relevant
 
 #### 3. Understand The Existing Structure
+
+Role: **Technical Lead**, **Backend Developer**
 
 Use skill: `navigate-service`
 
@@ -49,6 +55,8 @@ Map:
 
 #### 4. Choose The Smallest Refactor Sequence
 
+Role: **Technical Lead**
+
 Prefer a series of safe, reviewable steps:
 
 - rename first
@@ -60,6 +68,8 @@ Avoid mixing structural cleanup with new business logic.
 
 #### 5. Execute Incrementally
 
+Role: **Backend Developer**, **Frontend Developer**
+
 After each meaningful step:
 
 - rerun the most relevant tests
@@ -70,6 +80,8 @@ Use skill: `review-code` when the change alters boundaries or ownership between 
 
 #### 6. Check Secondary Effects
 
+Role: **Reviewer**, **SRE**
+
 If the refactor touches hot paths, shared code, or contracts:
 
 - verify performance did not regress
@@ -79,6 +91,8 @@ If the refactor touches hot paths, shared code, or contracts:
 Use skill: `performance-profiling` if the path is latency-sensitive.
 
 #### 7. Prepare Delivery
+
+Role: **Backend Developer**, **Frontend Developer**
 
 Use skill: `commit-code`
 

@@ -61,6 +61,19 @@ This role must follow [role-standard](role-standard.md) first.
 - do not bury critical operational steps in prose
 - do not let examples drift from the real system
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `write-documentation`
+- `write-tech-radar`
+
+### Supporting Skills (use when collaborating)
+
+- `navigate-service`
+- `meeting-review`
+- `review-service`
+
 ## Definition Of Done
 
 - target audience is clear

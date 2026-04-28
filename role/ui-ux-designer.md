@@ -61,6 +61,19 @@ This role must follow [role-standard](role-standard.md) first.
 - do not ignore empty, loading, error, and success states
 - do not ship inaccessible interaction patterns knowingly
 
+## Skill Toolbox
+
+### Primary Skills
+
+- `meeting-review`
+- `navigate-service`
+
+### Supporting Skills (use when collaborating)
+
+- `add-ui-component`
+- `add-page-route`
+- `write-documentation`
+
 ## Definition Of Done
 
 - key flows are clear
