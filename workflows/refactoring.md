@@ -122,8 +122,8 @@ Do not push, tag, or publish until the user or local process explicitly allows t
 
 ### Related Skills
 
-- navigate-service
-- write-tests
-- review-code
-- performance-profiling
-- commit-code
+- **navigate-service**: Understand the current structure before refactoring
+- **write-tests**: Establish behavior-preserving safety coverage
+- **review-code**: Review boundary and ownership changes
+- **performance-profiling**: Check performance-sensitive refactors
+- **commit-code**: Prepare approved refactor changes for delivery

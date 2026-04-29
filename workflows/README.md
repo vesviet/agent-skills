@@ -46,4 +46,29 @@ These workflows are intentionally generic.
 - keep public contracts backward compatible when possible
 - capture findings, risk, and follow-up explicitly
 
+## Workflow Authoring Standard
+
+Every workflow file should include:
+
+1. YAML frontmatter with a concise `description`.
+2. One `## <Name> Workflow` title.
+3. `### Prerequisites`.
+4. `### Workflow Steps` with sequential `#### N. Step Name` headings.
+5. A `Role:` line under every workflow step.
+6. `### Checklist` covering the major workflow steps.
+7. `### Related Workflows`.
+8. `### Related Skills` using `- **skill-name**: description`.
+
+Use `Blocking`, `Important`, and `Follow-Up` for prioritized findings. Do not introduce workflow-specific severity labels that conflict with the rest of the pack.
+
+## Validation Gate
+
+Run workflow validation after editing or adding workflows:
+
+```bash
+python3 scripts/validate-workflows.py
+```
+
+The validator checks frontmatter, required sections, sequential steps, role ownership, checklists, related workflow links, skill references, and stale priority labels.
+
 Last updated: 2026-04-28

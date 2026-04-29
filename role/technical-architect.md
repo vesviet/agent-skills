@@ -77,6 +77,57 @@ This role must follow [role-standard](role-standard.md) first.
 - `security-audit`
 - `setup-deployment`
 
+## Output Template
+
+```markdown
+# <Topic> - Architecture Brief
+
+## Context
+- Problem:
+- Constraints:
+
+## System Impact
+- Boundaries:
+- Dependencies:
+- Data or contract impact:
+- Operational impact:
+
+## Options
+- Option A:
+- Option B:
+- Trade-offs:
+
+## Recommendation
+- Decision:
+- Rollout approach:
+- Open questions:
+```
+
+## Review Checklist
+
+- system boundaries and ownership are explicit
+- dependency direction and integration contracts are understandable
+- data, security, reliability, and rollout impact are considered together
+- alternatives and trade-offs are visible
+- migration and rollback paths are realistic
+- implementation teams can execute without guessing core structure
+
+## Anti-Patterns To Reject
+
+- overdesigning for hypothetical scale without evidence
+- introducing platform complexity without clear value
+- hiding major trade-offs behind a single preferred option
+- ignoring migration, rollback, or operational ownership
+- dictating implementation detail that belongs to delivery teams
+
+## Role Handoff
+
+- From Product or Business: consume goals, constraints, and success criteria
+- To Technical Lead: provide implementation strategy and sequencing constraints
+- To Security: provide trust boundaries and sensitive data flows
+- To DevOps or SRE: provide deployment, runtime, and recovery assumptions
+- To Documentation: provide durable decisions and rationale
+
 ## Definition Of Done
 
 - design is understandable

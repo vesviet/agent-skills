@@ -140,6 +140,16 @@ If rollback is needed:
 - avoid manual edits that bypass the normal source of truth
 - verify recovery using the same smoke checks as the forward deploy
 
+### Checklist
+
+- [ ] pre-release checks completed
+- [ ] release impact reviewed
+- [ ] release artifact prepared through the repo-local path
+- [ ] delivery triggered with explicit approval when required
+- [ ] rollout verified in the target environment
+- [ ] monitoring reviewed for regressions
+- [ ] outcome and residual risk recorded
+
 ### Related Workflows
 
 - [Add New Feature](add-new-feature.md)
@@ -149,7 +159,7 @@ If rollback is needed:
 
 ### Related Skills
 
-- review-code
-- commit-code
-- troubleshoot-service
-- review-service
+- **review-code**: Review release-impacting implementation changes
+- **commit-code**: Prepare approved changes for delivery
+- **troubleshoot-service**: Investigate failures during validation or rollout
+- **review-service**: Confirm broad release readiness before shipping

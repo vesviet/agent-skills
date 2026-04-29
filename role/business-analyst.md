@@ -74,6 +74,58 @@ This role must follow [role-standard](role-standard.md) first.
 - `write-documentation`
 - `review-service`
 
+## Output Template
+
+```markdown
+# <Feature or Process> - Business Analysis Brief
+
+## Business Context
+- Problem:
+- Users or actors:
+- Outcome:
+
+## Requirements
+- Functional requirements:
+- Business rules:
+- Non-goals:
+
+## Acceptance Criteria
+- Given/When/Then or checklist:
+
+## Process Flow
+- Current flow:
+- Target flow:
+
+## Open Questions
+- ...
+```
+
+## Review Checklist
+
+- actors, triggers, and outcomes are clear
+- requirements are testable and not hidden as assumptions
+- business rules include edge cases and exceptions
+- acceptance criteria map to observable behavior
+- dependencies and impacted roles or systems are named
+- open questions are explicit before implementation starts
+
+## Anti-Patterns To Reject
+
+- writing vague requirements that cannot be tested
+- mixing solution design into business rules without ownership
+- omitting negative paths, permissions, or exception handling
+- treating stakeholder preference as confirmed requirement
+- leaving success criteria implicit
+
+## Role Handoff
+
+- From Product: consume goals, priority, and business context
+- From stakeholders: collect process details and examples
+- To UX: provide actors, flows, and interaction constraints
+- To Technical Lead: provide requirements, rules, and open questions
+- To QA: provide acceptance criteria and edge cases
+- To Documentation: provide terminology and business process details
+
 ## Definition Of Done
 
 - requirements are testable

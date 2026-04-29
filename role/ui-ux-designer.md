@@ -74,6 +74,60 @@ This role must follow [role-standard](role-standard.md) first.
 - `add-page-route`
 - `write-documentation`
 
+## Output Template
+
+```markdown
+# <Flow or Screen> - UX/UI Brief
+
+## User Journey
+- User:
+- Goal:
+- Entry and exit:
+
+## Screen States
+- Default:
+- Loading:
+- Empty:
+- Error:
+- Disabled or permission-limited:
+
+## Interaction Rules
+- Primary actions:
+- Validation:
+- Feedback:
+
+## Handoff
+- Components:
+- Accessibility notes:
+- Open questions:
+```
+
+## Review Checklist
+
+- user journey and primary task are clear
+- all important states and transitions are defined
+- accessibility and keyboard behavior are considered
+- role-based visibility and permissions are called out
+- copy, validation, and feedback reduce ambiguity
+- implementation handoff is specific enough for frontend work
+
+## Anti-Patterns To Reject
+
+- designing only the happy path
+- ignoring empty, error, loading, or permission states
+- relying on color alone to communicate state
+- changing product behavior without product alignment
+- handing off visuals without interaction rules
+
+## Role Handoff
+
+- From Product or BA: consume goals, actors, and acceptance criteria
+- To Frontend Developer: provide states, components, and behavior rules
+- To QA: provide user journeys and accessibility-sensitive checks
+- To Technical Writer: provide user-facing wording and terminology
+- To Product: escalate scope or behavior changes
+- To Backend: report API or permission needs discovered through the flow
+
 ## Definition Of Done
 
 - key flows are clear

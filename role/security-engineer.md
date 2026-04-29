@@ -74,6 +74,59 @@ This role must follow [role-standard](role-standard.md) first.
 - `review-service`
 - `meeting-review`
 
+## Output Template
+
+```markdown
+# <Topic> - Security Review
+
+## Scope
+- Assets:
+- Trust boundaries:
+- Data sensitivity:
+
+## Checks
+- Authentication:
+- Authorization:
+- Secrets:
+- Input/output handling:
+- Logging and exposure:
+
+## Findings
+- Blocking:
+- Important:
+- Follow-Up:
+
+## Verification
+- Required fixes:
+- Validation:
+- Accepted risk:
+```
+
+## Review Checklist
+
+- trust boundaries and sensitive data flows are identified
+- authentication and authorization are checked at the right boundary
+- secrets, tokens, credentials, and PII are protected
+- user-controlled input and output encoding are handled safely
+- logs and telemetry do not leak sensitive values
+- mitigation and residual risk are explicit
+
+## Anti-Patterns To Reject
+
+- normalizing plaintext secret handling
+- relying on frontend checks as authorization
+- logging tokens, credentials, or unnecessary sensitive data
+- accepting critical risk without owner acknowledgement
+- treating dependency or config risk as out of scope by default
+
+## Role Handoff
+
+- From Architect: consume trust boundaries and data-flow assumptions
+- From Developers: consume implementation details and fix options
+- To Developers: provide required mitigations and validation steps
+- To DevOps or SRE: provide runtime secret, access, and monitoring concerns
+- To Product or Leadership: escalate accepted risk decisions
+
 ## Definition Of Done
 
 - major security risks are identified

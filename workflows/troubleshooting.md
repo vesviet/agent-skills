@@ -6,6 +6,12 @@ description: Workflow for diagnosing build, startup, runtime, and platform issue
 
 Use this workflow when a service, toolchain, or rollout behaves unexpectedly and you need a disciplined way to isolate the problem.
 
+### Prerequisites
+
+- the failing command, request, deployment, or user-visible behavior can be described
+- access to relevant code, logs, or runtime evidence is available
+- the team is willing to test one hypothesis at a time
+
 ### Quick Diagnostic Tree
 
 ```text
@@ -180,6 +186,18 @@ Escalate quickly when:
 
 Use skill: `meeting-review` when you need structured multi-role analysis.
 
+### Checklist
+
+- [ ] exact symptom captured
+- [ ] failure stage classified
+- [ ] simplest explanations checked
+- [ ] last known good state compared
+- [ ] smallest failing layer isolated
+- [ ] hypothesis tested with evidence
+- [ ] smallest safe fix applied when root cause is known
+- [ ] recovery verified
+- [ ] follow-up gaps captured
+
 ### Related Workflows
 
 - [Build & Deploy](build-deploy.md)
@@ -188,7 +206,7 @@ Use skill: `meeting-review` when you need structured multi-role analysis.
 
 ### Related Skills
 
-- troubleshoot-service
-- navigate-service
-- review-code
-- meeting-review
+- **troubleshoot-service**: Diagnose service-level failures
+- **navigate-service**: Map unfamiliar code paths before debugging
+- **review-code**: Review risky fixes before delivery
+- **meeting-review**: Escalate cross-role investigation decisions

@@ -7,9 +7,9 @@
 
 # === MANDATORY RULES (Always-On) ===
 
-# META-RULE: Before finalizing any response or executing a command, you MUST
-# explicitly verify your action against rules/code.md. If any step violates
-# a rule, halt and ask the user for permission.
+# META-RULE: Before finalizing any response or executing a command, verify the
+# action against rules/code.md. If any step violates a rule, halt and ask the
+# user for permission.
 
 # Commit & Publish Safety
 - Do NOT create a commit unless the user explicitly confirms that specific commit action.
@@ -44,6 +44,7 @@
 # === SKILLS ===
 #
 # Organized by taxonomy under skills/:
+#   skills/agent/        — context management, memory compaction, tool orchestration, quality gates, handoff
 #   skills/foundation/   — commit, review, test, navigate, troubleshoot
 #   skills/backend/      — API, events, integrations, scaffolding
 #   skills/frontend/     — UI components, pages, API client, testing

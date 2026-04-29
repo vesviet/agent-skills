@@ -1,9 +1,9 @@
 ---
 name: performance-profiling
-description: Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, and validating improvements with repo-local tools
+description: Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, and validating improvements with repo-local tools. Use when performance, capacity, or resource usage needs evidence-based diagnosis.
 ---
 
-# Performance Profiling Skill
+# Performance Profiling
 
 Use this skill when investigating slow paths, memory growth, concurrency bottlenecks, or capacity limits.
 

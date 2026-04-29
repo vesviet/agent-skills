@@ -12,8 +12,9 @@ Global engineering skill pack for software delivery work. The pack starts with a
 
 ## Taxonomy
 
-The full-pack target is organized into six categories:
+The full-pack target is organized into seven categories:
 
+- agent: operating discipline for context, memory compaction, tools, validation, and handoff
 - foundation: portable skills used across most codebases
 - backend: service and API implementation skills
 - frontend: UI, routing, client integration, and frontend testing skills
@@ -25,6 +26,16 @@ See [skills/README.md](skills/README.md) for the current inventory and roadmap.
 
 ## Skills Overview
 
+### Agent Operations
+
+| Skill | What it covers |
+|-------|----------------|
+| [agent-context-management](skills/agent/agent-context-management/SKILL.md) | Preserve intent, evidence, assumptions, and continuity |
+| [agent-memory-compaction](skills/agent/agent-memory-compaction/SKILL.md) | Compact long conversations into a minimal working state |
+| [agent-tool-orchestration](skills/agent/agent-tool-orchestration/SKILL.md) | Choose, sequence, and validate tool use safely |
+| [agent-quality-gate](skills/agent/agent-quality-gate/SKILL.md) | Run validators, lints, tests, builds, and diff checks |
+| [agent-handoff](skills/agent/agent-handoff/SKILL.md) | Summarize state, validation, blockers, and next actions |
+
 ### Foundation
 
 | Skill | What it covers |
@@ -34,7 +45,7 @@ See [skills/README.md](skills/README.md) for the current inventory and roadmap.
 | [meeting-review](skills/foundation/meeting-review/SKILL.md) | Structured multi-angle technical review |
 | [navigate-service](skills/foundation/navigate-service/SKILL.md) | Understand an unfamiliar service quickly |
 | [performance-profiling](skills/foundation/performance-profiling/SKILL.md) | Profile hot paths and regressions |
-| [review-code](skills/foundation/review-code/SKILL.md) | Review code changes with P0/P1/P2 findings |
+| [review-code](skills/foundation/review-code/SKILL.md) | Review code changes with prioritized findings |
 | [review-service](skills/foundation/review-service/SKILL.md) | Full service readiness and release review |
 | [troubleshoot-service](skills/foundation/troubleshoot-service/SKILL.md) | Diagnose build, startup, and runtime failures |
 | [write-tests](skills/foundation/write-tests/SKILL.md) | Add or improve unit and integration tests |
@@ -82,6 +93,25 @@ See [workflows/README.md](workflows/README.md).
 - `/service-review-release`
 - `/setup-new-service`
 - `/troubleshooting`
+
+## Quality Gates
+
+Run these validators after editing rules, skills, roles, or workflows:
+
+```bash
+python3 scripts/validate-rules.py
+python3 scripts/validate-skills.py
+python3 scripts/validate-roles.py
+python3 scripts/validate-workflows.py
+```
+
+The rules validator checks the source rule file and adapter mirrors for required safety constraints and stale wording.
+
+The skill validator enforces the shared `SKILL.md` structure, required metadata, actionable checklists, and valid cross-skill references.
+
+The role validator enforces role structure, minimum content depth, valid skill toolbox references, role inventory, and workflow mapping.
+
+The workflow validator enforces workflow structure, step ownership, checklists, related workflow links, and valid skill references.
 
 ## How To Adapt This Pack
 
@@ -154,11 +184,11 @@ This pack is meant to become a full global engineering pack. The foundation set 
 
 ## Stats
 
-- 25 implemented skills
+- 30 implemented skills
 - 8 reusable workflows
 - 14 reusable role definitions (each with Skill Toolbox)
 - 1 always-on global rule file
-- 6 taxonomy categories
+- 7 taxonomy categories
 - 5 agent adapters (Codex, Cursor, Claude, Antigravity, Copilot)
 
 Last updated: 2026-04-28

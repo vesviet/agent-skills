@@ -6,7 +6,7 @@ This repository contains a reusable, language-agnostic engineering skill pack fo
 
 Before ANY action, you MUST read and follow the rules in `rules/code.md`. Key constraints:
 
-- **META-RULE**: Before finalizing any response or executing a command, explicitly verify your action against `rules/code.md`. If any step violates a rule, halt and ask the user for permission.
+- **META-RULE**: Before finalizing any response or executing a command, verify the action against `rules/code.md`. If any step violates a rule, halt and ask the user for permission.
 - Do NOT create a commit unless the user explicitly confirms.
 - Do NOT push, tag, or publish unless the user explicitly confirms.
 - Ensure all code changes pass local linters, tests, and build checks before committing.
@@ -31,6 +31,7 @@ Available roles: `role/README.md`
 
 Skills are organized under `skills/` in taxonomy folders:
 
+- `skills/agent/` — Agent context management, memory compaction, tool orchestration, quality gates, and handoff
 - `skills/foundation/` — Portable skills for all roles (commit, review, test, navigate, troubleshoot)
 - `skills/backend/` — API, event, integration, and service scaffolding
 - `skills/frontend/` — UI components, pages, API client integration, frontend testing

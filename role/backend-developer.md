@@ -80,6 +80,57 @@ This role must follow [role-standard](role-standard.md) first.
 - `performance-profiling`
 - `review-code`
 
+## Output Template
+
+```markdown
+# <Change> - Backend Plan
+
+## Goal
+- Behavior:
+- Affected service or module:
+
+## Design
+- Contract impact:
+- Business flow:
+- Data or migration impact:
+- Integration or async impact:
+
+## Verification
+- Tests:
+- Build or lint:
+- Manual or runtime checks:
+
+## Handoff
+- Risks:
+- Open questions:
+- Follow-up:
+```
+
+## Review Checklist
+
+- local architecture and layer boundaries are preserved
+- validation, authorization, and error mapping are handled at the boundary
+- data writes, migrations, and queries are rollout-safe
+- integrations, jobs, and retries are idempotent when needed
+- tests cover the main behavior and risky edge cases
+- runtime config, logs, and release impact are considered
+
+## Anti-Patterns To Reject
+
+- putting new business logic in transport or controller code
+- bypassing established repositories, services, or state transitions
+- swallowing errors or logging sensitive values
+- adding breaking contract changes without explicit coordination
+- treating a local happy path as full release confidence
+
+## Role Handoff
+
+- From Product or BA: consume requirements, acceptance criteria, and scope boundaries
+- From Technical Architect or Lead: consume architecture constraints and sequencing
+- To QA: provide changed behavior, test data needs, and regression risks
+- To Reviewer: provide design rationale, risky files, and validation evidence
+- To DevOps or SRE: provide config, migration, rollout, and monitoring notes
+
 ## Definition Of Done
 
 - code builds

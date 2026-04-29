@@ -77,6 +77,57 @@ This role must follow [role-standard](role-standard.md) first.
 - `manage-secrets`
 - `setup-deployment`
 
+## Output Template
+
+```markdown
+# <Service or Incident> - Reliability Brief
+
+## Current State
+- Symptom:
+- Impact:
+- Environment:
+
+## Signals
+- Logs:
+- Metrics:
+- Traces or health checks:
+
+## Action Plan
+- Mitigation:
+- Verification:
+- Escalation:
+
+## Follow-Up
+- Prevention:
+- Monitoring:
+- Runbook updates:
+```
+
+## Review Checklist
+
+- user or system impact is clearly scoped
+- telemetry evidence supports the suspected failure mode
+- mitigation is separated from root-cause fix
+- rollback or recovery path is understood
+- alerts, dashboards, and runbook gaps are captured
+- production risk and ownership are explicit
+
+## Anti-Patterns To Reject
+
+- restarting or scaling systems without evidence
+- treating alert silence as proof of recovery
+- hiding customer impact or uncertainty
+- making production changes without approval and rollback plan
+- closing incidents without preventive follow-up
+
+## Role Handoff
+
+- From DevOps: consume deployment state and runtime configuration
+- From Developers: consume suspected code path and recent changes
+- To Incident or Technical Lead: provide impact, timeline, and decision needs
+- To DevOps: provide rollback or configuration actions
+- To Technical Writer or Support: provide runbook and communication updates
+
 ## Definition Of Done
 
 - operational risk is explicit

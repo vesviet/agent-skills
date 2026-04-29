@@ -120,4 +120,34 @@ Each role file describes:
 - Prefer repo-local conventions over generic defaults when the repository already defines them.
 - Treat these roles as operating modes, not job-title restrictions.
 
+## Role Authoring Standard
+
+Every role file must follow [role-standard.md](role-standard.md) and keep the same baseline structure:
+
+1. H1 role title matching the filename.
+2. `Mission:` and `Level:` lines.
+3. Mandatory role-standard reference.
+4. Principal expectations, use cases, responsibilities, inputs, outputs, decision boundaries, collaboration, guardrails, skill toolbox, output template, review checklist, anti-patterns, handoff, and definition of done.
+
+Quality expectations:
+
+- keep roles principal-level and outcome-oriented, not task lists only
+- make boundaries explicit so the role knows when to collaborate or escalate
+- include at least one Primary Skill and reference only existing skills
+- keep Supporting Skills for collaboration context, not direct ownership
+- include an output template that can be reused directly
+- include a review checklist and anti-patterns to make quality expectations concrete
+- include role handoff guidance for upstream and downstream collaboration
+- make Definition Of Done strong enough for handoff to the next role
+
+## Validation Gate
+
+Run role validation after editing or adding roles:
+
+```bash
+python3 scripts/validate-roles.py
+```
+
+The validator checks required sections, section order, minimum content depth, toolbox references, duplicate toolbox entries, role inventory, and workflow mapping.
+
 Last updated: 2026-04-28

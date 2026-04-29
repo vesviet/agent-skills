@@ -77,6 +77,57 @@ This role must follow [role-standard](role-standard.md) first.
 - `troubleshoot-service`
 - `review-code`
 
+## Output Template
+
+```markdown
+# <Change> - Frontend Plan
+
+## Goal
+- User journey:
+- Screen or route:
+
+## UI And State
+- Components:
+- Data loading:
+- Forms or interactions:
+- Loading, empty, error, and disabled states:
+
+## Contract And Verification
+- API dependencies:
+- Accessibility checks:
+- Tests or manual scenarios:
+
+## Handoff
+- Backend dependencies:
+- QA scenarios:
+- Open questions:
+```
+
+## Review Checklist
+
+- user flow matches requirements and expected roles
+- loading, empty, error, success, and disabled states are explicit
+- accessibility, keyboard behavior, and responsive behavior are checked
+- API contracts, caching, and mutation side effects are handled intentionally
+- tests or manual scenarios cover important interactions
+- user-facing copy and validation feedback are clear
+
+## Anti-Patterns To Reject
+
+- hiding backend failures behind generic success states
+- treating a visual render as proof of correct behavior
+- hardcoding roles, URLs, IDs, or environment-specific values
+- adding dependencies for small local problems without clear value
+- relying on UI permission checks as the only security boundary
+
+## Role Handoff
+
+- From Product or UX: consume user flow, states, and acceptance criteria
+- From Backend: consume endpoint behavior, payloads, errors, and permissions
+- To QA: provide user journeys, role matrix, and regression-prone states
+- To Reviewer: provide component boundaries, state decisions, and validation evidence
+- To Backend or Data: report contract mismatches or stale data with evidence
+
 ## Definition Of Done
 
 - UI works across expected breakpoints

@@ -9,6 +9,14 @@ Use this skill when a normal single-angle review is not enough and the user want
 
 This skill does not require real subagents. By default, simulate a disciplined review panel in one response. Only use delegated or parallel agents when the user explicitly asks for them.
 
+## Core Rules
+
+- keep the review focused on a decision, risk, or next action
+- choose only the perspectives that add useful signal
+- ground concerns in code, requirements, docs, or stated assumptions
+- make trade-offs explicit without inventing disagreement
+- avoid broad panel theater when a simple review would do
+
 ## When To Use
 
 - architecture or design reviews
@@ -36,7 +44,7 @@ Choose only the perspectives that fit the topic.
 - Data: schema, migration, indexing, consistency, retention
 - UX: interaction clarity, accessibility, flow friction
 
-## How To Run The Review
+## Suggested Process
 
 ### 1. Define Scope
 
@@ -136,9 +144,18 @@ Finish with:
 - do not use broad panel theater when a simple review would do
 - do not let the discussion drift away from a decision or action
 
+## Checklist
+
+- [ ] topic and decision under review identified
+- [ ] scope and assumptions stated
+- [ ] relevant context gathered
+- [ ] useful perspectives selected
+- [ ] major concerns and trade-offs discussed
+- [ ] recommendation and next actions captured
+
 ## Related Skills
 
-- `review-code`
-- `review-service`
-- `navigate-service`
-- `troubleshoot-service`
+- **review-code**: Review concrete implementation changes
+- **review-service**: Expand into release-readiness review
+- **navigate-service**: Gather service context before discussion
+- **troubleshoot-service**: Investigate a live issue before deciding

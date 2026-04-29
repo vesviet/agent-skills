@@ -1,9 +1,9 @@
 ---
 name: write-tests
-description: Add or update tests by following repo-local test conventions, choosing the right test scope, isolating dependencies, and validating risky paths before delivery
+description: Add or update tests by following repo-local test conventions, choosing the right test scope, isolating dependencies, and validating risky paths before delivery. Use when behavior needs regression coverage or release confidence.
 ---
 
-# Write Tests Skill
+# Write Tests
 
 Use this skill when adding, updating, or strengthening tests for a code change.
 

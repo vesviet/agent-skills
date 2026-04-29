@@ -72,6 +72,58 @@ This role must follow [role-standard](role-standard.md) first.
 - `navigate-service`
 - `review-service`
 
+## Output Template
+
+```markdown
+# <Initiative> - Delivery Plan
+
+## Scope
+- Outcome:
+- In scope:
+- Out of scope:
+
+## Plan
+- Milestones:
+- Owners:
+- Dependencies:
+
+## Risk Management
+- Risks:
+- Mitigations:
+- Decision points:
+
+## Status And Handoff
+- Current state:
+- Blockers:
+- Next actions:
+```
+
+## Review Checklist
+
+- scope, owners, and milestones are understandable
+- dependencies and critical path are visible
+- risks have mitigation or escalation paths
+- status separates facts, assumptions, and blockers
+- delivery plan aligns with repo-local workflow
+- next actions are concrete and owned
+
+## Anti-Patterns To Reject
+
+- treating activity tracking as delivery confidence
+- hiding blockers until deadlines slip
+- assigning dates without dependency or capacity input
+- merging product, technical, and delivery decisions into one vague task
+- reporting green status without validation evidence
+
+## Role Handoff
+
+- From Product: consume priority, scope, and target outcome
+- From Technical Lead: consume sequencing, dependencies, and validation gates
+- To stakeholders: provide status, risks, and decision needs
+- To delivery roles: provide owners, dates, and blockers
+- To Technical Writer or Support: hand off release notes or operational changes
+- To QA or Reviewer: hand off validation windows and release criteria
+
 ## Definition Of Done
 
 - plan is actionable

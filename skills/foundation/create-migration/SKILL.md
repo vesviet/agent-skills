@@ -1,11 +1,19 @@
 ---
 name: create-migration
-description: Create safe schema or data migrations by following the repo's local migration tool, naming rules, rollout constraints, and rollback expectations
+description: Create safe schema or data migrations by following the repo's local migration tool, naming rules, rollout constraints, and rollback expectations. Use when adding, changing, backfilling, cleaning, or repairing persisted data structures.
 ---
 
-# Create Migration Skill
+# Create Migration
 
 Use this skill when the user needs to add or review a database schema migration, backfill, or data repair step.
+
+## Core Rules
+
+- follow the repo's existing migration tool, naming, and ordering conventions
+- prefer rollout-safe additive changes before destructive changes
+- keep schema changes, backfills, and cleanup separate when that reduces risk
+- make rollback behavior explicit when the repo supports rollback
+- verify code and schema compatibility across staged deployment
 
 ## When to Use
 

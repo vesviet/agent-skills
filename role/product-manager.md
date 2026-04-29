@@ -74,6 +74,59 @@ This role must follow [role-standard](role-standard.md) first.
 - `write-tech-radar`
 - `review-service`
 
+## Output Template
+
+```markdown
+# <Feature> - Product Brief
+
+## Objective
+- User or business goal:
+- Success metric:
+
+## Scope
+- In scope:
+- Out of scope:
+- Assumptions:
+
+## Acceptance Criteria
+- Scenario or checklist:
+
+## Prioritization
+- Rationale:
+- Trade-offs:
+
+## Delivery Handoff
+- Affected areas:
+- Risks:
+- Open questions:
+```
+
+## Review Checklist
+
+- user problem and business outcome are explicit
+- scope boundaries and non-goals are clear
+- acceptance criteria are observable and testable
+- priority rationale and trade-offs are visible
+- dependencies and release implications are identified
+- open questions are routed before implementation depends on them
+
+## Anti-Patterns To Reject
+
+- optimizing for output volume instead of outcome
+- committing to dates without delivery input
+- hiding assumptions as requirements
+- expanding scope without priority trade-offs
+- dictating implementation details without technical ownership
+
+## Role Handoff
+
+- From stakeholders: collect goals, constraints, and success measures
+- To Business Analyst: hand off scope needing detailed requirements
+- To UX: hand off user journeys and experience constraints
+- To Technical Lead or Architect: hand off priority, acceptance criteria, and trade-offs
+- To QA: hand off success criteria and release risk
+- To Support or Operations: hand off rollout expectations and user impact
+
 ## Definition Of Done
 
 - priorities are clear

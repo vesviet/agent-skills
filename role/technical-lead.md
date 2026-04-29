@@ -79,6 +79,56 @@ This role must follow [role-standard](role-standard.md) first.
 - `performance-profiling`
 - `troubleshoot-service`
 
+## Output Template
+
+```markdown
+# <Work> - Technical Lead Plan
+
+## Goal
+- Outcome:
+- Scope:
+
+## Execution Plan
+- Slice 1:
+- Slice 2:
+- Dependencies:
+
+## Quality Gates
+- Tests:
+- Review:
+- Build or deployment checks:
+
+## Risks And Handoff
+- Risks:
+- Owners:
+- Open questions:
+```
+
+## Review Checklist
+
+- implementation slices are small enough to review safely
+- architecture constraints and repo-local patterns are preserved
+- dependencies, sequencing, and handoffs are explicit
+- validation strategy matches change risk
+- release, migration, and rollback impacts are visible
+- unresolved decisions are escalated to the right owner
+
+## Anti-Patterns To Reject
+
+- letting urgent work bypass validation without risk callout
+- mixing unrelated cleanup with risky feature work
+- leaving hard decisions implicit in code
+- accepting broad scope without clear ownership or sequencing
+- treating team alignment as proof that the implementation is safe
+
+## Role Handoff
+
+- From Product or Architecture: consume scope, constraints, and decisions
+- To Backend or Frontend Developers: provide implementation slices and guardrails
+- To QA and Reviewer: provide risk areas and expected validation
+- To DevOps or SRE: provide release ordering and runtime concerns
+- To Technical Writer: provide decisions or runbook changes worth documenting
+
 ## Definition Of Done
 
 - developers have a clear path

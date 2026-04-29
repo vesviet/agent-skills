@@ -93,6 +93,15 @@ Capture the incident and rollback for the post-mortem:
 - root cause (if known) or investigation status
 - follow-up work and preventive measures
 
+### Checklist
+
+- [ ] impact assessed and recent deployment correlated
+- [ ] rollout halted when applicable
+- [ ] database state and migration safety checked
+- [ ] deployment source of truth reverted
+- [ ] system stability verified after rollback
+- [ ] rollback actions and follow-up documented
+
 ### Related Workflows
 
 - [Hotfix Production](hotfix-production.md)
@@ -101,8 +110,8 @@ Capture the incident and rollback for the post-mortem:
 
 ### Related Skills
 
-- troubleshoot-service
-- debug-runtime-platform
-- database-maintenance
-- setup-deployment
-- commit-code
+- **troubleshoot-service**: Confirm the failing layer before rollback
+- **debug-runtime-platform**: Verify runtime recovery after rollback
+- **database-maintenance**: Handle data or migration rollback safely
+- **setup-deployment**: Revert deployment source-of-truth configuration
+- **commit-code**: Prepare approved rollback changes for delivery

@@ -158,6 +158,18 @@ If the feature leaves known follow-up work:
 - compare runtime config, env vars, and dependency availability
 - check repo-local deployment manifests or release config
 
+### Checklist
+
+- [ ] change intent and affected contracts understood
+- [ ] existing local patterns reviewed
+- [ ] implementation plan scoped to the minimum useful change
+- [ ] feature implemented in the local architecture
+- [ ] tests and local verification completed
+- [ ] change reviewed for correctness, security, and rollout risk
+- [ ] delivery preparation followed explicit approval rules
+- [ ] rollout verified after shipping
+- [ ] follow-up work captured
+
 ### Related Workflows
 
 - [Build & Deploy](build-deploy.md)
@@ -166,8 +178,8 @@ If the feature leaves known follow-up work:
 
 ### Related Skills
 
-- navigate-service
-- create-migration
-- write-tests
-- review-code
-- commit-code
+- **navigate-service**: Understand the target service or component
+- **create-migration**: Add safe persistence changes when needed
+- **write-tests**: Cover behavior and regression risk
+- **review-code**: Review the implemented change
+- **commit-code**: Prepare approved changes for delivery

@@ -76,6 +76,58 @@ This role must follow [role-standard](role-standard.md) first.
 - `troubleshoot-service`
 - `database-maintenance`
 
+## Output Template
+
+```markdown
+# <Change> - Delivery Plan
+
+## Scope
+- Services:
+- Environment:
+- Change type:
+
+## Execution
+- Build:
+- Config:
+- Deployment:
+- Migration or data steps:
+
+## Verification
+- Health checks:
+- Smoke checks:
+- Logs or dashboards:
+
+## Rollback
+- Code or config rollback:
+- Data considerations:
+- Risks:
+```
+
+## Review Checklist
+
+- source-of-truth config is updated rather than patched live only
+- build, deploy, migration, cache, and restart order are explicit
+- secrets and environment values are handled safely
+- rollback path is realistic and documented
+- health checks, logs, and smoke verification are defined
+- skipped checks and residual release risk are visible
+
+## Anti-Patterns To Reject
+
+- patching live systems without updating source of truth
+- treating a green pipeline as proof of runtime health
+- exposing secrets from env files, logs, or command output
+- running migrations or destructive steps without approval
+- restarting broad infrastructure when a narrow restart is enough
+
+## Role Handoff
+
+- From Developers: consume build, config, migration, and runtime needs
+- From Security: consume secret and access-control requirements
+- To SRE: provide rollout status, health signals, and recovery path
+- To QA: provide environment and smoke-test readiness
+- To Technical Writer or Support: provide operational notes and release caveats
+
 ## Definition Of Done
 
 - automation is repeatable

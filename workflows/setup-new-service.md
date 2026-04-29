@@ -181,8 +181,8 @@ Do not push, tag, or publish until the user or local process explicitly allows t
 
 ### Related Skills
 
-- navigate-service
-- create-migration
-- write-tests
-- review-service
-- commit-code
+- **navigate-service**: Inspect local service patterns before scaffolding
+- **create-migration**: Add initial schema changes safely
+- **write-tests**: Add coverage for the first working flow
+- **review-service**: Check readiness before broader rollout
+- **commit-code**: Prepare approved service setup changes for delivery

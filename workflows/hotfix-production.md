@@ -120,6 +120,16 @@ Record:
 
 Schedule deeper cleanup separately from the hotfix itself.
 
+### Checklist
+
+- [ ] severity and production impact confirmed
+- [ ] blast radius contained with the least risky mitigation
+- [ ] smallest valid fix identified
+- [ ] narrow verification completed
+- [ ] emergency delivery path followed with explicit approvals
+- [ ] recovery monitored until stable
+- [ ] incident summary and preventive follow-up captured
+
 ### Related Workflows
 
 - [Troubleshooting](troubleshooting.md)
@@ -128,7 +138,7 @@ Schedule deeper cleanup separately from the hotfix itself.
 
 ### Related Skills
 
-- troubleshoot-service
-- review-code
-- commit-code
-- meeting-review
+- **troubleshoot-service**: Isolate the incident cause quickly
+- **review-code**: Review risky hotfix changes before shipping
+- **commit-code**: Prepare approved hotfix changes for delivery
+- **meeting-review**: Escalate cross-role incident decisions

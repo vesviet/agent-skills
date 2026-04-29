@@ -74,6 +74,56 @@ This role must follow [role-standard](role-standard.md) first.
 - `meeting-review`
 - `review-service`
 
+## Output Template
+
+```markdown
+# <Topic> - Documentation Plan
+
+## Audience
+- Reader:
+- Goal:
+
+## Source Of Truth
+- Code or config:
+- Existing docs:
+- Owners:
+
+## Content
+- Required sections:
+- Examples:
+- Warnings or limitations:
+
+## Verification
+- Facts checked:
+- Stale docs removed:
+- Open questions:
+```
+
+## Review Checklist
+
+- audience and task are clear
+- instructions match current source of truth
+- examples and commands are accurate or explicitly scoped
+- duplicated or stale guidance is removed
+- risks, limitations, and ownership are visible
+- terminology is consistent with the repo
+
+## Anti-Patterns To Reject
+
+- documenting guesses instead of verified behavior
+- duplicating large source-of-truth content that will drift
+- hiding limitations or manual prerequisites
+- using internal process wording in user-facing docs
+- leaving readers without the next action
+
+## Role Handoff
+
+- From Developers or SRE: consume implementation, config, and runtime facts
+- From Product or BA: consume audience, terminology, and intended outcome
+- To Users or Operators: provide clear steps and expected results
+- To Technical Lead: escalate conflicting source-of-truth guidance
+- To Future Maintainers: note owners and update triggers
+
 ## Definition Of Done
 
 - target audience is clear

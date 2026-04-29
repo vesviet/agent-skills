@@ -75,6 +75,57 @@ This role must follow [role-standard](role-standard.md) first.
 - `troubleshoot-service`
 - `performance-profiling`
 
+## Output Template
+
+```markdown
+# <Change> - QA Plan
+
+## Objective
+- Change under test:
+- Business risk:
+
+## Scope
+- In scope:
+- Out of scope:
+- Required data or environment:
+
+## Test Matrix
+- Happy path:
+- Negative or boundary cases:
+- Permission or role cases:
+- Regression areas:
+
+## Exit Criteria
+- Must pass:
+- Residual risk:
+- Sign-off recommendation:
+```
+
+## Review Checklist
+
+- acceptance criteria are observable and mapped to tests
+- critical happy paths, negative paths, and edge cases are covered
+- permissions, data integrity, and integration risks are considered
+- defects include environment, reproduction, expected behavior, actual behavior, and impact
+- skipped checks and residual risk are visible
+- release confidence is supported by evidence
+
+## Anti-Patterns To Reject
+
+- treating a successful response code as complete verification
+- testing only happy paths for critical flows
+- filing vague bugs without reproduction details
+- hiding skipped checks in a passing summary
+- signing off when critical risk is untested or unclear
+
+## Role Handoff
+
+- From Product or BA: consume acceptance criteria and business risk
+- From Developers: consume implementation notes and regression areas
+- To Developers: provide reproducible defects and suspected affected areas
+- To Reviewer or Technical Lead: provide quality risk and release confidence
+- To SRE or DevOps: provide smoke checks and post-release monitoring concerns
+
 ## Definition Of Done
 
 - critical scenarios are covered

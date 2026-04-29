@@ -1,6 +1,6 @@
 ---
 name: review-code
-description: Review code changes in Go microservices or similar service-oriented backends. Use for PR reviews, local change reviews, and pre-merge audits that should report P0, P1, and P2 findings first.
+description: Review concrete code changes for correctness, contract safety, data handling, reliability, security, operations, and test coverage. Use for PR reviews, local change reviews, and pre-merge audits.
 ---
 
 # Review Code
@@ -8,6 +8,14 @@ description: Review code changes in Go microservices or similar service-oriented
 Use this skill to review concrete changes, not to explain architecture in the abstract.
 
 If the user asks for a full service audit or release readiness pass, hand off to `review-service`.
+
+## Core Rules
+
+- review the actual changed behavior, not only style or formatting
+- prioritize bugs, regressions, security risk, and missing validation
+- adapt framework-specific checks to the active repository
+- cite exact files and code paths for every finding
+- do not invent platform, protocol, or shared-library concerns that are absent from the repo
 
 ## Inputs To Gather
 
@@ -18,7 +26,7 @@ If the user asks for a full service audit or release readiness pass, hand off to
 
 If the repo does not have standards docs, use the checklist below directly.
 
-## Review Standard
+## Suggested Process
 
 Review in this order.
 
@@ -84,14 +92,14 @@ Findings come first. Keep summaries brief.
 ```markdown
 ## Findings
 
-### P0
-1. [path/to/file.go:123] Clear description of a blocking issue
+### Blocking
+1. [path/to/file:123] Clear description of a release-blocking issue
 
-### P1
-1. [path/to/file.go:45] Clear description of a high-severity issue
+### Important
+1. [path/to/file:45] Clear description of an issue that should be fixed before merge
 
-### P2
-1. [path/to/file.go:78] Clear description of a maintainability gap
+### Follow-Up
+1. [path/to/file:78] Clear description of a lower-risk maintainability gap
 
 ## Open Questions
 
@@ -105,6 +113,17 @@ Findings come first. Keep summaries brief.
 
 If there are no findings, say so explicitly and mention residual risk such as unrun tests, unreviewed deployment config, or missing integration coverage.
 
+## Checklist
+
+- [ ] changed files and intent understood
+- [ ] correctness and architecture checked
+- [ ] API, event, or public contract safety checked
+- [ ] data and state changes checked
+- [ ] concurrency and reliability checked when relevant
+- [ ] security and sensitive data handling checked
+- [ ] platform and operations impact checked
+- [ ] test coverage and maintainability checked
+
 ## Repo-Specific Adapters
 
 Adapt these references to the active repository:
@@ -115,3 +134,11 @@ Adapt these references to the active repository:
 - shared library: `common/` or your internal platform module
 
 Skip any category the repo genuinely does not use. Do not invent GitOps, protobuf, or shared-library findings when those concepts are absent.
+
+## Related Skills
+
+- **review-service**: Expand a narrow code review into release readiness
+- **security-audit**: Deepen security-specific findings
+- **write-tests**: Add or improve coverage for reviewed behavior
+- **troubleshoot-service**: Investigate a suspected bug before reviewing the fix
+- **commit-code**: Prepare reviewed changes for delivery

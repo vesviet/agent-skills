@@ -7,11 +7,15 @@ description: Review an entire service for release readiness. Use for full-servic
 
 Use this skill for an end-to-end service review, not a narrow code diff.
 
-## Goal
+## Core Rules
 
-Decide whether a service is ready to ship, and fix or clearly report the issues that block release.
+- decide whether the service is ready to ship, not only whether code looks clean
+- map the service boundary before judging release risk
+- check code, contracts, data, dependencies, operations, and documentation together
+- fix clear local issues when that is in scope
+- escalate decisions that require product, architecture, security, or operational ownership
 
-## Review Flow
+## Suggested Process
 
 ### 1. Sync Context
 
@@ -50,18 +54,18 @@ Check who depends on this service:
 
 ### 5. Fix Or Escalate
 
-- fix P0 items before considering release
-- fix P1 items when the solution is clear and local
-- report P2 items as follow-up unless trivial
+- fix release-blocking issues before considering release
+- fix important issues when the solution is clear and local
+- report lower-risk follow-up items unless they are trivial to address
 - stop and escalate when a fix requires product or architecture decisions
 
 ### 6. Validate
 
 Run the validations that make sense for the repo:
 
-- code generation such as `make api` or `wire`
-- `go build ./...`
-- `go test ./...`
+- code generation
+- build checks
+- unit or integration tests
 - linting
 - manifest validation or dry-run checks
 
@@ -92,13 +96,13 @@ Do not force a specific docs layout if the repo uses a different convention.
 
 Status: Ready | Needs Work | Not Ready
 
-### P0
+### Blocking
 1. [file:line] Blocking issue
 
-### P1
-1. [file:line] High-severity issue
+### Important
+1. [file:line] Issue that should be fixed before release
 
-### P2
+### Follow-Up
 1. [file:line] Follow-up issue
 
 ### Completed Fixes
@@ -114,6 +118,17 @@ Status: Ready | Needs Work | Not Ready
 - short list of remaining risk or unknowns
 ```
 
+## Checklist
+
+- [ ] service boundary and entrypoints identified
+- [ ] local standards and docs reviewed when present
+- [ ] service layers and key flows mapped
+- [ ] code, contracts, data, and dependencies reviewed
+- [ ] rollout, config, and operations impact checked
+- [ ] clear local fixes applied when in scope
+- [ ] repo-local validation completed or explicitly skipped
+- [ ] release risks and follow-up items captured
+
 ## Adaptation Notes
 
 Adapt these assumptions to the active repo:
@@ -124,3 +139,11 @@ Adapt these assumptions to the active repo:
 - some services may not have workers, events, protobuf, or separate manifests
 
 Skip absent concepts. Do not mark them as findings just because this pack mentions them.
+
+## Related Skills
+
+- **navigate-service**: Map a service before reviewing it
+- **review-code**: Review concrete code paths and diffs
+- **security-audit**: Deepen security and trust-boundary review
+- **setup-deployment**: Check deployment source-of-truth changes
+- **commit-code**: Prepare reviewed fixes for delivery

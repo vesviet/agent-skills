@@ -1,9 +1,9 @@
 ---
 name: troubleshoot-service
-description: Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the failing layer, validating assumptions, and confirming recovery
+description: Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the failing layer, validating assumptions, and confirming recovery. Use when a service fails, behaves unexpectedly, or differs across environments.
 ---
 
-# Troubleshoot Service Skill
+# Troubleshoot Service
 
 Use this skill when a service fails to build, starts incorrectly, behaves unexpectedly at runtime, or breaks because of dependency, environment, or rollout problems.
 
@@ -35,7 +35,7 @@ Service issue
 `- Environment or rollout failure
 ```
 
-## Suggested Troubleshooting Flow
+## Suggested Process
 
 ### Step 1: Capture The Symptom
 

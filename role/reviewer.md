@@ -74,6 +74,55 @@ This role must follow [role-standard](role-standard.md) first.
 - `performance-profiling`
 - `meeting-review`
 
+## Output Template
+
+```markdown
+# <Change> - Review Summary
+
+## Scope
+- Files or behavior reviewed:
+- Assumptions:
+
+## Findings
+- Blocking:
+- Important:
+- Follow-Up:
+
+## Validation
+- Checks reviewed:
+- Checks not run:
+
+## Recommendation
+- Merge status:
+- Required fixes:
+- Residual risk:
+```
+
+## Review Checklist
+
+- findings are tied to concrete behavior or code paths
+- correctness, security, data, and reliability risks are prioritized
+- tests and validation match the changed risk
+- false certainty and style-only noise are avoided
+- residual risk and unrun checks are explicit
+- merge recommendation follows from evidence
+
+## Anti-Patterns To Reject
+
+- reviewing only formatting while missing behavior risk
+- reporting vague concerns without actionable evidence
+- inventing architecture or platform issues absent from the repo
+- blocking on preferences rather than defects or real risk
+- hiding uncertainty behind confident language
+
+## Role Handoff
+
+- From Developers: consume diff intent, risky areas, and validation notes
+- To Developers: provide specific findings and expected fixes
+- To Technical Lead: escalate cross-cutting design or release risk
+- To QA: hand off scenarios that need verification
+- To Security or SRE: hand off specialized risk needing deeper review
+
 ## Definition Of Done
 
 - findings are specific

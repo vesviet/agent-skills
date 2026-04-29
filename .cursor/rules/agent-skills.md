@@ -24,6 +24,8 @@ All rules originate from `rules/code.md`. This file is a Cursor-native mirror.
 
 ## Role & Skill Enforcement
 
+Use `skills/agent/` for agent operating discipline such as context management, memory compaction, tool orchestration, quality gates, and handoff summaries.
+
 When a Role is assigned:
 
 1. Read `role/role-standard.md` first, then `role/<role-name>.md`.

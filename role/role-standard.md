@@ -36,6 +36,8 @@ Every role must follow this standard first, then apply its own domain-specific r
 - summarize decisions and risks clearly
 - explain why a recommendation matters
 - avoid internal process metadata in user-visible artifacts
+- separate facts, assumptions, recommendations, and unresolved questions when decisions are material
+- make handoff outputs usable by the next responsible role without hidden context
 
 ## Execution Standard
 
@@ -44,6 +46,43 @@ Every role must follow this standard first, then apply its own domain-specific r
 - align with repo-local rules and standards when they exist
 - do not invent workflow conventions that the repository does not define
 - **SKILL TOOLBOX LOCK**: When a Role defines a Skill Toolbox, the Agent MUST prefer Primary Skills for direct execution. Supporting Skills may only be used when collaborating with or delegating to the appropriate role. Skills not listed in the Toolbox MUST NOT be used without explicit user permission.
+
+## Role File Standard
+
+Every role file must include these sections in order:
+
+1. H1 role title
+2. `Mission:`
+3. `Level:`
+4. link to `role-standard.md`
+5. `## Principal Expectations`
+6. `## Use This Role When`
+7. `## Core Responsibilities`
+8. `## Inputs Required`
+9. `## Outputs Produced`
+10. `## Decision Boundaries`
+11. `## Collaboration`
+12. `## Guardrails`
+13. `## Skill Toolbox`
+14. `## Output Template`
+15. `## Review Checklist`
+16. `## Anti-Patterns To Reject`
+17. `## Role Handoff`
+18. `## Definition Of Done`
+
+Each role must define at least one Primary Skill, may define Supporting Skills, and must reference only skills that exist in `skills/`.
+
+The output template should make role output easy to reuse. The review checklist should define readiness checks before handoff. Anti-patterns should name common bad behavior the role must reject. Role handoff should name the upstream and downstream collaboration paths.
+
+## Escalation Standard
+
+Escalate rather than silently proceeding when:
+
+- requirements, ownership, or success criteria are materially unclear
+- the decision crosses security, compliance, data, production, budget, or architecture boundaries
+- the role can identify risk but does not own the decision to accept it
+- the task requires skills outside the active role toolbox
+- validation cannot be completed and the remaining risk changes the delivery decision
 
 ## Guardrails
 

@@ -1,6 +1,6 @@
 ---
 name: commit-code
-description: Validate and package a finished change into a clean commit by following repo-local validation, generation, release-note, and approval rules without assuming push or release authorization
+description: Validate and package a finished change into a clean commit by following repo-local validation, generation, release-note, and approval rules. Use when the user explicitly asks to prepare or create a commit.
 ---
 
 # Commit Code
@@ -19,7 +19,7 @@ This skill covers commit preparation and commit creation. It does not imply perm
 - follow the repo's source of truth for generated code, version metadata, and deployment configuration
 - keep commits scoped to the intended change
 
-## Recommended Commit Flow
+## Suggested Process
 
 ### 1. Review What Changed
 
@@ -130,7 +130,7 @@ If deployment or release configuration changed:
 - avoid release metadata edits that CI or the platform is supposed to own
 - capture any rollout dependency or manual follow-up clearly
 
-## Quick Checklist
+## Checklist
 
 - [ ] diff matches intended scope
 - [ ] local-only artifacts removed
@@ -147,3 +147,11 @@ If deployment or release configuration changed:
 - not every repo commits generated files
 - validation may be full-repo or target-specific depending on the codebase
 - release notes, version files, or deployment manifests may live in another repo
+
+## Related Skills
+
+- **review-code**: Check risky changes before committing
+- **write-tests**: Add or update validation before delivery
+- **review-service**: Confirm release readiness for broad changes
+- **setup-deployment**: Validate deployment source-of-truth changes
+- **manage-secrets**: Keep sensitive values out of committed artifacts

@@ -147,9 +147,9 @@ Reviewer: <name>
 Status: Ready / Needs Work / Not Ready
 
 ### Issue Summary
-- P0: <count>
-- P1: <count>
-- P2: <count>
+- Blocking: <count>
+- Important: <count>
+- Follow-Up: <count>
 
 ### Blocking Issues
 1. file:line - description
@@ -175,7 +175,7 @@ Status: Ready / Needs Work / Not Ready
 - [ ] synced relevant source repos
 - [ ] reviewed repo-local standards
 - [ ] mapped service structure and dependencies
-- [ ] listed P0, P1, and P2 findings
+- [ ] listed Blocking, Important, and Follow-Up findings
 - [ ] checked cross-service impact
 - [ ] fixed or tracked blocking issues
 - [ ] re-ran tests, build, and static checks
@@ -191,8 +191,8 @@ Status: Ready / Needs Work / Not Ready
 
 ### Related Skills
 
-- review-service
-- navigate-service
-- review-code
-- write-tests
-- commit-code
+- **review-service**: Run a full service readiness review
+- **navigate-service**: Map the service before judging readiness
+- **review-code**: Review and fix concrete implementation issues
+- **write-tests**: Add coverage when release confidence is too low
+- **commit-code**: Prepare approved release changes for delivery

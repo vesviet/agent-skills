@@ -1,13 +1,21 @@
 ---
 name: navigate-service
-description: Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries
+description: Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session.
 ---
 
-# Navigate Service Skill
+# Navigate Service
 
 Use this skill when the user asks to understand, explore, or orient within a specific service or bounded component.
 
-## When to Use
+## Core Rules
+
+- prefer repo-local structure over generic examples
+- discover boundaries from the codebase instead of prior expectations
+- map only the context needed for the user's current task
+- distinguish confirmed facts from assumptions or unknowns
+- do not assume a fixed framework, folder layout, or service inventory
+
+## When To Use
 
 - the user asks how a service works
 - the user needs to find where a behavior is implemented
@@ -35,7 +43,7 @@ When using this skill, answer these questions as quickly as possible:
 5. What other services or packages does it call?
 6. What configuration, rollout, or runtime constraints matter?
 
-## Suggested Exploration Order
+## Suggested Process
 
 Adapt the order to the target repo, but usually start here:
 
@@ -114,22 +122,14 @@ When presenting a service overview, structure the response like this:
 6. Configuration and runtime considerations
 7. Risks, assumptions, and open questions
 
-## Exploration Checklist
-
-### Initial Orientation
+## Checklist
 
 - [ ] service boundary identified
 - [ ] main entrypoints located
 - [ ] local docs or service notes checked
-
-### Core Understanding
-
 - [ ] main business flow mapped
 - [ ] persistence layer located
 - [ ] external dependencies identified
-
-### Delivery Context
-
 - [ ] config source reviewed
 - [ ] build or generation steps noted
 - [ ] rollout or runtime constraints noted

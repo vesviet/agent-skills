@@ -30,6 +30,7 @@ Roles index: `role/README.md`
 
 Organized under `skills/` by taxonomy:
 
+- `skills/agent/` — context management, memory compaction, tool orchestration, quality gates, handoff
 - `skills/foundation/` — commit, review, test, navigate, troubleshoot
 - `skills/backend/` — API, events, integrations, scaffolding
 - `skills/frontend/` — UI, pages, API client, testing
