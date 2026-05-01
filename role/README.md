@@ -30,6 +30,10 @@ Each role file describes:
 
 ## Core Roles
 
+### Coordination And Orchestration
+
+- [agent-coordinator](agent-coordinator.md)
+
 ### Product And Discovery
 
 - [product-manager](product-manager.md)
@@ -57,12 +61,14 @@ Each role file describes:
 
 ### Discovery
 
+- Agent Coordinator
 - Product Manager
 - Business Analyst
 - UI/UX Designer
 
 ### Planning
 
+- Agent Coordinator
 - Product Manager
 - Project Manager
 - Technical Architect
@@ -70,6 +76,7 @@ Each role file describes:
 
 ### Implementation
 
+- Agent Coordinator
 - Backend Developer
 - Frontend Developer
 - Technical Lead
@@ -77,18 +84,21 @@ Each role file describes:
 
 ### Validation
 
+- Agent Coordinator
 - QA Engineer
 - Reviewer
 - Technical Lead
 
 ### Release
 
+- Agent Coordinator
 - DevOps Engineer
 - SRE
 - Technical Writer
 
 ### Operate And Improve
 
+- Agent Coordinator
 - SRE
 - DevOps Engineer
 - Reviewer
@@ -98,6 +108,7 @@ Each role file describes:
 
 | Role | Primary Workflows |
 |------|------------------|
+| Agent Coordinator | `/add-new-feature`, `/troubleshooting`, `/hotfix-production`, `/refactoring`, `/service-review-release` |
 | Product Manager | `/add-new-feature` |
 | Project Manager | `/add-new-feature`, `/service-review-release` |
 | Business Analyst | `/add-new-feature` |
@@ -119,6 +130,7 @@ Each role file describes:
 - Combine roles when a task naturally spans multiple concerns.
 - Prefer repo-local conventions over generic defaults when the repository already defines them.
 - Treat these roles as operating modes, not job-title restrictions.
+- Use Agent Coordinator when the user wants one role to drive a bug fix or feature from intake through validated handoff while coordinating other roles.
 
 ## Role Authoring Standard
 
@@ -150,4 +162,4 @@ python3 scripts/validate-roles.py
 
 The validator checks required sections, section order, minimum content depth, toolbox references, duplicate toolbox entries, role inventory, and workflow mapping.
 
-Last updated: 2026-04-28
+Last updated: 2026-05-01

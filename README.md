@@ -186,9 +186,9 @@ This pack is meant to become a full global engineering pack. The foundation set 
 
 - 30 implemented skills
 - 8 reusable workflows
-- 14 reusable role definitions (each with Skill Toolbox)
+- 15 reusable role definitions (each with Skill Toolbox)
 - 1 always-on global rule file
 - 7 taxonomy categories
 - 5 agent adapters (Codex, Cursor, Claude, Antigravity, Copilot)
 
-Last updated: 2026-04-28
+Last updated: 2026-05-01
