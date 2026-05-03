@@ -18,14 +18,17 @@ These cover agent operating discipline:
 
 These are the default portable skills:
 
+- `analyze-business-requirements`
 - `commit-code`
 - `create-migration`
+- `design-ux-flow`
 - `meeting-review`
 - `navigate-service`
 - `performance-profiling`
 - `review-code`
 - `review-service`
 - `troubleshoot-service`
+- `write-product-brief`
 - `write-tests`
 
 ### Backend
@@ -43,7 +46,10 @@ Implemented in this batch:
 
 - `add-ui-component`
 - `add-page-route`
+- `debug-3d-scene`
+- `integrate-r3f-three-legacy`
 - `integrate-api-client`
+- `optimize-3d-assets`
 - `frontend-testing`
 
 ### Platform
@@ -83,8 +89,10 @@ Implemented in this batch:
 ### Priority 2 Recommended Next
 
 - `design-review`
+- `3d-material-pipeline`
 - `incident-report`
 - `release-notes`
+- `product-discovery`
 
 ### Priority 3 Nice To Add
 

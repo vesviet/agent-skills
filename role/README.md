@@ -4,7 +4,7 @@ This directory defines reusable roles for the full software delivery lifecycle.
 
 The roles are global by default. They are meant to adapt to the active repository, product domain, and team structure instead of forcing one process on every project.
 
-All roles in this directory are defined at a principal or master-practitioner level. They are expected to operate with strong judgment, broad system awareness, and clear ownership across functions.
+All roles in this directory are defined at a principal or master-practitioner level. They are expected to operate with strong judgment, broad system awareness, clear ownership across functions, and explicit impact analysis when behavior changes.
 
 ## Directory Purpose
 
@@ -28,6 +28,16 @@ Each role file describes:
 
 - [role-standard](role-standard.md)
 
+## Quality Baseline
+
+All roles in this pack are expected to:
+
+- make preserved versus changed behavior explicit
+- check likely impact radius instead of trusting narrow local success
+- surface skipped checks and residual risk instead of implying certainty
+- hand off enough context that the next role can validate or act without guesswork
+- use Agent Coordinator as the controlling role when one role must drive a full bug or feature across specialist roles
+
 ## Core Roles
 
 ### Coordination And Orchestration
@@ -47,6 +57,7 @@ Each role file describes:
 - [technical-lead](technical-lead.md)
 - [backend-developer](backend-developer.md)
 - [frontend-developer](frontend-developer.md)
+- [3d-graphics-engineer](3d-graphics-engineer.md)
 - [security-engineer](security-engineer.md)
 
 ### Quality, Delivery, And Operations
@@ -117,6 +128,7 @@ Each role file describes:
 | Technical Lead | `/add-new-feature`, `/service-review-release`, `/refactoring` |
 | Backend Developer | `/add-new-feature`, `/refactoring`, `/hotfix-production` |
 | Frontend Developer | `/add-new-feature`, `/refactoring` |
+| 3D Graphics Engineer | `/add-new-feature`, `/refactoring`, `/troubleshooting` |
 | QA Engineer | `/service-review-release` |
 | Reviewer | `/service-review-release` |
 | Security Engineer | `/service-review-release`, `/hotfix-production` |
@@ -130,7 +142,8 @@ Each role file describes:
 - Combine roles when a task naturally spans multiple concerns.
 - Prefer repo-local conventions over generic defaults when the repository already defines them.
 - Treat these roles as operating modes, not job-title restrictions.
-- Use Agent Coordinator when the user wants one role to drive a bug fix or feature from intake through validated handoff while coordinating other roles.
+- Use Agent Coordinator when the user wants one role to control a bug fix or feature from intake through validated handoff while coordinating other specialist roles and phase gates.
+- Do not treat "looks correct" or "one check passed" as sufficient when the change affects shared logic, contracts, data, or release behavior.
 
 ## Role Authoring Standard
 
@@ -151,6 +164,7 @@ Quality expectations:
 - include a review checklist and anti-patterns to make quality expectations concrete
 - include role handoff guidance for upstream and downstream collaboration
 - make Definition Of Done strong enough for handoff to the next role
+- make impact radius, skipped checks, and residual risk explicit where they materially affect handoff quality
 
 ## Validation Gate
 
@@ -162,4 +176,4 @@ python3 scripts/validate-roles.py
 
 The validator checks required sections, section order, minimum content depth, toolbox references, duplicate toolbox entries, role inventory, and workflow mapping.
 
-Last updated: 2026-05-01
+Last updated: 2026-05-03

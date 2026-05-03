@@ -1,11 +1,11 @@
 ---
 name: agent-quality-gate
-description: Run and interpret repository quality gates for agent-delivered changes, including validators, lint, tests, build checks, and diff sanity checks. Use when reporting completion, preparing commits, or declaring a pack, role, workflow, or code change ready.
+description: Run and interpret repository quality gates for agent-delivered changes, including validators, lint, tests, build checks, diff sanity checks, and phase-exit evidence. Use when reporting completion, advancing a bug or feature to the next phase, or declaring a pack, role, workflow, or code change ready.
 ---
 
 # Agent Quality Gate
 
-Use this skill when changes need evidence that they are complete, valid, and aligned with repo-local checks.
+Use this skill when changes need evidence that they are complete, valid, and aligned with repo-local checks before a phase can close.
 
 ## Core Rules
 
@@ -14,6 +14,7 @@ Use this skill when changes need evidence that they are complete, valid, and ali
 - do not hide skipped checks or failing validation
 - fix introduced issues when the cause is clear and local
 - never treat a clean diff or passing lint as proof of full behavioral safety
+- do not allow a bug or feature to exit validation without explicit residual-risk handling
 
 ## Suggested Process
 
@@ -27,10 +28,18 @@ Inspect the repo for applicable checks:
 - build commands
 - formatting or documentation checks
 - diff whitespace checks
+- reproduction confirmation or acceptance-criteria confirmation when relevant
 
 ### 2. Match Gates To Change Risk
 
 Run narrow checks for small documentation or single-file changes. Run broader checks when behavior, shared contracts, scripts, or release paths changed.
+
+When the task is a bug fix or risky feature, also match gates to:
+
+- original issue reproduction
+- preserved behavior
+- impact radius
+- rollout risk
 
 ### 3. Run Checks Safely
 
@@ -45,18 +54,60 @@ When a check fails:
 - avoid masking unrelated pre-existing failures
 - rerun the failing check after a fix
 
+If the failed check invalidates the current conclusion:
+
+- reopen the prior phase
+- update the active owner when needed
+- do not summarize the work as ready
+
 ### 5. Report Evidence
 
-Summarize exact checks run, pass/fail status, skipped checks, and residual risk.
+Summarize:
+
+- exact checks run
+- pass/fail status
+- skipped checks
+- residual risk
+- whether the current phase may close
+- who must accept risk if validation is incomplete
+
+## Output Format
+
+```markdown
+## Quality Gate Result
+
+Phase under review:
+- ...
+
+Checks run:
+- ...
+
+Results:
+- ...
+
+Skipped checks:
+- ...
+
+Residual risk:
+- ...
+
+Phase exit decision:
+- Advance | Rework | Escalate
+
+Risk acceptance owner if needed:
+- ...
+```
 
 ## Checklist
 
 - [ ] required repo-local gates identified
 - [ ] check scope matched to change risk
 - [ ] relevant validators, lints, tests, or builds run
+- [ ] bug reproduction or feature acceptance evidence checked when relevant
 - [ ] failures investigated and fixed when local
 - [ ] skipped checks explained
 - [ ] final status reported with residual risk
+- [ ] phase exit decision stated explicitly
 
 ## Related Skills
 

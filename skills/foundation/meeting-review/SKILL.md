@@ -1,13 +1,13 @@
 ---
 name: meeting-review
-description: Run a structured multi-perspective technical review of a topic, proposal, code area, or risky change. Use when a user wants a discussion-style review that combines architecture, delivery, quality, product, security, or operations perspectives.
+description: Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.
 ---
 
 # Meeting Review
 
-Use this skill when a normal single-angle review is not enough and the user wants a broader discussion before deciding, building, or refactoring.
+Use this skill when a normal single-angle review is not enough and the user needs a decision-ready artifact before deciding, building, fixing, shipping, or refactoring.
 
-This skill does not require real subagents. By default, simulate a disciplined review panel in one response. Only use delegated or parallel agents when the user explicitly asks for them.
+This skill does not require real subagents. By default, synthesize the needed perspectives in one response. Only use delegated or parallel agents when the user explicitly asks for them.
 
 ## Core Rules
 
@@ -15,6 +15,8 @@ This skill does not require real subagents. By default, simulate a disciplined r
 - choose only the perspectives that add useful signal
 - ground concerns in code, requirements, docs, or stated assumptions
 - make trade-offs explicit without inventing disagreement
+- make preserved versus changed behavior explicit when the topic affects a bug fix, feature, or policy
+- identify who or what is impacted before recommending a path
 - avoid broad panel theater when a simple review would do
 
 ## When To Use
@@ -22,6 +24,8 @@ This skill does not require real subagents. By default, simulate a disciplined r
 - architecture or design reviews
 - large refactors
 - risky implementation plans
+- bug triage or bug-fix direction reviews
+- feature scope or acceptance reviews
 - release-readiness discussions
 - technical debt prioritization
 - cross-functional trade-off discussions
@@ -53,6 +57,8 @@ Identify:
 - the topic or decision under review
 - the files, modules, or systems in scope
 - the decision the user is trying to make
+- what behavior must stay stable
+- what may change if the recommendation is accepted
 
 If the request is too vague, ask one narrow clarifying question. Otherwise, state the assumptions and continue.
 
@@ -64,6 +70,7 @@ Read only what is needed:
 - related config or migration files
 - contracts or interfaces
 - docs, ADRs, or review notes if they exist
+- user-facing requirements, acceptance criteria, or bug reports when relevant
 
 ### 3. Select Perspectives
 
@@ -73,6 +80,8 @@ Pick the smallest useful panel. Examples:
 - performance issue: Engineering + Risk + Operations + Data
 - release hardening: Engineering + Risk + QA + Operations
 - schema change: Architecture + Engineering + Data + QA
+- bug-fix direction: Product + Engineering + QA + Risk
+- UX-sensitive behavior change: Product + UX + Engineering + QA
 
 ### 4. Run A Structured Discussion
 
@@ -82,6 +91,7 @@ For each major issue:
 - show where it appears in the code or plan
 - summarize each perspective briefly
 - call out disagreements or trade-offs explicitly
+- state affected users, systems, or downstream teams when relevant
 - end with a recommendation
 
 ### 5. Conclude With Decisions
@@ -90,8 +100,22 @@ Finish with:
 
 - key findings
 - decisions or recommendations
+- decision owner or escalation owner when needed
+- residual risk and what remains unverified
 - open questions
 - next actions
+
+## Output Artifact Guidance
+
+This skill should produce something that another role can use directly, not just a conversational debate recap.
+
+Aim to leave behind one of these:
+
+- a go / no-go recommendation
+- a bug-fix direction
+- a feature-scope decision
+- a release-risk decision
+- a refactor recommendation with trade-offs
 
 ## Output Format
 
@@ -101,6 +125,8 @@ Finish with:
 ## Scope
 
 - what is being reviewed
+- work type (bug / feature / design / release / refactor)
+- preserved behavior or constraint
 - assumptions if any
 
 ## Panel
@@ -118,17 +144,27 @@ Finish with:
 - Engineering: implementation view
 - Risk: failure mode or safety concern
 - QA: validation impact
+- Product / UX / Operations / Data: only if relevant
+- Impact radius: users, systems, or teams affected
 - Recommendation: concrete next step
 
 ### Issue 2: <title>
 
 - ...
 
-## Summary
+## Decision
+
+- Recommended path:
+- Why this path:
+- What stays stable:
+- What changes:
+- Decision owner or escalation owner:
+
+## Risks
 
 - strongest reasons to proceed
 - strongest reasons to change course
-- final recommendation
+- residual risk or unverified assumptions
 
 ## Next Actions
 
@@ -143,14 +179,18 @@ Finish with:
 - do not simulate fake certainty when the evidence is weak
 - do not use broad panel theater when a simple review would do
 - do not let the discussion drift away from a decision or action
+- do not end with "it depends" unless the missing decision owner or evidence is stated explicitly
+- do not recommend change without naming impact radius when it is broader than one file or one team
 
 ## Checklist
 
 - [ ] topic and decision under review identified
+- [ ] preserved behavior or hard constraint identified
 - [ ] scope and assumptions stated
 - [ ] relevant context gathered
 - [ ] useful perspectives selected
 - [ ] major concerns and trade-offs discussed
+- [ ] impact radius identified where relevant
 - [ ] recommendation and next actions captured
 
 ## Related Skills

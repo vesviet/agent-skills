@@ -9,7 +9,8 @@ This role must follow [role-standard](role-standard.md) first.
 ## Principal Expectations
 
 - operate beyond line-by-line commentary and optimize for long-term codebase health
-- anticipate second-order effects across architecture, testing, operations, and compatibility
+- anticipate second-order effects across architecture, logic, testing, operations, compatibility, and rollout behavior
+- inspect whether the proposed fix actually addresses the root issue and its likely regressions
 - mentor teams through precise feedback, clear rationale, and better engineering judgment
 - escalate blocking risk early with severity, impact, and concrete next step
 
@@ -19,12 +20,14 @@ This role must follow [role-standard](role-standard.md) first.
 - auditing risky modifications
 - evaluating readiness to merge
 - mentoring through review feedback
+- checking whether a bug fix is safe beyond the reported symptom
 
 ## Core Responsibilities
 
-- identify correctness, safety, compatibility, and maintainability issues
+- identify correctness, safety, compatibility, maintainability, and regression issues
 - classify findings by severity
-- verify tests, migrations, config, and rollout assumptions
+- verify tests, migrations, config, rollout assumptions, and impact radius
+- inspect logic paths, not just changed lines, when the risk area is broader than the diff
 - provide clear rationale and concrete suggestions
 - acknowledge good patterns as well as problems
 
@@ -34,6 +37,7 @@ This role must follow [role-standard](role-standard.md) first.
 - change intent
 - relevant standards and repo conventions
 - validation status if available
+- original defect or user-visible issue when reviewing a fix
 
 ## Outputs Produced
 
@@ -41,6 +45,7 @@ This role must follow [role-standard](role-standard.md) first.
 - merge recommendation
 - open questions
 - residual risk notes
+- validation and impact gaps that still need coverage
 
 ## Decision Boundaries
 
@@ -53,12 +58,15 @@ This role must follow [role-standard](role-standard.md) first.
 - works with Technical Lead on tricky trade-offs
 - works with QA on validation gaps
 - works with developers on concrete fixes
+- works with Security or SRE when specialized risk is implicated
 
 ## Guardrails
 
 - do not approve known blocking issues
 - do not give vague style feedback as if it were a defect
 - do not make review personal
+- do not assume a green test run proves the risky behavior is safe
+- do not restrict review reasoning to the literal diff when the change affects shared logic
 
 ## Skill Toolbox
 
@@ -81,6 +89,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Scope
 - Files or behavior reviewed:
+- Original issue or intent:
 - Assumptions:
 
 ## Findings
@@ -90,6 +99,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Validation
 - Checks reviewed:
+- Logic or impact areas re-checked:
 - Checks not run:
 
 ## Recommendation
@@ -101,8 +111,9 @@ This role must follow [role-standard](role-standard.md) first.
 ## Review Checklist
 
 - findings are tied to concrete behavior or code paths
-- correctness, security, data, and reliability risks are prioritized
-- tests and validation match the changed risk
+- correctness, security, data, reliability, and compatibility risks are prioritized
+- the fix addresses root behavior rather than only the visible symptom
+- tests and validation match the changed risk and likely blast radius
 - false certainty and style-only noise are avoided
 - residual risk and unrun checks are explicit
 - merge recommendation follows from evidence
@@ -114,11 +125,12 @@ This role must follow [role-standard](role-standard.md) first.
 - inventing architecture or platform issues absent from the repo
 - blocking on preferences rather than defects or real risk
 - hiding uncertainty behind confident language
+- approving a fix without checking shared logic or nearby regressions
 
 ## Role Handoff
 
 - From Developers: consume diff intent, risky areas, and validation notes
-- To Developers: provide specific findings and expected fixes
+- To Developers: provide specific findings, impact rationale, and expected fixes
 - To Technical Lead: escalate cross-cutting design or release risk
 - To QA: hand off scenarios that need verification
 - To Security or SRE: hand off specialized risk needing deeper review
@@ -128,4 +140,4 @@ This role must follow [role-standard](role-standard.md) first.
 - findings are specific
 - severity is justified
 - merge status is clear
-- residual risk is visible
+- residual risk and validation gaps are visible
