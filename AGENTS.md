@@ -36,7 +36,7 @@ Skills are organized under `skills/` in taxonomy folders:
 - `skills/backend/` — API, event, integration, and service scaffolding
 - `skills/frontend/` — UI components, pages, API client integration, frontend testing
 - `skills/platform/` — Deployment, runtime debugging, telemetry
-- `skills/security-data/` — Secrets, database maintenance, security audit
+- `skills/security-data/` — Secrets, database maintenance, security audit, data engineering
 - `skills/documentation/` — Technical docs and tech radar
 
 Each skill has a `SKILL.md` with steps, rules, and a checklist. Read the full SKILL.md before executing.

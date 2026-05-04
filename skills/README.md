@@ -67,6 +67,7 @@ Implemented in this batch:
 - `manage-secrets`
 - `database-maintenance`
 - `security-audit`
+- `data-engineer`
 
 ### Documentation
 
@@ -98,7 +99,6 @@ Implemented in this batch:
 
 - `accessibility-review`
 - `frontend-state-management`
-- `data-pipeline-review`
 
 ## Naming Rules
 

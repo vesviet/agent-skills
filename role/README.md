@@ -68,6 +68,10 @@ All roles in this pack are expected to:
 - [sre](sre.md)
 - [technical-writer](technical-writer.md)
 
+### Data And Analytics
+
+- [data-engineer](data-engineer.md)
+
 ## Lifecycle Mapping
 
 ### Discovery
@@ -115,6 +119,12 @@ All roles in this pack are expected to:
 - Reviewer
 - Product Manager
 
+### Data And Reporting
+
+- Data Engineer
+- Business Analyst
+- Agent Coordinator
+
 ## Recommended Workflows Per Role
 
 | Role | Primary Workflows |
@@ -135,6 +145,7 @@ All roles in this pack are expected to:
 | DevOps Engineer | `/build-deploy`, `/setup-new-service`, `/revert-deployment` |
 | SRE | `/troubleshooting`, `/hotfix-production`, `/revert-deployment` |
 | Technical Writer | `/add-new-feature`, `/service-review-release` |
+| Data Engineer | `/troubleshooting` |
 
 ## Usage Notes
 
@@ -176,4 +187,4 @@ python3 scripts/validate-roles.py
 
 The validator checks required sections, section order, minimum content depth, toolbox references, duplicate toolbox entries, role inventory, and workflow mapping.
 
-Last updated: 2026-05-03
+Last updated: 2026-05-05
