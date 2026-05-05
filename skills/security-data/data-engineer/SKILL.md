@@ -24,6 +24,12 @@ Use this skill when the task involves reading spreadsheet data, comparing datase
 - timestamp all report filenames so outputs never silently overwrite
 - do not modify source files; treat inputs as read-only
 - validate import results against source before proceeding to compare or report
+- group all data processing scripts into a dedicated directory (e.g., `scripts/`), do not scatter them
+- always assert/check uniqueness of key columns before merging or diffing to avoid Cartesian explosion
+- use chunking or memory-optimized libraries if the file size exceeds 100MB
+- do not print or log rows containing PII (Personal Identifiable Information); mask them or log aggregated counts only
+- implement try-catch blocks and encoding fallbacks (e.g., cp1252, iso-8859-1) when reading files to ensure resilience against corrupted data
+- strictly adhere to user-provided output templates: do not drop or bypass any requested columns; if data is missing, prompt the user for verification
 
 ## First Questions To Answer
 
