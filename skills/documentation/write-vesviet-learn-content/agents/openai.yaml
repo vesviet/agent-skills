@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Vesviet Learn Content"
+  short_description: "Hugo Markdown for tanhdev.com and learn.tanhdev.com content trees"
+  default_prompt: "Use $write-vesviet-learn-content to draft or update Markdown under vesviet/content or learn/content following local frontmatter and PaperMod patterns."

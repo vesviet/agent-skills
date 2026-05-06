@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Leaseinvietnam Maylanhtreotuong Data"
+  short_description: "Astro MDX/Markdown for leaseinvietnam and maylanhtreotuong src/data"
+  default_prompt: "Use $write-leaseinvietnam-maylanhtreotuong-data to draft or update post, property, or product content under leaseinvietnam/src/data or maylanhtreotuong/src/data per Astro content config."

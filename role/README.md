@@ -48,6 +48,7 @@ All roles in this pack are expected to:
 
 - [product-manager](product-manager.md)
 - [project-manager](project-manager.md)
+- [task-planner](task-planner.md)
 - [business-analyst](business-analyst.md)
 - [ui-ux-designer](ui-ux-designer.md)
 
@@ -67,6 +68,7 @@ All roles in this pack are expected to:
 - [devops-engineer](devops-engineer.md)
 - [sre](sre.md)
 - [technical-writer](technical-writer.md)
+- [content-writer](content-writer.md)
 
 ## Lifecycle Mapping
 
@@ -82,6 +84,7 @@ All roles in this pack are expected to:
 - Agent Coordinator
 - Product Manager
 - Project Manager
+- Task Planner
 - Technical Architect
 - Technical Lead
 
@@ -106,6 +109,7 @@ All roles in this pack are expected to:
 - DevOps Engineer
 - SRE
 - Technical Writer
+- Content Writer
 
 ### Operate And Improve
 
@@ -122,6 +126,7 @@ All roles in this pack are expected to:
 | Agent Coordinator | `/add-new-feature`, `/troubleshooting`, `/hotfix-production`, `/refactoring`, `/service-review-release` |
 | Product Manager | `/add-new-feature` |
 | Project Manager | `/add-new-feature`, `/service-review-release` |
+| Task Planner | `/add-new-feature`, `/refactoring`, `/troubleshooting` |
 | Business Analyst | `/add-new-feature` |
 | UI/UX Designer | `/add-new-feature` |
 | Technical Architect | `/setup-new-service`, `/refactoring` |
@@ -135,6 +140,7 @@ All roles in this pack are expected to:
 | DevOps Engineer | `/build-deploy`, `/setup-new-service`, `/revert-deployment` |
 | SRE | `/troubleshooting`, `/hotfix-production`, `/revert-deployment` |
 | Technical Writer | `/add-new-feature`, `/service-review-release` |
+| Content Writer | `/add-new-feature`, `/service-review-release` |
 
 ## Usage Notes
 
@@ -176,4 +182,4 @@ python3 scripts/validate-roles.py
 
 The validator checks required sections, section order, minimum content depth, toolbox references, duplicate toolbox entries, role inventory, and workflow mapping.
 
-Last updated: 2026-05-03
+Last updated: 2026-05-06

@@ -74,6 +74,8 @@ Implemented in this batch:
 
 - `write-documentation`
 - `write-tech-radar`
+- `write-vesviet-learn-content`
+- `write-leaseinvietnam-maylanhtreotuong-data`
 
 ## Priority Plan
 
