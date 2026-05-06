@@ -78,6 +78,7 @@ See [skills/README.md](skills/README.md) for the current inventory and roadmap.
 | [manage-secrets](skills/security-data/manage-secrets/SKILL.md) | Add, rotate, and review secret handling safely |
 | [database-maintenance](skills/security-data/database-maintenance/SKILL.md) | Handle operational database maintenance safely |
 | [security-audit](skills/security-data/security-audit/SKILL.md) | Review security posture and trust-boundary risk |
+| [data-engineer](skills/security-data/data-engineer/SKILL.md) | Read Excel, compare datasets, generate Excel reports |
 | [write-documentation](skills/documentation/write-documentation/SKILL.md) | Draft or update technical documentation clearly |
 | [write-tech-radar](skills/documentation/write-tech-radar/SKILL.md) | Draft technology radar and recommendation entries |
 
@@ -184,11 +185,11 @@ This pack is meant to become a full global engineering pack. The foundation set 
 
 ## Stats
 
-- 30 implemented skills
+- 31 implemented skills
 - 8 reusable workflows
-- 15 reusable role definitions (each with Skill Toolbox)
+- 16 reusable role definitions (each with Skill Toolbox)
 - 1 always-on global rule file
 - 7 taxonomy categories
 - 5 agent adapters (Codex, Cursor, Claude, Antigravity, Copilot)
 
-Last updated: 2026-05-01
+Last updated: 2026-05-05

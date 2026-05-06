@@ -70,6 +70,10 @@ All roles in this pack are expected to:
 - [technical-writer](technical-writer.md)
 - [content-writer](content-writer.md)
 
+### Data And Analytics
+
+- [data-engineer](data-engineer.md)
+
 ## Lifecycle Mapping
 
 ### Discovery
@@ -119,6 +123,12 @@ All roles in this pack are expected to:
 - Reviewer
 - Product Manager
 
+### Data And Reporting
+
+- Data Engineer
+- Business Analyst
+- Agent Coordinator
+
 ## Recommended Workflows Per Role
 
 | Role | Primary Workflows |
@@ -141,6 +151,7 @@ All roles in this pack are expected to:
 | SRE | `/troubleshooting`, `/hotfix-production`, `/revert-deployment` |
 | Technical Writer | `/add-new-feature`, `/service-review-release` |
 | Content Writer | `/add-new-feature`, `/service-review-release` |
+| Data Engineer | `/troubleshooting` |
 
 ## Usage Notes
 

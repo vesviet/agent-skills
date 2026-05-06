@@ -51,7 +51,6 @@ Implemented in this batch:
 - `integrate-api-client`
 - `optimize-3d-assets`
 - `frontend-testing`
-
 ### Platform
 
 These cover delivery and runtime:
@@ -67,6 +66,7 @@ Implemented in this batch:
 - `manage-secrets`
 - `database-maintenance`
 - `security-audit`
+- `data-engineer`
 
 ### Documentation
 
@@ -100,7 +100,6 @@ Implemented in this batch:
 
 - `accessibility-review`
 - `frontend-state-management`
-- `data-pipeline-review`
 
 ## Naming Rules
 
