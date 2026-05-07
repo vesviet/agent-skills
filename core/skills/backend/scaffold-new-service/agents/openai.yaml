@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scaffold New Service"
+  short_description: "Bootstrap a new service safely"
+  default_prompt: "Use $scaffold-new-service to scaffold a new service from local templates and conventions."

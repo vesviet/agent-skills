@@ -1,0 +1,4 @@
+name: global-engineering
+description: Portable global engineering pack without repo-specific overlays.
+includes:
+  - core

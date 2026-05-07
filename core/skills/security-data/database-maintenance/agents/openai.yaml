@@ -1,0 +1,4 @@
+interface:
+  display_name: "Database Maintenance"
+  short_description: "Handle operational database changes"
+  default_prompt: "Use $database-maintenance to plan or perform safe database maintenance work."

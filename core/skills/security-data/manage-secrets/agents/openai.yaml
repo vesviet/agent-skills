@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Secrets"
+  short_description: "Handle secrets and credentials safely"
+  default_prompt: "Use $manage-secrets to add or update secret handling safely in this codebase."

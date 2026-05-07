@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Testing"
+  short_description: "Add UI and interaction tests"
+  default_prompt: "Use $frontend-testing to add or improve frontend test coverage for this change."

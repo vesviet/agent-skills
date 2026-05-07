@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Documentation"
+  short_description: "Create clear technical documentation"
+  default_prompt: "Use $write-documentation to draft or update technical documentation for this work."

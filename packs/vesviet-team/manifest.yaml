@@ -1,0 +1,5 @@
+name: vesviet-team
+description: Global engineering core plus Vesviet content overlay.
+includes:
+  - core
+  - overlays/vesviet-content

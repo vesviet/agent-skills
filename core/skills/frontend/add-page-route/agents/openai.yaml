@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Page Route"
+  short_description: "Add pages and route wiring"
+  default_prompt: "Use $add-page-route to add or modify a page or route in this codebase."

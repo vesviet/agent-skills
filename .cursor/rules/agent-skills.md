@@ -1,18 +1,18 @@
 ---
 trigger: always_on
 glob: "**"
-description: "Global engineering rules from the agent-skills pack. Enforces commit safety, code standards, role/skill boundaries, and workflow execution discipline."
+description: "Global engineering rules from the agent-skills pack. Enforces commit safety, code standards, role and skill boundaries, and workflow execution discipline."
 ---
 
-# Agent Skills — Global Engineering Rules
+# Agent Skills - Global Engineering Rules
 
 ## Source of Truth
 
-All rules originate from `rules/code.md`. This file is a Cursor-native mirror.
+All rules originate from `core/rules/code.md`. This file is a Cursor-native mirror.
 
 ## Mandatory Constraints
 
-- **META-RULE**: Before finalizing any response or executing a command, verify your action against `rules/code.md`. If any step violates a rule, halt and ask the user.
+- **META-RULE**: Before finalizing any response or executing a command, verify your action against `core/rules/code.md`. If any step violates a rule, halt and ask the user.
 - Do NOT create a commit unless the user explicitly confirms.
 - Do NOT push, tag, or publish unless the user explicitly confirms.
 - Ensure all code changes pass local linters, tests, and build checks before committing.
@@ -22,13 +22,13 @@ All rules originate from `rules/code.md`. This file is a Cursor-native mirror.
 - Do not invent repository conventions not present in the active codebase.
 - Keep code comments implementation-focused, under 3 lines.
 
-## Role & Skill Enforcement
+## Role And Skill Enforcement
 
-Use `skills/agent/` for agent operating discipline such as context management, memory compaction, tool orchestration, quality gates, and handoff summaries.
+Use `core/skills/agent/` for agent operating discipline such as context management, memory compaction, tool orchestration, quality gates, and handoff summaries.
 
 When a Role is assigned:
 
-1. Read `role/role-standard.md` first, then `role/<role-name>.md`.
+1. Read `core/roles/role-standard.md` first, then `core/roles/<role-name>.md`.
 2. **SKILL TOOLBOX LOCK**: Only use Primary Skills from your Skill Toolbox. Supporting Skills require collaboration context. Unlisted skills require explicit user permission.
 3. **BOUNDARY LOCK**: Decline tasks outside your role's core responsibilities and recommend the appropriate role.
 

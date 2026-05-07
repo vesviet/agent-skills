@@ -1,0 +1,5 @@
+name: lease-team
+description: Global engineering core plus Lease content overlay.
+includes:
+  - core
+  - overlays/lease-content

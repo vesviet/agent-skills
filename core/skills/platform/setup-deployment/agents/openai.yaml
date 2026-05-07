@@ -1,0 +1,4 @@
+interface:
+  display_name: "Setup Deployment"
+  short_description: "Update deployment source of truth"
+  default_prompt: "Use $setup-deployment to add or update deployment configuration for this change."

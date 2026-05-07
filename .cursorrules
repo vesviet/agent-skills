@@ -1,15 +1,15 @@
-# Global Engineering Rules — Agent Skills Pack
+# Global Engineering Rules - Agent Skills Pack
 #
 # This file is the Cursor adapter for the agent-skills engineering pack.
 # It injects the always-on rules and provides navigation to the full pack.
 #
-# Source of truth: rules/code.md, role/role-standard.md
+# Source of truth: core/rules/code.md, core/roles/role-standard.md
 
 # === MANDATORY RULES (Always-On) ===
 
 # META-RULE: Before finalizing any response or executing a command, verify the
-# action against rules/code.md. If any step violates a rule, halt and ask the
-# user for permission.
+# action against core/rules/code.md. If any step violates a rule, halt and ask
+# the user for permission.
 
 # Commit & Publish Safety
 - Do NOT create a commit unless the user explicitly confirms that specific commit action.
@@ -33,27 +33,27 @@
 # === ROLE SYSTEM ===
 #
 # When the user assigns a Role, read:
-#   1. role/role-standard.md (mandatory base standard)
-#   2. role/<role-name>.md (specific role)
+#   1. core/roles/role-standard.md (mandatory base standard)
+#   2. core/roles/<role-name>.md (specific role)
 #
 # Follow SKILL TOOLBOX LOCK: Only use Primary Skills from your role's Skill Toolbox.
 # Follow BOUNDARY LOCK: Decline tasks outside your role's responsibilities.
 #
-# Available roles: role/README.md
+# Available roles: core/roles/README.md
 
 # === SKILLS ===
 #
-# Organized by taxonomy under skills/:
-#   skills/agent/        — context management, memory compaction, tool orchestration, quality gates, handoff
-#   skills/foundation/   — commit, review, test, navigate, troubleshoot
-#   skills/backend/      — API, events, integrations, scaffolding
-#   skills/frontend/     — UI components, pages, API client, testing
-#   skills/platform/     — deployment, runtime debug, telemetry
-#   skills/security-data/ — secrets, database, security audit
-#   skills/documentation/ — technical docs, tech radar
+# Organized by taxonomy under core/skills/:
+#   core/skills/agent/         - context management, memory compaction, tool orchestration, quality gates, handoff
+#   core/skills/foundation/    - commit, review, test, navigate, troubleshoot
+#   core/skills/backend/       - API, events, integrations, scaffolding
+#   core/skills/frontend/      - UI components, pages, API client, testing
+#   core/skills/platform/      - deployment, runtime debug, telemetry
+#   core/skills/security-data/ - secrets, database, security audit
+#   core/skills/documentation/ - technical docs, tech radar
 #
 # Each skill has a SKILL.md. Read it fully before executing.
-# Skill index: skills/README.md
+# Skill index: core/skills/README.md
 
 # === WORKFLOWS ===
 #
@@ -62,4 +62,4 @@
 #   2. Process only ONE step at a time, mark [x], explain result.
 #   3. Respect the Role: tag on each step.
 #
-# Available workflows: workflows/README.md
+# Available workflows: core/workflows/README.md

@@ -1,90 +1,80 @@
 # Engineering Agent Skills
 
-Global engineering skill pack for software delivery work. The pack starts with a broadly reusable service-oriented foundation and is expanding toward a full global engineering pack.
+Global engineering skill pack for software delivery work.
 
-## Layout
+The repository is now split into a portable **core** plus optional **overlays** so global teams can reuse the foundation without inheriting repo-specific or brand-specific assumptions.
 
-- `skills/`: default global core skills
-- `workflows/`: longer end-to-end operating procedures
-- `rules/`: always-on repo context rules
-- `role/`: reusable software delivery role definitions
-- `config/`: optional environment helpers
+## Repository Layout
 
-## Taxonomy
+- `core/`: portable source of truth for rules, roles, skills, workflows, validators, and helper config
+- `overlays/`: optional extensions for specific repos, brands, or domains
+- `packs/`: assembly manifests that describe which core plus overlays belong in a packaged distribution
+- root adapter files: entrypoints for Codex, Cursor, Claude Code, AGENTS-compatible tools, and Copilot
 
-The full-pack target is organized into seven categories:
+Start with [core/README.md](core/README.md) if you want the reusable foundation.
+See [overlays/README.md](overlays/README.md) if you need repo-specific extensions.
+See [packs/README.md](packs/README.md) for composition and distribution.
 
-- agent: operating discipline for context, memory compaction, tools, validation, and handoff
-- foundation: portable skills used across most codebases
-- backend: service and API implementation skills
-- frontend: UI, routing, client integration, and frontend testing skills
-- platform: deployment, runtime, and delivery skills
-- security-data: secrets, database operations, and security review skills
-- documentation: docs, change communication, and technical radar skills
+## Core Structure
 
-See [skills/README.md](skills/README.md) for the current inventory and roadmap.
+- [core/rules](core/rules/README.md): always-on global rules
+- [core/roles](core/roles/README.md): reusable software delivery role definitions
+- [core/skills](core/skills/README.md): taxonomy-organized skills for delivery work
+- [core/workflows](core/workflows/README.md): longer end-to-end operating procedures
+- [core/scripts](core/scripts/README.md): validation utilities for pack maintenance
+- [core/config](core/config/README.md): optional environment helpers
 
-## Skills Overview
+## Overlay Structure
+
+Current overlays:
+
+- `vesviet-content`: content-writing helpers for Vesviet and Learn Hugo sites
+- `lease-content`: content-writing helpers for Lease in Vietnam and May Lanh Treo Tuong Astro content trees
+- `ecommerce-microservices`: reserved for service-level or platform-specific conventions
+
+Overlay-specific skills are intentionally kept out of the global core inventory.
+
+## Core Skill Highlights
 
 ### Agent Operations
 
 | Skill | What it covers |
 |-------|----------------|
-| [agent-context-management](skills/agent/agent-context-management/SKILL.md) | Preserve intent, evidence, assumptions, and continuity |
-| [agent-memory-compaction](skills/agent/agent-memory-compaction/SKILL.md) | Compact long conversations into a minimal working state |
-| [agent-tool-orchestration](skills/agent/agent-tool-orchestration/SKILL.md) | Choose, sequence, and validate tool use safely |
-| [agent-quality-gate](skills/agent/agent-quality-gate/SKILL.md) | Run validators, lints, tests, builds, and diff checks |
-| [agent-handoff](skills/agent/agent-handoff/SKILL.md) | Summarize state, validation, blockers, and next actions |
+| [agent-context-management](core/skills/agent/agent-context-management/SKILL.md) | Preserve intent, evidence, assumptions, and continuity |
+| [agent-memory-compaction](core/skills/agent/agent-memory-compaction/SKILL.md) | Compact long conversations into a minimal working state |
+| [agent-tool-orchestration](core/skills/agent/agent-tool-orchestration/SKILL.md) | Choose, sequence, and validate tool use safely |
+| [agent-quality-gate](core/skills/agent/agent-quality-gate/SKILL.md) | Run validators, lints, tests, builds, and diff checks |
+| [agent-handoff](core/skills/agent/agent-handoff/SKILL.md) | Summarize state, validation, blockers, and next actions |
 
 ### Foundation
 
 | Skill | What it covers |
 |-------|----------------|
-| [commit-code](skills/foundation/commit-code/SKILL.md) | Pre-commit validation and commit flow |
-| [create-migration](skills/foundation/create-migration/SKILL.md) | Add safe schema migrations |
-| [meeting-review](skills/foundation/meeting-review/SKILL.md) | Structured multi-angle technical review |
-| [navigate-service](skills/foundation/navigate-service/SKILL.md) | Understand an unfamiliar service quickly |
-| [performance-profiling](skills/foundation/performance-profiling/SKILL.md) | Profile hot paths and regressions |
-| [review-code](skills/foundation/review-code/SKILL.md) | Review code changes with prioritized findings |
-| [review-service](skills/foundation/review-service/SKILL.md) | Full service readiness and release review |
-| [troubleshoot-service](skills/foundation/troubleshoot-service/SKILL.md) | Diagnose build, startup, and runtime failures |
-| [write-tests](skills/foundation/write-tests/SKILL.md) | Add or improve unit and integration tests |
+| [commit-code](core/skills/foundation/commit-code/SKILL.md) | Pre-commit validation and commit flow |
+| [create-migration](core/skills/foundation/create-migration/SKILL.md) | Add safe schema migrations |
+| [meeting-review](core/skills/foundation/meeting-review/SKILL.md) | Structured multi-angle technical review |
+| [navigate-service](core/skills/foundation/navigate-service/SKILL.md) | Understand an unfamiliar service quickly |
+| [performance-profiling](core/skills/foundation/performance-profiling/SKILL.md) | Profile hot paths and regressions |
+| [review-code](core/skills/foundation/review-code/SKILL.md) | Review code changes with prioritized findings |
+| [review-service](core/skills/foundation/review-service/SKILL.md) | Full service readiness and release review |
+| [troubleshoot-service](core/skills/foundation/troubleshoot-service/SKILL.md) | Diagnose build, startup, and runtime failures |
+| [write-tests](core/skills/foundation/write-tests/SKILL.md) | Add or improve unit and integration tests |
 
-### Backend And Platform
+### Delivery Domains
 
-| Skill | What it covers |
-|-------|----------------|
-| [add-api-endpoint](skills/backend/add-api-endpoint/SKILL.md) | Add or evolve service endpoints safely |
-| [add-event-handler](skills/backend/add-event-handler/SKILL.md) | Add event consumers or publishers in local patterns |
-| [add-service-client](skills/backend/add-service-client/SKILL.md) | Add service-to-service integrations and client calls |
-| [add-telemetry-instrumentation](skills/platform/add-telemetry-instrumentation/SKILL.md) | Add logging, metrics, and tracing to a service |
-| [debug-runtime-platform](skills/platform/debug-runtime-platform/SKILL.md) | Debug rollout, runtime, and environment issues beyond app code |
-| [scaffold-new-service](skills/backend/scaffold-new-service/SKILL.md) | Create a new service from local templates and conventions |
-| [setup-deployment](skills/platform/setup-deployment/SKILL.md) | Add or update deployment source-of-truth config |
+| Domain | Representative skills |
+|--------|-----------------------|
+| Backend | `add-api-endpoint`, `add-event-handler`, `add-service-client`, `scaffold-new-service` |
+| Frontend | `add-ui-component`, `add-page-route`, `integrate-api-client`, `frontend-testing` |
+| Platform | `setup-deployment`, `debug-runtime-platform`, `add-telemetry-instrumentation` |
+| Security and Data | `manage-secrets`, `database-maintenance`, `security-audit`, `data-engineer` |
+| Documentation | `write-documentation`, `write-tech-radar` |
 
-### Frontend
-
-| Skill | What it covers |
-|-------|----------------|
-| [add-ui-component](skills/frontend/add-ui-component/SKILL.md) | Build reusable UI components in local design patterns |
-| [add-page-route](skills/frontend/add-page-route/SKILL.md) | Add or modify frontend pages and route flows |
-| [integrate-api-client](skills/frontend/integrate-api-client/SKILL.md) | Connect frontend state to backend APIs safely |
-| [frontend-testing](skills/frontend/frontend-testing/SKILL.md) | Add or improve UI and interaction test coverage |
-
-### Security, Data, And Documentation
-
-| Skill | What it covers |
-|-------|----------------|
-| [manage-secrets](skills/security-data/manage-secrets/SKILL.md) | Add, rotate, and review secret handling safely |
-| [database-maintenance](skills/security-data/database-maintenance/SKILL.md) | Handle operational database maintenance safely |
-| [security-audit](skills/security-data/security-audit/SKILL.md) | Review security posture and trust-boundary risk |
-| [data-engineer](skills/security-data/data-engineer/SKILL.md) | Read Excel, compare datasets, generate Excel reports |
-| [write-documentation](skills/documentation/write-documentation/SKILL.md) | Draft or update technical documentation clearly |
-| [write-tech-radar](skills/documentation/write-tech-radar/SKILL.md) | Draft technology radar and recommendation entries |
+Full inventory: [core/skills/README.md](core/skills/README.md)
 
 ## Workflows
 
-See [workflows/README.md](workflows/README.md).
+Core workflows live in [core/workflows/README.md](core/workflows/README.md).
 
 - `/add-new-feature`
 - `/build-deploy`
@@ -97,30 +87,17 @@ See [workflows/README.md](workflows/README.md).
 
 ## Quality Gates
 
-Run these validators after editing rules, skills, roles, or workflows:
+Run these validators after editing core rules, skills, roles, or workflows:
 
 ```bash
-python3 scripts/validate-rules.py
-python3 scripts/validate-skills.py
-python3 scripts/validate-roles.py
-python3 scripts/validate-workflows.py
+python3 core/scripts/validate-rules.py
+python3 core/scripts/validate-skills.py
+python3 core/scripts/validate-roles.py
+python3 core/scripts/validate-workflows.py
+python3 core/scripts/validate-all.py
 ```
 
-The rules validator checks the source rule file and adapter mirrors for required safety constraints and stale wording.
-
-The skill validator enforces the shared `SKILL.md` structure, required metadata, actionable checklists, and valid cross-skill references.
-
-The role validator enforces role structure, minimum content depth, valid skill toolbox references, role inventory, and workflow mapping.
-
-The workflow validator enforces workflow structure, step ownership, checklists, related workflow links, and valid skill references.
-
-## How To Adapt This Pack
-
-When installing the pack into a different repository:
-
-- start with the foundation skills first
-- add backend, frontend, platform, security, or docs skills based on repo needs
-- adapt module paths, docs paths, workflow references, and environment naming to the active repository
+The validators enforce structure and references inside the **core** pack. Overlays can adopt the same patterns, but the current validation gate treats core as the portable source of truth.
 
 ## Agent Compatibility
 
@@ -128,68 +105,38 @@ This pack includes adapter files for all major AI coding agents:
 
 | Agent | Adapter File | Auto-Loads |
 |-------|-------------|------------|
-| OpenAI Codex | `skills/*/agents/openai.yaml` | Skills via `$skill-name` |
-| Cursor | `.cursorrules` + `.cursor/rules/agent-skills.md` | Rules, Roles, Skills, Workflows |
-| Claude Code | `CLAUDE.md` | Rules, Roles, Skills, Workflows |
-| Antigravity / Gemini | `AGENTS.md` | Rules, Roles, Skills, Workflows |
-| GitHub Copilot | `.github/copilot-instructions.md` | Rules, Skills summary |
+| OpenAI Codex | `core/skills/*/*/agents/openai.yaml` plus overlay skill adapters when installed | Skills via `$skill-name` |
+| Cursor | `.cursorrules` + `.cursor/rules/agent-skills.md` | Rules, roles, skills, workflows |
+| Claude Code | `CLAUDE.md` | Rules, roles, skills, workflows |
+| AGENTS-compatible tools | `AGENTS.md` | Rules, roles, skills, workflows |
+| GitHub Copilot | `.github/copilot-instructions.md` | Rules and pack navigation |
 
-All adapters point back to the same source of truth (`rules/code.md`, `role/role-standard.md`, `workflows/README.md`) instead of duplicating content.
+All adapters point back to the same source of truth in `core/`.
 
 ## Installation
 
-### Option 1: Clone Into Your Project (Recommended)
-
-Clone or add as a submodule, then each agent will auto-detect its adapter file:
+### Option 1: Clone Into Your Project
 
 ```bash
-# as submodule
 git submodule add <repo-url> agent-skills
-
-# or just clone
-git clone <repo-url> agent-skills
 ```
 
-### Option 2: Symlink Skills Into Codex
+### Option 2: Use Only The Core Pack
 
-```bash
-cd agent-skills
-mkdir -p ~/.codex/skills
-for d in skills/*/*; do
-  ln -sfn "$PWD/$d" "$HOME/.codex/skills/$(basename "$d")"
-done
-```
+Install or reference only:
 
-### Option 3: Copy Adapter Files Into Existing Repos
+- `core/rules`
+- `core/roles`
+- `core/skills`
+- `core/workflows`
+- the root adapter file(s) your agent requires
 
-Copy only the adapter file(s) you need into your target project root:
+### Option 3: Compose A Pack
 
-```bash
-# For Cursor
-cp agent-skills/.cursorrules your-project/
-cp -r agent-skills/.cursor your-project/
-
-# For Claude Code
-cp agent-skills/CLAUDE.md your-project/
-
-# For Antigravity / Gemini
-cp agent-skills/AGENTS.md your-project/
-
-# For GitHub Copilot
-cp -r agent-skills/.github your-project/
-```
+Use a manifest from `packs/` to combine the core with one or more overlays for a specific team or repository.
 
 ## Scope
 
-This pack is meant to become a full global engineering pack. The foundation set should remain broadly reusable, while implementation and delivery skills should stay generic enough to adapt across different repositories and stacks.
+The core pack is intended to remain broadly reusable across stacks and repositories.
 
-## Stats
-
-- 31 implemented skills
-- 8 reusable workflows
-- 16 reusable role definitions (each with Skill Toolbox)
-- 1 always-on global rule file
-- 7 taxonomy categories
-- 5 agent adapters (Codex, Cursor, Claude, Antigravity, Copilot)
-
-Last updated: 2026-05-05
+Repo-specific content, absolute paths, brand voice, and org-local conventions belong in overlays rather than the global core.

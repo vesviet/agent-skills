@@ -1,11 +1,12 @@
-# Agent Skills — Global Engineering Pack
+# Agent Skills - Global Engineering Pack
 
 This repository contains a reusable, language-agnostic engineering skill pack for software delivery.
 
 ## Mandatory Rules
 
-Before ANY action, follow these rules (source: `rules/code.md`):
+Before ANY action, follow these rules (source: `core/rules/code.md`):
 
+- **META-RULE**: Before finalizing any response or executing a command, verify your action against `core/rules/code.md`. If any step violates a rule, halt and ask the user for permission.
 - Do NOT create a commit unless the user explicitly confirms.
 - Do NOT push, tag, or publish unless the user explicitly confirms.
 - Ensure all code changes pass local linters, tests, and build checks before committing.
@@ -19,33 +20,34 @@ Before ANY action, follow these rules (source: `rules/code.md`):
 
 When a Role is assigned:
 
-1. Read `role/role-standard.md` first.
-2. Read `role/<role-name>.md` for the specific role.
-3. Only use skills listed in the role's **Skill Toolbox** (Primary Skills for direct use, Supporting Skills for collaboration).
-4. Decline tasks outside the role's core responsibilities and recommend the correct role.
+1. Read `core/roles/role-standard.md` first.
+2. Read `core/roles/<role-name>.md` for the specific role.
+3. Follow the **SKILL TOOLBOX LOCK**: Only use Primary Skills listed in the role's Skill Toolbox. Supporting Skills require collaboration context. Skills outside the Toolbox require explicit user permission.
+4. Follow the **BOUNDARY LOCK**: If a task falls outside your role's core responsibilities, politely decline and recommend the appropriate role.
 
-Roles index: `role/README.md`
+Roles index: `core/roles/README.md`
 
 ## Skills
 
-Organized under `skills/` by taxonomy:
+Organized under `core/skills/` by taxonomy:
 
-- `skills/agent/` — context management, memory compaction, tool orchestration, quality gates, handoff
-- `skills/foundation/` — commit, review, test, navigate, troubleshoot
-- `skills/backend/` — API, events, integrations, scaffolding
-- `skills/frontend/` — UI, pages, API client, testing
-- `skills/platform/` — deployment, runtime debug, telemetry
-- `skills/security-data/` — secrets, database, security audit
-- `skills/documentation/` — docs, tech radar
+- `core/skills/agent/`
+- `core/skills/foundation/`
+- `core/skills/backend/`
+- `core/skills/frontend/`
+- `core/skills/platform/`
+- `core/skills/security-data/`
+- `core/skills/documentation/`
 
-Each skill has a `SKILL.md`. Read it before executing.
+Overlay-specific skills live under `overlays/` and should be loaded only when the target repository needs them.
 
 ## Workflows
 
-When executing a workflow from `workflows/`:
+When executing a workflow from `core/workflows/`:
 
-1. Output a checklist for all steps.
-2. Process one step at a time, mark complete, explain result.
-3. Respect the `Role:` tag on each step.
+1. Output a markdown checklist `[ ]` for ALL steps.
+2. Process only ONE step at a time.
+3. Mark each step as `[x]` and explain the result before moving to the next.
+4. Respect the `Role:` tag on each step.
 
-Workflows index: `workflows/README.md`
+Workflows index: `core/workflows/README.md`

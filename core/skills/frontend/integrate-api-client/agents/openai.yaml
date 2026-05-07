@@ -1,0 +1,4 @@
+interface:
+  display_name: "Integrate API Client"
+  short_description: "Connect frontend to backend APIs"
+  default_prompt: "Use $integrate-api-client to connect frontend code to a backend API safely."
