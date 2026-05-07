@@ -1,0 +1,4 @@
+interface:
+  display_name: "Develop MDG Feature"
+  short_description: "Build features in the Máy Điện Giải Sài Gòn Laravel e-commerce"
+  default_prompt: "Use $develop-mdg-feature to add or modify a feature in this codebase."

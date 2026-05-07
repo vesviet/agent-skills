@@ -7,11 +7,18 @@ import re
 import sys
 from pathlib import Path
 
+from common import (
+    ROOT,
+    CORE_ROOT,
+    bullet_count,
+    collect_skill_names,
+    section_text,
+    slug,
+    strip_fenced_blocks,
+)
 
-ROOT = Path(__file__).resolve().parents[2]
-CORE_ROOT = ROOT / "core"
+
 ROLE_ROOT = CORE_ROOT / "roles"
-SKILLS_ROOT = CORE_ROOT / "skills"
 WORKFLOWS_ROOT = CORE_ROOT / "workflows"
 
 REQUIRED_SECTIONS = (
@@ -55,61 +62,8 @@ ROLE_SLUG_ALIASES = {
 }
 
 
-def slug(text: str) -> str:
-    value = text.strip().lower().replace("&", "and")
-    value = value.replace("/", "-")
-    value = re.sub(r"[^a-z0-9]+", "-", value)
-    return value.strip("-")
-
-
 def equivalent_role_slug(left: str, right: str) -> bool:
     return left == right or right in ROLE_SLUG_ALIASES.get(left, set())
-
-
-def strip_fenced_blocks(text: str) -> str:
-    lines: list[str] = []
-    in_fence = False
-    for line in text.splitlines():
-        if line.startswith("```"):
-            in_fence = not in_fence
-            continue
-        if not in_fence:
-            lines.append(line)
-    return "\n".join(lines)
-
-
-def section_text(body: str, heading: str) -> str:
-    marker = f"{heading}\n"
-    start = body.find(marker)
-    if start == -1:
-        return ""
-    start += len(marker)
-
-    level = len(heading.split(" ", 1)[0])
-    next_pattern = re.compile(rf"(?m)^#{{2,{level}}} .+")
-    match = next_pattern.search(body, start)
-    if match:
-        return body[start : match.start()]
-    return body[start:]
-
-
-def bullet_count(text: str) -> int:
-    return len(re.findall(r"(?m)^- .+", text))
-
-
-def collect_skill_names() -> set[str]:
-    names: set[str] = set()
-    for path in SKILLS_ROOT.glob("*/*/SKILL.md"):
-        text = path.read_text(encoding="utf-8")
-        match = re.search(r"(?m)^name: ([a-z0-9-]+)$", text)
-        if match:
-            names.add(match.group(1))
-    for path in (ROOT / "overlays").glob("*/*/*/SKILL.md"):
-        text = path.read_text(encoding="utf-8")
-        match = re.search(r"(?m)^name: ([a-z0-9-]+)$", text)
-        if match:
-            names.add(match.group(1))
-    return names
 
 
 def collect_workflow_names() -> set[str]:
@@ -158,16 +112,16 @@ def validate_role(path: Path, known_skills: set[str]) -> list[str]:
         last_index = index
 
     for section, minimum in MIN_ITEMS.items():
-        content = section_text(body, section)
+        content = section_text(body, section, level_aware=True)
         if content and bullet_count(content) < minimum:
             errors.append(f"{section} should contain at least {minimum} bullet items")
 
-    output_template = section_text(body, "## Output Template")
+    output_template = section_text(body, "## Output Template", level_aware=True)
     if "## Output Template" in body and "```markdown" not in output_template:
         errors.append("Output Template should include a markdown fenced template")
 
-    primary = re.findall(r"(?m)^- `([a-z0-9-]+)`", section_text(body, "### Primary Skills"))
-    supporting = re.findall(r"(?m)^- `([a-z0-9-]+)`", section_text(body, "### Supporting Skills (use when collaborating)"))
+    primary = re.findall(r"(?m)^- `([a-z0-9-]+)`", section_text(body, "### Primary Skills", level_aware=True))
+    supporting = re.findall(r"(?m)^- `([a-z0-9-]+)`", section_text(body, "### Supporting Skills (use when collaborating)", level_aware=True))
 
     if not primary:
         errors.append("must define at least one Primary Skill")

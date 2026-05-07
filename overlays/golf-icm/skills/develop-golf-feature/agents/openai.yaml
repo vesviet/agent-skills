@@ -1,0 +1,4 @@
+interface:
+  display_name: "Develop Golf Feature"
+  short_description: "Build features for the Golf ICM catalog site"
+  default_prompt: "Use $develop-golf-feature to add or modify a feature in this codebase."

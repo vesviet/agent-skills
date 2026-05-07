@@ -1,0 +1,4 @@
+interface:
+  display_name: "Integrate R3F Three Legacy"
+  short_description: "Bridge React Three Fiber and legacy Three.js code"
+  default_prompt: "Use $integrate-r3f-three-legacy for this task."

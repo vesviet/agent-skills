@@ -1,0 +1,4 @@
+interface:
+  display_name: "Develop OBJ Feature"
+  short_description: "Build features for the OBJ 3D Product Configurator"
+  default_prompt: "Use $develop-obj-feature to add or modify a feature in this codebase."

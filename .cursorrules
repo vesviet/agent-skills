@@ -8,8 +8,8 @@
 # === MANDATORY RULES (Always-On) ===
 
 # META-RULE: Before finalizing any response or executing a command, verify the
-# action against core/rules/code.md. If any step violates a rule, halt and ask
-# the user for permission.
+# action against core/rules/code.md. If any step violates a rule,
+# halt and ask the user for permission.
 
 # Commit & Publish Safety
 - Do NOT create a commit unless the user explicitly confirms that specific commit action.
@@ -37,7 +37,8 @@
 #   2. core/roles/<role-name>.md (specific role)
 #
 # Follow SKILL TOOLBOX LOCK: Only use Primary Skills from your role's Skill Toolbox.
-# Follow BOUNDARY LOCK: Decline tasks outside your role's responsibilities.
+# Follow BOUNDARY LOCK: If a task falls outside your role's core responsibilities,
+# politely decline and recommend the appropriate role.
 #
 # Available roles: core/roles/README.md
 

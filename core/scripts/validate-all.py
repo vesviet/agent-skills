@@ -14,6 +14,7 @@ VALIDATORS = (
     "validate-skills.py",
     "validate-roles.py",
     "validate-workflows.py",
+    "validate-packs.py",
 )
 
 

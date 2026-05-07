@@ -1,0 +1,4 @@
+interface:
+  display_name: "Develop Laravel Feature"
+  short_description: "Build features in a Laravel + Filament + Livewire monolith"
+  default_prompt: "Use $develop-laravel-feature to add or modify a feature in this codebase."

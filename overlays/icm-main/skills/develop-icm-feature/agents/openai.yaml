@@ -1,0 +1,4 @@
+interface:
+  display_name: "Develop ICM Feature"
+  short_description: "Build features for the ICM Factory Direct Astro site"
+  default_prompt: "Use $develop-icm-feature to add or modify a feature in this codebase."

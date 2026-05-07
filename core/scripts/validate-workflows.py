@@ -7,12 +7,19 @@ import re
 import sys
 from pathlib import Path
 
+from common import (
+    ROOT,
+    CORE_ROOT,
+    collect_skill_names,
+    parse_frontmatter,
+    section_text,
+    slug,
+    strip_fenced_blocks,
+)
 
-ROOT = Path(__file__).resolve().parents[2]
-CORE_ROOT = ROOT / "core"
+
 WORKFLOWS_ROOT = CORE_ROOT / "workflows"
 ROLE_ROOT = CORE_ROOT / "roles"
-SKILLS_ROOT = CORE_ROOT / "skills"
 
 REQUIRED_SECTIONS = (
     "### Prerequisites",
@@ -29,74 +36,6 @@ ROLE_ALIASES = {
 README_PLACEHOLDERS = {
     "description",
 }
-
-
-def parse_frontmatter(text: str) -> tuple[dict[str, str], str, list[str]]:
-    errors: list[str] = []
-    lines = text.splitlines()
-    if not lines or lines[0] != "---":
-        return {}, text, ["missing YAML frontmatter"]
-    try:
-        end = lines[1:].index("---") + 1
-    except ValueError:
-        return {}, text, ["unterminated YAML frontmatter"]
-
-    metadata: dict[str, str] = {}
-    for line in lines[1:end]:
-        if not line.strip():
-            continue
-        if ":" not in line:
-            errors.append(f"invalid frontmatter line: {line}")
-            continue
-        key, value = line.split(":", 1)
-        metadata[key.strip()] = value.strip()
-    return metadata, "\n".join(lines[end + 1 :]), errors
-
-
-def section_text(body: str, heading: str) -> str:
-    marker = f"{heading}\n"
-    start = body.find(marker)
-    if start == -1:
-        return ""
-    start += len(marker)
-    level = len(heading.split(" ", 1)[0])
-    match = re.search(rf"(?m)^#{{1,{level}}} .+", body[start:])
-    if match:
-        return body[start : start + match.start()]
-    return body[start:]
-
-
-def strip_fenced_blocks(text: str) -> str:
-    lines: list[str] = []
-    in_fence = False
-    for line in text.splitlines():
-        if line.startswith("```"):
-            in_fence = not in_fence
-            continue
-        if not in_fence:
-            lines.append(line)
-    return "\n".join(lines)
-
-
-def slug(text: str) -> str:
-    value = text.strip().lower().replace("&", "and")
-    value = re.sub(r"[^a-z0-9]+", "-", value)
-    return value.strip("-")
-
-
-def collect_skill_names() -> set[str]:
-    names: set[str] = set()
-    for path in SKILLS_ROOT.glob("*/*/SKILL.md"):
-        text = path.read_text(encoding="utf-8")
-        match = re.search(r"(?m)^name: ([a-z0-9-]+)$", text)
-        if match:
-            names.add(match.group(1))
-    for path in (ROOT / "overlays").glob("*/*/*/SKILL.md"):
-        text = path.read_text(encoding="utf-8")
-        match = re.search(r"(?m)^name: ([a-z0-9-]+)$", text)
-        if match:
-            names.add(match.group(1))
-    return names
 
 
 def collect_role_names() -> set[str]:
@@ -153,17 +92,17 @@ def validate_workflow(path: Path, workflows: set[str], skills: set[str], roles: 
             if canonical not in roles:
                 errors.append(f"{heading} references unknown role: {role}")
 
-    checklist = section_text(body, "### Checklist")
-    checklist_items = re.findall(r"(?m)^- \[ \] .+", checklist)
+    checklist_body = section_text(body, "### Checklist", level_aware=True)
+    checklist_items = re.findall(r"(?m)^- \[ \] .+", checklist_body)
     if "### Checklist" in body and len(checklist_items) < max(5, min(len(step_numbers), 10)):
         errors.append("Checklist should cover the workflow's major steps")
 
-    related_workflows = re.findall(r"\]\(([a-z0-9-]+)\.md\)", section_text(body, "### Related Workflows"))
+    related_workflows = re.findall(r"\]\(([a-z0-9-]+)\.md\)", section_text(body, "### Related Workflows", level_aware=True))
     for workflow in related_workflows:
         if workflow not in workflows:
             errors.append(f"Related Workflows references unknown workflow: {workflow}")
 
-    related_skills = re.findall(r"(?m)^- \*\*([a-z0-9-]+)\*\*: .+", section_text(body, "### Related Skills"))
+    related_skills = re.findall(r"(?m)^- \*\*([a-z0-9-]+)\*\*: .+", section_text(body, "### Related Skills", level_aware=True))
     if "### Related Skills" in body and not related_skills:
         errors.append("Related Skills should use '- **skill-name**: description' items")
     for skill in related_skills:

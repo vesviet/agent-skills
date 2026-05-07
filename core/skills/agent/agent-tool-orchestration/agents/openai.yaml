@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Tool Orchestration"
+  short_description: "Choose, sequence, and validate tool use safely"
+  default_prompt: "Use $agent-tool-orchestration for this task."

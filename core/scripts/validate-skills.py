@@ -7,10 +7,19 @@ import re
 import sys
 from pathlib import Path
 
+from common import (
+    ROOT,
+    CORE_ROOT,
+    SKILLS_ROOT,
+    collect_skill_files,
+    collect_skill_names,
+    parse_frontmatter,
+    section_text,
+    slug,
+    strip_fenced_blocks,
+)
 
-ROOT = Path(__file__).resolve().parents[2]
-CORE_ROOT = ROOT / "core"
-SKILLS_ROOT = CORE_ROOT / "skills"
+
 SKILL_NAME_RE = re.compile(r"^[a-z0-9-]{1,64}$")
 REQUIRED_SECTIONS = (
     "## Core Rules",
@@ -33,37 +42,6 @@ PLACEHOLDER_REFS = {
 }
 
 
-def collect_skill_files() -> list[Path]:
-    files = sorted(SKILLS_ROOT.glob("*/*/SKILL.md"))
-    files.extend(sorted((ROOT / "overlays").glob("*/*/*/SKILL.md")))
-    return files
-
-
-def parse_frontmatter(path: Path, text: str) -> tuple[dict[str, str], str, list[str]]:
-    errors: list[str] = []
-    lines = text.splitlines()
-    if not lines or lines[0] != "---":
-        return {}, text, ["missing YAML frontmatter"]
-
-    try:
-        end = lines[1:].index("---") + 1
-    except ValueError:
-        return {}, text, ["unterminated YAML frontmatter"]
-
-    metadata: dict[str, str] = {}
-    for line in lines[1:end]:
-        if not line.strip():
-            continue
-        if ":" not in line:
-            errors.append(f"invalid frontmatter line: {line}")
-            continue
-        key, value = line.split(":", 1)
-        metadata[key.strip()] = value.strip()
-
-    body = "\n".join(lines[end + 1 :])
-    return metadata, body, errors
-
-
 def slug_from_h1(line: str) -> str:
     title = line.lstrip("#").strip().lower()
     title = title.replace("&", "and")
@@ -71,44 +49,10 @@ def slug_from_h1(line: str) -> str:
     return title.strip("-")
 
 
-def strip_fenced_blocks(text: str) -> str:
-    lines: list[str] = []
-    in_fence = False
-    for line in text.splitlines():
-        if line.startswith("```"):
-            in_fence = not in_fence
-            continue
-        if not in_fence:
-            lines.append(line)
-    return "\n".join(lines)
-
-
-def section_text(body: str, heading: str) -> str:
-    marker = f"{heading}\n"
-    start = body.find(marker)
-    if start == -1:
-        return ""
-    start += len(marker)
-    next_heading = body.find("\n## ", start)
-    if next_heading == -1:
-        return body[start:]
-    return body[start:next_heading]
-
-
-def collect_skill_names(skill_files: list[Path]) -> set[str]:
-    names: set[str] = set()
-    for path in skill_files:
-        metadata, _, _ = parse_frontmatter(path, path.read_text(encoding="utf-8"))
-        name = metadata.get("name")
-        if name:
-            names.add(name)
-    return names
-
-
 def validate_skill(path: Path, known_skills: set[str]) -> list[str]:
     rel = path.relative_to(ROOT)
     text = path.read_text(encoding="utf-8")
-    metadata, body, errors = parse_frontmatter(path, text)
+    metadata, body, errors = parse_frontmatter(text)
 
     name = metadata.get("name", "")
     description = metadata.get("description", "")
@@ -187,7 +131,7 @@ def main() -> int:
     if not skill_files:
         errors.append("no skill files found under core/skills/*/*/SKILL.md or overlays/*/skills/*/SKILL.md")
 
-    known_skills = collect_skill_names(skill_files)
+    known_skills = collect_skill_names()
 
     for path in skill_files:
         errors.extend(validate_skill(path, known_skills))

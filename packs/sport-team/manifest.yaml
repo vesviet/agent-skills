@@ -1,0 +1,6 @@
+name: sport-team
+description: Global engineering core plus Astro/Cloudflare conventions plus Sport ICM catalog overlay.
+includes:
+  - core
+  - overlays/astro-cloudflare
+  - overlays/sport-icm

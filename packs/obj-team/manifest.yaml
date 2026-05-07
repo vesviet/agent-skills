@@ -1,0 +1,6 @@
+name: obj-team
+description: Global engineering core plus Astro/Cloudflare conventions plus OBJ 3D Configurator overlay.
+includes:
+  - core
+  - overlays/astro-cloudflare
+  - overlays/obj-configurator

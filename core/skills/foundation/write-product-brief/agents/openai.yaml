@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Product Brief"
+  short_description: "Draft structured product briefs for feature or initiative work"
+  default_prompt: "Use $write-product-brief for this task."
