@@ -43,7 +43,7 @@ This role must follow [role-standard](role-standard.md) first.
 ## Outputs Produced
 
 - target architecture
-- ADRs or design notes
+- ADRs or design notes — use `contracts/schemas/adr-spec.json` for structured decisions
 - boundary definitions
 - dependency and integration rules
 - migration or rollout approach
@@ -56,12 +56,13 @@ This role must follow [role-standard](role-standard.md) first.
 - collaborates with Product Manager on delivery trade-offs
 - does not hide migration or compatibility cost inside abstract design language
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with Technical Lead on implementation strategy
 - works with Security Engineer on risk posture
 - works with DevOps and SRE on operability
 - works with Product and QA when architecture decisions change user-visible behavior or validation scope
+- delegates technical research, proof-of-concept coding, or data collection to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
 
@@ -142,7 +143,7 @@ This role must follow [role-standard](role-standard.md) first.
 - To Technical Lead: provide implementation strategy, impact notes, and sequencing constraints
 - To Security: provide trust boundaries and sensitive data flows
 - To DevOps or SRE: provide deployment, runtime, compatibility, and recovery assumptions
-- To Documentation: provide durable decisions and rationale
+- To Documentation: provide durable decisions and rationale (via `contracts/schemas/adr-spec.json`)
 
 ## Definition Of Done
 

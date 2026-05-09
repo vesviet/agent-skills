@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adr-spec",
+  "title": "Architecture Decision Record",
+  "description": "Structured output for an Architecture Decision Record (ADR).",
+  "type": "object",
+  "properties": {
+    "title": { "type": "string" },
+    "status": { "type": "string", "enum": ["proposed", "accepted", "rejected", "superseded"] },
+    "context": {
+      "type": "string",
+      "description": "The problem, constraints, and business context."
+    },
+    "options_considered": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "option": { "type": "string" },
+          "pros": { "type": "array", "items": { "type": "string" } },
+          "cons": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["option"]
+      }
+    },
+    "decision": {
+      "type": "string",
+      "description": "The option chosen."
+    },
+    "consequences": {
+      "type": "object",
+      "properties": {
+        "positive": { "type": "array", "items": { "type": "string" } },
+        "negative": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "migration_plan": {
+      "type": "string",
+      "description": "Required steps for migration or rollout."
+    }
+  },
+  "required": ["title", "status", "context", "options_considered", "decision", "consequences"]
+}

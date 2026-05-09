@@ -56,12 +56,13 @@ This role must follow [role-standard](role-standard.md) first.
 - does not replace Product Manager ownership of priority
 - does not accept broad regression risk silently to preserve schedule
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with Technical Architect on major design decisions
-- works with Backend and Frontend Developers on delivery
+- works with Backend and Frontend Developers on delivery — assigns implementation slices via **A2A tasks** (`agent-delegation` skill)
 - works with QA, Reviewer, and DevOps on quality gates
 - works with Product or BA when fixes expose unclear or conflicting requirements
+- delegates dependency analysis or code scaffolding to specialist agents via A2A
 
 ## Guardrails
 

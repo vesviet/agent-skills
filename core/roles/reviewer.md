@@ -41,7 +41,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Outputs Produced
 
-- findings with severity
+- findings with severity — use `contracts/schemas/code-review-finding.json` for structured handoff
 - merge recommendation
 - open questions
 - residual risk notes
@@ -53,12 +53,13 @@ This role must follow [role-standard](role-standard.md) first.
 - does not redesign the whole system unless the change forces it
 - blocks only on real risk, not taste alone
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with Technical Lead on tricky trade-offs
 - works with QA on validation gaps
-- works with developers on concrete fixes
+- works with developers on concrete fixes — delivers feedback via structured contract
 - works with Security or SRE when specialized risk is implicated
+- delegates deep security audits or performance checks to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
 
@@ -130,7 +131,7 @@ This role must follow [role-standard](role-standard.md) first.
 ## Role Handoff
 
 - From Developers: consume diff intent, risky areas, and validation notes
-- To Developers: provide specific findings, impact rationale, and expected fixes
+- To Developers: provide specific findings, impact rationale, and expected fixes (via `contracts/schemas/code-review-finding.json`)
 - To Technical Lead: escalate cross-cutting design or release risk
 - To QA: hand off scenarios that need verification
 - To Security or SRE: hand off specialized risk needing deeper review
