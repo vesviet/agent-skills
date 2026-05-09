@@ -29,7 +29,7 @@ Find a nearby component that matches:
 
 ### 2. Define The Component Contract
 
-Clarify:
+Require or construct a **UI Component Spec** (via `contracts/schemas/ui-component-spec.json`). Clarify:
 
 - what the component renders
 - what inputs it accepts

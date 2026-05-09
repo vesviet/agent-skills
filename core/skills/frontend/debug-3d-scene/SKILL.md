@@ -78,6 +78,8 @@ Re-check:
 
 ## Output Format
 
+Outputs must summarize the root cause and mitigation, and if the debug involves performance/memory bottlenecks, output must be accompanied by a `contracts/schemas/performance-audit.json` payload.
+
 ```markdown
 # <Issue> - 3D Scene Debug Brief
 

@@ -67,30 +67,7 @@ Leave behind:
 
 ## Output Format
 
-```markdown
-# <Asset or Scene> - 3D Asset Optimization Brief
-
-## Current Cost
-- Asset type and format:
-- Main bottleneck:
-- Target devices or budgets:
-
-## Optimization Plan
-- Geometry changes:
-- Texture or material changes:
-- Format / compression changes:
-- Runtime assumptions to preserve:
-
-## Impact Review
-- Visual trade-offs:
-- Scenes / decals / materials to re-check:
-- Mobile or low-end GPU considerations:
-
-## Verification
-- Load-time or memory expectations:
-- Frame-rate expectations:
-- Residual risk:
-```
+Outputs must conform to the `contracts/schemas/performance-audit.json` schema. Provide this structured JSON instead of a raw Markdown block. Ensure `verdict`, `metrics` (like bundle size and frame rate expectations), and `findings` are explicitly populated.
 
 ## Checklist
 
