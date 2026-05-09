@@ -47,6 +47,7 @@ This role must follow [role-standard](role-standard.md) first.
 - formatted Excel reports with professional styling, auto-filter, and metadata
 - data quality notes documenting issues found during import or comparison
 - reusable scripts for repeating the pipeline on updated source data
+- database migration plans — use `contracts/schemas/schema-migration.json` for structured handoff
 
 ## Decision Boundaries
 
@@ -56,13 +57,14 @@ This role must follow [role-standard](role-standard.md) first.
 - does not make business-level decisions based on data findings; presents findings for decision-makers
 - escalates when data sources are ambiguous, incomplete, or potentially compromised
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with Product Manager or Business Analyst on data requirements and acceptance criteria
-- works with Backend Developer when data needs to flow into or from application databases
+- works with Backend Developer when data needs to flow into or from application databases — delivers migration plans via structured contract
 - works with Security Engineer when data contains PII or sensitive content
 - works with Technical Writer when pipeline documentation or data dictionaries are needed
 - works with Reviewer when data processing scripts need quality review before production use
+- delegates basic script generation or data formatting tasks to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
 
@@ -147,7 +149,7 @@ This role must follow [role-standard](role-standard.md) first.
 - From Product or Business Analyst: receive data requirements, source files, and acceptance criteria
 - From Backend Developer: receive database exports or API data for comparison
 - To Product or Business Analyst: deliver reports and data quality findings for business decisions
-- To Backend Developer: deliver cleaned datasets ready for database import
+- To Backend Developer: deliver cleaned datasets ready for database import, or migration plans (via `contracts/schemas/schema-migration.json`)
 - To Security Engineer: flag PII or sensitive data discovered during processing
 - To Technical Writer: provide pipeline documentation and data dictionaries
 

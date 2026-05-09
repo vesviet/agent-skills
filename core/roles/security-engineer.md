@@ -42,7 +42,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Outputs Produced
 
-- security findings
+- security findings — use `contracts/schemas/security-audit.json` for structured handoff
 - mitigation guidance
 - hardening recommendations
 - validation checklist for risky changes
@@ -55,12 +55,13 @@ This role must follow [role-standard](role-standard.md) first.
 - escalates critical findings immediately
 - does not silently accept security regressions to preserve convenience or schedule
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with Technical Architect on secure design
 - works with Backend and Frontend Developers on implementation fixes
 - works with DevOps and SRE on secrets, access, and runtime controls
 - works with Product or leadership when accepted risk needs explicit ownership
+- delegates code scanning or CVE research to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
 
@@ -138,7 +139,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 - From Architect: consume trust boundaries and data-flow assumptions
 - From Developers: consume implementation details and fix options
-- To Developers: provide required mitigations, blast radius, and validation steps
+- To Developers: provide required mitigations, blast radius, and validation steps (via `contracts/schemas/security-audit.json`)
 - To DevOps or SRE: provide runtime secret, access, monitoring, and rollback concerns
 - To Product or Leadership: escalate accepted risk decisions
 

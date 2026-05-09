@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema-migration",
+  "title": "Schema Migration Plan",
+  "description": "Structured output for a database migration plan.",
+  "type": "object",
+  "properties": {
+    "migration_name": { "type": "string" },
+    "database": { "type": "string" },
+    "changes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of tables, columns, or indexes being added, modified, or dropped."
+    },
+    "is_destructive": {
+      "type": "boolean",
+      "description": "True if data could be lost (e.g., dropping a column)."
+    },
+    "requires_downtime": {
+      "type": "boolean",
+      "description": "True if this migration locks tables for an extended period."
+    },
+    "up_script": { "type": "string", "description": "Path to the UP migration script." },
+    "down_script": { "type": "string", "description": "Path to the DOWN migration script." },
+    "data_backfill_required": { "type": "boolean" },
+    "verification_steps": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": ["migration_name", "database", "changes", "is_destructive", "requires_downtime", "up_script", "down_script"]
+}

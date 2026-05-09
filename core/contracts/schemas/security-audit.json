@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "security-audit",
+  "title": "Security Audit Report",
+  "description": "Structured output for a security audit or vulnerability assessment.",
+  "type": "object",
+  "properties": {
+    "target": { "type": "string", "description": "Component, PR, or service being audited." },
+    "audit_type": { "type": "string", "enum": ["code_review", "dependency_check", "architecture_review", "penetration_test"] },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "vulnerability": { "type": "string" },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "cwe_id": { "type": "string" },
+          "description": { "type": "string" },
+          "remediation": { "type": "string" }
+        },
+        "required": ["vulnerability", "severity", "description", "remediation"]
+      }
+    },
+    "compliance_violations": { "type": "array", "items": { "type": "string" } },
+    "overall_risk_score": { "type": "string", "enum": ["critical", "high", "medium", "low", "pass"] },
+    "action_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "task": { "type": "string" },
+          "owner_role": { "type": "string" }
+        },
+        "required": ["task", "owner_role"]
+      }
+    }
+  },
+  "required": ["target", "audit_type", "findings", "overall_risk_score"]
+}
