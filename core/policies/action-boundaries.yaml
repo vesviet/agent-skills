@@ -103,5 +103,23 @@ roles:
       - modify_secrets
       - push_to_production
 
+  content-writer:
+    allowed:
+      - read_file
+      - write_file
+      - create_file
+      - search_code
+      - read_database
+    requires_approval:
+      - delete_file
+      - run_build
+    denied:
+      - run_migration
+      - modify_environment_config
+      - modify_secrets
+      - push_to_production
+      - drop_database
+      - install_dependency
+
 # Default: any action not listed for a role requires approval.
 default_policy: requires_approval

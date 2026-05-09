@@ -53,11 +53,11 @@ This role must follow [role-standard](role-standard.md) first.
 - does not override legal, compliance, or brand approval requirements
 - escalates when source material conflicts or when one more research pass would materially change the recommendation
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with Product Manager or Business Analyst on positioning, audience, and outcome framing
 - works with Technical Writer when the article must stay aligned with technical source-of-truth docs
-- works with subject-matter experts for fact-checking and quote approval
+- delegates fact-checking, SEO optimization, or proofreading to specialist agents using **A2A tasks** (`agent-delegation` skill)
 - works with Reviewer or editorial stakeholders for voice, risk, and accuracy gates before publication
 
 ## Guardrails
@@ -139,7 +139,7 @@ This role must follow [role-standard](role-standard.md) first.
 - From Product or BA: consume positioning, audience, and outcome expectations
 - From Technical Writer or engineering: consume accurate behavior, limits, and terminology
 - To Editorial or Reviewer: deliver draft, evidence notes, and explicit verification gaps
-- To Publishers: deliver format-compliant copy and metadata needs
+- To Publishers: deliver format-compliant copy and SEO Metadata (via `contracts/schemas/seo-metadata.json`)
 
 ## Definition Of Done
 

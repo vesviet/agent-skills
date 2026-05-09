@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "seo-metadata",
+  "title": "SEO Metadata Contract",
+  "description": "Structured output for SEO metadata to be applied to content.",
+  "type": "object",
+  "properties": {
+    "title_tag": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "Optimized title tag (under 60 chars)."
+    },
+    "meta_description": {
+      "type": "string",
+      "maxLength": 160,
+      "description": "Compelling meta description (under 160 chars)."
+    },
+    "focus_keyword": {
+      "type": "string",
+      "description": "The primary targeted keyword."
+    },
+    "secondary_keywords": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "LSI or secondary keywords."
+    },
+    "slug": {
+      "type": "string",
+      "description": "SEO-friendly URL slug."
+    },
+    "readability_score": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Estimated readability level."
+    }
+  },
+  "required": ["title_tag", "meta_description", "focus_keyword", "slug"]
+}
