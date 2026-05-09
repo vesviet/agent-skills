@@ -1,0 +1,49 @@
+# Data Classification Policy
+# Defines sensitivity levels for data types to prevent accidental exposure.
+# Agents must check this before logging, returning, or persisting data.
+
+classification_levels:
+  public:
+    description: "Data that can be freely shared and logged."
+    examples:
+      - source code (non-secret)
+      - documentation
+      - public API schemas
+      - build logs
+      - test results
+    logging: allowed
+    memory_storage: allowed
+
+  internal:
+    description: "Data intended for team use only."
+    examples:
+      - architecture diagrams
+      - internal API endpoints
+      - deployment configurations (non-secret)
+      - performance benchmarks
+      - code review findings
+    logging: allowed_sanitized
+    memory_storage: allowed
+
+  confidential:
+    description: "Data requiring access control."
+    examples:
+      - customer data
+      - business metrics
+      - internal pricing
+      - pre-release features
+      - security audit findings
+    logging: metadata_only
+    memory_storage: denied
+
+  restricted:
+    description: "Data that must never leave secured systems."
+    examples:
+      - credentials and secrets
+      - API keys and tokens
+      - private keys
+      - PII (personally identifiable information)
+      - financial account numbers
+    logging: denied
+    memory_storage: denied
+    agent_access: denied

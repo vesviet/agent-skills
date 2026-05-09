@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "implementation-result",
+  "title": "Implementation Result",
+  "description": "Structured output from a code implementation step, used for handoff between developer and reviewer roles.",
+  "type": "object",
+  "properties": {
+    "files_changed": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "action": { "type": "string", "enum": ["created", "modified", "deleted", "renamed"] },
+          "summary": { "type": "string" }
+        },
+        "required": ["path", "action", "summary"]
+      }
+    },
+    "architecture_impact": {
+      "type": "string",
+      "description": "Brief statement of architectural impact or 'none' if isolated."
+    },
+    "breaking_changes": {
+      "type": "boolean",
+      "description": "Whether the change introduces breaking changes to public contracts."
+    },
+    "validation_run": {
+      "type": "object",
+      "properties": {
+        "tests": { "type": "string", "enum": ["passed", "failed", "skipped", "not_applicable"] },
+        "lint": { "type": "string", "enum": ["passed", "failed", "skipped", "not_applicable"] },
+        "build": { "type": "string", "enum": ["passed", "failed", "skipped", "not_applicable"] }
+      },
+      "required": ["tests", "lint", "build"]
+    },
+    "residual_risks": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Known risks that remain after implementation."
+    }
+  },
+  "required": ["files_changed", "breaking_changes", "validation_run"]
+}

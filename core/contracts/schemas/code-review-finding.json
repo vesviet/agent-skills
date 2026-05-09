@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "code-review-finding",
+  "title": "Code Review Finding",
+  "description": "A single finding from a code review, used by the review-code skill and reviewer role.",
+  "type": "object",
+  "properties": {
+    "file": {
+      "type": "string",
+      "description": "Relative path to the file containing the finding."
+    },
+    "line": {
+      "type": "integer",
+      "description": "Line number where the finding starts."
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low"],
+      "description": "Impact severity of the finding."
+    },
+    "category": {
+      "type": "string",
+      "enum": ["bug", "security", "performance", "correctness", "maintainability", "style"],
+      "description": "Classification of the finding."
+    },
+    "description": {
+      "type": "string",
+      "description": "What the issue is and why it matters."
+    },
+    "suggestion": {
+      "type": "string",
+      "description": "Recommended fix or mitigation."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["confirmed", "likely", "uncertain"],
+      "description": "How confident the reviewer is about this finding."
+    }
+  },
+  "required": ["file", "severity", "category", "description", "confidence"]
+}

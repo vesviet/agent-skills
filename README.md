@@ -23,6 +23,8 @@ See [packs/README.md](packs/README.md) for composition and distribution.
 - [core/roles](core/roles/README.md): reusable software delivery role definitions
 - [core/skills](core/skills/README.md): taxonomy-organized skills for delivery work
 - [core/workflows](core/workflows/README.md): longer end-to-end operating procedures
+- [core/contracts](core/contracts/README.md): JSON Schema output contracts for structured agent communication
+- [core/policies](core/policies/README.md): machine-readable action boundaries and data classification
 - [core/scripts](core/scripts/README.md): validation utilities for pack maintenance
 - [core/config](core/config/README.md): optional environment helpers
 
@@ -43,8 +45,12 @@ Overlay-specific skills are intentionally kept out of the global core inventory.
 | Skill | What it covers |
 |-------|----------------|
 | [agent-context-management](core/skills/agent/agent-context-management/SKILL.md) | Preserve intent, evidence, assumptions, continuity, and dynamic context assembly |
+| [agent-delegation](core/skills/agent/agent-delegation/SKILL.md) | Delegate scoped sub-tasks to specialist agents via A2A protocol |
 | [agent-memory-compaction](core/skills/agent/agent-memory-compaction/SKILL.md) | Compact long conversations into a minimal working state |
+| [agent-model-routing](core/skills/agent/agent-model-routing/SKILL.md) | Select cost-effective models per task based on complexity and risk tier |
+| [agent-observability](core/skills/agent/agent-observability/SKILL.md) | Trace reasoning chains, tool calls, and token costs for debugging and eval |
 | [agent-prompt-lifecycle](core/skills/agent/agent-prompt-lifecycle/SKILL.md) | Version, evaluate, and monitor prompt assets through PromptOps pipeline |
+| [agent-semantic-memory](core/skills/agent/agent-semantic-memory/SKILL.md) | Persist and retrieve codebase patterns and past fixes across conversations |
 | [agent-tool-orchestration](core/skills/agent/agent-tool-orchestration/SKILL.md) | Choose, sequence, and validate tool use safely with MCP awareness |
 | [agent-quality-gate](core/skills/agent/agent-quality-gate/SKILL.md) | Run validators, lints, tests, builds, and diff checks |
 | [agent-handoff](core/skills/agent/agent-handoff/SKILL.md) | Summarize state, validation, blockers, and next actions |

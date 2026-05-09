@@ -1,0 +1,107 @@
+# Action Boundaries Policy
+# Defines what each role is allowed, requires approval for, or denied from doing.
+# Enforcement: agent-tool-orchestration checks this before state-changing actions.
+
+roles:
+  backend-developer:
+    allowed:
+      - read_file
+      - write_file
+      - create_file
+      - run_tests
+      - run_linter
+      - run_build
+      - search_code
+      - read_logs
+    requires_approval:
+      - delete_file
+      - run_migration
+      - modify_environment_config
+      - install_dependency
+      - modify_public_api_contract
+    denied:
+      - push_to_production
+      - modify_secrets
+      - drop_database
+      - force_push
+      - delete_branch_main
+
+  frontend-developer:
+    allowed:
+      - read_file
+      - write_file
+      - create_file
+      - run_tests
+      - run_linter
+      - run_build
+      - run_dev_server
+      - search_code
+    requires_approval:
+      - delete_file
+      - install_dependency
+      - modify_public_api_contract
+    denied:
+      - run_migration
+      - modify_secrets
+      - push_to_production
+      - drop_database
+
+  reviewer:
+    allowed:
+      - read_file
+      - search_code
+      - run_tests
+      - run_linter
+      - run_build
+      - read_logs
+    requires_approval:
+      - write_file
+    denied:
+      - delete_file
+      - run_migration
+      - modify_secrets
+      - push_to_production
+      - install_dependency
+
+  devops-engineer:
+    allowed:
+      - read_file
+      - write_file
+      - create_file
+      - run_tests
+      - run_build
+      - read_logs
+      - run_deployment
+      - search_code
+    requires_approval:
+      - run_migration
+      - modify_environment_config
+      - modify_secrets
+      - push_to_production
+      - rollback_deployment
+    denied:
+      - drop_database
+      - force_push
+      - delete_branch_main
+
+  data-engineer:
+    allowed:
+      - read_file
+      - write_file
+      - create_file
+      - run_tests
+      - search_code
+      - read_database
+      - run_query
+    requires_approval:
+      - write_database
+      - run_migration
+      - export_data
+      - delete_file
+    denied:
+      - drop_database
+      - modify_secrets
+      - push_to_production
+
+# Default: any action not listed for a role requires approval.
+default_policy: requires_approval

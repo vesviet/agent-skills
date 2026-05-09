@@ -9,8 +9,12 @@ This directory contains the **portable core** skill inventory for the global eng
 These cover agent operating discipline:
 
 - `agent-context-management`
+- `agent-delegation`
 - `agent-memory-compaction`
+- `agent-model-routing`
+- `agent-observability`
 - `agent-prompt-lifecycle`
+- `agent-semantic-memory`
 - `agent-tool-orchestration`
 - `agent-quality-gate`
 - `agent-handoff`

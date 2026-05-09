@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a2a-artifact",
+  "title": "A2A Task Artifact",
+  "description": "Schema for the result returned by an agent after completing a delegated A2A task.",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "ID of the original A2A task this artifact responds to."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["completed", "failed", "blocked", "partial"],
+      "description": "Outcome status of the task."
+    },
+    "result": {
+      "type": "object",
+      "description": "The actual output conforming to the schema specified in the task.",
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Proof that success criteria were met."
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "criterion": { "type": "string" },
+          "reason": { "type": "string" }
+        },
+        "required": ["criterion", "reason"]
+      },
+      "description": "Which success criteria were not met and why."
+    },
+    "blockers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Issues preventing completion that require delegator action."
+    },
+    "token_usage": {
+      "type": "object",
+      "properties": {
+        "input_tokens": { "type": "integer" },
+        "output_tokens": { "type": "integer" },
+        "model_used": { "type": "string" }
+      },
+      "description": "Cost tracking for observability."
+    }
+  },
+  "required": ["task_id", "status"]
+}

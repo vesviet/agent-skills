@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a2a-task",
+  "title": "A2A Task Delegation",
+  "description": "Schema for delegating a scoped task from one agent to another, following A2A protocol principles.",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Unique identifier for this delegation."
+    },
+    "delegator": {
+      "type": "string",
+      "description": "Role or agent identity of the delegating agent."
+    },
+    "assignee_role": {
+      "type": "string",
+      "description": "Required role of the receiving agent."
+    },
+    "task_description": {
+      "type": "string",
+      "description": "Clear, self-contained description of the work to perform."
+    },
+    "input_data": {
+      "type": "object",
+      "description": "All context the assignee needs. Must be self-contained.",
+      "additionalProperties": true
+    },
+    "output_schema_ref": {
+      "type": "string",
+      "description": "Reference to the JSON Schema the result must conform to."
+    },
+    "success_criteria": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Conditions that must be true for the task to be considered complete."
+    },
+    "constraints": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Boundaries the assignee must not exceed."
+    },
+    "risk_tier": {
+      "type": "string",
+      "enum": ["vibe", "agentic", "engineering"],
+      "description": "Level of rigor required for this task."
+    },
+    "timeout_minutes": {
+      "type": "integer",
+      "description": "Maximum time allowed for task completion."
+    }
+  },
+  "required": ["task_id", "delegator", "assignee_role", "task_description", "output_schema_ref", "success_criteria", "risk_tier"]
+}

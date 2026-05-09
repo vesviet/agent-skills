@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "validation-result",
+  "title": "Validation Result",
+  "description": "Structured output from a validation or quality gate step.",
+  "type": "object",
+  "properties": {
+    "phase_reviewed": {
+      "type": "string",
+      "description": "Which phase or step was validated."
+    },
+    "checks_run": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "status": { "type": "string", "enum": ["passed", "failed", "skipped"] },
+          "detail": { "type": "string" }
+        },
+        "required": ["name", "status"]
+      }
+    },
+    "passed": {
+      "type": "boolean",
+      "description": "Overall pass/fail verdict."
+    },
+    "skipped_checks": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Checks that were skipped and why."
+    },
+    "residual_risk": {
+      "type": "string",
+      "description": "Remaining risk after validation."
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["advance", "rework", "escalate"],
+      "description": "Recommended action based on validation results."
+    }
+  },
+  "required": ["phase_reviewed", "checks_run", "passed", "decision"]
+}
