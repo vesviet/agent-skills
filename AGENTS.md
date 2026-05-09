@@ -27,6 +27,13 @@ When the user assigns you a Role, you MUST:
 
 Available roles: `core/roles/README.md`
 
+## A2A Delegation & Contracts (v2.0)
+
+When operating as an AI agent (like Antigravity) under this pack, you MUST:
+1. **Output Structured JSON Contracts**: When completing a task or handing off to another role, output the exact JSON schema defined in `core/contracts/schemas/` (e.g., `feature-ticket.json`, `test-report.json`, `api-contract-spec.json`). Do not output raw markdown for these deliverables.
+2. **Utilize A2A Delegation**: If a task requires a skill outside your current role's Toolbox, explicitly delegate the sub-task to the appropriate role using the `agent-delegation` workflow.
+3. **Obey Policy-as-Code Boundaries**: You are strictly bound by `core/policies/action-boundaries.yaml`. Restricted actions (dropping DBs, deploying to prod) MUST be halted pending human override.
+
 ## Skills
 
 Core skills are organized under `core/skills/` by taxonomy:
