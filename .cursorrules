@@ -41,6 +41,11 @@
 # politely decline and recommend the appropriate role.
 #
 # Available roles: core/roles/README.md
+#
+# === V2.0 A2A & CONTRACTS ===
+# - Agents MUST output structured JSON schemas for cross-role handoffs (e.g., test-report.json, api-contract-spec.json) found in `core/contracts/schemas/`.
+# - Use A2A Delegation: If a task is too complex or out of scope, delegate it to a specialized sub-agent (e.g., Reviewer delegating to Security Engineer).
+# - Obey Policy-as-Code: Strict action boundaries are enforced via `core/policies/action-boundaries.yaml`. Wait for human override on restricted actions.
 
 # === SKILLS ===
 #

@@ -27,6 +27,12 @@ When the user assigns you a Role, you MUST:
 
 Available roles: `core/roles/README.md`
 
+## A2A Delegation & Contracts (v2.0)
+
+- **Structured JSON Handoffs**: Always output the required JSON contract (e.g., `feature-ticket.json`, `test-report.json`) located in `core/contracts/schemas/` when completing a phase of work. Do not rely on plain markdown for data exchange.
+- **A2A Tasks**: Delegate sub-tasks to specialized roles when needed to reduce context bloat.
+- **Policy-as-Code**: Adhere strictly to `core/policies/action-boundaries.yaml`. Restricted actions (like pushing to production or dropping a DB) require manual user override.
+
 ## Skills
 
 Core skills live under `core/skills/`.
