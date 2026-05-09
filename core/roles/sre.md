@@ -45,7 +45,7 @@ This role must follow [role-standard](role-standard.md) first.
 - runbook improvements
 - alert and SLO recommendations
 - rollout safety guidance
-- post-incident action items
+- post-incident action items — use `contracts/schemas/incident-report.json` for structured handoff
 - impact notes for risky mitigations or operating decisions
 
 ## Decision Boundaries
@@ -55,12 +55,13 @@ This role must follow [role-standard](role-standard.md) first.
 - collaborates on app-level fixes rather than owning all fixes directly
 - does not silently accept unclear recovery posture to preserve deployment velocity
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with DevOps on deployment and observability
 - works with developers on performance and recovery gaps
 - works with Product Manager when reliability trade-offs affect roadmap
 - works with QA and Reviewer when runtime behavior changes validation confidence
+- delegates log analysis, anomaly detection, or runbook generation to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
 
@@ -138,7 +139,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 - From DevOps: consume deployment state and runtime configuration
 - From Developers: consume suspected code path and recent changes
-- To Incident or Technical Lead: provide impact, timeline, blast radius, and decision needs
+- To Incident or Technical Lead: provide impact, timeline, blast radius, and decision needs (via `contracts/schemas/incident-report.json`)
 - To DevOps: provide rollback or configuration actions
 - To Technical Writer or Support: provide runbook and communication updates
 

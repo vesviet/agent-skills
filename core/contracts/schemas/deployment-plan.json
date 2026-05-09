@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "deployment-plan",
+  "title": "Deployment Plan",
+  "description": "Structured output for a deployment strategy and execution plan.",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Version tag or commit hash being deployed."
+    },
+    "environments": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Target environments (e.g., staging, production)."
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "order": { "type": "integer" },
+          "action": { "type": "string" },
+          "is_destructive": { "type": "boolean" },
+          "owner": { "type": "string" }
+        },
+        "required": ["order", "action", "is_destructive"]
+      },
+      "description": "Ordered sequence of deployment steps."
+    },
+    "rollback_plan": {
+      "type": "object",
+      "properties": {
+        "strategy": { "type": "string", "enum": ["revert_commit", "previous_image", "feature_flag_off", "manual_restore"] },
+        "estimated_time_mins": { "type": "integer" },
+        "data_loss_risk": { "type": "string", "enum": ["none", "low", "high"] }
+      },
+      "required": ["strategy", "data_loss_risk"]
+    },
+    "smoke_tests": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Post-deployment checks to verify health."
+    }
+  },
+  "required": ["version", "environments", "steps", "rollback_plan"]
+}

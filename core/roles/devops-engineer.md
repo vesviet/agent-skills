@@ -46,7 +46,7 @@ This role must follow [role-standard](role-standard.md) first.
 - pipeline changes
 - deployment config
 - environment automation
-- rollout and rollback procedures
+- rollout and rollback procedures — use `contracts/schemas/deployment-plan.json` for structured handoff
 - release impact notes for risky changes
 
 ## Decision Boundaries
@@ -56,12 +56,13 @@ This role must follow [role-standard](role-standard.md) first.
 - escalates risky environment changes
 - does not silently accept rollout risk to preserve release speed
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with developers on build and config needs
 - works with SRE on operability and alerts
 - works with Security Engineer on secret handling and access controls
 - works with QA when environment readiness or smoke-test scope changes validation confidence
+- delegates load testing, infrastructure validation, or database migrations to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
 
@@ -146,7 +147,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 - From Developers: consume build, config, migration, and runtime needs
 - From Security: consume secret and access-control requirements
-- To SRE: provide rollout status, health signals, recovery path, and residual risk
+- To SRE: provide rollout status, health signals, recovery path, and deployment plan (via `contracts/schemas/deployment-plan.json`)
 - To QA: provide environment readiness, smoke-test scope, and validation caveats
 - To Technical Writer or Support: provide operational notes and release caveats
 

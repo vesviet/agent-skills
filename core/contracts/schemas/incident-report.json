@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "incident-report",
+  "title": "Incident Report",
+  "description": "Structured output for SRE incident response and post-mortems.",
+  "type": "object",
+  "properties": {
+    "incident_id": { "type": "string" },
+    "severity": { "type": "string", "enum": ["SEV-1", "SEV-2", "SEV-3", "SEV-4"] },
+    "status": { "type": "string", "enum": ["investigating", "mitigated", "resolved"] },
+    "impact": {
+      "type": "object",
+      "properties": {
+        "user_facing": { "type": "boolean" },
+        "services_affected": { "type": "array", "items": { "type": "string" } },
+        "downtime_minutes": { "type": "integer" }
+      },
+      "required": ["user_facing"]
+    },
+    "timeline": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "event": { "type": "string" }
+        },
+        "required": ["timestamp", "event"]
+      }
+    },
+    "root_cause": { "type": "string", "description": "Identified root cause (or hypothesized if investigating)." },
+    "mitigation_steps": { "type": "array", "items": { "type": "string" } },
+    "action_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "task": { "type": "string" },
+          "owner_role": { "type": "string" },
+          "ticket_ref": { "type": "string" }
+        },
+        "required": ["task", "owner_role"]
+      }
+    }
+  },
+  "required": ["severity", "status", "impact", "timeline"]
+}
