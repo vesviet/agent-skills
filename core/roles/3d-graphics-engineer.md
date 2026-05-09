@@ -48,7 +48,7 @@ This role must follow [role-standard](role-standard.md) first.
 - 3D rendering code (R3F, Three.js, WebGL)
 - optimized assets or asset processing pipelines
 - custom shaders (GLSL)
-- performance profiling notes and memory leak checks
+- performance profiling notes and memory leak checks — use `contracts/schemas/performance-audit.json` for structured handoff
 - regression notes for risky rendering fixes
 - impacted-scene summary when core rendering logic changes
 
@@ -59,12 +59,13 @@ This role must follow [role-standard](role-standard.md) first.
 - escalates poor asset quality, hardware limitations, or cross-surface performance conflicts
 - does not silently reduce visual quality below requirements to achieve performance without consensus
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with UI/UX and 3D Artists on interaction intent and visual fidelity
 - works with Frontend Developer on integrating the canvas with the DOM and React state
 - works with QA on device performance validation and crash reporting
 - works with Reviewer on code quality, mathematics, and memory management
+- delegates asset optimization or texture compression tasks to specialist agents using **A2A tasks** (`agent-delegation` skill)
 - works with Product when 3D bugs reveal hardware constraints or unachievable visual goals
 
 ## Guardrails

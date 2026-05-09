@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "performance-audit",
+  "title": "Performance Audit Result",
+  "description": "Structured output for a frontend or 3D performance audit.",
+  "type": "object",
+  "properties": {
+    "target": {
+      "type": "string",
+      "description": "Page, route, scene, or component being audited."
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "lcp_ms": { "type": "number", "description": "Largest Contentful Paint in milliseconds." },
+        "fid_ms": { "type": "number", "description": "First Input Delay in milliseconds." },
+        "cls": { "type": "number", "description": "Cumulative Layout Shift score." },
+        "ttfb_ms": { "type": "number", "description": "Time to First Byte in milliseconds." },
+        "fps": { "type": "number", "description": "Frames per second (for 3D scenes)." },
+        "memory_mb": { "type": "number", "description": "Peak memory usage in MB." },
+        "draw_calls": { "type": "integer", "description": "Number of draw calls (for 3D scenes)." },
+        "bundle_size_kb": { "type": "number", "description": "Total JS bundle size in KB." }
+      },
+      "description": "Measured performance metrics."
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "issue": { "type": "string" },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
+          "recommendation": { "type": "string" }
+        },
+        "required": ["issue", "severity", "recommendation"]
+      }
+    },
+    "device_profile": {
+      "type": "string",
+      "description": "Device or profile used for testing (e.g. 'Desktop Chrome', 'Mobile Safari', 'Low-end Android')."
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "conditional_pass", "fail"],
+      "description": "Overall performance verdict."
+    }
+  },
+  "required": ["target", "findings", "verdict"]
+}

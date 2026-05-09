@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ui-component-spec",
+  "title": "UI Component Specification",
+  "description": "Structured output for a UI component specification — used for handoff between UI/UX Designer and Frontend Developer roles.",
+  "type": "object",
+  "properties": {
+    "component_name": {
+      "type": "string",
+      "description": "PascalCase name of the component."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["presentational", "stateful", "compositional", "island"],
+      "description": "Component architecture type."
+    },
+    "props": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "required": { "type": "boolean" },
+          "description": { "type": "string" }
+        },
+        "required": ["name", "type", "required"]
+      },
+      "description": "Component input props."
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["default", "loading", "empty", "error", "disabled", "success", "hover", "focus", "active"]
+      },
+      "description": "Visual states the component must support."
+    },
+    "accessibility": {
+      "type": "object",
+      "properties": {
+        "role": { "type": "string", "description": "ARIA role if not implicit from semantic HTML." },
+        "keyboard_support": { "type": "boolean" },
+        "focus_trap": { "type": "boolean" },
+        "aria_labels": { "type": "array", "items": { "type": "string" } }
+      },
+      "description": "Accessibility requirements."
+    },
+    "responsive_breakpoints": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Breakpoints requiring layout changes (e.g. 'sm', 'md', 'lg')."
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Other components or hooks this component depends on."
+    }
+  },
+  "required": ["component_name", "type", "states"]
+}

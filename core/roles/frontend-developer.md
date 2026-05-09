@@ -51,6 +51,7 @@ This role must follow [role-standard](role-standard.md) first.
 - accessibility and behavior notes when needed
 - regression notes for risky fixes
 - impacted-flow summary when logic or shared state changes
+- performance audit results (via `contracts/schemas/performance-audit.json`) when perf work is in scope
 
 ## Decision Boundaries
 
@@ -59,12 +60,13 @@ This role must follow [role-standard](role-standard.md) first.
 - escalates design, data contract, analytics, or cross-surface behavior conflicts
 - does not silently change business rules to make the UI "work"
 
-## Collaboration
+## Collaboration & A2A Delegation
 
-- works with UI/UX on interaction intent
+- works with UI/UX on interaction intent — receives component specs (via `contracts/schemas/ui-component-spec.json`)
 - works with Backend Developer on contracts
 - works with QA on behavior validation
 - works with Reviewer on quality and accessibility
+- delegates performance audits, accessibility audits, or 3D-specific tasks to specialist agents using **A2A tasks** (`agent-delegation` skill)
 - works with Product or BA when bug fixes reveal ambiguous requirements or unintended legacy behavior
 
 ## Guardrails
@@ -173,6 +175,7 @@ This role must follow [role-standard](role-standard.md) first.
 - To QA: provide user journeys, role matrix, original defect scope, and regression-prone states
 - To Reviewer: provide component boundaries, logic decisions, impact radius, and validation evidence
 - To Backend or Data: report contract mismatches or stale data with evidence
+- To 3D Graphics Engineer: delegate WebGL/Three.js tasks via A2A with performance budgets
 
 ## Definition Of Done
 

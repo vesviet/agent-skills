@@ -43,7 +43,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 - flow diagrams
 - wireframes or annotated UI specs
-- component behavior rules
+- component behavior rules — use `contracts/schemas/ui-component-spec.json` for structured handoff
 - content and interaction guidance
 - accessibility notes
 - impact notes for changed flows or reused patterns
@@ -55,12 +55,13 @@ This role must follow [role-standard](role-standard.md) first.
 - collaborates on feasibility when implementation constraints are tight
 - does not silently change product behavior through interaction tweaks
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with Product Manager and Business Analyst on user goals
-- works with Frontend Developer on implementation details
+- works with Frontend Developer on implementation details — delivers component specs via structured contract
 - works with Technical Writer on content clarity
 - works with QA when a UX change expands validation scope
+- delegates accessibility audits or usability testing to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
 
@@ -138,7 +139,7 @@ This role must follow [role-standard](role-standard.md) first.
 ## Role Handoff
 
 - From Product or BA: consume goals, actors, acceptance criteria, and preserved behavior
-- To Frontend Developer: provide states, components, logic notes, and behavior rules
+- To Frontend Developer: provide states, components, logic notes, behavior rules, and component spec (via `contracts/schemas/ui-component-spec.json`)
 - To QA: provide user journeys, adjacent flows, and accessibility-sensitive checks
 - To Technical Writer: provide user-facing wording and terminology
 - To Product: escalate scope or behavior changes

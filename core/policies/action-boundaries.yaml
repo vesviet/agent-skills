@@ -121,5 +121,44 @@ roles:
       - drop_database
       - install_dependency
 
+  ui-ux-designer:
+    allowed:
+      - read_file
+      - write_file
+      - create_file
+      - search_code
+      - run_dev_server
+    requires_approval:
+      - delete_file
+      - run_build
+    denied:
+      - run_migration
+      - modify_environment_config
+      - modify_secrets
+      - push_to_production
+      - drop_database
+      - install_dependency
+      - run_deployment
+
+  3d-graphics-engineer:
+    allowed:
+      - read_file
+      - write_file
+      - create_file
+      - run_tests
+      - run_linter
+      - run_build
+      - run_dev_server
+      - search_code
+    requires_approval:
+      - delete_file
+      - install_dependency
+      - modify_public_api_contract
+    denied:
+      - run_migration
+      - modify_secrets
+      - push_to_production
+      - drop_database
+
 # Default: any action not listed for a role requires approval.
 default_policy: requires_approval
