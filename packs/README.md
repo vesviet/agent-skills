@@ -12,3 +12,4 @@ Examples:
 - `obj-team`: core plus Astro/Cloudflare plus OBJ 3D Configurator overlay
 - `golf-team`: core plus Astro/Cloudflare plus Golf ICM catalog overlay
 - `sport-team`: core plus Astro/Cloudflare plus Sport ICM catalog overlay
+- `ecommerce-team`: core plus Go Microservices plus Ecommerce Microservices overlay

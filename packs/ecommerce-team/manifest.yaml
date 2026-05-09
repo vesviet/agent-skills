@@ -1,0 +1,6 @@
+name: ecommerce-team
+description: Global engineering core plus Go Microservices conventions and Ecommerce Microservices overlay.
+includes:
+  - core
+  - overlays/go-microservices
+  - overlays/ecommerce-microservices
