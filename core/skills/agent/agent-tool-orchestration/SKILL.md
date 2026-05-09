@@ -16,6 +16,26 @@ Use this skill when a task needs disciplined tool selection and sequencing acros
 - inspect before editing and validate after substantive changes
 - keep tool use scoped to the user's request and repo-local conventions
 - do not let a task move to the next phase without enough evidence for that phase
+- when available, prefer MCP-compatible tool servers over ad-hoc integrations
+- validate tool inputs and outputs against their declared contracts
+
+## MCP And Context Engineering
+
+Model Context Protocol (MCP) is the 2026 industry standard for connecting agents to external tools, databases, and enterprise systems.
+
+When orchestrating tools in an MCP-aware environment:
+
+- **Discovery**: query the MCP server for available tools before assuming capabilities
+- **Contracts**: respect the input/output schema declared by each tool server
+- **Authentication**: use the standard MCP auth layer rather than embedding credentials in prompts
+- **Idempotency**: prefer idempotent tool calls; confirm side effects before executing non-idempotent actions
+- **Cost awareness**: set budgets for expensive tool calls (API queries, large data retrievals) and report usage
+
+When MCP is not available, apply the same discipline manually:
+
+- document each tool's expected input and output format
+- validate responses before passing them to the next step
+- treat tool failures as retriable unless explicitly marked as fatal
 
 ## Suggested Process
 
@@ -101,14 +121,18 @@ Evidence required before next phase:
 - [ ] task type and current phase classified
 - [ ] repo constraints checked before action
 - [ ] smallest reliable tools selected
+- [ ] MCP tool discovery performed when available
+- [ ] tool input/output contracts validated
 - [ ] independent exploration parallelized
 - [ ] state-changing commands sequenced safely
 - [ ] phase progression justified by evidence
 - [ ] edits validated with relevant checks
+- [ ] tool call costs tracked when applicable
 
 ## Related Skills
 
 - **agent-context-management**: Keep goal, evidence, and assumptions aligned
+- **agent-prompt-lifecycle**: Manage prompt versioning and evaluation when orchestrating prompt-driven tasks
 - **agent-quality-gate**: Run the correct completion checks
 - **agent-handoff**: Report results and remaining risk clearly
 - **troubleshoot-service**: Diagnose failing commands or runtime behavior

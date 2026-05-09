@@ -113,6 +113,7 @@ Risk acceptance owner if needed:
 
 - **agent-tool-orchestration**: Run checks in the right order
 - **agent-context-management**: Track validation evidence across long tasks
+- **agent-prompt-lifecycle**: Include prompt evaluation as a quality gate when prompt assets change
 - **agent-handoff**: Communicate validation results clearly
 - **write-tests**: Add coverage when risk is not protected
 - **commit-code**: Validate changes before approved commit creation

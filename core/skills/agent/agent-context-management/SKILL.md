@@ -15,6 +15,20 @@ Use this skill when the work requires preserving the user's latest request, repo
 - distinguish confirmed facts from assumptions and open questions
 - avoid restarting from scratch after interruption when enough context remains
 - summarize only the context needed to continue safely
+- prefer dynamically assembled context over static hardcoded context when both are available
+- validate that injected context (from RAG, MCP tools, or memory) is relevant to the current task
+
+## Context Engineering
+
+In 2026, agent context management extends beyond tracking user intent and evidence. Context Engineering is the discipline of assembling the right information into the model's context window at the right time.
+
+When managing context for a task, consider:
+
+- **Static vs. Dynamic**: is the context hardcoded in the prompt, or should it be retrieved dynamically from a vector store, API, or tool?
+- **Relevance filtering**: not all available context belongs in the window; inject only what the current phase requires
+- **Context budget**: large context windows are not free; track token usage and prioritize high-signal information
+- **Staleness**: verify that retrieved data is current; flag stale context before acting on it
+- **Provenance**: record where each piece of injected context came from so decisions can be audited
 
 ## Suggested Process
 
@@ -114,6 +128,8 @@ Next safe action:
 - [ ] applicable rules and constraints noted
 - [ ] current phase and active owner tracked
 - [ ] explored evidence tracked
+- [ ] dynamic context sources identified and validated
+- [ ] context relevance and staleness checked
 - [ ] assumptions and open questions separated from facts
 - [ ] next action follows the current state
 - [ ] final response answers the newest request
@@ -121,6 +137,7 @@ Next safe action:
 ## Related Skills
 
 - **agent-tool-orchestration**: Choose and sequence tools without losing context
+- **agent-prompt-lifecycle**: Track prompt evaluation evidence and version history
 - **agent-quality-gate**: Run the right validators before completion
 - **agent-handoff**: Produce a concise continuation or completion summary
 - **navigate-service**: Gather codebase context for service work

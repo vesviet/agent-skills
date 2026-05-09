@@ -10,6 +10,7 @@ These cover agent operating discipline:
 
 - `agent-context-management`
 - `agent-memory-compaction`
+- `agent-prompt-lifecycle`
 - `agent-tool-orchestration`
 - `agent-quality-gate`
 - `agent-handoff`

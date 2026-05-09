@@ -4,6 +4,8 @@ Global engineering skill pack for software delivery work.
 
 The repository is now split into a portable **core** plus optional **overlays** so global teams can reuse the foundation without inheriting repo-specific or brand-specific assumptions.
 
+As of 2026, the core pack reflects the industry shift from ad-hoc prompting to **Context Engineering** and **PromptOps**: prompts are treated as versioned, testable assets; tool integration follows the **Model Context Protocol (MCP)** standard; and prompt quality is measured through automated evaluation rather than gut-feel assessment.
+
 ## Repository Layout
 
 - `core/`: portable source of truth for rules, roles, skills, workflows, validators, and helper config
@@ -40,9 +42,10 @@ Overlay-specific skills are intentionally kept out of the global core inventory.
 
 | Skill | What it covers |
 |-------|----------------|
-| [agent-context-management](core/skills/agent/agent-context-management/SKILL.md) | Preserve intent, evidence, assumptions, and continuity |
+| [agent-context-management](core/skills/agent/agent-context-management/SKILL.md) | Preserve intent, evidence, assumptions, continuity, and dynamic context assembly |
 | [agent-memory-compaction](core/skills/agent/agent-memory-compaction/SKILL.md) | Compact long conversations into a minimal working state |
-| [agent-tool-orchestration](core/skills/agent/agent-tool-orchestration/SKILL.md) | Choose, sequence, and validate tool use safely |
+| [agent-prompt-lifecycle](core/skills/agent/agent-prompt-lifecycle/SKILL.md) | Version, evaluate, and monitor prompt assets through PromptOps pipeline |
+| [agent-tool-orchestration](core/skills/agent/agent-tool-orchestration/SKILL.md) | Choose, sequence, and validate tool use safely with MCP awareness |
 | [agent-quality-gate](core/skills/agent/agent-quality-gate/SKILL.md) | Run validators, lints, tests, builds, and diff checks |
 | [agent-handoff](core/skills/agent/agent-handoff/SKILL.md) | Summarize state, validation, blockers, and next actions |
 
