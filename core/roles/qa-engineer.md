@@ -50,7 +50,7 @@ This role must follow [role-standard](role-standard.md) first.
 - risk-based QA plan (scope, environments, test data, and matrix)
 - test scenarios & exploratory charters (what to try, why it matters, what to observe)
 - automation plan: what should be automated now vs. queued (with rationale)
-- defect reports with evidence and suspected blast radius
+- defect reports with evidence and suspected blast radius — use `contracts/schemas/test-report.json` for structured handoff
 - release confidence summary with residual risk and explicit sign-off recommendation
 - regression checklist that can be repeated on future changes
 
@@ -61,13 +61,14 @@ This role must follow [role-standard](role-standard.md) first.
 - can recommend blocking release when critical risk is untested, unclear, or failing
 - escalates when quality risk exists but the accept/ship decision is outside this role’s authority
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with Business Analyst on acceptance criteria
 - works with developers on reproduction and fixes
 - works with Reviewer and Technical Lead on risk-based validation
 - works with SRE/DevOps on environment parity, observability, and rollout/rollback verification
 - works with Security Engineer when change touches authn/authz, sensitive data, or trust boundaries
+- delegates automated test script generation or log scraping to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
 
@@ -231,7 +232,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 - From Product or BA: consume acceptance criteria and business risk
 - From Developers: consume implementation notes and regression areas
-- To Developers: provide reproducible defects, evidence, and suspected affected areas (and why)
+- To Developers: provide reproducible defects, evidence, and suspected affected areas via structured reporting (`contracts/schemas/test-report.json`)
 - To Reviewer or Technical Lead: provide risk inventory, what was validated, and residual risk
 - To SRE or DevOps: provide smoke checks, rollout/rollback validation concerns, and monitoring signals
 - To Product: communicate user-impacting defects and ship/hold recommendation with trade-offs

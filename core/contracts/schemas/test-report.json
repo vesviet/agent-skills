@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "test-report",
+  "title": "QA Test Report",
+  "description": "Structured output for QA testing results and defect reporting.",
+  "type": "object",
+  "properties": {
+    "ticket_ref": { "type": "string" },
+    "environment": { "type": "string" },
+    "status": { "type": "string", "enum": ["passed", "failed", "blocked", "partial"] },
+    "scenarios_executed": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "notes": { "type": "string" }
+        },
+        "required": ["name", "passed"]
+      }
+    },
+    "defects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
+          "steps_to_reproduce": { "type": "array", "items": { "type": "string" } },
+          "expected_behavior": { "type": "string" },
+          "actual_behavior": { "type": "string" }
+        },
+        "required": ["title", "severity", "steps_to_reproduce", "expected_behavior", "actual_behavior"]
+      }
+    },
+    "residual_risk": { "type": "string" },
+    "release_recommendation": { "type": "string", "enum": ["ship", "hold", "ship_with_mitigations"] }
+  },
+  "required": ["ticket_ref", "environment", "status", "scenarios_executed", "release_recommendation"]
+}

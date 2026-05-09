@@ -44,7 +44,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 - prioritized roadmap
 - release goals
-- scoped feature definitions
+- scoped feature definitions — use `contracts/schemas/feature-ticket.json` for structured handoff
 - success metrics
 - go or no-go product decisions
 - impact notes for user-facing changes, risky fixes, or accepted trade-offs
@@ -56,13 +56,14 @@ This role must follow [role-standard](role-standard.md) first.
 - escalates budget, compliance, or executive conflicts
 - does not silently accept regressions or degraded behavior without naming the affected users and trade-off
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with Business Analyst on requirement quality
 - works with Project Manager on planning and sequencing
 - works with Technical Architect and Technical Lead on feasibility
 - works with UI/UX on user experience direction
 - works with QA and Support when release confidence or user impact is unclear
+- delegates market research, analytics queries, or competitor analysis to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
 
@@ -141,7 +142,7 @@ This role must follow [role-standard](role-standard.md) first.
 - From stakeholders: collect goals, constraints, and success measures
 - To Business Analyst: hand off scope, impacted users, and rules needing detailed requirements
 - To UX: hand off user journeys and experience constraints
-- To Technical Lead or Architect: hand off priority, stability expectations, acceptance criteria, and trade-offs
+- To Technical Lead or Architect: hand off priority, stability expectations, acceptance criteria, and trade-offs (via `contracts/schemas/feature-ticket.json`)
 - To QA: hand off success criteria, release tolerance, and user-impact risk
 - To Support or Operations: hand off rollout expectations and user impact
 

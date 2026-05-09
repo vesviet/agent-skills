@@ -42,7 +42,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Outputs Produced
 
-- user stories
+- user stories — use `contracts/schemas/feature-ticket.json` for structured handoff
 - acceptance criteria
 - process maps
 - glossary and business rules
@@ -56,13 +56,14 @@ This role must follow [role-standard](role-standard.md) first.
 - does not choose implementation details alone
 - does not silently allow ambiguous business behavior to pass as "engineering detail"
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with Product Manager on value and scope
 - works with UI/UX on user flow clarity
 - works with Technical Lead on feasibility and ambiguity removal
 - works with QA on testable acceptance criteria
 - works with Support or Operations when real-world exceptions reveal hidden rules
+- delegates documentation drafting or meeting summaries to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
 
@@ -140,7 +141,7 @@ This role must follow [role-standard](role-standard.md) first.
 - From Product: consume goals, priority, and business context
 - From stakeholders: collect process details, exceptions, and examples
 - To UX: provide actors, flows, edge cases, and interaction constraints
-- To Technical Lead: provide requirements, preserved behavior, rules, and open questions
+- To Technical Lead: provide requirements, preserved behavior, rules, and open questions (via `contracts/schemas/feature-ticket.json`)
 - To QA: provide acceptance criteria, edge cases, and impacted roles
 - To Documentation: provide terminology and business process details
 
