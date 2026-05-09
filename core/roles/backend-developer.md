@@ -52,6 +52,7 @@ This role must follow [role-standard](role-standard.md) first.
 - integration updates
 - implementation notes when needed
 - regression and compatibility notes for risky fixes
+- API contract definitions — use `contracts/schemas/api-contract-spec.json` for structured handoff
 - impact summary when contracts, shared logic, or side effects change
 
 ## Decision Boundaries
@@ -61,12 +62,13 @@ This role must follow [role-standard](role-standard.md) first.
 - escalates unclear requirements or cross-service impacts
 - does not silently change business rules, compatibility guarantees, or data semantics to make a bug disappear
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with Technical Lead on approach
 - works with QA on testability and risky scenarios
 - works with Reviewer on change quality
 - works with DevOps and SRE on runtime issues
+- delegates complex SQL queries or database migrations to specialist agents using **A2A tasks** (`agent-delegation` skill)
 - works with Product or BA when a bug fix exposes unclear or conflicting domain behavior
 
 ## Guardrails
@@ -177,6 +179,7 @@ This role must follow [role-standard](role-standard.md) first.
 - To QA: provide changed behavior, original defect scope, test data needs, and regression risks
 - To Reviewer: provide design rationale, risky files, impact radius, and validation evidence
 - To DevOps or SRE: provide config, migration, rollout, monitoring, and rollback notes
+- To Frontend / Client teams: provide API contracts via structured JSON (using `contracts/schemas/api-contract-spec.json`)
 - To dependent teams or services: provide contract, schema, or event changes with explicit compatibility notes
 
 ## Definition Of Done

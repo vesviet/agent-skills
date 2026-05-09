@@ -29,11 +29,12 @@ Find a nearby endpoint that matches the shape you need:
 
 ### 2. Update The Contract
 
-Modify the source of truth the repo uses for APIs, such as:
+Modify the source of truth the repo uses for APIs, and if delivering a spec for A2A or Frontend handoff, use `contracts/schemas/api-contract-spec.json`. This may involve:
 
 - schema or IDL files
 - route definitions
 - typed request and response models
+- exporting the JSON API contract for downstream consumers
 
 If the repo uses generated code, regenerate it with the local command after editing the contract.
 

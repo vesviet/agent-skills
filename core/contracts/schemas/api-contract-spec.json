@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "api-contract-spec",
+  "title": "API Contract Specification",
+  "description": "Structured output defining an API endpoint contract. Used for backend-to-frontend handoff and A2A delegation.",
+  "type": "object",
+  "properties": {
+    "endpoint": {
+      "type": "string",
+      "description": "The route path (e.g., /api/v1/orders/{id})."
+    },
+    "method": {
+      "type": "string",
+      "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+    },
+    "description": {
+      "type": "string",
+      "description": "What this endpoint does and its business logic."
+    },
+    "auth_required": {
+      "type": "boolean",
+      "description": "Whether authentication/authorization is required."
+    },
+    "request_payload": {
+      "type": "object",
+      "description": "JSON Schema or definition of the expected request body/query parameters."
+    },
+    "response_success": {
+      "type": "object",
+      "description": "Expected successful response shape and status code."
+    },
+    "response_errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status_code": { "type": "integer" },
+          "error_code": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": ["status_code", "error_code"]
+      },
+      "description": "Expected failure responses."
+    },
+    "side_effects": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Events fired, database mutations, or cache invalidations."
+    }
+  },
+  "required": ["endpoint", "method", "response_success", "response_errors"]
+}
