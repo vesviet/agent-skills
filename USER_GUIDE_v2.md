@@ -29,6 +29,10 @@ To get the best results, you must explicitly invoke the agent by its **Role Name
 ### ✅ Example 2: Backend Development
 > *"Act as the `@backend-developer`. We need a new endpoint to fetch User Orders. Please define the API contract using `api-contract-spec.json`, then implement the Express route."*
 
+### ✅ Example 3: Bug Fixing with Agent Coordinator (Auto-delegation)
+When a QA Agent finds a bug (e.g., `test-report.json` says "failed"), you don't need to fix it manually. Wake up the Coordinator to manage the fix end-to-end:
+> *"Act as the `@agent-coordinator`. Read `test-report.json`. Use A2A to call `@backend-developer` to fix the Prisma error, then call `@qa-engineer` to re-test. Do not stop until the report status is 'passed'."*
+
 ---
 
 ## 3. A2A Delegation (Agent-to-Agent)
