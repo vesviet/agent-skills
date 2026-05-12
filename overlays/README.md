@@ -14,3 +14,4 @@ Current overlays:
 - [vesviet-content](vesviet-content/README.md)
 - [lease-content](lease-content/README.md)
 - [ecommerce-microservices](ecommerce-microservices/README.md)
+- [data-engineer-rabity](data-engineer-rabity/README.md)
