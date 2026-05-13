@@ -63,14 +63,28 @@ def parse_frontmatter(text: str) -> tuple[dict[str, str], str, list[str]]:
         return {}, text, ["unterminated YAML frontmatter"]
 
     metadata: dict[str, str] = {}
+    current_key: str | None = None
     for line in lines[1:end]:
         if not line.strip():
             continue
+        # Continuation line for YAML block scalar (> or |)
+        if current_key and line.startswith(("  ", "\t")):
+            metadata[current_key] += " " + line.strip()
+            continue
         if ":" not in line:
             errors.append(f"invalid frontmatter line: {line}")
+            current_key = None
             continue
         key, value = line.split(":", 1)
-        metadata[key.strip()] = value.strip()
+        key = key.strip()
+        value = value.strip()
+        # Detect block scalar indicators (> or |) and start accumulation
+        if value in (">", "|", ">-", "|-"):
+            metadata[key] = ""
+            current_key = key
+        else:
+            metadata[key] = value
+            current_key = None
 
     body = "\n".join(lines[end + 1 :])
     return metadata, body, errors

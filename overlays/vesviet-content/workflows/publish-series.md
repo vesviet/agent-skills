@@ -1,0 +1,81 @@
+# Publish Series
+
+End-to-end workflow for producing and publishing a multi-part technical series across the Vesviet and Learn Hugo sites.
+
+## When to Use
+
+Use this workflow when creating a new series or adding parts to an existing series that must be published on both `vesviet` (English) and `learn` (Vietnamese) sites.
+
+## Roles
+
+| Step | Owner |
+|------|-------|
+| Plan series structure | `task-planner` |
+| Draft content (Vietnamese) | `content-writer` |
+| Translate to English | `content-writer` |
+| Code linting review | `reviewer` |
+| Content conformance review | `reviewer` |
+| Commit and push | `content-writer` or `backend-developer` |
+
+## Steps
+
+### Step 1 — Plan Series Structure
+
+1. Define the series topic, target audience, and number of parts.
+2. Create a Table of Contents with part titles and one-line descriptions.
+3. Identify prerequisite links and cross-references to existing series.
+4. Save the plan under `plan/` with a date-based filename.
+
+### Step 2 — Initialize Series Infrastructure
+
+1. Create the series directory under `learn/content/series/<series-slug>/`.
+2. Write `_index.md` with `draft: false`, correct frontmatter (see `content-brand.md`), and TOC linking all parts.
+3. Verify URL structure matches Hugo config permalinks.
+
+### Step 3 — Draft Parts (Vietnamese — Learn site)
+
+For each part:
+1. Clone frontmatter conventions from sibling series (delimiter, keys, ordering).
+2. Include: Prerequisite block, numbered sections, code snippets with docstrings, Production Failure story, CTA/Next Step link.
+3. Set `draft: true` until review passes.
+
+### Step 4 — Review and Fix
+
+1. Run code linting checks (Python: `py_compile`/`flake8`, Go: `gofmt`/unused imports).
+2. Review frontmatter conformance against `content-brand.md` rules.
+3. Fix all blocking issues before proceeding.
+
+### Step 5 — Translate to English (Vesviet site)
+
+1. Create the same directory structure under `vesviet/content/series/<series-slug>/`.
+2. Translate all parts maintaining identical code snippets (only translate comments and strings).
+3. Update cross-site links to use absolute URLs where needed.
+
+### Step 6 — Final Review
+
+1. Run `reviewer` role on the English translation for consistency with existing Vesviet series.
+2. Verify no unused imports, no placeholder content, no broken internal links.
+
+### Step 7 — Commit and Push
+
+1. Commit the Learn repo: `git add && git commit -m "feat(content): add <series-name> series" && git push`
+2. Commit the Vesviet repo: same pattern.
+3. Verify both repos show clean `git status`.
+
+### Step 8 — Go Live
+
+1. Toggle `draft: false` on all parts when ready to publish.
+2. Commit the draft flag changes separately: `fix(content): publish <series-name> series`.
+3. Verify pages render correctly on both live sites.
+
+## Checklist
+
+- [ ] Series plan reviewed and approved
+- [ ] `_index.md` created with TOC and `draft: false`
+- [ ] All parts drafted with required structure (prerequisite, failure story, CTA)
+- [ ] Code snippets pass linting (no unused imports, valid syntax)
+- [ ] English translation completed for Vesviet site
+- [ ] Cross-site links use absolute URLs
+- [ ] Reviewer approved both Vietnamese and English versions
+- [ ] Both repos committed and pushed
+- [ ] Draft flags toggled for go-live

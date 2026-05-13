@@ -2,6 +2,20 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [2.1.0] - 2026-05-13
+
+### Fixed
+- `core/scripts/common.py`: `parse_frontmatter` now supports YAML block scalars (`>`, `|`, `>-`, `|-`). Multi-line descriptions no longer trigger false "invalid frontmatter line" errors.
+- `core/skills/security-data/data-engineer/SKILL.md`: restored multi-line description now that the parser handles it correctly.
+
+### Added
+- `overlays/vesviet-content/rules/content-brand.md`: populated with real voice/tone guidelines, style constraints (meta ≤ 160 chars, Production Failure template, code linting rules), and publishing constraints for Vesviet and Learn sites.
+- `overlays/vesviet-content/workflows/publish-series.md`: end-to-end workflow for producing and publishing multi-part technical series across both Hugo sites. Covers planning, drafting, translation, review, and go-live steps.
+- `core/contracts/schemas/series-article.json`: JSON Schema contract for series article output, validating frontmatter fields (date timezone, description length, weight ordering) and body structure (prerequisite block, production failure, CTA link).
+
+### Changed
+- `VERSION`: bumped from 2.0.0 to 2.1.0.
+
 ## [2.0.0] - 2026-05-09
 
 ### Added

@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Series Article",
+  "description": "Schema for a series article output, validating required frontmatter fields and body structure before publishing.",
+  "type": "object",
+  "required": ["frontmatter", "body"],
+  "properties": {
+    "frontmatter": {
+      "type": "object",
+      "required": ["title", "date", "draft", "description", "ShowToc", "TocOpen", "weight", "categories", "tags"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 120,
+          "description": "Article title including part number for series parts."
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+07:00$",
+          "description": "ISO 8601 datetime with +07:00 timezone offset."
+        },
+        "draft": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 160,
+          "description": "Meta description, must be ≤ 160 characters."
+        },
+        "ShowToc": {
+          "type": "boolean",
+          "const": true
+        },
+        "TocOpen": {
+          "type": "boolean",
+          "const": true
+        },
+        "weight": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Ordering weight within the series."
+        },
+        "categories": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 2
+        }
+      }
+    },
+    "body": {
+      "type": "object",
+      "required": ["prerequisite_block", "sections", "production_failure", "cta_link"],
+      "properties": {
+        "prerequisite_block": {
+          "type": "boolean",
+          "const": true,
+          "description": "Must open with a > **Prerequisite:** blockquote."
+        },
+        "sections": {
+          "type": "integer",
+          "minimum": 3,
+          "description": "Minimum number of H2 sections in the article body."
+        },
+        "production_failure": {
+          "type": "boolean",
+          "const": true,
+          "description": "Must contain at least one Production Failure case study."
+        },
+        "cta_link": {
+          "type": "boolean",
+          "const": true,
+          "description": "Must close with a Next Step / CTA link to the following part."
+        },
+        "code_snippets_linted": {
+          "type": "boolean",
+          "const": true,
+          "description": "All code snippets must pass basic linting for their language."
+        }
+      }
+    }
+  }
+}

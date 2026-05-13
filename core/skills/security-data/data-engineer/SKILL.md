@@ -1,11 +1,10 @@
 ---
 name: data-engineer
 description: >
-  Full-lifecycle data engineering skill covering ingestion, cleaning, transformation, storage,
-  orchestration, modeling, streaming, lakehouse, and observability. Use when any task involves
-  reading raw data sources, building ETL/ELT pipelines, querying with DuckDB or Spark,
-  modeling data warehouses, orchestrating with Airflow, processing Kafka streams, or
-  generating stakeholder-ready reports and quality gates.
+  Use when any task involves data ingestion, ETL/ELT pipelines, DuckDB/Spark queries,
+  dbt modeling, Airflow orchestration, Kafka streaming, lakehouse architecture, or
+  stakeholder-ready report generation. Full-lifecycle skill covering ingestion, cleaning,
+  transformation, storage, orchestration, modeling, streaming, and observability.
 ---
 
 # Data Engineer
