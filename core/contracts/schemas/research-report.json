@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "research-report",
+  "title": "Research Report Specification",
+  "description": "Structured output for a 10-round deep dive research synthesis.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "research-report"
+    },
+    "objective": {
+      "type": "string",
+      "description": "The core hypothesis, question, or problem being researched."
+    },
+    "execution_metrics": {
+      "type": "object",
+      "properties": {
+        "total_rounds": {
+          "type": "integer",
+          "minimum": 10,
+          "description": "Total number of iterative research loops executed. Must be at least 10."
+        },
+        "sources_analyzed": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": ["total_rounds", "sources_analyzed"]
+    },
+    "synthesis": {
+      "type": "object",
+      "properties": {
+        "key_findings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The primary verified insights discovered."
+        },
+        "critical_gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Missing, ambiguous, or unverifiable information after 10 rounds."
+        },
+        "confidence_score": {
+          "type": "string",
+          "enum": ["High", "Medium", "Low"],
+          "description": "Overall confidence based on data triangulation."
+        }
+      },
+      "required": ["key_findings", "critical_gaps", "confidence_score"]
+    },
+    "raw_data_references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_name": { "type": "string" },
+          "url": { "type": "string" },
+          "credibility": { 
+            "type": "string",
+            "enum": ["Official", "Authority", "Community", "Unverified"] 
+          },
+          "context_summary": { "type": "string" }
+        },
+        "required": ["source_name", "url", "credibility"]
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "objective",
+    "execution_metrics",
+    "synthesis",
+    "raw_data_references"
+  ]
+}
