@@ -74,6 +74,11 @@ All roles in this pack are expected to:
 
 - [data-engineer](data-engineer.md)
 
+### Education And Mentoring
+
+- [teacher](teacher.md)
+
+
 ## Lifecycle Mapping
 
 ### Discovery
@@ -129,6 +134,13 @@ All roles in this pack are expected to:
 - Business Analyst
 - Agent Coordinator
 
+### Learning And Enablement
+
+- Teacher
+- Technical Writer
+- Content Writer
+
+
 ## Recommended Workflows Per Role
 
 | Role | Primary Workflows |
@@ -152,6 +164,7 @@ All roles in this pack are expected to:
 | Technical Writer | `/add-new-feature`, `/service-review-release` |
 | Content Writer | `/add-new-feature`, `/service-review-release` |
 | Data Engineer | `/troubleshooting` |
+| Teacher | `/add-new-feature`, `/refactoring` |
 
 ## Usage Notes
 

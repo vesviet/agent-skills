@@ -80,6 +80,14 @@ Implemented in this batch:
 - `write-documentation`
 - `write-tech-radar`
 
+### Education
+
+These cover teaching, mentoring, and curriculum design:
+
+- `design-learning-plan`
+- `create-exercises`
+- `grade-and-review`
+
 Overlay-specific documentation skills live outside the core under `overlays/`.
 
 ## Priority Plan
@@ -109,7 +117,7 @@ Overlay-specific documentation skills live outside the core under `overlays/`.
 ## Naming Rules
 
 - prefer generic names over stack-specific names
-- categorize skills under their respective taxonomy folders (agent, foundation, backend, frontend, platform, security-data, documentation)
+- categorize skills under their respective taxonomy folders (agent, foundation, backend, frontend, platform, security-data, documentation, education)
 - move stack-specific or org-specific variants into separate packs later if needed
 
 ## Skill Authoring Standard
