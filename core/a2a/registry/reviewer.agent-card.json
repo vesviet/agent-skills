@@ -1,0 +1,64 @@
+{
+  "name": "reviewer",
+  "description": "raise quality through precise, evidence-based review that catches defects, protects maintainability, and teaches good patterns without creating review theater.",
+  "url": "pack://agent-skills/core/roles/reviewer.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "review-code",
+      "name": "Review Code",
+      "description": "Primary skill for reviewer role.",
+      "tags": [
+        "reviewer",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "code-review-finding.json"
+      ]
+    },
+    {
+      "id": "review-service",
+      "name": "Review Service",
+      "description": "Primary skill for reviewer role.",
+      "tags": [
+        "reviewer",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "code-review-finding.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "code-review-finding.json"
+  ],
+  "role_file": "core/roles/reviewer.md",
+  "policy_profile": "reviewer"
+}

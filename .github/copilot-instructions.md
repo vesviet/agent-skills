@@ -51,3 +51,11 @@ When executing a workflow from `core/workflows/`:
 4. Respect the `Role:` tag on each step.
 
 Workflows index: `core/workflows/README.md`
+
+## A2A 1.0 And Antigravity
+
+- Agent registry: `core/a2a/.well-known/agent-registry.json`
+- Protocol skill: `agent-a2a-protocol`
+- Antigravity adapter: `adapters/antigravity/ANTIGRAVITY.md`
+- Emit JSON contracts from `core/contracts/schemas/` for cross-role handoffs
+- Policy: `core/policies/action-boundaries.yaml`

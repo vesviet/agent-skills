@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "technical-delivery-plan",
+  "title": "Technical Delivery Plan",
+  "description": "Structured implementation plan from Technical Lead for developers, QA, and release.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "technical-delivery-plan"
+    },
+    "work_title": { "type": "string" },
+    "feature_ticket_ref": { "type": "string" },
+    "adr_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "goal_summary": { "type": "string" },
+    "preserved_behavior": { "type": "string" },
+    "slices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "slice_id": { "type": "string" },
+          "description": { "type": "string" },
+          "owner_role": { "type": "string" },
+          "depends_on": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "output_schema_ref": { "type": "string" }
+        },
+        "required": ["slice_id", "description", "owner_role"]
+      }
+    },
+    "impact_radius": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "quality_gates": {
+      "type": "object",
+      "properties": {
+        "tests": { "type": "string" },
+        "review": { "type": "string" },
+        "build": { "type": "string" },
+        "security": { "type": "string" }
+      }
+    },
+    "rollout_notes": { "type": "string" },
+    "rollback_notes": { "type": "string" },
+    "documentation_deltas": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Topics for Technical Writer follow-up."
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "readiness_status": {
+      "type": "string",
+      "enum": ["planning", "in_progress", "ready_for_review", "blocked"]
+    }
+  },
+  "required": [
+    "contract_type",
+    "work_title",
+    "goal_summary",
+    "slices",
+    "quality_gates",
+    "readiness_status"
+  ]
+}

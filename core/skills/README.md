@@ -8,8 +8,10 @@ This directory contains the **portable core** skill inventory for the global eng
 
 These cover agent operating discipline:
 
+- `agent-a2a-protocol`
 - `agent-context-management`
 - `agent-delegation`
+- `agent-graph-orchestration`
 - `agent-memory-compaction`
 - `agent-model-routing`
 - `agent-observability`
@@ -24,9 +26,12 @@ These cover agent operating discipline:
 These are the default portable skills:
 
 - `analyze-business-requirements`
+- `analyze-data`
+- `optimize-seo`
 - `commit-code`
 - `create-migration`
 - `design-ux-flow`
+- `plan-technical-delivery`
 - `meeting-review`
 - `navigate-service`
 - `performance-profiling`
@@ -34,6 +39,7 @@ These are the default portable skills:
 - `review-service`
 - `troubleshoot-service`
 - `write-product-brief`
+- `write-article`
 - `write-tests`
 
 ### Backend

@@ -1,0 +1,84 @@
+{
+  "name": "data-engineer",
+  "description": "design, build, and maintain reliable data pipelines and storage layers so analysts and applications can trust timely, well-modeled, and governable data products.",
+  "url": "pack://agent-skills/core/roles/data-engineer.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "data-engineer",
+      "name": "Data Engineer",
+      "description": "Primary skill for data-engineer role.",
+      "tags": [
+        "data",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "schema-migration.json"
+      ]
+    },
+    {
+      "id": "database-maintenance",
+      "name": "Database Maintenance",
+      "description": "Primary skill for data-engineer role.",
+      "tags": [
+        "data",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "schema-migration.json"
+      ]
+    },
+    {
+      "id": "create-migration",
+      "name": "Create Migration",
+      "description": "Primary skill for data-engineer role.",
+      "tags": [
+        "data",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "schema-migration.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "schema-migration.json"
+  ],
+  "role_file": "core/roles/data-engineer.md",
+  "policy_profile": "data-engineer"
+}

@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "content-handoff",
+  "title": "Content Handoff",
+  "description": "Structured deliverable for article drafts: path, research discipline, claims, and publish status.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "content-handoff"
+    },
+    "working_title": { "type": "string" },
+    "site_or_repo": {
+      "type": "string",
+      "description": "e.g. leaseinvietnam, maylanhtreotuong, vesviet, learn"
+    },
+    "content_path": {
+      "type": "string",
+      "description": "Repo-relative path to draft file."
+    },
+    "audience": { "type": "string" },
+    "goal_or_cta": { "type": "string" },
+    "channel": { "type": "string" },
+    "word_count_target": { "type": "string" },
+    "word_count_actual": { "type": "integer" },
+    "research_required": { "type": "boolean" },
+    "research_source": {
+      "type": "string",
+      "enum": [
+        "editorial_passes",
+        "researcher_report",
+        "supplied_only",
+        "mixed"
+      ]
+    },
+    "research_passes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pass_number": { "type": "integer" },
+          "focus": { "type": "string" },
+          "sources": { "type": "string" }
+        },
+        "required": ["pass_number", "focus"]
+      }
+    },
+    "facts_vs_judgment_notes": { "type": "string" },
+    "unverified_claims": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "seo_brief_ref": {
+      "type": "string",
+      "description": "Path or id for seo-content-brief.json"
+    },
+    "internal_links_used": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "primary_keyword": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["planned", "draft", "draft_ready", "audited", "published"]
+    },
+    "publish_log_updated": {
+      "type": "boolean",
+      "description": "True when plan/baiviet/publish-log.md was appended for this piece."
+    }
+  },
+  "required": [
+    "contract_type",
+    "working_title",
+    "site_or_repo",
+    "content_path",
+    "status"
+  ]
+}

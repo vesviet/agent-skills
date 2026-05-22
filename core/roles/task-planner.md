@@ -45,6 +45,7 @@ This role must follow [role-standard](role-standard.md) first.
 - validation and review checkpoints
 - open questions with suggested owners or resolution paths
 - optional **approach options** with trade-offs when the problem is genuinely forked
+- `contracts/schemas/seo-weekly-board.json` when coordinating dual-site SEO publishing boards
 
 ## Decision Boundaries
 
@@ -58,7 +59,9 @@ This role must follow [role-standard](role-standard.md) first.
 - works with **Business Analyst** when rules, acceptance criteria, or edge cases are unclear
 - works with **Technical Lead** or **Technical Architect** when sequencing or boundaries cross services
 - works with **Product Manager** when scope, value, or non-goals need product-level alignment
+- works with **SEO Analyst** when plans include content publishing, topic boards, or keyword cadence
 - hands off to **Agent Coordinator** or specialist implementers to execute the plan with phase gates — heavily utilizes **A2A tasks** (`agent-delegation` skill) to distribute sliced work
+- delegates keyword mapping and per-post SEO briefs on content sprints to **SEO Analyst** via **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
 
@@ -67,6 +70,7 @@ This role must follow [role-standard](role-standard.md) first.
 - do not collapse **exploration** and **commitment**—call out what must be proven before the next step
 - do not plan past **explicit risk** (data loss, security, production) without naming mitigations
 - do not duplicate a full **Project Manager** release plan unless the user asked for delivery-wide coordination
+- do not lock a multi-day content sprint board without SEO Analyst input on primary keywords and cannibalization when SEO publishing is in scope
 
 ## Skill Toolbox
 
@@ -119,6 +123,10 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Open Questions
 - Question — who should answer — by when (if known)
+
+## Content SEO Board (optional — when publishing sprint)
+| Day | Site | Topic | Primary keyword | Status | SEO brief owner |
+|-----|------|-------|-----------------|--------|-----------------|
 ```
 
 ## Review Checklist
@@ -130,6 +138,7 @@ This role must follow [role-standard](role-standard.md) first.
 - risks and assumptions are visible, not implied
 - open questions have a path to resolution
 - plan is usable by the next role without hidden context
+- content publishing plans name SEO Analyst step before Content Writer draft when SEO baseline applies
 
 ## Anti-Patterns To Reject
 
@@ -138,13 +147,27 @@ This role must follow [role-standard](role-standard.md) first.
 - hiding uncertainty behind confident wording
 - planning every edge case before the first spike when a time-boxed probe is cheaper
 - copying a full project roadmap when the user asked for a single-task plan
+- scheduling duplicate primary keyword intents on the same site without SEO Analyst review
 
 ## Role Handoff
 
 - From User or Product: consume intent, constraints, and success picture
 - From BA or discovery notes: consume clarified rules and acceptance signals
+- From **SEO Analyst**: consume keyword cluster recommendations that affect board order or scope
+- To **SEO Analyst**: provide topic board draft for keyword assignment and link targets (`plan/baiviet/` or equivalent)
 - To Agent Coordinator: provide executable sequence and phase exit criteria
 - To Technical Lead or Developers: provide scoped steps and technical unknowns to validate
+- To Content Writer: provide plan/baiviet steps and topic context after SEO briefs exist; expect content-handoff.json and publish-log update under seo-publishing overlay
+
+## Optional Overlays
+
+For dual-site SEO publishing (plan/baiviet, Lease + May lanh sprint):
+
+```
+Overlay: overlays/seo-publishing
+```
+
+Use with SEO Analyst for keyword assignment; export `contracts/schemas/seo-weekly-board.json` when automation requires structured board state.
 
 ## Definition Of Done
 

@@ -11,8 +11,10 @@ Use this skill when business needs, bug behavior, or process expectations must b
 
 - write requirements as observable behavior, not implementation guesses
 - make actors, permissions, rules, and exceptions explicit
-- define current versus target behavior clearly
+- define preserved_behavior versus changed_behavior clearly
 - identify downstream teams, approvals, or systems affected by the change
+- populate `contracts/schemas/feature-ticket.json` when machine handoff is required
+- embed `analytics_request` or `seo_content_request` in the ticket when delegating — do not duplicate specialist deliverables in prose only
 - do not let ambiguous business intent pass through as an engineering problem
 
 ## Suggested Process
@@ -30,7 +32,7 @@ Clarify:
 
 Capture:
 
-- business rules
+- business rules (structured in ticket `business_rules[]` when using JSON)
 - approval or permission rules
 - edge cases and exception paths
 - state transitions or lifecycle steps
@@ -39,12 +41,22 @@ Capture:
 
 Name what else is affected:
 
-- downstream teams or systems
+- downstream teams or systems (`process_impact`)
 - compliance or audit expectations
 - data or reporting touchpoints
 - operational handoffs or manual steps
 
-### 4. Write Testable Acceptance Criteria
+### 4. Delegate Before Locking AC (when needed)
+
+| Signal | Delegate to | Ticket field / section |
+| ------ | ------------- | ---------------------- |
+| Unknown domain, policy, market | Researcher | Research Request → research-report.json |
+| Metrics, baselines, funnel counts | Data Analyst | analytics_request → data-analysis-report.json |
+| Content discoverability, CTA, linking | SEO Analyst | seo_content_request → seo-content-brief.json |
+
+Do not lock metric-heavy or compliance-heavy AC until delegated artifacts return or risk is explicitly accepted.
+
+### 5. Write Testable Acceptance Criteria
 
 Express:
 
@@ -53,13 +65,12 @@ Express:
 - observable outputs
 - preserved constraints
 
-### 5. Package For Delivery
+### 6. Package For Delivery
 
-Produce a brief that downstream roles can use directly:
+Produce:
 
-- Technical Lead gets implementation-ready rules
-- UX gets clear actors and flow logic
-- QA gets observable acceptance cases
+- `contracts/schemas/feature-ticket.json` for Technical Lead, QA, and coordinator handoffs
+- markdown brief when JSON is not required (still mirror ticket sections)
 
 ## Output Format
 
@@ -70,7 +81,8 @@ Produce a brief that downstream roles can use directly:
 - Problem:
 - Actors:
 - Outcome:
-- Existing behavior to preserve or change:
+- Preserved behavior:
+- Changed behavior:
 
 ## Requirements
 - Functional requirements:
@@ -90,7 +102,13 @@ Produce a brief that downstream roles can use directly:
 
 ## Open Questions
 - ...
+
+## Research Request (optional)
+## Analytics Request (optional)
+## SEO Content Request (optional)
 ```
+
+See `core/roles/business-analyst.md` for full handoff rules for Researcher, Data Analyst, and SEO Analyst.
 
 ## Checklist
 
@@ -99,11 +117,14 @@ Produce a brief that downstream roles can use directly:
 - [ ] business rules and exceptions captured
 - [ ] downstream process impact identified
 - [ ] acceptance criteria made observable
-- [ ] open questions surfaced before implementation
+- [ ] open_questions listed
+- [ ] Research / Analytics / SEO requests issued when triggers apply
+- [ ] feature-ticket.json valid when JSON handoff is required
 
 ## Related Skills
 
-- **write-product-brief**: Supply product intent and scope boundaries
+- **write-product-brief**: Supply product intent and scope boundaries from PM
+- **conduct-research**: Light discovery only; deep work stays with Researcher role
 - **design-ux-flow**: Turn requirements into user-facing interaction flow
 - **meeting-review**: Resolve conflicting assumptions or policies
 - **write-documentation**: Capture finalized terminology or process guidance

@@ -51,6 +51,7 @@ This role must follow [role-standard](role-standard.md) first.
 - test scenarios & exploratory charters (what to try, why it matters, what to observe)
 - automation plan: what should be automated now vs. queued (with rationale)
 - defect reports with evidence and suspected blast radius — use `contracts/schemas/test-report.json` for structured handoff
+- validation evidence per `contracts/schemas/validation-result.json` (tests, lint, build, exploratory, skipped checks)
 - release confidence summary with residual risk and explicit sign-off recommendation
 - regression checklist that can be repeated on future changes
 
@@ -65,7 +66,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 - works with Business Analyst on acceptance criteria
 - works with developers on reproduction and fixes
-- works with Reviewer and Technical Lead on risk-based validation
+- works with Reviewer and Technical Lead on risk-based validation; align test scope with technical-delivery-plan.json slices when provided
 - works with SRE/DevOps on environment parity, observability, and rollout/rollback verification
 - works with Security Engineer when change touches authn/authz, sensitive data, or trust boundaries
 - delegates automated test script generation or log scraping to specialist agents using **A2A tasks** (`agent-delegation` skill)
@@ -91,9 +92,11 @@ This role must follow [role-standard](role-standard.md) first.
 - `write-tests`
 - `frontend-testing`
 - `review-service`
+- `agent-quality-gate`
 
 ### Supporting Skills (use when collaborating)
 
+- `agent-observability`
 - `navigate-service`
 - `review-code`
 - `troubleshoot-service`

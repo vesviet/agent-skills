@@ -1,0 +1,76 @@
+{
+  "name": "teacher",
+  "description": "empower Vietnamese middle school students (THCS - Lớp 6 đến Lớp 9) to acquire knowledge, internalize core concepts across all subjects, and validate their understanding through structured learning, practice, and feedback aligned with the MOET (Bộ GD&ĐT) curriculum.",
+  "url": "pack://agent-skills/core/roles/teacher.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "design-learning-plan",
+      "name": "Design Learning Plan",
+      "description": "Primary skill for teacher role.",
+      "tags": [
+        "teacher",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    },
+    {
+      "id": "create-exercises",
+      "name": "Create Exercises",
+      "description": "Primary skill for teacher role.",
+      "tags": [
+        "teacher",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    },
+    {
+      "id": "grade-and-review",
+      "name": "Grade And Review",
+      "description": "Primary skill for teacher role.",
+      "tags": [
+        "teacher",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    }
+  ],
+  "defaultOutputSchemas": [],
+  "role_file": "core/roles/teacher.md",
+  "policy_profile": "teacher"
+}

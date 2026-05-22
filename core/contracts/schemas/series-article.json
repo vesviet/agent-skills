@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "series-article",
   "title": "Series Article",
   "description": "Schema for a series article output, validating required frontmatter fields and body structure before publishing.",
   "type": "object",

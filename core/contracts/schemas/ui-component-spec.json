@@ -2,12 +2,23 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "ui-component-spec",
   "title": "UI Component Specification",
-  "description": "Structured output for a UI component specification — used for handoff between UI/UX Designer and Frontend Developer roles.",
+  "description": "Structured component spec for handoff between UI/UX Designer and Frontend Developer.",
   "type": "object",
   "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "ui-component-spec"
+    },
     "component_name": {
       "type": "string",
       "description": "PascalCase name of the component."
+    },
+    "flow_id": {
+      "type": "string",
+      "description": "Links to parent ux-flow-spec.json flow_id."
+    },
+    "feature_ticket_ref": {
+      "type": "string"
     },
     "type": {
       "type": "string",
@@ -25,36 +36,65 @@
           "description": { "type": "string" }
         },
         "required": ["name", "type", "required"]
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "payload": { "type": "string" },
+          "when": { "type": "string" }
+        },
+        "required": ["name", "when"]
       },
-      "description": "Component input props."
+      "description": "Callbacks or DOM events the parent must handle."
     },
     "states": {
       "type": "array",
       "items": {
         "type": "string",
         "enum": ["default", "loading", "empty", "error", "disabled", "success", "hover", "focus", "active"]
+      }
+    },
+    "copy_per_state": {
+      "type": "object",
+      "description": "User-visible labels or messages keyed by state name.",
+      "additionalProperties": { "type": "string" }
+    },
+    "api_fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": { "type": "string" },
+          "source": { "type": "string" },
+          "required": { "type": "boolean" }
+        },
+        "required": ["field"]
       },
-      "description": "Visual states the component must support."
+      "description": "Data fields the component displays or edits."
     },
     "accessibility": {
       "type": "object",
       "properties": {
-        "role": { "type": "string", "description": "ARIA role if not implicit from semantic HTML." },
+        "role": { "type": "string" },
         "keyboard_support": { "type": "boolean" },
         "focus_trap": { "type": "boolean" },
-        "aria_labels": { "type": "array", "items": { "type": "string" } }
-      },
-      "description": "Accessibility requirements."
+        "aria_labels": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
     },
     "responsive_breakpoints": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Breakpoints requiring layout changes (e.g. 'sm', 'md', 'lg')."
+      "items": { "type": "string" }
     },
     "dependencies": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Other components or hooks this component depends on."
+      "items": { "type": "string" }
     }
   },
   "required": ["component_name", "type", "states"]

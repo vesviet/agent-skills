@@ -1,0 +1,88 @@
+{
+  "name": "3d-graphics-engineer",
+  "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGL/WebGPU implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility.",
+  "url": "pack://agent-skills/core/roles/3d-graphics-engineer.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "debug-3d-scene",
+      "name": "Debug 3D Scene",
+      "description": "Primary skill for 3d-graphics-engineer role.",
+      "tags": [
+        "3d",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "integrate-r3f-three-legacy",
+      "name": "Integrate R3F Three Legacy",
+      "description": "Primary skill for 3d-graphics-engineer role.",
+      "tags": [
+        "3d",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "optimize-3d-assets",
+      "name": "Optimize 3D Assets",
+      "description": "Primary skill for 3d-graphics-engineer role.",
+      "tags": [
+        "3d",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "implementation-result.json",
+    "performance-audit.json"
+  ],
+  "role_file": "core/roles/3d-graphics-engineer.md",
+  "policy_profile": "3d-graphics-engineer"
+}

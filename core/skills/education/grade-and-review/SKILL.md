@@ -1,6 +1,6 @@
 ---
 name: grade-and-review
-description: Evaluate submitted learner work, assign scores, and provide constructive feedback. Use this when grading assignments or reviewing student submissions.
+description: Evaluate learner work on the Vietnamese 10-point scale with constructive MOET-aligned feedback. Use when grading assignments or reviewing student submissions.
 ---
 
 # Grade And Review
@@ -32,5 +32,5 @@ Use this skill to assess a student's completed exercise, assign scores based on 
 
 ## Related Skills
 
-- `create-exercises`: use this if the student needs a follow-up assignment to practice weak points.
-- `review-code`: use this for technical or programming-specific assignments.
+- **create-exercises**: assign follow-up practice for identified weak points.
+- **review-code**: apply code-review patterns for technical or programming assignments.

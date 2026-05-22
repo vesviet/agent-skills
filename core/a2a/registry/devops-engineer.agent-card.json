@@ -1,0 +1,104 @@
+{
+  "name": "devops-engineer",
+  "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollout safety, configuration integrity, and recovery paths.",
+  "url": "pack://agent-skills/core/roles/devops-engineer.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "setup-deployment",
+      "name": "Setup Deployment",
+      "description": "Primary skill for devops-engineer role.",
+      "tags": [
+        "devops",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "deployment-plan.json"
+      ]
+    },
+    {
+      "id": "debug-runtime-platform",
+      "name": "Debug Runtime Platform",
+      "description": "Primary skill for devops-engineer role.",
+      "tags": [
+        "devops",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "deployment-plan.json"
+      ]
+    },
+    {
+      "id": "add-telemetry-instrumentation",
+      "name": "Add Telemetry Instrumentation",
+      "description": "Primary skill for devops-engineer role.",
+      "tags": [
+        "devops",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "deployment-plan.json"
+      ]
+    },
+    {
+      "id": "manage-secrets",
+      "name": "Manage Secrets",
+      "description": "Primary skill for devops-engineer role.",
+      "tags": [
+        "devops",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "deployment-plan.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "deployment-plan.json"
+  ],
+  "role_file": "core/roles/devops-engineer.md",
+  "policy_profile": "devops-engineer"
+}

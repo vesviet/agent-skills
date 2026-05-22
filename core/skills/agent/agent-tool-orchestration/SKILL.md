@@ -18,6 +18,25 @@ Use this skill when a task needs disciplined tool selection and sequencing acros
 - do not let a task move to the next phase without enough evidence for that phase
 - when available, prefer MCP-compatible tool servers over ad-hoc integrations
 - validate tool inputs and outputs against their declared contracts
+- check `core/policies/action-boundaries.yaml` before any state-changing action when a role is active
+- check `core/policies/data-classification.yaml` before logging, returning, or persisting sensitive data
+
+## Policy-As-Code (2026)
+
+Before state-changing tools (write, delete, shell that mutates, install, migration, deployment, secrets):
+
+1. identify the **active role** (from user assignment or coordination plan owner)
+2. map the attempted action to a policy action id (for example `write_file`, `run_migration`, `push_to_production`)
+3. read `core/policies/action-boundaries.yaml` for that role:
+   - **allowed**: proceed
+   - **requires_approval**: stop and request explicit user approval with risk summary
+   - **denied**: stop and explain the boundary; recommend the owning role
+4. if output may contain customer, credential, or PII data, classify it with `data-classification.yaml`:
+   - **restricted** or **confidential**: do not log full payloads; redact in handoff artifacts
+5. when no role entry exists, apply `default_policy: requires_approval`
+6. map IDE/MCP tool names through `core/policies/mcp-tool-map.yaml` when the platform tool label differs from policy action ids
+
+Policies complement `core/rules/code.md`; policies take precedence for enforceable action decisions. Optional runtime: `adapters/cursor/hooks.template.json` invokes `core/scripts/hooks/check-policy.py`.
 
 ## MCP And Context Engineering
 
@@ -120,6 +139,8 @@ Evidence required before next phase:
 
 - [ ] task type and current phase classified
 - [ ] repo constraints checked before action
+- [ ] active role identified and action checked against action-boundaries.yaml
+- [ ] sensitive data classified before logging or handoff
 - [ ] smallest reliable tools selected
 - [ ] MCP tool discovery performed when available
 - [ ] tool input/output contracts validated
@@ -131,6 +152,9 @@ Evidence required before next phase:
 
 ## Related Skills
 
+- **agent-a2a-protocol**: Full A2A lifecycle when tools participate in multi-agent handoffs
+- **agent-graph-orchestration**: Advance multi-phase graphs with parallel merge gates
+- **agent-delegation**: Issue A2A tasks instead of overloading a single context
 - **agent-context-management**: Keep goal, evidence, and assumptions aligned
 - **agent-prompt-lifecycle**: Manage prompt versioning and evaluation when orchestrating prompt-driven tasks
 - **agent-quality-gate**: Run the correct completion checks

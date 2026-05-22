@@ -42,10 +42,11 @@
 #
 # Available roles: core/roles/README.md
 #
-# === V2.0 A2A & CONTRACTS ===
-# - Agents MUST output structured JSON schemas for cross-role handoffs (e.g., test-report.json, api-contract-spec.json) found in `core/contracts/schemas/`.
-# - Use A2A Delegation: If a task is too complex or out of scope, delegate it to a specialized sub-agent (e.g., Reviewer delegating to Security Engineer).
-# - Obey Policy-as-Code: Strict action boundaries are enforced via `core/policies/action-boundaries.yaml`. Wait for human override on restricted actions.
+# === V2.3 A2A 1.0, GRAPH, ANTIGRAVITY ===
+# - Antigravity: read adapters/antigravity/ANTIGRAVITY.md; use core/a2a/.well-known/agent-registry.json for discovery.
+# - Full A2A lifecycle: agent-a2a-protocol (task, progress, status, artifact, cancel); JSON-RPC via a2a-jsonrpc-envelope.json.
+# - Coordinator: agent-a2a-protocol + agent-graph-orchestration + coordination-plan.json per phase.
+# - Obey Policy-as-Code: action-boundaries.yaml + data-classification.yaml before state-changing actions.
 
 # === SKILLS ===
 #

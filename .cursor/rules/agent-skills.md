@@ -39,3 +39,12 @@ When executing a workflow:
 1. Output a markdown checklist `[ ]` for ALL steps.
 2. Process only ONE step at a time, mark `[x]`, explain the result.
 3. Respect the `Role:` tag on each step.
+
+## A2A 1.0, Antigravity, And Policy Hooks
+
+- Discovery: `core/a2a/.well-known/agent-registry.json` (run `python3 core/scripts/generate-a2a-registry.py` after role edits).
+- Full lifecycle: `agent-a2a-protocol` — `a2a-task.json`, `a2a-task-progress.json`, `a2a-task-status.json`, `a2a-artifact.json`, `a2a-task-cancel.json`.
+- Antigravity: `adapters/antigravity/ANTIGRAVITY.md` and `.antigravity/rules.md` from template.
+- Cursor policy hooks: `adapters/cursor/hooks.template.json` → `.cursor/hooks.json`.
+- Policy: `core/policies/action-boundaries.yaml`, `data-classification.yaml`, `mcp-tool-map.yaml`.
+- Structured handoffs: `core/contracts/schemas/` — not prose-only for delivery artifacts.

@@ -1,0 +1,64 @@
+{
+  "name": "project-manager",
+  "description": "turn agreed product scope into an executable plan with clear milestones, dependencies, owners, and risk control.",
+  "url": "pack://agent-skills/core/roles/project-manager.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "meeting-review",
+      "name": "Meeting Review",
+      "description": "Primary skill for project-manager role.",
+      "tags": [
+        "project",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "coordination-plan.json"
+      ]
+    },
+    {
+      "id": "agent-graph-orchestration",
+      "name": "Agent Graph Orchestration",
+      "description": "Primary skill for project-manager role.",
+      "tags": [
+        "project",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "coordination-plan.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "coordination-plan.json"
+  ],
+  "role_file": "core/roles/project-manager.md",
+  "policy_profile": "project-manager"
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "seo-audit-report",
+  "title": "SEO Audit Report",
+  "description": "Structured on-page SEO audit with issues, recommendations, and optional metadata fixes.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "seo-audit-report"
+    },
+    "page_url_or_path": {
+      "type": "string"
+    },
+    "audit_date": {
+      "type": "string",
+      "description": "ISO date of audit."
+    },
+    "focus_keyword": {
+      "type": "string"
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "title",
+              "meta_description",
+              "headings",
+              "content",
+              "internal_links",
+              "slug",
+              "schema",
+              "technical",
+              "cannibalization",
+              "other"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low"]
+          },
+          "finding": { "type": "string" },
+          "recommendation": { "type": "string" }
+        },
+        "required": ["category", "severity", "finding", "recommendation"]
+      }
+    },
+    "passed_checks": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "cannibalization_notes": {
+      "type": "string"
+    },
+    "recommended_metadata": {
+      "type": "object",
+      "description": "Optional inline seo-metadata fields when audit proposes publish-ready fixes.",
+      "properties": {
+        "title_tag": { "type": "string", "maxLength": 60 },
+        "meta_description": { "type": "string", "maxLength": 160 },
+        "focus_keyword": { "type": "string" },
+        "secondary_keywords": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "slug": { "type": "string" }
+      }
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["High", "Medium", "Low"]
+    }
+  },
+  "required": [
+    "contract_type",
+    "page_url_or_path",
+    "focus_keyword",
+    "issues",
+    "confidence"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "name": "security-engineer",
+  "description": "reduce security risk early by identifying weaknesses in design, code, configuration, dependencies, and operations before they become incidents.",
+  "url": "pack://agent-skills/core/roles/security-engineer.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "security-audit",
+      "name": "Security Audit",
+      "description": "Primary skill for security-engineer role.",
+      "tags": [
+        "security",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "security-audit.json"
+      ]
+    },
+    {
+      "id": "manage-secrets",
+      "name": "Manage Secrets",
+      "description": "Primary skill for security-engineer role.",
+      "tags": [
+        "security",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "security-audit.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "security-audit.json"
+  ],
+  "role_file": "core/roles/security-engineer.md",
+  "policy_profile": "security-engineer"
+}

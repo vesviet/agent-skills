@@ -7,6 +7,8 @@ description: Draft or update technical documentation by following the repo's exi
 
 Use this skill when a change needs clear technical documentation or when existing docs are outdated or incomplete.
 
+**Role routing:** Long-form **articles, blogs, guides, and SEO posts** → **Content Writer** role with `write-article`. **README, runbooks, API docs, setup guides** → **Technical Writer** role. Content Writer may use this skill for structure and clarity patterns only—not as a substitute for `write-article` on publishable posts.
+
 ## Core Rules
 
 - write for the intended audience, not for the author
@@ -72,6 +74,7 @@ Check:
 
 ## Related Skills
 
+- **write-article**: Narrative and blog drafting under Content Writer
 - **navigate-service**: Gather context before documenting a service
 - **review-service**: Capture readiness or release notes after review
 - **troubleshoot-service**: Turn learned recovery steps into runbook updates

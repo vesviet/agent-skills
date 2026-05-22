@@ -1,0 +1,48 @@
+# Antigravity A2A configuration — merge into .antigravity/a2a-config.yaml
+# Registry paths are relative to agent-skills pack root in workspace.
+
+a2a:
+  enabled: true
+  protocol_version: "1.0"
+  pack_version: "2.4.0"  # sync with VERSION file
+
+  discovery:
+    registry: "core/a2a/.well-known/agent-registry.json"
+    agent_card_pattern: "core/a2a/registry/{role}.agent-card.json"
+    well_known_path: "/.well-known/agent.json"
+
+  defaults:
+    interaction_mode: stream
+    risk_tier: engineering
+    timeout_minutes: 120
+    authentication_scheme: pack-local
+
+  streaming:
+    enabled: true
+    event_schema: "contracts/schemas/a2a-task-progress.json"
+    sse_content_type: "text/event-stream"
+
+  operations:
+    invoke_schema: "contracts/schemas/a2a-jsonrpc-envelope.json"
+    task_schema: "contracts/schemas/a2a-task.json"
+    artifact_schema: "contracts/schemas/a2a-artifact.json"
+    status_schema: "contracts/schemas/a2a-task-status.json"
+
+  coordinator:
+    role: agent-coordinator
+    plan_schema: "contracts/schemas/coordination-plan.json"
+
+  policies:
+    action_boundaries: "core/policies/action-boundaries.yaml"
+    data_classification: "core/policies/data-classification.yaml"
+
+  # Map Antigravity capability ids to pack role slugs (extend per project)
+  capability_role_map:
+    coordinate-delivery: agent-coordinator
+    backend-implement: backend-developer
+    frontend-implement: frontend-developer
+    review-code: reviewer
+    run-qa: qa-engineer
+    security-audit: security-engineer
+    write-docs: technical-writer
+    deep-research: researcher

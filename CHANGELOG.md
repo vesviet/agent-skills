@@ -2,6 +2,153 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [2.6.2] - 2026-05-22
+
+### Added
+- `research-report.json`: `depth_mode` (deep|scoped), `recommended_next_roles`, `inferences`, `residual_risks`, optional `feature_ticket_ref`
+
+### Changed
+- `researcher`: R1 toolbox (Primary `conduct-research` only), R2 handoff parity, R3 contract depth alignment
+- `conduct-research` skill: depth_mode rules and scoped waiver
+
+## [2.6.1] - 2026-05-22
+
+### Changed
+- `frontend-developer`, `backend-developer`, `3d-graphics-engineer`: D1–D3 developer handoff parity
+- All three: `implementation-result.json` in Outputs; Inputs path-ified; Deliverable Routing tables
+- `frontend-developer`: Role Handoff aligned with UX/Architect/Lead triangle; FE↔3D two-way handoff
+- `backend-developer`: Collaboration expanded; Technical Writer and Lead consumption paths
+- `3d-graphics-engineer`: Lead/UX/Architect integration; Primary toolbox cleanup; optional overlays
+
+## [2.6.0] - 2026-05-22
+
+### Added
+- Contracts: `architecture-options.json`, `technical-delivery-plan.json`, `documentation-handoff.json`
+- Skill `plan-technical-delivery` for Technical Lead
+
+### Changed
+- `adr-spec.json`: affected_services, api_contract_refs, supersedes_adr, rollback_plan, feature_ticket_ref
+- `technical-architect`, `technical-lead`, `technical-writer`: full triangle handoffs (packages A/B/C)
+- `business-analyst`, `agent-coordinator`, `backend-developer`, `frontend-developer`: aligned contracts
+- `write-tech-radar`: role routing vs ADR and Technical Writer
+
+## [2.5.4] - 2026-05-22
+
+### Added
+- `ux-flow-spec.json` contract for multi-screen UX handoff
+- `overlays/ui-design-system` with flow/component handoff conventions
+- UI/UX Designer: BA/Researcher/Data Analyst handoffs, deliverable decision table, optional overlays
+
+### Changed
+- `ui-component-spec.json`: flow_id, events, copy_per_state, api_fields, feature_ticket_ref
+- `design-ux-flow` skill: layered contracts and deliverable decision table
+- `frontend-developer`, `business-analyst`, `researcher`, `data-analyst`: UX spec handoffs
+
+## [2.5.3] - 2026-05-22
+
+### Added
+- `write-article` foundation skill for editorial drafting
+- `content-handoff.json` contract for article deliverables
+- Content Writer: Research Depth table, overlay activation, publish-log duty under seo-publishing
+
+### Changed
+- `content-writer`: primary toolbox write-article + write-documentation; supporting overlay site skills
+- `write-documentation`: role routing (articles vs Technical Writer)
+- `researcher`, `business-analyst`, `task-planner`, `seo-publishing`: Content Writer handoffs
+
+## [2.5.2] - 2026-05-22
+
+### Added
+- `feature-ticket.json`: business_rules, preserved/changed behavior, open_questions, analytics_request, seo_content_request
+- Business Analyst: Research and SEO handoffs; Research Request and SEO Content Request template sections
+
+### Changed
+- `business-analyst`: conduct-research supporting skill; expanded collaboration and guardrails
+- `analyze-business-requirements` skill: ticket JSON, delegation table, checklist
+- `generate-a2a-registry.py`: output schemas derived from Outputs Produced only (fixes BA agent card)
+- `researcher`, `seo-analyst`: explicit handoff from Business Analyst
+
+## [2.5.1] - 2026-05-22
+
+### Added
+- `overlays/seo-publishing`: dual-site sprint cadence, plan/baiviet board, publish-log, and cannibalization rules
+- Contract `seo-weekly-board.json` for structured 7-day topic boards
+
+### Changed
+- `seo-analyst` and `task-planner`: optional seo-publishing overlay activation
+
+## [2.5.0] - 2026-05-22
+
+### Added
+- `seo-analyst` role with skill `optimize-seo`
+- Contracts `seo-content-brief.json` and `seo-audit-report.json`
+- A2A agent card and policy profile for SEO Analyst
+
+### Changed
+- `content-writer` and `task-planner`: explicit SEO Analyst handoff for briefs, audits, and topic boards
+- `core/roles/README.md`: Content And SEO lifecycle mapping
+
+## [2.4.2] - 2026-05-22
+
+### Added
+- `overlays/data-analyst-stack`: DuckDB, Metabase, and BI conventions for the data-analyst role
+
+### Changed
+- `business-analyst`: analytics handoff to Data Analyst, guardrails on unverified KPIs, optional Analytics Request template section
+
+## [2.4.1] - 2026-05-22
+
+### Added
+- `data-analyst` role: business-facing metrics, SQL/tabular analysis, and `data-analysis-report.json`
+- `analyze-data` foundation skill for analyst workflows
+
+### Changed
+- `data-engineer` role refocused on pipelines, ETL, migrations, and operational data platforms (analyst work moved to Data Analyst)
+
+## [2.4.0] - 2026-05-22
+
+### Added
+- Schemas: `a2a-push-notification-config.json`, `a2a-task-cancel.json`, `agent-trace-span.json`; optional JWS `signature` on `agent-card.json`
+- `validate-agent-cards.py`, `validate-standardization.py` (>=90% gate)
+- Cursor adapter: `adapters/cursor/hooks.template.json`, `check-policy.py`, `log-trace-span.py`
+- `core/policies/mcp-tool-map.yaml`, `core/prompts/golden/` sample dataset
+- `capability-role-map.generated.yaml` from `generate-a2a-registry.py`
+
+### Changed
+- Wired `agent-prompt-lifecycle` and `agent-semantic-memory` to Coordinator, Technical Lead, SRE, Researcher
+- QA role: `validation-result.json`, `agent-quality-gate`, `agent-observability`
+- `CLAUDE.md`, `.cursor/rules/agent-skills.md`, Copilot instructions — A2A/Antigravity parity
+- `validate-all.py` includes agent-card and standardization validators
+
+## [2.3.0] - 2026-05-22
+
+### Added
+- Full **A2A 1.0** contracts: `agent-card.json`, `a2a-task-status.json`, `a2a-task-progress.json`, `a2a-message.json`, `a2a-jsonrpc-envelope.json`
+- `agent-a2a-protocol` skill: discover, invoke, stream, get/list/cancel, scatter-gather
+- **Antigravity adapter**: `adapters/antigravity/` (`ANTIGRAVITY.md`, `rules.template.md`, `a2a-config.template.yaml`)
+- `core/a2a/` registry with `generate-a2a-registry.py` (21 role Agent Cards)
+- Workflow `/agent-a2a-delegation`
+- Validators: `validate-contracts.py`, `validate-a2a-compliance.py`
+
+### Changed
+- `a2a-task.json` / `a2a-artifact.json`: A2A lifecycle states, streaming, multimodal `parts`
+- `agent-coordinator`: primary `agent-a2a-protocol`, registry discovery, progress/status contracts
+- `AGENTS.md`: Antigravity + full A2A lifecycle requirements
+
+## [2.2.0] - 2026-05-22
+
+### Added
+- `agent-graph-orchestration` skill: phase graphs, parallel groups, merge gates, and coordination-plan publishing
+- `core/contracts/schemas/coordination-plan.json`: structured phase graph for Agent Coordinator
+- `core/scripts/validate-2026-compliance.py`: validates A2A coverage, coordinator wiring, policy coverage, and policy hooks in tool orchestration
+
+### Changed
+- `agent-coordinator` role: primary `agent-delegation` and `agent-graph-orchestration`; A2A and JSON contract handoffs
+- `project-manager`, `technical-writer`, `teacher` roles: Collaboration & A2A Delegation and contract references
+- `agent-tool-orchestration` skill: Policy-as-Code checks for `action-boundaries.yaml` and `data-classification.yaml`
+- `action-boundaries.yaml`: policy entries for all 21 delivery roles (was 9)
+- `validate-all.py`: includes 2026 compliance validator
+
 ## [2.1.0] - 2026-05-13
 
 ### Fixed

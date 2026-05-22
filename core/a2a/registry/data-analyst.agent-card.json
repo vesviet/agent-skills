@@ -1,0 +1,58 @@
+{
+  "name": "data-analyst",
+  "description": "answer business questions with reproducible, well-documented analysis from tabular and warehouse data — defining metrics clearly, separating evidence from interpretation, and delivering stakeholder-ready reports without owning production pipeline infrastructure.",
+  "url": "pack://agent-skills/core/roles/data-analyst.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "analyze-data",
+      "name": "Analyze Data",
+      "description": "Primary skill for data-analyst role.",
+      "tags": [
+        "data",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    },
+    {
+      "id": "analyze-business-requirements",
+      "name": "Analyze Business Requirements",
+      "description": "Primary skill for data-analyst role.",
+      "tags": [
+        "data",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    }
+  ],
+  "defaultOutputSchemas": [],
+  "role_file": "core/roles/data-analyst.md",
+  "policy_profile": "data-analyst"
+}

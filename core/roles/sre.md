@@ -82,6 +82,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Supporting Skills (use when collaborating)
 
+- `agent-observability`
+- `agent-semantic-memory`
 - `navigate-service`
 - `database-maintenance`
 - `manage-secrets`

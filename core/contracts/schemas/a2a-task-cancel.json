@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a2a-task-cancel",
+  "title": "A2A Task Cancel Request",
+  "description": "Request body for tasks/cancel (A2A 1.0).",
+  "type": "object",
+  "properties": {
+    "task_id": { "type": "string" },
+    "requested_by": {
+      "type": "string",
+      "description": "Role or user identity requesting cancel."
+    },
+    "cancel_reason": { "type": "string" },
+    "force": {
+      "type": "boolean",
+      "default": false,
+      "description": "When true, cancel even if worker reports in-progress side effects."
+    }
+  },
+  "required": ["task_id", "cancel_reason"]
+}

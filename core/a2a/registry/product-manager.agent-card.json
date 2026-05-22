@@ -1,0 +1,64 @@
+{
+  "name": "product-manager",
+  "description": "maximize user and business value through clear prioritization, scope control, and outcome-driven delivery without hiding impact, trade-offs, or regression risk inside vague scope decisions.",
+  "url": "pack://agent-skills/core/roles/product-manager.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "write-product-brief",
+      "name": "Write Product Brief",
+      "description": "Primary skill for product-manager role.",
+      "tags": [
+        "product",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    },
+    {
+      "id": "meeting-review",
+      "name": "Meeting Review",
+      "description": "Primary skill for product-manager role.",
+      "tags": [
+        "product",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "feature-ticket.json"
+  ],
+  "role_file": "core/roles/product-manager.md",
+  "policy_profile": "product-manager"
+}

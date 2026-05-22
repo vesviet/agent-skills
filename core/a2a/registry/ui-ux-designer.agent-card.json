@@ -1,0 +1,88 @@
+{
+  "name": "ui-ux-designer",
+  "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear.",
+  "url": "pack://agent-skills/core/roles/ui-ux-designer.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "design-ux-flow",
+      "name": "Design Ux Flow",
+      "description": "Primary skill for ui-ux-designer role.",
+      "tags": [
+        "ui",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "ui-component-spec.json",
+        "ux-flow-spec.json"
+      ]
+    },
+    {
+      "id": "meeting-review",
+      "name": "Meeting Review",
+      "description": "Primary skill for ui-ux-designer role.",
+      "tags": [
+        "ui",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "ui-component-spec.json",
+        "ux-flow-spec.json"
+      ]
+    },
+    {
+      "id": "navigate-service",
+      "name": "Navigate Service",
+      "description": "Primary skill for ui-ux-designer role.",
+      "tags": [
+        "ui",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "ui-component-spec.json",
+        "ux-flow-spec.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "ui-component-spec.json",
+    "ux-flow-spec.json"
+  ],
+  "role_file": "core/roles/ui-ux-designer.md",
+  "policy_profile": "ui-ux-designer"
+}

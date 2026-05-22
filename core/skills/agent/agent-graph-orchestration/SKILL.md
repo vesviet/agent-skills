@@ -1,0 +1,114 @@
+---
+name: agent-graph-orchestration
+description: Model multi-phase delivery as a directed graph with parallel branches, phase gates, and A2A delegations per node. Use when coordinating bugs or features across multiple specialist roles, parallel validation tracks, or merge points that require evidence before advancing.
+---
+
+# Agent Graph Orchestration
+
+Use this skill when work spans multiple phases or roles and linear sequencing is insufficient. It complements `agent-delegation` (single hop) and `agent-tool-orchestration` (tool phases).
+
+## Core Rules
+
+- represent the work as a **phase graph**: nodes are phases with owners; edges are dependencies
+- allow **parallel groups** only when phases have no shared mutable scope and exit criteria are independent
+- never advance past a gate without evidence that satisfies that phase's exit criteria
+- emit or update a `coordination-plan.json` artifact when acting as supervisor
+- delegate phase execution via `a2a-task.json`; collect results via `a2a-artifact.json`
+- merge parallel branch results before opening dependent phases
+- reopen earlier phases when new evidence invalidates prior conclusions
+
+## Graph Model
+
+### Node (Phase)
+
+Each phase defines:
+
+- `phase_id`, `name`, `owner_role`, `status`
+- `exit_criteria` (checklist, not vibes)
+- `depends_on` (upstream phase_ids)
+- optional `delegation_task_id` and `output_schema_ref`
+
+### Edge (Dependency)
+
+- hard dependency: downstream phase blocked until upstream `completed`
+- soft dependency: downstream may start read-only prep but must not commit outcomes until upstream completes
+
+### Parallel Group
+
+Phases in the same parallel group:
+
+- share no write scope on the same files unless explicitly coordinated
+- must each produce schema-valid artifacts before merge
+- merge gate validates combined evidence before the next dependent phase opens
+
+## Suggested Process
+
+### 1. Frame The Work Graph
+
+Classify `work_type` (bug, feature, refactor, hotfix, review) and `risk_tier` (vibe, agentic, engineering).
+
+Draft minimum phases for engineering-tier work:
+
+1. intake / triage
+2. analysis or design (BA, architect, or lead)
+3. implementation (dev roles)
+4. validation (QA, quality gate)
+5. review (reviewer, security when needed)
+6. handoff (implementation-result, docs, deployment plan when needed)
+
+### 2. Publish coordination-plan.json
+
+Use schema: `contracts/schemas/coordination-plan.json`
+
+Set `current_phase_id` to the active node. Keep `blockers` and `residual_risks` current.
+
+### 3. Delegate Phase Nodes
+
+For each active phase, compose `contracts/schemas/a2a-task.json` with:
+
+- self-contained `task_description` and `input_data`
+- `assignee_role` matching the phase owner
+- `output_schema_ref` matching the phase deliverable
+- `success_criteria` mirroring exit criteria
+
+### 4. Merge Parallel Branches
+
+When a parallel group completes:
+
+- validate each `a2a-artifact.json`
+- resolve conflicts in findings or implementation scope before downstream phases start
+- document merge decisions in the coordination plan
+
+### 5. Close The Graph
+
+Final phase produces:
+
+- `implementation-result.json` when code changed
+- `validation-result.json` when validation is material
+- markdown summary for the user when human-readable closure is required
+
+## Output Schema
+
+Use: `contracts/schemas/coordination-plan.json` (graph state)
+
+Per-phase outputs reference domain schemas (for example `feature-ticket.json`, `test-report.json`, `code-review-finding.json`).
+
+## Checklist
+
+- [ ] work_type and risk_tier assigned
+- [ ] phase graph published with owners and dependencies
+- [ ] parallel groups justified (no conflicting write scope)
+- [ ] each active phase has exit criteria and output schema
+- [ ] A2A tasks are self-contained for worker agents
+- [ ] returned artifacts validated before phase marked completed
+- [ ] merge gates executed after parallel branches
+- [ ] blockers and residual risks visible in coordination plan
+- [ ] graph closure includes validation evidence summary
+
+## Related Skills
+
+- **agent-delegation**: Compose and validate A2A tasks and artifacts per phase
+- **agent-tool-orchestration**: Execute tools within a phase under policy checks
+- **agent-quality-gate**: Run validators before marking validation phases complete
+- **agent-handoff**: Summarize graph state for user or downstream roles
+- **agent-model-routing**: Assign model tier per phase based on risk

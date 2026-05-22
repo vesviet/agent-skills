@@ -1,0 +1,49 @@
+{
+  "name": "seo-analyst",
+  "description": "ensure publishable content meets search intent with defensible keyword strategy, on-page structure, internal linking, and metadata — producing briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation.",
+  "url": "pack://agent-skills/core/roles/seo-analyst.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "optimize-seo",
+      "name": "Optimize Seo",
+      "description": "Primary skill for seo-analyst role.",
+      "tags": [
+        "seo",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "seo-audit-report.json",
+        "seo-content-brief.json",
+        "seo-metadata.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "seo-audit-report.json",
+    "seo-content-brief.json",
+    "seo-metadata.json",
+    "seo-weekly-board.json"
+  ],
+  "role_file": "core/roles/seo-analyst.md",
+  "policy_profile": "seo-analyst"
+}

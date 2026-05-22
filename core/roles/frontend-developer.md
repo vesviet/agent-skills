@@ -35,9 +35,12 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Inputs Required
 
-- user flows and UI specs
-- API contracts
-- existing design system and frontend conventions
+- `contracts/schemas/feature-ticket.json` from Business Analyst (scope, AC, business_rules, preserved/changed behavior)
+- `contracts/schemas/ux-flow-spec.json` and referenced `contracts/schemas/ui-component-spec.json` from UI/UX Designer
+- `contracts/schemas/technical-delivery-plan.json` from Technical Lead (UI slices, quality_gates, documentation_deltas)
+- `contracts/schemas/adr-spec.json` from Technical Architect when client boundaries, BFF, cache, or feature-flag strategy apply
+- `contracts/schemas/api-contract-spec.json` from Backend Developer
+- existing design system, overlay conventions, and frontend repo patterns
 - browser and device constraints
 - bug report or defect description when fixing issues
 - impacted roles, permissions, feature flags, and analytics expectations when relevant
@@ -45,13 +48,21 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Outputs Produced
 
-- UI code
-- component tests
-- integration updates
+- `contracts/schemas/implementation-result.json` when code changes (primary machine handoff per slice)
+- UI code, component tests, and integration updates
 - accessibility and behavior notes when needed
 - regression notes for risky fixes
 - impacted-flow summary when logic or shared state changes
-- performance audit results (via `contracts/schemas/performance-audit.json`) when perf work is in scope
+- `contracts/schemas/performance-audit.json` when perf work is in scope
+
+## Deliverable Routing
+
+| Situation | Primary contract | Notes |
+| --------- | ---------------- | ----- |
+| Slice code complete | implementation-result.json | Always when files changed; include validation_run and residual_risks |
+| Perf investigation or budget proof | performance-audit.json | Supplement implementation-result; do not replace it |
+| API shape change needed | Escalate to Backend Developer | Produce api-contract-spec via backend role, not FE alone |
+| 3D scene or shader work in slice | Delegate to 3D Graphics Engineer | FE owns DOM integration; 3D owns scene implementation-result when they own files |
 
 ## Decision Boundaries
 
@@ -62,12 +73,17 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Collaboration & A2A Delegation
 
-- works with UI/UX on interaction intent — receives component specs (via `contracts/schemas/ui-component-spec.json`)
-- works with Backend Developer on contracts
-- works with QA on behavior validation
-- works with Reviewer on quality and accessibility
-- delegates performance audits, accessibility audits, or 3D-specific tasks to specialist agents using **A2A tasks** (`agent-delegation` skill)
-- works with Product or BA when bug fixes reveal ambiguous requirements or unintended legacy behavior
+- works with **Business Analyst** on feature-ticket.json scope and acceptance criteria
+- works with **UI/UX Designer** on `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/ui-component-spec.json` (handoff manifest)
+- works with **Technical Lead** on `contracts/schemas/technical-delivery-plan.json` UI slices, quality_gates, and documentation_deltas
+- works with **Technical Architect** on `contracts/schemas/adr-spec.json` when client architecture or cross-cutting UI constraints apply
+- works with **Backend Developer** on `contracts/schemas/api-contract-spec.json` and integration behavior
+- works with **Technical Writer** when documentation_deltas require user-facing or operator doc updates (via implementation-result facts)
+- works with **QA** on behavior validation and test scenarios from flow specs
+- works with **Reviewer** on quality, accessibility, and implementation-result evidence
+- works with **Agent Coordinator** when UI work is a gated phase (emit implementation-result.json per slice)
+- delegates performance audits, accessibility deep-dives, or 3D scene work to specialist agents using **A2A tasks** (`agent-delegation` skill)
+- works with **Product Manager** or **BA** when bug fixes reveal ambiguous requirements or unintended legacy behavior
 
 ## Guardrails
 
@@ -96,6 +112,7 @@ This role must follow [role-standard](role-standard.md) first.
 - `write-tests`
 - `troubleshoot-service`
 - `review-code`
+- `agent-delegation`
 
 ## Output Template
 
@@ -137,6 +154,8 @@ This role must follow [role-standard](role-standard.md) first.
 - Evidence that the original bug and nearby regressions were checked:
 
 ## Handoff
+- Slice / delivery_plan_ref:
+- implementation-result.json path (when emitted):
 - Backend dependencies:
 - QA focus areas:
 - Residual risk:
@@ -170,18 +189,26 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Role Handoff
 
-- From Product or UX: consume user flow, states, and acceptance criteria
-- From Backend: consume endpoint behavior, payloads, errors, and permissions
-- To QA: provide user journeys, role matrix, original defect scope, and regression-prone states
-- To Reviewer: provide component boundaries, logic decisions, impact radius, and validation evidence
-- To Backend or Data: report contract mismatches or stale data with evidence
-- To 3D Graphics Engineer: delegate WebGL/Three.js tasks via A2A with performance budgets
+- From **Business Analyst**: consume `contracts/schemas/feature-ticket.json`
+- From **UI/UX Designer**: consume `contracts/schemas/ux-flow-spec.json`, `contracts/schemas/ui-component-spec.json`, and handoff manifest
+- From **Technical Lead**: consume `contracts/schemas/technical-delivery-plan.json` slices and quality_gates
+- From **Technical Architect**: consume `contracts/schemas/adr-spec.json` when UI/BFF/cache boundaries are in scope
+- From **Backend Developer**: consume `contracts/schemas/api-contract-spec.json` (payloads, errors, permissions)
+- From **Frontend Developer** (self): coordinate DOM/canvas boundaries when 3D is embedded
+- To **Technical Lead**: deliver `contracts/schemas/implementation-result.json` per completed slice
+- To **Reviewer**: deliver implementation-result, component boundaries, impact radius, and validation evidence
+- To **QA**: provide user journeys, role matrix, original defect scope, and regression-prone states
+- To **Backend Developer** or **Data Analyst**: report contract mismatches or stale data with evidence
+- To **Technical Writer**: support documentation_deltas with verified changed vs preserved UI behavior
+- To **3D Graphics Engineer**: delegate WebGL/Three.js slices via A2A with perf budgets from ux-flow or delivery plan; consume their implementation-result when they own scene files
+- From **3D Graphics Engineer**: consume scene integration notes, performance-audit.json, and implementation-result for 3D-owned paths
 
 ## Definition Of Done
 
 - UI works across expected breakpoints
-- behavior matches requirements and preserved business logic
+- behavior matches requirements, flow specs, and preserved business logic
 - original bug is fixed without obvious regression in affected flows
 - accessibility basics are covered
 - tests cover key interactions and risky logic where appropriate
+- `contracts/schemas/implementation-result.json` emitted when code changed
 - blast radius and remaining risk are understood

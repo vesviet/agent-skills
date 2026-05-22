@@ -1,6 +1,6 @@
 ---
 name: create-exercises
-description: Design educational assignments, practice tests, and quizzes. Use this when generating exercises to test specific learning objectives.
+description: Design educational assignments, practice tests, and quizzes following Vietnamese THCS and MOET exam matrices. Use when generating exercises or mock exams for specific learning objectives.
 ---
 
 # Create Exercises
@@ -32,5 +32,5 @@ Use this skill to generate practical tasks, tests, or mock exams strictly follow
 
 ## Related Skills
 
-- `grade-and-review`: use this to evaluate the completed exercises.
-- `design-learning-plan`: use this to understand where the exercise fits in the overall curriculum.
+- **grade-and-review**: evaluate completed exercises against the rubric.
+- **design-learning-plan**: align exercises with the broader curriculum sequence.

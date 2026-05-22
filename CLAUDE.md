@@ -9,7 +9,7 @@ Before ANY action, you MUST read and follow the rules in `core/rules/code.md`. K
 - **META-RULE**: Before finalizing any response or executing a command, verify the action against `core/rules/code.md`. If any step violates a rule, halt and ask the user for permission.
 - Do NOT create a commit unless the user explicitly confirms.
 - Do NOT push, tag, or publish unless the user explicitly confirms.
-- Ensure all code changes pass local linters, tests, and build checks before committing.
+- Ensure all code changes pass local linters, unit tests, and build checks before committing.
 - Do NOT expose secrets, credentials, or sensitive values in any user-visible artifact.
 - Do NOT mention agents, AI workflow, or internal process metadata in commits, changelogs, or release notes.
 - Prefer repo-local standards over defaults when they exist.
@@ -27,16 +27,21 @@ When the user assigns you a Role, you MUST:
 
 Available roles: `core/roles/README.md`
 
-## A2A Delegation & Contracts (v2.0)
+## A2A 1.0 & Antigravity (v2.4)
 
-- **Structured JSON Handoffs**: Always output the required JSON contract (e.g., `feature-ticket.json`, `test-report.json`) located in `core/contracts/schemas/` when completing a phase of work. Do not rely on plain markdown for data exchange.
-- **A2A Tasks**: Delegate sub-tasks to specialized roles when needed to reduce context bloat.
-- **Policy-as-Code**: Adhere strictly to `core/policies/action-boundaries.yaml`. Restricted actions (like pushing to production or dropping a DB) require manual user override.
+When operating as an AI agent (including **Antigravity** or **Claude Code**) under this pack:
+
+1. Read `adapters/antigravity/ANTIGRAVITY.md` when using Antigravity; use `core/a2a/.well-known/agent-registry.json` for discovery.
+2. Output **structured JSON** from `core/contracts/schemas/` for handoffs.
+3. Use **full A2A lifecycle** via `agent-a2a-protocol`: task, progress, status, artifact, cancel, optional push notifications.
+4. **Delegate** with `agent-delegation` / `/agent-a2a-delegation` across role boundaries.
+5. Obey **Policy-as-Code**: `action-boundaries.yaml` and `data-classification.yaml`; Cursor hooks optional via `adapters/cursor/hooks.template.json`.
+6. Use **PromptOps** (`agent-prompt-lifecycle`) and **semantic memory** (`agent-semantic-memory`) when Coordinator or Technical Lead owns long-running work.
 
 ## Skills
 
 Core skills live under `core/skills/`.
-Overlay skills live under `overlays/` and should be treated as opt-in extensions.
+Overlay skills live under `overlays/`.
 
 ## Workflows
 
@@ -45,17 +50,25 @@ When executing a workflow from `core/workflows/`, you MUST:
 1. Output a markdown checklist `[ ]` for ALL steps.
 2. Process only ONE step at a time.
 3. Mark each step as `[x]` and explain the result before moving to the next.
-4. Respect the `Role:` tag on each step - that role owns the step.
+4. Respect the `Role:` tag on each step.
 
 Available workflows: `core/workflows/README.md`
+
+## Validation
+
+```bash
+python3 core/scripts/validate-all.py
+python3 core/scripts/generate-a2a-registry.py
+```
 
 ## Quick Reference
 
 | Need | Go to |
 |------|-------|
-| Rules (always-on) | `core/rules/code.md` |
-| Role standard | `core/roles/role-standard.md` |
-| All roles | `core/roles/README.md` |
-| All skills | `core/skills/README.md` |
-| All workflows | `core/workflows/README.md` |
-| Overlay index | `overlays/README.md` |
+| Rules | `core/rules/code.md` |
+| Antigravity | `adapters/antigravity/ANTIGRAVITY.md` |
+| Cursor hooks | `adapters/cursor/README.md` |
+| A2A registry | `core/a2a/.well-known/agent-registry.json` |
+| Roles | `core/roles/README.md` |
+| Skills | `core/skills/README.md` |
+| Workflows | `core/workflows/README.md` |

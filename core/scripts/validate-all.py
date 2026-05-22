@@ -15,6 +15,11 @@ VALIDATORS = (
     "validate-roles.py",
     "validate-workflows.py",
     "validate-packs.py",
+    "validate-2026-compliance.py",
+    "validate-contracts.py",
+    "validate-a2a-compliance.py",
+    "validate-agent-cards.py",
+    "validate-standardization.py",
 )
 
 

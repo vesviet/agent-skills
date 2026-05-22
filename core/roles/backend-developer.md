@@ -36,9 +36,10 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Inputs Required
 
-- requirements and acceptance criteria
-- technical plan and architecture constraints
-- existing code patterns
+- `contracts/schemas/feature-ticket.json` from Business Analyst (scope, AC, business_rules)
+- `contracts/schemas/technical-delivery-plan.json` from Technical Lead (slices, quality_gates, documentation_deltas)
+- `contracts/schemas/adr-spec.json` from Technical Architect (boundaries, api_contract_refs, rollback expectations)
+- existing service architecture, code patterns, and repo conventions
 - runtime and deployment assumptions
 - bug report or incident context when fixing issues
 - affected contracts, schemas, event payloads, and dependent consumers
@@ -46,14 +47,19 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Outputs Produced
 
-- backend code
-- tests
-- migrations
-- integration updates
-- implementation notes when needed
+- `contracts/schemas/implementation-result.json` when code changes (primary machine handoff per slice)
+- backend code, tests, migrations, and integration updates
 - regression and compatibility notes for risky fixes
-- API contract definitions — use `contracts/schemas/api-contract-spec.json` for structured handoff
+- `contracts/schemas/api-contract-spec.json` when API or event contracts change
 - impact summary when contracts, shared logic, or side effects change
+
+## Deliverable Routing
+
+| Situation | Primary contract | Notes |
+| --------- | ---------------- | ----- |
+| Slice code complete | implementation-result.json | Always when files changed; set breaking_changes accurately |
+| Public API or event shape change | api-contract-spec.json | Align with adr-spec api_contract_refs; coordinate Frontend consumers |
+| No file changes (analysis only) | Markdown brief | Do not emit empty implementation-result |
 
 ## Decision Boundaries
 
@@ -64,12 +70,17 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Collaboration & A2A Delegation
 
-- works with Technical Lead on approach
-- works with QA on testability and risky scenarios
-- works with Reviewer on change quality
-- works with DevOps and SRE on runtime issues
-- delegates complex SQL queries or database migrations to specialist agents using **A2A tasks** (`agent-delegation` skill)
-- works with Product or BA when a bug fix exposes unclear or conflicting domain behavior
+- works with **Business Analyst** on feature-ticket.json requirements and acceptance criteria
+- works with **Technical Architect** on adr-spec.json and boundary decisions
+- works with **Technical Lead** on technical-delivery-plan.json slices, quality_gates, and readiness
+- works with **Frontend Developer** on api-contract-spec.json and client integration behavior
+- works with **Technical Writer** on documentation_deltas and verified implementation facts
+- works with **QA** on testability, risky scenarios, and validation-result alignment
+- works with **Reviewer** on change quality and implementation-result evidence
+- works with **DevOps** and **SRE** on runtime, deployment-plan, and incident follow-up
+- works with **Agent Coordinator** when backend work is a gated phase (emit implementation-result.json per slice)
+- delegates complex SQL, data pipelines, or security audits to specialist agents using **A2A tasks** (`agent-delegation` skill)
+- works with **Product Manager** or **BA** when a bug fix exposes unclear or conflicting domain behavior
 
 ## Guardrails
 
@@ -100,6 +111,7 @@ This role must follow [role-standard](role-standard.md) first.
 - `troubleshoot-service`
 - `performance-profiling`
 - `review-code`
+- `agent-delegation`
 
 ## Output Template
 
@@ -139,6 +151,9 @@ This role must follow [role-standard](role-standard.md) first.
 - Evidence the original bug and nearby regressions were checked:
 
 ## Handoff
+- Slice / delivery_plan_ref:
+- implementation-result.json (when emitted):
+- api-contract-spec.json (when contracts changed):
 - Risks:
 - QA focus areas:
 - Operational notes:
@@ -174,13 +189,17 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Role Handoff
 
-- From Product or BA: consume requirements, acceptance criteria, and scope boundaries
-- From Technical Architect or Lead: consume architecture constraints and sequencing
-- To QA: provide changed behavior, original defect scope, test data needs, and regression risks
-- To Reviewer: provide design rationale, risky files, impact radius, and validation evidence
-- To DevOps or SRE: provide config, migration, rollout, monitoring, and rollback notes
-- To Frontend / Client teams: provide API contracts via structured JSON (using `contracts/schemas/api-contract-spec.json`)
-- To dependent teams or services: provide contract, schema, or event changes with explicit compatibility notes
+- From **Business Analyst**: consume `contracts/schemas/feature-ticket.json`
+- From **Technical Architect**: consume `contracts/schemas/adr-spec.json`; align `contracts/schemas/api-contract-spec.json` with ADR api_contract_refs
+- From **Technical Lead**: consume `contracts/schemas/technical-delivery-plan.json` slices and quality_gates
+- From **UI/UX Designer**: consume api_needs from ux-flow-spec when API work is UX-driven
+- To **Technical Lead**: deliver `contracts/schemas/implementation-result.json` per completed slice
+- To **Reviewer**: provide design rationale, implementation-result, impact radius, and validation evidence
+- To **QA**: provide changed behavior, original defect scope, test data needs, and regression risks
+- To **DevOps** or **SRE**: provide config, migration, rollout, monitoring, and rollback notes
+- To **Frontend Developer** and client teams: deliver `contracts/schemas/api-contract-spec.json` when contracts change
+- To **Technical Writer**: support documentation_deltas with verified changed vs preserved behavior
+- To dependent services: provide contract, schema, or event changes with explicit compatibility notes
 
 ## Definition Of Done
 
@@ -188,4 +207,6 @@ This role must follow [role-standard](role-standard.md) first.
 - tests cover the change appropriately
 - business logic and original bug fix are verified without obvious regression in affected paths
 - config, migration, and side-effect impact are handled
+- `contracts/schemas/implementation-result.json` emitted when code changed
+- `contracts/schemas/api-contract-spec.json` updated when public contracts changed
 - rollout risks and blast radius are understood

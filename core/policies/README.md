@@ -12,11 +12,15 @@ Policies answer: "Is this agent, in this role, allowed to perform this action on
 
 ### Action Boundaries
 
-`action-boundaries.yaml` defines what each role is allowed, requires approval for, or denied from doing.
+`action-boundaries.yaml` defines what each of the 21 delivery roles is allowed, requires approval for, or denied from doing.
 
 ### Data Classification
 
 `data-classification.yaml` defines sensitivity levels for different data types to prevent accidental exposure.
+
+### MCP Tool Mapping
+
+`mcp-tool-map.yaml` maps IDE/MCP tool names to policy action ids for `agent-tool-orchestration` and Cursor hooks.
 
 ## Usage
 

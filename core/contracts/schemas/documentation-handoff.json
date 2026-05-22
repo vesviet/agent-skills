@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "documentation-handoff",
+  "title": "Documentation Handoff",
+  "description": "Structured documentation deliverable from Technical Writer.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "documentation-handoff"
+    },
+    "topic": { "type": "string" },
+    "audience": { "type": "string" },
+    "doc_paths": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "doc_type": {
+      "type": "string",
+      "enum": [
+        "readme",
+        "api_reference",
+        "runbook",
+        "release_notes",
+        "setup_guide",
+        "troubleshooting",
+        "other"
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "adr-spec",
+              "implementation-result",
+              "api-contract-spec",
+              "incident-report",
+              "code",
+              "other"
+            ]
+          },
+          "ref": { "type": "string" }
+        },
+        "required": ["type", "ref"]
+      }
+    },
+    "changed_behavior_summary": { "type": "string" },
+    "preserved_behavior_summary": { "type": "string" },
+    "verified_facts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "stale_docs_removed": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "review_ready", "published"]
+    }
+  },
+  "required": [
+    "contract_type",
+    "topic",
+    "audience",
+    "doc_paths",
+    "doc_type",
+    "status"
+  ]
+}

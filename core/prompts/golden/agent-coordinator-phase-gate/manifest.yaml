@@ -1,0 +1,5 @@
+prompt_id: agent-coordinator-phase-gate
+version: "1.0.0"
+role: agent-coordinator
+min_pass_rate: 0.9
+cases_dir: cases/

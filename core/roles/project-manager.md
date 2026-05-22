@@ -42,7 +42,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Outputs Produced
 
-- delivery plan
+- delivery plan — use `contracts/schemas/coordination-plan.json` when coordinating multi-phase execution with Agent Coordinator
 - timeline and milestone view
 - risk and blocker log
 - status reports
@@ -56,12 +56,14 @@ This role must follow [role-standard](role-standard.md) first.
 - proposes schedule adjustments when risk changes
 - does not hide validation cost to keep a plan looking on track
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - works with Product Manager on scope and sequencing
-- works with Technical Lead on implementation progress
-- works with QA and DevOps on release readiness
+- works with Agent Coordinator on phase graphs, parallel tracks, and gate evidence (`coordination-plan.json`)
+- works with Technical Lead on implementation progress and impact-driven replanning
+- works with QA and DevOps on release readiness (`test-report.json`, `deployment-plan.json`)
 - works with Support or Ops when rollout timing changes user impact
+- delegates status synthesis or doc updates to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
 
@@ -76,9 +78,11 @@ This role must follow [role-standard](role-standard.md) first.
 ### Primary Skills
 
 - `meeting-review`
+- `agent-graph-orchestration`
 
 ### Supporting Skills (use when collaborating)
 
+- `agent-delegation`
 - `navigate-service`
 - `review-service`
 

@@ -29,7 +29,7 @@ Find a nearby component that matches:
 
 ### 2. Define The Component Contract
 
-Require or construct a **UI Component Spec** (via `contracts/schemas/ui-component-spec.json`). Clarify:
+Require or construct a **UI Component Spec** (via `contracts/schemas/ui-component-spec.json`). When a parent **UX Flow Spec** exists (`contracts/schemas/ux-flow-spec.json`), match `flow_id` and honor `component_spec_refs`. Clarify:
 
 - what the component renders
 - what inputs it accepts
@@ -92,4 +92,5 @@ Cover:
 - **integrate-api-client**: Connect UI state to backend data safely
 - **frontend-testing**: Add UI and interaction coverage
 - **review-code**: Review accessibility and maintainability risk
+- **design-ux-flow**: Upstream ux-flow-spec and ui-component-spec from UI/UX Designer
 - **commit-code**: Prepare the component change for delivery

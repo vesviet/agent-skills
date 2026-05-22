@@ -1,0 +1,130 @@
+{
+  "name": "backend-developer",
+  "description": "build correct, maintainable, testable backend behavior across APIs, business logic, data access, and integrations while preserving business rules and avoiding regressions when fixes alter contracts, data flow, or side effects.",
+  "url": "pack://agent-skills/core/roles/backend-developer.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "add-api-endpoint",
+      "name": "Add Api Endpoint",
+      "description": "Primary skill for backend-developer role.",
+      "tags": [
+        "backend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "api-contract-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "add-event-handler",
+      "name": "Add Event Handler",
+      "description": "Primary skill for backend-developer role.",
+      "tags": [
+        "backend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "api-contract-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "add-service-client",
+      "name": "Add Service Client",
+      "description": "Primary skill for backend-developer role.",
+      "tags": [
+        "backend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "api-contract-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "create-migration",
+      "name": "Create Migration",
+      "description": "Primary skill for backend-developer role.",
+      "tags": [
+        "backend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "api-contract-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "write-tests",
+      "name": "Write Tests",
+      "description": "Primary skill for backend-developer role.",
+      "tags": [
+        "backend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "api-contract-spec.json",
+        "implementation-result.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "api-contract-spec.json",
+    "implementation-result.json"
+  ],
+  "role_file": "core/roles/backend-developer.md",
+  "policy_profile": "backend-developer"
+}

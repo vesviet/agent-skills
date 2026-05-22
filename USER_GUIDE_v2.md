@@ -1,4 +1,6 @@
-# 🚀 Agent-Skills v2.0: The Complete User Guide
+# Agent-Skills v2.3: User Guide (A2A 1.0 + Antigravity)
+
+> v2.0 sections below; v2.3 adds full A2A lifecycle — see `adapters/antigravity/ANTIGRAVITY.md`.
 
 Welcome to the **Agent-Skills v2.0** ecosystem. This system transforms standard AI coding assistants into an **Autonomous Swarm Environment**. Instead of having one general AI try to do everything, you now have a team of highly specialized, policy-driven "Virtual Employees" that can talk to each other using strict Data Contracts.
 
@@ -59,16 +61,35 @@ Here are the core contracts available in `core/contracts/schemas/`:
 
 | Contract File | Used By | Purpose |
 |---------------|---------|---------|
-| `feature-ticket.json` | PM / BA | Defines business rules and acceptance criteria for Devs. |
-| `ui-component-spec.json`| UX Designer | Defines UI states and props for Frontend Devs. |
+| `feature-ticket.json` | PM / BA | Requirements ticket: rules, preserved/changed behavior, AC, optional analytics_request and seo_content_request. |
+| `ux-flow-spec.json` | UI/UX Designer | Multi-screen flows, transitions, API needs, component refs. |
+| `ui-component-spec.json`| UI/UX Designer | Per-component states, props, events, and copy for Frontend. |
+| `implementation-result.json` | Frontend / Backend / 3D | Per-slice code change summary for Lead, Coordinator, Reviewer, Writer. |
 | `api-contract-spec.json`| Backend Dev | Defines REST/gRPC endpoints for Frontend consumption. |
+| `performance-audit.json` | Frontend / 3D | Profiling and perf budget evidence (supplements implementation-result). |
 | `schema-migration.json` | Data Engineer | Defines DB changes and rollback scripts safely. |
+| `data-analysis-report.json` | Data Analyst | Metrics, findings, lineage, and recommendations for stakeholders. |
+| `seo-content-brief.json` | SEO Analyst | Keywords, intent, outline, and internal links before drafting. |
+| `seo-audit-report.json` | SEO Analyst | On-page audit issues and metadata recommendations. |
+| `seo-metadata.json` | SEO Analyst / Content Writer | Publish-ready title, meta, slug, and keywords. |
+| `seo-weekly-board.json` | SEO Analyst / Task Planner | 7-day dual-site topic board and publish status. |
+| `content-handoff.json` | Content Writer | Article path, research passes, claims, and publish status. |
 | `test-report.json` | QA Engineer | Logs test results, bugs, and release recommendations. |
 | `performance-audit.json`| 3D / Frontend | Logs FPS, memory, and bundle size metrics. |
 | `security-audit.json` | Security Eng | Logs vulnerabilities and assigns CVE mitigation tasks. |
 | `deployment-plan.json` | DevOps | Defines environment rollout and rollback strategy. |
 | `incident-report.json` | SRE | Logs post-mortem findings and action items. |
-| `adr-spec.json` | Architect | Records why a technical decision was made. |
+| `architecture-options.json` | Technical Architect | Structured options before an ADR is accepted. |
+| `adr-spec.json` | Technical Architect | Records why a technical decision was made. |
+| `technical-delivery-plan.json` | Technical Lead | Implementation slices, gates, and readiness. |
+| `documentation-handoff.json` | Technical Writer | Published doc paths and verified sources. |
+| `agent-card.json` | All roles | A2A discovery manifest (see `core/a2a/registry/`). |
+| `a2a-task.json` | Coordinator / delegators | Submit delegated work (UUID task_id). |
+| `a2a-task-progress.json` | Worker | SSE streaming progress events. |
+| `a2a-task-status.json` | Coordinator | Get/list/cancel task state. |
+| `a2a-artifact.json` | Worker | Validated deliverable for a task. |
+| `coordination-plan.json` | Agent Coordinator | Multi-phase graph state. |
+| `research-report.json` | Researcher | Research synthesis; `depth_mode` deep (10+ rounds) or scoped (3+ with waiver); includes `recommended_next_roles`. |
 
 ---
 

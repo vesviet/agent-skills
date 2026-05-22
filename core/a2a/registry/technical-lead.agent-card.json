@@ -1,0 +1,124 @@
+{
+  "name": "technical-lead",
+  "description": "turn architecture and requirements into a delivery-ready technical plan, guide implementation quality, and keep engineering decisions aligned without losing sight of logic correctness, regression risk, or rollout impact.",
+  "url": "pack://agent-skills/core/roles/technical-lead.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "plan-technical-delivery",
+      "name": "Plan Technical Delivery",
+      "description": "Primary skill for technical-lead role.",
+      "tags": [
+        "technical",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "review-code",
+      "name": "Review Code",
+      "description": "Primary skill for technical-lead role.",
+      "tags": [
+        "technical",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "review-service",
+      "name": "Review Service",
+      "description": "Primary skill for technical-lead role.",
+      "tags": [
+        "technical",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "navigate-service",
+      "name": "Navigate Service",
+      "description": "Primary skill for technical-lead role.",
+      "tags": [
+        "technical",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "meeting-review",
+      "name": "Meeting Review",
+      "description": "Primary skill for technical-lead role.",
+      "tags": [
+        "technical",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "technical-delivery-plan.json"
+  ],
+  "role_file": "core/roles/technical-lead.md",
+  "policy_profile": "technical-lead"
+}

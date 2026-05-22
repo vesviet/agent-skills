@@ -1,0 +1,26 @@
+# Generated capability → role map for Antigravity a2a-config.template.yaml
+# Regenerate: python3 core/scripts/generate-a2a-registry.py
+capability_role_map:
+  3d-graphics-engineer: 3d-graphics-engineer
+  agent-coordinator: agent-coordinator
+  backend-developer: backend-developer
+  business-analyst: business-analyst
+  content-writer: content-writer
+  data-analyst: data-analyst
+  data-engineer: data-engineer
+  devops-engineer: devops-engineer
+  frontend-developer: frontend-developer
+  product-manager: product-manager
+  project-manager: project-manager
+  qa-engineer: qa-engineer
+  researcher: researcher
+  reviewer: reviewer
+  security-engineer: security-engineer
+  seo-analyst: seo-analyst
+  sre: sre
+  task-planner: task-planner
+  teacher: teacher
+  technical-architect: technical-architect
+  technical-lead: technical-lead
+  technical-writer: technical-writer
+  ui-ux-designer: ui-ux-designer

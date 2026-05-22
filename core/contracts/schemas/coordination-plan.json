@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "coordination-plan",
+  "title": "Coordination Plan",
+  "description": "Structured phase graph for Agent Coordinator orchestration across specialist roles.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "coordination-plan"
+    },
+    "work_id": {
+      "type": "string",
+      "description": "Stable identifier for the coordinated work item."
+    },
+    "work_type": {
+      "type": "string",
+      "enum": ["bug", "feature", "refactor", "hotfix", "review"]
+    },
+    "goal_summary": {
+      "type": "string"
+    },
+    "risk_tier": {
+      "type": "string",
+      "enum": ["vibe", "agentic", "engineering"]
+    },
+    "phases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "phase_id": { "type": "string" },
+          "name": { "type": "string" },
+          "owner_role": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "active", "blocked", "completed", "skipped"]
+          },
+          "exit_criteria": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "depends_on": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "phase_id values that must complete first"
+          },
+          "delegation_task_id": {
+            "type": "string",
+            "description": "Optional A2A task_id when work is delegated"
+          },
+          "output_schema_ref": {
+            "type": "string",
+            "description": "Expected artifact schema for this phase"
+          }
+        },
+        "required": ["phase_id", "name", "owner_role", "status", "exit_criteria"]
+      }
+    },
+    "parallel_groups": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "phase_ids that may run in parallel"
+      }
+    },
+    "current_phase_id": { "type": "string" },
+    "blockers": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "residual_risks": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": [
+    "contract_type",
+    "work_id",
+    "work_type",
+    "goal_summary",
+    "risk_tier",
+    "phases",
+    "current_phase_id"
+  ]
+}

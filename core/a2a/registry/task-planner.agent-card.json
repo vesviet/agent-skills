@@ -1,0 +1,64 @@
+{
+  "name": "task-planner",
+  "description": "produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation checkpoints, and explicit assumptions—so implementers can start without rediscovering the approach.",
+  "url": "pack://agent-skills/core/roles/task-planner.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "analyze-business-requirements",
+      "name": "Analyze Business Requirements",
+      "description": "Primary skill for task-planner role.",
+      "tags": [
+        "task",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "seo-weekly-board.json"
+      ]
+    },
+    {
+      "id": "write-product-brief",
+      "name": "Write Product Brief",
+      "description": "Primary skill for task-planner role.",
+      "tags": [
+        "task",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "seo-weekly-board.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "seo-weekly-board.json"
+  ],
+  "role_file": "core/roles/task-planner.md",
+  "policy_profile": "task-planner"
+}

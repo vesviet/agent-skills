@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "data-analysis-report",
+  "title": "Data Analysis Report",
+  "description": "Structured analyst deliverable for metrics, findings, and recommendations.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "data-analysis-report"
+    },
+    "business_question": {
+      "type": "string"
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "definition": { "type": "string" },
+          "value": { "type": "string" },
+          "grain": { "type": "string" },
+          "time_range": { "type": "string" }
+        },
+        "required": ["name", "definition"]
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "path_or_table": { "type": "string" },
+          "as_of": { "type": "string" },
+          "limitations": { "type": "string" }
+        },
+        "required": ["name", "path_or_table"]
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "interpretation": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "data_quality_issues": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["High", "Medium", "Low"]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths to Excel, charts, or query exports."
+    }
+  },
+  "required": [
+    "contract_type",
+    "business_question",
+    "metrics",
+    "sources",
+    "findings",
+    "confidence"
+  ]
+}

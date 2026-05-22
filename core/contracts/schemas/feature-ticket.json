@@ -2,15 +2,39 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "feature-ticket",
   "title": "Feature Ticket Specification",
-  "description": "Structured output for a parsed and actionable feature ticket.",
+  "description": "Structured output for business requirements and actionable feature tickets.",
   "type": "object",
   "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "feature-ticket"
+    },
     "title": { "type": "string" },
     "type": { "type": "string", "enum": ["feature", "bug", "chore", "spike"] },
     "business_value": { "type": "string" },
+    "preserved_behavior": {
+      "type": "string",
+      "description": "Behavior that must remain unchanged."
+    },
+    "changed_behavior": {
+      "type": "string",
+      "description": "Intended new or restored behavior."
+    },
     "actors": {
       "type": "array",
       "items": { "type": "string" }
+    },
+    "business_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "rule": { "type": "string" },
+          "exceptions": { "type": "string" }
+        },
+        "required": ["rule"]
+      }
     },
     "acceptance_criteria": {
       "type": "array",
@@ -36,6 +60,54 @@
     "out_of_scope": {
       "type": "array",
       "items": { "type": "string" }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "process_impact": {
+      "type": "string",
+      "description": "Downstream teams, systems, or workflows affected."
+    },
+    "analytics_request": {
+      "type": "object",
+      "description": "Optional handoff block for Data Analyst.",
+      "properties": {
+        "decision_supported": { "type": "string" },
+        "questions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "proposed_metrics": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "segments": { "type": "string" },
+        "time_range": { "type": "string" },
+        "timezone": { "type": "string" },
+        "sources_known": { "type": "string" },
+        "constraints": { "type": "string" },
+        "out_of_scope": { "type": "string" }
+      }
+    },
+    "seo_content_request": {
+      "type": "object",
+      "description": "Optional handoff block for SEO Analyst (content/discoverability outcomes).",
+      "properties": {
+        "business_outcome": { "type": "string" },
+        "audience": { "type": "string" },
+        "site_or_channel": { "type": "string" },
+        "topic_angle": { "type": "string" },
+        "proposed_primary_keyword": { "type": "string" },
+        "conversion_or_cta_goal": { "type": "string" },
+        "must_link_to": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "High-value paths (product, property, guides) BA wants emphasized."
+        },
+        "constraints": { "type": "string" },
+        "out_of_scope": { "type": "string" }
+      }
     }
   },
   "required": ["title", "type", "acceptance_criteria"]

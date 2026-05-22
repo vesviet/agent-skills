@@ -1,0 +1,30 @@
+# MCP / IDE tool name → policy action id for action-boundaries.yaml checks.
+# Used by agent-tool-orchestration and Cursor hooks.template.json.
+
+tool_actions:
+  read_file: read_file
+  write: write_file
+  write_file: write_file
+  create_file: create_file
+  delete_file: delete_file
+  search: search_code
+  grep: search_code
+  run_terminal_cmd: run_build
+  shell: run_build
+  run_tests: run_tests
+  run_linter: run_linter
+  run_build: run_build
+  mcp_call: read_file
+  fetch: read_file
+
+destructive_patterns:
+  - pattern: "git push"
+    action: push_to_production
+  - pattern: "git commit"
+    action: write_file
+  - pattern: "drop database"
+    action: drop_database
+  - pattern: "migrate"
+    action: run_migration
+  - pattern: "npm install"
+    action: install_dependency

@@ -50,6 +50,7 @@ All roles in this pack are expected to:
 - [project-manager](project-manager.md)
 - [task-planner](task-planner.md)
 - [business-analyst](business-analyst.md)
+- [researcher](researcher.md)
 - [ui-ux-designer](ui-ux-designer.md)
 
 ### Architecture And Engineering
@@ -69,9 +70,11 @@ All roles in this pack are expected to:
 - [sre](sre.md)
 - [technical-writer](technical-writer.md)
 - [content-writer](content-writer.md)
+- [seo-analyst](seo-analyst.md)
 
 ### Data And Analytics
 
+- [data-analyst](data-analyst.md)
 - [data-engineer](data-engineer.md)
 
 ### Education And Mentoring
@@ -86,6 +89,7 @@ All roles in this pack are expected to:
 - Agent Coordinator
 - Product Manager
 - Business Analyst
+- Researcher
 - UI/UX Designer
 
 ### Planning
@@ -118,6 +122,7 @@ All roles in this pack are expected to:
 - DevOps Engineer
 - SRE
 - Technical Writer
+- SEO Analyst
 - Content Writer
 
 ### Operate And Improve
@@ -130,9 +135,17 @@ All roles in this pack are expected to:
 
 ### Data And Reporting
 
+- Data Analyst
 - Data Engineer
 - Business Analyst
 - Agent Coordinator
+
+### Content And SEO
+
+- Task Planner
+- SEO Analyst
+- Content Writer
+- Researcher
 
 ### Learning And Enablement
 
@@ -145,11 +158,12 @@ All roles in this pack are expected to:
 
 | Role | Primary Workflows |
 |------|------------------|
-| Agent Coordinator | `/add-new-feature`, `/troubleshooting`, `/hotfix-production`, `/refactoring`, `/service-review-release` |
+| Agent Coordinator | `/add-new-feature`, `/troubleshooting`, `/hotfix-production`, `/refactoring`, `/service-review-release`, `/agent-a2a-delegation` |
 | Product Manager | `/add-new-feature` |
 | Project Manager | `/add-new-feature`, `/service-review-release` |
 | Task Planner | `/add-new-feature`, `/refactoring`, `/troubleshooting` |
 | Business Analyst | `/add-new-feature` |
+| Researcher | `/add-new-feature`, `/troubleshooting` |
 | UI/UX Designer | `/add-new-feature` |
 | Technical Architect | `/setup-new-service`, `/refactoring` |
 | Technical Lead | `/add-new-feature`, `/service-review-release`, `/refactoring` |
@@ -163,7 +177,9 @@ All roles in this pack are expected to:
 | SRE | `/troubleshooting`, `/hotfix-production`, `/revert-deployment` |
 | Technical Writer | `/add-new-feature`, `/service-review-release` |
 | Content Writer | `/add-new-feature`, `/service-review-release` |
-| Data Engineer | `/troubleshooting` |
+| SEO Analyst | `/add-new-feature`, `/service-review-release` |
+| Data Analyst | `/add-new-feature`, `/troubleshooting` |
+| Data Engineer | `/troubleshooting`, `/setup-new-service` |
 | Teacher | `/add-new-feature`, `/refactoring` |
 
 ## Usage Notes
@@ -202,8 +218,9 @@ Run role validation after editing or adding roles:
 
 ```bash
 python3 core/scripts/validate-roles.py
+python3 core/scripts/validate-2026-compliance.py
 ```
 
-The validator checks required sections, section order, minimum content depth, toolbox references, duplicate toolbox entries, role inventory, and workflow mapping.
+The validator checks required sections, section order, minimum content depth, toolbox references, duplicate toolbox entries, role inventory, and workflow mapping. The 2026 compliance validator checks A2A/contract coverage, coordinator wiring, full policy coverage, and graph orchestration infrastructure.
 
-Last updated: 2026-05-06
+Last updated: 2026-05-22

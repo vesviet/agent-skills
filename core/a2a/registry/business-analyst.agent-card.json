@@ -1,0 +1,84 @@
+{
+  "name": "business-analyst",
+  "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules, edge cases, or downstream impact.",
+  "url": "pack://agent-skills/core/roles/business-analyst.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "analyze-business-requirements",
+      "name": "Analyze Business Requirements",
+      "description": "Primary skill for business-analyst role.",
+      "tags": [
+        "business",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    },
+    {
+      "id": "meeting-review",
+      "name": "Meeting Review",
+      "description": "Primary skill for business-analyst role.",
+      "tags": [
+        "business",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    },
+    {
+      "id": "navigate-service",
+      "name": "Navigate Service",
+      "description": "Primary skill for business-analyst role.",
+      "tags": [
+        "business",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "feature-ticket.json"
+  ],
+  "role_file": "core/roles/business-analyst.md",
+  "policy_profile": "business-analyst"
+}

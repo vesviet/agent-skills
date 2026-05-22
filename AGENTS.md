@@ -27,12 +27,18 @@ When the user assigns you a Role, you MUST:
 
 Available roles: `core/roles/README.md`
 
-## A2A Delegation & Contracts (v2.0)
+## A2A 1.0 & Antigravity (v2.4)
 
-When operating as an AI agent (like Antigravity) under this pack, you MUST:
-1. **Output Structured JSON Contracts**: When completing a task or handing off to another role, output the exact JSON schema defined in `core/contracts/schemas/` (e.g., `feature-ticket.json`, `test-report.json`, `api-contract-spec.json`). Do not output raw markdown for these deliverables.
-2. **Utilize A2A Delegation**: If a task requires a skill outside your current role's Toolbox, explicitly delegate the sub-task to the appropriate role using the `agent-delegation` workflow.
-3. **Obey Policy-as-Code Boundaries**: You are strictly bound by `core/policies/action-boundaries.yaml`. Restricted actions (dropping DBs, deploying to prod) MUST be halted pending human override.
+When operating as an AI agent (like **Antigravity**) under this pack, you MUST:
+
+1. **Read the Antigravity adapter**: `adapters/antigravity/ANTIGRAVITY.md` and apply `.antigravity/rules.md` from `adapters/antigravity/rules.template.md` in the active project.
+2. **Discover agents** via `core/a2a/.well-known/agent-registry.json` and per-role `*.agent-card.json` (regenerate with `python3 core/scripts/generate-a2a-registry.py`).
+3. **Output Structured JSON Contracts** from `core/contracts/schemas/` — not prose-only handoffs.
+4. **Use full A2A lifecycle** (`agent-a2a-protocol` skill): `a2a-task.json` → stream `a2a-task-progress.json` → `a2a-artifact.json` / `a2a-task-status.json`; support cancel and UUID v4 task IDs.
+5. **Delegate** with `agent-delegation` / workflow `/agent-a2a-delegation` when work crosses role boundaries.
+6. **Obey Policy-as-Code**: `core/policies/action-boundaries.yaml`, `data-classification.yaml`, and `mcp-tool-map.yaml` before state-changing actions.
+7. **PromptOps & memory**: use `agent-prompt-lifecycle` and `agent-semantic-memory` when Coordinator or Technical Lead owns durable sessions (see `core/prompts/golden/`).
+8. **Cursor hooks** (optional): `adapters/cursor/hooks.template.json` for runtime policy advisory checks.
 
 ## Skills
 

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a2a-task-status",
+  "title": "A2A Task Status",
+  "description": "Response for Get Task / List Tasks operations (A2A 1.0).",
+  "type": "object",
+  "properties": {
+    "task_id": { "type": "string" },
+    "state": {
+      "type": "string",
+      "enum": ["submitted", "working", "input-required", "completed", "failed", "canceled"]
+    },
+    "delegator": { "type": "string" },
+    "assignee_role": { "type": "string" },
+    "interaction_mode": {
+      "type": "string",
+      "enum": ["sync", "stream", "push"]
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "messages": {
+      "type": "array",
+      "items": { "$ref": "a2a-message.json" }
+    },
+    "artifact": {
+      "type": "object",
+      "description": "Latest artifact when state is terminal or partial.",
+      "additionalProperties": true
+    },
+    "blockers": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "cancel_reason": { "type": "string" }
+  },
+  "required": ["task_id", "state", "updated_at"]
+}

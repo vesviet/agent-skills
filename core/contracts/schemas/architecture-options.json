@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "architecture-options",
+  "title": "Architecture Options Brief",
+  "description": "Structured options analysis before an ADR is accepted.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "architecture-options"
+    },
+    "title": { "type": "string" },
+    "feature_ticket_ref": { "type": "string" },
+    "context": { "type": "string" },
+    "constraints": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "preserved_behavior": { "type": "string" },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "option_id": { "type": "string" },
+          "summary": { "type": "string" },
+          "pros": { "type": "array", "items": { "type": "string" } },
+          "cons": { "type": "array", "items": { "type": "string" } },
+          "migration_effort": { "type": "string" },
+          "risk_notes": { "type": "string" }
+        },
+        "required": ["option_id", "summary"]
+      }
+    },
+    "recommended_option_id": { "type": "string" },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["contract_type", "title", "context", "options"]
+}

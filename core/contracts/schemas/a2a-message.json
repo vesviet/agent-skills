@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a2a-message",
+  "title": "A2A Message",
+  "description": "Single message in an A2A task conversation history.",
+  "type": "object",
+  "properties": {
+    "message_id": { "type": "string" },
+    "role": {
+      "type": "string",
+      "enum": ["user", "agent", "system", "delegator", "worker"]
+    },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "parts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": ["text", "file", "data", "json"]
+          },
+          "text": { "type": "string" },
+          "data": { "type": "object", "additionalProperties": true },
+          "file_ref": { "type": "string" }
+        },
+        "required": ["kind"]
+      }
+    }
+  },
+  "required": ["message_id", "role", "parts"]
+}

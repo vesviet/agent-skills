@@ -1,0 +1,104 @@
+{
+  "name": "sre",
+  "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety.",
+  "url": "pack://agent-skills/core/roles/sre.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "debug-runtime-platform",
+      "name": "Debug Runtime Platform",
+      "description": "Primary skill for sre role.",
+      "tags": [
+        "sre",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "incident-report.json"
+      ]
+    },
+    {
+      "id": "troubleshoot-service",
+      "name": "Troubleshoot Service",
+      "description": "Primary skill for sre role.",
+      "tags": [
+        "sre",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "incident-report.json"
+      ]
+    },
+    {
+      "id": "add-telemetry-instrumentation",
+      "name": "Add Telemetry Instrumentation",
+      "description": "Primary skill for sre role.",
+      "tags": [
+        "sre",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "incident-report.json"
+      ]
+    },
+    {
+      "id": "performance-profiling",
+      "name": "Performance Profiling",
+      "description": "Primary skill for sre role.",
+      "tags": [
+        "sre",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "incident-report.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "incident-report.json"
+  ],
+  "role_file": "core/roles/sre.md",
+  "policy_profile": "sre"
+}

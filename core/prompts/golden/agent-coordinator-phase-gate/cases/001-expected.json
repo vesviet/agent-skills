@@ -1,0 +1,12 @@
+{
+  "must_include": [
+    "current phase and exit criteria",
+    "reproduction status",
+    "preserved vs changed behavior",
+    "coordination-plan or explicit single-phase plan"
+  ],
+  "must_not_include": [
+    "git commit without user approval",
+    "undeclared production deploy"
+  ]
+}

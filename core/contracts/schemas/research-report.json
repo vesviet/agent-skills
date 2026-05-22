@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "research-report",
   "title": "Research Report Specification",
-  "description": "Structured output for a 10-round deep dive research synthesis.",
+  "description": "Structured output for iterative research synthesis with deep (10+ rounds) or scoped depth.",
   "type": "object",
   "properties": {
     "contract_type": {
@@ -13,37 +13,77 @@
       "type": "string",
       "description": "The core hypothesis, question, or problem being researched."
     },
+    "feature_ticket_ref": {
+      "type": "string",
+      "description": "Optional path or ID linking to feature-ticket.json when research supports requirements work."
+    },
     "execution_metrics": {
       "type": "object",
       "properties": {
+        "depth_mode": {
+          "type": "string",
+          "enum": ["deep", "scoped"],
+          "description": "deep = default 10+ rounds; scoped = user- or BA-narrowed depth with documented waiver."
+        },
         "total_rounds": {
           "type": "integer",
-          "minimum": 10,
-          "description": "Total number of iterative research loops executed. Must be at least 10."
+          "minimum": 1,
+          "description": "Distinct research loops executed. Minimum 10 when depth_mode is deep; minimum 3 when scoped."
         },
         "sources_analyzed": {
           "type": "integer",
           "minimum": 1
+        },
+        "scope_waiver_note": {
+          "type": "string",
+          "description": "Required when depth_mode is scoped: who narrowed scope and why fewer rounds are sufficient."
         }
       },
-      "required": ["total_rounds", "sources_analyzed"]
+      "required": ["depth_mode", "total_rounds", "sources_analyzed"],
+      "allOf": [
+        {
+          "if": {
+            "properties": { "depth_mode": { "const": "deep" } },
+            "required": ["depth_mode"]
+          },
+          "then": {
+            "properties": {
+              "total_rounds": { "minimum": 10 }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "depth_mode": { "const": "scoped" } },
+            "required": ["depth_mode"]
+          },
+          "then": {
+            "properties": {
+              "total_rounds": { "minimum": 3 },
+              "scope_waiver_note": { "minLength": 1 }
+            },
+            "required": ["scope_waiver_note"]
+          }
+        }
+      ]
     },
     "synthesis": {
       "type": "object",
       "properties": {
         "key_findings": {
           "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "The primary verified insights discovered."
+          "items": { "type": "string" },
+          "description": "Primary verified insights discovered."
+        },
+        "inferences": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Labeled inferences that are not fully verified."
         },
         "critical_gaps": {
           "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Missing, ambiguous, or unverifiable information after 10 rounds."
+          "items": { "type": "string" },
+          "description": "Missing, ambiguous, or unverifiable information after research."
         },
         "confidence_score": {
           "type": "string",
@@ -55,19 +95,45 @@
     },
     "raw_data_references": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
         "properties": {
           "source_name": { "type": "string" },
           "url": { "type": "string" },
-          "credibility": { 
+          "credibility": {
             "type": "string",
-            "enum": ["Official", "Authority", "Community", "Unverified"] 
+            "enum": ["Official", "Authority", "Community", "Unverified"]
           },
           "context_summary": { "type": "string" }
         },
         "required": ["source_name", "url", "credibility"]
       }
+    },
+    "recommended_next_roles": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Downstream owners; Researcher recommends but does not decide for them.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Target role slug, e.g. technical-architect, business-analyst, content-writer."
+          },
+          "rationale": { "type": "string" },
+          "open_decisions": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["role", "rationale"]
+      }
+    },
+    "residual_risks": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Risks and skipped checks when certainty is limited."
     }
   },
   "required": [
@@ -75,6 +141,7 @@
     "objective",
     "execution_metrics",
     "synthesis",
-    "raw_data_references"
+    "raw_data_references",
+    "recommended_next_roles"
   ]
 }

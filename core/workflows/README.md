@@ -14,6 +14,7 @@ This directory contains reusable, longer-form workflows that sit above the indiv
 | [hotfix-production](hotfix-production.md) | Handle urgent production incidents safely |
 | [revert-deployment](revert-deployment.md) | Safely roll back a failed deployment or release |
 | [refactoring](refactoring.md) | Improve structure without changing behavior |
+| [agent-a2a-delegation](agent-a2a-delegation.md) | Full A2A 1.0 delegate with discovery, streaming, and artifact validation |
 
 ## How To Use These
 

@@ -1,0 +1,64 @@
+{
+  "name": "content-writer",
+  "description": "produce new articles that match the intended audience, voice, and evidence bar—using deep research when facts are not yet established, and using supplied material and house formats when they are.",
+  "url": "pack://agent-skills/core/roles/content-writer.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "write-article",
+      "name": "Write Article",
+      "description": "Primary skill for content-writer role.",
+      "tags": [
+        "content",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "content-handoff.json"
+      ]
+    },
+    {
+      "id": "write-documentation",
+      "name": "Write Documentation",
+      "description": "Primary skill for content-writer role.",
+      "tags": [
+        "content",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "content-handoff.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "content-handoff.json"
+  ],
+  "role_file": "core/roles/content-writer.md",
+  "policy_profile": "content-writer"
+}

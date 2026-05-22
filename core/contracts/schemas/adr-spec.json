@@ -5,11 +5,33 @@
   "description": "Structured output for an Architecture Decision Record (ADR).",
   "type": "object",
   "properties": {
-    "title": { "type": "string" },
-    "status": { "type": "string", "enum": ["proposed", "accepted", "rejected", "superseded"] },
-    "context": {
+    "contract_type": {
       "type": "string",
-      "description": "The problem, constraints, and business context."
+      "const": "adr-spec"
+    },
+    "title": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["proposed", "accepted", "rejected", "superseded"]
+    },
+    "feature_ticket_ref": { "type": "string" },
+    "architecture_options_ref": {
+      "type": "string",
+      "description": "Path to architecture-options.json when options analysis preceded this ADR."
+    },
+    "supersedes_adr": {
+      "type": "string",
+      "description": "Title or id of ADR this record replaces."
+    },
+    "context": { "type": "string" },
+    "affected_services": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "api_contract_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths or ids of api-contract-spec.json artifacts impacted."
     },
     "options_considered": {
       "type": "array",
@@ -23,10 +45,7 @@
         "required": ["option"]
       }
     },
-    "decision": {
-      "type": "string",
-      "description": "The option chosen."
-    },
+    "decision": { "type": "string" },
     "consequences": {
       "type": "object",
       "properties": {
@@ -34,10 +53,8 @@
         "negative": { "type": "array", "items": { "type": "string" } }
       }
     },
-    "migration_plan": {
-      "type": "string",
-      "description": "Required steps for migration or rollout."
-    }
+    "migration_plan": { "type": "string" },
+    "rollback_plan": { "type": "string" }
   },
   "required": ["title", "status", "context", "options_considered", "decision", "consequences"]
 }

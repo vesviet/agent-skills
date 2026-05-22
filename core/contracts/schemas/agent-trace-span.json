@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent-trace-span",
+  "title": "Agent Trace Span",
+  "description": "Lightweight observability span for agent sessions (OpenTelemetry GenAI-aligned fields).",
+  "type": "object",
+  "properties": {
+    "trace_id": { "type": "string" },
+    "span_id": { "type": "string" },
+    "parent_span_id": { "type": "string" },
+    "session_id": { "type": "string" },
+    "role": { "type": "string" },
+    "operation": { "type": "string" },
+    "start_time": { "type": "string", "format": "date-time" },
+    "end_time": { "type": "string", "format": "date-time" },
+    "status": {
+      "type": "string",
+      "enum": ["ok", "error", "unset"]
+    },
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "model": { "type": "string" },
+        "input_tokens": { "type": "integer" },
+        "output_tokens": { "type": "integer" },
+        "task_id": { "type": "string" },
+        "tool_name": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": ["trace_id", "span_id", "role", "operation", "status"]
+}

@@ -2,21 +2,40 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "a2a-artifact",
   "title": "A2A Task Artifact",
-  "description": "Schema for the result returned by an agent after completing a delegated A2A task.",
+  "description": "Deliverable returned by a worker agent (A2A Artifact / Antigravity task result).",
   "type": "object",
   "properties": {
     "task_id": {
       "type": "string",
       "description": "ID of the original A2A task this artifact responds to."
     },
+    "state": {
+      "type": "string",
+      "enum": ["submitted", "working", "input-required", "completed", "failed", "canceled"],
+      "description": "Terminal or in-progress task state mirrored on artifact."
+    },
     "status": {
       "type": "string",
       "enum": ["completed", "failed", "blocked", "partial"],
-      "description": "Outcome status of the task."
+      "description": "Pack-level outcome status (maps to A2A terminal states)."
+    },
+    "parts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": { "type": "string", "enum": ["text", "file", "data", "json"] },
+          "text": { "type": "string" },
+          "data": { "type": "object", "additionalProperties": true },
+          "file_ref": { "type": "string" }
+        },
+        "required": ["kind"]
+      },
+      "description": "A2A multimodal artifact parts."
     },
     "result": {
       "type": "object",
-      "description": "The actual output conforming to the schema specified in the task.",
+      "description": "Structured output conforming to output_schema_ref from the task.",
       "additionalProperties": true
     },
     "evidence": {
@@ -33,13 +52,11 @@
           "reason": { "type": "string" }
         },
         "required": ["criterion", "reason"]
-      },
-      "description": "Which success criteria were not met and why."
+      }
     },
     "blockers": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Issues preventing completion that require delegator action."
+      "items": { "type": "string" }
     },
     "token_usage": {
       "type": "object",
@@ -47,9 +64,9 @@
         "input_tokens": { "type": "integer" },
         "output_tokens": { "type": "integer" },
         "model_used": { "type": "string" }
-      },
-      "description": "Cost tracking for observability."
-    }
+      }
+    },
+    "trace_id": { "type": "string" }
   },
   "required": ["task_id", "status"]
 }

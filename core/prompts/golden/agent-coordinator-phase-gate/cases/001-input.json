@@ -1,0 +1,5 @@
+{
+  "work_type": "bug",
+  "phase": "triage",
+  "user_request": "Login fails after password reset for OAuth users"
+}

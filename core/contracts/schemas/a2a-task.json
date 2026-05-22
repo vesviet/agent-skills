@@ -2,12 +2,17 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "a2a-task",
   "title": "A2A Task Delegation",
-  "description": "Schema for delegating a scoped task from one agent to another, following A2A protocol principles.",
+  "description": "Task unit for A2A 1.0 delegation (submit, stream, get, cancel). Extends pack delegation with full lifecycle.",
   "type": "object",
   "properties": {
     "task_id": {
       "type": "string",
-      "description": "Unique identifier for this delegation."
+      "description": "Unique identifier (UUID v4 recommended for Antigravity)."
+    },
+    "state": {
+      "type": "string",
+      "enum": ["submitted", "working", "input-required", "completed", "failed", "canceled"],
+      "default": "submitted"
     },
     "delegator": {
       "type": "string",
@@ -16,6 +21,10 @@
     "assignee_role": {
       "type": "string",
       "description": "Required role of the receiving agent."
+    },
+    "assignee_agent_card": {
+      "type": "string",
+      "description": "Optional URI or registry key to worker Agent Card."
     },
     "task_description": {
       "type": "string",
@@ -45,10 +54,39 @@
       "enum": ["vibe", "agentic", "engineering"],
       "description": "Level of rigor required for this task."
     },
+    "interaction_mode": {
+      "type": "string",
+      "enum": ["sync", "stream", "push"],
+      "default": "stream",
+      "description": "sync=blocking invoke; stream=SSE progress; push=webhook on completion."
+    },
     "timeout_minutes": {
       "type": "integer",
       "description": "Maximum time allowed for task completion."
-    }
+    },
+    "parent_task_id": {
+      "type": "string",
+      "description": "Parent task for scatter-gather or phased graphs."
+    },
+    "messages": {
+      "type": "array",
+      "items": { "type": "object", "additionalProperties": true },
+      "description": "Conversation history (a2a-message.json objects)."
+    },
+    "push_notification_url": {
+      "type": "string",
+      "description": "Webhook when interaction_mode is push."
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
   },
-  "required": ["task_id", "delegator", "assignee_role", "task_description", "output_schema_ref", "success_criteria", "risk_tier"]
+  "required": [
+    "task_id",
+    "delegator",
+    "assignee_role",
+    "task_description",
+    "output_schema_ref",
+    "success_criteria",
+    "risk_tier"
+  ]
 }

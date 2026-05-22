@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "seo-content-brief",
+  "title": "SEO Content Brief",
+  "description": "Structured brief for Content Writer: intent, keywords, outline, and internal link plan.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "seo-content-brief"
+    },
+    "page_topic": {
+      "type": "string"
+    },
+    "search_intent": {
+      "type": "string",
+      "enum": ["informational", "commercial", "transactional", "navigational", "mixed"]
+    },
+    "primary_keyword": {
+      "type": "string"
+    },
+    "secondary_keywords": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "title_options": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Candidate title tags (≤60 chars each)."
+    },
+    "meta_description_options": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Candidate meta descriptions (≤160 chars each)."
+    },
+    "suggested_slug": {
+      "type": "string"
+    },
+    "outline_h2": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "faq_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "internal_link_targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "anchor_text": { "type": "string" },
+          "url_or_path": { "type": "string" },
+          "rationale": { "type": "string" }
+        },
+        "required": ["anchor_text", "url_or_path"]
+      }
+    },
+    "word_count_target": {
+      "type": "string",
+      "description": "e.g. 1400-1800 words"
+    },
+    "competitor_notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "out_of_scope": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": [
+    "contract_type",
+    "page_topic",
+    "search_intent",
+    "primary_keyword",
+    "suggested_slug",
+    "outline_h2",
+    "internal_link_targets"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "seo-weekly-board",
+  "title": "SEO Weekly Topic Board",
+  "description": "Structured 7-day publishing board for dual-site SEO sprints.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "seo-weekly-board"
+    },
+    "week_start": {
+      "type": "string",
+      "description": "ISO date (Monday or sprint start)."
+    },
+    "timezone": {
+      "type": "string",
+      "default": "Asia/Ho_Chi_Minh"
+    },
+    "sprint_mode": {
+      "type": "string",
+      "enum": ["dual-site", "single-site", "paused"]
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": { "type": "string" },
+          "site": {
+            "type": "string",
+            "enum": ["leaseinvietnam", "maylanhtreotuong"]
+          },
+          "topic": { "type": "string" },
+          "primary_keyword": { "type": "string" },
+          "secondary_keywords": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "content_cluster": { "type": "string" },
+          "planned_slug": { "type": "string" },
+          "internal_link_targets": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "high_value_link": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": [
+              "planned",
+              "briefed",
+              "drafted",
+              "audited",
+              "published",
+              "carry-over"
+            ]
+          },
+          "brief_ref": {
+            "type": "string",
+            "description": "Path or id for seo-content-brief.json"
+          }
+        },
+        "required": ["date", "site", "topic", "primary_keyword", "content_cluster", "status"]
+      }
+    },
+    "guardrails_notes": {
+      "type": "string",
+      "description": "7-day keyword intents to avoid per site."
+    },
+    "weekly_review_notes": {
+      "type": "string"
+    }
+  },
+  "required": ["contract_type", "week_start", "entries"]
+}

@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ux-flow-spec",
+  "title": "UX Flow Specification",
+  "description": "Structured multi-screen flow handoff from UI/UX Designer to Frontend, QA, and Backend.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "ux-flow-spec"
+    },
+    "flow_id": {
+      "type": "string",
+      "description": "Stable slug for the flow (e.g. checkout-guest)."
+    },
+    "flow_name": { "type": "string" },
+    "feature_ticket_ref": {
+      "type": "string",
+      "description": "Path or id linking to feature-ticket.json when applicable."
+    },
+    "preserved_behavior": { "type": "string" },
+    "changed_behavior": { "type": "string" },
+    "user_goal": { "type": "string" },
+    "actors": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "screens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "screen_id": { "type": "string" },
+          "name": { "type": "string" },
+          "purpose": { "type": "string" },
+          "entry_points": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["screen_id", "name"]
+      }
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from_screen_id": { "type": "string" },
+          "to_screen_id": { "type": "string" },
+          "trigger": { "type": "string" },
+          "conditions": { "type": "string" }
+        },
+        "required": ["from_screen_id", "to_screen_id", "trigger"]
+      }
+    },
+    "component_spec_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Component names or paths with matching ui-component-spec.json files."
+    },
+    "accessibility_notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "analytics_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "event_name": { "type": "string" },
+          "trigger": { "type": "string" },
+          "properties": { "type": "string" }
+        },
+        "required": ["event_name", "trigger"]
+      }
+    },
+    "api_needs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "purpose": { "type": "string" },
+          "endpoint_or_resource": { "type": "string" },
+          "fields": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "notes": { "type": "string" }
+        },
+        "required": ["purpose"]
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": [
+    "contract_type",
+    "flow_id",
+    "flow_name",
+    "user_goal",
+    "screens",
+    "component_spec_refs"
+  ]
+}

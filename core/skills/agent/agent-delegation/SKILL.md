@@ -25,7 +25,8 @@ Agent-to-Agent (A2A) is the 2026 industry standard for inter-agent communication
 - **Agent Cards**: agents advertise their capabilities (role, skills, supported output schemas)
 - **Tasks**: structured delegation objects with clear input/output contracts
 - **Artifacts**: structured results returned by the worker
-- **Streaming**: real-time progress updates via SSE for long-running tasks
+- **Streaming**: real-time progress updates via SSE (`a2a-task-progress.json`) for long-running tasks
+- **Full lifecycle**: use `agent-a2a-protocol` for get/list/cancel and Antigravity wire formats
 
 ### Supervisor-Worker Pattern
 
@@ -111,5 +112,6 @@ Use: `contracts/schemas/a2a-task.json` (outgoing) and `contracts/schemas/a2a-art
 - **agent-context-management**: Ensure delegated context is complete and relevant
 - **agent-tool-orchestration**: Sequence delegations alongside direct tool use
 - **agent-quality-gate**: Validate delegation results as part of phase gates
+- **agent-a2a-protocol**: Full A2A 1.0 lifecycle and Antigravity integration
 - **agent-model-routing**: Select the right model tier for the delegated task
 - **agent-prompt-lifecycle**: Version and evaluate prompts used in delegated tasks

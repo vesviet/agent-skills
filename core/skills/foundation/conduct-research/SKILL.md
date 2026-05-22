@@ -1,6 +1,6 @@
 ---
 name: conduct-research
-description: Execute iterative, deep-dive research to discover, validate, and synthesize complex information. Use when building context, evaluating technologies, or mapping ambiguous domains, specifically designed for 10-round deep dive requirements.
+description: Execute iterative research to discover, validate, and synthesize complex information. Use for deep (10+ round) or scoped (3+ round with waiver) investigation before architecture, product, or content decisions. Primary skill for the Researcher role.
 ---
 
 # Conduct Research
@@ -9,10 +9,12 @@ Use this skill when a task requires deep discovery before architectural, product
 
 ## Core Rules
 
-- enforce the 10-round deep dive minimum: do not stop at the first relevant result
+- set `execution_metrics.depth_mode` to **deep** (default) or **scoped** before searching; scoped requires `scope_waiver_note` in research-report.json
+- deep mode: minimum ten distinct research rounds; scoped mode: minimum three rounds with documented waiver
 - triangulate data across multiple independent sources to eliminate hallucinations and bias
 - document missing information explicitly rather than guessing or fabricating
 - evaluate source credibility and document confidence levels
+- populate `recommended_next_roles` in JSON handoffs — do not author feature-ticket.json or architecture decisions
 - structure the output for agent-to-agent consumption, avoiding raw text dumps
 
 ## Suggested Process
@@ -21,8 +23,9 @@ Use this skill when a task requires deep discovery before architectural, product
 
 Clarify:
 - the core hypothesis, question, or problem to solve
+- depth_mode: deep | scoped (and who narrowed scope if scoped)
 - boundaries (time constraints, domain limits, excluded sources)
-- expected output format (e.g., `research-report.json`, detailed markdown)
+- expected output format (`contracts/schemas/research-report.json` or markdown brief)
 
 ### 2. Formulate Search Strategy (Rounds 1-3)
 
@@ -59,9 +62,14 @@ Produce a structured JSON or Markdown contract that downstream roles can use dir
 - Constraints:
 
 ## Execution Metrics
-- Rounds completed: (must be >= 10)
+- depth_mode: deep | scoped
+- Rounds completed: (>= 10 if deep; >= 3 if scoped)
+- scope_waiver_note: (required if scoped)
 - Sources analyzed:
 - Confidence score: [High/Medium/Low]
+
+## Recommended Next Roles
+- role | rationale | open_decisions
 
 ## Key Findings
 - 
@@ -81,15 +89,17 @@ Produce a structured JSON or Markdown contract that downstream roles can use dir
 
 ## Checklist
 
-- [ ] minimum 10 distinct research iterations executed
+- [ ] depth_mode set and round minimum met for that mode
 - [ ] data triangulated across multiple independent sources
 - [ ] source credibility evaluated and documented
+- [ ] recommended_next_roles populated in JSON handoff
 - [ ] gaps, assumptions, and limitations explicitly stated
 - [ ] output structured for downstream agent use (no raw dumps)
+- [ ] feature-ticket.json not authored by Researcher
 
 ## Related Skills
 
-- **analyze-business-requirements**: Clarify the exact business need before starting research
-- **agent-context-management**: Prevent token bloat during the 10 rounds of context building
+- **analyze-business-requirements**: Read BA framing only — do not populate feature-ticket.json as Researcher
+- **agent-context-management**: Prevent token bloat during long research sessions
 - **agent-tool-orchestration**: Manage search APIs, web scrapers, and local retrieval tools
 - **agent-quality-gate**: Verify research findings before synthesizing

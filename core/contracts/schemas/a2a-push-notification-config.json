@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a2a-push-notification-config",
+  "title": "A2A Push Notification Config",
+  "description": "Webhook configuration for async task completion (A2A 1.0 push notifications).",
+  "type": "object",
+  "properties": {
+    "task_id": { "type": "string" },
+    "callback_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "HTTPS endpoint to receive task terminal events."
+    },
+    "auth_scheme": {
+      "type": "string",
+      "enum": ["Bearer", "none", "HMAC"]
+    },
+    "secret_ref": {
+      "type": "string",
+      "description": "Reference to stored secret for HMAC or Bearer — never inline secrets."
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["task.completed", "task.failed", "task.canceled", "task.input-required"]
+      }
+    }
+  },
+  "required": ["task_id", "callback_url", "events"]
+}

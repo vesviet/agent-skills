@@ -17,6 +17,8 @@ Start with [core/README.md](core/README.md) if you want the reusable foundation.
 See [overlays/README.md](overlays/README.md) if you need repo-specific extensions.
 See [packs/README.md](packs/README.md) for composition and distribution.
 
+**Antigravity IDE:** [adapters/antigravity/ANTIGRAVITY.md](adapters/antigravity/ANTIGRAVITY.md)
+
 ## Core Structure
 
 - [core/rules](core/rules/README.md): always-on global rules
@@ -45,7 +47,9 @@ Overlay-specific skills are intentionally kept out of the global core inventory.
 | Skill | What it covers |
 |-------|----------------|
 | [agent-context-management](core/skills/agent/agent-context-management/SKILL.md) | Preserve intent, evidence, assumptions, continuity, and dynamic context assembly |
+| [agent-a2a-protocol](core/skills/agent/agent-a2a-protocol/SKILL.md) | Full A2A 1.0 lifecycle, JSON-RPC, streaming, Antigravity registry |
 | [agent-delegation](core/skills/agent/agent-delegation/SKILL.md) | Delegate scoped sub-tasks to specialist agents via A2A protocol |
+| [agent-graph-orchestration](core/skills/agent/agent-graph-orchestration/SKILL.md) | Phase graphs, parallel branches, merge gates, and coordination-plan.json |
 | [agent-memory-compaction](core/skills/agent/agent-memory-compaction/SKILL.md) | Compact long conversations into a minimal working state |
 | [agent-model-routing](core/skills/agent/agent-model-routing/SKILL.md) | Select cost-effective models per task based on complexity and risk tier |
 | [agent-observability](core/skills/agent/agent-observability/SKILL.md) | Trace reasoning chains, tool calls, and token costs for debugging and eval |
@@ -93,10 +97,11 @@ Core workflows live in [core/workflows/README.md](core/workflows/README.md).
 - `/service-review-release`
 - `/setup-new-service`
 - `/troubleshooting`
+- `/agent-a2a-delegation`
 
 ## Quality Gates
 
-Run these validators after editing core rules, skills, roles, or workflows:
+Run these validators after editing core rules, skills, roles, or workflows (includes 2026 compliance):
 
 ```bash
 python3 core/scripts/validate-rules.py

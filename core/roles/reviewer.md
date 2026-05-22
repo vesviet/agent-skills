@@ -55,7 +55,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Collaboration & A2A Delegation
 
-- works with Technical Lead on tricky trade-offs
+- works with Technical Lead on tricky trade-offs; consume technical-delivery-plan.json for expected impact_radius
 - works with QA on validation gaps
 - works with developers on concrete fixes — delivers feedback via structured contract
 - works with Security or SRE when specialized risk is implicated

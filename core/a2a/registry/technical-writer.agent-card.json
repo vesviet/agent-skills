@@ -1,0 +1,44 @@
+{
+  "name": "technical-writer",
+  "description": "make systems, features, and operational procedures understandable so that users and teams can act without guesswork.",
+  "url": "pack://agent-skills/core/roles/technical-writer.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "write-documentation",
+      "name": "Write Documentation",
+      "description": "Primary skill for technical-writer role.",
+      "tags": [
+        "technical",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "documentation-handoff.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "documentation-handoff.json"
+  ],
+  "role_file": "core/roles/technical-writer.md",
+  "policy_profile": "technical-writer"
+}

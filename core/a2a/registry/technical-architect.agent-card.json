@@ -1,0 +1,88 @@
+{
+  "name": "technical-architect",
+  "description": "shape system structure and technical direction so the product can evolve safely, coherently, and at the right cost without hiding migration, compatibility, or operational risk.",
+  "url": "pack://agent-skills/core/roles/technical-architect.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "navigate-service",
+      "name": "Navigate Service",
+      "description": "Primary skill for technical-architect role.",
+      "tags": [
+        "technical",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    },
+    {
+      "id": "write-tech-radar",
+      "name": "Write Tech Radar",
+      "description": "Primary skill for technical-architect role.",
+      "tags": [
+        "technical",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    },
+    {
+      "id": "meeting-review",
+      "name": "Meeting Review",
+      "description": "Primary skill for technical-architect role.",
+      "tags": [
+        "technical",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "adr-spec.json",
+    "architecture-options.json"
+  ],
+  "role_file": "core/roles/technical-architect.md",
+  "policy_profile": "technical-architect"
+}

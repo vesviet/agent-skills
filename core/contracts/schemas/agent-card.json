@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent-card",
+  "title": "A2A Agent Card",
+  "description": "Self-describing manifest for agent discovery (A2A 1.0 / Antigravity). Publish at /.well-known/agent.json per role or use pack registry.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Stable agent identifier (matches role slug)."
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable capability summary."
+    },
+    "url": {
+      "type": "string",
+      "description": "Endpoint URL or pack-local role reference (pack://agent-skills/core/roles/<role>.md)."
+    },
+    "version": {
+      "type": "string",
+      "description": "Agent card semver."
+    },
+    "protocol_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "streaming": { "type": "boolean", "default": true },
+        "pushNotifications": { "type": "boolean", "default": false },
+        "stateTransitionHistory": { "type": "boolean", "default": true }
+      },
+      "required": ["streaming", "stateTransitionHistory"]
+    },
+    "authentication": {
+      "type": "object",
+      "properties": {
+        "schemes": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["Bearer", "none", "pack-local"] }
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "inputModes": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["text", "file", "data", "json"] }
+          },
+          "outputModes": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["text", "file", "data", "json"] }
+          },
+          "output_schema_refs": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "JSON Schema filenames this skill may produce."
+          }
+        },
+        "required": ["id", "name", "description"]
+      }
+    },
+    "defaultOutputSchemas": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Default handoff schemas for this role."
+    },
+    "role_file": {
+      "type": "string",
+      "description": "Path to role definition in agent-skills pack."
+    },
+    "policy_profile": {
+      "type": "string",
+      "description": "Key in action-boundaries.yaml for this role."
+    },
+    "signature": {
+      "type": "object",
+      "description": "Optional JWS signature for A2A 1.0 signed Agent Cards (enterprise).",
+      "properties": {
+        "alg": { "type": "string", "enum": ["RS256", "ES256"] },
+        "jws": { "type": "string", "description": "Compact JWS over canonical card JSON." },
+        "key_id": { "type": "string" },
+        "signed_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "required": ["name", "description", "url", "version", "protocol_version", "capabilities", "skills"]
+}

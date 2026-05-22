@@ -1,6 +1,6 @@
 ---
 name: design-learning-plan
-description: Create a structured, curriculum-aligned learning plan or syllabus. Use this when planning a study schedule or curriculum.
+description: Create a structured, curriculum-aligned learning plan or syllabus aligned to Vietnamese THCS and MOET standards. Use when planning a study schedule, syllabus, or grade 6–7 transition roadmap.
 ---
 
 # Design Learning Plan
@@ -32,5 +32,5 @@ Use this skill to structure a personalized or generalized study plan, ensuring s
 
 ## Related Skills
 
-- `create-exercises`: use this to design practice materials for the learning plan.
-- `analyze-business-requirements`: use this to adapt the plan based on broader goals.
+- **create-exercises**: design practice materials that match the plan milestones.
+- **analyze-business-requirements**: adapt the plan when broader program goals or constraints apply.

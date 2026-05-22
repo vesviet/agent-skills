@@ -1,0 +1,183 @@
+{
+  "name": "agent-coordinator",
+  "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality gates, and driving work from intake to validated handoff without losing context or skipping safety.",
+  "url": "pack://agent-skills/core/roles/agent-coordinator.md",
+  "version": "2.6.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "agent-a2a-protocol",
+      "name": "Agent A2A Protocol",
+      "description": "Primary skill for agent-coordinator role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-delegation",
+      "name": "Agent Delegation",
+      "description": "Primary skill for agent-coordinator role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-graph-orchestration",
+      "name": "Agent Graph Orchestration",
+      "description": "Primary skill for agent-coordinator role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-tool-orchestration",
+      "name": "Agent Tool Orchestration",
+      "description": "Primary skill for agent-coordinator role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-context-management",
+      "name": "Agent Context Management",
+      "description": "Primary skill for agent-coordinator role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-quality-gate",
+      "name": "Agent Quality Gate",
+      "description": "Primary skill for agent-coordinator role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-handoff",
+      "name": "Agent Handoff",
+      "description": "Primary skill for agent-coordinator role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "a2a-artifact.json",
+    "a2a-task-progress.json",
+    "a2a-task-status.json",
+    "a2a-task.json",
+    "coordination-plan.json",
+    "implementation-result.json"
+  ],
+  "role_file": "core/roles/agent-coordinator.md",
+  "policy_profile": "agent-coordinator"
+}

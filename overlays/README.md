@@ -15,3 +15,6 @@ Current overlays:
 - [lease-content](lease-content/README.md)
 - [ecommerce-microservices](ecommerce-microservices/README.md)
 - [data-engineer-rabity](data-engineer-rabity/README.md)
+- [data-analyst-stack](data-analyst-stack/README.md)
+- [seo-publishing](seo-publishing/README.md)
+- [ui-design-system](ui-design-system/README.md)
