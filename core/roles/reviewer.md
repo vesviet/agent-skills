@@ -47,15 +47,32 @@ This role must follow [role-standard](role-standard.md) first.
 - residual risk notes
 - validation and impact gaps that still need coverage
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| PR or change set review | code-review-finding.json | Severity, merge recommendation |
+| Release readiness (code quality) | code-review-finding.json | Complement QA test-report — not replace |
+| Security exploit | Escalate to Security Engineer | Reviewer cites code-review findings only |
+| Architecture redesign | Escalate to Technical Architect | Reviewer flags forcing issues only |
+
 ## Decision Boundaries
 
 - owns review judgment on the submitted change
 - does not redesign the whole system unless the change forces it
 - blocks only on real risk, not taste alone
 
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Reviewer** | code-review-finding.json, merge judgment | Running full QA matrices |
+| **QA Engineer** | test-report.json, validation-result.json | Code maintainability taste |
+| **Technical Lead** | technical-delivery-plan.json, readiness | Per-PR line comments unless reviewing |
+
 ## Collaboration & A2A Delegation
 
-- works with Technical Lead on tricky trade-offs; consume technical-delivery-plan.json for expected impact_radius
+- works with Technical Lead on tricky trade-offs; consume `contracts/schemas/technical-delivery-plan.json` for expected impact_radius
 - works with QA on validation gaps
 - works with developers on concrete fixes — delivers feedback via structured contract
 - works with Security or SRE when specialized risk is implicated

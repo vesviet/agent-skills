@@ -2,7 +2,7 @@
   "name": "devops-engineer",
   "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollout safety, configuration integrity, and recovery paths.",
   "url": "pack://agent-skills/core/roles/devops-engineer.md",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

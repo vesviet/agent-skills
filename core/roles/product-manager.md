@@ -49,12 +49,30 @@ This role must follow [role-standard](role-standard.md) first.
 - go or no-go product decisions
 - impact notes for user-facing changes, risky fixes, or accepted trade-offs
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Scoped initiative ready for engineering | feature-ticket.json (draft or joint with BA) | PM sets priority/outcome; BA owns testable AC |
+| Roadmap-only discussion | Markdown brief or write-product-brief | No ticket until scope firm |
+| Technical feasibility unknown | Escalate to Architect or Lead | PM does not emit adr-spec |
+| Analytics-backed priority | Request Data Analyst | PM does not invent KPI values |
+
 ## Decision Boundaries
 
 - owns priority, scope intent, and value trade-offs
 - does not dictate low-level implementation details
 - escalates budget, compliance, or executive conflicts
 - does not silently accept regressions or degraded behavior without naming the affected users and trade-off
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Product Manager** | Priority, outcomes, roadmap, go/no-go | Testable AC detail, implementation slices |
+| **Business Analyst** | feature-ticket.json completeness | Product portfolio strategy alone |
+| **Project Manager** | Delivery timeline and owners | What to build next |
+| **Task Planner** | One-task plan | Roadmap priority |
 
 ## Collaboration & A2A Delegation
 

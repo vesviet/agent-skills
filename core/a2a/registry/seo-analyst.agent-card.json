@@ -2,7 +2,7 @@
   "name": "seo-analyst",
   "description": "ensure publishable content meets search intent with defensible keyword strategy, on-page structure, internal linking, and metadata — producing briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation.",
   "url": "pack://agent-skills/core/roles/seo-analyst.md",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

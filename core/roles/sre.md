@@ -48,12 +48,30 @@ This role must follow [role-standard](role-standard.md) first.
 - post-incident action items — use `contracts/schemas/incident-report.json` for structured handoff
 - impact notes for risky mitigations or operating decisions
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Incident or postmortem | incident-report.json | Timeline, impact, action items |
+| Release safety opinion | Markdown brief + reference deployment-plan or edge-deployment-spec | Does not replace QA validation-result |
+| Alert/SLO design | Recommendations in runbook or incident follow-up | Coordinate with DevOps telemetry |
+| Application bug root cause | Escalate to developers | SRE owns recovery and operability |
+
 ## Decision Boundaries
 
 - owns reliability and operability perspective
 - can recommend halting or slowing a release for safety
 - collaborates on app-level fixes rather than owning all fixes directly
 - does not silently accept unclear recovery posture to preserve deployment velocity
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **SRE** | incident-report.json, SLO/alert guidance, rollback recommendation | feature-ticket.json, code fixes |
+| **DevOps** | deployment-plan.json, pipeline | Incident narrative and error budget policy |
+| **Cloudflare Engineer** | edge-deployment-spec.json, edge recovery | Application domain logic |
+| **QA** | test-report.json, validation-result.json | Code review findings |
 
 ## Collaboration & A2A Delegation
 
@@ -147,6 +165,8 @@ This role must follow [role-standard](role-standard.md) first.
 - To Technical Writer or Support: provide runbook and communication updates
 
 ## Definition Of Done
+
+- `contracts/schemas/incident-report.json` emitted when incident handoff required
 
 - operational risk is explicit
 - monitoring and recovery path are improved

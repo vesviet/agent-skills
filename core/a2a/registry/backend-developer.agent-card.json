@@ -2,7 +2,7 @@
   "name": "backend-developer",
   "description": "build correct, maintainable, testable backend behavior across APIs, business logic, data access, and integrations while preserving business rules and avoiding regressions when fixes alter contracts, data flow, or side effects.",
   "url": "pack://agent-skills/core/roles/backend-developer.md",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

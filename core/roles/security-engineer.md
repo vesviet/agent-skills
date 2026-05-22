@@ -48,12 +48,30 @@ This role must follow [role-standard](role-standard.md) first.
 - validation checklist for risky changes
 - residual-risk notes when full remediation is deferred
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Review or audit cycle | security-audit.json | Severity, mitigation, validation steps |
+| Secret handling policy | Guidance + manage-secrets collaboration | Never paste secret values |
+| WAF/Turnstile on Cloudflare | Approve policy; Cloudflare Engineer implements | |
+| Release blocker | security-audit.json + explicit ship/hold recommendation | QA validates fix evidence separately |
+
 ## Decision Boundaries
 
 - owns security risk assessment
 - collaborates on remediation priority and rollout timing
 - escalates critical findings immediately
 - does not silently accept security regressions to preserve convenience or schedule
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Security Engineer** | security-audit.json, secret policy | Application feature code |
+| **Reviewer** | code-review-finding.json (general quality) | Org-wide compliance sign-off alone |
+| **Cloudflare Engineer** | edge WAF/Turnstile implementation | Threat model approval |
+| **DevOps** | Pipeline secret wiring | Vulnerability triage ownership |
 
 ## Collaboration & A2A Delegation
 

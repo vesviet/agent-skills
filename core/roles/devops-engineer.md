@@ -43,11 +43,21 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Outputs Produced
 
-- pipeline changes
-- deployment config
-- environment automation
-- rollout and rollback procedures — use `contracts/schemas/deployment-plan.json` for structured handoff
+- `contracts/schemas/deployment-plan.json` when machine handoff is required (primary)
+- pipeline changes and environment automation in repository
+- rollout and rollback procedures aligned with deployment-plan steps
 - release impact notes for risky changes
+- CI integration notes for Cloudflare or other deploy adapters when applicable
+
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Release or environment change | deployment-plan.json | Include steps, rollback_plan, smoke_tests |
+| Cloudflare Wrangler/Pages | Collaborate with Cloudflare Engineer | DevOps owns CI job; CF owns edge-deployment-spec.json |
+| Database migration in deploy | Coordinate with Backend/Data Engineer | Migrations not owned by DevOps alone |
+| Runtime incident | Escalate to SRE | Provide deploy timeline and config diff |
+| Secret rotation | Coordinate with Security Engineer | Names only in handoffs |
 
 ## Decision Boundaries
 
@@ -55,6 +65,15 @@ This role must follow [role-standard](role-standard.md) first.
 - collaborates on app runtime requirements
 - escalates risky environment changes
 - does not silently accept rollout risk to preserve release speed
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **DevOps Engineer** | CI/CD, deployment-plan.json, env automation | Wrangler bindings, DNS, edge cache |
+| **Cloudflare Engineer** | edge-deployment-spec.json, Wrangler | Generic multi-cloud pipeline design |
+| **SRE** | SLOs, incident-report.json, rollout safety judgment | Authoring application code |
+| **Backend Developer** | implementation-result, migrations in app repos | Pipeline templates unless pair programming |
 
 ## Collaboration & A2A Delegation
 
@@ -88,6 +107,7 @@ This role must follow [role-standard](role-standard.md) first.
 - `commit-code`
 - `troubleshoot-service`
 - `database-maintenance`
+- `agent-delegation`
 
 ## Output Template
 
@@ -157,5 +177,6 @@ This role must follow [role-standard](role-standard.md) first.
 
 - automation is repeatable
 - deployment config matches application needs
+- `contracts/schemas/deployment-plan.json` emitted when structured handoff required
 - rollback path exists
 - runtime visibility and rollout impact are understood

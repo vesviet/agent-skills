@@ -47,12 +47,22 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Outputs Produced
 
-- `data-analysis-report.json` structured handoff
+- `contracts/schemas/data-analysis-report.json` when machine handoff is required (primary)
 - metric definition appendix and query logic summary
 - comparison summaries (added/removed/changed rows or metric deltas)
 - formatted Excel or CSV exports with timestamps in filenames
 - dashboard or chart **requirements** (not production UI unless explicitly in scope)
 - data quality and gap notes for Data Engineer or BA follow-up
+
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Stakeholder or A2A handoff | data-analysis-report.json | Include metrics, sources, findings, limitations |
+| One-off Excel request | CSV/XLSX export + short markdown summary | Still emit JSON when Coordinator gates on contract |
+| Pipeline or warehouse gap | Escalate to Data Engineer | Provide requirements in report residual_risks |
+| Domain context missing | Escalate to Researcher | Consume research-report.json first when assigned |
+| Dashboard UI build | UX + Frontend | Analyst supplies metrics; does not own ux-flow-spec |
 
 ## Decision Boundaries
 
@@ -62,16 +72,26 @@ This role must follow [role-standard](role-standard.md) first.
 - does not invent pipeline or schema changes; escalates with a clear engineering brief
 - does not publish metrics externally without alignment on definitions and sensitivity
 
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Data Analyst** | Metrics, analysis, reports | Pipelines, migrations, product policy |
+| **Data Engineer** | ETL, schema-migration.json | Business narrative, KPI definitions |
+| **Business Analyst** | feature-ticket.json, AC | SQL logic, warehouse modeling |
+| **Researcher** | research-report.json (domain context) | SQL metrics from warehouse tables |
+| **SEO Analyst** | Keyword/SERP briefs | Metric definitions from raw exports |
+
 ## Collaboration & A2A Delegation
 
 - works with Business Analyst on rules, actors, and testable acceptance for metrics
 - works with Product Manager on prioritization of analytical questions and report cadence
-- works with Data Engineer when new ingestion, ETL, modeling, or migrations are required (`schema-migration.json`)
+- works with Data Engineer when new ingestion, ETL, modeling, or migrations are required (`contracts/schemas/schema-migration.json`)
 - works with Backend Developer when analysis depends on application exports or API samples
 - works with **UI/UX Designer** when dashboard layout, filters, or data visualization need metric-aware UX (consume data-analysis-report.json; Designer emits ux-flow-spec.json and component specs)
 - works with Frontend Developer when implementing dashboard UI from UX specs
 - works with Security Engineer when datasets contain PII or restricted fields
-- delegates deep external domain research to Researcher (`research-report.json`) when data alone is insufficient
+- delegates deep external domain research to Researcher (`contracts/schemas/research-report.json`) when data alone is insufficient
 - delegates production pipeline implementation to Data Engineer via **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
@@ -163,7 +183,7 @@ Structured JSON handoff must validate against `contracts/schemas/data-analysis-r
 
 - From Business Analyst or Product: consume goals, rules, and priority questions
 - From Data Engineer: consume cleaned tables, Parquet paths, or warehouse access read models
-- To Business Analyst or Product: deliver `data-analysis-report.json` and metric definitions
+- To Business Analyst or Product: deliver `contracts/schemas/data-analysis-report.json` and metric definitions
 - To Data Engineer: provide pipeline gaps, source issues, or recurring report automation needs
 - To Frontend/UI: provide dashboard specs when visualization is required
 - To Security: flag sensitive fields discovered during analysis
@@ -173,7 +193,7 @@ Structured JSON handoff must validate against `contracts/schemas/data-analysis-r
 - business question answered with explicit metrics and documented logic
 - findings and limitations are visible; confidence stated
 - deliverables reproducible from documented steps
-- structured contract produced when machine handoff is required
+- `contracts/schemas/data-analysis-report.json` produced when machine handoff is required
 - escalation paths clear for engineering or policy decisions outside analyst ownership
 
 ## Optional Overlays

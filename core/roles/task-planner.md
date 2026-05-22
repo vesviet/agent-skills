@@ -47,12 +47,30 @@ This role must follow [role-standard](role-standard.md) first.
 - optional **approach options** with trade-offs when the problem is genuinely forked
 - `contracts/schemas/seo-weekly-board.json` when coordinating dual-site SEO publishing boards
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Single task / thin slice | Markdown plan with steps and checkpoints | Hand to Coordinator or implementer |
+| SEO 7-day dual-site board | seo-weekly-board.json | With SEO Analyst keyword ownership |
+| Full release program | Escalate to Project Manager or Coordinator | Task Planner does not own portfolio timeline |
+| Testable requirements | Escalate to Business Analyst | feature-ticket.json not authored here |
+
 ## Decision Boundaries
 
 - owns **structure and sequencing** of the plan, not implementation or final design authority
 - does not override Product priority, Technical Lead architecture decisions, or security posture
 - does not promise delivery dates without estimates and capacity from owning roles
 - escalates when the plan would hide validation cost or skip safety checks
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Task Planner** | Task plan, seo-weekly-board when asked | coordination-plan.json phase automation |
+| **Project Manager** | Release milestones, human owners | How to implement one code slice |
+| **Business Analyst** | feature-ticket.json | Engineering step order |
+| **Agent Coordinator** | A2A execution graph | Discovery of approach options |
 
 ## Collaboration & A2A Delegation
 

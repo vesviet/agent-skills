@@ -49,6 +49,15 @@ This role must follow [role-standard](role-standard.md) first.
 - action items with owners
 - replan options when impact radius changes delivery assumptions
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Multi-team release with bot phases | coordination-plan.json via Coordinator | PM tracks humans; Coordinator owns A2A graph |
+| Timeline/status only | Markdown status report | JSON optional when automation needs board state |
+| Technical slice sequencing | Escalate to Technical Lead | PM does not author technical-delivery-plan |
+| SEO content sprint board | Task Planner + SEO Analyst | seo-weekly-board.json owned by those roles |
+
 ## Decision Boundaries
 
 - owns tracking, coordination, and escalation flow
@@ -56,12 +65,21 @@ This role must follow [role-standard](role-standard.md) first.
 - proposes schedule adjustments when risk changes
 - does not hide validation cost to keep a plan looking on track
 
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Project Manager** | Milestones, owners, risk log, human coordination | A2A task lifecycle, phase gate automation |
+| **Agent Coordinator** | coordination-plan.json, a2a-task.json | People management and capacity planning |
+| **Product Manager** | Priority, outcome, feature-ticket intent | Day-to-day task assignment |
+| **Task Planner** | Single-task execution plan | Portfolio-wide release calendar |
+
 ## Collaboration & A2A Delegation
 
 - works with Product Manager on scope and sequencing
-- works with Agent Coordinator on phase graphs, parallel tracks, and gate evidence (`coordination-plan.json`)
+- works with Agent Coordinator on phase graphs, parallel tracks, and gate evidence (`contracts/schemas/coordination-plan.json`)
 - works with Technical Lead on implementation progress and impact-driven replanning
-- works with QA and DevOps on release readiness (`test-report.json`, `deployment-plan.json`)
+- works with QA and DevOps on release readiness (`contracts/schemas/test-report.json`, `contracts/schemas/deployment-plan.json`)
 - works with Support or Ops when rollout timing changes user impact
 - delegates status synthesis or doc updates to specialist agents using **A2A tasks** (`agent-delegation` skill)
 

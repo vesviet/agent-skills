@@ -27,6 +27,7 @@ contracts/
     technical-delivery-plan.json
     documentation-handoff.json
     edge-deployment-spec.json
+    learning-handoff.json
     seo-content-brief.json
     seo-audit-report.json
     seo-metadata.json

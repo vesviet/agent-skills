@@ -2,7 +2,7 @@
   "name": "ui-ux-designer",
   "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear.",
   "url": "pack://agent-skills/core/roles/ui-ux-designer.md",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

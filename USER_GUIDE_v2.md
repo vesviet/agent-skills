@@ -91,6 +91,7 @@ Here are the core contracts available in `core/contracts/schemas/`:
 | `coordination-plan.json` | Agent Coordinator | Multi-phase graph state. |
 | `research-report.json` | Researcher | Research synthesis; `depth_mode` deep (10+ rounds) or scoped (3+ with waiver); includes `recommended_next_roles`. |
 | `edge-deployment-spec.json` | Cloudflare Engineer | Wrangler, bindings, DNS/cache notes, deploy and rollback for Cloudflare Pages/Workers. |
+| `learning-handoff.json` | Teacher | MOET-aligned plans, exercises, evaluations (grades 6–9). |
 
 ---
 

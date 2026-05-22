@@ -2,7 +2,7 @@
   "name": "sre",
   "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety.",
   "url": "pack://agent-skills/core/roles/sre.md",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

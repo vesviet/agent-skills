@@ -2,7 +2,7 @@
   "name": "content-writer",
   "description": "produce new articles that match the intended audience, voice, and evidence bar—using deep research when facts are not yet established, and using supplied material and house formats when they are.",
   "url": "pack://agent-skills/core/roles/content-writer.md",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

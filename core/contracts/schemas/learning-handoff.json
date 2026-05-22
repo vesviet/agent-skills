@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "learning-handoff",
+  "title": "Learning Handoff",
+  "description": "Structured handoff for MOET-aligned middle-school learning plans, exercises, and evaluations.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "learning-handoff"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Subject name (e.g., Toán, Ngữ văn, Tiếng Anh)."
+    },
+    "grade": {
+      "type": "integer",
+      "minimum": 6,
+      "maximum": 9,
+      "description": "Vietnamese middle school grade (Lớp 6-9)."
+    },
+    "topic": {
+      "type": "string"
+    },
+    "artifact_type": {
+      "type": "string",
+      "enum": ["learning_plan", "exercises", "evaluation", "feedback"]
+    },
+    "goals": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "content_paths": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Repo paths to study guides, exercise files, or feedback markdown."
+    },
+    "score_out_of_10": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10,
+      "description": "Present when artifact_type is evaluation or feedback."
+    },
+    "strengths": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "improvements": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "next_steps": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "moet_alignment_notes": {
+      "type": "string",
+      "description": "How content maps to textbook chapter or exam standard."
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": [
+    "contract_type",
+    "subject",
+    "grade",
+    "topic",
+    "artifact_type",
+    "goals",
+    "next_steps"
+  ]
+}

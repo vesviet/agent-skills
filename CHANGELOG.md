@@ -2,6 +2,16 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [2.6.4] - 2026-05-22
+
+### Added
+- Contract `learning-handoff.json` for Teacher role MOET handoffs
+
+### Changed
+- Role hygiene audit: Deliverable Routing and Role Boundaries for DevOps, QA, SRE, PM, Product, Security, Reviewer, Data Engineer, Task Planner, Teacher
+- `data-analyst`: fix `contracts/schemas/data-analysis-report.json` in Outputs (A2A card)
+- `devops-engineer`, `teacher`: structured contract emission in Definition of Done
+
 ## [2.6.3] - 2026-05-22
 
 ### Added

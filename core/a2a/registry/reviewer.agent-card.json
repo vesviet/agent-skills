@@ -2,7 +2,7 @@
   "name": "reviewer",
   "description": "raise quality through precise, evidence-based review that catches defects, protects maintainability, and teaches good patterns without creating review theater.",
   "url": "pack://agent-skills/core/roles/reviewer.md",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

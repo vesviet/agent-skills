@@ -48,6 +48,15 @@ This role must follow [role-standard](role-standard.md) first.
 - operational runbooks for failures, backfills, and replays
 - engineered datasets paths for Data Analyst handoff
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Schema or pipeline change | schema-migration.json + pipeline code | Include rollback and backfill notes |
+| Analyst one-off question | Escalate to Data Analyst | Do not permanentize ad-hoc SQL without prioritization |
+| Business metric definition | Escalate to Data Analyst or BA | DE owns movement, not KPI narrative |
+| App API contract change | Coordinate with Backend | api-contract-spec owned by Backend |
+
 ## Decision Boundaries
 
 - owns pipeline architecture, implementation, and operational safety for data movement
@@ -55,6 +64,14 @@ This role must follow [role-standard](role-standard.md) first.
 - does not modify production without approval and rollback plan
 - does not expose raw PII in logs or unsecured exports
 - escalates cross-service contract changes to Technical Lead or Backend owners
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Data Engineer** | Pipelines, schema-migration.json | data-analysis-report.json content |
+| **Data Analyst** | Metrics, analysis reports | Production Airflow/Kafka ownership |
+| **Backend Developer** | api-contract-spec.json for app APIs | Warehouse modeling policy alone |
 
 ## Collaboration & A2A Delegation
 

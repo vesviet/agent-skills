@@ -55,6 +55,16 @@ This role must follow [role-standard](role-standard.md) first.
 - release confidence summary with residual risk and explicit sign-off recommendation
 - regression checklist that can be repeated on future changes
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Defect or release gate | test-report.json | Include repro, evidence, blast radius |
+| Build/test/lint evidence | validation-result.json | Pair with test-report for Coordinator gates |
+| Exploratory only | Markdown charter + validation-result when required | Do not claim full regression without matrix |
+| Code style debate | Escalate to Reviewer | QA owns behavior and release risk |
+| Security exploit path | Escalate to Security Engineer | QA validates fix evidence after SEC guidance |
+
 ## Decision Boundaries
 
 - owns quality assessment, defect visibility, and the integrity of "tested" claims
@@ -62,11 +72,20 @@ This role must follow [role-standard](role-standard.md) first.
 - can recommend blocking release when critical risk is untested, unclear, or failing
 - escalates when quality risk exists but the accept/ship decision is outside this role’s authority
 
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **QA Engineer** | test-report.json, validation-result.json, release confidence | Merge approval on code style alone |
+| **Reviewer** | code-review-finding.json | Running full exploratory test matrices |
+| **Technical Lead** | technical-delivery-plan.json, readiness | Writing automated test code unless agreed |
+| **Developer** | implementation-result.json, fixes | Declaring "tested" without QA evidence |
+
 ## Collaboration & A2A Delegation
 
 - works with Business Analyst on acceptance criteria
 - works with developers on reproduction and fixes
-- works with Reviewer and Technical Lead on risk-based validation; align test scope with technical-delivery-plan.json slices when provided
+- works with Reviewer and Technical Lead on risk-based validation; align test scope with `contracts/schemas/technical-delivery-plan.json` slices when provided
 - works with SRE/DevOps on environment parity, observability, and rollout/rollback verification
 - works with Security Engineer when change touches authn/authz, sensitive data, or trust boundaries
 - delegates automated test script generation or log scraping to specialist agents using **A2A tasks** (`agent-delegation` skill)

@@ -2,7 +2,7 @@
   "name": "data-engineer",
   "description": "design, build, and maintain reliable data pipelines and storage layers so analysts and applications can trust timely, well-modeled, and governable data products.",
   "url": "pack://agent-skills/core/roles/data-engineer.md",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

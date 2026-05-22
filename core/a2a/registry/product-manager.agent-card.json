@@ -2,7 +2,7 @@
   "name": "product-manager",
   "description": "maximize user and business value through clear prioritization, scope control, and outcome-driven delivery without hiding impact, trade-offs, or regression risk inside vague scope decisions.",
   "url": "pack://agent-skills/core/roles/product-manager.md",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
