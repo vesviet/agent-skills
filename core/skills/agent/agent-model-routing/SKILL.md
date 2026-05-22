@@ -7,6 +7,17 @@ description: Select the most cost-effective model for each task or sub-task base
 
 Use this skill when the choice of model matters for cost, quality, or latency and the default model may not be the best fit for every sub-task.
 
+## When Agent Coordinator Enables This
+
+Enable **`agent-model-routing`** (Supporting skill) when:
+
+- the coordination plan has **three or more phases** with different complexity (e.g., triage → implement → review)
+- token budget is tight and premium models must be reserved for security, architecture, or incident steps
+- cascade routing can start phases on mid-tier models and escalate only on validation failure
+- parallel A2A delegations mix low-risk formatting work with high-risk engineering steps
+
+Skip explicit routing when the task is a **single-phase** handoff to one specialist, or when the user pinned a model for the whole session.
+
 ## Core Rules
 
 - match model capability to task complexity — do not use premium models for routine work

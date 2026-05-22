@@ -2,6 +2,24 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [2.6.6] - 2026-05-22
+
+### Added
+- Skills `design-review` and `accessibility-review` (foundation)
+- `build-deploy` workflow: optional Cloudflare edge release step (4b) and `debug-workers-edge` verification
+
+### Changed
+- `core/skills/README.md`: full inventory sync (57 core), `conduct-research`, skill boundary table, backlog cleanup
+- `data-engineer` skill: *When To Use Data Analyst Instead* boundary section
+- `agent-model-routing`: *When Agent Coordinator Enables This* guidance
+- Role toolboxes: UI/UX, Reviewer, QA, Frontend, Data Engineer, Agent Coordinator notes for new skills
+
+## [2.6.5] - 2026-05-22
+
+### Changed
+- Deliverable Routing and Role Boundaries: `business-analyst`, `content-writer`, `seo-analyst`, `technical-architect`, `agent-coordinator`
+- Personalized workspace `AGENTS.md`: Astro Cloudflare sites, cloudflare-engineer mapping, engineering handoffs
+
 ## [2.6.4] - 2026-05-22
 
 ### Added

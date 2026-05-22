@@ -72,6 +72,9 @@ Overlay-specific skills are intentionally kept out of the global core inventory.
 | [review-service](core/skills/foundation/review-service/SKILL.md) | Full service readiness and release review |
 | [troubleshoot-service](core/skills/foundation/troubleshoot-service/SKILL.md) | Diagnose build, startup, and runtime failures |
 | [write-tests](core/skills/foundation/write-tests/SKILL.md) | Add or improve unit and integration tests |
+| [conduct-research](core/skills/foundation/conduct-research/SKILL.md) | Deep or scoped research before decisions |
+| [design-review](core/skills/foundation/design-review/SKILL.md) | UX/spec design critique before build |
+| [accessibility-review](core/skills/foundation/accessibility-review/SKILL.md) | WCAG-oriented a11y audit |
 
 ### Delivery Domains
 
@@ -79,7 +82,7 @@ Overlay-specific skills are intentionally kept out of the global core inventory.
 |--------|-----------------------|
 | Backend | `add-api-endpoint`, `add-event-handler`, `add-service-client`, `scaffold-new-service` |
 | Frontend | `add-ui-component`, `add-page-route`, `integrate-api-client`, `frontend-testing` |
-| Platform | `setup-deployment`, `debug-runtime-platform`, `add-telemetry-instrumentation` |
+| Platform | `setup-deployment`, `manage-wrangler-deploy`, `debug-runtime-platform`, `add-telemetry-instrumentation` |
 | Security and Data | `manage-secrets`, `database-maintenance`, `security-audit`, `data-engineer` |
 | Documentation | `write-documentation`, `write-tech-radar` |
 

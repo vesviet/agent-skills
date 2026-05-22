@@ -2,16 +2,19 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
+**Counts:** 57 core skills under `core/skills/` + overlay skills under `overlays/*/skills/` (run `validate-skills.py` for the live total).
+
 ## Taxonomy
 
-### Agent
+### Agent (12)
 
-These cover agent operating discipline:
+Agent operating discipline and orchestration:
 
 - `agent-a2a-protocol`
 - `agent-context-management`
 - `agent-delegation`
 - `agent-graph-orchestration`
+- `agent-handoff`
 - `agent-memory-compaction`
 - `agent-model-routing`
 - `agent-observability`
@@ -19,52 +22,51 @@ These cover agent operating discipline:
 - `agent-semantic-memory`
 - `agent-tool-orchestration`
 - `agent-quality-gate`
-- `agent-handoff`
 
-### Foundation
+### Foundation (19)
 
-These are the default portable skills:
+Cross-cutting portable skills:
 
 - `analyze-business-requirements`
 - `analyze-data`
-- `optimize-seo`
+- `accessibility-review`
 - `commit-code`
+- `conduct-research`
 - `create-migration`
+- `design-review`
 - `design-ux-flow`
-- `plan-technical-delivery`
 - `meeting-review`
 - `navigate-service`
+- `optimize-seo`
 - `performance-profiling`
+- `plan-technical-delivery`
 - `review-code`
 - `review-service`
 - `troubleshoot-service`
-- `write-product-brief`
 - `write-article`
+- `write-product-brief`
 - `write-tests`
 
-### Backend
-
-These cover service implementation:
+### Backend (4)
 
 - `add-api-endpoint`
 - `add-event-handler`
 - `add-service-client`
 - `scaffold-new-service`
 
-### Frontend
-
-Implemented in this batch:
+### Frontend (7)
 
 - `add-ui-component`
 - `add-page-route`
 - `debug-3d-scene`
-- `integrate-r3f-three-legacy`
-- `integrate-api-client`
-- `optimize-3d-assets`
 - `frontend-testing`
-### Platform
+- `integrate-api-client`
+- `integrate-r3f-three-legacy`
+- `optimize-3d-assets`
 
-These cover delivery and runtime:
+### Platform (6)
+
+Delivery and runtime:
 
 - `setup-deployment`
 - `manage-wrangler-deploy`
@@ -73,61 +75,59 @@ These cover delivery and runtime:
 - `debug-runtime-platform`
 - `add-telemetry-instrumentation`
 
-### Security And Data
-
-Implemented in this batch:
+### Security And Data (4)
 
 - `manage-secrets`
 - `database-maintenance`
 - `security-audit`
 - `data-engineer`
 
-### Documentation
-
-Implemented in this batch:
+### Documentation (2)
 
 - `write-documentation`
 - `write-tech-radar`
 
-### Education
+### Education (3)
 
-These cover teaching, mentoring, and curriculum design:
+Teaching and curriculum:
 
 - `design-learning-plan`
 - `create-exercises`
 - `grade-and-review`
 
-Overlay-specific documentation skills live outside the core under `overlays/`.
+Overlay-specific skills (site stacks, ICM, content data) live under `overlays/*/skills/` and are validated together with core.
 
-## Priority Plan
+## Skill Boundaries (quick reference)
 
-### Priority 1 Implemented In This Batch
+| Topic | Primary skill | Escalate to |
+| ----- | ------------- | ----------- |
+| Deep discovery | `conduct-research` | Researcher role |
+| Ad-hoc analysis / dashboards | `analyze-data` | Data Analyst role |
+| Pipelines / ETL / warehouse | `data-engineer` | Data Engineer role; analysis-only → `analyze-data` |
+| UX flows and specs | `design-ux-flow` | UI/UX Designer |
+| Visual / IA critique (no code) | `design-review` | UI/UX or Reviewer |
+| a11y conformance | `accessibility-review` | QA + Frontend |
+| Generic CI/CD deploy | `setup-deployment` | DevOps Engineer |
+| Cloudflare Workers/Pages | `manage-wrangler-deploy` | Cloudflare Engineer |
 
-- `add-api-endpoint`
-- `add-event-handler`
-- `add-service-client`
-- `scaffold-new-service`
-- `setup-deployment`
-- `debug-runtime-platform`
+## Backlog (not yet skills)
 
-### Priority 2 Recommended Next
+### Priority 2
 
-- `design-review`
 - `3d-material-pipeline`
 - `incident-report`
 - `release-notes`
 - `product-discovery`
 
-### Priority 3 Nice To Add
+### Priority 3
 
-- `accessibility-review`
 - `frontend-state-management`
 
 ## Naming Rules
 
 - prefer generic names over stack-specific names
 - categorize skills under their respective taxonomy folders (agent, foundation, backend, frontend, platform, security-data, documentation, education)
-- move stack-specific or org-specific variants into separate packs later if needed
+- move stack-specific or org-specific variants into overlays when they are not portable
 
 ## Skill Authoring Standard
 
@@ -141,9 +141,9 @@ Every `SKILL.md` should use this baseline structure unless a skill has a clear r
 6. `## Checklist` for completion checks.
 7. `## Related Skills` with one-line descriptions.
 
-Optional sections such as `## Output Format`, `## Adaptation Notes`, `## Quick Reference`, or domain-specific guidance are fine when they make the skill easier to execute.
+Optional sections such as `## Output Format`, `## When to Use`, `## Deliverable Decision`, or domain-specific guidance are fine when they improve execution.
 
-Descriptions should include both what the skill does and when to use it. Keep skills repo-agnostic by default; put stack-specific assumptions in adapters or examples rather than the main trigger text.
+Descriptions should include both what the skill does and when to use it. Keep skills repo-agnostic by default; put stack-specific assumptions in adapters or overlays.
 
 ## Validation Gate
 

@@ -64,6 +64,18 @@ This role must follow [role-standard](role-standard.md) first.
 - implementation summary per `contracts/schemas/implementation-result.json` when code changed
 - no-commit delivery handoff that leaves the user in control of commit, push, tag, and publish actions
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Multi-phase feature or bug | coordination-plan.json + a2a-task.json | One output_schema_ref per phase assignee |
+| Long-running phase | a2a-task-progress.json | Stream status to user |
+| Completed delegate work | a2a-artifact.json | Validate against assignee contract |
+| Code changed under coordination | implementation-result.json | Aggregate from dev roles when applicable |
+| Requirements unclear | Delegate to BA first | feature-ticket.json before dev phases |
+| User-only wants plan | Markdown status; optional coordination-plan | Do not over-orchestrate single-step tasks |
+| Commit/push/release | Stop — user or authorized role | Coordinator does not commit unless user explicitly approves another role |
+
 ## Decision Boundaries
 
 - owns orchestration, sequencing, context control, and completion evidence
@@ -72,6 +84,16 @@ This role must follow [role-standard](role-standard.md) first.
 - may coordinate implementation work but does not override specialist ownership of product, architecture, security, data, or operations decisions
 - must escalate when requirements, risk acceptance, production impact, security, compliance, or destructive actions need explicit user approval
 - must stop before commit, push, tag, release, publish, or irreversible deployment actions unless another explicitly authorized role and user approval handle them
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Agent Coordinator** | coordination-plan.json, A2A lifecycle, phase gates | Specialist deliverable content |
+| **Project Manager** | Human timeline, milestones, owners | Bot delegation graph |
+| **Task Planner** | Single-task approach plan | End-to-end multi-role execution |
+| **Technical Lead** | Delivery plan and readiness | Choosing which roles to invoke |
+| **Specialist roles** | Domain contracts (ticket, ADR, code, tests) | Cross-phase sequencing |
 
 ## Collaboration & A2A Delegation
 
@@ -116,7 +138,7 @@ This role must follow [role-standard](role-standard.md) first.
 ### Supporting Skills (use when collaborating)
 
 - `agent-memory-compaction`
-- `agent-model-routing`
+- `agent-model-routing` — enable for multi-phase graphs with mixed complexity or tight token budget; see skill section *When Agent Coordinator Enables This*
 - `agent-observability`
 - `agent-prompt-lifecycle`
 - `agent-semantic-memory`

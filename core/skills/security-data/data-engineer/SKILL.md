@@ -294,8 +294,24 @@ When presenting results always include:
 - [ ] all scripts run idempotently (safe to re-run)
 - [ ] results verified against source data before stakeholder delivery
 
+## When To Use Data Analyst Instead
+
+Use skill **`analyze-data`** (and the **Data Analyst** role) when the work stops at exploration, metrics, or stakeholder insight—without owning a repeatable pipeline:
+
+| Situation | Use Data Analyst / analyze-data | Use data-engineer skill |
+| --------- | -------------------------------- | ------------------------ |
+| One-off Excel/CSV compare or pivot for a decision | Yes | No |
+| Dashboard or report from existing warehouse tables | Yes | No |
+| Ad-hoc SQL/DuckDB query answering a business question | Yes | No |
+| Scheduled ingestion, idempotent ETL, or orchestration | No | Yes |
+| Bronze/Silver/Gold modeling, dbt, Airflow, Kafka | No | Yes |
+| Production data quality gates and pipeline observability | No | Yes |
+
+When both apply (e.g., prototype analysis then productionize), finish analysis with `analyze-data`, then hand off pipeline design to **Data Engineer** with `data-pipeline-spec.json` or equivalent repo contract.
+
 ## Related Skills
 
+- **analyze-data**: Ad-hoc analysis, dashboards, and reports without pipeline ownership
 - **database-maintenance**: Use when cleaned data needs to move into a production database
 - **security-audit**: Review data handling for PII or sensitive content
 - **write-documentation**: Document pipeline architecture and data dictionaries

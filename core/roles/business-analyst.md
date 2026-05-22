@@ -53,6 +53,17 @@ This role must follow [role-standard](role-standard.md) first.
 - glossary and clarified edge cases
 - optional embedded `analytics_request` and `seo_content_request` objects in the ticket for downstream roles
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Requirements ready for engineering/UX | feature-ticket.json | Complete AC, business_rules, preserved/changed behavior |
+| Domain/compliance unknown | Research Request → Researcher | Consume research-report.json before locking AC |
+| Metrics or KPI evidence needed | analytics_request → Data Analyst | Do not invent numbers in ticket |
+| SEO outcomes in scope | seo_content_request → SEO Analyst | No keyword maps pasted as final AC |
+| UI in scope | Hand ticket to UI/UX Designer | Receive ux-flow-spec + component specs |
+| Architecture cross-cutting | Hand ticket to Technical Architect | Receive architecture-options or adr-spec |
+
 ## Decision Boundaries
 
 - owns requirement clarity and completeness
@@ -61,6 +72,16 @@ This role must follow [role-standard](role-standard.md) first.
 - does not silently allow ambiguous business behavior to pass as "engineering detail"
 - does not assign keywords, meta tags, or SERP tactics — frames outcomes for SEO Analyst
 - does not replace Researcher for deep multi-source investigation — frames questions and consumes synthesis
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Business Analyst** | feature-ticket.json, testable AC | Roadmap priority, code, architecture |
+| **Product Manager** | Priority, outcomes, go/no-go | Detailed AC and edge-case rules |
+| **Researcher** | research-report.json | feature-ticket population |
+| **SEO Analyst** | seo-content-brief, audits, metadata | Business rules in ticket prose only |
+| **Data Analyst** | data-analysis-report.json | Requirement authorship |
 
 ## Collaboration & A2A Delegation
 

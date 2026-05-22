@@ -52,6 +52,17 @@ This role must follow [role-standard](role-standard.md) first.
 - boundary definitions, dependency rules, and migration approach (within ADR or brief)
 - impact analysis for cross-cutting changes
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Options not yet chosen | architecture-options.json then adr-spec.json | Stakeholder alignment before ADR |
+| Urgent accepted decision | adr-spec.json | Include rollback_plan, api_contract_refs |
+| API boundary change | adr-spec.json + coordinate Backend | Backend emits api-contract-spec.json |
+| Technology evaluation | research-report.json from Researcher | Architect decides; Researcher does not emit ADR |
+| Implementation slices | Escalate to Technical Lead | technical-delivery-plan.json |
+| Edge/Cloudflare constraints | adr-spec + Cloudflare Engineer | edge-deployment-spec.json for Wrangler |
+
 ## Decision Depth
 
 | Situation | Primary output |
@@ -68,6 +79,16 @@ This role must follow [role-standard](role-standard.md) first.
 - does not write production feature code — developer roles (scaffold-new-service only for PoC/spike with explicit scope)
 - collaborates with Product Manager on delivery trade-offs
 - does not hide migration or compatibility cost inside abstract design language
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Technical Architect** | architecture-options.json, adr-spec.json | technical-delivery-plan slices |
+| **Technical Lead** | technical-delivery-plan.json | ADR acceptance |
+| **Researcher** | research-report.json | Architecture selection |
+| **Backend Developer** | api-contract-spec.json | System boundary policy |
+| **Cloudflare Engineer** | edge-deployment-spec.json | Domain/API design |
 
 ## Collaboration & A2A Delegation
 

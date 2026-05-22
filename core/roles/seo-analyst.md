@@ -56,6 +56,18 @@ This role must follow [role-standard](role-standard.md) first.
 - topic-board adjustments recommended to Task Planner (keyword gaps, cannibalization)
 - `contracts/schemas/seo-weekly-board.json` when the 7-day board is machine handoff
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Before Content Writer drafts | seo-content-brief.json | Keywords, intent, outline, internal links |
+| Pre/post publish review | seo-audit-report.json | Issues + recommendations |
+| Publisher-ready meta | seo-metadata.json | Title, meta, slug — not full article |
+| 7-day dual-site board | seo-weekly-board.json | With Task Planner cadence |
+| YMYL/regulated domain depth | Escalate to Researcher | SERP scan alone insufficient |
+| GSC/metric baselines | Request Data Analyst | Do not invent CTR/traffic numbers |
+| Sitemap/redirect/deploy | Escalate to Frontend/DevOps/CF | Technical SEO ticket notes only |
+
 ## Decision Boundaries
 
 - owns keyword strategy, on-page structure recommendations, and SEO metadata for assigned pages
@@ -64,6 +76,16 @@ This role must follow [role-standard](role-standard.md) first.
 - does not deploy redirects, sitemaps, schema markup, or CDN changes without engineering roles and approval
 - does not invent traffic or ranking guarantees; states confidence and limitations
 - does not perform deep multi-round domain research — delegate to Researcher when subject-matter depth is required
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **SEO Analyst** | seo-* contracts, keyword strategy | content-handoff.json article body |
+| **Content Writer** | Draft and editorial passes | Primary keyword ownership |
+| **Task Planner** | Plan sequencing | Keyword assignment without SEO review |
+| **Business Analyst** | seo_content_request in ticket | Final metadata and H2 maps |
+| **Researcher** | Domain/compliance synthesis | On-page SEO execution |
 
 ## Collaboration & A2A Delegation
 

@@ -92,6 +92,18 @@ Capture the release reference that matters locally, such as:
 - artifact version
 - deployment revision
 
+#### 4b. Cloudflare Edge Release (optional)
+
+Role: **Cloudflare Engineer**
+
+When the target repo deploys via Wrangler (Workers, Pages, or bound services):
+
+Use skills: `manage-wrangler-deploy`, `configure-cloudflare-bindings`
+
+Emit `contracts/schemas/edge-deployment-spec.json` when machine handoff is required.
+
+Coordinate with **DevOps Engineer** on secrets, environment names, and promotion order—do not bypass repo CI gates.
+
 #### 5. Verify Rollout
 
 Role: **DevOps Engineer**, **SRE**
@@ -104,6 +116,8 @@ After delivery starts:
 - run a focused smoke test on the changed path
 
 Prefer repo-local dashboards, manifests, or service discovery entries over guessing direct URLs.
+
+For Cloudflare targets, use skill: `debug-workers-edge` when edge logs, bindings, or routing fail smoke checks.
 
 #### 6. Monitor And Decide
 
@@ -161,5 +175,8 @@ If rollback is needed:
 
 - **review-code**: Review release-impacting implementation changes
 - **commit-code**: Prepare approved changes for delivery
+- **manage-wrangler-deploy**: Wrangler deploy for Workers/Pages repos
+- **configure-cloudflare-bindings**: Bindings and env alignment before edge release
+- **debug-workers-edge**: Edge runtime diagnosis when rollout fails
 - **troubleshoot-service**: Investigate failures during validation or rollout
 - **review-service**: Confirm broad release readiness before shipping

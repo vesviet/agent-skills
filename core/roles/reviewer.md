@@ -95,6 +95,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Supporting Skills (use when collaborating)
 
+- `design-review`
+- `accessibility-review`
 - `navigate-service`
 - `security-audit`
 - `performance-profiling`

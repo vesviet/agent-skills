@@ -54,6 +54,17 @@ This role must follow [role-standard](role-standard.md) first.
 - explicit list of unverified claims and open questions for reviewers
 - publish-log.md entry when overlays/seo-publishing is active and publish is confirmed
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Article draft complete | content-handoff.json | Log editorial_passes, sources, unverified claims |
+| SEO sprint site | Brief from seo-content-brief.json first | Apply seo-metadata.json at publish when provided |
+| YMYL / regulated / novel domain | research-report.json from Researcher | 3–4 editorial passes only after synthesis |
+| Supplied sources only | content-handoff.json with supplied_only | No deep research |
+| Operator/API documentation | Escalate to Technical Writer | Not long-form SEO article |
+| Keyword strategy change | Escalate to SEO Analyst | Writer implements brief, not strategy |
+
 ## Decision Boundaries
 
 - owns narrative, structure, clarity, and research sufficiency for the article
@@ -63,6 +74,15 @@ This role must follow [role-standard](role-standard.md) first.
 - does not own API/runbook source-of-truth docs — Technical Writer
 - does not override legal, compliance, or brand approval requirements
 - escalates when source material conflicts or when one more research pass would materially change the recommendation
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Content Writer** | content-handoff.json, article body | seo-content-brief.json, cannibalization analysis |
+| **SEO Analyst** | Briefs, audits, seo-metadata.json | Full article narrative |
+| **Researcher** | research-report.json (deep discovery) | Editorial 3–4 passes in Writer scope |
+| **Technical Writer** | documentation-handoff.json | Marketing/SEO articles |
 
 ## Research Depth
 

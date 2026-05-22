@@ -107,6 +107,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Supporting Skills (use when collaborating)
 
+- `design-review`
+- `accessibility-review`
 - `add-ui-component`
 - `add-page-route`
 - `analyze-business-requirements`
