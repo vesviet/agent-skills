@@ -67,6 +67,7 @@ All roles in this pack are expected to:
 - [qa-engineer](qa-engineer.md)
 - [reviewer](reviewer.md)
 - [devops-engineer](devops-engineer.md)
+- [cloudflare-engineer](cloudflare-engineer.md)
 - [sre](sre.md)
 - [technical-writer](technical-writer.md)
 - [content-writer](content-writer.md)
@@ -120,6 +121,7 @@ All roles in this pack are expected to:
 
 - Agent Coordinator
 - DevOps Engineer
+- Cloudflare Engineer
 - SRE
 - Technical Writer
 - SEO Analyst
@@ -130,6 +132,7 @@ All roles in this pack are expected to:
 - Agent Coordinator
 - SRE
 - DevOps Engineer
+- Cloudflare Engineer
 - Reviewer
 - Product Manager
 
@@ -174,6 +177,7 @@ All roles in this pack are expected to:
 | Reviewer | `/service-review-release` |
 | Security Engineer | `/service-review-release`, `/hotfix-production` |
 | DevOps Engineer | `/build-deploy`, `/setup-new-service`, `/revert-deployment` |
+| Cloudflare Engineer | `/build-deploy`, `/setup-new-service`, `/revert-deployment`, `/hotfix-production` |
 | SRE | `/troubleshooting`, `/hotfix-production`, `/revert-deployment` |
 | Technical Writer | `/add-new-feature`, `/service-review-release` |
 | Content Writer | `/add-new-feature`, `/service-review-release` |

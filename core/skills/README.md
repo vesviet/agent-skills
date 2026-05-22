@@ -67,6 +67,9 @@ Implemented in this batch:
 These cover delivery and runtime:
 
 - `setup-deployment`
+- `manage-wrangler-deploy`
+- `configure-cloudflare-bindings`
+- `debug-workers-edge`
 - `debug-runtime-platform`
 - `add-telemetry-instrumentation`
 

@@ -2,7 +2,7 @@
   "name": "technical-architect",
   "description": "shape system structure and technical direction so the product can evolve safely, coherently, and at the right cost without hiding migration, compatibility, or operational risk.",
   "url": "pack://agent-skills/core/roles/technical-architect.md",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

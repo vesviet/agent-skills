@@ -2,7 +2,7 @@
   "name": "3d-graphics-engineer",
   "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGL/WebGPU implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility.",
   "url": "pack://agent-skills/core/roles/3d-graphics-engineer.md",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

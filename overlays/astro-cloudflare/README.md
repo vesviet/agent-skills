@@ -16,3 +16,5 @@ Generic, reusable conventions for any Astro v5 project deployed to Cloudflare Pa
 - `rules/astro-cloudflare-conventions.md` — Architecture, component patterns, deploy, Wrangler config
 
 This overlay should be composed with the global core and optionally with project-specific overlays.
+
+**Recommended role:** `cloudflare-engineer` (edge/Wrangler/bindings) with `frontend-developer` (Astro UI). Activate this overlay for both when working on deploy or binding changes.

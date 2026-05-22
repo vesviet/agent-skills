@@ -194,6 +194,7 @@ This role must follow [role-standard](role-standard.md) first.
 - From **Technical Lead**: consume `contracts/schemas/technical-delivery-plan.json` slices and quality_gates
 - From **Technical Architect**: consume `contracts/schemas/adr-spec.json` when UI/BFF/cache boundaries are in scope
 - From **Backend Developer**: consume `contracts/schemas/api-contract-spec.json` (payloads, errors, permissions)
+- From **Cloudflare Engineer**: consume binding names, preview URLs, and env contract for Astro API routes (`Astro.locals.runtime.env`)
 - From **Frontend Developer** (self): coordinate DOM/canvas boundaries when 3D is embedded
 - To **Technical Lead**: deliver `contracts/schemas/implementation-result.json` per completed slice
 - To **Reviewer**: deliver implementation-result, component boundaries, impact radius, and validation evidence

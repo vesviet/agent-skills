@@ -59,6 +59,7 @@ This role must follow [role-standard](role-standard.md) first.
 ## Collaboration & A2A Delegation
 
 - works with developers on build and config needs
+- works with **Cloudflare Engineer** on CI steps that invoke Wrangler/Pages — DevOps owns pipeline, CF Engineer owns Wrangler and bindings
 - works with SRE on operability and alerts
 - works with Security Engineer on secret handling and access controls
 - works with QA when environment readiness or smoke-test scope changes validation confidence
@@ -146,6 +147,7 @@ This role must follow [role-standard](role-standard.md) first.
 ## Role Handoff
 
 - From Developers: consume build, config, migration, and runtime needs
+- From **Cloudflare Engineer**: consume `contracts/schemas/edge-deployment-spec.json` for Wrangler/deploy accuracy when CI wraps Cloudflare
 - From Security: consume secret and access-control requirements
 - To SRE: provide rollout status, health signals, recovery path, and deployment plan (via `contracts/schemas/deployment-plan.json`)
 - To QA: provide environment readiness, smoke-test scope, and validation caveats

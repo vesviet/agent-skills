@@ -1,6 +1,6 @@
 {
   "contract_type": "agent-registry",
-  "pack_version": "2.6.2",
+  "pack_version": "2.6.3",
   "protocol_version": "1.0",
   "generated_from": "core/roles",
   "agents": [
@@ -27,6 +27,12 @@
       "agent_card": "core/a2a/registry/business-analyst.agent-card.json",
       "url": "pack://agent-skills/core/roles/business-analyst.md",
       "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules,"
+    },
+    {
+      "role": "cloudflare-engineer",
+      "agent_card": "core/a2a/registry/cloudflare-engineer.agent-card.json",
+      "url": "pack://agent-skills/core/roles/cloudflare-engineer.md",
+      "description": "own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration"
     },
     {
       "role": "content-writer",

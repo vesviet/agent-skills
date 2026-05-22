@@ -2,7 +2,7 @@
   "name": "project-manager",
   "description": "turn agreed product scope into an executable plan with clear milestones, dependencies, owners, and risk control.",
   "url": "pack://agent-skills/core/roles/project-manager.md",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

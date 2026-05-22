@@ -85,7 +85,7 @@ This role must follow [role-standard](role-standard.md) first.
 - works with Technical Writer on documentation phases (`documentation-handoff.json`)
 - works with Backend Developer and Frontend Developer to execute scoped code changes (`implementation-result.json`)
 - works with QA Engineer and Reviewer to validate behavior and review findings (`test-report.json`, `code-review-finding.json`)
-- works with Security Engineer, DevOps Engineer, and SRE when secrets, data, runtime, or deployment are in scope (`security-audit.json`, `deployment-plan.json`, `incident-report.json`)
+- works with Security Engineer, DevOps Engineer, Cloudflare Engineer, and SRE when secrets, data, runtime, or deployment are in scope (`security-audit.json`, `deployment-plan.json`, `edge-deployment-spec.json`, `incident-report.json`)
 - works with Technical Writer when docs, release notes, or runbooks must be updated
 - controls when each collaborator is engaged, what contract they must return, and whether parallel phases may run
 

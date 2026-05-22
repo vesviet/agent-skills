@@ -2,7 +2,7 @@
   "name": "frontend-developer",
   "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior.",
   "url": "pack://agent-skills/core/roles/frontend-developer.md",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

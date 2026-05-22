@@ -2,7 +2,7 @@
   "name": "teacher",
   "description": "empower Vietnamese middle school students (THCS - Lớp 6 đến Lớp 9) to acquire knowledge, internalize core concepts across all subjects, and validate their understanding through structured learning, practice, and feedback aligned with the MOET (Bộ GD&ĐT) curriculum.",
   "url": "pack://agent-skills/core/roles/teacher.md",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

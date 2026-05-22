@@ -267,6 +267,29 @@ roles:
       - force_push
       - delete_branch_main
 
+  cloudflare-engineer:
+    allowed:
+      - read_file
+      - write_file
+      - create_file
+      - run_tests
+      - run_build
+      - read_logs
+      - run_deployment
+      - search_code
+    requires_approval:
+      - push_to_production
+      - rollback_deployment
+      - modify_environment_config
+      - modify_secrets
+      - modify_dns_production
+      - purge_cache_zone
+      - delete_cloudflare_resource
+    denied:
+      - drop_database
+      - force_push
+      - delete_branch_main
+
   sre:
     allowed:
       - read_file

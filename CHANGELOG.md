@@ -2,6 +2,18 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [2.6.3] - 2026-05-22
+
+### Added
+- Role `cloudflare-engineer` for Wrangler, Pages/Workers, bindings, and edge incidents
+- Contract `edge-deployment-spec.json`
+- Skills `manage-wrangler-deploy`, `configure-cloudflare-bindings`, `debug-workers-edge`
+- Policy profile `cloudflare-engineer` in action-boundaries.yaml
+
+### Changed
+- `devops-engineer`, `sre`, `frontend-developer`: Cloudflare Engineer handoff references
+- `overlays/astro-cloudflare`: recommended role pairing
+
 ## [2.6.2] - 2026-05-22
 
 ### Added

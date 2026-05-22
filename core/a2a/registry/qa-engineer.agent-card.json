@@ -2,7 +2,7 @@
   "name": "qa-engineer",
   "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escaped defects across a distributed microservices system.",
   "url": "pack://agent-skills/core/roles/qa-engineer.md",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

@@ -5,6 +5,7 @@ capability_role_map:
   agent-coordinator: agent-coordinator
   backend-developer: backend-developer
   business-analyst: business-analyst
+  cloudflare-engineer: cloudflare-engineer
   content-writer: content-writer
   data-analyst: data-analyst
   data-engineer: data-engineer

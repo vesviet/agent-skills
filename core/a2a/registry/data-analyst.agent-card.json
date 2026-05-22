@@ -2,7 +2,7 @@
   "name": "data-analyst",
   "description": "answer business questions with reproducible, well-documented analysis from tabular and warehouse data — defining metrics clearly, separating evidence from interpretation, and delivering stakeholder-ready reports without owning production pipeline infrastructure.",
   "url": "pack://agent-skills/core/roles/data-analyst.md",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

@@ -2,7 +2,7 @@
   "name": "technical-lead",
   "description": "turn architecture and requirements into a delivery-ready technical plan, guide implementation quality, and keep engineering decisions aligned without losing sight of logic correctness, regression risk, or rollout impact.",
   "url": "pack://agent-skills/core/roles/technical-lead.md",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

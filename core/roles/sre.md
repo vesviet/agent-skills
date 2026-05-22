@@ -58,6 +58,7 @@ This role must follow [role-standard](role-standard.md) first.
 ## Collaboration & A2A Delegation
 
 - works with DevOps on deployment and observability
+- works with **Cloudflare Engineer** on edge incidents, rollback, and `contracts/schemas/edge-deployment-spec.json` smoke/rollback evidence
 - works with developers on performance and recovery gaps
 - works with Product Manager when reliability trade-offs affect roadmap
 - works with QA and Reviewer when runtime behavior changes validation confidence
