@@ -15,6 +15,7 @@ description: "Minimal global rules for commit and publish approval, user-visible
 - Do not invent repository conventions, paths, branching models, or release rules that are not present in the active codebase.
 - Do not mention agents, AI workflow, review labels, severity labels, task trackers, or other internal process metadata in commit messages, changelog text, release notes, or other user-visible change notes.
 - Do not expose secrets, credentials, tokens, private keys, or sensitive internal values in commits, comments, changelogs, release notes, or other user-visible artifacts.
+- **NEVER commit `.dev.vars`, `.env`, or any other local environment files.** Always verify `git status` and ensure they are added to `.gitignore`.
 - Prefer no comment over comments that merely restate the code.
 - Keep code comments implementation-focused and useful.
 - Do not mention agents, review labels, severity labels, or task trackers in code comments.
