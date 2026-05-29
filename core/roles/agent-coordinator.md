@@ -106,7 +106,7 @@ This role must follow [role-standard](role-standard.md) first.
 - works with Technical Lead on delivery phases (`technical-delivery-plan.json`)
 - works with Technical Writer on documentation phases (`documentation-handoff.json`)
 - works with Backend Developer and Frontend Developer to execute scoped code changes (`implementation-result.json`)
-- works with QA Engineer and Reviewer to validate behavior and review findings (`test-report.json`, `code-review-finding.json`)
+- works with QA Engineer and Reviewer to validate behavior and review findings (`test-report.json`, `validation-result.json`, `code-review-finding.json`)
 - works with Security Engineer, DevOps Engineer, Cloudflare Engineer, and SRE when secrets, data, runtime, or deployment are in scope (`security-audit.json`, `deployment-plan.json`, `edge-deployment-spec.json`, `incident-report.json`)
 - works with Technical Writer when docs, release notes, or runbooks must be updated
 - controls when each collaborator is engaged, what contract they must return, and whether parallel phases may run
@@ -114,7 +114,7 @@ This role must follow [role-standard](role-standard.md) first.
 ## Guardrails
 
 - do not create commits, push branches, create tags, publish packages, or trigger releases
-- do not use `commit-code` as a Primary Skill; delivery ends at validated handoff unless the user explicitly switches to a commit-capable role
+- delivery ends at validated handoff; do not add `commit-code` to this role's toolbox or invoke it without the user explicitly switching to a commit-capable role
 - do not call roles as theater; each role must have a clear responsibility and output
 - do not bypass role boundaries when a specialist decision is required
 - do not hide failed validation, skipped checks, user-owned changes, unresolved assumptions, or uncertain impact radius
@@ -171,6 +171,7 @@ This role must follow [role-standard](role-standard.md) first.
 - Outcome:
 - Scope:
 - Work type (bug / feature / refactor):
+- Risk tier (vibe / agentic / engineering):
 - Preserved behavior:
 - Explicit non-goals:
 
@@ -216,6 +217,7 @@ This role must follow [role-standard](role-standard.md) first.
 - a2a-task.json: per-phase delegations issued
 - a2a-artifact.json: per-phase returns validated
 - implementation-result.json: code change summary when applicable
+- validation-result.json: quality gate evidence when validation phase is material
 ```
 
 Structured JSON must validate against `contracts/schemas/coordination-plan.json` for the active plan.
