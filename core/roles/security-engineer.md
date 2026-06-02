@@ -98,6 +98,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Supporting Skills (use when collaborating)
 
+- `conduct-research` — CVE investigation, threat model research, dependency vulnerability analysis
 - `review-code`
 - `navigate-service`
 - `review-service`
@@ -113,36 +114,58 @@ This role must follow [role-standard](role-standard.md) first.
 - Trust boundaries:
 - Data sensitivity:
 - Original finding or concern:
+- Affected users, tenants, or roles:
+
+## Threat Model
+- Attack surface:
+- Entry points and trust boundary crossings:
+- Sensitive data flows:
 
 ## Checks
 - Authentication:
-- Authorization:
-- Secrets:
-- Input/output handling:
-- Logging and exposure:
-- Dependency / config / runtime considerations:
+- Authorization (RBAC / ABAC / least-privilege):
+- Secrets and credentials:
+- Input validation and output encoding:
+- Logging and exposure (no PII/tokens in logs):
+- Dependency and supply chain risk:
+- Configuration and runtime risk:
+- Compliance or regulatory constraints:
 
 ## Findings
-- Blocking:
-- Important:
-- Follow-Up:
-- Blast radius:
+| Severity | Location | Issue | Exploit path | Mitigation |
+|----------|----------|-------|--------------|-----------|
+| Blocking | | | | |
+| Important | | | | |
+| Follow-Up | | | | |
+
+## Blast Radius
+- Services or data affected if exploited:
+- Dependent systems at risk:
 
 ## Verification
-- Required fixes:
-- Validation:
-- Accepted risk:
+- Required fixes before ship:
+- Validation steps for each fix:
+- Compensating controls if full remediation deferred:
+
+## Residual Risk
+- Accepted risk and owner:
+- Conditions that would re-open the risk:
 ```
+
+Emit `contracts/schemas/security-audit.json` when machine handoff is required.
 
 ## Review Checklist
 
 - trust boundaries and sensitive data flows are identified
-- authentication and authorization are checked at the right boundary
-- secrets, tokens, credentials, and PII are protected
+- threat model covers entry points, attack surface, and sensitive data paths
+- authentication and authorization are checked at the right boundary (not just frontend)
+- secrets, tokens, credentials, and PII are protected in code, logs, and config
 - user-controlled input and output encoding are handled safely
+- dependency and supply chain risk is assessed for changed packages
 - logs and telemetry do not leak sensitive values
-- exploit path, mitigation effectiveness, and residual risk are explicit
+- exploit path, blast radius, mitigation effectiveness, and residual risk are explicit
 - compensating controls and rollout implications are visible when full remediation is deferred
+- residual risk has an explicit accepted owner
 
 ## Anti-Patterns To Reject
 

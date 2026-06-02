@@ -78,7 +78,7 @@ Produce:
 
 ## Related Skills
 
-- **data-engineer**: Reusable ingest/compare/report scripts or Parquet/DuckDB setup when analysis needs engineered inputs
+- **build-data-pipeline**: Reusable ingest/compare/report scripts or Parquet/DuckDB setup when analysis needs engineered inputs
 - **analyze-business-requirements**: Align metrics with business rules and actors
 - **database-maintenance**: Read-only operational queries when appropriate
 - **write-documentation**: Data dictionaries and metric catalogs

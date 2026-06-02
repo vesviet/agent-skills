@@ -51,6 +51,13 @@ This role must follow [role-standard](role-standard.md) first.
 - release readiness assessment with readiness_status
 - impact-radius summary for risky fixes or changes
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Feature execution | technical-delivery-plan.json | Handed off to developers |
+| Architecture change | ADR request | Escalate to Technical Architect |
+
 ## Role Boundaries
 
 | Role | Owns | Does not own |
@@ -101,13 +108,11 @@ This role must follow [role-standard](role-standard.md) first.
 ### Supporting Skills (use when collaborating)
 
 - `scaffold-new-service`
-- `agent-prompt-lifecycle`
-- `agent-semantic-memory`
+- `performance-profiling`
 - `agent-delegation`
 - `write-tests`
 - `commit-code`
 - `create-migration`
-- `performance-profiling`
 - `troubleshoot-service`
 
 ## Output Template

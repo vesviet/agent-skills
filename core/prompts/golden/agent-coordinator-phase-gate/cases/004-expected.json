@@ -1,0 +1,12 @@
+{
+  "must_include": [
+    "phase transition from implementation to validation",
+    "qa-engineer as next phase owner",
+    "validation scope and success criteria",
+    "residual risk from missing integration tests"
+  ],
+  "must_not_include": [
+    "merge or commit before QA validation",
+    "skip validation phase"
+  ]
+}

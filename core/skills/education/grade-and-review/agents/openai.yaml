@@ -1,0 +1,4 @@
+interface:
+  display_name: "Grade and Review"
+  short_description: "Evaluate learner work on the Vietnamese 10-point scale with constructive feedback"
+  default_prompt: "Use $grade-and-review to assess the completed exercise and provide MOET-aligned feedback."

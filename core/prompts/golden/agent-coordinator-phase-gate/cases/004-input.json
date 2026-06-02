@@ -1,0 +1,9 @@
+{
+  "work_type": "feature",
+  "phase": "implementation",
+  "user_request": "Backend developer has finished the API. QA needs to validate before we can merge.",
+  "context": {
+    "implementation_result": "api-endpoint added at POST /reports/export",
+    "test_coverage": "unit tests added, integration tests pending"
+  }
+}

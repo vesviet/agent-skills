@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Learning Plan"
+  short_description: "Create a structured, curriculum-aligned learning plan or syllabus for THCS students"
+  default_prompt: "Use $design-learning-plan to structure a study schedule or syllabus."

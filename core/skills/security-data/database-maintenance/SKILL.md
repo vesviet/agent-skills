@@ -73,6 +73,7 @@ Confirm:
 - [ ] maintenance goal defined
 - [ ] current state inspected
 - [ ] safe execution plan prepared
+- [ ] backup or recovery posture verified before starting destructive steps
 - [ ] recovery path understood
 - [ ] maintenance executed with checkpoints
 - [ ] post-maintenance verification completed

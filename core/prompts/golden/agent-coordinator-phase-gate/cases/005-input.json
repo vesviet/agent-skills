@@ -1,0 +1,9 @@
+{
+  "work_type": "bug",
+  "phase": "validation",
+  "user_request": "QA says the fix works in staging but we found a regression in the user profile update flow",
+  "context": {
+    "original_bug": "Login fails after password reset for OAuth users",
+    "fix_status": "patch applied"
+  }
+}

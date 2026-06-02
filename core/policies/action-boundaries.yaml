@@ -485,5 +485,26 @@ roles:
       - push_to_production
       - drop_database
 
+  mobile-engineer:
+    allowed:
+      - read_file
+      - write_file
+      - create_file
+      - run_tests
+      - run_linter
+      - run_build
+      - run_dev_server
+      - search_code
+    requires_approval:
+      - delete_file
+      - install_dependency
+      - modify_public_api_contract
+    denied:
+      - run_migration
+      - modify_secrets
+      - push_to_production
+      - drop_database
+      - force_push
+
 # Default: any action not listed for a role requires approval.
 default_policy: requires_approval

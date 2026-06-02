@@ -95,14 +95,13 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Primary Skills
 
-- `data-engineer`
+- `build-data-pipeline`
 - `database-maintenance`
 - `create-migration`
 
 ### Supporting Skills (use when collaborating)
 
 - `analyze-data`
-
 - `review-code`
 - `write-documentation`
 - `security-audit`

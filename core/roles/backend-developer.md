@@ -68,6 +68,15 @@ This role must follow [role-standard](role-standard.md) first.
 - escalates unclear requirements or cross-service impacts
 - does not silently change business rules, compatibility guarantees, or data semantics to make a bug disappear
 
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Backend Developer** | Service code, API endpoints, db schemas | Frontend code, production deployment |
+| **Frontend Developer** | UI code, API consumption | API implementation |
+| **DevOps Engineer** | Deployment manifests, CI/CD pipelines | Service application logic |
+| **Reviewer** | Code review findings | Implementation |
+
 ## Collaboration & A2A Delegation
 
 - works with **Business Analyst** on feature-ticket.json requirements and acceptance criteria

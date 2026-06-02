@@ -101,7 +101,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Supporting Skills (use when collaborating)
 
-- `agent-observability`
+- `agent-observability` — trace and cost analysis for agent-assisted incident investigation
 - `agent-semantic-memory`
 - `navigate-service`
 - `database-maintenance`
@@ -167,7 +167,6 @@ This role must follow [role-standard](role-standard.md) first.
 ## Definition Of Done
 
 - `contracts/schemas/incident-report.json` emitted when incident handoff required
-
 - operational risk is explicit
 - monitoring and recovery path are improved
 - recurring failure modes have owners

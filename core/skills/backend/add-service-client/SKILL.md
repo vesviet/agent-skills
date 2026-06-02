@@ -12,6 +12,7 @@ Use this skill when a service must call another internal service, external API, 
 - reuse the repo's existing client abstraction pattern
 - keep transport details out of business logic when the repo separates them
 - make timeouts, retries, and auth explicit
+- consider circuit breakers for dependency calls that could cascade under load
 - map downstream errors into local domain or boundary errors intentionally
 - avoid widening the dependency surface more than necessary
 

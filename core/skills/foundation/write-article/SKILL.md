@@ -69,7 +69,8 @@ When overlays/seo-publishing is active, after user confirms publish, append plan
 
 - **write-documentation**: Structure and clarity patterns; technical README/runbooks belong with Technical Writer
 - **write-tech-radar**: Radar-style technology assessments (Vesviet radar subtree)
-- **write-leaseinvietnam-maylanhtreotuong-data**: Astro MDX for Lease and May lanh sites (overlay)
-- **write-vesviet-learn-content**: Hugo content for Vesviet and Learn (overlay)
 - **analyze-business-requirements**: Align copy with business rules when BA supplied a ticket
 - **meeting-review**: Resolve stakeholder conflicts before drafting sensitive claims
+- **agent-delegation**: Delegate drafting or specialist work to other roles
+
+> **Site-specific authoring skills** (Astro MDX for Lease/May lanh, Hugo for Vesviet/Learn) live in overlays — see `overlays/lease-content/` and `overlays/vesviet-content/` README for the skill names to activate.

@@ -1,0 +1,12 @@
+{
+  "must_include": [
+    "infrastructure gap flagged (no WebSocket)",
+    "escalation or architecture decision required before implementation",
+    "timeline risk or scope negotiation noted",
+    "technical-architect or technical-lead in role plan"
+  ],
+  "must_not_include": [
+    "start implementation before infrastructure decision",
+    "promise delivery without scoping infra gap"
+  ]
+}

@@ -2,6 +2,22 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [2.7.0] - 2026-06-02
+
+### Added
+- `build-data-pipeline` skill (replaces `data-engineer` skill to resolve naming collision)
+- `mobile-engineer` role and corresponding action boundary policy
+- `incident-report` and `release-notes` foundation skills
+- 100% role compliance: `Role Boundaries` and `Deliverable Routing` added to 8 previously non-compliant roles
+- `agents/openai.yaml` stubs added for all missing education and foundation skills
+
+### Changed
+- `data-engineer` skill deprecated (redirects to `build-data-pipeline`)
+- Education skills (`create-exercises`, `design-learning-plan`, `grade-and-review`) expanded from Grade 6-7 to full Grade 6-9 range
+- `setup-deployment`, `database-maintenance`, `add-service-client` skills hardened with extra safety and output format checks
+- `write-article` broken overlay references replaced with generic guidance
+- All 25 roles and 68 skills now fully compliant with validation scripts
+
 ## [2.6.6] - 2026-05-22
 
 ### Added

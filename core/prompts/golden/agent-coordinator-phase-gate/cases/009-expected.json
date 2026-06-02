@@ -1,0 +1,12 @@
+{
+  "must_include": [
+    "preserved behavior declared explicitly (no new features)",
+    "impact radius across auth, user, and gateway services",
+    "regression coverage plan for all three services",
+    "technical-architect or technical-lead in role plan for cross-service refactor"
+  ],
+  "must_not_include": [
+    "start refactor without preserved behavior declared",
+    "treat multi-service refactor as low-risk without impact analysis"
+  ]
+}

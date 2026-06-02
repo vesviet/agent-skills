@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 57 core skills under `core/skills/` + overlay skills under `overlays/*/skills/` (run `validate-skills.py` for the live total).
+**Counts:** 60 portable core skills under `core/skills/` + 8 overlay skills under `overlays/*/skills/` = **68 total** (run `validate-skills.py` for the live total).
 
 ## Taxonomy
 
@@ -23,7 +23,7 @@ Agent operating discipline and orchestration:
 - `agent-tool-orchestration`
 - `agent-quality-gate`
 
-### Foundation (19)
+### Foundation (21)
 
 Cross-cutting portable skills:
 
@@ -35,11 +35,13 @@ Cross-cutting portable skills:
 - `create-migration`
 - `design-review`
 - `design-ux-flow`
+- `incident-report`
 - `meeting-review`
 - `navigate-service`
 - `optimize-seo`
 - `performance-profiling`
 - `plan-technical-delivery`
+- `release-notes`
 - `review-code`
 - `review-service`
 - `troubleshoot-service`
@@ -75,12 +77,13 @@ Delivery and runtime:
 - `debug-runtime-platform`
 - `add-telemetry-instrumentation`
 
-### Security And Data (4)
+### Security And Data (5)
 
 - `manage-secrets`
 - `database-maintenance`
 - `security-audit`
-- `data-engineer`
+- `build-data-pipeline`
+- `data-engineer` *(deprecated — use `build-data-pipeline`)*
 
 ### Documentation (2)
 
@@ -103,7 +106,7 @@ Overlay-specific skills (site stacks, ICM, content data) live under `overlays/*/
 | ----- | ------------- | ----------- |
 | Deep discovery | `conduct-research` | Researcher role |
 | Ad-hoc analysis / dashboards | `analyze-data` | Data Analyst role |
-| Pipelines / ETL / warehouse | `data-engineer` | Data Engineer role; analysis-only → `analyze-data` |
+| Pipelines / ETL / warehouse | `build-data-pipeline` | Data Engineer role; analysis-only → `analyze-data` |
 | UX flows and specs | `design-ux-flow` | UI/UX Designer |
 | Visual / IA critique (no code) | `design-review` | UI/UX or Reviewer |
 | a11y conformance | `accessibility-review` | QA + Frontend |
@@ -115,8 +118,6 @@ Overlay-specific skills (site stacks, ICM, content data) live under `overlays/*/
 ### Priority 2
 
 - `3d-material-pipeline`
-- `incident-report`
-- `release-notes`
 - `product-discovery`
 
 ### Priority 3

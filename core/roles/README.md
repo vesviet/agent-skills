@@ -59,6 +59,7 @@ All roles in this pack are expected to:
 - [technical-lead](technical-lead.md)
 - [backend-developer](backend-developer.md)
 - [frontend-developer](frontend-developer.md)
+- [mobile-engineer](mobile-engineer.md)
 - [3d-graphics-engineer](3d-graphics-engineer.md)
 - [security-engineer](security-engineer.md)
 
@@ -107,6 +108,7 @@ All roles in this pack are expected to:
 - Agent Coordinator
 - Backend Developer
 - Frontend Developer
+- Mobile Engineer
 - Technical Lead
 - Security Engineer
 
@@ -115,6 +117,7 @@ All roles in this pack are expected to:
 - Agent Coordinator
 - QA Engineer
 - Reviewer
+- Mobile Engineer
 - Technical Lead
 
 ### Release
@@ -122,6 +125,7 @@ All roles in this pack are expected to:
 - Agent Coordinator
 - DevOps Engineer
 - Cloudflare Engineer
+- Mobile Engineer
 - SRE
 - Technical Writer
 - SEO Analyst
@@ -172,6 +176,7 @@ All roles in this pack are expected to:
 | Technical Lead | `/add-new-feature`, `/service-review-release`, `/refactoring` |
 | Backend Developer | `/add-new-feature`, `/refactoring`, `/hotfix-production` |
 | Frontend Developer | `/add-new-feature`, `/refactoring` |
+| Mobile Engineer | `/add-new-feature`, `/refactoring`, `/troubleshooting`, `/hotfix-production` |
 | 3D Graphics Engineer | `/add-new-feature`, `/refactoring`, `/troubleshooting` |
 | QA Engineer | `/service-review-release` |
 | Reviewer | `/service-review-release` |

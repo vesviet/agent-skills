@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Notes"
+  short_description: "Draft and structure release notes for users, operators, and downstream consumers"
+  default_prompt: "Use $release-notes to write release notes for this version, covering breaking changes, new features, bug fixes, and upgrade steps."

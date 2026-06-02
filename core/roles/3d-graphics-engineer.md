@@ -77,6 +77,13 @@ This role must follow [role-standard](role-standard.md) first.
 - does not silently reduce visual quality below requirements to achieve performance without consensus
 - does not own full-page routing or non-canvas business logic — coordinate with Frontend
 
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **3D Graphics Engineer**| 3D models, shaders, R3F scenes | 2D DOM UI, backend APIs |
+| **Frontend Developer** | 2D DOM UI, page routing | 3D models, shaders |
+
 ## Collaboration & A2A Delegation
 
 - works with **UI/UX Designer** on `contracts/schemas/ux-flow-spec.json` interaction and visual states

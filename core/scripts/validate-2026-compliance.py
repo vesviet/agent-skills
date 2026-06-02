@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import re
 import sys
 from pathlib import Path
@@ -111,9 +112,19 @@ def validate_infrastructure() -> list[str]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Validate 2026 agent standards compliance.")
+    parser.add_argument(
+        "-v", "--verbose",
+        action="store_true",
+        help="Show detailed pass/fail results for each check instead of a summary only.",
+    )
+    args = parser.parse_args()
+    verbose = args.verbose
+
     role_paths = role_files()
     policies = policy_roles()
     errors: list[str] = []
+    passed: list[str] = []
 
     if not role_paths:
         errors.append("no role files found")
@@ -122,16 +133,48 @@ def main() -> int:
 
     coordinator = ROLE_ROOT / f"{COORDINATOR}.md"
     if coordinator.is_file():
-        errors.extend(validate_coordinator(coordinator))
+        coord_errors = validate_coordinator(coordinator)
+        errors.extend(coord_errors)
+        if verbose:
+            if coord_errors:
+                for e in coord_errors:
+                    print(f"  FAIL [coordinator] {e}")
+            else:
+                print(f"  PASS [coordinator] primary skills, coordination-plan, a2a-task wired")
 
-    errors.extend(validate_roles_a2a(role_paths))
-    errors.extend(validate_policy_coverage(role_paths, policies))
-    errors.extend(validate_infrastructure())
+    a2a_errors = validate_roles_a2a(role_paths)
+    errors.extend(a2a_errors)
+    if verbose:
+        failed_a2a = {e.split(":")[0] for e in a2a_errors}
+        for path in role_paths:
+            rel = str(path.relative_to(ROOT))
+            if rel in failed_a2a:
+                print(f"  FAIL [a2a-markers] {rel}: missing 2026 handoff markers")
+            else:
+                print(f"  PASS [a2a-markers] {rel}")
+
+    policy_errors = validate_policy_coverage(role_paths, policies)
+    errors.extend(policy_errors)
+    if verbose:
+        if policy_errors:
+            for e in policy_errors:
+                print(f"  FAIL [policy-coverage] {e}")
+        else:
+            print(f"  PASS [policy-coverage] all {len(role_paths)} roles have policy entries")
+
+    infra_errors = validate_infrastructure()
+    errors.extend(infra_errors)
+    if verbose:
+        if infra_errors:
+            for e in infra_errors:
+                print(f"  FAIL [infrastructure] {e}")
+        else:
+            print(f"  PASS [infrastructure] graph orchestration, tool orchestration, coordination-plan wired")
 
     if errors:
         print("2026 compliance validation failed:")
         for error in errors:
-            print(f"- {error}")
+            print(f"  - {error}")
         return 1
 
     print(

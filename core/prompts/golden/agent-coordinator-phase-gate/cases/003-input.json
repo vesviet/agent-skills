@@ -1,0 +1,5 @@
+{
+  "work_type": "bug",
+  "phase": "triage",
+  "user_request": "500 error on POST /api/orders when cart has more than 50 items — only happening in production"
+}

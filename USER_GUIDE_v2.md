@@ -1,12 +1,14 @@
-# Agent-Skills v2.3: User Guide (A2A 1.0 + Antigravity)
+# Agent-Skills v2.6: User Guide (A2A 1.0 + Antigravity)
 
-> v2.0 sections below; v2.3 adds full A2A lifecycle — see `adapters/antigravity/ANTIGRAVITY.md`.
+> This guide covers the core concepts introduced in v2.0 and updated through v2.6. For the full A2A lifecycle and Antigravity adapter setup, see `adapters/antigravity/ANTIGRAVITY.md`.
+>
+> **Note:** This file will be renamed to `USER_GUIDE.md` at the next major version to avoid a stale version number in the filename.
 
-Welcome to the **Agent-Skills v2.0** ecosystem. This system transforms standard AI coding assistants into an **Autonomous Swarm Environment**. Instead of having one general AI try to do everything, you now have a team of highly specialized, policy-driven "Virtual Employees" that can talk to each other using strict Data Contracts.
+Welcome to the **Agent-Skills v2.6** ecosystem. This system transforms standard AI coding assistants into an **Autonomous Swarm Environment**. Instead of having one general AI try to do everything, you now have a team of highly specialized, policy-driven "Virtual Employees" that can talk to each other using strict Data Contracts.
 
 ---
 
-## 1. Core Concepts of v2.0
+## 1. Core Concepts of v2.6
 
 - **Policy-as-Code:** Agents cannot run destructive commands (like dropping databases or pushing to production) without explicit permission. This is governed by `core/policies/action-boundaries.yaml`.
 - **A2A Delegation:** Agents can spin up sub-agents to do specialized work (e.g., a Backend Developer asking a Data Engineer to write a complex SQL migration).
@@ -19,7 +21,7 @@ Welcome to the **Agent-Skills v2.0** ecosystem. This system transforms standard 
 To get the best results, you must explicitly invoke the agent by its **Role Name** and provide the necessary context.
 
 ### The "Golden" Prompt Structure:
-> *"Act as the `@<role-name>`. [State your objective]. Ensure you follow your v2.0 role guidelines and output the necessary JSON contract if applicable."*
+> *"Act as the `@<role-name>`. [State your objective]. Ensure you follow your role guidelines and output the necessary JSON contract if applicable."*
 
 ### ✅ Example 1: Creating a UI Component
 > *"Act as the `@ui-ux-designer`. I need a new Product Card for the E-commerce site. Please generate the `ui-component-spec.json` contract for this component."*
@@ -39,7 +41,7 @@ When a QA Agent finds a bug (e.g., `test-report.json` says "failed"), you don't 
 
 ## 3. A2A Delegation (Agent-to-Agent)
 
-In v2.0, you don't need to micromanage everything. Agents know when a task is out of their depth and can delegate it.
+In v2.6, you don't need to micromanage everything. Agents know when a task is out of their depth and can delegate it.
 
 **How it works:**
 If you ask the `@reviewer` to audit a large Pull Request containing a tricky authentication flow, the Reviewer will:

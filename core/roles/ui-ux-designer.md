@@ -57,7 +57,7 @@ This role must follow [role-standard](role-standard.md) first.
 - UX handoff manifest listing flow + component spec paths for Frontend Developer
 - impact notes for changed flows or reused patterns
 
-## Deliverable Decision
+## Deliverable Routing
 
 | Scope | Primary contract | Notes |
 | ----- | ---------------- | ----- |
@@ -73,6 +73,14 @@ This role must follow [role-standard](role-standard.md) first.
 - does not own long-form marketing copy or SEO metadata — Content Writer / SEO Analyst
 - collaborates on feasibility when implementation constraints are tight
 - does not silently change product behavior through interaction tweaks
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **UI/UX Designer** | ux-flow-spec.json, component design | React/Vue code, HTML/CSS |
+| **Frontend Developer** | React/Vue code, HTML/CSS | ux-flow-spec.json |
+| **Business Analyst** | feature-ticket.json (requirements) | Screen layouts |
 
 ## Collaboration & A2A Delegation
 

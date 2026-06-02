@@ -52,13 +52,21 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Deliverable Routing
 
-| Material | Primary source contract |
-| -------- | ------------------------ |
-| Architecture decision doc | adr-spec.json |
-| API reference | api-contract-spec.json |
-| Release notes / what changed | implementation-result.json + feature-ticket.json |
-| Runbook / incident follow-up | incident-report.json |
-| Long-form marketing article | Escalate to Content Writer — not Technical Writer |
+| Material | Primary source contract | Notes |
+| -------- | ------------------------ | ----- |
+| Architecture decision doc | adr-spec.json | |
+| API reference | api-contract-spec.json | |
+| Release notes / what changed | implementation-result.json + feature-ticket.json | |
+| Runbook / incident follow-up | incident-report.json | |
+| Setup guide or onboarding doc | implementation-result.json or verified SME input | |
+| Long-form SEO or marketing article | **Escalate to Content Writer** | TW owns technical accuracy; CW owns narrative and editorial |
+| Blog post / thought leadership | **Escalate to Content Writer** | Not Technical Writer scope |
+
+**Technical Writer vs Content Writer:**
+- Technical Writer owns: API docs, runbooks, setup guides, release notes, ADR publications, operator-facing material — accuracy and structure over voice
+- Content Writer owns: blog posts, thought leadership, announcements, SEO articles — narrative, audience framing, and editorial quality
+- If the deliverable is user-facing instructional content with no SEO angle → Technical Writer
+- If the deliverable is a persuasive or discovery article that a general audience reads → Content Writer
 
 ## Decision Boundaries
 
@@ -67,6 +75,14 @@ This role must follow [role-standard](role-standard.md) first.
 - does not set architecture or implementation direction
 - escalates contradictory or outdated source material to Technical Lead or Architect
 - does not hide user or operator impact behind vague release wording
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Technical Writer** | READMEs, runbooks, integration docs | Application code, SEO articles |
+| **Content Writer** | Blogs, SEO articles, marketing copy | API documentation, runbooks |
+| **Backend Developer**| Application code | Final technical documentation |
 
 ## Collaboration & A2A Delegation
 

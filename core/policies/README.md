@@ -12,7 +12,7 @@ Policies answer: "Is this agent, in this role, allowed to perform this action on
 
 ### Action Boundaries
 
-`action-boundaries.yaml` defines what each of the 21 delivery roles is allowed, requires approval for, or denied from doing.
+`action-boundaries.yaml` defines what each of the 24 delivery roles is allowed, requires approval for, or denied from doing.
 
 ### Data Classification
 

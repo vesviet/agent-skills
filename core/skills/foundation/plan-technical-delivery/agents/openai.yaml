@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan Technical Delivery"
+  short_description: "Turn architecture decisions into a delivery-ready technical plan with slices and quality gates"
+  default_prompt: "Use $plan-technical-delivery to break down the implementation work for this feature or architecture spec."

@@ -74,6 +74,14 @@ This role must follow [role-standard](role-standard.md) first.
 - does not fabricate statistics, quotes, or third-party positions when evidence is missing
 - escalates when findings materially affect security, compliance, budget, or production posture
 
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Researcher** | research-report.json, domain context | Business rules, AC, Product Briefs |
+| **Business Analyst** | feature-ticket.json, AC | Deep market research |
+| **Product Manager**| write-product-brief | External domain research |
+
 ## Collaboration & A2A Delegation
 
 - works with **Business Analyst** on Research Request framing and consuming findings into feature-ticket.json (BA owns ticket)

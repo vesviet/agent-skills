@@ -120,19 +120,17 @@ This role must follow [role-standard](role-standard.md) first.
 ### Primary Skills
 
 - `write-article`
-- `write-documentation`
 
 ### Supporting Skills (use when collaborating)
 
-- `write-leaseinvietnam-maylanhtreotuong-data`
-- `write-vesviet-learn-content`
+- `write-documentation`
 - `write-tech-radar`
 - `write-product-brief`
 - `analyze-business-requirements`
 - `meeting-review`
 - `agent-delegation`
 
-Activate site overlay skills when editing content under leaseinvietnam, maylanhtreotuong, vesviet, or learn trees.
+When working under a site overlay (lease-content, vesviet-content, seo-publishing), additional overlay-specific skills are activated. See the Optional Overlays section and each overlay README for the skill names to load.
 
 ## Output Template
 

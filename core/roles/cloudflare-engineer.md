@@ -72,6 +72,13 @@ This role must follow [role-standard](role-standard.md) first.
 - does not purge entire zone cache or change production DNS without approval
 - escalates org-wide WAF, Zero Trust, and billing/account changes
 
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Cloudflare Engineer**| wrangler.toml, edge bindings, Workers | Generic frontend/backend code |
+| **Frontend Developer** | Astro/React application code | Cloudflare KV/D1 binding config |
+
 ## Collaboration & A2A Delegation
 
 - works with **DevOps Engineer** on CI jobs that invoke `npm run deploy` / Wrangler; DevOps owns pipeline, CF Engineer owns Wrangler correctness

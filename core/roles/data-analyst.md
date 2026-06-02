@@ -113,7 +113,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Supporting Skills (use when collaborating)
 
-- `data-engineer`
+- `build-data-pipeline`
 - `database-maintenance`
 - `conduct-research`
 - `write-documentation`

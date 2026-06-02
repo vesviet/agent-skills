@@ -8,7 +8,7 @@ Use this workflow when work must cross role boundaries with structured A2A tasks
 
 ### Prerequisites
 
-- agent-skills pack v2.3+ installed
+- agent-skills pack v2.6+ installed
 - A2A registry generated: `python3 core/scripts/generate-a2a-registry.py`
 - delegating role assigned (typically Agent Coordinator or Technical Lead)
 - output schema identified for the worker deliverable

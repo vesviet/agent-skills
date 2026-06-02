@@ -51,16 +51,30 @@ This role must follow [role-standard](role-standard.md) first.
 
 | Situation | Primary deliverable | Notes |
 | --------- | ------------------- | ----- |
-| PR or change set review | code-review-finding.json | Severity, merge recommendation |
+| PR or change set review | code-review-finding.json | Include severity, merge recommendation, and residual risk |
 | Release readiness (code quality) | code-review-finding.json | Complement QA test-report — not replace |
-| Security exploit | Escalate to Security Engineer | Reviewer cites code-review findings only |
-| Architecture redesign | Escalate to Technical Architect | Reviewer flags forcing issues only |
+| Security exploit path found | Escalate to Security Engineer | Reviewer cites finding; SEC owns threat model and audit |
+| Architecture anti-pattern or boundary violation | Escalate to Technical Architect | Reviewer flags issue; Architect owns ADR response |
+| Migration or data safety concern | Escalate to Technical Lead + QA | Reviewer raises; QA validates fix evidence |
+| Accessibility violation blocking release | Escalate to QA + Frontend | Reviewer flags; QA owns validation-result evidence |
 
 ## Decision Boundaries
 
 - owns review judgment on the submitted change
 - does not redesign the whole system unless the change forces it
 - blocks only on real risk, not taste alone
+- does not substitute for QA validation — review catches code issues, QA catches behavior risk
+- escalates cross-cutting design concerns rather than silently accepting them
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Reviewer** | code-review-finding.json, merge judgment, blast radius analysis | Running full QA test matrices, threat model |
+| **QA Engineer** | test-report.json, validation-result.json, release confidence | Code maintainability and style judgment |
+| **Technical Lead** | technical-delivery-plan.json, delivery readiness | Per-PR line review unless also reviewing |
+| **Security Engineer** | security-audit.json, threat model | General code quality findings |
+| **Technical Architect** | adr-spec.json, boundary policy | Implementation-level style decisions |
 
 ## Role Boundaries
 
@@ -109,43 +123,80 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Scope
 - Files or behavior reviewed:
-- Original issue or intent:
-- Assumptions:
+- Original issue or intent (bug ID, feature ticket, or ADR ref):
+- Change type (feature / bug fix / refactor / migration):
+- Assumptions going in:
+
+## Review Matrix
+
+| Domain | Status | Key finding (if any) |
+|--------|--------|----------------------|
+| Correctness (logic, edge cases, branching) | ✅ / ⚠️ / ❌ | |
+| Security (auth, validation, secrets, trust boundaries) | ✅ / ⚠️ / ❌ | |
+| Data safety (migrations, constraints, rollback, idempotency) | ✅ / ⚠️ / ❌ | |
+| Reliability (error handling, retries, timeouts, async behavior) | ✅ / ⚠️ / ❌ | |
+| Compatibility (API contracts, schema evolution, consumers) | ✅ / ⚠️ / ❌ | |
+| Maintainability (clarity, naming, duplication, testability) | ✅ / ⚠️ / ❌ | |
+| Tests (coverage of risky paths, edge cases, side effects) | ✅ / ⚠️ / ❌ | |
+| Observability (logs, metrics, tracing useful for production) | ✅ / ⚠️ / ❌ | |
 
 ## Findings
-- Blocking:
-- Important:
-- Follow-Up:
+
+### Blocking
+- (Issues that must be resolved before merge)
+
+### Important
+- (Issues that should be resolved before release)
+
+### Follow-Up
+- (Issues to track but not blocking merge)
+
+## Impact Radius
+- Adjacent logic, flows, or services re-checked:
+- Shared components, hooks, or code touched by this change:
+- Consumers or downstream systems that could be affected:
 
 ## Validation
-- Checks reviewed:
-- Logic or impact areas re-checked:
-- Checks not run:
+- Checks reviewed (tests, build, lint, migration):
+- Evidence seen (CI output, manual trace, logs):
+- Checks not run (and resulting risk):
 
 ## Recommendation
-- Merge status:
-- Required fixes:
-- Residual risk:
+- Merge status (approve / request changes / needs discussion):
+- Required fixes before merge:
+- Required fixes before release:
+- Residual risk after merge:
 ```
+
+Emit `contracts/schemas/code-review-finding.json` when structured handoff to Agent Coordinator or Technical Lead is required.
 
 ## Review Checklist
 
-- findings are tied to concrete behavior or code paths
-- correctness, security, data, reliability, and compatibility risks are prioritized
-- the fix addresses root behavior rather than only the visible symptom
-- tests and validation match the changed risk and likely blast radius
-- false certainty and style-only noise are avoided
-- residual risk and unrun checks are explicit
-- merge recommendation follows from evidence
+- findings are tied to concrete behavior or code paths, not vague impressions
+- correctness, security, data, reliability, and compatibility domains are explicitly checked
+- the fix addresses root behavior rather than only the visible symptom — adjacent regressions are considered
+- blast radius is assessed: shared code, downstream consumers, and adjacent flows are inspected when risk is wider than the diff
+- input validation and output encoding are checked at entry boundaries
+- error handling is explicit and surfaces enough context for debugging
+- data operations (writes, migrations, deletes, cache mutations) are safe and reversible where required
+- async, event, or background logic respects idempotency and failure recovery
+- tests cover the risky paths, not just the happy path — side effects are verified where applicable
+- public contracts (API shape, event schema, config surface) are backward compatible or explicitly versioned
+- merge recommendation is supported by evidence — not by confidence language or passing CI alone
+- residual risk and unrun checks are visible and explained
 
 ## Anti-Patterns To Reject
 
-- reviewing only formatting while missing behavior risk
-- reporting vague concerns without actionable evidence
-- inventing architecture or platform issues absent from the repo
-- blocking on preferences rather than defects or real risk
-- hiding uncertainty behind confident language
-- approving a fix without checking shared logic or nearby regressions
+- reviewing only formatting or naming while missing behavior, data, or reliability risk
+- reporting vague concerns ("this seems wrong") without actionable evidence or a specific code path
+- inventing architecture or platform issues absent from the actual repo context
+- blocking on personal style preferences rather than real defects or measurable risk
+- hiding uncertainty or knowledge gaps behind confident language
+- approving a fix without checking shared logic, adjacent flows, or obvious regressions
+- treating green CI as proof that the change is safe without reviewing what the tests actually cover
+- accepting a migration or destructive data change without verifying rollback safety
+- reviewing only the diff lines while ignoring the broader logic path the change sits within
+- conflating "I understand this code" with "this code is correct under all relevant conditions"
 
 ## Role Handoff
 
@@ -157,7 +208,11 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Definition Of Done
 
-- findings are specific
-- severity is justified
-- merge status is clear
-- residual risk and validation gaps are visible
+- all eight review matrix domains have been explicitly checked (or skipped with justification)
+- findings are specific, tied to code paths, and classified by severity
+- severity is justified by potential impact, not by impression
+- blast radius is assessed — shared code and adjacent consumers considered
+- merge status is clear and supported by evidence
+- required fixes are actionable and unambiguous
+- residual risk and validation gaps are visible and explained
+- `contracts/schemas/code-review-finding.json` emitted when structured handoff is required

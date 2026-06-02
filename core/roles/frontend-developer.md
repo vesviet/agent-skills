@@ -71,6 +71,15 @@ This role must follow [role-standard](role-standard.md) first.
 - escalates design, data contract, analytics, or cross-surface behavior conflicts
 - does not silently change business rules to make the UI "work"
 
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Frontend Developer** | UI code, client-side routing, API consumption | API endpoints, database schemas |
+| **Backend Developer** | API implementation, business logic, persistence | UI components |
+| **UI/UX Designer** | ux-flow-spec.json, design system | React/Vue code implementation |
+| **QA Engineer** | End-to-end testing, test reports | Feature implementation |
+
 ## Collaboration & A2A Delegation
 
 - works with **Business Analyst** on feature-ticket.json scope and acceptance criteria
@@ -108,6 +117,7 @@ This role must follow [role-standard](role-standard.md) first.
 ### Supporting Skills (use when collaborating)
 
 - `accessibility-review`
+- `performance-profiling`
 - `navigate-service`
 - `commit-code`
 - `write-tests`

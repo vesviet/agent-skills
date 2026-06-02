@@ -1,0 +1,8 @@
+{
+  "work_type": "refactor",
+  "phase": "intake",
+  "user_request": "Refactor the authentication module to support multi-tenancy. No new features, just restructure.",
+  "context": {
+    "affected_services": ["auth-service", "user-service", "api-gateway"]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "must_include": [
+    "regression explicitly called out as a blocker",
+    "phase held open until regression is resolved",
+    "adjacent flow impact radius declared",
+    "do not close bug with open regression"
+  ],
+  "must_not_include": [
+    "declare fix complete despite regression",
+    "close phase gate with unresolved blocker"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "work_type": "bug",
+  "phase": "triage",
+  "user_request": "The data export is producing wrong totals but only for accounts created before 2024-01-01",
+  "context": {
+    "suspected_cause": "unknown",
+    "data_affected": "financial report exports"
+  }
+}

@@ -117,13 +117,13 @@ This role must follow [role-standard](role-standard.md) first.
 ### Primary Skills
 
 - `navigate-service`
+- `review-service`
 - `write-tech-radar`
 - `meeting-review`
 
 ### Supporting Skills (use when collaborating)
 
 - `scaffold-new-service`
-- `review-service`
 - `review-code`
 - `security-audit`
 - `setup-deployment`

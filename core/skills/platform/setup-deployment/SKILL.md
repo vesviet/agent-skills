@@ -64,11 +64,24 @@ Confirm that:
 - rollback remains possible
 - docs or operator notes are updated if needed
 
+## Output Format
+
+When generating deployment plans or manifests, ensure the output includes:
+
+- The environment (dev, staging, prod) being targeted
+- The exact changes to configuration values or manifest blocks
+- A clear rollout sequence, especially if dependencies or secrets are involved
+- Rollback instructions in case of failure
+
+For machine-to-machine handoff, output a structured JSON plan (e.g., `deployment-plan.json`) if the repo expects it.
+
 ## Checklist
 
 - [ ] deployment source of truth located
 - [ ] required config added or updated
-- [ ] rollout ordering checked
+- [ ] environment variables and secrets validated (no hardcoded secrets)
+- [ ] rollout ordering and dependencies checked
+- [ ] rollback and smoke test requirements defined
 - [ ] validation commands run
 - [ ] health and rollback behavior reviewed
 

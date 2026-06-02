@@ -1,18 +1,18 @@
 ---
 name: create-exercises
-description: Design educational assignments, practice tests, and quizzes following Vietnamese THCS and MOET exam matrices. Use when generating exercises or mock exams for specific learning objectives.
+description: Design educational assignments, practice tests, and quizzes following Vietnamese THCS curriculum and MOET exam matrices for Grades 6 through 9. Use when generating exercises, mock exams, or exam preparation materials for specific learning objectives at any THCS level.
 ---
 
 # Create Exercises
 
-Use this skill to generate practical tasks, tests, or mock exams strictly following the Vietnamese THCS testing format and the MOET Exam Matrix (Ma trận đề thi), especially tailored for the cognitive development of 6th and 7th graders.
+Use this skill to generate practical tasks, tests, or mock exams strictly following the Vietnamese THCS testing format and the MOET Exam Matrix (Ma trận đề thi), for students in Grades 6 through 9.
 
 ## Core Rules
 
 - Strictly adhere to standard Vietnamese testing formats: Kiểm tra miệng (Oral, 5-10 mins), Kiểm tra 15 phút (Short quiz), Kiểm tra 1 tiết / 45 phút (Unit test), Kiểm tra Giữa kì / Cuối kì.
-- Follow the MOET 4-level cognitive matrix (Ma trận đề): Nhận biết (Recognition) -> Thông hiểu (Comprehension) -> Vận dụng (Application) -> Vận dụng cao (High Application).
-- For 6th and 7th graders, maintain a ratio heavily weighted towards Nhận biết & Thông hiểu (e.g., 40% - 30% - 20% - 10%) to build confidence.
-- Avoid notations, formulas, or problem-solving methods not taught in the Vietnamese curriculum.
+- Follow the MOET 4-level cognitive matrix (Ma trận đề): Nhận biết (Recognition) → Thông hiểu (Comprehension) → Vận dụng (Application) → Vận dụng cao (High Application).
+- Calibrate difficulty ratio to the student's grade and goal: lower grades or foundational tests weight more towards Nhận biết and Thông hiểu; Grade 8-9 and entrance exam prep can increase Vận dụng cao proportion.
+- Avoid notations, formulas, or problem-solving methods not yet taught in the Vietnamese curriculum for that grade level.
 
 ## Suggested Process
 
@@ -25,10 +25,11 @@ Use this skill to generate practical tasks, tests, or mock exams strictly follow
 ## Checklist
 
 - [ ] Test format (15 phút, 1 tiết, etc.) is clearly stated.
+- [ ] Target grade (Lớp 6, 7, 8, or 9) is confirmed before setting difficulty.
 - [ ] Questions are distributed according to the MOET 4-level cognitive matrix.
+- [ ] Difficulty ratio reflects the grade level and exam goal (more Nhận biết/Thông hiểu for lower grades and foundational tests; more Vận dụng cao for Grade 8-9 or entrance exam prep).
 - [ ] Answer key provides point breakdowns (e.g., 0.25 or 0.5 points per step).
-- [ ] Difficulty is strictly calibrated for Grade 6/7 students.
-- [ ] Language and terminology match official Vietnamese textbooks.
+- [ ] Language and terminology match official Vietnamese textbooks for that specific grade.
 
 ## Related Skills
 
