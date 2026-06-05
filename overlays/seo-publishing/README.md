@@ -1,4 +1,4 @@
-# SEO Publishing — Dual-Site Sprint Overlay
+# SEO Publishing — Dual-Site Sprint Overlay (2025–2026)
 
 Publishing overlay for recurring SEO content on **Lease in Vietnam** and **May Lanh Treo Tuong**. Composes on top of:
 
@@ -16,6 +16,11 @@ Also pair with site overlays when editing content files:
 - Dual-site sprint: up to **2 posts/day** (1 Lease + 1 May lanh) when active
 - Rolling **7-day topic board** and daily **publish log** under the workspace plan folder
 - Per-post SEO baseline, content-mix guardrails, and cannibalization checks
+- **GEO/AEO optimization**: answer-first structure, query fan-out, fact density, AI extractability
+- **Topical authority mapping**: pillar–cluster assignment, information gain analysis
+- **E-E-A-T quality gates**: experience proof, author entity, trust signals, claim policy
+- **Schema/structured data**: type recommendations per article for Frontend implementation
+- **AI visibility tracking**: weekly citation checks in Google AI Overviews, Perplexity, ChatGPT
 - Handoff contracts: seo-content-brief.json, seo-audit-report.json, seo-metadata.json, seo-weekly-board.json
 
 ## Workspace Paths (default)
@@ -32,10 +37,10 @@ Set `PLAN_BAIVIET_ROOT` to the active plan folder (default in personalized works
 
 ## Included
 
-- `rules/publishing-cadence.md` — Time windows, dual-site runbook, per-post baseline
-- `rules/topic-board-template.md` — 7-day board and daily plan sections
-- `rules/publish-log-conventions.md` — Post-publish tracking format
-- `rules/site-mix-and-cannibalization.md` — Cluster mix and 7-day keyword guardrails
+- `rules/publishing-cadence.md` — Time windows, dual-site runbook, per-post baseline (traditional SEO + GEO/AEO + E-E-A-T + schema)
+- `rules/topic-board-template.md` — 7-day board and daily plan sections with GEO/AEO and topical authority fields
+- `rules/publish-log-conventions.md` — Post-publish tracking format with AI visibility tracking and pillar–cluster monitoring
+- `rules/site-mix-and-cannibalization.md` — Cluster mix, 7-day keyword guardrails, pillar–cluster maps, entity SEO, and AI visibility rules
 
 ## Activation
 
@@ -58,7 +63,9 @@ Then hand off briefs to SEO Analyst and drafts to Content Writer with overlays/l
 | Step | Owner | Output |
 | ---- | ----- | ------ |
 | Update 7-day board | Task Planner + SEO Analyst | plan-YYYY-MM-DD.md or seo-weekly-board.json |
-| Keyword + links per post | SEO Analyst | seo-content-brief.json |
-| Draft | Content Writer | MDX under src/data |
-| Pre-publish audit | SEO Analyst | seo-audit-report.json, seo-metadata.json |
-| Log | Content Writer (after publish) or SEO Analyst / Task Planner | publish-log.md entry |
+| Keyword + links + GEO/AEO + pillar–cluster per post | SEO Analyst | seo-content-brief.json (with GEO/AEO fields, schema spec, E-E-A-T gates) |
+| Draft | Content Writer | MDX under src/data (with answer-first structure, experience proof) |
+| Pre-publish audit | SEO Analyst | seo-audit-report.json (with AI extractability check), seo-metadata.json |
+| Log | Content Writer (after publish) or SEO Analyst / Task Planner | publish-log.md entry (with GEO ready, pillar, schema, experience proof) |
+| Weekly AI visibility check | SEO Analyst | AI citation report in weekly rollup (Google AI Overview, Perplexity, ChatGPT) |
+| Schema implementation | Frontend Developer | JSON-LD per SEO Analyst specification |

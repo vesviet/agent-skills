@@ -2,6 +2,56 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [2.8.0] - 2026-06-05
+
+### Changed — 2026 AI Governance & Standards Upgrade Wave
+
+Systematic upgrade of **17 roles** to 2025–2026 industry standards. Each role received two new domain sections with concrete guardrails (LOCK rules), expanded review checklists, updated anti-patterns, and updated Definition of Done.
+
+#### Universal Additions Across All Upgraded Roles
+- **AI-generated code/artifact governance**: tiered trust validation proportional to risk (High: Auth/Payments/PII; Medium: Logic/Async; Low: Scaffolding)
+- **Guardrail naming convention**: `LOCK` suffix on all hard-stop rules (e.g., `AI-CODE LOCK`, `HITL-SPEC LOCK`)
+- **Probabilistic thinking**: requirements, SLOs, and acceptance criteria updated to accommodate non-deterministic AI system behavior
+- **EU AI Act awareness**: risk tier classification embedded in relevant role outputs (BA ticket, Security review, Architecture ADR)
+
+#### Role-by-Role Changes
+
+**`role-standard.md`** — Added AI Governance universal layer (hard locks: `AI-CODE LOCK`, `OBSERVABILITY LOCK`); Fail-Safe Protocol section; Agent Governance Standards
+
+**`agent-coordinator.md`** — Added Multi-Agent Governance (trust verification, blast-radius analysis before delegation, kill-switch); Progressive Delivery orchestration
+
+**`content-writer.md`** — Added GEO/AEO (Generative Engine Optimization); E-E-A-T signal engineering; AI-assisted draft discipline; AI-Disclosure requirements
+
+**`researcher.md`** — Added AI-Augmented Research Methodology (source triangulation, AI hallucination detection); Research Provenance standards; Epistemic Confidence framework
+
+**`seo-analyst.md`** — Added GEO/AEO optimization layer; AI-native SERP features (SGE, featured snippets); semantic content clustering; entity-based SEO
+
+**`technical-lead.md`** — Added Technical Debt Governance (quantified register, interest rate tracking); AI-Assisted Development Oversight (tiered code validation); Progressive Delivery (feature flags, canary releases)
+
+**`technical-architect.md`** — Added AI/ML System Architecture patterns (RAG, agent orchestration, feature store, vector DB); Architecture Decision Record discipline with AI-specific risk tiers
+
+**`qa-engineer.md`** — Added AI/LLM Testing Discipline (probabilistic AC, LLM-as-Judge, adversarial prompting, hallucination detection); Non-Deterministic Test Architecture (golden datasets, property-based testing)
+
+**`product-manager.md`** — Added AI Product Stewardship (EU AI Act, XAI, HITL); Hypothesis-Driven Discovery (kill-early protocol); Outcome Metrics Framework
+
+**`backend-developer.md`** — Added AI-Assisted Development Governance (tiered trust validation); Observability-First Engineering (OpenTelemetry universal standard, GenAI observability); `AI-CODE LOCK`, `OBSERVABILITY LOCK`, `LLM-INTEGRATION LOCK`, `PROMPT-INJECTION LOCK`
+
+**`frontend-developer.md`** — Added AI-Generated UI Governance (tiered trust model, visual regression discipline); Performance-as-a-Product (INP-first CWV metrics, CI-enforced budgets, rendering strategy framework); `AI-UI LOCK`, `PERFORMANCE-BUDGET LOCK`, `RENDERING-STRATEGY LOCK`, `PERMISSION-BOUNDARY LOCK`
+
+**`data-engineer.md`** — Added AI/ML Data Product Engineering (embedding pipelines, feature stores with training-serving parity, multimodal lakehouse, context engineering, training data quality gates); Data Contracts as Engineering Artifacts (machine-readable, version-controlled, CI/CD validated); `AI-PIPELINE LOCK`, `FEATURE-STORE LOCK`, `DATA-CONTRACT LOCK`, `TRAINING-DATA LOCK`
+
+**`data-analyst.md`** — Added AI-Augmented Analysis (LLM-assisted SQL validation discipline, AI narrative validation, semantic layer alignment); Causal Reasoning Standards (mandatory correlation-causation disclosure, causal methods table, statistical vs. practical significance); `AI-SQL LOCK`, `AI-NARRATIVE LOCK`, `CAUSATION LOCK`, `SEMANTIC-LAYER LOCK`
+
+**`business-analyst.md`** — Added AI Feature Requirements Specification (behavioral boundaries not deterministic outputs, probabilistic AC format, HITL escalation trigger specification, AI accountability model, EU AI Act tier in ticket); Assumption Mapping & Continuous Discovery (living assumption register with risk scoring, Event Storming, JTBD, Impact Mapping, kill-early signals); `AI-AC LOCK`, `HITL-SPEC LOCK`, `ASSUMPTION LOCK`, `EU-AI-ACT LOCK`; expanded Output Template with AI Feature Requirements section and Assumption Register table
+
+**`ui-ux-designer.md`** — Added AI Interaction Design (5-state AI model: Generating/Uncertain/Fallback/Overridden/Corrected; confidence indicators; transparency hooks; human override patterns; Red Path design; HITL interface requirements; AI accessibility extensions beyond WCAG 2.2); Design System as Living Infrastructure (W3C DTCG three-tier token architecture; automated design-to-code pipeline; AI governance for design system); `AI-STATE LOCK`, `AI-OVERCONFIDENCE LOCK`, `TRUST-DESIGN LOCK`, `TOKEN-EXPORT LOCK`
+
+**`devops-engineer.md`** — Added AI/ML Pipeline Governance (model promotion gates, shadow testing, canary rollout with model-specific rollback triggers, inference deployment safety, monitoring gates); GitOps-First Infrastructure & Supply Chain Security (SLSA framework, SBOM, dependency provenance, pinned CI action SHAs); `GITOPS LOCK`, `AI-DEPLOY LOCK`, `SUPPLY-CHAIN LOCK`
+
+**`security-engineer.md`** — Added AI/LLM Security (prompt injection as OWASP LLM01 #1 attack vector, training data poisoning, model output exploitation, LLM-specific STRIDE threat model extensions, EU AI Act high-risk compliance sign-off); Shift-Left Security Engineering (threat modeling before design sign-off, SAST/DAST in CI, dependency and secret scanning gates); `PROMPT-INJECTION LOCK`, `AI-THREAT-MODEL LOCK`, `SHIFT-LEFT LOCK`
+
+**`sre.md`** — Added AI/ML System Reliability (AI-specific SLO dimensions: output quality, inference latency, token cost, model availability, context window utilization; model degradation as P1 reliability incident; LLM-specific operational considerations); Proactive Reliability Engineering (error budget burn rate alerts, chaos engineering, game days, automated runbooks with dry-run mode); `AI-SLO LOCK`, `ERROR-BUDGET LOCK`
+
 ## [2.7.0] - 2026-06-02
 
 ### Added

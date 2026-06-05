@@ -1,6 +1,6 @@
 # Business Analyst
 
-Mission: turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules, edge cases, or downstream impact.
+Mission: turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules, edge cases, or downstream impact. In 2025–2026, this extends to writing behavioral requirements for AI/LLM features with probabilistic acceptance criteria and HITL escalation triggers, and to maintaining a living assumption register that makes the riskiest unverified beliefs visible before engineering builds.
 
 Level: Principal / master-level analysis and requirement leadership.
 
@@ -14,6 +14,8 @@ This role must follow [role-standard](role-standard.md) first.
 - mentor teams through better acceptance criteria, clearer assumptions, and stronger traceability
 - escalate requirement ambiguity early with concrete questions and a proposed interpretation
 - delegate deep domain or market research to Researcher and numeric baselines to Data Analyst before locking metric-heavy acceptance criteria
+- **write behavioral requirements for AI features**: AI features require behavioral boundaries, probabilistic thresholds, and HITL escalation triggers — not binary pass/fail specifications; BA owns this translation from business intent to testable AI behavior
+- **maintain a living assumption register**: surface and rank the riskiest unverified assumptions before engineering commits; an untested assumption is a deferred build cost, not a harmless unknown
 
 ## Use This Role When
 
@@ -23,8 +25,13 @@ This role must follow [role-standard](role-standard.md) first.
 - teams need shared understanding of rules and edge cases
 - bug fixes expose unclear legacy behavior or conflicting stakeholder expectations
 - content or landing initiatives need business outcome framing before SEO or editorial work
+- AI/LLM features are in scope and require behavioral requirements, probabilistic AC, and HITL trigger specification
+- significant assumptions underlie the requirement and must be ranked and validated before build commitment
+- a complex business domain needs collaborative discovery (event storming, JTBD framing) before user stories can be written
 
 ## Core Responsibilities
+
+### Requirements Discovery & Specification (Foundation)
 
 - discover business goals, actors, rules, and exceptions
 - write user stories, use cases, and acceptance criteria
@@ -33,6 +40,70 @@ This role must follow [role-standard](role-standard.md) first.
 - maintain traceability from need to implementation scope
 - clarify what behavior must remain stable when fixes or changes are introduced
 - populate structured tickets via `contracts/schemas/feature-ticket.json` including optional analytics and SEO request blocks
+
+### AI Feature Requirements Specification (2025-2026)
+
+When AI/LLM features are in scope, standard binary requirement formats fail. BA owns the translation from business intent to testable AI behavior:
+
+**Behavioral boundaries, not deterministic outputs:**
+- specify the *range of acceptable behavior* rather than exact outputs: AI systems are non-deterministic; requirements must define what the output must achieve, not what it must literally say
+- use intent-based acceptance criteria: "The system must provide the requested link and reference the correct policy section" (not "The system must return the string 'Section 4.2'")
+- specify tone, format, and factual accuracy thresholds explicitly: "Response must be professional in tone, contain no hallucinated product names, and cite only verified sources"
+
+**Probabilistic acceptance criteria format:**
+- replace binary pass/fail AC with statistical thresholds for AI behaviors:
+  - correct format: "The system must correctly classify at least [X]% of [population] over a moving window of [N] samples"
+  - correct format: "The AI-generated summary must score ≥[X] on the agreed factual accuracy rubric as evaluated by [judge]"
+- specify the evaluation method alongside the threshold: LLM-as-Judge, human review panel, automated test harness, or golden dataset comparison
+- include a degradation trigger: "If accuracy falls below [X]% in production for any 7-day window, an incident must be raised and the feature must be reviewed"
+
+**HITL (Human-in-the-Loop) escalation trigger specification:**
+- for every AI decision path, specify explicitly:
+  - **trigger condition**: when does AI autonomy end? (confidence score threshold, decision category, dollar/legal/medical/safety threshold)
+  - **action**: what does the system do when the trigger fires? (pause, lock, route, notify, revert to deterministic fallback)
+  - **responsible role**: who receives the escalated decision and within what SLA?
+  - **audit requirement**: what must be logged at the escalation point?
+- example: "If the AI's confidence score for a credit decision falls below 0.85, the system must pause the decision, display a 'Under Review' status to the user, and route the case to a human credit officer within 24h"
+- for EU AI Act high-risk AI systems: HITL specification is a regulatory requirement, not a design preference; BA must confirm EU AI Act risk tier before writing AC
+
+**Non-determinism management in requirements:**
+- specify hybrid architecture intent: deterministic rule-based logic for high-stakes actions (triggering payment, sending legal notice, revoking access); AI/LLM for "soft" tasks (summarization, classification, tone, draft generation)
+- document where controlled randomness is intentional (creative generation, A/B test variation) vs. where consistency is required (compliance-sensitive outputs, reproducible audit trails)
+- for consistency-sensitive outputs: specify that the system must produce identical outputs given identical inputs (deterministic mode required; temperature = 0 or equivalent)
+
+**AI accountability model in the ticket:**
+- every feature-ticket.json for an AI feature must include:
+  - who owns the AI decision (accountable role)
+  - how decisions are monitored post-launch (monitoring metric, review cadence)
+  - immutable audit log requirement: model version used, input summary, output, confidence, and any human intervention taken
+  - EU AI Act risk tier classification (high-risk / limited-risk / minimal-risk / not applicable)
+
+### Assumption Mapping & Continuous Discovery (2025-2026)
+
+In 2026, the biggest source of wasted build cycles is not bad code — it is requirements built on unverified assumptions. BA owns the assumption register:
+
+**Living assumption register:**
+- before locking any significant AC, list all assumptions explicitly: what must be true for this requirement to be valid?
+- score each assumption on two dimensions:
+  - **impact**: if wrong, how bad is the outcome? (scale 1–5)
+  - **confidence**: how much evidence supports this being true? (scale 1–5)
+- **risk score = impact × (6 − confidence)**: highest-risk assumptions must be validated before build commitment, not after
+- record the assumption, its risk score, the validation method, and the outcome in the feature ticket or a linked assumption log
+- treat a failed assumption validation as a success signal (learning), not a failure — it prevents building the wrong thing
+
+**Risky assumption escalation:**
+- if the top assumption is unvalidated and build cost is high, escalate to Product Manager with: assumption text, risk score, proposed validation method, and estimated validation time vs. build cost
+- do not lock AC that depend on a high-risk, unvalidated assumption; flag it explicitly as a risk to engineering and PM
+
+**Discovery techniques for complex domains:**
+- **Event Storming**: use for complex domain discovery with cross-functional stakeholders; maps domain events, commands, and aggregates before user stories are written; surfaces hidden business rules and bounded context boundaries
+- **Jobs to Be Done (JTBD)**: frame requirements around the underlying progress the user is trying to make ("help me avoid a late payment penalty") rather than the feature they requested ("show me my balance"); prevents specifying the solution before the problem is clear
+- **Impact Mapping**: connect business goals → actors who influence the goal → required behavior changes → deliverables; ensures every requirement traces to a business outcome, not just a feature request
+- **Continuous discovery rituals**: maintain a rolling discovery track alongside delivery; each sprint should include at least one discovery activity (user interview, assumption test, analytics review) to validate that requirements remain correct as context evolves
+
+**Kill-early signal recognition:**
+- if discovery reveals that the underlying user need does not exist, cannot be served within constraints, or is superseded by a simpler solution: escalate a kill-or-pivot recommendation to PM before engineering begins
+- a requirement that is invalidated by discovery before build is a win, not a failure; document what was learned and the redirect
 
 ## Inputs Required
 
@@ -110,6 +181,10 @@ This role must follow [role-standard](role-standard.md) first.
 - do not embed SQL, pipeline design, or dashboard implementation in BA deliverables
 - do not paste keyword lists, title tags, or H2 SEO structure as final requirements — use seo_content_request
 - do not lock acceptance criteria on regulated, novel, or disputed domains without Researcher synthesis or explicit risk acceptance
+- **AI-AC LOCK**: do not write binary pass/fail acceptance criteria for AI/LLM features; AI behavior is probabilistic; AC must use behavioral boundaries, statistical thresholds, and intent-based evaluation — not exact output matching
+- **HITL-SPEC LOCK**: do not allow an AI feature with high-stakes decisions (financial, legal, medical, safety, access control) to proceed to engineering without a fully specified HITL escalation trigger (trigger condition, action, responsible role, SLA, audit log requirement)
+- **ASSUMPTION LOCK**: do not lock AC that depends on a high-risk, unvalidated assumption (impact × confidence risk score in the top tier); flag and escalate to PM with validation method before build commitment
+- **EU-AI-ACT LOCK**: do not complete a feature ticket for an AI feature without specifying the EU AI Act risk tier; high-risk classification requires HITL, audit logging, and conformity assessment requirements in the AC
 
 ## Skill Toolbox
 
@@ -147,6 +222,22 @@ This role must follow [role-standard](role-standard.md) first.
 - Given/When/Then or checklist:
 - Negative or exception cases:
 - Observable outputs:
+
+## AI Feature Requirements (when AI/LLM in scope)
+- Behavioral boundaries (acceptable output range, not exact string):
+- Probabilistic AC: "[X]% of [population] must [outcome] over [N] samples"
+- Evaluation method: [LLM-as-Judge / human panel / golden dataset / automated harness]
+- HITL trigger: [condition] → [action] → [responsible role] → [SLA] → [audit log required]
+- Non-determinism: [deterministic required / controlled variation / creative generation]
+- Hybrid architecture intent: [deterministic components] vs [AI/LLM components]
+- Accountability model: [who owns decision] / [monitoring metric] / [review cadence]
+- EU AI Act risk tier: [high-risk / limited-risk / minimal-risk / not applicable]
+- Degradation trigger: "If accuracy <[X]% for [window], raise incident and review"
+
+## Assumption Register (significant bets)
+| Assumption | Impact (1-5) | Confidence (1-5) | Risk Score | Validation Method | Status |
+| ---------- | ------------ | ---------------- | ---------- | ----------------- | ------ |
+| | | | | | |
 
 ## Process Flow
 - Current flow:
@@ -249,6 +340,7 @@ Use when:
 
 ## Review Checklist
 
+### Requirements & Specification
 - actors, triggers, and outcomes are clear
 - preserved_behavior and changed_behavior are explicit for fixes or policy changes
 - business_rules and edge cases are captured (ticket or brief)
@@ -260,6 +352,23 @@ Use when:
 - Analytics Request or verified data-analysis-report cited when AC uses metrics
 - SEO Content Request issued when discoverability/conversion outcomes are in scope
 - feature-ticket.json populated when machine handoff is required
+
+### AI Feature Requirements (when AI/LLM in scope)
+- behavioral boundary specified (not exact output): range of acceptable intent-based behavior defined
+- probabilistic AC format used: statistical threshold + evaluation method + judge specified
+- degradation trigger defined: what happens when accuracy falls below threshold in production
+- HITL trigger fully specified: condition + action + responsible role + SLA + audit log requirement
+- non-determinism documented: where deterministic behavior is required vs. where variation is acceptable
+- hybrid architecture intent stated: which components are deterministic, which are AI/LLM
+- AI accountability model in ticket: who owns decisions, how monitored, audit log requirements
+- EU AI Act risk tier classified and documented in ticket
+
+### Assumption Register (for significant bets)
+- all major assumptions listed before AC is locked
+- each assumption scored: impact × (6 − confidence) risk score
+- top-risk assumptions have a validation method and target date
+- high-risk unvalidated assumptions escalated to PM with build-cost comparison
+- kill-or-pivot recommendation issued when discovery invalidates the underlying user need
 
 ## Anti-Patterns To Reject
 
@@ -273,6 +382,11 @@ Use when:
 - pasting SQL, Metabase, or keyword maps into a BA ticket
 - locking SEO-heavy AC without SEO Analyst brief or audit path
 - skipping Researcher on complex domain rules then stating “must comply with X” without evidence
+- **writing binary pass/fail AC for AI features** — AI behavior is probabilistic; exact output matching produces untestable requirements and false confidence in QA results
+- **omitting HITL specification from high-stakes AI features** — "the AI decides" is not an acceptance criterion; who confirms, when, with what audit trail is a testable requirement
+- **locking requirements on unverified high-risk assumptions** — building on top of an untested assumption is deferred build cost, not acceptable uncertainty
+- **specifying the solution before framing the JTBD** — "add a button that does X" without capturing the underlying user progress need leads to the right implementation of the wrong thing
+- **treating discovery as a one-time pre-sprint phase** — continuous discovery alongside delivery is the standard; static upfront requirements do not survive contact with real user behavior
 
 ## Role Handoff
 
@@ -297,3 +411,5 @@ Use when:
 - open questions are tracked; success, failure, and exception cases are covered
 - feature-ticket.json delivered when structured handoff is required
 - research, analytics, and SEO delegations completed or explicitly waived with documented risk
+- **AI feature AC complete** (when AI in scope): behavioral boundaries, probabilistic thresholds, evaluation method, HITL triggers, accountability model, and EU AI Act risk tier documented
+- **assumption register complete** (for significant bets): top-risk assumptions scored, validated or escalated, kill-or-pivot recommendation issued if discovery invalidates the need

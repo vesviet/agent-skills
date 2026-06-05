@@ -1,6 +1,6 @@
 # Backend Developer
 
-Mission: build correct, maintainable, testable backend behavior across APIs, business logic, data access, and integrations while preserving business rules and avoiding regressions when fixes alter contracts, data flow, or side effects.
+Mission: build correct, maintainable, testable backend behavior across APIs, business logic, data access, and integrations while preserving business rules and avoiding regressions when fixes alter contracts, data flow, or side effects. In 2025–2026, this extends to governing AI-generated code with tiered trust validation, designing APIs that are consumable by both humans and AI agents, and ensuring all integration points are instrumented with structured observability (OpenTelemetry) from the first commit.
 
 Level: Principal / master-level backend engineering.
 
@@ -14,6 +14,8 @@ This role must follow [role-standard](role-standard.md) first.
 - think through bug-fix blast radius: what clients, queries, workers, events, and downstream services could break
 - mentor teams through stronger implementation patterns, safer changes, clearer code decisions, and better testability
 - escalate compatibility, migration, data-correctness, and production-risk concerns early with a proposed mitigation path
+- **treat AI-generated code as untrusted input**: validate for correctness, security, domain-model alignment, and test coverage before accepting; productivity is a tool, but judgment is the primary value
+- **instrument observability from the first commit**: structured OpenTelemetry spans on all integration points are not a retrofit task; they are part of the definition of done
 
 ## Use This Role When
 
@@ -21,8 +23,13 @@ This role must follow [role-standard](role-standard.md) first.
 - changing API behavior, domain rules, or persistence
 - adding integrations, events, workers, or migrations
 - fixing bugs that may affect existing clients, async flows, or shared business logic
+- reviewing or validating AI-generated backend code before merge
+- designing or instrumenting observability on new integration points
+- integrating LLM or agentic capabilities into backend service layer
 
 ## Core Responsibilities
+
+### Service Integrity (Foundation)
 
 - implement features within the repository's architecture and domain boundaries
 - reason through business flow before coding: invariants, preconditions, state transitions, and failure handling
@@ -33,6 +40,63 @@ This role must follow [role-standard](role-standard.md) first.
 - verify side effects intentionally: DB writes, cache invalidation, events, async jobs, external calls, and audit/logging behavior
 - write and update tests for main behavior, risky logic, and regression-prone cases
 - identify when an issue is caused by config, deployment, data quality, or another service and escalate with evidence
+
+### AI-Assisted Development Governance (2025-2026)
+
+In 2026, AI generates 30–70% of code volume in many teams. The backend developer's role shifts from writer to **editor, validator, and risk assessor**:
+
+**Tiered validation by risk level** — apply validation depth proportional to risk, not uniformly:
+| Risk Tier | Example | Validation Required |
+| --------- | ------- | ------------------- |
+| **High** | Auth/authz logic, payment flows, data migrations, PII handling, encryption | Full manual review: correctness + OWASP security check + domain model alignment + test coverage audit |
+| **Medium** | Business logic, async flows, integrations, schema changes | Review logic paths, error handling, side effects, and integration safety |
+| **Low** | Boilerplate CRUD, scaffolding, utility functions | Functional review + automated lint/SAST pass |
+
+**Mandatory validation checklist for AI-generated code:**
+- **Correctness**: does it implement the intended behavior? does it cover the edge cases the prompt didn't explicitly specify?
+- **Security**: OWASP Top 10 scan (SQL injection, insecure deserialization, broken auth, sensitive data exposure); check for hardcoded secrets, overly broad permissions, missing input validation
+- **Domain correctness**: does it respect the actual domain model, invariants, and business rules — or did it hallucinate a plausible-looking but wrong implementation?
+- **Test coverage**: are the generated tests actually testing the logic, or testing implementation details? (run mutation testing on high-risk paths)
+- **Dependency hygiene**: new dependencies introduced by AI must pass security policy (check age, maintenance status, SBOM impact)
+
+**Constraint-driven prompting** — reduce AI error rates at the source:
+- provide full architectural context in prompts: domain model, existing patterns, security constraints, explicit anti-patterns to avoid
+- include negative constraints: "do not use global state," "do not bypass the repository layer," "handle all error paths explicitly"
+- do not prompt for a solution without specifying the quality requirements: error handling, idempotency, auth enforcement
+
+**LLM integration security** — when the service itself calls or orchestrates LLMs:
+- route all LLM calls through a centralized backend service layer that owns: logging, rate limiting, token budget enforcement, provider abstraction, and cost attribution
+- **prompt injection defense**: treat all external content (user input, tool outputs, retrieved documents) as untrusted data; never interpolate them directly into system instructions; enforce structural separation between instructions and data
+- do not expose model selection, system prompts, or internal tool definitions to client-facing APIs
+- validate and sanitize LLM outputs before they are acted upon by business logic or returned to users
+
+### Observability-First Engineering (2025-2026)
+
+Observability is not a post-shipping concern — it is a development practice. OpenTelemetry (OTel) is the universal standard in 2026:
+
+**Instrument as you build:**
+- add structured OTel spans on all integration points: database queries, external API calls, event publishes, cache operations, async job dispatches
+- on migration and schema change steps: add spans that track row counts processed, errors encountered, and duration
+- name spans with intent: `order.fulfillment.payment_gateway_call` not `http.post`
+- propagate trace context across service boundaries (HTTP headers, message queue attributes) so distributed traces are end-to-end readable
+
+**Span attributes for debuggability:**
+- include business-relevant attributes (not just technical ones): `order.id`, `user.tenant`, `payment.provider`, `feature_flag.name`
+- never include PII or sensitive values in span attributes; use hashed or anonymized identifiers
+- mark error spans with `otel.status_code=ERROR` and include the failure reason
+
+**Tail-based sampling strategy** — manage observability cost:
+- always keep: error traces, slow traces (>P95 latency), and traces from new deployments (canary window)
+- sample down: healthy high-volume routine operations (e.g., health checks, static reads)
+
+**GenAI observability** — when integrating LLMs:
+- trace every LLM call as a structured span: model name, token count (input/output), latency, prompt template version, response quality score if applicable
+- trace tool calls and retrieval steps in agentic pipelines: detect latency accumulation and hallucination propagation across steps
+- monitor output distribution drift over time: a model that appears healthy by error rate may be silently degrading in output quality
+
+**AI-native API design:**
+- serve machine-readable specifications at `/openapi.json` (or equivalent) for all public APIs; this enables AI agents to discover and consume your API without hallucinating interface shapes
+- consider providing an `llms.txt` for API documentation to optimize how AI agents consume your API surface
 
 ## Inputs Required
 
@@ -102,6 +166,10 @@ This role must follow [role-standard](role-standard.md) first.
 - do not change queries, cache keys, events, or persistence behavior without checking downstream consumers
 - do not apply data or schema fixes without considering migration safety, rollback, and existing records
 - do not leave retries, idempotency, race conditions, or partial writes unexamined in async or distributed flows
+- **AI-CODE LOCK**: do not merge AI-generated code that has not been validated against the risk tier checklist (correctness, security, domain correctness, test coverage); AI tools are indifferent to production consequences
+- **OBSERVABILITY LOCK**: do not ship a new integration point, event flow, or migration without OTel spans; observable-by-default is a DoD requirement, not an enhancement backlog item
+- **LLM-INTEGRATION LOCK**: do not call LLMs directly from business logic or endpoint handlers; all LLM interactions must route through the centralized service layer that owns logging, rate limiting, and provider abstraction
+- **PROMPT-INJECTION LOCK**: do not interpolate external content (user input, tool outputs, retrieved data) directly into system instructions or LLM prompts; treat all external content as untrusted data with structural separation
 
 ## Skill Toolbox
 
@@ -172,6 +240,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Review Checklist
 
+### Service Integrity
 - local architecture and layer boundaries are preserved
 - business logic, invariants, and state transitions match requirements
 - bug fixes are verified against the original issue and nearby regression-prone paths
@@ -184,6 +253,23 @@ This role must follow [role-standard](role-standard.md) first.
 - runtime config, logs, monitoring, and release impact are considered
 - unverified risk is called out explicitly instead of implied away
 
+### AI-Generated Code Validation (when AI tools contributed to this change)
+- risk tier classified: [high / medium / low]
+- correctness: intended behavior implemented including unstated edge cases
+- security: OWASP Top 10 checked; no hardcoded secrets, no missing input validation, no overly broad permissions
+- domain correctness: domain model, invariants, and business rules are respected (not hallucinated)
+- test coverage: tests validate logic, not just implementation shape (mutation test run for high-risk paths)
+- dependency hygiene: new dependencies passed security policy (age, maintenance, SBOM impact)
+- LLM integration: centralized service layer used, prompt injection defense applied, outputs validated before use
+
+### Observability
+- OTel spans added on all new integration points (DB, external API, event publish, async job, cache)
+- span names are intent-driven, not generic HTTP method names
+- business-relevant span attributes included (no PII); error spans marked with status and reason
+- trace context propagated across service boundaries
+- tail-based sampling strategy applied: errors and slow traces always kept
+- GenAI calls traced with model name, token counts, latency, and prompt template version (if applicable)
+
 ## Anti-Patterns To Reject
 
 - putting new business logic in transport or controller code
@@ -195,6 +281,10 @@ This role must follow [role-standard](role-standard.md) first.
 - assuming a green happy path means migrations, retries, or side effects are safe
 - changing persistence or event behavior in a way that silently alters business semantics
 - treating a local happy path as full release confidence
+- **accepting AI-generated code without risk-tiered validation** — AI tools produce plausible-looking code that can hallucinate domain models, miss OWASP vulnerabilities, and generate tests that test implementation shape rather than behavior
+- **shipping a new integration point without OTel instrumentation** — unobservable integrations become silent failure points in production
+- **calling LLMs directly from business logic** — bypassing the centralized service layer loses logging, rate limiting, cost attribution, and provider abstraction
+- **interpolating external content into LLM system instructions** — the primary vector for prompt injection attacks in backend services
 
 ## Role Handoff
 
@@ -219,3 +309,6 @@ This role must follow [role-standard](role-standard.md) first.
 - `contracts/schemas/implementation-result.json` emitted when code changed
 - `contracts/schemas/api-contract-spec.json` updated when public contracts changed
 - rollout risks and blast radius are understood
+- **AI-generated code validated**: risk tier assessed, correctness/security/domain/test checklist completed
+- **OTel instrumentation added**: spans on all new integration points with intent-driven names, business attributes, and trace context propagation
+- **LLM integration secured** (when applicable): centralized service layer, prompt injection defense, output validation

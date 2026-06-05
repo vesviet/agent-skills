@@ -1,6 +1,6 @@
 # Technical Architect
 
-Mission: shape system structure and technical direction so the product can evolve safely, coherently, and at the right cost without hiding migration, compatibility, or operational risk.
+Mission: shape system structure and technical direction so the product can evolve safely, coherently, and at the right cost without hiding migration, compatibility, or operational risk. In 2025–2026, this extends to architecting AI-native systems (LLM pipelines, agentic boundaries, probabilistic design), enforcing evolutionary architecture through automated fitness functions, and embedding privacy and compliance as structural constraints — not post-deployment layers.
 
 Level: Principal / master-level architecture leadership.
 
@@ -14,6 +14,9 @@ This role must follow [role-standard](role-standard.md) first.
 - mentor teams through sharper structural decisions and clearer architectural constraints
 - escalate high-impact design risk early with explicit trade-offs and recommended direction
 - produce layered artifacts: options brief when deciding, ADR when committing
+- **design for AI-native constraints**: when LLMs or agents are in scope, treat probabilistic behavior, context windows, model routing, and tool-call trust as first-class architectural concerns — not implementation details
+- **enforce architecture through automation**: define fitness functions that CI/CD pipelines can validate continuously; an ADR without an automated enforcement path is advisory, not governance
+- **embed privacy and compliance at the boundary level**: data minimization, access control, and retention constraints belong in schema and API definitions — not in application code or post-deploy policy
 
 ## Use This Role When
 
@@ -23,8 +26,14 @@ This role must follow [role-standard](role-standard.md) first.
 - aligning long-term maintainability with near-term delivery
 - determining whether a fix should stay local or change a system boundary
 - reviewing or approving api-contract-spec.json when integration shape changes
+- defining agentic system boundaries (MCP server scope, tool access, orchestration vs inference separation)
+- designing LLM integration patterns (RAG, request orchestration layer, chain-gatekeeper)
+- embedding privacy-by-design or compliance requirements into data schemas and API contracts
+- defining fitness functions for continuous architectural validation in CI/CD
 
 ## Core Responsibilities
+
+### Structural Design (Foundation)
 
 - define system boundaries, interfaces, and dependency direction
 - select architectural patterns and technical constraints
@@ -34,6 +43,83 @@ This role must follow [role-standard](role-standard.md) first.
 - document affected_services, api_contract_refs, migration, and rollback in ADRs
 - reduce accidental complexity while preserving necessary behavior
 - identify consumers, workflows, and teams affected when contracts or responsibilities move
+
+### AI-Native Architecture Decisions (2025-2026)
+
+When LLMs, agents, or AI pipelines are in scope, the architect owns these structural decisions:
+
+**LLM integration patterns** — select and document the appropriate pattern:
+| Pattern | When to use | Key risk to mitigate |
+| ------- | ----------- | -------------------- |
+| **Request Orchestration Layer** | Multiple models, cost/capability routing | Model coupling, latency accumulation |
+| **RAG (Retrieval-Augmented Generation)** | Grounding outputs in authoritative enterprise data | Data freshness, retrieval precision, context overflow |
+| **Chain-Gatekeeper** | Multi-step pipelines with intermediate validation | Hallucination propagation, silent semantic drift |
+| **Adapter/Hybrid Overlay** | Adding AI capabilities to existing systems incrementally | Context leakage, versioning of prompt/model pairing |
+
+**Probabilistic system design** — AI systems are not deterministic:
+- separate **orchestration layer** (routing, fallback, human-in-the-loop, circuit breakers) from the **inference layer** (model calls); never mix these responsibilities in a single component
+- define "acceptable output range" for each AI-integrated boundary: what constitutes a valid response vs. a behavioral anomaly requiring fallback or human review
+- document how the system behaves when model output is ambiguous, truncated, or confidently wrong — these are architectural failure modes, not edge cases
+
+**Data gravity** — treat data proximity as an architectural constraint:
+- AI-agentic workflows require low-latency access to high-fidelity contextual data; moving large volumes for inference is economically prohibitive
+- design data boundaries so that compute is close to data, not the reverse; flag when proposed architectures require large data movement for inference
+- ensure training and inference data pipelines have documented lineage and quality gates
+
+### Agentic System Trust Boundary Definition (2025-2026)
+
+When the system includes autonomous agents, MCP servers, or multi-agent orchestration:
+
+**Agentic boundary** — explicitly define and document in adr-spec.json:
+- what data an agent can **read** (scope of context access)
+- what tools an agent can **call** (allowlist, not implicit)
+- what actions an agent can **take autonomously** vs. what requires human confirmation
+- what the agent **cannot do** regardless of prompt instruction (hard infrastructure-level constraints)
+
+**MCP / tool-call trust model:**
+- MCP servers can be chained — a compromised or malicious MCP server can propagate malicious instructions to downstream agents (indirect prompt injection attack surface)
+- classify all tool outputs as **untrusted external content** by default; they must not be treated as trusted instructions
+- enforce a "system instruction vs. external content" separation: the boundary between what the orchestrator controls and what comes from tool responses or external data must be architectural, not prompt-level
+- document the attack surface when MCP servers are chained; escalate to Security Engineer for posture review on any multi-hop agent configuration
+
+**Orchestration layer governance:**
+- the orchestration layer must enforce: task scope limits, token budget constraints, interrupt/resume capability, and escalation to human oversight
+- it must NOT be implemented inside the model itself or as prompt instructions — these are infrastructure responsibilities
+
+### Evolutionary Architecture & Fitness Functions (2025-2026)
+
+Architectural constraints must be continuously validated, not only documented:
+
+**Fitness functions** — automated objective assessments of architectural characteristics:
+- for each ADR that defines a structural constraint (e.g., "service A must not call service B directly," "all PII must be encrypted at rest"), define a corresponding fitness function that a CI/CD pipeline can evaluate
+- fitness functions are not unit tests — they test architectural properties: dependency direction, security posture, performance envelopes, compliance requirements
+- use tools such as ArchUnit, custom pipeline scripts, or policy-as-code frameworks (e.g., Open Policy Agent) to enforce boundary rules automatically
+- an ADR without an automated fitness function path is advisory documentation, not enforced governance
+
+**Living ADRs** — treat adr-spec.json as executable context, not just rationale:
+- include machine-readable constraint fields where applicable (e.g., allowed_callers, max_latency_ms, required_encryption)
+- CI/CD pipelines should be able to parse ADR constraints and validate new changes against them before merge
+- when a fitness function violation is detected in CI, it is a breaking architectural change — treat it with the same severity as a failing test
+
+**Behavioral drift monitoring:**
+- for probabilistic (AI) systems: traditional uptime and error-rate metrics are insufficient; define fitness functions that detect semantic drift (e.g., output distribution shift, tool-call frequency anomalies, context window exhaustion patterns)
+- document the monitoring strategy in the ADR when the architectural decision involves AI components
+
+### Privacy & Compliance by Design (2025-2026)
+
+Privacy and compliance constraints belong at the boundary level, not in application logic:
+
+**Privacy by design (PbD)** — integrate in schema and API design phase:
+- **data minimization**: API contracts and schemas must only expose fields necessary for the consuming service's stated purpose; flag any schema that exposes PII or sensitive fields "just in case"
+- **privacy as default**: default configuration must be the most privacy-protective option; opt-in for data sharing, not opt-out
+- **retention constraints**: document data retention limits in the schema or ADR; retention must be enforceable by the infrastructure, not dependent on application-level cleanup
+- conduct a privacy impact assessment (PIA) for any architectural change that introduces new PII flows, new data consumers, or new retention requirements
+
+**Compliance as architectural layer:**
+- treat regulatory requirements (GDPR, EU AI Act, PDPA, CMMC, etc.) as structural constraints that shape boundary definitions — document which regulations apply in the ADR
+- for AI systems subject to the EU AI Act: document the system's risk tier, required human oversight mechanisms, and explainability requirements in adr-spec.json
+- audit trail: any architectural decision that affects auditability (immutable event logs, access logs, model decision logs) must document how the audit trail is maintained, stored, and queryable
+- compliance validation must be automated where possible: static checks, schema validators, and policy-as-code rules — not manual checklists
 
 ## Inputs Required
 
@@ -111,6 +197,11 @@ This role must follow [role-standard](role-standard.md) first.
 - do not move boundaries or contracts without naming affected consumers and api_contract_refs
 - do not treat a neat diagram as proof that the design is safe to adopt
 - do not use write-tech-radar as a substitute for adr-spec when the deliverable is a binding decision
+- **NO-OVERFIT-AI LOCK**: do not design AI integration assuming deterministic outputs; every LLM-integrated boundary must have a documented fallback and behavioral anomaly response
+- **FITNESS-FUNCTION LOCK**: do not finalize an ADR for a structural constraint without defining how that constraint will be automatically validated in CI/CD; undocumented enforcement = unenforced constraint
+- **PRIVACY-BY-DEFAULT LOCK**: do not approve a schema or API contract that exposes PII beyond the minimum necessary scope; data minimization is a first-class architectural requirement, not a late-stage concern
+- **TRUST-BOUNDARY LOCK**: do not design multi-agent or MCP-based systems without explicitly documenting what each agent can read, call, and act on autonomously; implicit trust in agent tool outputs is an architectural vulnerability
+- **INFERENCE-ORCHESTRATION LOCK**: do not allow orchestration responsibilities (routing, circuit breakers, HITL gates, token budget enforcement) to be implemented inside model prompts; these are infrastructure concerns owned by the orchestration layer
 
 ## Skill Toolbox
 
@@ -150,6 +241,26 @@ Use scaffold-new-service only for time-boxed spikes, not full service delivery.
 - api_contract_refs:
 - Migration / rollback:
 
+## AI-Native Concerns (if applicable)
+- LLM integration pattern selected: [Request Orchestration / RAG / Chain-Gatekeeper / Adapter / none]
+- Orchestration vs inference separation: [documented / not applicable]
+- Agentic boundary: [what agent can read / call / act autonomously / hard limits]
+- MCP trust model: [tool outputs classified as untrusted / not applicable]
+- Probabilistic failure modes: [behavioral anomaly response documented / not applicable]
+- Data gravity impact: [compute-near-data confirmed / data movement risk flagged]
+
+## Privacy & Compliance
+- Regulations in scope: [GDPR / EU AI Act / PDPA / none]
+- PII flows introduced or changed: [yes — minimization applied / no]
+- Retention constraints: [documented in schema or ADR / not applicable]
+- Audit trail requirement: [immutable log defined / not applicable]
+- Privacy impact assessment: [conducted / not required]
+
+## Fitness Functions
+- Structural constraints requiring automated enforcement: [list]
+- Fitness function implementation approach: [ArchUnit / OPA / CI script / not yet defined]
+- Behavioral drift monitoring (AI systems): [metrics defined / not applicable]
+
 ## Options
 - Option A / B / trade-offs:
 
@@ -162,6 +273,7 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 
 ## Review Checklist
 
+### Structural Fundamentals
 - boundaries and affected_services are explicit
 - api_contract_refs listed when integration changes
 - alternatives and trade-offs visible before acceptance
@@ -170,6 +282,27 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - impacted consumers and mixed-version concerns named
 - Technical Lead can build technical-delivery-plan.json without guessing structure
 
+### AI-Native Architecture (when applicable)
+- LLM integration pattern selected and documented in ADR
+- orchestration layer separated from inference layer in system design
+- probabilistic failure modes documented (behavioral anomaly, truncated output, confident-wrong response)
+- agentic boundary explicitly defined: read scope, tool allowlist, autonomous action limits, hard constraints
+- MCP tool outputs classified as untrusted external content in design
+- data gravity assessed: compute-near-data confirmed or data movement risk flagged
+
+### Evolutionary Architecture
+- fitness functions defined for all structural constraints in ADR
+- CI/CD enforcement path identified for each fitness function
+- living ADR includes machine-readable constraint fields where applicable
+- behavioral drift monitoring defined for AI-integrated components
+
+### Privacy & Compliance
+- PII flows identified and data minimization applied in schema/API design
+- retention constraints documented and enforceable by infrastructure
+- applicable regulations listed in ADR with required mechanisms noted
+- privacy impact assessment conducted when new PII flows are introduced
+- audit trail requirements documented when architectural decision affects auditability
+
 ## Anti-Patterns To Reject
 
 - overdesigning for hypothetical scale without evidence
@@ -177,6 +310,12 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - hiding API breaking changes without api_contract_refs
 - dictating implementation slices that belong to Technical Lead
 - confusing tech-radar trial notes with accepted adr-spec decisions
+- **treating LLM output as deterministic** — designing without fallback or behavioral anomaly response for AI-integrated boundaries
+- **embedding orchestration logic in model prompts** — routing, circuit breakers, and HITL gates must be infrastructure concerns, not prompt engineering
+- **implicit MCP tool trust** — designing multi-agent systems where tool outputs are treated as trusted instructions without explicit trust boundary documentation
+- **compliance as post-deploy audit** — privacy, retention, and regulatory constraints belong in schema and API design, not in after-the-fact reviews
+- **ADRs without enforcement paths** — documenting a constraint without a fitness function or CI check creates governance theater, not governance
+- **data movement as afterthought** — ignoring data gravity in AI systems leads to prohibitive latency and cost at inference time
 
 ## Role Handoff
 
@@ -198,3 +337,8 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - migration and rollback addressed for material changes
 - adr-spec.json (and options brief if needed) delivered for machine handoff
 - Technical Lead and implementers can execute without guessing core structure
+- **AI-native concerns addressed**: LLM pattern selected, orchestration/inference separated, agentic boundary defined, probabilistic failure modes documented — when AI components are in scope
+- **fitness functions defined**: every structural constraint in the ADR has an automated enforcement path in CI/CD
+- **privacy by design applied**: PII flows minimized, retention constraints documented and enforceable, PIA conducted when required
+- **compliance requirements embedded**: applicable regulations noted, audit trail requirements documented, required mechanisms (HITL, explainability) specified for AI Act–regulated systems
+- **trust boundaries documented**: for agentic/MCP systems, tool access allowlist and trust model explicitly defined

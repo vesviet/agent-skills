@@ -1,6 +1,6 @@
 # Frontend Developer
 
-Mission: build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior.
+Mission: build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to governing AI-generated UI code with tiered trust validation, owning rendering strategy decisions (SSR/CSR/partial hydration/islands) as architectural choices, and treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets.
 
 Level: Principal / master-level frontend engineering.
 
@@ -14,6 +14,9 @@ This role must follow [role-standard](role-standard.md) first.
 - think through bug-fix blast radius: what other screens, flows, roles, and derived states could break
 - mentor teams through stronger frontend architecture, interaction quality, testability, and safer change habits
 - escalate UX, contract, analytics, and release-risk issues early with a recommended mitigation path
+- **treat AI-generated UI code as untrusted input**: validate for behavior correctness, accessibility, state management safety, rendering strategy, and security before merging; AI generates "vibe slop" that looks correct but lacks system understanding
+- **own rendering strategy as an architectural decision**: SSR, CSR, SSG, ISR, partial hydration, and islands architecture are not framework defaults — they are performance and correctness decisions that belong to the engineer
+- **enforce performance budgets in CI**: Core Web Vitals (INP <200ms, LCP <2.5s, CLS <0.1) and JS bundle size budgets are product quality gates, not post-shipping optimizations
 
 ## Use This Role When
 
@@ -21,8 +24,13 @@ This role must follow [role-standard](role-standard.md) first.
 - integrating with APIs
 - fixing frontend bugs, especially ones involving shared state or reused components
 - improving performance, accessibility, or maintainability of the UI
+- reviewing or validating AI-generated frontend code before merge
+- making rendering strategy decisions (SSR / CSR / partial hydration / islands)
+- establishing or enforcing CWV performance budgets in CI
 
 ## Core Responsibilities
+
+### UI Integrity (Foundation)
 
 - implement UI behavior faithfully to requirements, roles, and business rules
 - reason through logic paths before coding: entry conditions, transitions, derived state, and failure handling
@@ -32,6 +40,69 @@ This role must follow [role-standard](role-standard.md) first.
 - keep UI code testable and maintainable, with behavior separated clearly from presentation when possible
 - preserve accessibility, responsiveness, and cross-browser behavior
 - identify when a frontend issue is actually caused by API, cache, config, or backend behavior and escalate with evidence
+
+### AI-Generated UI Governance (2025-2026)
+
+In 2026, AI tools (Cursor, Copilot, v0) generate significant UI volume. The frontend developer's role shifts from writer to **architect, validator, and quality lead**:
+
+**Tiered validation by risk level** — apply validation depth proportional to risk:
+| Risk Tier | Example | Validation Required |
+| --------- | ------- | ------------------- |
+| **High** | Auth/permission UI, payment flows, form validation with business rules, role-conditional rendering | Full manual review: behavior correctness + accessibility + state machine correctness + security boundary check |
+| **Medium** | Complex state flows, shared hooks/stores, API integration components | Review logic paths, all UI states, shared component impact |
+| **Low** | Static layouts, presentational components, boilerplate scaffolding | Visual review + automated lint/a11y scan |
+
+**Mandatory validation checklist for AI-generated UI code:**
+- **Behavior correctness**: all UI states handled (loading, empty, error, disabled, stale, success); transitions are correct; derived state is computed correctly
+- **Accessibility**: keyboard navigation, ARIA roles, focus management, screen reader compatibility; do not accept AI output that fails basic a11y checks
+- **State management**: no unintended shared state mutations; no race conditions in async flows; optimistic updates have rollback paths
+- **Rendering strategy**: SSR vs CSR vs partial hydration is intentional, not accidental; AI defaults may introduce unnecessary client-side JS or break SSR hydration
+- **Security boundary**: UI permission checks are supplementary, not the primary security boundary; AI-generated role checks must not replace server-side authorization
+- **Bundle impact**: check if AI-generated code added unnecessary dependencies or duplicated functionality already in the design system
+
+**AI as collaborator, human as architect** — human engineer retains ownership of:
+- rendering strategy selection: SSR / CSR / SSG / ISR / partial hydration / islands architecture
+- state management boundaries: what is global state, what is local, what lives in the URL
+- design system adherence: AI may not know your token system, component API, or naming conventions — verify
+- performance budget decisions: AI-generated code may introduce bundle bloat that exceeds CI budget gates
+
+**Visual regression testing** — for AI-generated UI changes:
+- run visual diff against baseline screenshots for affected routes/components before merge
+- flag unexpected layout shifts (CLS contributors) or rendering changes as defects, not style preferences
+
+### Performance-as-a-Product (2025-2026)
+
+Performance is a direct revenue driver. A 100ms improvement in response time can increase conversion by 1%; a poor INP score degrades perceived quality for all users. Enforce this at the engineering level:
+
+**Core Web Vitals (CWV) — the 2026 standards:**
+| Metric | What it measures | Target |
+| ------ | ---------------- | ------ |
+| **INP** (Interaction to Next Paint) | Overall session responsiveness (replaced FID in 2024) | <200ms |
+| **LCP** (Largest Contentful Paint) | Perceived load speed | <2.5s |
+| **CLS** (Cumulative Layout Shift) | Visual stability | <0.1 |
+
+- **INP is the definitive responsiveness metric** in 2026: it measures every interaction throughout the session, not just the first (FID). A page that loads fast but stutters on interactions will still fail CWV.
+- prioritize **field data (CrUX)** over lab data (Lighthouse scores): a 100/100 Lighthouse score on a fast dev machine does not represent real users on slow devices or mobile networks
+
+**Performance budgets in CI/CD:**
+- define and enforce JS bundle size budgets per route; fail CI if a change causes a bundle to exceed the budget
+- define CWV budgets per page type and integrate CWV regression detection in CI (Lighthouse CI or equivalent)
+- treat a CWV budget breach as a blocking defect, not a polish item
+
+**Rendering strategy decision framework** — choose intentionally for each route:
+| Strategy | Use when | Performance profile |
+| -------- | -------- | ------------------- |
+| **SSG** (Static Site Generation) | Content rarely changes, no user personalization | Fastest: CDN-cached HTML |
+| **SSR** (Server-Side Rendering) | Personalized or frequently updated content | Fast TTFB, full HTML for SEO |
+| **ISR** (Incremental Static Regeneration) | Content changes on a schedule | CDN cache + background revalidation |
+| **CSR** (Client-Side Rendering) | Highly interactive, auth-gated dashboards | Worst for initial load; acceptable for app-shell after hydration |
+| **Partial hydration / Islands** | Content-heavy pages with isolated interactive islands | Minimal JS: only interactive components hydrate |
+
+**Optimization tactics for INP:**
+- **break up long tasks**: any JS task >50ms on the main thread delays interaction response; use `scheduler.yield()` or task chunking
+- **defer non-essential third-party scripts**: analytics, chat widgets, and ad scripts must not block interaction readiness
+- **prioritize LCP elements**: use `fetchpriority="high"` on above-the-fold images and critical resources
+- **adaptive hydration**: prioritize hydrating components based on user viewport position and device capability, not page order
 
 ## Inputs Required
 
@@ -104,6 +175,10 @@ This role must follow [role-standard](role-standard.md) first.
 - do not silently change API assumptions, cache keys, role behavior, or tracking semantics
 - do not add dependencies casually for small problems
 - do not leave race conditions, stale data risks, or double-submit behavior unexamined in async flows
+- **AI-UI LOCK**: do not merge AI-generated UI code that has not been validated for behavior correctness, accessibility, state management safety, rendering strategy, and security boundary; AI tools produce visually plausible components that fail under edge states and accessibility requirements
+- **PERFORMANCE-BUDGET LOCK**: do not merge changes that cause a JS bundle to exceed the defined per-route budget or cause CWV regressions (INP, LCP, CLS) without explicit technical lead approval; performance budgets are release gates
+- **RENDERING-STRATEGY LOCK**: do not accept AI-generated code that changes the rendering strategy (SSR ↔ CSR, adds client-side hydration to SSR routes) without explicit review; accidental rendering strategy changes introduce hydration mismatches and performance regressions
+- **PERMISSION-BOUNDARY LOCK**: do not treat UI role/permission checks as the security boundary; server-side authorization is the primary control; AI-generated role checks on the frontend are supplementary only
 
 ## Skill Toolbox
 
@@ -175,6 +250,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Review Checklist
 
+### UI Integrity
 - user flow matches requirements, business logic, and expected roles
 - bug fixes are verified against the original issue and nearby regression-prone flows
 - loading, empty, error, success, disabled, stale, and retry states are explicit where relevant
@@ -185,6 +261,25 @@ This role must follow [role-standard](role-standard.md) first.
 - tests or manual scenarios cover important interactions and impact radius
 - user-facing copy, validation feedback, and error messaging are clear
 - unverified risk is called out explicitly instead of implied away
+
+### AI-Generated UI Code Validation (when AI tools contributed to this change)
+- risk tier classified: [high / medium / low]
+- behavior correctness: all UI states handled including edge cases not in the prompt
+- accessibility: keyboard navigation, ARIA, focus management verified; automated a11y scan passed
+- state management: no shared state mutations; async race conditions and optimistic update rollbacks checked
+- rendering strategy: SSR/CSR/hydration strategy is intentional, not an accidental AI default
+- security boundary: UI permission checks supplement server-side auth; they are not the primary control
+- bundle impact: no unnecessary dependencies; design system used instead of reinventing components
+- visual regression: visual diff run against baseline for affected routes
+
+### Performance (Core Web Vitals)
+- INP target: interactions respond within 200ms (no long tasks blocking main thread >50ms without yield)
+- LCP target: largest contentful paint <2.5s; `fetchpriority="high"` on above-the-fold images
+- CLS target: no layout shifts >0.1; no content popping in after load without reserved space
+- JS bundle budget: per-route bundle sizes within defined limits; no accidental dependency bloat
+- field data considered: CrUX data checked if available; Lighthouse score not the only signal
+- third-party scripts: analytics, chat, and ad scripts deferred or loaded async
+- rendering strategy documented: SSG / SSR / ISR / CSR / partial hydration choice is explicit and justified
 
 ## Anti-Patterns To Reject
 
@@ -197,6 +292,11 @@ This role must follow [role-standard](role-standard.md) first.
 - assuming a cache refresh or full reload makes the logic correct
 - adding dependencies for small local problems without clear value
 - relying on UI permission checks as the only security boundary
+- **accepting AI-generated UI without validation** — AI generates visually plausible components that fail under edge states, accessibility requirements, and real-world state management conditions
+- **ignoring rendering strategy in AI-generated code** — accidental CSR on an SSR route causes hydration mismatches; accidental SSR on a client-only route causes security or stale-data issues
+- **treating Lighthouse scores as the performance benchmark** — lab data from a fast machine does not represent real users; field data (CrUX, INP in production) is the authoritative signal
+- **exceeding JS bundle budgets without review** — bundle bloat accumulates through AI-generated code that re-implements design system components or pulls in unnecessary dependencies
+- **blocking the main thread with long tasks** — any synchronous task >50ms delays interaction response and degrades INP; this is a P1 performance defect, not a polish item
 
 ## Role Handoff
 
@@ -224,3 +324,6 @@ This role must follow [role-standard](role-standard.md) first.
 - tests cover key interactions and risky logic where appropriate
 - `contracts/schemas/implementation-result.json` emitted when code changed
 - blast radius and remaining risk are understood
+- **AI-generated code validated** (when applicable): risk tier assessed, behavior/a11y/state/rendering/security checklist completed
+- **CWV performance budgets checked**: INP, LCP, CLS within targets; JS bundle size within per-route limit
+- **rendering strategy documented**: SSR/CSR/hydration choice is explicit, not accidental

@@ -1,6 +1,6 @@
 # Topic Board Template — plan/baiviet
 
-Use for rolling 7-day planning and daily execution. Task Planner owns structure; SEO Analyst owns keywords and link targets.
+Use for rolling 7-day planning and daily execution. Task Planner owns structure; SEO Analyst owns keywords, link targets, GEO/AEO optimization, and topical authority mapping. Updated for 2025–2026 SEO standards.
 
 ## File Naming
 
@@ -37,11 +37,12 @@ Repeat for each site:
 ```markdown
 ### Site: leaseinvietnam | maylanhtreotuong
 
+#### Traditional SEO
 - **Topic:**
 - **Working title:**
 - **Primary keyword:**
 - **Secondary keywords:**
-- **Search intent:**
+- **Search intent:** [informational | commercial | navigational | transactional]
 - **Content cluster:**
 - **Target path:**
 - **Meta description (≤160):**
@@ -49,18 +50,46 @@ Repeat for each site:
 - **H2 outline:** (numbered)
 - **Internal links (≥3):** path + anchor
 - **High-value link:** property/* or product/* (required ≥1/week per site)
+
+#### GEO / AEO
+- **Answer-first block:** [≤60 words opening for main H2]
+- **Query fan-out:** [3–5 sub-questions from PAA + LLM]
+- **Answer format per section:** [definition | comparison table | numbered steps | bullet list]
+- **Fact density target:** [minimum verifiable data points]
+
+#### Topical Authority
+- **Pillar page URL:**
+- **Cluster position:** [pillar | supporting | supplementary]
+- **Information gain:** [what makes this unique vs top SERP results]
+- **Content freshness type:** [new_topic | evergreen_refresh | data_update | experience_addition]
+
+#### E-E-A-T
+- **Experience proof:** [original_photo | firsthand_account | documented_test | expert_interview]
+- **Author entity:** [author name + profile URL]
+- **YMYL-adjacent:** [yes/no]
+
+#### Schema
+- **Required schema types:** [Article | FAQPage | HowTo | Product]
+
+#### Status
 - **SEO brief:** path to seo-content-brief.json or inline
-- **Status:** Planned / Briefed / Drafted / Audited / Published
+- **Status:** Planned | Briefed | Drafted | Audited | Published
 ```
 
 ## 7-Day Board Table (rolling)
 
 ```markdown
-| Date | Site | Topic | Primary keyword | Cluster | Brief | Draft | Audit | Status |
-|------|------|-------|-----------------|---------|-------|-------|-------|--------|
+| Date | Site | Topic | Primary keyword | Cluster | Pillar page | GEO ready | Brief | Draft | Audit | Status |
+|------|------|-------|-----------------|---------|-------------|-----------|-------|-------|-------|--------|
 ```
 
-SEO Analyst MUST verify no duplicate primary intent per site within the visible 7-day window.
+- **Pillar page**: URL of the pillar page this article supports
+- **GEO ready**: ✅ when answer-first + query fan-out + schema specified in brief; ❌ otherwise
+
+SEO Analyst MUST verify:
+- no duplicate primary intent per site within the visible 7-day window
+- pillar–cluster balance: each pillar has ≥3 supporting articles
+- GEO/AEO fields complete before marking Briefed
 
 ## Handoff To Content Writer
 
@@ -69,6 +98,10 @@ Each row marked **Briefed** MUST have:
 - Approved primary keyword and slug direction
 - H2 outline and internal link list
 - seo-content-brief.json attached or inlined in plan file
+- Answer-first guidance for each H2 section
+- Query fan-out list (3–5 sub-questions)
+- Experience proof type specified
+- Schema types recommended
 
 ## Machine Handoff
 

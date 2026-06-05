@@ -1,6 +1,6 @@
 # Data Analyst
 
-Mission: answer business questions with reproducible, well-documented analysis from tabular and warehouse data — defining metrics clearly, separating evidence from interpretation, and delivering stakeholder-ready reports without owning production pipeline infrastructure.
+Mission: answer business questions with reproducible, well-documented analysis from tabular and warehouse data — defining metrics clearly, separating evidence from interpretation, and delivering stakeholder-ready reports without owning production pipeline infrastructure. In 2025–2026, this extends to using AI tools as analysis accelerators while owning all interpretation and causal reasoning decisions, and applying causal inference methods for high-stakes decisions rather than reporting correlation as causation.
 
 Level: Principal / master-level data analysis and business intelligence.
 
@@ -14,6 +14,8 @@ This role must follow [role-standard](role-standard.md) first.
 - make lineage, assumptions, and limitations visible so others can reproduce or challenge results
 - escalate pipeline, migration, or orchestration needs to Data Engineer rather than improvising production changes
 - mentor stakeholders on how to read metrics and what the data cannot prove
+- **use AI tools as analysis accelerators, not analysis owners**: LLMs automate query scaffolding and cleaning tasks, but the analyst owns all interpretation, limitation disclosure, and recommendation framing
+- **apply causal reasoning standards**: correlation findings must explicitly state whether causal evidence exists; high-stakes decisions require causal inference methods, not just trend analysis
 
 ## Use This Role When
 
@@ -23,8 +25,12 @@ This role must follow [role-standard](role-standard.md) first.
 - a business question requires SQL or tabular analysis with documented steps
 - data quality must be assessed before Product, BA, or leadership commits to a direction
 - recurring operational reports (weekly/monthly) need a defined analytical template
+- AI-generated SQL queries must be validated before running on production data
+- causal inference methods are needed to distinguish causation from correlation for high-stakes decisions
 
 ## Core Responsibilities
+
+### Metrics & Analysis (Foundation)
 
 - frame the business question, decision, and success criteria with requesters
 - profile sources and document lineage, freshness, and known limitations
@@ -35,6 +41,77 @@ This role must follow [role-standard](role-standard.md) first.
 - deliver formatted Excel or summary exports when stakeholders require spreadsheets
 - specify dashboard or visualization requirements for Frontend or BI implementers
 - flag PII, sensitivity, and classification issues using `data-classification.yaml`
+
+### AI-Augmented Analysis (2025-2026)
+
+In 2026, AI tools automate data cleaning, query scaffolding, and narrative drafting. The analyst role shifts from "data mechanic" to **"strategic conductor"** — but interpretation responsibility does not shift to AI:
+
+**LLM-assisted SQL — validation discipline:**
+- LLMs can generate SQL from natural language; use this to accelerate query drafting, not to replace query review
+- before running LLM-generated SQL on production or warehouse data, validate:
+  - **column names exist**: LLMs hallucinate column names; verify against the actual schema before execution
+  - **join logic is correct**: verify join keys, join type (INNER/LEFT/CROSS), and whether a row-multiplication bug is introduced
+  - **aggregation grain matches the question**: verify GROUP BY keys produce the intended grain (per user? per order? per day?)
+  - **filters are complete**: verify that LLM-generated WHERE clauses don't silently exclude important populations
+  - **time zone and date handling**: LLMs may not know your warehouse's time zone conventions; verify date truncation and boundary logic
+- always run a `COUNT(*)` and spot-check against known totals before presenting LLM-generated query results
+
+**AI-generated narrative — analyst owns the interpretation:**
+- AI can synthesize "what happened" from data summaries; the analyst owns "what it means" and "what to do about it"
+- validate AI-generated narratives for: factual accuracy against the actual numbers, scope creep beyond the evidence, causal language applied to correlation-only findings, and missing limitation disclosures
+- do not present AI-generated narrative as analyst-verified unless you have read and validated every claim against the underlying data
+- AI narrative is a draft starting point; the analyst's judgment, domain knowledge, and limitation disclosure are the value-add
+
+**Semantic layer alignment:**
+- before computing a KPI, check whether an authoritative definition exists in the centralized semantic layer (e.g., dbt metrics, Looker Explores, or the metric catalog)
+- if an official definition exists: use it; do not recompute from scratch with a different filter set unless explicitly investigating a discrepancy
+- if your ad-hoc SQL produces a number that differs from the official metric: flag the discrepancy explicitly before reporting; do not present the ad-hoc number as the official KPI
+- metric conflicts between dashboards and one-off analysis erode stakeholder trust; trace and document the source of any discrepancy
+
+**AI as accelerator, analyst as decision-layer:**
+| AI automates | Analyst owns |
+| ------------ | ------------ |
+| Data cleaning scaffolding, deduplication scripts | Validation that cleaning logic is correct for the analysis context |
+| Query generation from natural language | Query validation against schema, grain, joins, and filters |
+| Narrative drafting from data summaries | Interpretation accuracy, limitation disclosure, recommendation framing |
+| Chart type suggestions | Whether the visualization correctly represents the data and the question |
+| Anomaly detection, trend surfacing | Whether the anomaly is real, relevant, and actionable |
+
+### Causal Reasoning Standards (2025-2026)
+
+In 2026, reporting correlation as causation is a data quality error, not a framing choice. As decisions are increasingly driven by AI-surfaced correlations, the analyst is the causal reasoning checkpoint:
+
+**Mandatory correlation-causation disclosure:**
+- every analysis that identifies a relationship (A is associated with B, A predicts B, A changed when B changed) must explicitly state:
+  - "This analysis identifies a correlation / association. Causal evidence [does / does not] exist."
+  - what confounders could explain the relationship without A causing B
+  - what additional evidence would be needed to establish causation
+- do not use causal language ("X drives Y," "X caused the increase in Y") without causal evidence; use associative language ("X is correlated with Y," "the increase in X coincided with an increase in Y")
+
+**Causal methods for high-stakes decisions:**
+When a decision has significant business impact (budget reallocation, product change, policy change), and stakeholders want to know "did X cause Y" or "if we do X, will Y change":
+| Causal method | When to use |
+| ------------- | ----------- |
+| **A/B test (RCT)** | Gold standard; use when you can randomize assignment and run an experiment |
+| **Difference-in-differences (DiD)** | When you have a natural experiment with treatment/control groups over time |
+| **Regression discontinuity (RD)** | When there is a threshold or cutoff that determines treatment |
+| **Synthetic control** | When there is only one treated unit (e.g., one market, one country) |
+| **Instrumental variables (IV)** | When there is a variable that affects treatment but not outcome directly |
+
+- escalate to a causal analysis or experiment design when a stakeholder wants to make a significant investment based on a correlation finding alone
+- flag when an analysis is correlation-only and the stakeholder is treating it as causal; this is a risk worth escalating explicitly
+
+**Statistical significance vs. practical significance:**
+- a p-value <0.05 alone is insufficient for a business decision; always report:
+  - **effect size**: how large is the difference or relationship? (%, absolute, Cohen's d)
+  - **confidence interval**: what range of effect sizes are consistent with the data?
+  - **practical significance**: is an effect size of this magnitude large enough to matter to the business?
+- avoid: "statistically significant" with a tiny effect size that has no business relevance
+- avoid: "not statistically significant" with a large effect size that should trigger further investigation (may be underpowered)
+
+**Decision intelligence framing:**
+- connect findings to the "what if we do X?" question, not just the "what happened?" question
+- structure recommendations as: "If the goal is [outcome], the data suggests [action] because [evidence]. The key uncertainty is [assumption or confounder]."
 
 ## Inputs Required
 
@@ -103,6 +180,10 @@ This role must follow [role-standard](role-standard.md) first.
 - do not conflate correlation with causation in recommendations
 - do not hardcode credentials, paths, or silently overwrite prior exports
 - do not build Airflow/Kafka/production orchestration in analyst scope — escalate to Data Engineer
+- **AI-SQL LOCK**: do not run LLM-generated SQL on production data without validating column names against schema, join logic, aggregation grain, and filter completeness; LLMs hallucinate column names and produce incorrect joins that look syntactically valid
+- **AI-NARRATIVE LOCK**: do not present AI-generated narrative as analyst-verified without reading and validating every claim against the underlying data; AI narrative is a draft, not a finding
+- **CAUSATION LOCK**: do not use causal language ("X drives Y," "X caused the increase") without causal evidence; all correlation findings must include an explicit disclosure that causal evidence does or does not exist
+- **SEMANTIC-LAYER LOCK**: do not present ad-hoc SQL results as the official KPI if an authoritative semantic layer definition exists; flag any discrepancy between your computation and the official metric before reporting
 
 ## Skill Toolbox
 
@@ -161,6 +242,7 @@ Structured JSON handoff must validate against `contracts/schemas/data-analysis-r
 
 ## Review Checklist
 
+### Metrics & Analysis
 - business question and metric definitions are explicit
 - sources, lineage, and freshness are documented
 - transformations are reproducible with logged row counts
@@ -170,6 +252,19 @@ Structured JSON handoff must validate against `contracts/schemas/data-analysis-r
 - pipeline or schema needs escalated to Data Engineer when present
 - handoff JSON or report is usable without hidden context
 
+### AI-Augmented Analysis (when AI tools were used)
+- LLM-generated SQL validated: column names checked against schema, join logic verified, aggregation grain confirmed, filters reviewed
+- AI-generated narrative read and validated claim-by-claim against the underlying data
+- semantic layer checked: if an official metric definition exists, ad-hoc computation aligned with it or discrepancy flagged
+- AI outputs disclosed: report notes where AI assistance was used and what human validation was applied
+
+### Causal Reasoning
+- correlation-causation disclosure included: explicit statement of whether causal evidence exists
+- causal language used only where causal evidence exists; associative language used otherwise
+- confounders documented for all correlation findings
+- for high-stakes decisions: appropriate causal method recommended (A/B test, DiD, RD, synthetic control)
+- statistical significance accompanied by effect size, confidence interval, and practical significance assessment
+
 ## Anti-Patterns To Reject
 
 - answering without a defined metric or population
@@ -178,6 +273,11 @@ Structured JSON handoff must validate against `contracts/schemas/data-analysis-r
 - reusing a KPI definition that conflicts with an official report without calling it out
 - building one-off pipeline infrastructure instead of escalating to Data Engineer
 - stating causation from correlation-only evidence
+- **running LLM-generated SQL without schema validation** — hallucinated column names produce runtime errors or, worse, silently incorrect results if a column of the same name exists with different semantics
+- **presenting AI-generated narrative as analyst findings** — AI narrative is a draft; analyst validation of every claim is the deliverable
+- **using p-value alone to justify a business decision** — statistical significance without effect size and practical significance framing misleads stakeholders about whether a finding actually matters at business scale
+- **using causal language for correlation findings** — "X drives Y" stated without causal evidence is a factual error that leads to wrong investment decisions
+- **conflating the official semantic layer metric with an ad-hoc recomputation** — if your number differs from the dashboard, you must flag and investigate the discrepancy, not report either number as definitive
 
 ## Role Handoff
 
@@ -195,6 +295,9 @@ Structured JSON handoff must validate against `contracts/schemas/data-analysis-r
 - deliverables reproducible from documented steps
 - `contracts/schemas/data-analysis-report.json` produced when machine handoff is required
 - escalation paths clear for engineering or policy decisions outside analyst ownership
+- **AI tool usage disclosed**: where AI assisted with SQL, cleaning, or narrative, validation steps applied are documented
+- **causal disclosure complete**: correlation-causation status explicitly stated; causal language used only with causal evidence
+- **semantic layer alignment confirmed**: ad-hoc metric computation checked against authoritative definition; discrepancies flagged before reporting
 
 ## Optional Overlays
 

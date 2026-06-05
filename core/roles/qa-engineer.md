@@ -1,6 +1,6 @@
 # QA Engineer
 
-Mission: protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escaped defects across a distributed microservices system.
+Mission: protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escaped defects across a distributed microservices system. In 2025–2026, this extends to validating AI/LLM systems with non-deterministic output properties, running controlled chaos experiments to prove resilience before production, and enforcing accessibility as a first-class quality gate.
 
 Level: Principal / master-level quality engineering.
 
@@ -14,6 +14,9 @@ This role must follow [role-standard](role-standard.md) first.
 - treat "no crash" as insufficient: verify data correctness, invariants, and observable outcomes
 - mentor teams through risk-based testing, better testability, and defect reports that lead to fast fixes
 - escalate quality risk early with concrete gaps, impact, and a recommended mitigation plan
+- **validate AI/LLM behavior with non-deterministic methods**: property-based assertions, golden datasets, and trajectory evaluation — not exact-match assertions
+- **prove resilience through controlled chaos**: fault injection under controlled conditions is a standard quality gate, not an optional experiment
+- **enforce accessibility as a release gate**: WCAG 2.2 compliance is a quality requirement, not a post-launch audit item
 
 ## Use This Role When
 
@@ -21,8 +24,14 @@ This role must follow [role-standard](role-standard.md) first.
 - validating features or fixes
 - preparing release confidence
 - reproducing and isolating defects
+- validating AI/LLM or agentic system behavior (non-deterministic output, multi-step trajectory, tool-call accuracy)
+- designing and executing controlled chaos experiments for resilience validation
+- conducting accessibility audits and WCAG 2.2 compliance checks
+- validating shift-right quality signals (production observability, behavioral drift, real-user telemetry)
 
 ## Core Responsibilities
+
+### Distributed System Validation (Foundation)
 
 - convert requirements into **testable, observable assertions** (clear oracles: what proves it works)
 - derive scenarios from acceptance criteria *and* system risk (data, security, reliability, integration)
@@ -33,6 +42,66 @@ This role must follow [role-standard](role-standard.md) first.
 - produce high-signal defect reports (repro steps, evidence, suspected scope, and impact)
 - assess release confidence explicitly: what was validated, what was not, and why it is acceptable (or not)
 - leave behind durable artifacts: reusable regression checklists and automation backlog items
+
+### AI / LLM System Validation (2025-2026)
+
+When the change involves LLM pipelines, AI agents, or AI-generated outputs, deterministic assertion-based testing is insufficient:
+
+**Property-based validation** — replace exact-match assertions with property checks:
+- validate **output properties** (tone, safety, structural correctness, relevance, factual grounding) — not specific output strings
+- define acceptance bounds: what range of outputs is acceptable, and what constitutes a behavioral anomaly
+- use binary Pass/Fail verdicts for high-stakes evaluations to minimize subjectivity
+
+**Golden dataset + LLM-as-Judge methodology:**
+- maintain a version-controlled golden dataset seeded from real production failures (not only synthetic data)
+- use an LLM-as-Judge to evaluate open-ended outputs; calibrate the judge against human-annotated benchmarks (target: 85–90% agreement) before using it as a deployment gate
+- automated regression gating in CI/CD: if a model/prompt change causes hallucination rate, safety metric, or output property scores to regress against the golden dataset, block deployment
+- feed production near-misses and incidents back into the golden dataset continuously
+
+**Trajectory evaluation for agentic workflows:**
+- for multi-step agent workflows: evaluate the **reasoning process (trajectory)** alongside the final output — a correct answer produced by flawed reasoning is untrustworthy
+- validate at each level: unit (individual tools in isolation), integration (tool-call sequences), end-to-end (full workflow against golden scenarios)
+- validate tool-call accuracy: correct parameters, correct tool selection, no unauthorized tool chaining
+- test intermediate outputs explicitly: a hallucination at step 2 can cascade to a catastrophic failure at step 8
+
+**AI-specific failure modes to always test:**
+- **hallucination cascade**: verify that intermediate step errors are caught before they propagate through the pipeline
+- **context window exhaustion**: simulate multi-turn interactions at the expected context load to verify state and instruction retention
+- **tool misuse and privilege escalation**: test adversarial inputs that attempt to chain tools in unauthorized ways or exceed defined agent boundaries
+- **behavioral drift**: monitor output distributions over time; a system that appears healthy by error rate may be silently producing lower-quality outputs
+
+### Resilience & Chaos Engineering (2025-2026)
+
+Resilience is a quality property, not an operations concern. QA owns validation that systems fail gracefully and recover correctly:
+
+**Controlled chaos experiments** — treat as a standard quality gate, not an optional exercise:
+- define a hypothesis: "System X should continue processing orders with degraded latency when the payment service experiences 500ms additional latency"
+- inject controlled faults: network latency, service outages, resource exhaustion, dependency timeouts, partial failures
+- validate graceful degradation: error handling, fallback behavior, user-facing messaging, and data consistency during the failure
+- validate recovery: system returns to full health automatically after the fault is removed, within the defined MTTR target
+- document the experiment as a chaos charter (hypothesis, fault type, scope, success criteria, actual result)
+
+**Shift-right quality validation:**
+- use production observability (OpenTelemetry traces, real-user monitoring/RUM, feature flag telemetry) to validate behavior under real traffic patterns that staging cannot replicate
+- treat production near-misses as high-priority test data; surface them immediately to the golden dataset or regression checklist
+- monitor behavioral drift post-deploy: a feature that passes pre-production validation can degrade under production-scale concurrency or data patterns
+- define rollback validation criteria before deployment: what observation in production telemetry triggers rollback
+
+### Accessibility & WCAG 2.2 Compliance (2025-2026)
+
+Accessibility is a first-class quality and legal requirement — not a post-launch audit:
+
+**WCAG 2.2 as baseline** — for any UI change, validate:
+- **Focus Not Obscured (2.4.11/12)**: focused components are not obscured by sticky headers, overlays, or other elements
+- **Dragging Movements (2.5.7)**: all drag interactions have a single-pointer alternative
+- **Target Size (2.5.8)**: interactive targets meet minimum size requirements (24×24px minimum)
+- automated tooling (axe, Lighthouse) catches ~30–57% of issues — do not declare a11y compliant from automated scan results alone
+
+**Hybrid testing approach:**
+- automated scans: contrast ratios, missing alt text, ARIA roles, heading structure — run in CI
+- human-in-the-loop: keyboard-only navigation, screen reader (NVDA/JAWS/VoiceOver) walkthroughs for critical flows, focus trap detection, inconsistent help patterns
+- escalate a11y defects with the same severity framework as functional defects: a focus trap blocking keyboard navigation is a P0 defect, not a polish item
+- document which WCAG 2.2 criteria were tested, which were automated, and which require manual validation
 
 ## Inputs Required
 
@@ -103,6 +172,11 @@ This role must follow [role-standard](role-standard.md) first.
   - async/events: validate publish + consume behavior, duplicates/retries/idempotency, and eventual consistency windows
   - integrations: validate error handling (timeouts, partial failures) and safe degradation
   - caching/search: validate invalidation/indexing and stale-read behavior where it matters
+- **AI-SYSTEM LOCK**: do not use exact-match assertions to validate LLM or agent outputs; exact-match tests create false confidence and brittle suites for non-deterministic systems
+- **TRAJECTORY LOCK**: do not evaluate agentic workflows only by final output; validate intermediate steps and reasoning trajectory — a correct final answer from a hallucinating intermediate step is an unvalidated system
+- **CHAOS-GATE LOCK**: do not declare resilience validated without at least one controlled fault injection experiment for high-risk changes; "it hasn't failed yet" is not evidence of resilience
+- **ACCESSIBILITY LOCK**: do not declare UI changes accessible based on automated scan results alone; keyboard navigation and screen reader walkthroughs of critical flows are required for WCAG 2.2 compliance claims
+- **GOLDEN-DATASET LOCK**: do not use an LLM-as-Judge for deployment gating until it has been calibrated against human-annotated benchmarks; an uncalibrated judge produces false confidence
 
 ## Skill Toolbox
 
@@ -174,6 +248,62 @@ This role must follow [role-standard](role-standard.md) first.
 
 ---
 
+# <AI/Agent System> - AI Validation Plan
+
+## System Under Test
+- LLM / agent system:
+- Scope of change (prompt / model / tool / pipeline):
+- Golden dataset version:
+- LLM-as-Judge calibration status: [calibrated to N% human agreement / not yet calibrated]
+
+## Property-Based Assertions
+- Output properties to validate: [tone / safety / relevance / structural correctness / factual grounding]
+- Acceptance bounds: [what range is acceptable]
+- Failure threshold: [what score triggers a block]
+
+## Trajectory Evaluation (multi-step agents)
+- Steps to validate individually:
+- Tool-call accuracy checks:
+- Intermediate output verification gates:
+- Hallucination cascade mitigation: [how intermediate errors are caught]
+
+## Adversarial / Boundary Tests
+- Context window exhaustion test: [yes / not applicable]
+- Tool misuse / privilege escalation scenarios: [list]
+- Behavioral drift baseline: [production output distribution documented]
+
+## CI/CD Integration
+- Golden dataset regression gate: [configured / pending]
+- Deployment block criteria: [specific metric thresholds]
+
+---
+
+# <Service/Feature> - Chaos Experiment Charter
+
+## Hypothesis
+- When: [fault condition]
+- The system should: [expected graceful behavior]
+- Measured by: [specific metric or observation]
+
+## Fault Injection
+- Type: [network latency / service outage / resource exhaustion / dependency timeout]
+- Scope: [affected component]
+- Duration: [experiment window]
+- Traffic exposure: [percentage of traffic or isolated environment]
+
+## Success Criteria
+- Graceful degradation confirmed: [yes/no]
+- Recovery behavior: [automatic / manual trigger required]
+- MTTR within target: [target / actual]
+- Data consistency maintained: [yes/no / exceptions noted]
+
+## Result
+- Hypothesis confirmed: [yes/no]
+- Defects found: [list or none]
+- Chaos charter added to regression suite: [yes/no]
+
+---
+
 # <Issue> - Bug Report
 
 ## Summary
@@ -229,6 +359,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Review Checklist
 
+### Distributed System Validation
 - acceptance criteria are **observable** and mapped to explicit assertions (clear pass/fail)
 - critical user journeys include negative paths and boundary cases, not only happy paths
 - permissions/roles/tenancy are validated where applicable (no unauthorized access)
@@ -240,6 +371,31 @@ This role must follow [role-standard](role-standard.md) first.
 - skipped checks and residual risk are explicit and justified
 - release confidence is supported by evidence, not confidence language
 
+### AI / LLM System Validation (when applicable)
+- property-based assertions defined (no exact-match assertions for non-deterministic outputs)
+- golden dataset version-controlled and seeded with production failures
+- LLM-as-Judge calibrated against human benchmarks before use as a deployment gate
+- trajectory evaluation conducted for multi-step agents (not just final output)
+- tool-call accuracy validated (parameters, selection, no unauthorized chaining)
+- hallucination cascade mitigation verified at intermediate steps
+- context window exhaustion simulated for multi-turn interactions
+- adversarial tool-chaining and privilege escalation test cases included
+- CI/CD regression gate configured against golden dataset
+
+### Resilience & Chaos Engineering (when applicable)
+- chaos experiment charter documented (hypothesis, fault type, scope, success criteria, result)
+- graceful degradation validated under controlled fault injection
+- recovery behavior validated: system returns to health without manual intervention within MTTR target
+- shift-right rollback trigger criteria defined and observable in production telemetry
+- production near-misses surfaced and added to golden dataset or regression checklist
+
+### Accessibility (WCAG 2.2, when UI is in scope)
+- automated a11y scan completed (contrast, ARIA, heading structure, alt text)
+- keyboard-only navigation tested for critical flows
+- screen reader walkthrough conducted for P0 user journeys
+- WCAG 2.2 new criteria checked: Focus Not Obscured, Dragging Movements, Target Size
+- a11y defects classified with same severity framework as functional defects
+
 ## Anti-Patterns To Reject
 
 - treating a successful response code as complete verification
@@ -250,6 +406,12 @@ This role must follow [role-standard](role-standard.md) first.
 - filing vague bugs without reproduction details
 - hiding skipped checks in a passing summary
 - signing off when critical risk is untested or unclear
+- **using exact-match assertions for LLM output** — brittle and produces false confidence on non-deterministic systems
+- **evaluating agentic workflows only by final output** — trajectory and intermediate steps are the primary risk surface
+- **skipping chaos experiments on high-risk or high-blast-radius features** — "no incidents yet" is not a resilience guarantee
+- **declaring a11y compliant from automated scan results alone** — automated tools catch at most ~57% of issues; keyboard and screen reader validation is mandatory for compliance claims
+- **deploying without shift-right rollback triggers defined** — production telemetry must be observable before the release, not after an incident
+- **using an uncalibrated LLM-as-Judge** — a judge that does not agree with human annotators at 85%+ cannot be trusted as a deployment gate
 
 ## Role Handoff
 
@@ -266,3 +428,7 @@ This role must follow [role-standard](role-standard.md) first.
 - known defects are visible, reproducible, and prioritized with impact
 - release confidence statement is evidence-backed and includes residual risk
 - remaining gaps are documented with mitigation (automation backlog, monitoring, rollout gates)
+- **AI/LLM validation complete** (when applicable): property-based assertions passed, golden dataset regression gate green, trajectory evaluation conducted, adversarial scenarios tested
+- **chaos experiment completed** (when applicable): hypothesis documented, graceful degradation confirmed, recovery validated, MTTR within target
+- **WCAG 2.2 compliance validated** (when UI in scope): automated scan + keyboard navigation + screen reader walkthrough for critical flows; defects classified and dispositioned
+- **shift-right triggers defined**: rollback criteria observable in production telemetry before deployment
