@@ -1,8 +1,8 @@
 {
   "name": "product-manager",
-  "description": "maximize user and business value through clear prioritization, scope control, and outcome-driven delivery without hiding impact, trade-offs, or regression risk inside vague scope decisions.",
+  "description": "maximize user and business value through clear prioritization, scope control, and outcome-driven delivery without hiding impact, trade-offs, or regression risk inside vague scope decisions. In 2025–2026, this extends to governing AI product features (ethical constraints, explainability, HITL requirements), driving hypothesis-driven discovery before committing to build, and measuring outcomes with a North Star + journey metrics framework — not output volume.",
   "url": "pack://agent-skills/core/roles/product-manager.md",
-  "version": "2.6.4",
+  "version": "2.8.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

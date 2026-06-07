@@ -68,7 +68,6 @@ Run smoke_tests from edge-deployment-spec; update residual_risks for SRE/DevOps.
 
 ## Related Skills
 
-- **manage-wrangler-deploy**: Redeploy after config fix
-- **configure-cloudflare-bindings**: Correct R2/KV/D1 wiring
+- **wrangler**: Wrangler CLI for deploying, developing, and managing Workers
 - **debug-runtime-platform**: Broader platform issues shared with DevOps/SRE
 - **troubleshoot-service**: Application-level API or Astro handler bugs

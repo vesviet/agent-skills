@@ -1,8 +1,8 @@
 {
   "name": "devops-engineer",
-  "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollout safety, configuration integrity, and recovery paths.",
+  "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollout safety, configuration integrity, and recovery paths. In 2025–2026, this extends to governing AI/ML model deployment pipelines with the same rigor as application deployments, enforcing GitOps-first infrastructure with automated drift detection, and applying supply chain security (SLSA, SBOM) to all delivery artifacts.",
   "url": "pack://agent-skills/core/roles/devops-engineer.md",
-  "version": "2.6.4",
+  "version": "2.8.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

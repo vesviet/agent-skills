@@ -1,8 +1,8 @@
 {
   "name": "ui-ux-designer",
-  "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear.",
+  "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2026, this extends to designing for probabilistic AI systems (non-deterministic states, confidence indicators, transparency hooks, human override patterns), and to governing design systems as living infrastructure with W3C-compliant token architecture and automated design-to-code pipelines.",
   "url": "pack://agent-skills/core/roles/ui-ux-designer.md",
-  "version": "2.6.4",
+  "version": "2.8.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

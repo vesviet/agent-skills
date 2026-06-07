@@ -98,7 +98,7 @@ Role: **Cloudflare Engineer**
 
 When the target repo deploys via Wrangler (Workers, Pages, or bound services):
 
-Use skills: `manage-wrangler-deploy`, `configure-cloudflare-bindings`
+Use skill: `wrangler`
 
 Emit `contracts/schemas/edge-deployment-spec.json` when machine handoff is required.
 
@@ -175,8 +175,7 @@ If rollback is needed:
 
 - **review-code**: Review release-impacting implementation changes
 - **commit-code**: Prepare approved changes for delivery
-- **manage-wrangler-deploy**: Wrangler deploy for Workers/Pages repos
-- **configure-cloudflare-bindings**: Bindings and env alignment before edge release
+- **wrangler**: Wrangler CLI for deploying, developing, and managing Workers
 - **debug-workers-edge**: Edge runtime diagnosis when rollout fails
 - **troubleshoot-service**: Investigate failures during validation or rollout
 - **review-service**: Confirm broad release readiness before shipping

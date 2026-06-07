@@ -108,6 +108,7 @@ This role must follow [role-standard](role-standard.md) first.
 ### Primary Skills
 
 - `write-documentation`
+- `release-notes`
 
 ### Supporting Skills (use when collaborating)
 

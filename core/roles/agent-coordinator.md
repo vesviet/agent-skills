@@ -81,7 +81,7 @@ Detect and halt on semantic (not just technical) failures:
 - estimate token budget for the entire coordination graph at intake; flag if estimated cost is unusually high for the work type
 - before delegating each phase: check that the expected token usage is within the phase budget; re-scope the task if not
 - if a sub-agent returns and has consumed significantly more tokens than expected, investigate before opening the next phase
-- implement pre-execution budget check for long-running `stream` tasks: if the task has not progressed meaningfully within an expected window, cancel and re-delegate with a narrower scope
+- implement pre-execution budget check for long-running 'stream' tasks: if the task has not progressed meaningfully within an expected window, cancel and re-delegate with a narrower scope
 - use `agent-model-routing` to route simpler phases to lower-cost models and reserve high-capability models for high-risk or high-complexity phases
 
 ### Observability & Trace Continuity

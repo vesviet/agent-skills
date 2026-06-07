@@ -65,6 +65,7 @@ All roles in this pack are expected to:
 
 ### Quality, Delivery, And Operations
 
+- [agent-discovery-engineer](agent-discovery-engineer.md)
 - [qa-engineer](qa-engineer.md)
 - [reviewer](reviewer.md)
 - [devops-engineer](devops-engineer.md)
@@ -166,6 +167,7 @@ All roles in this pack are expected to:
 | Role | Primary Workflows |
 |------|------------------|
 | Agent Coordinator | `/add-new-feature`, `/troubleshooting`, `/hotfix-production`, `/refactoring`, `/service-review-release`, `/agent-a2a-delegation` |
+| Agent Discovery Engineer | `/build-deploy`, `/setup-new-service`, `/troubleshooting` |
 | Product Manager | `/add-new-feature` |
 | Project Manager | `/add-new-feature`, `/service-review-release` |
 | Task Planner | `/add-new-feature`, `/refactoring`, `/troubleshooting` |

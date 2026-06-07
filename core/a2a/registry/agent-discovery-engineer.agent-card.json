@@ -1,0 +1,166 @@
+{
+  "name": "agent-discovery-engineer",
+  "description": "Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance across all 19 checks of the Agent Readiness standards (e.g., isitagentready.com). This covers Protocol Discovery, Commerce Standards, Discoverability, and Bot Access Control.",
+  "url": "pack://agent-skills/core/roles/agent-discovery-engineer.md",
+  "version": "2.8.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "manage-auth-md",
+      "name": "Manage Auth Md",
+      "description": "Primary skill for agent-discovery-engineer role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    },
+    {
+      "id": "configure-oauth-metadata",
+      "name": "Configure Oauth Metadata",
+      "description": "Primary skill for agent-discovery-engineer role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    },
+    {
+      "id": "debug-workos-integration",
+      "name": "Debug Workos Integration",
+      "description": "Primary skill for agent-discovery-engineer role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    },
+    {
+      "id": "configure-mcp",
+      "name": "Configure Mcp",
+      "description": "Primary skill for agent-discovery-engineer role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    },
+    {
+      "id": "configure-agent-commerce",
+      "name": "Configure Agent Commerce",
+      "description": "Primary skill for agent-discovery-engineer role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    },
+    {
+      "id": "configure-agent-headers",
+      "name": "Configure Agent Headers",
+      "description": "Primary skill for agent-discovery-engineer role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    },
+    {
+      "id": "manage-api-catalog",
+      "name": "Manage Api Catalog",
+      "description": "Primary skill for agent-discovery-engineer role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    },
+    {
+      "id": "configure-agent-skills",
+      "name": "Configure Agent Skills",
+      "description": "Primary skill for agent-discovery-engineer role.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    }
+  ],
+  "defaultOutputSchemas": [],
+  "role_file": "core/roles/agent-discovery-engineer.md",
+  "policy_profile": "agent-discovery-engineer"
+}

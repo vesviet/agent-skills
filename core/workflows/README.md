@@ -24,7 +24,7 @@ Typical combinations:
 
 - feature work: `navigate-service` + `create-migration` + `write-tests` + `commit-code`
 - release hardening: `navigate-service` + `review-code` + `review-service`
-- edge release (Cloudflare): `manage-wrangler-deploy` + `configure-cloudflare-bindings` + `debug-workers-edge`
+- edge release (Cloudflare): `wrangler` + `debug-workers-edge`
 - incident response: `troubleshoot-service` + `meeting-review` + `review-code`
 
 ## Execution Standard (Checklist Driven)

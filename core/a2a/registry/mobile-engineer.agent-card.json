@@ -1,0 +1,104 @@
+{
+  "name": "mobile-engineer",
+  "description": "deliver correct, performant, and accessible mobile experiences on iOS and Android by owning native app logic, platform integration, offline behavior, and release readiness without hiding device, OS version, or distribution risk.",
+  "url": "pack://agent-skills/core/roles/mobile-engineer.md",
+  "version": "2.8.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "skills": [
+    {
+      "id": "add-ui-component",
+      "name": "Add Ui Component",
+      "description": "Primary skill for mobile-engineer role.",
+      "tags": [
+        "mobile",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "integrate-api-client",
+      "name": "Integrate Api Client",
+      "description": "Primary skill for mobile-engineer role.",
+      "tags": [
+        "mobile",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "write-tests",
+      "name": "Write Tests",
+      "description": "Primary skill for mobile-engineer role.",
+      "tags": [
+        "mobile",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "frontend-testing",
+      "name": "Frontend Testing",
+      "description": "Primary skill for mobile-engineer role.",
+      "tags": [
+        "mobile",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "implementation-result.json"
+  ],
+  "role_file": "core/roles/mobile-engineer.md",
+  "policy_profile": "mobile-engineer"
+}

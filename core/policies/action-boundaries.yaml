@@ -27,6 +27,24 @@ roles:
       - force_push
       - delete_branch_main
 
+  agent-discovery-engineer:
+    allowed:
+      - read_file
+      - write_file
+      - create_file
+      - search_code
+    requires_approval:
+      - delete_file
+      - run_build
+      - modify_dns_production
+      - purge_cache_zone
+    denied:
+      - run_migration
+      - modify_secrets
+      - push_to_production
+      - drop_database
+      - force_push
+
   business-analyst:
     allowed:
       - read_file

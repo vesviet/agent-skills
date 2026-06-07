@@ -106,12 +106,16 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Primary Skills
 
-- `manage-wrangler-deploy`
-- `configure-cloudflare-bindings`
-- `debug-workers-edge`
+- `wrangler`
+- `durable-objects`
+- `turnstile-spin`
+- `workers-best-practices`
+- `sandbox-sdk`
 
 ### Supporting Skills (use when collaborating)
 
+- `cloudflare-email-service`
+- `web-perf`
 - `setup-deployment`
 - `debug-runtime-platform`
 - `manage-secrets`

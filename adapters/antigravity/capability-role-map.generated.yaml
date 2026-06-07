@@ -3,6 +3,7 @@
 capability_role_map:
   3d-graphics-engineer: 3d-graphics-engineer
   agent-coordinator: agent-coordinator
+  agent-discovery-engineer: agent-discovery-engineer
   backend-developer: backend-developer
   business-analyst: business-analyst
   cloudflare-engineer: cloudflare-engineer
@@ -11,6 +12,7 @@ capability_role_map:
   data-engineer: data-engineer
   devops-engineer: devops-engineer
   frontend-developer: frontend-developer
+  mobile-engineer: mobile-engineer
   product-manager: product-manager
   project-manager: project-manager
   qa-engineer: qa-engineer

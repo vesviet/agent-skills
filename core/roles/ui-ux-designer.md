@@ -102,9 +102,9 @@ In 2026, design systems are not component libraries — they are living infrastr
 **W3C-compliant three-tier token architecture:**
 | Tier | Type | Example | Purpose |
 | ---- | ---- | ------- | ------- |
-| **Primitive (Core)** | Raw value | `#3B82F6`, `16px`, `500ms` | The raw palette; never used directly in components |
-| **Semantic (Decision)** | Purpose-driven | `color-text-primary`, `spacing-component-gap` | Maps intent to primitive; the primary design-to-code contract |
-| **Component** | Component-specific | `button-bg-primary-hover`, `card-border-radius` | Granular overrides for specific component states |
+| **Primitive (Core)** | Raw value | `#3B82F6`, '16px', '500ms' | The raw palette; never used directly in components |
+| **Semantic (Decision)** | Purpose-driven | 'color-text-primary', 'spacing-component-gap' | Maps intent to primitive; the primary design-to-code contract |
+| **Component** | Component-specific | 'button-bg-primary-hover', 'card-border-radius' | Granular overrides for specific component states |
 
 - adopt W3C DTCG (Design Tokens Community Group) format with `$value` and `$type` syntax for all token definitions
 - semantic tokens are the primary handoff contract between design and Frontend; components must reference semantic tokens, not primitive values
