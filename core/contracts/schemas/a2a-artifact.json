@@ -11,12 +11,24 @@
     },
     "state": {
       "type": "string",
-      "enum": ["submitted", "working", "input-required", "completed", "failed", "canceled"],
+      "enum": [
+        "submitted",
+        "working",
+        "input-required",
+        "completed",
+        "failed",
+        "canceled"
+      ],
       "description": "Terminal or in-progress task state mirrored on artifact."
     },
     "status": {
       "type": "string",
-      "enum": ["completed", "failed", "blocked", "partial"],
+      "enum": [
+        "completed",
+        "failed",
+        "blocked",
+        "partial"
+      ],
       "description": "Pack-level outcome status (maps to A2A terminal states)."
     },
     "parts": {
@@ -24,12 +36,29 @@
       "items": {
         "type": "object",
         "properties": {
-          "kind": { "type": "string", "enum": ["text", "file", "data", "json"] },
-          "text": { "type": "string" },
-          "data": { "type": "object", "additionalProperties": true },
-          "file_ref": { "type": "string" }
+          "kind": {
+            "type": "string",
+            "enum": [
+              "text",
+              "file",
+              "data",
+              "json"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "file_ref": {
+            "type": "string"
+          }
         },
-        "required": ["kind"]
+        "required": [
+          "kind"
+        ]
       },
       "description": "A2A multimodal artifact parts."
     },
@@ -40,7 +69,9 @@
     },
     "evidence": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Proof that success criteria were met."
     },
     "failures": {
@@ -48,25 +79,58 @@
       "items": {
         "type": "object",
         "properties": {
-          "criterion": { "type": "string" },
-          "reason": { "type": "string" }
+          "criterion": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
         },
-        "required": ["criterion", "reason"]
+        "required": [
+          "criterion",
+          "reason"
+        ]
       }
     },
     "blockers": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "token_usage": {
       "type": "object",
       "properties": {
-        "input_tokens": { "type": "integer" },
-        "output_tokens": { "type": "integer" },
-        "model_used": { "type": "string" }
+        "input_tokens": {
+          "type": "integer"
+        },
+        "output_tokens": {
+          "type": "integer"
+        },
+        "model_used": {
+          "type": "string"
+        }
       }
     },
-    "trace_id": { "type": "string" }
+    "trace_id": {
+      "type": "string"
+    }
   },
-  "required": ["task_id", "status"]
+  "required": [
+    "task_id",
+    "status"
+  ],
+  "examples": [
+    {
+      "artifact_id": "artifact-impl-result-slice-01",
+      "task_id": "task-cod-store-routing-slice-01",
+      "name": "implementation-result",
+      "parts": [
+        {
+          "type": "text",
+          "text": "{\"contract_type\":\"implementation-result\",\"slice_id\":\"slice-01-command-logic\",...}"
+        }
+      ]
+    }
+  ]
 }

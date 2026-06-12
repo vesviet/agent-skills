@@ -5,12 +5,23 @@
   "description": "Single message in an A2A task conversation history.",
   "type": "object",
   "properties": {
-    "message_id": { "type": "string" },
+    "message_id": {
+      "type": "string"
+    },
     "role": {
       "type": "string",
-      "enum": ["user", "agent", "system", "delegator", "worker"]
+      "enum": [
+        "user",
+        "agent",
+        "system",
+        "delegator",
+        "worker"
+      ]
     },
-    "timestamp": { "type": "string", "format": "date-time" },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
     "parts": {
       "type": "array",
       "items": {
@@ -18,15 +29,45 @@
         "properties": {
           "kind": {
             "type": "string",
-            "enum": ["text", "file", "data", "json"]
+            "enum": [
+              "text",
+              "file",
+              "data",
+              "json"
+            ]
           },
-          "text": { "type": "string" },
-          "data": { "type": "object", "additionalProperties": true },
-          "file_ref": { "type": "string" }
+          "text": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "file_ref": {
+            "type": "string"
+          }
         },
-        "required": ["kind"]
+        "required": [
+          "kind"
+        ]
       }
     }
   },
-  "required": ["message_id", "role", "parts"]
+  "required": [
+    "message_id",
+    "role",
+    "parts"
+  ],
+  "examples": [
+    {
+      "role": "agent",
+      "parts": [
+        {
+          "type": "text",
+          "text": "slice-01 completed. See implementation-result.json."
+        }
+      ],
+      "messageId": "msg-001"
+    }
+  ]
 }

@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/agent-coordinator",
+  "contract_type": "agent-card",
   "name": "agent-coordinator",
   "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality gates, and driving work from intake to validated handoff without losing context or skipping safety. In 2025–2026, this means treating multi-agent systems as distributed software: enforcing deterministic state transitions, applying runtime guardrails (not prompt-based trust), maintaining end-to-end trace observability, managing token budgets as a design constraint, and applying explicit HITL gates before irreversible actions.",
   "url": "pack://agent-skills/core/roles/agent-coordinator.md",
@@ -14,11 +16,19 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "agent-a2a-protocol",
       "name": "Agent A2A Protocol",
-      "description": "Primary skill for agent-coordinator role.",
+      "description": "Implement the full A2A 1.0 task lifecycle including Agent Card discovery, JSON-RPC invoke/stream, task get/list/cancel, SSE progress events, and Antigravity-compatible handoffs. Use when integrating multi-agent systems, exposing agent services, or operating as Antigravity with structured agent-to-agent communication.",
       "tags": [
         "agent",
         "pack"
@@ -40,7 +50,7 @@
     {
       "id": "agent-delegation",
       "name": "Agent Delegation",
-      "description": "Primary skill for agent-coordinator role.",
+      "description": "Delegate scoped sub-tasks from a supervisor agent to specialist worker agents using structured A2A task contracts, validate returned artifacts against output schemas, and handle delegation failures. Use when a task exceeds one agent's role boundary, requires parallel specialist work, or benefits from isolated context to reduce hallucination risk.",
       "tags": [
         "agent",
         "pack"
@@ -62,7 +72,7 @@
     {
       "id": "agent-graph-orchestration",
       "name": "Agent Graph Orchestration",
-      "description": "Primary skill for agent-coordinator role.",
+      "description": "Model multi-phase delivery as a directed graph with parallel branches, phase gates, and A2A delegations per node. Use when coordinating bugs or features across multiple specialist roles, parallel validation tracks, or merge points that require evidence before advancing.",
       "tags": [
         "agent",
         "pack"
@@ -84,7 +94,7 @@
     {
       "id": "agent-tool-orchestration",
       "name": "Agent Tool Orchestration",
-      "description": "Primary skill for agent-coordinator role.",
+      "description": "Plan and sequence agent tool use by choosing the smallest reliable tool, controlling work phase by phase, parallelizing independent reads, avoiding unsafe shell operations, and validating results. Use when a task requires multiple searches, file edits, commands, or external checks across a bug, feature, review, or debugging flow.",
       "tags": [
         "agent",
         "pack"
@@ -106,7 +116,7 @@
     {
       "id": "agent-context-management",
       "name": "Agent Context Management",
-      "description": "Primary skill for agent-coordinator role.",
+      "description": "Manage working context across long or multi-step agent tasks by tracking user intent, current phase, active owner, repo rules, explored evidence, assumptions, and remaining work. Use when a task spans many files, resumes after interruption, or needs reliable bug or feature control across phases.",
       "tags": [
         "agent",
         "pack"
@@ -128,7 +138,7 @@
     {
       "id": "agent-quality-gate",
       "name": "Agent Quality Gate",
-      "description": "Primary skill for agent-coordinator role.",
+      "description": "Run and interpret repository quality gates for agent-delivered changes, including validators, lint, tests, build checks, diff sanity checks, and phase-exit evidence. Use when reporting completion, advancing a bug or feature to the next phase, or declaring a pack, role, workflow, or code change ready.",
       "tags": [
         "agent",
         "pack"
@@ -150,7 +160,7 @@
     {
       "id": "agent-handoff",
       "name": "Agent Handoff",
-      "description": "Primary skill for agent-coordinator role.",
+      "description": "Produce concise agent handoffs, status updates, and completion summaries that preserve phase state, decisions, changed files, validation evidence, blockers, and next actions. Use when pausing, resuming, handing work to another session, or reporting completed engineering work across bug or feature control flows.",
       "tags": [
         "agent",
         "pack"

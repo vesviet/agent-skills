@@ -1,38 +1,203 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "seo-metadata",
-  "title": "SEO Metadata Contract",
-  "description": "Structured output for SEO metadata to be applied to content.",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "contracts/schemas/seo-metadata.json",
+  "title": "SEO Metadata",
+  "description": "Publisher-ready metadata produced by SEO Analyst. Used at publish time to set title, meta description, slug, and social metadata. Does not include full article content — that is in content-handoff.json. Validates against seo-analyst.md Outputs Produced section and overlay slug/frontmatter rules.",
   "type": "object",
+  "required": [
+    "metadata_id",
+    "created_at",
+    "site",
+    "url_or_path",
+    "title",
+    "meta_description",
+    "slug",
+    "primary_keyword",
+    "secondary_keywords",
+    "schema_types",
+    "status"
+  ],
   "properties": {
-    "title_tag": {
+    "$schema": {
+      "type": "string"
+    },
+    "metadata_id": {
+      "type": "string",
+      "description": "Unique identifier. Convention: YYYY-MM-DD-site-slug.",
+      "examples": ["2026-06-12-lease-thu-thiem-neighborhood-guide"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "site": {
+      "type": "string",
+      "enum": ["leaseinvietnam", "maylanhtreotuong", "vesviet", "learn", "other"]
+    },
+    "url_or_path": {
+      "type": "string",
+      "description": "Live URL or repo-relative content path this metadata applies to."
+    },
+    "brief_ref": {
+      "type": "string",
+      "description": "Reference to the seo-content-brief.json brief_id this metadata was produced from."
+    },
+    "audit_ref": {
+      "type": "string",
+      "description": "Reference to the seo-audit-report.json audit_id that approved this metadata."
+    },
+    "title": {
       "type": "string",
       "maxLength": 60,
-      "description": "Optimized title tag (under 60 chars)."
+      "description": "Final title tag. ≤60 chars. Must contain primary keyword. Respects overlay rules."
+    },
+    "title_char_count": {
+      "type": "integer",
+      "description": "Character count of the title field for quick validation."
     },
     "meta_description": {
       "type": "string",
       "maxLength": 160,
-      "description": "Compelling meta description (under 160 chars)."
+      "description": "Final meta description. ≤160 chars. Must contain primary keyword. Compelling for click-through."
     },
-    "focus_keyword": {
+    "meta_char_count": {
+      "type": "integer",
+      "description": "Character count of the meta_description field."
+    },
+    "slug": {
       "type": "string",
-      "description": "The primary targeted keyword."
+      "description": "Final URL slug (repo-relative or absolute path). Follows site overlay slug conventions. Lowercase, hyphen-separated, no trailing slash.",
+      "examples": ["post/neighborhood/thu-thiem-neighborhood-guide-2026"]
+    },
+    "primary_keyword": {
+      "type": "string",
+      "description": "The single primary keyword this page targets. Used for cannibalization tracking."
     },
     "secondary_keywords": {
       "type": "array",
       "items": { "type": "string" },
-      "description": "LSI or secondary keywords."
+      "minItems": 2,
+      "maxItems": 4,
+      "description": "2–4 secondary keywords targeted in the article body."
     },
-    "slug": {
-      "type": "string",
-      "description": "SEO-friendly URL slug."
+    "schema_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["Article", "FAQPage", "HowTo", "Product", "BreadcrumbList", "Person", "Organization", "LocalBusiness"]
+      },
+      "minItems": 1,
+      "description": "Schema types recommended for this page. Frontend implements JSON-LD per these types. Article is always included."
     },
-    "readability_score": {
+    "canonical_url": {
       "type": "string",
-      "enum": ["high", "medium", "low"],
-      "description": "Estimated readability level."
+      "description": "Canonical URL if different from the published URL. Leave null if self-canonical."
+    },
+    "social": {
+      "type": "object",
+      "description": "Open Graph / Twitter Card metadata for social sharing. Optional but recommended.",
+      "properties": {
+        "og_title": {
+          "type": "string",
+          "maxLength": 70,
+          "description": "Open Graph title. Can differ slightly from title tag (≤70 chars)."
+        },
+        "og_description": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Open Graph description (≤200 chars)."
+        },
+        "og_image": {
+          "type": "string",
+          "description": "Absolute URL or repo-relative path to the featured image for OG."
+        },
+        "twitter_card": {
+          "type": "string",
+          "enum": ["summary", "summary_large_image"],
+          "description": "Twitter card type."
+        }
+      },
+      "additionalProperties": false
+    },
+    "frontmatter_fields": {
+      "type": "object",
+      "description": "Site-specific frontmatter fields derived from overlay rules (e.g. leaseinvietnam src/content/config.ts). These override the generic fields above when publishing to Astro/Hugo repos. SEO Analyst populates; Content Writer or publisher applies.",
+      "properties": {
+        "publishDate": { "type": "string", "format": "date-time", "description": "Publish date in ISO 8601 format." },
+        "updateDate": { "type": "string", "format": "date-time", "description": "Last updated date for evergreen_refresh content." },
+        "category": { "type": "string", "description": "Post category as defined by the site's content collection config." },
+        "tags": { "type": "array", "items": { "type": "string" }, "description": "Post tags for taxonomy." },
+        "draft": { "type": "boolean", "description": "Draft status. Set to false only when publisher confirms ready to go live — SEO Analyst does NOT change this without explicit user instruction." },
+        "image": { "type": "string", "description": "Featured image path or URL for the post." },
+        "author": { "type": "string", "description": "Author name as it appears in frontmatter." }
+      },
+      "additionalProperties": true,
+      "description": "Additional overlay-specific fields can be added here without breaking validation."
+    },
+    "seo_publishing_overlay": {
+      "type": "object",
+      "description": "Fields for seo-publishing dual-site sprint tracking.",
+      "properties": {
+        "sprint_date": { "type": "string", "format": "date" },
+        "content_cluster": { "type": "string" },
+        "pillar_page_url": { "type": "string" },
+        "geo_ready": {
+          "type": "boolean",
+          "description": "True when answer-first + query fan-out + schema types are all specified."
+        }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "ready_to_publish", "published", "needs_update"],
+      "description": "Metadata lifecycle status. ready_to_publish = approved by audit and safe to apply to CMS/frontmatter."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Any remaining notes for publisher or Content Writer."
     }
   },
-  "required": ["title_tag", "meta_description", "focus_keyword", "slug"]
+  "additionalProperties": false,
+  "examples": [
+    {
+      "metadata_id": "2026-06-12-lease-thu-thiem-neighborhood-guide",
+      "created_at": "2026-06-12T11:30:00+07:00",
+      "site": "leaseinvietnam",
+      "url_or_path": "post/neighborhood/thu-thiem-neighborhood-guide-2026.mdx",
+      "brief_ref": "2026-06-12-lease-thu-thiem-neighborhood-guide",
+      "audit_ref": "2026-06-12-lease-thu-thiem-pre-publish",
+      "title": "Thu Thiem Neighborhood Guide 2026 | Expat Renting Tips",
+      "title_char_count": 55,
+      "meta_description": "Complete guide to renting in Thu Thiem in 2026. Rental prices, best streets, transport links, and expat tips for District 2's newest neighborhood.",
+      "meta_char_count": 150,
+      "slug": "post/neighborhood/thu-thiem-neighborhood-guide-2026",
+      "primary_keyword": "thu thiem neighborhood guide",
+      "secondary_keywords": ["renting in thu thiem", "thu thiem expat living", "thu thiem vs district 2"],
+      "schema_types": ["Article", "FAQPage", "BreadcrumbList"],
+      "canonical_url": null,
+      "social": {
+        "og_title": "Thu Thiem Neighborhood Guide 2026 — Expat Rental Tips",
+        "og_description": "Everything expats need to know about living in Thu Thiem: rental prices, transport, best streets, and a 2026 market update.",
+        "og_image": "/images/thu-thiem-neighborhood-2026.jpg",
+        "twitter_card": "summary_large_image"
+      },
+      "frontmatter_fields": {
+        "publishDate": "2026-06-12T12:00:00+07:00",
+        "category": "neighborhood",
+        "tags": ["thu-thiem", "expat-living", "hcmc-neighborhoods", "renting-guide"],
+        "draft": false,
+        "image": "/images/thu-thiem-neighborhood-2026.jpg",
+        "author": "Lease in Vietnam Editorial Team"
+      },
+      "seo_publishing_overlay": {
+        "sprint_date": "2026-06-12",
+        "content_cluster": "neighborhood-comparison",
+        "pillar_page_url": "/guides/hcmc-neighborhoods",
+        "geo_ready": true
+      },
+      "status": "ready_to_publish",
+      "notes": "Apply frontmatter_fields to the MDX file before publish. Schema implementation (Article + FAQPage + BreadcrumbList) is a post-publish Frontend task per audit technical escalation."
+    }
+  ]
 }

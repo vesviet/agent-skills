@@ -5,9 +5,19 @@
   "description": "Wire-format wrapper for A2A operations (agent.invoke, agent.stream, tasks/get, tasks/cancel).",
   "type": "object",
   "properties": {
-    "jsonrpc": { "type": "string", "const": "2.0" },
+    "jsonrpc": {
+      "type": "string",
+      "const": "2.0"
+    },
     "id": {
-      "oneOf": [{ "type": "string" }, { "type": "integer" }]
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "integer"
+        }
+      ]
     },
     "method": {
       "type": "string",
@@ -31,12 +41,34 @@
     "error": {
       "type": "object",
       "properties": {
-        "code": { "type": "integer" },
-        "message": { "type": "string" },
-        "data": { "type": "object", "additionalProperties": true }
+        "code": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": true
+        }
       },
-      "required": ["code", "message"]
+      "required": [
+        "code",
+        "message"
+      ]
     }
   },
-  "required": ["jsonrpc"]
+  "required": [
+    "jsonrpc"
+  ],
+  "examples": [
+    {
+      "jsonrpc": "2.0",
+      "id": "req-001",
+      "method": "tasks/send",
+      "params": {
+        "id": "task-001"
+      }
+    }
+  ]
 }

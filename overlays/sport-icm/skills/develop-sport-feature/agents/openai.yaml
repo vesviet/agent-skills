@@ -1,4 +1,0 @@
-interface:
-  display_name: "Develop Sport Feature"
-  short_description: "Build features for the Sport ICM catalog site"
-  default_prompt: "Use $develop-sport-feature to add or modify a feature in this codebase."

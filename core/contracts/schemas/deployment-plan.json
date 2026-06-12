@@ -5,13 +5,20 @@
   "description": "Structured output for a deployment strategy and execution plan.",
   "type": "object",
   "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "deployment-plan",
+      "description": "Machine-readable contract discriminator."
+    },
     "version": {
       "type": "string",
       "description": "Version tag or commit hash being deployed."
     },
     "environments": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Target environments (e.g., staging, production)."
     },
     "steps": {
@@ -19,29 +26,106 @@
       "items": {
         "type": "object",
         "properties": {
-          "order": { "type": "integer" },
-          "action": { "type": "string" },
-          "is_destructive": { "type": "boolean" },
-          "owner": { "type": "string" }
+          "order": {
+            "type": "integer"
+          },
+          "action": {
+            "type": "string"
+          },
+          "is_destructive": {
+            "type": "boolean"
+          },
+          "owner": {
+            "type": "string"
+          }
         },
-        "required": ["order", "action", "is_destructive"]
+        "required": [
+          "order",
+          "action",
+          "is_destructive"
+        ]
       },
       "description": "Ordered sequence of deployment steps."
     },
     "rollback_plan": {
       "type": "object",
       "properties": {
-        "strategy": { "type": "string", "enum": ["revert_commit", "previous_image", "feature_flag_off", "manual_restore"] },
-        "estimated_time_mins": { "type": "integer" },
-        "data_loss_risk": { "type": "string", "enum": ["none", "low", "high"] }
+        "strategy": {
+          "type": "string",
+          "enum": [
+            "revert_commit",
+            "previous_image",
+            "feature_flag_off",
+            "manual_restore"
+          ]
+        },
+        "estimated_time_mins": {
+          "type": "integer"
+        },
+        "data_loss_risk": {
+          "type": "string",
+          "enum": [
+            "none",
+            "low",
+            "high"
+          ]
+        }
       },
-      "required": ["strategy", "data_loss_risk"]
+      "required": [
+        "strategy",
+        "data_loss_risk"
+      ]
     },
     "smoke_tests": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Post-deployment checks to verify health."
     }
   },
-  "required": ["version", "environments", "steps", "rollback_plan"]
+  "required": [
+    "contract_type",
+    "version",
+    "environments",
+    "steps",
+    "rollback_plan"
+  ],
+  "examples": [
+    {
+      "contract_type": "deployment-plan",
+      "plan_id": "2026-06-12-cod-store-order",
+      "service": "DMS orders-service",
+      "environment": "staging",
+      "version": "v1.4.2-cod-routing",
+      "steps": [
+        {
+          "order": 1,
+          "action": "Run database migration check (none required)",
+          "is_destructive": false,
+          "owner": "devops-engineer"
+        },
+        {
+          "order": 2,
+          "action": "Deploy to staging via CI pipeline",
+          "is_destructive": false,
+          "owner": "devops-engineer"
+        },
+        {
+          "order": 3,
+          "action": "Run smoke test: assign COD order to store 42",
+          "is_destructive": false,
+          "owner": "qa-engineer"
+        },
+        {
+          "order": 4,
+          "action": "Promote to production on QA sign-off",
+          "is_destructive": false,
+          "owner": "devops-engineer"
+        }
+      ],
+      "rollback_plan": "Revert deployment to previous build. No migration rollback required.",
+      "monitoring": "Watch order assignment error rate for 30 min post-deploy. Alert if > 0.5%."
+    }
+  ]
 }

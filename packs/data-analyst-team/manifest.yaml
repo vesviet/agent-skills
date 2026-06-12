@@ -1,0 +1,10 @@
+name: data-analyst-team
+description: Global engineering core plus DuckDB, Metabase, and BI analytics stack overlay for data analysts.
+version: 1.0.0
+tags:
+  - core
+author: user
+maintained_by: platform-team
+includes:
+  - core
+  - overlays/data-analyst-stack

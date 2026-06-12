@@ -28,18 +28,37 @@
     "capabilities": {
       "type": "object",
       "properties": {
-        "streaming": { "type": "boolean", "default": true },
-        "pushNotifications": { "type": "boolean", "default": false },
-        "stateTransitionHistory": { "type": "boolean", "default": true }
+        "streaming": {
+          "type": "boolean",
+          "default": true
+        },
+        "pushNotifications": {
+          "type": "boolean",
+          "default": false
+        },
+        "stateTransitionHistory": {
+          "type": "boolean",
+          "default": true
+        }
       },
-      "required": ["streaming", "stateTransitionHistory"]
+      "required": [
+        "streaming",
+        "stateTransitionHistory"
+      ]
     },
     "authentication": {
       "type": "object",
       "properties": {
         "schemes": {
           "type": "array",
-          "items": { "type": "string", "enum": ["Bearer", "none", "pack-local"] }
+          "items": {
+            "type": "string",
+            "enum": [
+              "Bearer",
+              "none",
+              "pack-local"
+            ]
+          }
         }
       }
     },
@@ -48,30 +67,65 @@
       "items": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "description": { "type": "string" },
-          "tags": { "type": "array", "items": { "type": "string" } },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "inputModes": {
             "type": "array",
-            "items": { "type": "string", "enum": ["text", "file", "data", "json"] }
+            "items": {
+              "type": "string",
+              "enum": [
+                "text",
+                "file",
+                "data",
+                "json"
+              ]
+            }
           },
           "outputModes": {
             "type": "array",
-            "items": { "type": "string", "enum": ["text", "file", "data", "json"] }
+            "items": {
+              "type": "string",
+              "enum": [
+                "text",
+                "file",
+                "data",
+                "json"
+              ]
+            }
           },
           "output_schema_refs": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "JSON Schema filenames this skill may produce."
           }
         },
-        "required": ["id", "name", "description"]
+        "required": [
+          "id",
+          "name",
+          "description"
+        ]
       }
     },
     "defaultOutputSchemas": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Default handoff schemas for this role."
     },
     "role_file": {
@@ -86,12 +140,62 @@
       "type": "object",
       "description": "Optional JWS signature for A2A 1.0 signed Agent Cards (enterprise).",
       "properties": {
-        "alg": { "type": "string", "enum": ["RS256", "ES256"] },
-        "jws": { "type": "string", "description": "Compact JWS over canonical card JSON." },
-        "key_id": { "type": "string" },
-        "signed_at": { "type": "string", "format": "date-time" }
+        "alg": {
+          "type": "string",
+          "enum": [
+            "RS256",
+            "ES256"
+          ]
+        },
+        "jws": {
+          "type": "string",
+          "description": "Compact JWS over canonical card JSON."
+        },
+        "key_id": {
+          "type": "string"
+        },
+        "signed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
       }
     }
   },
-  "required": ["name", "description", "url", "version", "protocol_version", "capabilities", "skills"]
+  "required": [
+    "name",
+    "description",
+    "url",
+    "version",
+    "protocol_version",
+    "capabilities",
+    "skills"
+  ],
+  "examples": [
+    {
+      "name": "Backend Developer Agent",
+      "description": "Implements backend features, APIs, and migrations following principal engineering standards",
+      "url": "https://api.personalized.dev/agents/backend-developer",
+      "version": "2.6.4",
+      "skills": [
+        {
+          "id": "add-api-endpoint",
+          "name": "Add API Endpoint",
+          "description": "Add a new API endpoint with business logic, validation, and tests"
+        },
+        {
+          "id": "create-migration",
+          "name": "Create Migration",
+          "description": "Create and validate a database schema migration"
+        }
+      ],
+      "defaultInputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "defaultOutputModes": [
+        "text/plain",
+        "application/json"
+      ]
+    }
+  ]
 }

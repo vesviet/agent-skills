@@ -1,4 +1,0 @@
-interface:
-  display_name: "Data Engineer"
-  short_description: "Read Excel, compare datasets, generate Excel reports"
-  default_prompt: "Use $data-engineer to import spreadsheet data, compare datasets, or generate formatted Excel reports."

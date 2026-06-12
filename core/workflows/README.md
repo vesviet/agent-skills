@@ -15,6 +15,13 @@ This directory contains reusable, longer-form workflows that sit above the indiv
 | [revert-deployment](revert-deployment.md) | Safely roll back a failed deployment or release |
 | [refactoring](refactoring.md) | Improve structure without changing behavior |
 | [agent-a2a-delegation](agent-a2a-delegation.md) | Full A2A 1.0 delegate with discovery, streaming, and artifact validation |
+| [security-incident-response](security-incident-response.md) | Respond to confirmed or suspected security incidents with safe containment and disclosure |
+| [data-migration](data-migration.md) | Plan, execute, and verify database schema migrations safely |
+| [dependency-upgrade](dependency-upgrade.md) | Safely upgrade dependencies with regression testing and security review |
+| [seo-keyword-brief](seo-keyword-brief.md) | SEO Analyst: research intent, define keywords, map topical authority, produce seo-content-brief.json |
+| [content-publishing](content-publishing.md) | Brief → draft → SEO audit → publish → publish-log (Content Writer + SEO Analyst + User) |
+| [tech-repo-review](tech-repo-review.md) | Holistic repo health audit: architecture fitness, code quality, security posture, dependency health, docs |
+| [qa-validation](qa-validation.md) | QA: coverage audit → risk-based test plan → execute → release confidence verdict |
 
 ## How To Use These
 
@@ -73,4 +80,4 @@ python3 core/scripts/validate-workflows.py
 
 The validator checks frontmatter, required sections, sequential steps, role ownership, checklists, related workflow links, skill references, and stale priority labels.
 
-Last updated: 2026-04-28
+Last updated: 2026-06-12

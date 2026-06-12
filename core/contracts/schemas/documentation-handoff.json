@@ -9,11 +9,17 @@
       "type": "string",
       "const": "documentation-handoff"
     },
-    "topic": { "type": "string" },
-    "audience": { "type": "string" },
+    "topic": {
+      "type": "string"
+    },
+    "audience": {
+      "type": "string"
+    },
     "doc_paths": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "doc_type": {
       "type": "string",
@@ -43,28 +49,47 @@
               "other"
             ]
           },
-          "ref": { "type": "string" }
+          "ref": {
+            "type": "string"
+          }
         },
-        "required": ["type", "ref"]
+        "required": [
+          "type",
+          "ref"
+        ]
       }
     },
-    "changed_behavior_summary": { "type": "string" },
-    "preserved_behavior_summary": { "type": "string" },
+    "changed_behavior_summary": {
+      "type": "string"
+    },
+    "preserved_behavior_summary": {
+      "type": "string"
+    },
     "verified_facts": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "stale_docs_removed": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "open_questions": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "status": {
       "type": "string",
-      "enum": ["draft", "review_ready", "published"]
+      "enum": [
+        "draft",
+        "review_ready",
+        "published"
+      ]
     }
   },
   "required": [
@@ -74,5 +99,28 @@
     "doc_paths",
     "doc_type",
     "status"
+  ],
+  "examples": [
+    {
+      "contract_type": "documentation-handoff",
+      "handoff_id": "2026-06-12-cod-routing-docs",
+      "feature_ticket_ref": "2026-06-12-change-store-order-cod",
+      "implementation_result_ref": "slice-01-command-logic",
+      "pages_to_update": [
+        {
+          "path": "docs/order-assignment-runbook.md",
+          "change": "Add COD store routing section with fallback behavior description"
+        },
+        {
+          "path": "docs/api/orders.md",
+          "change": "Document new store_id field behavior in POST /orders/assign-courier"
+        }
+      ],
+      "new_pages_needed": [],
+      "verified_facts": [
+        "COD orders with store_id route to store courier; fallback to warehouse with warning log on no active courier"
+      ],
+      "release_notes_snippet": "COD orders with a store_id are now routed to store-specific couriers for faster delivery. Warehouse fallback applies when no store courier is available."
+    }
   ]
 }

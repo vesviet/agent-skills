@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/data-engineer",
+  "contract_type": "agent-card",
   "name": "data-engineer",
   "description": "design, build, and maintain reliable data pipelines and storage layers so analysts and applications can trust timely, well-modeled, and governable data products. In 2025–2026, this extends to engineering data supply chains for AI/ML systems (embeddings, feature stores, multimodal lakehouses), enforcing data contracts as machine-readable engineering artifacts with automated validation, and owning real-time freshness requirements for AI-native applications.",
   "url": "pack://agent-skills/core/roles/data-engineer.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "build-data-pipeline",
       "name": "Build Data Pipeline",
-      "description": "Primary skill for data-engineer role.",
+      "description": "Design and implement data ingestion, transformation, and delivery pipelines including ETL/ELT, Parquet/DuckDB warehousing, dbt modeling, Airflow orchestration, Kafka streaming, and data quality gates. Use when the work requires a repeatable, owned pipeline — not a one-off analytical query.",
       "tags": [
-        "data",
+        "security",
         "pack"
       ],
       "inputModes": [
@@ -38,9 +48,9 @@
     {
       "id": "database-maintenance",
       "name": "Database Maintenance",
-      "description": "Primary skill for data-engineer role.",
+      "description": "Plan or perform operational database maintenance by following the repo's safety, backup, rollback, and verification patterns. Use for cleanup, backfill, index work, repair tasks, restore preparation, or other operational data changes.",
       "tags": [
-        "data",
+        "security",
         "pack"
       ],
       "inputModes": [
@@ -58,9 +68,9 @@
     {
       "id": "create-migration",
       "name": "Create Migration",
-      "description": "Primary skill for data-engineer role.",
+      "description": "Create safe schema or data migrations by following the repo's local migration tool, naming rules, rollout constraints, and rollback expectations. Use when adding, changing, backfilling, cleaning, or repairing persisted data structures.",
       "tags": [
-        "data",
+        "foundation",
         "pack"
       ],
       "inputModes": [

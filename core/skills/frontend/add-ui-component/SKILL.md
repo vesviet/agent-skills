@@ -13,7 +13,9 @@ Use this skill when a frontend change needs a new reusable component or a meanin
 - prefer composition over one-off duplication
 - keep accessibility, semantics, and keyboard behavior explicit
 - keep styling and state responsibilities narrow and understandable
+- consider performance impact: bundle size, lazy loading, and layout shift (CLS)
 - update visual or interaction tests when the component contract changes
+- if any code in this change was AI-generated, validate it per the risk tier defined in the frontend-developer role before accepting
 
 ## Suggested Process
 
@@ -84,6 +86,7 @@ Cover:
 - [ ] accessibility and semantics checked
 - [ ] state boundaries kept clear
 - [ ] styling follows local system
+- [ ] performance impact considered (bundle size, lazy loading, CLS)
 - [ ] tests added or updated
 
 ## Related Skills

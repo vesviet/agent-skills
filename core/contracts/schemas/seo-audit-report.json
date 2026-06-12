@@ -1,85 +1,453 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "seo-audit-report",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "contracts/schemas/seo-audit-report.json",
   "title": "SEO Audit Report",
-  "description": "Structured on-page SEO audit with issues, recommendations, and optional metadata fixes.",
+  "description": "Pre/post-publish audit produced by SEO Analyst using optimize-seo skill. Covers traditional SEO issues, AI extractability, metadata compliance, and technical escalation items. Validates against seo-analyst.md Review Checklist.",
   "type": "object",
+  "required": [
+    "audit_id",
+    "created_at",
+    "site",
+    "audited_url_or_path",
+    "audit_type",
+    "traditional_seo",
+    "ai_extractability",
+    "metadata_audit",
+    "cannibalization_check",
+    "handoff"
+  ],
   "properties": {
-    "contract_type": {
-      "type": "string",
-      "const": "seo-audit-report"
-    },
-    "page_url_or_path": {
+    "$schema": {
       "type": "string"
     },
-    "audit_date": {
+    "audit_id": {
       "type": "string",
-      "description": "ISO date of audit."
+      "description": "Unique identifier for this audit report.",
+      "examples": ["2026-06-12-lease-thu-thiem-pre-publish"]
     },
-    "focus_keyword": {
-      "type": "string"
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
     },
-    "issues": {
+    "site": {
+      "type": "string",
+      "enum": ["leaseinvietnam", "maylanhtreotuong", "vesviet", "learn", "other"]
+    },
+    "audited_url_or_path": {
+      "type": "string",
+      "description": "The draft path (repo-relative) or live URL that was audited."
+    },
+    "audit_type": {
+      "type": "string",
+      "enum": ["pre_publish", "post_publish", "periodic_refresh"],
+      "description": "Whether this is a pre-publish audit (draft), post-publish audit (live page), or periodic refresh."
+    },
+    "brief_ref": {
+      "type": "string",
+      "description": "Reference to the seo-content-brief.json brief_id this audit is based on."
+    },
+    "traditional_seo": {
+      "type": "object",
+      "description": "Traditional SEO on-page findings.",
+      "required": ["issues", "internal_links_audit", "overall_score"],
+      "properties": {
+        "issues": {
+          "type": "array",
+          "description": "Severitized list of SEO issues found. Empty array if no issues.",
+          "items": {
+            "type": "object",
+            "required": ["severity", "category", "finding", "recommendation"],
+            "properties": {
+              "severity": {
+                "type": "string",
+                "enum": ["critical", "high", "medium", "low", "info"],
+                "description": "critical = blocks publish; high = fix before publish; medium = fix in next revision; low/info = advisory."
+              },
+              "category": {
+                "type": "string",
+                "enum": [
+                  "title_tag",
+                  "meta_description",
+                  "slug",
+                  "heading_structure",
+                  "keyword_usage",
+                  "internal_links",
+                  "content_length",
+                  "faq_missing",
+                  "answer_first_missing",
+                  "schema",
+                  "cannibalization",
+                  "technical_seo",
+                  "other"
+                ]
+              },
+              "finding": { "type": "string", "description": "Specific finding with evidence (e.g. title is 72 chars, exceeds 60-char limit)." },
+              "recommendation": { "type": "string", "description": "Actionable fix recommendation." }
+            },
+            "additionalProperties": false
+          }
+        },
+        "internal_links_audit": {
+          "type": "object",
+          "description": "Verification of internal link plan from brief.",
+          "required": ["count_found", "minimum_required", "passes"],
+          "properties": {
+            "count_found": { "type": "integer", "description": "Number of valid internal links found in the draft/page." },
+            "minimum_required": { "type": "integer", "description": "Minimum required per site baseline (typically 3)." },
+            "passes": { "type": "boolean" },
+            "high_value_link_present": { "type": "boolean", "description": "Whether at least one high-value property/* or product/* link is present." },
+            "missing_links": { "type": "array", "items": { "type": "string" }, "description": "Links planned in brief but not found in draft." }
+          },
+          "additionalProperties": false
+        },
+        "overall_score": {
+          "type": "string",
+          "enum": ["pass", "conditional_pass", "fail"],
+          "description": "pass = ready to publish; conditional_pass = publish with noted caveats; fail = requires revision."
+        },
+        "overall_notes": {
+          "type": "string",
+          "description": "Summary of traditional SEO status and key action items."
+        }
+      },
+      "additionalProperties": false
+    },
+    "ai_extractability": {
+      "type": "object",
+      "description": "AI extractability audit — evaluates how well the content can be extracted and cited by generative AI engines.",
+      "required": [
+        "answer_first_structure",
+        "heading_hierarchy",
+        "fact_density",
+        "schema_markup",
+        "ai_bot_crawlability",
+        "overall_score"
+      ],
+      "properties": {
+        "answer_first_structure": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fail", "partial"] },
+            "notes": { "type": "string", "description": "e.g. 3 of 5 H2 sections have answer-first block; 2 sections bury answer in paragraph 3." }
+          },
+          "additionalProperties": false
+        },
+        "heading_hierarchy": {
+          "type": "object",
+          "description": "Checks H1→H2→H3 hierarchy is clean and query-intent aligned.",
+          "required": ["status"],
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fail", "partial"] },
+            "h1_count": { "type": "integer", "description": "Should be exactly 1." },
+            "issues": { "type": "array", "items": { "type": "string" } }
+          },
+          "additionalProperties": false
+        },
+        "fact_density": {
+          "type": "object",
+          "description": "Verifiable data points per 500 words. Target: minimum 3.",
+          "required": ["status"],
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fail", "partial"] },
+            "data_points_found": { "type": "integer" },
+            "word_count_approximate": { "type": "integer" },
+            "notes": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "schema_markup": {
+          "type": "object",
+          "description": "Whether required schema types from the brief are implemented on the live page.",
+          "required": ["status"],
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fail", "not_checked", "pending_frontend"] },
+            "types_present": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Schema types found on the page."
+            },
+            "types_missing": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Schema types required by brief but not yet implemented."
+            },
+            "notes": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "ai_bot_crawlability": {
+          "type": "object",
+          "description": "Robots.txt check for OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot.",
+          "required": ["status"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["verified_allowed", "blocked", "partial_block", "not_checked"]
+            },
+            "blocked_bots": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "List of blocked AI bots if status is blocked or partial_block."
+            },
+            "notes": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "content_uniqueness": {
+          "type": "object",
+          "description": "Information gain assessment versus SERP competitors.",
+          "required": ["status"],
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fail", "partial"] },
+            "information_gain_present": { "type": "boolean" },
+            "notes": { "type": "string", "description": "What unique value the article provides vs top-3 SERP results." }
+          },
+          "additionalProperties": false
+        },
+        "query_fan_out_coverage": {
+          "type": "object",
+          "description": "Whether the 3–5 query fan-out sub-questions from the brief are addressed in the article.",
+          "required": ["status"],
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fail", "partial"] },
+            "questions_covered": { "type": "array", "items": { "type": "string" } },
+            "questions_missing": { "type": "array", "items": { "type": "string" } }
+          },
+          "additionalProperties": false
+        },
+        "overall_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "AI extractability score 0–100 based on element statuses. Pass = 70+."
+        },
+        "overall_status": {
+          "type": "string",
+          "enum": ["pass", "conditional_pass", "fail"],
+          "description": "pass = 70+; conditional_pass = 50–69 with documented caveats; fail = below 50."
+        }
+      },
+      "additionalProperties": false
+    },
+    "metadata_audit": {
+      "type": "object",
+      "description": "Audit of title, meta description, and slug against brief and overlay rules.",
+      "required": ["title_audit", "meta_audit", "slug_audit"],
+      "properties": {
+        "title_audit": {
+          "type": "object",
+          "required": ["current_title", "char_count", "contains_primary_keyword", "within_limit", "status"],
+          "properties": {
+            "current_title": { "type": "string" },
+            "char_count": { "type": "integer" },
+            "contains_primary_keyword": { "type": "boolean" },
+            "within_limit": { "type": "boolean", "description": "True if ≤60 chars or within overlay-specified limit." },
+            "status": { "type": "string", "enum": ["pass", "fail", "needs_revision"] },
+            "recommended_title": { "type": "string", "description": "Revised title if status is fail or needs_revision." }
+          },
+          "additionalProperties": false
+        },
+        "meta_audit": {
+          "type": "object",
+          "required": ["current_meta", "char_count", "contains_primary_keyword", "within_limit", "status"],
+          "properties": {
+            "current_meta": { "type": "string" },
+            "char_count": { "type": "integer" },
+            "contains_primary_keyword": { "type": "boolean" },
+            "within_limit": { "type": "boolean", "description": "True if ≤160 chars or within overlay-specified limit." },
+            "status": { "type": "string", "enum": ["pass", "fail", "needs_revision"] },
+            "recommended_meta": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "slug_audit": {
+          "type": "object",
+          "required": ["current_slug", "status"],
+          "properties": {
+            "current_slug": { "type": "string" },
+            "contains_primary_keyword": { "type": "boolean" },
+            "follows_overlay_conventions": { "type": "boolean" },
+            "status": { "type": "string", "enum": ["pass", "fail", "needs_revision"] },
+            "recommended_slug": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "eeat_audit": {
+      "type": "object",
+      "description": "E-E-A-T signals audit. Checked against requirements specified in seo-content-brief.json.",
+      "properties": {
+        "experience_proof_present": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "status": { "type": "string", "enum": ["pass", "fail", "not_required"] },
+            "proof_type_found": { "type": "string", "description": "Type of experience proof found in the draft." },
+            "notes": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "author_entity_present": {
+          "type": "boolean",
+          "description": "Whether author attribution with profile link is present."
+        },
+        "trust_signals_present": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Trust signals actually found (source citations, contact info, etc.)."
+        },
+        "ymyl_elevated_review_done": {
+          "type": "boolean",
+          "description": "If ymyl_adjacent was true in the brief, whether elevated review was completed."
+        }
+      },
+      "additionalProperties": false
+    },
+    "cannibalization_check": {
+      "type": "object",
+      "description": "Final cannibalization verification at audit time (may differ from brief-time check if new posts published since).",
+      "required": ["status", "window_checked"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["clear", "risk_found", "exception_documented"]
+        },
+        "window_checked": {
+          "type": "string",
+          "description": "Date range checked (e.g. 2026-06-05 to 2026-06-12)."
+        },
+        "conflicting_url": {
+          "type": "string",
+          "description": "URL of conflicting page if risk_found."
+        },
+        "exception_rationale": {
+          "type": "string",
+          "description": "If exception_documented, explain why publishing is still appropriate."
+        }
+      },
+      "additionalProperties": false
+    },
+    "technical_escalations": {
       "type": "array",
+      "description": "Technical SEO items requiring Frontend, DevOps, or Cloudflare Engineer action. SEO Analyst specifies; does not implement.",
       "items": {
         "type": "object",
+        "required": ["type", "description", "owner"],
         "properties": {
-          "category": {
+          "type": {
             "type": "string",
-            "enum": [
-              "title",
-              "meta_description",
-              "headings",
-              "content",
-              "internal_links",
-              "slug",
-              "schema",
-              "technical",
-              "cannibalization",
-              "other"
-            ]
+            "enum": ["schema_implementation", "canonical", "redirect", "sitemap", "robots_txt", "core_web_vitals", "other"]
           },
-          "severity": {
-            "type": "string",
-            "enum": ["critical", "high", "medium", "low"]
-          },
-          "finding": { "type": "string" },
-          "recommendation": { "type": "string" }
+          "description": { "type": "string", "description": "Engineering-ready specification for the technical item." },
+          "owner": { "type": "string", "enum": ["frontend-developer", "devops-engineer", "cloudflare-engineer"] },
+          "priority": { "type": "string", "enum": ["must_do_before_publish", "post_publish", "next_sprint"] }
         },
-        "required": ["category", "severity", "finding", "recommendation"]
+        "additionalProperties": false
       }
     },
-    "passed_checks": {
-      "type": "array",
-      "items": { "type": "string" }
-    },
-    "cannibalization_notes": {
-      "type": "string"
-    },
-    "recommended_metadata": {
+    "handoff": {
       "type": "object",
-      "description": "Optional inline seo-metadata fields when audit proposes publish-ready fixes.",
+      "description": "Handoff routing and next steps.",
+      "required": ["status", "action_required"],
       "properties": {
-        "title_tag": { "type": "string", "maxLength": 60 },
-        "meta_description": { "type": "string", "maxLength": 160 },
-        "focus_keyword": { "type": "string" },
-        "secondary_keywords": {
-          "type": "array",
-          "items": { "type": "string" }
+        "status": {
+          "type": "string",
+          "enum": ["approved_to_publish", "revision_required", "escalated_to_frontend", "escalated_to_researcher"],
+          "description": "Overall audit outcome."
         },
-        "slug": { "type": "string" }
-      }
-    },
-    "confidence": {
-      "type": "string",
-      "enum": ["High", "Medium", "Low"]
+        "action_required": {
+          "type": "string",
+          "description": "Clear, actionable next step for the receiving role."
+        },
+        "metadata_contract_ready": {
+          "type": "boolean",
+          "description": "True if seo-metadata.json is produced and attached with this audit."
+        },
+        "contracts": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Related contract files.",
+          "examples": [["contracts/schemas/seo-metadata.json"]]
+        },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
     }
   },
-  "required": [
-    "contract_type",
-    "page_url_or_path",
-    "focus_keyword",
-    "issues",
-    "confidence"
+  "additionalProperties": false,
+  "examples": [
+    {
+      "audit_id": "2026-06-12-lease-thu-thiem-pre-publish",
+      "created_at": "2026-06-12T11:00:00+07:00",
+      "site": "leaseinvietnam",
+      "audited_url_or_path": "post/neighborhood/thu-thiem-neighborhood-guide-2026.mdx",
+      "audit_type": "pre_publish",
+      "brief_ref": "2026-06-12-lease-thu-thiem-neighborhood-guide",
+      "traditional_seo": {
+        "issues": [
+          {
+            "severity": "medium",
+            "category": "faq_missing",
+            "finding": "Draft does not include FAQ block. SERP competitors include FAQ in 4 of 5 top results.",
+            "recommendation": "Add ## FAQ section with 3 questions from query fan-out list. Required for FAQPage schema."
+          }
+        ],
+        "internal_links_audit": {
+          "count_found": 4,
+          "minimum_required": 3,
+          "passes": true,
+          "high_value_link_present": true,
+          "missing_links": []
+        },
+        "overall_score": "conditional_pass",
+        "overall_notes": "Add FAQ block before publish. All other traditional SEO elements pass."
+      },
+      "ai_extractability": {
+        "answer_first_structure": { "status": "pass", "notes": "All 5 H2 sections have answer-first block ≤60 words." },
+        "heading_hierarchy": { "status": "pass", "h1_count": 1, "issues": [] },
+        "fact_density": { "status": "pass", "data_points_found": 12, "word_count_approximate": 1650, "notes": "3.6 data points per 500 words — meets target." },
+        "schema_markup": { "status": "pending_frontend", "types_present": [], "types_missing": ["Article", "FAQPage", "BreadcrumbList"], "notes": "Technical ticket raised for Frontend." },
+        "ai_bot_crawlability": { "status": "verified_allowed", "notes": "robots.txt allows OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot." },
+        "content_uniqueness": { "status": "pass", "information_gain_present": true, "notes": "Includes 2026 rental price ranges from live listings and firsthand walkability description not found in top SERP results." },
+        "query_fan_out_coverage": { "status": "pass", "questions_covered": ["Is Thu Thiem good for expats?", "What is the average rent in Thu Thiem?", "How does Thu Thiem compare to District 1?", "What amenities are available?", "Is Thu Thiem safe?"], "questions_missing": [] },
+        "overall_score": 82,
+        "overall_status": "pass"
+      },
+      "metadata_audit": {
+        "title_audit": { "current_title": "Thu Thiem Neighborhood Guide 2026 | Expat Renting Tips", "char_count": 55, "contains_primary_keyword": true, "within_limit": true, "status": "pass" },
+        "meta_audit": { "current_meta": "Complete guide to renting in Thu Thiem in 2026. Rental prices, best streets, transport links, and expat tips for District 2's newest neighborhood.", "char_count": 150, "contains_primary_keyword": true, "within_limit": true, "status": "pass" },
+        "slug_audit": { "current_slug": "post/neighborhood/thu-thiem-neighborhood-guide-2026", "contains_primary_keyword": true, "follows_overlay_conventions": true, "status": "pass" }
+      },
+      "eeat_audit": {
+        "experience_proof_present": { "status": "pass", "proof_type_found": "firsthand_account", "notes": "First-person walkability description and actual lease price comparison included." },
+        "author_entity_present": true,
+        "trust_signals_present": ["source_citations", "verifiable_claims"],
+        "ymyl_elevated_review_done": false
+      },
+      "cannibalization_check": {
+        "status": "clear",
+        "window_checked": "2026-06-05 to 2026-06-12",
+        "conflicting_url": null,
+        "exception_rationale": null
+      },
+      "technical_escalations": [
+        {
+          "type": "schema_implementation",
+          "description": "Implement Article + FAQPage + BreadcrumbList JSON-LD. Article @id: https://leaseinvietnam.com/post/neighborhood/thu-thiem-neighborhood-guide-2026. Author Person schema: name=Lease in Vietnam Editorial Team, url=/about/team. Organization @id: https://leaseinvietnam.com/#organization. BreadcrumbList: Home > Neighborhoods > Thu Thiem Guide.",
+          "owner": "frontend-developer",
+          "priority": "post_publish"
+        }
+      ],
+      "handoff": {
+        "status": "revision_required",
+        "action_required": "Content Writer: add FAQ block (3 questions from query fan-out). After FAQ added, status upgrades to approved_to_publish. Frontend: implement schema after publish.",
+        "metadata_contract_ready": true,
+        "contracts": ["contracts/schemas/seo-metadata.json"],
+        "notes": "FAQ is the only blocker. All other audit elements pass."
+      }
+    }
   ]
 }

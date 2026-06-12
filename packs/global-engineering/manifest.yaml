@@ -1,4 +1,9 @@
 name: global-engineering
 description: Portable global engineering pack without repo-specific overlays.
+version: 1.0.0
+tags:
+  - core
+author: user
+maintained_by: platform-team
 includes:
   - core

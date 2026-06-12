@@ -1,528 +1,589 @@
 # Action Boundaries Policy
 # Defines what each role is allowed, requires approval for, or denied from doing.
 # Enforcement: agent-tool-orchestration checks this before state-changing actions.
-
 roles:
-  agent-coordinator:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-      - read_logs
-      - run_tests
-      - run_linter
-      - run_build
-    requires_approval:
-      - delete_file
-      - run_migration
-      - modify_environment_config
-      - install_dependency
-      - run_deployment
-      - export_data
-    denied:
-      - push_to_production
-      - modify_secrets
-      - drop_database
-      - force_push
-      - delete_branch_main
+    3d-graphics-engineer:
+      allowed:
+        - create_file
+        - read_file
+        - run_build
+        - run_dev_server
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - install_dependency
+        - modify_public_api_contract
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  agent-discovery-engineer:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-    requires_approval:
-      - delete_file
-      - run_build
-      - modify_dns_production
-      - purge_cache_zone
-    denied:
-      - run_migration
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - force_push
+    agent-coordinator:
+      allowed:
+        - create_file
+        - read_file
+        - read_logs
+        - run_build
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - export_data
+        - install_dependency
+        - modify_environment_config
+        - run_deployment
+        - run_migration
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_secrets
+        - push_to_production
 
-  business-analyst:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-      - read_database
-    requires_approval:
-      - delete_file
-      - run_build
-      - export_data
-    denied:
-      - run_migration
-      - modify_environment_config
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - install_dependency
-      - force_push
+    agent-discovery-engineer:
+      allowed:
+        - create_file
+        - read_file
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - modify_dns_production
+        - purge_cache_zone
+        - run_build
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  product-manager:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-      - read_database
-    requires_approval:
-      - delete_file
-      - run_build
-    denied:
-      - run_migration
-      - modify_environment_config
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - install_dependency
-      - force_push
+    ecommerce-engineer:
+      allowed:
+        - create_file
+        - read_database
+        - read_file
+        - read_logs
+        - run_build
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - export_data
+        - install_dependency
+        - modify_environment_config
+        - modify_payment_gateway_config
+        - modify_public_api_contract
+        - run_migration
+        - shipping_label_generation
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_secrets
+        - push_to_production
 
-  project-manager:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-      - read_database
-      - read_logs
-    requires_approval:
-      - delete_file
-      - run_build
-      - run_deployment
-    denied:
-      - run_migration
-      - modify_environment_config
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - force_push
 
-  task-planner:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-    requires_approval:
-      - delete_file
-      - run_build
-      - install_dependency
-    denied:
-      - run_migration
-      - modify_environment_config
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - force_push
+    backend-developer:
+      allowed:
+        - create_file
+        - read_file
+        - read_logs
+        - run_build
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - install_dependency
+        - modify_environment_config
+        - modify_public_api_contract
+        - run_migration
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_secrets
+        - push_to_production
 
-  technical-architect:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-      - run_tests
-      - run_linter
-      - run_build
-    requires_approval:
-      - delete_file
-      - run_migration
-      - modify_public_api_contract
-      - install_dependency
-    denied:
-      - push_to_production
-      - modify_secrets
-      - drop_database
-      - force_push
+    business-analyst:
+      allowed:
+        - create_file
+        - read_database
+        - read_file
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - export_data
+        - run_build
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - install_dependency
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  technical-lead:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-      - run_tests
-      - run_linter
-      - run_build
-      - read_logs
-    requires_approval:
-      - delete_file
-      - run_migration
-      - modify_environment_config
-      - install_dependency
-      - modify_public_api_contract
-    denied:
-      - push_to_production
-      - modify_secrets
-      - drop_database
-      - force_push
-      - delete_branch_main
+    cloudflare-engineer:
+      allowed:
+        - create_file
+        - read_file
+        - read_logs
+        - run_build
+        - run_deployment
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_cloudflare_resource
+        - modify_dns_production
+        - modify_environment_config
+        - modify_secrets
+        - purge_cache_zone
+        - push_to_production
+        - rollback_deployment
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
 
-  backend-developer:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - run_tests
-      - run_linter
-      - run_build
-      - search_code
-      - read_logs
-    requires_approval:
-      - delete_file
-      - run_migration
-      - modify_environment_config
-      - install_dependency
-      - modify_public_api_contract
-    denied:
-      - push_to_production
-      - modify_secrets
-      - drop_database
-      - force_push
-      - delete_branch_main
+    content-writer:
+      allowed:
+        - create_file
+        - read_database
+        - read_file
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - run_build
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - install_dependency
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  frontend-developer:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - run_tests
-      - run_linter
-      - run_build
-      - run_dev_server
-      - search_code
-    requires_approval:
-      - delete_file
-      - install_dependency
-      - modify_public_api_contract
-    denied:
-      - run_migration
-      - modify_secrets
-      - push_to_production
-      - drop_database
+    data-analyst:
+      allowed:
+        - create_file
+        - read_database
+        - read_file
+        - run_query
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - export_data
+        - run_build
+        - run_migration
+        - write_database
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
 
-  reviewer:
-    allowed:
-      - read_file
-      - search_code
-      - run_tests
-      - run_linter
-      - run_build
-      - read_logs
-    requires_approval:
-      - write_file
-    denied:
-      - delete_file
-      - run_migration
-      - modify_secrets
-      - push_to_production
-      - install_dependency
+    data-engineer:
+      allowed:
+        - create_file
+        - read_database
+        - read_file
+        - run_query
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - export_data
+        - run_migration
+        - write_database
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
 
-  qa-engineer:
-    allowed:
-      - read_file
-      - search_code
-      - run_tests
-      - run_linter
-      - run_build
-      - read_logs
-      - write_file
-    requires_approval:
-      - delete_file
-      - create_file
-    denied:
-      - run_migration
-      - modify_environment_config
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - force_push
+    devops-engineer:
+      allowed:
+        - create_file
+        - read_file
+        - read_logs
+        - run_build
+        - run_deployment
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - rollback_deployment
+        - run_migration
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
 
-  security-engineer:
-    allowed:
-      - read_file
-      - search_code
-      - run_tests
-      - run_linter
-      - run_build
-      - read_logs
-      - write_file
-    requires_approval:
-      - delete_file
-      - run_migration
-      - modify_environment_config
-    denied:
-      - push_to_production
-      - modify_secrets
-      - drop_database
-      - force_push
+    frontend-developer:
+      allowed:
+        - create_file
+        - read_file
+        - run_build
+        - run_dev_server
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - install_dependency
+        - modify_public_api_contract
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  devops-engineer:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - run_tests
-      - run_build
-      - read_logs
-      - run_deployment
-      - search_code
-    requires_approval:
-      - run_migration
-      - modify_environment_config
-      - modify_secrets
-      - push_to_production
-      - rollback_deployment
-    denied:
-      - drop_database
-      - force_push
-      - delete_branch_main
+    mobile-engineer:
+      allowed:
+        - create_file
+        - read_file
+        - run_build
+        - run_dev_server
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - install_dependency
+        - modify_public_api_contract
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  cloudflare-engineer:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - run_tests
-      - run_build
-      - read_logs
-      - run_deployment
-      - search_code
-    requires_approval:
-      - push_to_production
-      - rollback_deployment
-      - modify_environment_config
-      - modify_secrets
-      - modify_dns_production
-      - purge_cache_zone
-      - delete_cloudflare_resource
-    denied:
-      - drop_database
-      - force_push
-      - delete_branch_main
+    product-manager:
+      allowed:
+        - create_file
+        - read_database
+        - read_file
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - run_build
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - install_dependency
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  sre:
-    allowed:
-      - read_file
-      - search_code
-      - run_tests
-      - run_linter
-      - run_build
-      - read_logs
-      - read_database
-    requires_approval:
-      - write_file
-      - run_deployment
-      - run_migration
-      - modify_environment_config
-      - rollback_deployment
-    denied:
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - force_push
-      - delete_branch_main
+    project-manager:
+      allowed:
+        - create_file
+        - read_database
+        - read_file
+        - read_logs
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - run_build
+        - run_deployment
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  data-analyst:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-      - read_database
-      - run_query
-    requires_approval:
-      - write_database
-      - run_migration
-      - export_data
-      - delete_file
-      - run_build
-    denied:
-      - drop_database
-      - modify_secrets
-      - push_to_production
-      - modify_environment_config
-      - force_push
+    qa-engineer:
+      allowed:
+        - read_file
+        - read_logs
+        - run_build
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - create_file
+        - delete_file
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  data-engineer:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - run_tests
-      - search_code
-      - read_database
-      - run_query
-    requires_approval:
-      - write_database
-      - run_migration
-      - export_data
-      - delete_file
-    denied:
-      - drop_database
-      - modify_secrets
-      - push_to_production
+    researcher:
+      allowed:
+        - create_file
+        - read_database
+        - read_file
+        - read_logs
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - export_data
+        - install_dependency
+        - run_build
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  researcher:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-      - read_database
-      - read_logs
-    requires_approval:
-      - delete_file
-      - run_build
-      - export_data
-      - install_dependency
-    denied:
-      - run_migration
-      - modify_environment_config
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - force_push
+    reviewer:
+      allowed:
+        - read_file
+        - read_logs
+        - run_build
+        - run_linter
+        - run_tests
+        - search_code
+      requires_approval:
+        - write_file
+      denied:
+        - delete_branch_main
+        - delete_file
+        - drop_database
+        - force_push
+        - install_dependency
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  content-writer:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-      - read_database
-    requires_approval:
-      - delete_file
-      - run_build
-    denied:
-      - run_migration
-      - modify_environment_config
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - install_dependency
+    security-engineer:
+      allowed:
+        - read_file
+        - read_logs
+        - run_build
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - modify_environment_config
+        - run_migration
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_secrets
+        - push_to_production
 
-  seo-analyst:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-    requires_approval:
-      - delete_file
-      - run_build
-      - modify_environment_config
-    denied:
-      - run_migration
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - write_database
-      - force_push
+    seo-analyst:
+      allowed:
+        - create_file
+        - read_file
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - modify_environment_config
+        - run_build
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_secrets
+        - push_to_production
+        - run_migration
+        - write_database
 
-  technical-writer:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-    requires_approval:
-      - delete_file
-      - run_build
-    denied:
-      - run_migration
-      - modify_environment_config
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - install_dependency
-      - run_deployment
+    sre:
+      allowed:
+        - read_database
+        - read_file
+        - read_logs
+        - run_build
+        - run_linter
+        - run_tests
+        - search_code
+      requires_approval:
+        - modify_environment_config
+        - rollback_deployment
+        - run_deployment
+        - run_migration
+        - write_file
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_secrets
+        - push_to_production
 
-  teacher:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-    requires_approval:
-      - delete_file
-      - run_build
-      - export_data
-    denied:
-      - run_migration
-      - modify_environment_config
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - install_dependency
-      - force_push
+    task-planner:
+      allowed:
+        - create_file
+        - read_file
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - install_dependency
+        - run_build
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  ui-ux-designer:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - search_code
-      - run_dev_server
-    requires_approval:
-      - delete_file
-      - run_build
-    denied:
-      - run_migration
-      - modify_environment_config
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - install_dependency
-      - run_deployment
+    teacher:
+      allowed:
+        - create_file
+        - read_file
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - export_data
+        - run_build
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - install_dependency
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
 
-  3d-graphics-engineer:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - run_tests
-      - run_linter
-      - run_build
-      - run_dev_server
-      - search_code
-    requires_approval:
-      - delete_file
-      - install_dependency
-      - modify_public_api_contract
-    denied:
-      - run_migration
-      - modify_secrets
-      - push_to_production
-      - drop_database
+    technical-architect:
+      allowed:
+        - create_file
+        - read_file
+        - run_build
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - install_dependency
+        - modify_public_api_contract
+        - run_migration
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_secrets
+        - push_to_production
 
-  mobile-engineer:
-    allowed:
-      - read_file
-      - write_file
-      - create_file
-      - run_tests
-      - run_linter
-      - run_build
-      - run_dev_server
-      - search_code
-    requires_approval:
-      - delete_file
-      - install_dependency
-      - modify_public_api_contract
-    denied:
-      - run_migration
-      - modify_secrets
-      - push_to_production
-      - drop_database
-      - force_push
+    technical-lead:
+      allowed:
+        - create_file
+        - read_file
+        - read_logs
+        - run_build
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - install_dependency
+        - modify_environment_config
+        - modify_public_api_contract
+        - run_migration
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_secrets
+        - push_to_production
+
+    technical-writer:
+      allowed:
+        - create_file
+        - read_file
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - run_build
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - install_dependency
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_deployment
+        - run_migration
+
+    ui-ux-designer:
+      allowed:
+        - create_file
+        - read_file
+        - run_dev_server
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - run_build
+      denied:
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - install_dependency
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_deployment
+        - run_migration
 
 # Default: any action not listed for a role requires approval.
 default_policy: requires_approval

@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/data-analyst",
+  "contract_type": "agent-card",
   "name": "data-analyst",
   "description": "answer business questions with reproducible, well-documented analysis from tabular and warehouse data — defining metrics clearly, separating evidence from interpretation, and delivering stakeholder-ready reports without owning production pipeline infrastructure. In 2025–2026, this extends to using AI tools as analysis accelerators while owning all interpretation and causal reasoning decisions, and applying causal inference methods for high-stakes decisions rather than reporting correlation as causation.",
   "url": "pack://agent-skills/core/roles/data-analyst.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "analyze-data",
       "name": "Analyze Data",
-      "description": "Primary skill for data-analyst role.",
+      "description": "Explore datasets, define metrics, run reproducible SQL or tabular analysis, and produce stakeholder-ready insights with documented assumptions and lineage. Use when answering business questions from data, comparing datasets, building KPI definitions, or drafting dashboard requirements without owning production pipeline infrastructure.",
       "tags": [
-        "data",
+        "foundation",
         "pack"
       ],
       "inputModes": [
@@ -38,9 +48,9 @@
     {
       "id": "analyze-business-requirements",
       "name": "Analyze Business Requirements",
-      "description": "Primary skill for data-analyst role.",
+      "description": "Analyze and write business requirements by making actors, business rules, state transitions, exceptions, preserved behavior, and downstream process impact explicit. Use when a feature, policy change, or bug fix needs implementation-ready requirements and testable acceptance criteria.",
       "tags": [
-        "data",
+        "foundation",
         "pack"
       ],
       "inputModes": [

@@ -36,9 +36,25 @@ KNOWN_WORKFLOWS = {
     "service-review-release",
     "setup-new-service",
     "troubleshooting",
+    "data-migration",
+    "security-incident-response",
+    "dependency-upgrade",
+    "seo-keyword-brief",
+    "content-publishing",
+    "tech-repo-review",
+    "qa-validation",
 }
 PLACEHOLDER_REFS = {
     "description",
+    "true",
+    "false",
+    "carry-over",
+    "up",
+    "down",
+    "confidential",
+    "restricted",
+    "pip-audit",
+    "npm audit",
 }
 
 

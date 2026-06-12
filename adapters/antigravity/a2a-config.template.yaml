@@ -4,7 +4,7 @@
 a2a:
   enabled: true
   protocol_version: "1.0"
-  pack_version: "2.6.6"  # sync with VERSION file
+  pack_version: "2.8.0"  # sync with VERSION file
 
   discovery:
     registry: "core/a2a/.well-known/agent-registry.json"
@@ -35,14 +35,48 @@ a2a:
   policies:
     action_boundaries: "core/policies/action-boundaries.yaml"
     data_classification: "core/policies/data-classification.yaml"
+    mcp_tool_map: "core/policies/mcp-tool-map.yaml"
 
-  # Map Antigravity capability ids to pack role slugs (extend per project)
+  # Map Antigravity capability ids to pack role slugs.
+  # Keys are capability identifiers used in agent invocation; values are role slugs.
+  # The generated full map is at adapters/antigravity/capability-role-map.generated.yaml
   capability_role_map:
+    # Coordination
     coordinate-delivery: agent-coordinator
+    discover-agents: agent-discovery-engineer
+
+    # Engineering
     backend-implement: backend-developer
     frontend-implement: frontend-developer
+    mobile-implement: mobile-engineer
+    cloudflare-deploy: cloudflare-engineer
+    devops-deploy: devops-engineer
+    graphics-3d: 3d-graphics-engineer
+
+    # Quality & Review
     review-code: reviewer
     run-qa: qa-engineer
     security-audit: security-engineer
-    write-docs: technical-writer
+    sre-reliability: sre
+
+    # Architecture & Planning
+    architect-system: technical-architect
+    lead-delivery: technical-lead
+    plan-task: task-planner
+    manage-project: project-manager
+    manage-product: product-manager
+
+    # Analysis & Research
+    analyze-business: business-analyst
+    analyze-data: data-analyst
+    engineer-data: data-engineer
     deep-research: researcher
+
+    # Content & Documentation
+    write-article: content-writer
+    optimize-seo: seo-analyst
+    write-docs: technical-writer
+    teach-lesson: teacher
+
+    # Design
+    design-ux: ui-ux-designer

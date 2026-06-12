@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/ui-ux-designer",
+  "contract_type": "agent-card",
   "name": "ui-ux-designer",
   "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2026, this extends to designing for probabilistic AI systems (non-deterministic states, confidence indicators, transparency hooks, human override patterns), and to governing design systems as living infrastructure with W3C-compliant token architecture and automated design-to-code pipelines.",
   "url": "pack://agent-skills/core/roles/ui-ux-designer.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "design-ux-flow",
       "name": "Design Ux Flow",
-      "description": "Primary skill for ui-ux-designer role.",
+      "description": "Design or refine a UX flow by defining user goals, preserved behavior, screen states, interaction rules, edge cases, and adjacent flow impact. Use when a feature, bug fix, or behavior change needs a UX/UI brief that frontend and QA can implement and validate reliably.",
       "tags": [
-        "ui",
+        "foundation",
         "pack"
       ],
       "inputModes": [
@@ -39,9 +49,9 @@
     {
       "id": "meeting-review",
       "name": "Meeting Review",
-      "description": "Primary skill for ui-ux-designer role.",
+      "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.",
       "tags": [
-        "ui",
+        "foundation",
         "pack"
       ],
       "inputModes": [
@@ -60,9 +70,9 @@
     {
       "id": "navigate-service",
       "name": "Navigate Service",
-      "description": "Primary skill for ui-ux-designer role.",
+      "description": "Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session.",
       "tags": [
-        "ui",
+        "foundation",
         "pack"
       ],
       "inputModes": [

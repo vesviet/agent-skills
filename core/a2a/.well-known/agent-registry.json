@@ -6,157 +6,163 @@
   "agents": [
     {
       "role": "3d-graphics-engineer",
-      "agent_card": "core\\a2a\\registry\\3d-graphics-engineer.agent-card.json",
+      "agent_card": "core/a2a/registry/3d-graphics-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/3d-graphics-engineer.md",
       "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGL/WebGPU impleme"
     },
     {
       "role": "agent-coordinator",
-      "agent_card": "core\\a2a\\registry\\agent-coordinator.agent-card.json",
+      "agent_card": "core/a2a/registry/agent-coordinator.agent-card.json",
       "url": "pack://agent-skills/core/roles/agent-coordinator.md",
       "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality g"
     },
     {
       "role": "agent-discovery-engineer",
-      "agent_card": "core\\a2a\\registry\\agent-discovery-engineer.agent-card.json",
+      "agent_card": "core/a2a/registry/agent-discovery-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/agent-discovery-engineer.md",
       "description": "Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance acros"
     },
     {
       "role": "backend-developer",
-      "agent_card": "core\\a2a\\registry\\backend-developer.agent-card.json",
+      "agent_card": "core/a2a/registry/backend-developer.agent-card.json",
       "url": "pack://agent-skills/core/roles/backend-developer.md",
       "description": "build correct, maintainable, testable backend behavior across APIs, business logic, data access, and integrations while "
     },
     {
       "role": "business-analyst",
-      "agent_card": "core\\a2a\\registry\\business-analyst.agent-card.json",
+      "agent_card": "core/a2a/registry/business-analyst.agent-card.json",
       "url": "pack://agent-skills/core/roles/business-analyst.md",
       "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules,"
     },
     {
       "role": "cloudflare-engineer",
-      "agent_card": "core\\a2a\\registry\\cloudflare-engineer.agent-card.json",
+      "agent_card": "core/a2a/registry/cloudflare-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/cloudflare-engineer.md",
       "description": "own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration"
     },
     {
       "role": "content-writer",
-      "agent_card": "core\\a2a\\registry\\content-writer.agent-card.json",
+      "agent_card": "core/a2a/registry/content-writer.agent-card.json",
       "url": "pack://agent-skills/core/roles/content-writer.md",
       "description": "produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not "
     },
     {
       "role": "data-analyst",
-      "agent_card": "core\\a2a\\registry\\data-analyst.agent-card.json",
+      "agent_card": "core/a2a/registry/data-analyst.agent-card.json",
       "url": "pack://agent-skills/core/roles/data-analyst.md",
       "description": "answer business questions with reproducible, well-documented analysis from tabular and warehouse data — defining metrics"
     },
     {
       "role": "data-engineer",
-      "agent_card": "core\\a2a\\registry\\data-engineer.agent-card.json",
+      "agent_card": "core/a2a/registry/data-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/data-engineer.md",
       "description": "design, build, and maintain reliable data pipelines and storage layers so analysts and applications can trust timely, we"
     },
     {
       "role": "devops-engineer",
-      "agent_card": "core\\a2a\\registry\\devops-engineer.agent-card.json",
+      "agent_card": "core/a2a/registry/devops-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/devops-engineer.md",
       "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollo"
     },
     {
+      "role": "ecommerce-engineer",
+      "agent_card": "core/a2a/registry/ecommerce-engineer.agent-card.json",
+      "url": "pack://agent-skills/core/roles/ecommerce-engineer.md",
+      "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and "
+    },
+    {
       "role": "frontend-developer",
-      "agent_card": "core\\a2a\\registry\\frontend-developer.agent-card.json",
+      "agent_card": "core/a2a/registry/frontend-developer.agent-card.json",
       "url": "pack://agent-skills/core/roles/frontend-developer.md",
       "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business "
     },
     {
       "role": "mobile-engineer",
-      "agent_card": "core\\a2a\\registry\\mobile-engineer.agent-card.json",
+      "agent_card": "core/a2a/registry/mobile-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/mobile-engineer.md",
       "description": "deliver correct, performant, and accessible mobile experiences on iOS and Android by owning native app logic, platform i"
     },
     {
       "role": "product-manager",
-      "agent_card": "core\\a2a\\registry\\product-manager.agent-card.json",
+      "agent_card": "core/a2a/registry/product-manager.agent-card.json",
       "url": "pack://agent-skills/core/roles/product-manager.md",
       "description": "maximize user and business value through clear prioritization, scope control, and outcome-driven delivery without hiding"
     },
     {
       "role": "project-manager",
-      "agent_card": "core\\a2a\\registry\\project-manager.agent-card.json",
+      "agent_card": "core/a2a/registry/project-manager.agent-card.json",
       "url": "pack://agent-skills/core/roles/project-manager.md",
       "description": "turn agreed product scope into an executable plan with clear milestones, dependencies, owners, and risk control."
     },
     {
       "role": "qa-engineer",
-      "agent_card": "core\\a2a\\registry\\qa-engineer.agent-card.json",
+      "agent_card": "core/a2a/registry/qa-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/qa-engineer.md",
       "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escap"
     },
     {
       "role": "researcher",
-      "agent_card": "core\\a2a\\registry\\researcher.agent-card.json",
+      "agent_card": "core/a2a/registry/researcher.agent-card.json",
       "url": "pack://agent-skills/core/roles/researcher.md",
       "description": "run deep, iterative investigation and deliver triangulated, structured findings that downstream roles can act on without"
     },
     {
       "role": "reviewer",
-      "agent_card": "core\\a2a\\registry\\reviewer.agent-card.json",
+      "agent_card": "core/a2a/registry/reviewer.agent-card.json",
       "url": "pack://agent-skills/core/roles/reviewer.md",
       "description": "raise quality through precise, evidence-based review that catches defects, protects maintainability, and teaches good pa"
     },
     {
       "role": "security-engineer",
-      "agent_card": "core\\a2a\\registry\\security-engineer.agent-card.json",
+      "agent_card": "core/a2a/registry/security-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/security-engineer.md",
       "description": "reduce security risk early by identifying weaknesses in design, code, configuration, dependencies, and operations before"
     },
     {
       "role": "seo-analyst",
-      "agent_card": "core\\a2a\\registry\\seo-analyst.agent-card.json",
+      "agent_card": "core/a2a/registry/seo-analyst.agent-card.json",
       "url": "pack://agent-skills/core/roles/seo-analyst.md",
       "description": "ensure publishable content meets search intent across traditional search, AI Overviews, and answer engines — with defens"
     },
     {
       "role": "sre",
-      "agent_card": "core\\a2a\\registry\\sre.agent-card.json",
+      "agent_card": "core/a2a/registry/sre.agent-card.json",
       "url": "pack://agent-skills/core/roles/sre.md",
       "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2025–2026"
     },
     {
       "role": "task-planner",
-      "agent_card": "core\\a2a\\registry\\task-planner.agent-card.json",
+      "agent_card": "core/a2a/registry/task-planner.agent-card.json",
       "url": "pack://agent-skills/core/roles/task-planner.md",
       "description": "produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation check"
     },
     {
       "role": "teacher",
-      "agent_card": "core\\a2a\\registry\\teacher.agent-card.json",
+      "agent_card": "core/a2a/registry/teacher.agent-card.json",
       "url": "pack://agent-skills/core/roles/teacher.md",
-      "description": "empower Vietnamese middle school students (THCS - Lớp 6 đến Lớp 9) to acquire knowledge, internalize core concepts acros"
+      "description": "empower learners to acquire knowledge, internalize core concepts across subjects, and validate their understanding throu"
     },
     {
       "role": "technical-architect",
-      "agent_card": "core\\a2a\\registry\\technical-architect.agent-card.json",
+      "agent_card": "core/a2a/registry/technical-architect.agent-card.json",
       "url": "pack://agent-skills/core/roles/technical-architect.md",
       "description": "shape system structure and technical direction so the product can evolve safely, coherently, and at the right cost witho"
     },
     {
       "role": "technical-lead",
-      "agent_card": "core\\a2a\\registry\\technical-lead.agent-card.json",
+      "agent_card": "core/a2a/registry/technical-lead.agent-card.json",
       "url": "pack://agent-skills/core/roles/technical-lead.md",
       "description": "turn architecture and requirements into a delivery-ready technical plan, guide implementation quality, and keep engineer"
     },
     {
       "role": "technical-writer",
-      "agent_card": "core\\a2a\\registry\\technical-writer.agent-card.json",
+      "agent_card": "core/a2a/registry/technical-writer.agent-card.json",
       "url": "pack://agent-skills/core/roles/technical-writer.md",
       "description": "make systems, features, and operational procedures understandable so that users and teams can act without guesswork."
     },
     {
       "role": "ui-ux-designer",
-      "agent_card": "core\\a2a\\registry\\ui-ux-designer.agent-card.json",
+      "agent_card": "core/a2a/registry/ui-ux-designer.agent-card.json",
       "url": "pack://agent-skills/core/roles/ui-ux-designer.md",
       "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2"
     }

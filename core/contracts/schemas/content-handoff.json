@@ -2,81 +2,126 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "content-handoff",
   "title": "Content Handoff",
-  "description": "Structured deliverable for article drafts: path, research discipline, claims, and publish status.",
+  "description": "Structured handoff from Content Writer to editor, SEO Analyst, or publisher upon completing an article, post, or content piece. Consumed by SEO Analyst (for post-draft audit), Reviewer (for editorial check), and the publishing workflow. Pairs with seo-metadata.json for final publication metadata.",
   "type": "object",
   "properties": {
     "contract_type": {
       "type": "string",
-      "const": "content-handoff"
+      "const": "content-handoff",
+      "description": "Machine-readable contract discriminator."
     },
-    "working_title": { "type": "string" },
-    "site_or_repo": {
+    "handoff_id": {
       "type": "string",
-      "description": "e.g. leaseinvietnam, maylanhtreotuong, vesviet, learn"
+      "description": "Unique handoff identifier. Convention: YYYY-MM-DD-slug."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "site": {
+      "type": "string",
+      "description": "Target site slug (e.g. leaseinvietnam, maylanhtreotuong, vesviet, learn)."
     },
     "content_path": {
       "type": "string",
-      "description": "Repo-relative path to draft file."
+      "description": "Repo-relative path(s) to the content file(s) created or updated."
     },
-    "audience": { "type": "string" },
-    "goal_or_cta": { "type": "string" },
-    "channel": { "type": "string" },
-    "word_count_target": { "type": "string" },
-    "word_count_actual": { "type": "integer" },
-    "research_required": { "type": "boolean" },
-    "research_source": {
+    "status": {
       "type": "string",
-      "enum": [
-        "editorial_passes",
-        "researcher_report",
-        "supplied_only",
-        "mixed"
-      ]
+      "enum": ["draft_ready", "needs_revision", "approved", "published"],
+      "description": "Content status at time of handoff."
     },
-    "research_passes": {
+    "primary_keyword": {
+      "type": "string",
+      "description": "Primary SEO keyword targeted by this content."
+    },
+    "word_count": {
+      "type": "integer",
+      "description": "Approximate word count of the content body (excluding frontmatter)."
+    },
+    "editorial_passes": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of editorial passes completed before this handoff."
+    },
+    "research_sources": {
       "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "pass_number": { "type": "integer" },
-          "focus": { "type": "string" },
-          "sources": { "type": "string" }
-        },
-        "required": ["pass_number", "focus"]
-      }
+      "items": { "type": "string" },
+      "description": "Sources used in the content. Can be URLs, document names, or data references."
     },
-    "facts_vs_judgment_notes": { "type": "string" },
     "unverified_claims": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": { "type": "string" },
+      "description": "Claims that could not be fully verified and may need fact-checking."
+    },
+    "information_gain": {
+      "type": "string",
+      "description": "How this content adds unique value vs existing content on the topic."
+    },
+    "internal_links_added": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Internal page paths linked from this content."
+    },
+    "answer_first_implemented": {
+      "type": "boolean",
+      "description": "Whether Answer-First (direct answer in first paragraph) structure was applied."
+    },
+    "faq_implemented": {
+      "type": "boolean",
+      "description": "Whether an FAQ section was included."
     },
     "open_questions": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": { "type": "string" },
+      "description": "Open editorial or fact-checking questions for the next reviewer."
     },
-    "seo_brief_ref": {
-      "type": "string",
-      "description": "Path or id for seo-content-brief.json"
-    },
-    "internal_links_used": {
+    "recommended_next_roles": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string",
+        "enum": ["seo-analyst", "reviewer", "publisher", "editor"]
+      },
+      "description": "Roles that should act on this content next."
     },
-    "primary_keyword": { "type": "string" },
-    "status": {
+    "source_data": {
       "type": "string",
-      "enum": ["planned", "draft", "draft_ready", "audited", "published"]
-    },
-    "publish_log_updated": {
-      "type": "boolean",
-      "description": "True when plan/baiviet/publish-log.md was appended for this piece."
+      "description": "Reference to any research-report.json, seo-content-brief.json, or other structured input used."
     }
   },
   "required": [
     "contract_type",
-    "working_title",
-    "site_or_repo",
     "content_path",
     "status"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "contract_type": "content-handoff",
+      "handoff_id": "2026-06-12-how-to-lease-in-vietnam-guide",
+      "created_at": "2026-06-12T11:00:00+07:00",
+      "site": "leaseinvietnam",
+      "content_path": "src/data/post/guides/how-to-lease-in-vietnam-guide.mdx",
+      "status": "draft_ready",
+      "primary_keyword": "thuê nhà ở Việt Nam hướng dẫn",
+      "word_count": 1580,
+      "editorial_passes": 1,
+      "research_sources": [
+        "research-report/vietnam-leasing-market-2026",
+        "https://batdongsan.com.vn/thue-nha-ha-noi"
+      ],
+      "unverified_claims": [],
+      "information_gain": "First-person checklist format covering legal documents required by foreign nationals — not covered by competing posts",
+      "internal_links_added": [
+        "/property/ho-chi-minh-apartments",
+        "/guide/visa-and-residency",
+        "/guide/neighborhood-guide-district-2"
+      ],
+      "answer_first_implemented": true,
+      "faq_implemented": true,
+      "open_questions": [],
+      "recommended_next_roles": ["seo-analyst"],
+      "source_data": "seo-content-brief/thuê-nhà-ở-việt-nam-2026-06-10"
+    }
   ]
 }

@@ -58,4 +58,4 @@ Workflows index: `core/workflows/README.md`
 - Protocol skill: `agent-a2a-protocol`
 - Antigravity adapter: `adapters/antigravity/ANTIGRAVITY.md`
 - Emit JSON contracts from `core/contracts/schemas/` for cross-role handoffs
-- Policy: `core/policies/action-boundaries.yaml`
+- Policy: `core/policies/action-boundaries.yaml`, `core/policies/data-classification.yaml`

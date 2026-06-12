@@ -9,34 +9,114 @@
       "type": "string",
       "const": "architecture-options"
     },
-    "title": { "type": "string" },
-    "feature_ticket_ref": { "type": "string" },
-    "context": { "type": "string" },
+    "title": {
+      "type": "string"
+    },
+    "feature_ticket_ref": {
+      "type": "string"
+    },
+    "context": {
+      "type": "string"
+    },
     "constraints": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
-    "preserved_behavior": { "type": "string" },
+    "preserved_behavior": {
+      "type": "string"
+    },
     "options": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "option_id": { "type": "string" },
-          "summary": { "type": "string" },
-          "pros": { "type": "array", "items": { "type": "string" } },
-          "cons": { "type": "array", "items": { "type": "string" } },
-          "migration_effort": { "type": "string" },
-          "risk_notes": { "type": "string" }
+          "option_id": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "pros": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "migration_effort": {
+            "type": "string"
+          },
+          "risk_notes": {
+            "type": "string"
+          }
         },
-        "required": ["option_id", "summary"]
+        "required": [
+          "option_id",
+          "summary"
+        ]
       }
     },
-    "recommended_option_id": { "type": "string" },
+    "recommended_option_id": {
+      "type": "string"
+    },
     "open_questions": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     }
   },
-  "required": ["contract_type", "title", "context", "options"]
+  "required": [
+    "contract_type",
+    "title",
+    "context",
+    "options"
+  ],
+  "examples": [
+    {
+      "contract_type": "architecture-options",
+      "analysis_id": "2026-06-12-cod-routing-options",
+      "feature_ticket_ref": "2026-06-12-change-store-order-cod",
+      "question": "How should COD store order routing be implemented in NewLogicAutoAssign?",
+      "options": [
+        {
+          "option_id": "A",
+          "title": "Conditional branch in existing command",
+          "description": "Add if-block for COD+store_id inside existing NewLogicAutoAssign.php",
+          "pros": [
+            "Fast to ship; no new files"
+          ],
+          "cons": [
+            "Increases complexity; harder to test in isolation"
+          ],
+          "risk": "medium",
+          "effort": "low"
+        },
+        {
+          "option_id": "B",
+          "title": "Dedicated CodStoreRouter service class",
+          "description": "Extract routing logic to separate class called from command",
+          "pros": [
+            "Single responsibility; testable; extensible"
+          ],
+          "cons": [
+            "More files; slightly higher initial cost"
+          ],
+          "risk": "low",
+          "effort": "medium"
+        }
+      ],
+      "recommendation": "A",
+      "recommendation_rationale": "Given v1 scope and single rule, Option A is proportionate. Extract to service class in v2 if routing logic grows.",
+      "open_questions": [],
+      "decision_deferred_to": "adr-spec/adr-005-order-state-machine"
+    }
+  ]
 }

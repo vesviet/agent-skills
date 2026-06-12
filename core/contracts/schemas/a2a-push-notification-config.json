@@ -5,7 +5,9 @@
   "description": "Webhook configuration for async task completion (A2A 1.0 push notifications).",
   "type": "object",
   "properties": {
-    "task_id": { "type": "string" },
+    "task_id": {
+      "type": "string"
+    },
     "callback_url": {
       "type": "string",
       "format": "uri",
@@ -13,7 +15,11 @@
     },
     "auth_scheme": {
       "type": "string",
-      "enum": ["Bearer", "none", "HMAC"]
+      "enum": [
+        "Bearer",
+        "none",
+        "HMAC"
+      ]
     },
     "secret_ref": {
       "type": "string",
@@ -23,9 +29,27 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["task.completed", "task.failed", "task.canceled", "task.input-required"]
+        "enum": [
+          "task.completed",
+          "task.failed",
+          "task.canceled",
+          "task.input-required"
+        ]
       }
     }
   },
-  "required": ["task_id", "callback_url", "events"]
+  "required": [
+    "task_id",
+    "callback_url",
+    "events"
+  ],
+  "examples": [
+    {
+      "url": "https://hooks.personalized.dev/a2a-notify",
+      "token": "bearer-token-placeholder",
+      "authentication": {
+        "scheme": "Bearer"
+      }
+    }
+  ]
 }

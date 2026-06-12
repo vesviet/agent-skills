@@ -61,6 +61,7 @@ All roles in this pack are expected to:
 - [frontend-developer](frontend-developer.md)
 - [mobile-engineer](mobile-engineer.md)
 - [3d-graphics-engineer](3d-graphics-engineer.md)
+- [ecommerce-engineer](ecommerce-engineer.md)
 - [security-engineer](security-engineer.md)
 
 ### Quality, Delivery, And Operations
@@ -110,6 +111,7 @@ All roles in this pack are expected to:
 - Backend Developer
 - Frontend Developer
 - Mobile Engineer
+- E-commerce Engineer
 - Technical Lead
 - Security Engineer
 
@@ -191,6 +193,7 @@ All roles in this pack are expected to:
 | SEO Analyst | `/add-new-feature`, `/service-review-release` |
 | Data Analyst | `/add-new-feature`, `/troubleshooting` |
 | Data Engineer | `/troubleshooting`, `/setup-new-service` |
+| Ecommerce Engineer | `/add-new-feature`, `/refactoring`, `/hotfix-production`, `/troubleshooting` |
 | Teacher | `/add-new-feature`, `/refactoring` |
 
 ## Usage Notes

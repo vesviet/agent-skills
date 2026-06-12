@@ -13,7 +13,9 @@ Use this skill when a service needs a new endpoint or when an existing endpoint 
 - preserve backward compatibility unless the change is intentionally breaking
 - keep validation close to the boundary
 - keep transport logic thin and business logic in the repo's expected layer
+- wire auth/authz middleware per the repo's security pattern for every new endpoint
 - update tests and user-visible docs when the endpoint contract changes
+- if any code in this change was AI-generated, validate it per the risk tier defined in the backend-developer role before accepting
 
 ## Suggested Process
 
@@ -43,6 +45,7 @@ If the repo uses generated code, regenerate it with the local command after edit
 Add or update:
 
 - handler or controller wiring
+- auth/authz middleware per the repo's security pattern
 - request parsing
 - validation
 - error mapping
@@ -65,6 +68,7 @@ Verify:
 - consumers can tolerate the new response shape
 - removed or renamed fields are handled safely
 - new auth or config requirements are documented
+- if the repo uses API versioning, the endpoint is in the correct version namespace
 
 ### 6. Add Tests
 
@@ -82,9 +86,12 @@ Cover:
 - [ ] similar local pattern reviewed
 - [ ] API contract updated
 - [ ] generated artifacts updated if needed
+- [ ] auth/authz middleware wired
 - [ ] boundary validation added
 - [ ] business flow wired correctly
+- [ ] observability instrumented (OTel span on endpoint handler)
 - [ ] compatibility risk checked
+- [ ] API versioning verified (if repo uses versioned endpoints)
 - [ ] tests added or updated
 
 ## Related Skills
@@ -93,4 +100,5 @@ Cover:
 - **write-tests**: Add coverage for the new or changed endpoint
 - **review-code**: Check contract and boundary safety
 - **add-service-client**: Integrate downstream calls behind the endpoint
+- **add-telemetry-instrumentation**: Wire OTel spans for the endpoint
 - **commit-code**: Prepare the change for delivery

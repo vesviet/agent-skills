@@ -5,22 +5,47 @@
   "description": "Response for Get Task / List Tasks operations (A2A 1.0).",
   "type": "object",
   "properties": {
-    "task_id": { "type": "string" },
+    "task_id": {
+      "type": "string"
+    },
     "state": {
       "type": "string",
-      "enum": ["submitted", "working", "input-required", "completed", "failed", "canceled"]
+      "enum": [
+        "submitted",
+        "working",
+        "input-required",
+        "completed",
+        "failed",
+        "canceled"
+      ]
     },
-    "delegator": { "type": "string" },
-    "assignee_role": { "type": "string" },
+    "delegator": {
+      "type": "string"
+    },
+    "assignee_role": {
+      "type": "string"
+    },
     "interaction_mode": {
       "type": "string",
-      "enum": ["sync", "stream", "push"]
+      "enum": [
+        "sync",
+        "stream",
+        "push"
+      ]
     },
-    "created_at": { "type": "string", "format": "date-time" },
-    "updated_at": { "type": "string", "format": "date-time" },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
     "messages": {
       "type": "array",
-      "items": { "$ref": "a2a-message.json" }
+      "items": {
+        "$ref": "a2a-message.json"
+      }
     },
     "artifact": {
       "type": "object",
@@ -29,9 +54,32 @@
     },
     "blockers": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
-    "cancel_reason": { "type": "string" }
+    "cancel_reason": {
+      "type": "string"
+    }
   },
-  "required": ["task_id", "state", "updated_at"]
+  "required": [
+    "task_id",
+    "state",
+    "updated_at"
+  ],
+  "examples": [
+    {
+      "state": "completed",
+      "message": {
+        "role": "agent",
+        "parts": [
+          {
+            "type": "text",
+            "text": "slice-01-command-logic completed. implementation-result.json emitted. 2 files changed. Tests passing."
+          }
+        ]
+      },
+      "timestamp": "2026-06-12T11:30:00Z"
+    }
+  ]
 }

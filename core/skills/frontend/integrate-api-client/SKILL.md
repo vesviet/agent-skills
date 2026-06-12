@@ -13,7 +13,9 @@ Use this skill when frontend code needs to call a backend API or when an existin
 - keep transport details out of presentational components when possible
 - make loading, error, and retry behavior explicit
 - preserve auth and sensitive-data handling rules
+- preserve type safety between API contract and frontend usage (generated types, Zod, or repo-local pattern)
 - avoid duplicated request logic when a shared client already exists
+- if any code in this change was AI-generated, validate it per the risk tier defined in the frontend-developer role before accepting
 
 ## Suggested Process
 
@@ -79,7 +81,7 @@ Cover:
 ## Checklist
 
 - [ ] local data-fetching pattern reviewed
-- [ ] request and response contract defined
+- [ ] request and response contract defined (types preserved)
 - [ ] client or hook updated
 - [ ] UI wiring added
 - [ ] loading and error states handled

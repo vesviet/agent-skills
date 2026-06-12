@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/devops-engineer",
+  "contract_type": "agent-card",
   "name": "devops-engineer",
   "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollout safety, configuration integrity, and recovery paths. In 2025–2026, this extends to governing AI/ML model deployment pipelines with the same rigor as application deployments, enforcing GitOps-first infrastructure with automated drift detection, and applying supply chain security (SLSA, SBOM) to all delivery artifacts.",
   "url": "pack://agent-skills/core/roles/devops-engineer.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "setup-deployment",
       "name": "Setup Deployment",
-      "description": "Primary skill for devops-engineer role.",
+      "description": "Add or update deployment source-of-truth configuration for a service or component. Use when a change needs rollout manifests, release config, runtime settings, or environment wiring.",
       "tags": [
-        "devops",
+        "platform",
         "pack"
       ],
       "inputModes": [
@@ -38,9 +48,9 @@
     {
       "id": "debug-runtime-platform",
       "name": "Debug Runtime Platform",
-      "description": "Primary skill for devops-engineer role.",
+      "description": "Investigate deployment, environment, runtime, and rollout issues that are not purely application-code bugs. Use when the service behaves differently across environments or when deployment health is unclear.",
       "tags": [
-        "devops",
+        "platform",
         "pack"
       ],
       "inputModes": [
@@ -58,9 +68,9 @@
     {
       "id": "add-telemetry-instrumentation",
       "name": "Add Telemetry Instrumentation",
-      "description": "Primary skill for devops-engineer role.",
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns. Use when a service, feature, endpoint, job, or integration needs operational visibility.",
       "tags": [
-        "devops",
+        "platform",
         "pack"
       ],
       "inputModes": [
@@ -78,9 +88,9 @@
     {
       "id": "manage-secrets",
       "name": "Manage Secrets",
-      "description": "Primary skill for devops-engineer role.",
+      "description": "Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-control, and rollout patterns. Use when code or deployment work touches credentials, tokens, keys, or sensitive configuration.",
       "tags": [
-        "devops",
+        "security",
         "pack"
       ],
       "inputModes": [

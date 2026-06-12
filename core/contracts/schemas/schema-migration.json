@@ -5,11 +5,22 @@
   "description": "Structured output for a database migration plan.",
   "type": "object",
   "properties": {
-    "migration_name": { "type": "string" },
-    "database": { "type": "string" },
+    "contract_type": {
+      "type": "string",
+      "const": "schema-migration",
+      "description": "Machine-readable contract discriminator."
+    },
+    "migration_name": {
+      "type": "string"
+    },
+    "database": {
+      "type": "string"
+    },
     "changes": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "List of tables, columns, or indexes being added, modified, or dropped."
     },
     "is_destructive": {
@@ -20,10 +31,46 @@
       "type": "boolean",
       "description": "True if this migration locks tables for an extended period."
     },
-    "up_script": { "type": "string", "description": "Path to the UP migration script." },
-    "down_script": { "type": "string", "description": "Path to the DOWN migration script." },
-    "data_backfill_required": { "type": "boolean" },
-    "verification_steps": { "type": "array", "items": { "type": "string" } }
+    "up_script": {
+      "type": "string",
+      "description": "Path to the UP migration script."
+    },
+    "down_script": {
+      "type": "string",
+      "description": "Path to the DOWN migration script."
+    },
+    "data_backfill_required": {
+      "type": "boolean"
+    },
+    "verification_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
   },
-  "required": ["migration_name", "database", "changes", "is_destructive", "requires_downtime", "up_script", "down_script"]
+  "required": [
+    "contract_type",
+    "migration_name",
+    "database",
+    "changes",
+    "is_destructive",
+    "requires_downtime",
+    "up_script",
+    "down_script"
+  ],
+  "examples": [
+    {
+      "contract_type": "schema-migration",
+      "migration_id": "2026-06-12-add-store-courier-index",
+      "database": "dms_orders",
+      "migration_type": "index_add",
+      "up_script": "CREATE INDEX idx_store_couriers_store_id ON store_couriers(store_id) WHERE is_active = 1;",
+      "down_script": "DROP INDEX idx_store_couriers_store_id ON store_couriers;",
+      "estimated_duration_seconds": 5,
+      "data_loss_risk": "none",
+      "rollback_safe": true,
+      "pre_deploy_check": "Verify table has < 1M rows; run EXPLAIN on query before applying"
+    }
+  ]
 }

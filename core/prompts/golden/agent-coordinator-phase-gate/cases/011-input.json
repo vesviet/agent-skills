@@ -1,0 +1,10 @@
+{
+  "work_type": "bug",
+  "phase": "implementation",
+  "user_request": "The developer is mid-fix on the OAuth login bug but the fix depends on a third-party library upgrade that hasn't been approved yet.",
+  "context": {
+    "original_bug": "Login fails after password reset for OAuth users",
+    "blocker": "requires upgrade of oauth2-client from 3.1 to 3.2 — pending security review",
+    "current_branch": "fix/oauth-login-reset"
+  }
+}

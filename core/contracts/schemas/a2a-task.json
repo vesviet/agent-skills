@@ -11,7 +11,14 @@
     },
     "state": {
       "type": "string",
-      "enum": ["submitted", "working", "input-required", "completed", "failed", "canceled"],
+      "enum": [
+        "submitted",
+        "working",
+        "input-required",
+        "completed",
+        "failed",
+        "canceled"
+      ],
       "default": "submitted"
     },
     "delegator": {
@@ -41,22 +48,34 @@
     },
     "success_criteria": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Conditions that must be true for the task to be considered complete."
     },
     "constraints": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Boundaries the assignee must not exceed."
     },
     "risk_tier": {
       "type": "string",
-      "enum": ["vibe", "agentic", "engineering"],
+      "enum": [
+        "vibe",
+        "agentic",
+        "engineering"
+      ],
       "description": "Level of rigor required for this task."
     },
     "interaction_mode": {
       "type": "string",
-      "enum": ["sync", "stream", "push"],
+      "enum": [
+        "sync",
+        "stream",
+        "push"
+      ],
       "default": "stream",
       "description": "sync=blocking invoke; stream=SSE progress; push=webhook on completion."
     },
@@ -70,15 +89,24 @@
     },
     "messages": {
       "type": "array",
-      "items": { "type": "object", "additionalProperties": true },
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      },
       "description": "Conversation history (a2a-message.json objects)."
     },
     "push_notification_url": {
       "type": "string",
       "description": "Webhook when interaction_mode is push."
     },
-    "created_at": { "type": "string", "format": "date-time" },
-    "updated_at": { "type": "string", "format": "date-time" }
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
   },
   "required": [
     "task_id",
@@ -88,5 +116,24 @@
     "output_schema_ref",
     "success_criteria",
     "risk_tier"
+  ],
+  "examples": [
+    {
+      "id": "task-cod-store-routing-slice-01",
+      "session_id": "session-2026-06-12-cod-order",
+      "status": {
+        "state": "submitted"
+      },
+      "kind": "task",
+      "message": {
+        "role": "user",
+        "parts": [
+          {
+            "type": "text",
+            "text": "Implement COD store routing in NewLogicAutoAssign.php per slice-01 of technical-delivery-plan 2026-06-12-change-store-order-cod"
+          }
+        ]
+      }
+    }
   ]
 }

@@ -1,2 +1,4 @@
-name: add-telemetry-instrumentation
-description: Add logging, metrics, and tracing to a service
+interface:
+  display_name: "Add Telemetry Instrumentation"
+  short_description: "Add logging, metrics, and tracing to a service"
+  default_prompt: "Use $add-telemetry-instrumentation to add or update observability instrumentation for this service, endpoint, or integration."

@@ -14,6 +14,8 @@ Use this skill when a change involves publishing an event, consuming one, or ext
 - make idempotency explicit for event consumers
 - keep transport concerns separate from business decisions
 - document ordering, retry, and failure behavior when it matters
+- if the repo uses a schema registry (Avro, Protobuf, JSON Schema), register or update the event schema before publishing
+- if any code in this change was AI-generated, validate it per the risk tier defined in the backend-developer role before accepting
 
 ## Suggested Process
 
@@ -74,10 +76,11 @@ Cover:
 ## Checklist
 
 - [ ] event boundary understood
-- [ ] contract updated safely
+- [ ] contract updated safely (schema registry updated if applicable)
 - [ ] publisher or consumer logic implemented
 - [ ] idempotency considered
 - [ ] failure and retry behavior checked
+- [ ] observability instrumented (OTel span on publish/consume)
 - [ ] tests added or updated
 
 ## Related Skills
@@ -85,5 +88,6 @@ Cover:
 - **navigate-service**: Trace existing event patterns in the repo
 - **write-tests**: Add regression coverage for event behavior
 - **review-code**: Review compatibility and idempotency risk
+- **add-telemetry-instrumentation**: Wire OTel spans for publish/consume operations
 - **troubleshoot-service**: Debug failed consumers or publish flow issues
 - **commit-code**: Prepare the event change for delivery

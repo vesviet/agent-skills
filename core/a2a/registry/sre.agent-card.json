@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/sre",
+  "contract_type": "agent-card",
   "name": "sre",
   "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2025–2026, this extends to defining AI/ML-specific SLOs (output quality, inference latency, token cost budget, model drift), treating model degradation as a reliability incident, and operating proactive reliability practices (chaos engineering, error budget burn rate alerts, automated runbooks).",
   "url": "pack://agent-skills/core/roles/sre.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "debug-runtime-platform",
       "name": "Debug Runtime Platform",
-      "description": "Primary skill for sre role.",
+      "description": "Investigate deployment, environment, runtime, and rollout issues that are not purely application-code bugs. Use when the service behaves differently across environments or when deployment health is unclear.",
       "tags": [
-        "sre",
+        "platform",
         "pack"
       ],
       "inputModes": [
@@ -38,9 +48,9 @@
     {
       "id": "troubleshoot-service",
       "name": "Troubleshoot Service",
-      "description": "Primary skill for sre role.",
+      "description": "Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the failing layer, validating assumptions, and confirming recovery. Use when a service fails, behaves unexpectedly, or differs across environments.",
       "tags": [
-        "sre",
+        "foundation",
         "pack"
       ],
       "inputModes": [
@@ -58,9 +68,9 @@
     {
       "id": "add-telemetry-instrumentation",
       "name": "Add Telemetry Instrumentation",
-      "description": "Primary skill for sre role.",
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns. Use when a service, feature, endpoint, job, or integration needs operational visibility.",
       "tags": [
-        "sre",
+        "platform",
         "pack"
       ],
       "inputModes": [
@@ -78,9 +88,9 @@
     {
       "id": "performance-profiling",
       "name": "Performance Profiling",
-      "description": "Primary skill for sre role.",
+      "description": "Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, and validating improvements with repo-local tools. Use when performance, capacity, or resource usage needs evidence-based diagnosis.",
       "tags": [
-        "sre",
+        "foundation",
         "pack"
       ],
       "inputModes": [

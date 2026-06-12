@@ -30,6 +30,7 @@ SOURCE_REQUIRED = (
     "Prefer repo-local standards, templates, and workflows when they exist",
     "Do not invent repository conventions, paths, branching models, or release rules",
     "Keep code comments implementation-focused and useful",
+    "core/policies/action-boundaries.yaml",
 )
 
 ADAPTER_GROUPS = {
@@ -60,6 +61,10 @@ ADAPTER_GROUPS = {
         "checklist",
         "ONE step at a time",
         "Role:",
+    ),
+    "policy_enforcement": (
+        "action-boundaries.yaml",
+        "data-classification.yaml",
     ),
 }
 

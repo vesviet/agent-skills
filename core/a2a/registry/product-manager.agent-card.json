@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/product-manager",
+  "contract_type": "agent-card",
   "name": "product-manager",
   "description": "maximize user and business value through clear prioritization, scope control, and outcome-driven delivery without hiding impact, trade-offs, or regression risk inside vague scope decisions. In 2025–2026, this extends to governing AI product features (ethical constraints, explainability, HITL requirements), driving hypothesis-driven discovery before committing to build, and measuring outcomes with a North Star + journey metrics framework — not output volume.",
   "url": "pack://agent-skills/core/roles/product-manager.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "write-product-brief",
       "name": "Write Product Brief",
-      "description": "Primary skill for product-manager role.",
+      "description": "Write or refine a product brief that makes user value, business outcome, preserved behavior, affected users, acceptance boundaries, and trade-offs explicit. Use when a feature, bug fix, workaround, rollback, or scope decision needs a product-facing decision artifact before implementation or release.",
       "tags": [
-        "product",
+        "foundation",
         "pack"
       ],
       "inputModes": [
@@ -38,9 +48,9 @@
     {
       "id": "meeting-review",
       "name": "Meeting Review",
-      "description": "Primary skill for product-manager role.",
+      "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.",
       "tags": [
-        "product",
+        "foundation",
         "pack"
       ],
       "inputModes": [

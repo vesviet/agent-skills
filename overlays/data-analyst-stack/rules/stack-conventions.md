@@ -1,78 +1,47 @@
 # Stack Conventions — Data Analyst (DuckDB, Metabase, BI)
 
-Extends `core/roles/data-analyst.md` and `analyze-data` with toolchain-specific rules.
+Strict toolchain rules for the `data-analyst` role operating with DuckDB, Metabase, and Spreadsheet BI exports.
 
-## Data Layout
+## 1. Data Layout & Workspace Hygiene
 
-Under `ANALYTICS_DATA_ROOT` (default `./data/analytics`):
+To keep the analytics environment uncluttered, all analysis must occur strictly within the `ANALYTICS_DATA_ROOT` (default `./data/analytics`).
 
-```
+```text
 analytics/
-  raw/           # Immutable drops (gitignored)
-  staging/       # Cleaned single-table files
-  warehouse.duckdb
-  queries/       # Saved .sql — one logical query per file
-  exports/       # Dated Excel/CSV outputs (gitignored if sensitive)
-  specs/         # Metabase and BI requirement markdown/JSON
+  raw/           # Immutable raw drops (gitignored)
+  staging/       # Cleaned intermediate files
+  warehouse.duckdb # Local DuckDB instance
+  queries/       # Saved SQL scripts (.sql)
+  exports/       # Finalized Excel/CSV outputs (gitignored if sensitive)
+  specs/         # Metabase requirement docs (markdown/JSON)
 ```
 
-- Never commit `raw/`, `exports/`, or `warehouse.duckdb` when they contain PII or production snapshots.
-- Prefer Parquet over CSV for repeated analysis; document encoding for CSV (UTF-8 default).
+- **Saved SQL Rules:** All analytical queries must be saved as `.sql` files inside `queries/`. Do not run ephemeral queries without saving logic.
+- **SQL Headers:** Every `.sql` file MUST begin with a header specifying: `purpose`, `grain`, and `as_of` date.
+- **Data Privacy:** Absolutely NO Personally Identifiable Information (PII) is allowed to be committed to version control. PII must be aggregated, masked, or kept locally in gitignored folders.
 
-## DuckDB Rules
+## 2. DuckDB Execution Rules
 
-- Open connections with explicit path: `DUCKDB_PATH` or in-memory only for tiny probes.
-- Use parameterized views or documented filters — no string-concatenated user input in SQL files.
-- Log row counts after each materializing step (`CREATE TABLE AS`, `INSERT`, major `WHERE`).
-- Name saved queries `queries/<slug>.sql` with a header comment: purpose, grain, as-of date.
-- Read from engineered paths produced by Data Engineer; do not invent production ingest jobs in analyst scope.
+- **Connections:** Open connections using an explicit file path (`DUCKDB_PATH`), or strictly in-memory for ephemeral probes.
+- **Tracing:** Always log row counts after any materializing steps (`CREATE TABLE AS`, `INSERT`, major `WHERE`).
+- **Boundaries:** Analysts read from paths engineered by the `data-engineer`. Analysts DO NOT invent production ingest pipelines.
 
-Example header:
+## 3. Metabase Handoff Boundaries
 
-```sql
--- purpose: weekly active users by segment
--- grain: user_id, week_start (ISO Monday)
--- as_of: 2026-05-22
-```
+- **No Admin Assumptions:** The Data Analyst does NOT create dashboards directly in the production Metabase instance unless explicitly granted admin access.
+- **Specification Delivery:** The analyst delivers dashboard requirements purely as **Specs** (Markdown or JSON) stored in `specs/metabase/`.
+- **Spec Requirements:** Every spec MUST strictly define: the source table/view, the exact `dimensions`, `measures`, default `filters`, `segment` logic, and `refresh` intervals.
 
-## Metabase Rules (requirements only)
+## 4. Excel / BI Export Standards
 
-- Analyst delivers **specs** under `specs/metabase/<slug>.md` or structured JSON in the spec template.
-- Do not assume Metabase admin API access unless the user explicitly grants it.
-- Every card/question spec MUST list: data source (table/view), dimensions, measures, default filters, segment definitions, and refresh expectation.
-- Link expected Metabase collection or dashboard name when known; use `METABASE_INSTANCE_URL` for human-readable references.
+- **Output Path:** All exports must be saved to `exports/` with the filename pattern: `YYYY-MM-DD_<slug>.xlsx` (or `.csv`).
+- **Mandatory "Metrics" Sheet:** Every Excel export MUST include a dedicated "Metrics" sheet that clearly documents the definitions of the numbers presented.
+- **Structure:** Separate **Facts** (computed data tables) from **Notes** (analyst interpretation/insights) on distinct sheets or distinct visual sections.
+- **Anonymization:** Mask or aggregate all PII columns before export unless the user explicitly confirms clearance.
 
-## Excel / BI Export Rules
+## 5. Escalation To Data Engineer
 
-- Filename pattern: `exports/YYYY-MM-DD_<slug>.xlsx` (or `.csv` when Excel is not required).
-- Include a **Metrics** sheet or appendix with definitions copied from the analysis report.
-- Separate **Facts** (computed values) from **Notes** (interpretation) on distinct sheets or sections.
-- Mask or aggregate PII columns unless the user confirms clearance.
-
-## Session Checklist (stack overlay)
-
-1. Confirm `ANALYTICS_DATA_ROOT` and sources exist or request Data Engineer path.
-2. Frame business question and metric definitions (see `metric-dashboard-templates.md`).
-3. Run DuckDB analysis with logged steps and saved SQL under `queries/`.
-4. Produce `data-analysis-report.json` when machine handoff is required.
-5. Add Metabase or BI spec if dashboards are in scope.
-6. Write dated export under `exports/` when stakeholders need spreadsheets.
-
-## Escalation To Data Engineer
-
-Escalate when any of the following apply:
-
-- New recurring ingest, Airflow/dbt job, or Kafka/stream source is needed
-- Schema migration or production table write is required
-- DuckDB must be replaced by a shared warehouse with SLA and access control
-- Source data is missing, corrupt, or stale and needs pipeline fix
-
-Provide: business question, desired grain, sample row counts, failing query, and target table names.
-
-## Anti-Patterns (stack)
-
-- Embedding absolute machine-specific paths in committed SQL (use env or repo-relative roots)
-- Building Metabase questions in prose without measure/filter definitions
-- Shipping Excel without metric definitions or as-of date
-- Using analyst session to author Airflow DAGs or production migrations
-- Comparing two exports without documenting key normalization and timezone
+Escalate to a Data Engineer if:
+- New recurring ingest pipelines (Airflow, dbt) are needed.
+- DuckDB hits processing limits and needs replacement with a dedicated Cloud Data Warehouse.
+- Source data is missing, corrupt, or stale.

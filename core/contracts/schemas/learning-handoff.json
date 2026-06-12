@@ -24,15 +24,24 @@
     },
     "artifact_type": {
       "type": "string",
-      "enum": ["learning_plan", "exercises", "evaluation", "feedback"]
+      "enum": [
+        "learning_plan",
+        "exercises",
+        "evaluation",
+        "feedback"
+      ]
     },
     "goals": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "content_paths": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Repo paths to study guides, exercise files, or feedback markdown."
     },
     "score_out_of_10": {
@@ -43,15 +52,21 @@
     },
     "strengths": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "improvements": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "next_steps": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "moet_alignment_notes": {
       "type": "string",
@@ -59,7 +74,9 @@
     },
     "open_questions": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     }
   },
   "required": [
@@ -70,5 +87,27 @@
     "artifact_type",
     "goals",
     "next_steps"
+  ],
+  "examples": [
+    {
+      "contract_type": "learning-handoff",
+      "handoff_id": "2026-06-12-order-service-patterns",
+      "learner_profile": "New backend developer joining DMS team",
+      "topic": "Order assignment command patterns in orders-service",
+      "exercises_assigned": [
+        "trace COD routing path end-to-end",
+        "write test for fallback case"
+      ],
+      "key_concepts": [
+        "COD routing branch",
+        "store_couriers lookup",
+        "fallback with warning log"
+      ],
+      "resources": [
+        "docs/order-assignment-runbook.md",
+        "orders-service/app/Console/Commands/NewLogicAutoAssign.php"
+      ],
+      "assessment_criteria": "Can explain when COD routing branch activates and what happens when store service is unavailable"
+    }
   ]
 }

@@ -17,13 +17,26 @@
       "items": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "definition": { "type": "string" },
-          "value": { "type": "string" },
-          "grain": { "type": "string" },
-          "time_range": { "type": "string" }
+          "name": {
+            "type": "string"
+          },
+          "definition": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "grain": {
+            "type": "string"
+          },
+          "time_range": {
+            "type": "string"
+          }
         },
-        "required": ["name", "definition"]
+        "required": [
+          "name",
+          "definition"
+        ]
       }
     },
     "sources": {
@@ -31,37 +44,62 @@
       "items": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "path_or_table": { "type": "string" },
-          "as_of": { "type": "string" },
-          "limitations": { "type": "string" }
+          "name": {
+            "type": "string"
+          },
+          "path_or_table": {
+            "type": "string"
+          },
+          "as_of": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "string"
+          }
         },
-        "required": ["name", "path_or_table"]
+        "required": [
+          "name",
+          "path_or_table"
+        ]
       }
     },
     "findings": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "interpretation": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "data_quality_issues": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "recommendations": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "confidence": {
       "type": "string",
-      "enum": ["High", "Medium", "Low"]
+      "enum": [
+        "High",
+        "Medium",
+        "Low"
+      ]
     },
     "artifacts": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Paths to Excel, charts, or query exports."
     }
   },
@@ -72,5 +110,34 @@
     "sources",
     "findings",
     "confidence"
+  ],
+  "examples": [
+    {
+      "contract_type": "data-analysis-report",
+      "report_id": "2026-06-12-cod-order-failure-analysis",
+      "feature_ticket_ref": "2026-06-12-change-store-order-cod",
+      "question": "How often do COD store orders fail due to warehouse routing vs store routing mismatch?",
+      "period": "2026-05-01 to 2026-06-11",
+      "findings": [
+        {
+          "metric": "COD orders with store_id mis-routed to warehouse",
+          "value": "34%",
+          "context": "Of all COD+store orders in the period"
+        },
+        {
+          "metric": "Delivery failure rate for mis-routed COD orders",
+          "value": "18%",
+          "context": "vs 6% for correctly routed orders"
+        }
+      ],
+      "recommendation": "Implement COD store routing to reduce delivery failure rate by estimated 12 percentage points",
+      "caveats": [
+        "Analysis based on store_id field which was only 60% filled pre-Q2"
+      ],
+      "visualizations": [
+        "bar_chart: COD routing by month",
+        "funnel: mis-routing → delivery failure"
+      ]
+    }
   ]
 }

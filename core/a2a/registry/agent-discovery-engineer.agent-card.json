@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/agent-discovery-engineer",
+  "contract_type": "agent-card",
   "name": "agent-discovery-engineer",
   "description": "Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance across all 19 checks of the Agent Readiness standards (e.g., isitagentready.com). This covers Protocol Discovery, Commerce Standards, Discoverability, and Bot Access Control.",
   "url": "pack://agent-skills/core/roles/agent-discovery-engineer.md",
@@ -14,11 +16,19 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "manage-auth-md",
       "name": "Manage Auth Md",
-      "description": "Primary skill for agent-discovery-engineer role.",
+      "description": "Use when creating, updating, or auditing the /auth.md file at the repository or domain root to ensure agentic registration discovery compliance with WorkOS and isitagentready.com standards.",
       "tags": [
         "agent",
         "pack"
@@ -36,7 +46,7 @@
     {
       "id": "configure-oauth-metadata",
       "name": "Configure Oauth Metadata",
-      "description": "Primary skill for agent-discovery-engineer role.",
+      "description": "Use when configuring well-known OAuth and OpenID endpoints, particularly the agent_auth block for agentic registration.",
       "tags": [
         "agent",
         "pack"
@@ -54,7 +64,7 @@
     {
       "id": "debug-workos-integration",
       "name": "Debug Workos Integration",
-      "description": "Primary skill for agent-discovery-engineer role.",
+      "description": "Use when troubleshooting WorkOS Agentic Registration, Auth.md scanner errors, and SSO/Directory Sync issues.",
       "tags": [
         "agent",
         "pack"
@@ -72,7 +82,7 @@
     {
       "id": "configure-mcp",
       "name": "Configure Mcp",
-      "description": "Primary skill for agent-discovery-engineer role.",
+      "description": "Use when configuring Model Context Protocol (MCP) servers and WebMCP browser components to make a service natively accessible to AI clients through the standardized MCP discovery stack.",
       "tags": [
         "agent",
         "pack"
@@ -90,7 +100,7 @@
     {
       "id": "configure-agent-commerce",
       "name": "Configure Agent Commerce",
-      "description": "Primary skill for agent-discovery-engineer role.",
+      "description": "Use when implementing agentic commerce standards like x402, MPP, UCP, and ACP for transactional checkout flows in agent-driven applications.",
       "tags": [
         "agent",
         "pack"
@@ -108,7 +118,7 @@
     {
       "id": "configure-agent-headers",
       "name": "Configure Agent Headers",
-      "description": "Primary skill for agent-discovery-engineer role.",
+      "description": "Use when exposing RFC 8288 Link headers and DNS-AID configurations to make a web service natively discoverable by AI agents without requiring a dedicated well-known endpoint scan.",
       "tags": [
         "agent",
         "pack"
@@ -126,7 +136,7 @@
     {
       "id": "manage-api-catalog",
       "name": "Manage Api Catalog",
-      "description": "Primary skill for agent-discovery-engineer role.",
+      "description": "Use when publishing and maintaining RFC 9727 API Catalog registries for automated API discovery by agents, developer tools, and client SDKs.",
       "tags": [
         "agent",
         "pack"
@@ -144,7 +154,7 @@
     {
       "id": "configure-agent-skills",
       "name": "Configure Agent Skills",
-      "description": "Primary skill for agent-discovery-engineer role.",
+      "description": "Use when creating and managing the agentskills.io manifest index to expose API capabilities for agent capability routing and discovery.",
       "tags": [
         "agent",
         "pack"

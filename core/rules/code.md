@@ -10,6 +10,7 @@ description: "Minimal global rules for commit and publish approval, user-visible
 - Do not create a commit unless the user explicitly confirms that specific commit action.
 - Do not push commits, create tags, or publish releases unless the user explicitly confirms that specific action.
 - Repo-local rules override these defaults when they are explicitly present.
+- **POLICY-AS-CODE**: Obey `core/policies/action-boundaries.yaml` and `core/policies/data-classification.yaml` before executing any state-changing actions.
 - Ensure all code changes pass local linters, unit tests, and build checks before creating a commit.
 - Prefer repo-local standards, templates, and workflows when they exist.
 - Do not invent repository conventions, paths, branching models, or release rules that are not present in the active codebase.

@@ -1,0 +1,10 @@
+name: content-sprint-team
+description: Global engineering core plus SEO publishing sprint cadence overlay for generic dual-site sprints.
+version: 1.0.0
+tags:
+  - core
+author: user
+maintained_by: platform-team
+includes:
+  - core
+  - overlays/seo-publishing

@@ -15,6 +15,8 @@ Use this skill when a service must call another internal service, external API, 
 - consider circuit breakers for dependency calls that could cascade under load
 - map downstream errors into local domain or boundary errors intentionally
 - avoid widening the dependency surface more than necessary
+- add a tracing span for the outbound call if the repo uses distributed tracing (OpenTelemetry)
+- if any code in this change was AI-generated, validate it per the risk tier defined in the backend-developer role before accepting
 
 ## Suggested Process
 
@@ -74,6 +76,7 @@ Cover:
 - [ ] config and auth wired safely
 - [ ] timeout and retry behavior checked
 - [ ] error mapping reviewed
+- [ ] observability instrumented (OTel span on outbound call)
 - [ ] tests added or updated
 
 ## Related Skills
@@ -82,4 +85,5 @@ Cover:
 - **write-tests**: Add coverage for downstream interactions
 - **review-code**: Review dependency and reliability risk
 - **add-api-endpoint**: Expose the new client-backed behavior safely
+- **add-telemetry-instrumentation**: Wire OTel span for the outbound call
 - **commit-code**: Prepare the integration for delivery

@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/technical-writer",
+  "contract_type": "agent-card",
   "name": "technical-writer",
   "description": "make systems, features, and operational procedures understandable so that users and teams can act without guesswork.",
   "url": "pack://agent-skills/core/roles/technical-writer.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "write-documentation",
       "name": "Write Documentation",
-      "description": "Primary skill for technical-writer role.",
+      "description": "Draft or update technical documentation by following the repo's existing doc structure, audience needs, and source-of-truth boundaries. Use for README updates, service docs, runbooks, integration notes, or change explanations.",
       "tags": [
-        "technical",
+        "documentation",
         "pack"
       ],
       "inputModes": [
@@ -38,9 +48,9 @@
     {
       "id": "release-notes",
       "name": "Release Notes",
-      "description": "Primary skill for technical-writer role.",
+      "description": "Draft, structure, and review release notes for a software change so that users, operators, and downstream consumers understand what changed, what broke compatibility, and what action they must take. Use when shipping a feature, fix, or breaking change that requires external communication.",
       "tags": [
-        "technical",
+        "foundation",
         "pack"
       ],
       "inputModes": [

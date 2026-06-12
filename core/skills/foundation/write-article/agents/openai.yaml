@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Article"
+  short_description: "Draft SEO-optimised long-form articles"
+  default_prompt: "Use $write-article to draft or revise a long-form article following the content brief, SEO metadata, and site-specific style guide."

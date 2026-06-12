@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/researcher",
+  "contract_type": "agent-card",
   "name": "researcher",
   "description": "run deep, iterative investigation and deliver triangulated, structured findings that downstream roles can act on without re-researching the baseline. In 2025–2026, this means navigating an AI-saturated information landscape where LLM-generated content permeates the web — distinguishing primary human-verified sources from AI-synthesized aggregations, applying Chain-of-Verification for critical claims, and enabling information gain for downstream SEO and content roles.",
   "url": "pack://agent-skills/core/roles/researcher.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "conduct-research",
       "name": "Conduct Research",
-      "description": "Primary skill for researcher role.",
+      "description": "Execute iterative, deeply-verified research to discover, validate, and synthesize complex information. Use for deep (10+ round) or scoped (3+ round with waiver) investigation before architecture, product, or content decisions. Applies AI-era source discipline (primary source hierarchy, Chain-of-Verification, hallucination mitigation, grounding protocol) and delivers information gain assessment for SEO/content handoffs. Primary skill for the Researcher role.",
       "tags": [
-        "researcher",
+        "foundation",
         "pack"
       ],
       "inputModes": [

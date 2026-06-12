@@ -11,6 +11,7 @@ capability_role_map:
   data-analyst: data-analyst
   data-engineer: data-engineer
   devops-engineer: devops-engineer
+  ecommerce-engineer: ecommerce-engineer
   frontend-developer: frontend-developer
   mobile-engineer: mobile-engineer
   product-manager: product-manager

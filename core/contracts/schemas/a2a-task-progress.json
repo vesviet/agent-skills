@@ -17,11 +17,23 @@
         "task.canceled"
       ]
     },
-    "task_id": { "type": "string" },
-    "timestamp": { "type": "string", "format": "date-time" },
+    "task_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
     "state": {
       "type": "string",
-      "enum": ["submitted", "working", "input-required", "completed", "failed", "canceled"]
+      "enum": [
+        "submitted",
+        "working",
+        "input-required",
+        "completed",
+        "failed",
+        "canceled"
+      ]
     },
     "progress_percent": {
       "type": "integer",
@@ -38,7 +50,21 @@
       "description": "Incremental artifact fragment when event is task.artifact.",
       "additionalProperties": true
     },
-    "trace_id": { "type": "string" }
+    "trace_id": {
+      "type": "string"
+    }
   },
-  "required": ["event", "task_id", "timestamp"]
+  "required": [
+    "event",
+    "task_id",
+    "timestamp"
+  ],
+  "examples": [
+    {
+      "task_id": "task-cod-store-routing-slice-01",
+      "state": "working",
+      "progress": 0.6,
+      "message": "Modified NewLogicAutoAssign.php; writing unit tests"
+    }
+  ]
 }

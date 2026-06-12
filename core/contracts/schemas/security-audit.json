@@ -5,35 +5,117 @@
   "description": "Structured output for a security audit or vulnerability assessment.",
   "type": "object",
   "properties": {
-    "target": { "type": "string", "description": "Component, PR, or service being audited." },
-    "audit_type": { "type": "string", "enum": ["code_review", "dependency_check", "architecture_review", "penetration_test"] },
+    "contract_type": {
+      "type": "string",
+      "const": "security-audit",
+      "description": "Machine-readable contract discriminator."
+    },
+    "target": {
+      "type": "string",
+      "description": "Component, PR, or service being audited."
+    },
+    "audit_type": {
+      "type": "string",
+      "enum": [
+        "code_review",
+        "dependency_check",
+        "architecture_review",
+        "penetration_test"
+      ]
+    },
     "findings": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "vulnerability": { "type": "string" },
-          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
-          "cwe_id": { "type": "string" },
-          "description": { "type": "string" },
-          "remediation": { "type": "string" }
+          "vulnerability": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low",
+              "info"
+            ]
+          },
+          "cwe_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "remediation": {
+            "type": "string"
+          }
         },
-        "required": ["vulnerability", "severity", "description", "remediation"]
+        "required": [
+          "vulnerability",
+          "severity",
+          "description",
+          "remediation"
+        ]
       }
     },
-    "compliance_violations": { "type": "array", "items": { "type": "string" } },
-    "overall_risk_score": { "type": "string", "enum": ["critical", "high", "medium", "low", "pass"] },
+    "compliance_violations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "overall_risk_score": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low",
+        "pass"
+      ]
+    },
     "action_items": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "task": { "type": "string" },
-          "owner_role": { "type": "string" }
+          "task": {
+            "type": "string"
+          },
+          "owner_role": {
+            "type": "string"
+          }
         },
-        "required": ["task", "owner_role"]
+        "required": [
+          "task",
+          "owner_role"
+        ]
       }
     }
   },
-  "required": ["target", "audit_type", "findings", "overall_risk_score"]
+  "required": [
+    "contract_type",
+    "target",
+    "audit_type",
+    "findings",
+    "overall_risk_score"
+  ],
+  "examples": [
+    {
+      "contract_type": "security-audit",
+      "audit_id": "2026-06-12-cod-routing-security",
+      "scope": "NewLogicAutoAssign.php — COD store routing changes",
+      "audit_type": "code_review",
+      "overall_status": "pass",
+      "findings": [],
+      "owasp_checks": {
+        "injection": "pass",
+        "broken_auth": "not_applicable",
+        "sensitive_data": "pass",
+        "security_misconfiguration": "pass"
+      },
+      "recommendation": "No security issues found. Store courier lookup uses prepared statements. No secrets exposed."
+    }
+  ]
 }

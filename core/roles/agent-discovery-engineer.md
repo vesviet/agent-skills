@@ -80,12 +80,45 @@ This role must follow [role-standard](role-standard.md) first.
 ## Output Template
 
 ```markdown
-# Agent Discovery Deployment Plan
+# Agent Discovery Deployment Plan — <Domain>
 
-- Target Domain:
-- Auth.md Status:
-- Well-Known Endpoints:
-- Scanner Log Verification:
+## Context
+- Target domain:
+- Sprint or ticket ref:
+- Scanner: isitagentready.com (or equivalent)
+- Previous scan score:
+
+## Protocol Discovery Status
+- `/auth.md` present and validated: [yes / no / blocked]
+- `/.well-known/oauth-protected-resource`: [compliant / issue: ]
+- `/.well-known/oauth-authorization-server`: [compliant / issue: ]
+- `/.well-known/api-catalog`: [compliant / issue: ]
+- `/.well-known/mcp/server-card.json`: [compliant / issue: ]
+
+## Commerce Standards
+- x402 endpoint: [compliant / not implemented / issue: ]
+- MPP (Merchant Payment Protocol): [compliant / not implemented / issue: ]
+- UCP (User Context Protocol): [compliant / not implemented / issue: ]
+- ACP (Agentic Commerce Protocol): [compliant / not implemented / issue: ]
+
+## Discoverability
+- RFC 8288 `Link` headers configured: [yes / no]
+- DNS-AID configured: [yes / no]
+- Bot access control (robots.txt): [allows required bots / blocked: ]
+
+## Scanner Validation Log
+- Validation run at:
+- Score: / 19
+- Failing checks:
+
+## Escalations
+- Security Engineer (OAuth scopes, credentials): [none / issue: ]
+- Cloudflare Engineer (header injection, DNS): [none / issue: ]
+- DevOps (production deploy approval): [pending / approved]
+
+## Residual Risk
+- Open issues not yet resolved:
+- Next scan scheduled:
 ```
 
 ## Review Checklist

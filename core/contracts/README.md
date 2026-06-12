@@ -8,46 +8,72 @@ In 2026, agents must produce outputs that are not just human-readable but **mach
 
 Contracts use JSON Schema (draft 2020-12) and are enforced via native constrained decoding (Structured Outputs) or post-generation validation (Pydantic/Zod).
 
-## Directory Structure
+## Quick Reference
+
+See [`schemas/INDEX.md`](schemas/INDEX.md) for the full schema index with descriptions, ownership table, and cross-reference chain.
+
+## Delivery Chain (Primary Workflow)
 
 ```
-contracts/
-  README.md
-  schemas/
-    code-review-finding.json
-    implementation-result.json
-    validation-result.json
-    feature-ticket.json
-    data-analysis-report.json
-    content-handoff.json
-    ux-flow-spec.json
-    ui-component-spec.json
-    architecture-options.json
-    adr-spec.json
-    technical-delivery-plan.json
-    documentation-handoff.json
-    edge-deployment-spec.json
-    learning-handoff.json
-    seo-content-brief.json
-    seo-audit-report.json
-    seo-metadata.json
-    seo-weekly-board.json
-    agent-card.json
-    a2a-task.json
-    a2a-artifact.json
-    a2a-task-status.json
-    a2a-task-progress.json
-    a2a-message.json
-    a2a-jsonrpc-envelope.json
-    a2a-push-notification-config.json
-    a2a-task-cancel.json
-    agent-trace-span.json
-    coordination-plan.json
+feature-ticket.json          ← Business Analyst
+  → technical-delivery-plan.json  ← Technical Lead
+    → implementation-result.json  ← Developer (per slice)
+      → code-review-finding.json  ← Reviewer
+        → test-report.json        ← QA Engineer
+          → validation-result.json ← Agent Coordinator (phase gate)
 ```
 
-A2A registry (generated): `core/a2a/.well-known/agent-registry.json`
+## All Schemas (38 total)
 
-Adapters: `adapters/antigravity/ANTIGRAVITY.md`, `adapters/cursor/README.md`
+### Engineering Delivery
+- `feature-ticket.json` — Business requirements and AC
+- `technical-delivery-plan.json` — Sliced implementation plan from Technical Lead
+- `adr-spec.json` — Architecture Decision Record
+- `architecture-options.json` — Options analysis before ADR
+- `implementation-result.json` — Code change handoff from Developer
+- `api-contract-spec.json` — API endpoint definition
+- `deployment-plan.json` — General deployment steps
+- `edge-deployment-spec.json` — Cloudflare-specific deployment
+
+### Quality & Review
+- `code-review-finding.json` — Full code review with findings matrix
+- `test-report.json` — QA test execution report
+- `validation-result.json` — Phase gate validation
+- `security-audit.json` — Security audit findings
+- `performance-audit.json` — Performance profiling report
+- `incident-report.json` — SRE incident post-mortem
+
+### Design & Content
+- `ux-flow-spec.json` — Multi-screen UX flow handoff
+- `ui-component-spec.json` — UI component specification
+- `content-handoff.json` — Article/content completion handoff
+- `documentation-handoff.json` — Technical doc update handoff
+- `learning-handoff.json` — Teaching/exercise handoff
+- `research-report.json` — Research findings
+- `data-analysis-report.json` — Data analysis findings
+- `schema-migration.json` — Database migration definition
+
+### SEO & Publishing
+- `seo-content-brief.json` — SEO keyword brief and content plan
+- `seo-audit-report.json` — On-page SEO audit
+- `seo-metadata.json` — Page metadata (title, description, OG)
+- `seo-weekly-board.json` — Weekly content sprint board
+- `series-article.json` — Article series navigation
+
+### A2A Protocol
+- `coordination-plan.json` — Multi-agent phase graph
+- `a2a-task.json` — A2A task envelope
+- `a2a-task-status.json` — Task status update
+- `a2a-task-progress.json` — Task progress notification
+- `a2a-artifact.json` — Task output artifact
+- `a2a-task-cancel.json` — Task cancellation
+- `a2a-message.json` — A2A message unit
+- `a2a-jsonrpc-envelope.json` — JSON-RPC wrapper
+- `a2a-push-notification-config.json` — Push notification config
+
+### Agent Infrastructure
+- `agent-card.json` — Agent capability descriptor
+- `agent-trace-span.json` — OpenTelemetry trace span
 
 ## Usage In Skills
 
@@ -56,10 +82,15 @@ Every skill that produces structured output should reference a contract:
 ```markdown
 ## Output Schema
 
-Use: `contracts/schemas/code-review-finding.json`
+Use: `contracts/schemas/implementation-result.json`
 ```
 
 ## Validation
+
+```bash
+# Validate a contract instance (requires ajv-cli)
+npx ajv validate -s contracts/schemas/implementation-result.json -d my-output.json
+```
 
 Contracts should be validated against the JSON Schema meta-schema before use. Invalid schemas will produce unpredictable constrained decoding behavior.
 
@@ -68,3 +99,8 @@ Contracts should be validated against the JSON Schema meta-schema before use. In
 - when a new handoff type is needed between agents or workflow steps
 - when an existing skill output is consumed programmatically
 - when a tool server needs a typed input or output contract
+
+## Related
+
+- A2A registry: `core/a2a/.well-known/agent-registry.json`
+- Adapters: `adapters/antigravity/ANTIGRAVITY.md`, `adapters/cursor/README.md`

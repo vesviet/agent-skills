@@ -1,6 +1,8 @@
 {
+  "id": "pack://agent-skills/core/roles/teacher",
+  "contract_type": "agent-card",
   "name": "teacher",
-  "description": "empower Vietnamese middle school students (THCS - Lớp 6 đến Lớp 9) to acquire knowledge, internalize core concepts across all subjects, and validate their understanding through structured learning, practice, and feedback aligned with the MOET (Bộ GD&ĐT) curriculum.",
+  "description": "empower learners to acquire knowledge, internalize core concepts across subjects, and validate their understanding through structured learning, practice, and feedback aligned with designated educational curricula and standards.",
   "url": "pack://agent-skills/core/roles/teacher.md",
   "version": "2.8.0",
   "protocol_version": "1.0",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "design-learning-plan",
       "name": "Design Learning Plan",
-      "description": "Primary skill for teacher role.",
+      "description": "Create a structured, curriculum-aligned learning plan or syllabus. Use when planning a study schedule, syllabus, exam preparation roadmap, or grade transition plan for any educational level.",
       "tags": [
-        "teacher",
+        "education",
         "pack"
       ],
       "inputModes": [
@@ -38,9 +48,9 @@
     {
       "id": "create-exercises",
       "name": "Create Exercises",
-      "description": "Primary skill for teacher role.",
+      "description": "Design educational assignments, practice tests, and quizzes following designated curriculum matrices and cognitive models. Use when generating exercises, mock exams, or exam preparation materials for specific learning objectives.",
       "tags": [
-        "teacher",
+        "education",
         "pack"
       ],
       "inputModes": [
@@ -58,9 +68,9 @@
     {
       "id": "grade-and-review",
       "name": "Grade And Review",
-      "description": "Primary skill for teacher role.",
+      "description": "Evaluate learner work and provide constructive feedback on the designated grading scale. Use when grading assignments, reviewing student submissions, or providing improvement guidance at any educational level.",
       "tags": [
-        "teacher",
+        "education",
         "pack"
       ],
       "inputModes": [

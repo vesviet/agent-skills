@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/business-analyst",
+  "contract_type": "agent-card",
   "name": "business-analyst",
   "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules, edge cases, or downstream impact. In 2025–2026, this extends to writing behavioral requirements for AI/LLM features with probabilistic acceptance criteria and HITL escalation triggers, and to maintaining a living assumption register that makes the riskiest unverified beliefs visible before engineering builds.",
   "url": "pack://agent-skills/core/roles/business-analyst.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "analyze-business-requirements",
       "name": "Analyze Business Requirements",
-      "description": "Primary skill for business-analyst role.",
+      "description": "Analyze and write business requirements by making actors, business rules, state transitions, exceptions, preserved behavior, and downstream process impact explicit. Use when a feature, policy change, or bug fix needs implementation-ready requirements and testable acceptance criteria.",
       "tags": [
-        "business",
+        "foundation",
         "pack"
       ],
       "inputModes": [
@@ -38,9 +48,9 @@
     {
       "id": "meeting-review",
       "name": "Meeting Review",
-      "description": "Primary skill for business-analyst role.",
+      "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.",
       "tags": [
-        "business",
+        "foundation",
         "pack"
       ],
       "inputModes": [
@@ -58,9 +68,9 @@
     {
       "id": "navigate-service",
       "name": "Navigate Service",
-      "description": "Primary skill for business-analyst role.",
+      "description": "Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session.",
       "tags": [
-        "business",
+        "foundation",
         "pack"
       ],
       "inputModes": [

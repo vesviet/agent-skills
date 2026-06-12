@@ -1,0 +1,4 @@
+interface:
+  display_name: "Accessibility Review"
+  short_description: "Audit WCAG conformance and a11y issues"
+  default_prompt: "Use $accessibility-review to audit the accessibility of this component, page, or codebase for WCAG conformance and usability issues."

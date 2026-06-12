@@ -85,3 +85,4 @@ Outputs must conform to the `contracts/schemas/performance-audit.json` schema. P
 - **frontend-testing**: Re-check UI and interaction behavior after asset changes
 - **review-code**: Review material, loader, or runtime trade-offs
 - **troubleshoot-service**: Investigate delivery or environment issues affecting asset loading
+- **commit-code**: Prepare optimized assets for delivery

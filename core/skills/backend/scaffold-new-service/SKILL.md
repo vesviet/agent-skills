@@ -14,6 +14,8 @@ Use this skill when a repo needs a brand-new service, worker, or similar bounded
 - define ownership and boundaries before adding features
 - do not invent structure when the repo already has conventions
 - leave the new service ready for tests, docs, and delivery wiring
+- wire baseline observability (health endpoint, structured OTel spans on integration points) from the first commit
+- if any code in this change was AI-generated, validate it per the risk tier defined in the backend-developer role before accepting
 
 ## Suggested Process
 
@@ -84,6 +86,7 @@ Make sure the new service has:
 - [ ] identifiers renamed safely
 - [ ] minimum structure created
 - [ ] first end-to-end flow wired
+- [ ] baseline observability wired (health endpoint, OTel spans)
 - [ ] tests added
 - [ ] delivery handoff prepared
 
@@ -92,5 +95,6 @@ Make sure the new service has:
 - **create-migration**: Add initial schema changes if the service owns data
 - **write-tests**: Add safety-net coverage
 - **setup-deployment**: Add deployable source-of-truth config
+- **add-telemetry-instrumentation**: Wire baseline observability for the new service
 - **review-service**: Check readiness before wider rollout
 - **commit-code**: Prepare the new service work for delivery

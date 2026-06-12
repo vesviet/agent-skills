@@ -76,14 +76,6 @@ This role must follow [role-standard](role-standard.md) first.
 | **Security Engineer** | security-audit.json, threat model | General code quality findings |
 | **Technical Architect** | adr-spec.json, boundary policy | Implementation-level style decisions |
 
-## Role Boundaries
-
-| Role | Owns | Does not own |
-| ---- | ---- | ------------ |
-| **Reviewer** | code-review-finding.json, merge judgment | Running full QA matrices |
-| **QA Engineer** | test-report.json, validation-result.json | Code maintainability taste |
-| **Technical Lead** | technical-delivery-plan.json, readiness | Per-PR line comments unless reviewing |
-
 ## Collaboration & A2A Delegation
 
 - works with Technical Lead on tricky trade-offs; consume `contracts/schemas/technical-delivery-plan.json` for expected impact_radius

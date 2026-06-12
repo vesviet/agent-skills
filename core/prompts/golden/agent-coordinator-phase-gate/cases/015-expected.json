@@ -1,0 +1,13 @@
+{
+  "must_include": [
+    "SEV1 incident triage mode — SRE as incident commander",
+    "immediate mitigation options listed (rollback, traffic reroute, service restart)",
+    "impact radius confirmed across dependent services",
+    "no direct code changes without SRE or incident commander approval"
+  ],
+  "must_not_include": [
+    "attempt code fix before incident scope is confirmed",
+    "deploy changes to auth-service without SRE approval",
+    "dismiss incident severity without evidence"
+  ]
+}

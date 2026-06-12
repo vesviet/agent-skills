@@ -36,7 +36,7 @@ def role_files() -> list[Path]:
 
 def policy_roles() -> set[str]:
     text = POLICY_PATH.read_text(encoding="utf-8")
-    return set(re.findall(r"^  ([a-z0-9-]+):\n", text, re.M))
+    return set(re.findall(r"^ {2,4}([a-z0-9-]+):\n", text, re.M))
 
 
 def primary_skills(body: str) -> set[str]:

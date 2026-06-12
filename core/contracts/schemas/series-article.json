@@ -4,11 +4,24 @@
   "title": "Series Article",
   "description": "Schema for a series article output, validating required frontmatter fields and body structure before publishing.",
   "type": "object",
-  "required": ["frontmatter", "body"],
+  "required": [
+    "frontmatter",
+    "body"
+  ],
   "properties": {
     "frontmatter": {
       "type": "object",
-      "required": ["title", "date", "draft", "description", "ShowToc", "TocOpen", "weight", "categories", "tags"],
+      "required": [
+        "title",
+        "date",
+        "draft",
+        "description",
+        "ShowToc",
+        "TocOpen",
+        "weight",
+        "categories",
+        "tags"
+      ],
       "properties": {
         "title": {
           "type": "string",
@@ -44,19 +57,28 @@
         },
         "categories": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "minItems": 1
         },
         "tags": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "minItems": 2
         }
       }
     },
     "body": {
       "type": "object",
-      "required": ["prerequisite_block", "sections", "production_failure", "cta_link"],
+      "required": [
+        "prerequisite_block",
+        "sections",
+        "production_failure",
+        "cta_link"
+      ],
       "properties": {
         "prerequisite_block": {
           "type": "boolean",
@@ -85,5 +107,20 @@
         }
       }
     }
-  }
+  },
+  "examples": [
+    {
+      "contract_type": "series-article",
+      "series_id": "cod-order-guide-2026",
+      "article_index": 1,
+      "title": "COD Ordering Guide for Store Managers",
+      "previous_article_ref": null,
+      "next_article_ref": "how-to-track-your-cod-courier",
+      "summary": "Introduction to COD order routing for store managers",
+      "internal_links": [
+        "/property/ho-chi-minh-retail-stores",
+        "/guide/store-manager-dashboard"
+      ]
+    }
+  ]
 }

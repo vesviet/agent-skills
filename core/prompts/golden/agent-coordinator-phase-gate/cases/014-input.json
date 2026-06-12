@@ -1,0 +1,11 @@
+{
+  "work_type": "hotfix",
+  "phase": "triage",
+  "user_request": "Payments are failing for all users in production right now. We need a hotfix immediately.",
+  "context": {
+    "severity": "P0",
+    "affected_users": "100%",
+    "last_deploy": "30 minutes ago",
+    "suspected_cause": "environment config change"
+  }
+}

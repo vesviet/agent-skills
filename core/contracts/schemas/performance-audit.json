@@ -5,6 +5,11 @@
   "description": "Structured output for a frontend or 3D performance audit.",
   "type": "object",
   "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "performance-audit",
+      "description": "Machine-readable contract discriminator."
+    },
     "target": {
       "type": "string",
       "description": "Page, route, scene, or component being audited."
@@ -12,14 +17,38 @@
     "metrics": {
       "type": "object",
       "properties": {
-        "lcp_ms": { "type": "number", "description": "Largest Contentful Paint in milliseconds." },
-        "fid_ms": { "type": "number", "description": "First Input Delay in milliseconds." },
-        "cls": { "type": "number", "description": "Cumulative Layout Shift score." },
-        "ttfb_ms": { "type": "number", "description": "Time to First Byte in milliseconds." },
-        "fps": { "type": "number", "description": "Frames per second (for 3D scenes)." },
-        "memory_mb": { "type": "number", "description": "Peak memory usage in MB." },
-        "draw_calls": { "type": "integer", "description": "Number of draw calls (for 3D scenes)." },
-        "bundle_size_kb": { "type": "number", "description": "Total JS bundle size in KB." }
+        "lcp_ms": {
+          "type": "number",
+          "description": "Largest Contentful Paint in milliseconds."
+        },
+        "fid_ms": {
+          "type": "number",
+          "description": "First Input Delay in milliseconds."
+        },
+        "cls": {
+          "type": "number",
+          "description": "Cumulative Layout Shift score."
+        },
+        "ttfb_ms": {
+          "type": "number",
+          "description": "Time to First Byte in milliseconds."
+        },
+        "fps": {
+          "type": "number",
+          "description": "Frames per second (for 3D scenes)."
+        },
+        "memory_mb": {
+          "type": "number",
+          "description": "Peak memory usage in MB."
+        },
+        "draw_calls": {
+          "type": "integer",
+          "description": "Number of draw calls (for 3D scenes)."
+        },
+        "bundle_size_kb": {
+          "type": "number",
+          "description": "Total JS bundle size in KB."
+        }
       },
       "description": "Measured performance metrics."
     },
@@ -28,11 +57,27 @@
       "items": {
         "type": "object",
         "properties": {
-          "issue": { "type": "string" },
-          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
-          "recommendation": { "type": "string" }
+          "issue": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "recommendation": {
+            "type": "string"
+          }
         },
-        "required": ["issue", "severity", "recommendation"]
+        "required": [
+          "issue",
+          "severity",
+          "recommendation"
+        ]
       }
     },
     "device_profile": {
@@ -41,9 +86,38 @@
     },
     "verdict": {
       "type": "string",
-      "enum": ["pass", "conditional_pass", "fail"],
+      "enum": [
+        "pass",
+        "conditional_pass",
+        "fail"
+      ],
       "description": "Overall performance verdict."
     }
   },
-  "required": ["target", "findings", "verdict"]
+  "required": [
+    "contract_type",
+    "target",
+    "findings",
+    "verdict"
+  ],
+  "examples": [
+    {
+      "contract_type": "performance-audit",
+      "audit_id": "2026-06-12-order-assign-command-perf",
+      "component": "orders-service/NewLogicAutoAssign.php",
+      "baseline_p95_ms": 210,
+      "current_p95_ms": 340,
+      "regression_detected": true,
+      "findings": [
+        {
+          "finding": "Store courier lookup adds ~130ms per COD order due to N+1 query pattern",
+          "severity": "high",
+          "recommendation": "Batch store_id lookups; cache active store courier IDs for 60s"
+        }
+      ],
+      "action_items": [
+        "Add batch lookup in NewLogicAutoAssign.php store query"
+      ]
+    }
+  ]
 }

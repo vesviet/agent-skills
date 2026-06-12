@@ -1,30 +1,144 @@
 # MCP / IDE tool name → policy action id for action-boundaries.yaml checks.
 # Used by agent-tool-orchestration and Cursor hooks.template.json.
+#
+# Resolution order for shell/terminal commands:
+#   1. Check destructive_patterns (matched by substring, highest priority)
+#   2. Fall back to tool_actions mapping
+#   3. Default: requires_approval (per default_policy in action-boundaries.yaml)
 
 tool_actions:
+  # File operations
   read_file: read_file
+  view_file: read_file
+  open_file: read_file
   write: write_file
   write_file: write_file
+  edit_file: write_file
   create_file: create_file
   delete_file: delete_file
+  move_file: write_file
+
+  # Code navigation
   search: search_code
   grep: search_code
-  run_terminal_cmd: run_build
-  shell: run_build
+  find_in_files: search_code
+  search_code: search_code
+
+  # Build / test / lint
+  run_build: run_build
   run_tests: run_tests
   run_linter: run_linter
-  run_build: run_build
+  run_dev_server: run_dev_server
+
+  # Terminal / shell (coarse fallback — check destructive_patterns first)
+  run_terminal_cmd: run_build
+  shell: run_build
+  execute_command: run_build
+
+  # Database / data
+  query_db: run_query
+  execute_query: run_query
+  read_database: read_database
+
+  # Network / MCP
   mcp_call: read_file
   fetch: read_file
+  http_get: read_file
+  http_post: write_file
+
+  # Deployment / infra
+  wrangler_deploy: run_deployment
+  wrangler_publish: run_deployment
+  deploy: run_deployment
+
+  # Data export
+  export_csv: export_data
+  download_file: export_data
+  export_data: export_data
+
+  # Dependency management
+  npm_install: install_dependency
+  pip_install: install_dependency
+  yarn_add: install_dependency
+  cargo_add: install_dependency
 
 destructive_patterns:
+  # Git operations
+  - pattern: "git push --force"
+    action: force_push
+  - pattern: "git push -f"
+    action: force_push
+  - pattern: "git push origin --force"
+    action: force_push
+  - pattern: "git push origin -f"
+    action: force_push
   - pattern: "git push"
     action: push_to_production
   - pattern: "git commit"
     action: write_file
+  - pattern: "git branch -D"
+    action: delete_branch_main
+  - pattern: "git push origin :main"
+    action: delete_branch_main
+  - pattern: "git push origin :master"
+    action: delete_branch_main
+
+  # Database destructive operations
   - pattern: "drop database"
     action: drop_database
+  - pattern: "DROP DATABASE"
+    action: drop_database
+  - pattern: "DROP TABLE"
+    action: drop_database
+  - pattern: "TRUNCATE TABLE"
+    action: drop_database
+
+  # Migrations
   - pattern: "migrate"
     action: run_migration
+  - pattern: "db:migrate"
+    action: run_migration
+  - pattern: "prisma migrate"
+    action: run_migration
+  - pattern: "knex migrate"
+    action: run_migration
+
+  # Dependency installation
   - pattern: "npm install"
     action: install_dependency
+  - pattern: "pip install"
+    action: install_dependency
+  - pattern: "yarn add"
+    action: install_dependency
+  - pattern: "cargo add"
+    action: install_dependency
+  - pattern: "gem install"
+    action: install_dependency
+
+  # Deployment
+  - pattern: "wrangler deploy"
+    action: run_deployment
+  - pattern: "wrangler publish"
+    action: run_deployment
+  - pattern: "kubectl apply"
+    action: run_deployment
+  - pattern: "terraform apply"
+    action: run_deployment
+
+  # Rollback
+  - pattern: "rollback"
+    action: rollback_deployment
+  - pattern: "wrangler rollback"
+    action: rollback_deployment
+
+  # DNS / cache
+  - pattern: "wrangler dns"
+    action: modify_dns_production
+  - pattern: "cloudflare cache purge"
+    action: purge_cache_zone
+
+  # Secrets
+  - pattern: "wrangler secret put"
+    action: modify_secrets
+  - pattern: "wrangler secret delete"
+    action: modify_secrets

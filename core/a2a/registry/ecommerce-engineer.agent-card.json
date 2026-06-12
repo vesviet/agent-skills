@@ -1,0 +1,134 @@
+{
+  "id": "pack://agent-skills/core/roles/ecommerce-engineer",
+  "contract_type": "agent-card",
+  "name": "ecommerce-engineer",
+  "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale.",
+  "url": "pack://agent-skills/core/roles/ecommerce-engineer.md",
+  "version": "2.8.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "integrate-payment-gateway",
+      "name": "Integrate Payment Gateway",
+      "description": "Integrate or extend a payment gateway (Stripe, VNPay, PayPal, Momo, etc.) into an e-commerce application. Use when adding, replacing, or auditing a payment provider's checkout, refund, or webhook flow.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "handle-checkout-flow",
+      "name": "Handle Checkout Flow",
+      "description": "Design and implement the end-to-end checkout flow including cart management, tax and shipping calculation, discount/coupon application, and order confirmation. Use when building or fixing any step in the purchase funnel from cart to payment confirmation.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "manage-product-catalog",
+      "name": "Manage Product Catalog",
+      "description": "Build or maintain a product catalog including product creation, variant management (size, color, SKU), pricing, and inventory synchronization across channels. Use when adding, updating, or structuring product data in an e-commerce system.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "manage-order-fulfillment",
+      "name": "Manage Order Fulfillment",
+      "description": "Implement and manage the post-purchase order lifecycle including order status management, packing, shipping label generation, carrier tracking, and refund or return processing. Use when building or maintaining fulfillment workflows after a successful payment.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "configure-agent-commerce",
+      "name": "Configure Agent Commerce",
+      "description": "Use when implementing agentic commerce standards like x402, MPP, UCP, and ACP for transactional checkout flows in agent-driven applications.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "implementation-result.json"
+  ],
+  "role_file": "core/roles/ecommerce-engineer.md",
+  "policy_profile": "ecommerce-engineer"
+}

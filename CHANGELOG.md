@@ -2,6 +2,39 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [2.9.0] - 2026-06-12
+
+### Added — E-commerce Engineer Role & Commerce Skill Taxonomy
+
+- **`ecommerce-engineer` role**: Principal-level role owning the full e-commerce stack (catalog, checkout, payment, fulfillment) with 5 primary skills and commerce-specific LOCK guardrails (`PAYMENT-LOCK`, `PRICE-TRUST LOCK`, `IDEMPOTENCY LOCK`, `STATE-MACHINE LOCK`)
+- **`integrate-payment-gateway` skill** (`commerce/`): Stripe, VNPay, PayPal, Momo integration with idempotency keys, webhook signature validation, and PCI-safe tokenization
+- **`handle-checkout-flow` skill** (`commerce/`): End-to-end checkout funnel — cart, tax, shipping, coupon, payment, confirmation — with server-side price enforcement
+- **`manage-product-catalog` skill** (`commerce/`): Product and variant data model, SKU uniqueness, atomic inventory operations, pricing versioning, multi-channel sync
+- **`manage-order-fulfillment` skill** (`commerce/`): Order state machine, carrier label generation, tracking webhooks, return/refund flows
+- New **Commerce** taxonomy in `core/skills/` (4 skills)
+- `ecommerce-engineer` action boundary policy (`action-boundaries.yaml`) — `modify_payment_gateway_config` and `shipping_label_generation` require approval
+- A2A agent card for `ecommerce-engineer` generated and registered in `core/a2a/.well-known/agent-registry.json`
+
+### Changed — Core Rules & Skills Audit
+
+- **`core/rules/code.md`**: Added mandatory `POLICY-AS-CODE` rule requiring all agents to verify against `action-boundaries.yaml` and `data-classification.yaml` before state-changing actions
+- **`validate-rules.py`**: Added `policy_enforcement` parity group to enforce that all adapters reference both policy files
+- **`.github/copilot-instructions.md`**: Added missing `data-classification.yaml` reference to pass policy parity check
+- **`core/skills/security-data/data-engineer/`**: Removed deprecated redirect skill (zero remaining references confirmed); skill count updated accordingly
+- **Education skills** (`create-exercises`, `design-learning-plan`, `grade-and-review`): Generalized from hardcoded Vietnamese MOET / THCS to portable global education standards (Bloom's Taxonomy, configurable grading scale, standard academic calendar). Vietnamese-specific conventions may be provided as context by the caller or via overlay.
+- **`teacher` role**: Generalized to portable educator role (removed hardcoded MOET references); Output Template now in English with bilingual-friendly structure
+- **`core/skills/README.md`**: Updated taxonomy counts, added Commerce section; counts now 76 core + 7 overlay = 83 total
+- **`core/roles/README.md`**: Registered `ecommerce-engineer` in Architecture & Engineering, Implementation lifecycle, and Workflow mapping table
+- **`overlays/sport-icm/`**: Restored missing directory and `rules/sport-project-rules.md` referenced by `packs/sport-team/manifest.yaml`
+- **Root `README.md`**: Updated Overlay list (added `astro-cloudflare`, `data-analyst-stack`, `go-microservices`); fixed stale skill references (`manage-wrangler-deploy` → `wrangler`, `data-engineer` → `build-data-pipeline`); added Commerce domain to delivery domains table
+
+### Validation — All Validators Green
+
+- Rules: ✅ | Skills: ✅ 83 checked | Roles: ✅ 27 checked | Workflows: ✅ 16 checked
+- Packs: ✅ 12 checked | Overlays: ✅ 15 checked | Contracts: ✅ 38 checked
+- 2026 Compliance: ✅ 27 roles / 27 policies / graph + coordinator A2A wired
+- A2A Full Compliance: ✅ | Agent Cards: ✅ 27 checked | Standardization: ✅ 100%
+
 ## [2.8.0] - 2026-06-05
 
 ### Changed — 2026 AI Governance & Standards Upgrade Wave

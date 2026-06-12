@@ -2,13 +2,13 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 60 portable core skills under `core/skills/` + 8 overlay skills under `overlays/*/skills/` = **68 total** (run `validate-skills.py` for the live total).
+**Counts:** 76 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **83 total** (run `validate-skills.py` for the live total).
 
 ## Taxonomy
 
-### Agent (12)
+### Agent (20)
 
-Agent operating discipline and orchestration:
+Agent operating discipline, orchestration, and agentic web standards:
 
 - `agent-a2a-protocol`
 - `agent-context-management`
@@ -22,6 +22,19 @@ Agent operating discipline and orchestration:
 - `agent-semantic-memory`
 - `agent-tool-orchestration`
 - `agent-quality-gate`
+
+#### Agent Infrastructure & Agentic Web Standards (8)
+
+Configuration and compliance skills for agentic-ready web presence (MCP, RFC 9727, x402, WorkOS):
+
+- `configure-agent-commerce`
+- `configure-agent-headers`
+- `configure-agent-skills`
+- `configure-mcp`
+- `configure-oauth-metadata`
+- `debug-workos-integration`
+- `manage-api-catalog`
+- `manage-auth-md`
 
 ### Foundation (21)
 
@@ -66,24 +79,37 @@ Cross-cutting portable skills:
 - `integrate-r3f-three-legacy`
 - `optimize-3d-assets`
 
-### Platform (6)
+### Platform (11)
 
-Delivery and runtime:
+Delivery, runtime, and Cloudflare-specific skills:
 
 - `setup-deployment`
-- `manage-wrangler-deploy`
-- `configure-cloudflare-bindings`
+- `wrangler`
 - `debug-workers-edge`
 - `debug-runtime-platform`
 - `add-telemetry-instrumentation`
+- `cloudflare-email-service`
+- `durable-objects`
+- `sandbox-sdk`
+- `turnstile-spin`
+- `web-perf`
+- `workers-best-practices`
 
-### Security And Data (5)
+### Commerce (4)
+
+E-commerce catalog, checkout, payment, and fulfillment:
+
+- `integrate-payment-gateway`
+- `handle-checkout-flow`
+- `manage-product-catalog`
+- `manage-order-fulfillment`
+
+### Security And Data (4)
 
 - `manage-secrets`
 - `database-maintenance`
 - `security-audit`
 - `build-data-pipeline`
-- `data-engineer` *(deprecated — use `build-data-pipeline`)*
 
 ### Documentation (2)
 
@@ -111,7 +137,10 @@ Overlay-specific skills (site stacks, ICM, content data) live under `overlays/*/
 | Visual / IA critique (no code) | `design-review` | UI/UX or Reviewer |
 | a11y conformance | `accessibility-review` | QA + Frontend |
 | Generic CI/CD deploy | `setup-deployment` | DevOps Engineer |
-| Cloudflare Workers/Pages | `manage-wrangler-deploy` | Cloudflare Engineer |
+| Cloudflare Workers/Pages | `wrangler` | Cloudflare Engineer |
+| MCP server configuration | `configure-mcp` | Cloudflare Engineer |
+| Agentic commerce flows | `configure-agent-commerce` | Backend Developer |
+| Agent-ready web discovery | `configure-agent-headers` + `manage-api-catalog` | Agent Discovery Engineer |
 
 ## Backlog (not yet skills)
 

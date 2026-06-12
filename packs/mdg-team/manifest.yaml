@@ -1,5 +1,10 @@
 name: mdg-team
 description: Global engineering core plus Laravel conventions plus Máy Điện Giải Sài Gòn project overlay.
+version: 1.0.0
+tags:
+  - core
+author: user
+maintained_by: platform-team
 includes:
   - core
   - overlays/laravel-filament

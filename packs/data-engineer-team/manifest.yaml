@@ -1,0 +1,10 @@
+name: data-engineer-team
+description: Global engineering core plus data engineering learning and Rabity roadmap overlay.
+version: 1.0.0
+tags:
+  - core
+author: user
+maintained_by: platform-team
+includes:
+  - core
+  - overlays/data-engineer-rabity

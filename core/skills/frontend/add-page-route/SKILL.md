@@ -14,6 +14,7 @@ Use this skill when a frontend change needs a new page, screen, or route-level f
 - make loading, empty, error, and unauthorized states explicit
 - preserve navigation and deep-link behavior
 - update route-aware tests when the page contract changes
+- if any code in this change was AI-generated, validate it per the risk tier defined in the frontend-developer role before accepting
 
 ## Suggested Process
 
@@ -62,6 +63,7 @@ Verify:
 - direct URL access works if the app supports it
 - back/forward navigation behaves correctly
 - query params, path params, or search state are handled intentionally
+- if the route is public-facing, verify SSR/SSG behavior and meta tag requirements (title, description, OG)
 
 ### 6. Add Tests
 
@@ -81,6 +83,7 @@ Cover:
 - [ ] layout and navigation wired correctly
 - [ ] page-level states handled
 - [ ] direct navigation checked
+- [ ] SEO/SSR verified for public-facing routes (meta tags, OG, SSG behavior)
 - [ ] tests added or updated
 
 ## Related Skills
@@ -88,5 +91,6 @@ Cover:
 - **add-ui-component**: Build reusable UI used by the page
 - **integrate-api-client**: Load or mutate backend data from the route
 - **frontend-testing**: Add route and screen coverage
+- **accessibility-review**: Check route-level a11y (focus management, navigation announcements)
 - **navigate-service**: Understand existing frontend structure before wiring routes
 - **commit-code**: Prepare the route change for delivery

@@ -92,6 +92,7 @@ Run:
 - targeted frontend tests first
 - broader suite if shared UI or route infrastructure changed
 - accessibility or visual checks if the repo uses them
+- visual regression snapshots if the repo uses them (Chromatic, Percy, Playwright visual)
 
 ## Checklist
 

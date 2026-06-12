@@ -5,6 +5,11 @@
   "description": "Structured output from a validation or quality gate step.",
   "type": "object",
   "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "validation-result",
+      "description": "Machine-readable contract discriminator."
+    },
     "phase_reviewed": {
       "type": "string",
       "description": "Which phase or step was validated."
@@ -14,11 +19,25 @@
       "items": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "status": { "type": "string", "enum": ["passed", "failed", "skipped"] },
-          "detail": { "type": "string" }
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "passed",
+              "failed",
+              "skipped"
+            ]
+          },
+          "detail": {
+            "type": "string"
+          }
         },
-        "required": ["name", "status"]
+        "required": [
+          "name",
+          "status"
+        ]
       }
     },
     "passed": {
@@ -27,7 +46,9 @@
     },
     "skipped_checks": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Checks that were skipped and why."
     },
     "residual_risk": {
@@ -36,9 +57,53 @@
     },
     "decision": {
       "type": "string",
-      "enum": ["advance", "rework", "escalate"],
+      "enum": [
+        "advance",
+        "rework",
+        "escalate"
+      ],
       "description": "Recommended action based on validation results."
     }
   },
-  "required": ["phase_reviewed", "checks_run", "passed", "decision"]
+  "required": [
+    "contract_type",
+    "phase_reviewed",
+    "checks_run",
+    "passed",
+    "decision"
+  ],
+  "examples": [
+    {
+      "contract_type": "validation-result",
+      "phase_reviewed": "slice-01-command-logic post-implementation",
+      "checks_run": [
+        {
+          "name": "Unit tests pass",
+          "status": "passed",
+          "detail": "PHPUnit 12/12 passing"
+        },
+        {
+          "name": "Lint",
+          "status": "passed",
+          "detail": "PHP CS Fixer clean"
+        },
+        {
+          "name": "Build",
+          "status": "passed",
+          "detail": "CI pipeline green"
+        },
+        {
+          "name": "Code review finding F-01 fixed",
+          "status": "passed",
+          "detail": "Store service 503 fallback implemented and tested"
+        }
+      ],
+      "passed": true,
+      "skipped_checks": [
+        "Integration test under 503 load — added to next sprint"
+      ],
+      "residual_risk": "Batch performance under high COD volume not validated.",
+      "decision": "advance"
+    }
+  ]
 }

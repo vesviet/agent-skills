@@ -1,5 +1,10 @@
 name: vesviet-team
 description: Global engineering core plus Vesviet content overlay.
+version: 1.0.0
+tags:
+  - core
+author: user
+maintained_by: platform-team
 includes:
   - core
   - overlays/vesviet-content

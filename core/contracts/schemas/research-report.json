@@ -22,7 +22,10 @@
       "properties": {
         "depth_mode": {
           "type": "string",
-          "enum": ["deep", "scoped"],
+          "enum": [
+            "deep",
+            "scoped"
+          ],
           "description": "deep = default 10+ rounds; scoped = user- or BA-narrowed depth with documented waiver."
         },
         "total_rounds": {
@@ -39,30 +42,54 @@
           "description": "Required when depth_mode is scoped: who narrowed scope and why fewer rounds are sufficient."
         }
       },
-      "required": ["depth_mode", "total_rounds", "sources_analyzed"],
+      "required": [
+        "depth_mode",
+        "total_rounds",
+        "sources_analyzed"
+      ],
       "allOf": [
         {
           "if": {
-            "properties": { "depth_mode": { "const": "deep" } },
-            "required": ["depth_mode"]
+            "properties": {
+              "depth_mode": {
+                "const": "deep"
+              }
+            },
+            "required": [
+              "depth_mode"
+            ]
           },
           "then": {
             "properties": {
-              "total_rounds": { "minimum": 10 }
+              "total_rounds": {
+                "minimum": 10
+              }
             }
           }
         },
         {
           "if": {
-            "properties": { "depth_mode": { "const": "scoped" } },
-            "required": ["depth_mode"]
+            "properties": {
+              "depth_mode": {
+                "const": "scoped"
+              }
+            },
+            "required": [
+              "depth_mode"
+            ]
           },
           "then": {
             "properties": {
-              "total_rounds": { "minimum": 3 },
-              "scope_waiver_note": { "minLength": 1 }
+              "total_rounds": {
+                "minimum": 3
+              },
+              "scope_waiver_note": {
+                "minLength": 1
+              }
             },
-            "required": ["scope_waiver_note"]
+            "required": [
+              "scope_waiver_note"
+            ]
           }
         }
       ]
@@ -72,26 +99,40 @@
       "properties": {
         "key_findings": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "Primary verified insights discovered."
         },
         "inferences": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "Labeled inferences that are not fully verified."
         },
         "critical_gaps": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "Missing, ambiguous, or unverifiable information after research."
         },
         "confidence_score": {
           "type": "string",
-          "enum": ["High", "Medium", "Low"],
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ],
           "description": "Overall confidence based on data triangulation."
         }
       },
-      "required": ["key_findings", "critical_gaps", "confidence_score"]
+      "required": [
+        "key_findings",
+        "critical_gaps",
+        "confidence_score"
+      ]
     },
     "raw_data_references": {
       "type": "array",
@@ -99,15 +140,30 @@
       "items": {
         "type": "object",
         "properties": {
-          "source_name": { "type": "string" },
-          "url": { "type": "string" },
+          "source_name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
           "credibility": {
             "type": "string",
-            "enum": ["Official", "Authority", "Community", "Unverified"]
+            "enum": [
+              "Official",
+              "Authority",
+              "Community",
+              "Unverified"
+            ]
           },
-          "context_summary": { "type": "string" }
+          "context_summary": {
+            "type": "string"
+          }
         },
-        "required": ["source_name", "url", "credibility"]
+        "required": [
+          "source_name",
+          "url",
+          "credibility"
+        ]
       }
     },
     "recommended_next_roles": {
@@ -121,18 +177,27 @@
             "type": "string",
             "description": "Target role slug, e.g. technical-architect, business-analyst, content-writer."
           },
-          "rationale": { "type": "string" },
+          "rationale": {
+            "type": "string"
+          },
           "open_decisions": {
             "type": "array",
-            "items": { "type": "string" }
+            "items": {
+              "type": "string"
+            }
           }
         },
-        "required": ["role", "rationale"]
+        "required": [
+          "role",
+          "rationale"
+        ]
       }
     },
     "residual_risks": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Risks and skipped checks when certainty is limited."
     }
   },
@@ -143,5 +208,35 @@
     "synthesis",
     "raw_data_references",
     "recommended_next_roles"
+  ],
+  "examples": [
+    {
+      "contract_type": "research-report",
+      "report_id": "2026-06-12-cod-courier-routing-patterns",
+      "topic": "COD order courier routing patterns in SE Asian logistics platforms",
+      "conducted_by": "researcher",
+      "created_at": "2026-06-12T08:00:00+07:00",
+      "summary": "Leading SE Asian platforms (Shopee, Lazada, Grab) route COD store orders to dedicated store courier pools with a fallback chain to 3PL couriers. None use a single centralized assignment queue for all COD orders.",
+      "findings": [
+        {
+          "finding": "Store-specific courier pools reduce COD delivery failure rate by 23% vs centralized assignment (Shopee logistics whitepaper 2024)",
+          "confidence": "high",
+          "source": "Shopee Logistics Engineering Blog 2024"
+        },
+        {
+          "finding": "Fallback to 3PL on no store courier is standard practice; all platforms log and alert on fallback",
+          "confidence": "high",
+          "source": "Grab Delivery Engineering 2023"
+        }
+      ],
+      "sources": [
+        "https://engineering.shopee.com/logistics-2024",
+        "https://engineering.grab.com/delivery-2023"
+      ],
+      "gaps": [
+        "Specific performance benchmarks for COD routing latency not found"
+      ],
+      "recommendation": "Implement dedicated store courier routing with fallback and alerting — aligns with industry best practice"
+    }
   ]
 }

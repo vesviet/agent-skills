@@ -1,0 +1,13 @@
+{
+  "must_include": [
+    "blameless postmortem framing — no individual blame",
+    "timeline reconstruction: detection, triage, mitigation, resolution",
+    "root cause identified and documented (config drift)",
+    "action items with owners: prevent recurrence"
+  ],
+  "must_not_include": [
+    "assign individual blame in postmortem artifact",
+    "skip action items — postmortem is not just a report",
+    "expose user PII or sensitive service internals in postmortem output"
+  ]
+}

@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/cloudflare-engineer",
+  "contract_type": "agent-card",
   "name": "cloudflare-engineer",
   "description": "own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration, and edge incident recovery — so application teams ship safely on Cloudflare without platform guesswork.",
   "url": "pack://agent-skills/core/roles/cloudflare-engineer.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "wrangler",
       "name": "Wrangler",
-      "description": "Primary skill for cloudflare-engineer role.",
+      "description": "Use when deploying, developing, and managing Cloudflare Workers, KV, R2, D1, Vectorize, Hyperdrive, AI, Containers, Queues, Workflows, Pipelines, and Secrets.",
       "tags": [
-        "cloudflare",
+        "platform",
         "pack"
       ],
       "inputModes": [
@@ -38,9 +48,9 @@
     {
       "id": "durable-objects",
       "name": "Durable Objects",
-      "description": "Primary skill for cloudflare-engineer role.",
+      "description": "Create and review Cloudflare Durable Objects. Use when building stateful coordination (chat rooms, multiplayer games, booking systems), implementing RPC methods, SQLite storage, alarms, WebSockets, or reviewing DO code for best practices. Covers Workers integration, wrangler config, and testing with Vitest. Biases towards retrieval from Cloudflare docs over pre-trained knowledge.",
       "tags": [
-        "cloudflare",
+        "platform",
         "pack"
       ],
       "inputModes": [
@@ -58,9 +68,9 @@
     {
       "id": "turnstile-spin",
       "name": "Turnstile Spin",
-      "description": "Primary skill for cloudflare-engineer role.",
+      "description": "Use when setting up Cloudflare Turnstile CAPTCHA protection end-to-end in a project, verifying configuration, and deploying managed siteverify Workers.",
       "tags": [
-        "cloudflare",
+        "platform",
         "pack"
       ],
       "inputModes": [
@@ -78,9 +88,9 @@
     {
       "id": "workers-best-practices",
       "name": "Workers Best Practices",
-      "description": "Primary skill for cloudflare-engineer role.",
+      "description": "Use when reviewing and authoring Cloudflare Workers code against production best practices and security standards.",
       "tags": [
-        "cloudflare",
+        "platform",
         "pack"
       ],
       "inputModes": [
@@ -98,9 +108,9 @@
     {
       "id": "sandbox-sdk",
       "name": "Sandbox Sdk",
-      "description": "Primary skill for cloudflare-engineer role.",
+      "description": "Use when building sandboxed applications for secure code execution, AI code interpreters, or interactive dev environments on Cloudflare Workers.",
       "tags": [
-        "cloudflare",
+        "platform",
         "pack"
       ],
       "inputModes": [

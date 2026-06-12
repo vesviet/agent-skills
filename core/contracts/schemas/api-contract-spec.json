@@ -5,13 +5,25 @@
   "description": "Structured output defining an API endpoint contract. Used for backend-to-frontend handoff and A2A delegation.",
   "type": "object",
   "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "api-contract-spec",
+      "description": "Machine-readable contract discriminator."
+    },
     "endpoint": {
       "type": "string",
       "description": "The route path (e.g., /api/v1/orders/{id})."
     },
     "method": {
       "type": "string",
-      "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+      "enum": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "OPTIONS"
+      ]
     },
     "description": {
       "type": "string",
@@ -34,19 +46,95 @@
       "items": {
         "type": "object",
         "properties": {
-          "status_code": { "type": "integer" },
-          "error_code": { "type": "string" },
-          "description": { "type": "string" }
+          "status_code": {
+            "type": "integer"
+          },
+          "error_code": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
         },
-        "required": ["status_code", "error_code"]
+        "required": [
+          "status_code",
+          "error_code"
+        ]
       },
       "description": "Expected failure responses."
     },
     "side_effects": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Events fired, database mutations, or cache invalidations."
     }
   },
-  "required": ["endpoint", "method", "response_success", "response_errors"]
+  "required": [
+    "contract_type",
+    "endpoint",
+    "method",
+    "response_success",
+    "response_errors"
+  ],
+  "examples": [
+    {
+      "contract_type": "api-contract-spec",
+      "endpoint": "/api/v1/orders/{id}/assign-courier",
+      "method": "POST",
+      "description": "Assign a courier to a COD order. Triggers COD store routing if store_id is set.",
+      "auth_required": true,
+      "request_payload": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "integer"
+          },
+          "store_id": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "payment_method": {
+            "type": "string",
+            "enum": [
+              "cod",
+              "bank_transfer",
+              "cash"
+            ]
+          }
+        },
+        "required": [
+          "order_id",
+          "payment_method"
+        ]
+      },
+      "response_success": {
+        "status_code": 200,
+        "body": {
+          "assignment_id": "integer",
+          "courier_id": "integer",
+          "routed_to": "string"
+        }
+      },
+      "response_errors": [
+        {
+          "status_code": 404,
+          "error_code": "ORDER_NOT_FOUND",
+          "description": "Order ID does not exist"
+        },
+        {
+          "status_code": 503,
+          "error_code": "STORE_SERVICE_UNAVAILABLE",
+          "description": "Store courier lookup failed; retry or use fallback"
+        }
+      ],
+      "side_effects": [
+        "order.assignment.created event published",
+        "warehouse_courier_pool updated if fallback triggered"
+      ]
+    }
+  ]
 }

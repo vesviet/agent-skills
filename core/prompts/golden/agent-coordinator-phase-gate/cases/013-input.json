@@ -1,0 +1,10 @@
+{
+  "work_type": "feature",
+  "phase": "validation",
+  "user_request": "The CSV export feature is ready for QA sign-off. All unit tests pass, but we haven't done end-to-end validation yet.",
+  "context": {
+    "feature": "CSV export for orders dashboard",
+    "test_status": "unit tests: pass, e2e tests: not run",
+    "staging_deploy": "deployed to staging"
+  }
+}

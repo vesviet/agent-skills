@@ -1,5 +1,10 @@
 name: golf-team
 description: Global engineering core plus Astro/Cloudflare conventions plus Golf ICM catalog overlay.
+version: 1.0.0
+tags:
+  - core
+author: user
+maintained_by: platform-team
 includes:
   - core
   - overlays/astro-cloudflare

@@ -8,7 +8,7 @@ import re
 import sys
 from pathlib import Path
 
-from common import CORE_ROOT, ROOT, collect_skill_names, section_text
+from common import CORE_ROOT, ROOT, SKILLS_ROOT, collect_skill_names, parse_frontmatter, section_text
 
 
 ROLE_ROOT = CORE_ROOT / "roles"
@@ -16,6 +16,17 @@ REGISTRY_ROOT = CORE_ROOT / "a2a" / "registry"
 WELL_KNOWN = CORE_ROOT / "a2a" / ".well-known" / "agent-registry.json"
 PACK_VERSION_PATH = ROOT / "VERSION"
 SCHEMAS_ROOT = CORE_ROOT / "contracts" / "schemas"
+
+CANONICAL_TAGS = {
+    "agent": "agent",
+    "backend": "backend",
+    "frontend": "frontend",
+    "platform": "platform",
+    "foundation": "foundation",
+    "security-data": "security",
+    "documentation": "documentation",
+    "education": "education",
+}
 
 
 def pack_version() -> str:
@@ -33,6 +44,23 @@ def role_files() -> list[Path]:
 def parse_mission(body: str) -> str:
     match = re.search(r"(?m)^Mission: (.+)$", body)
     return match.group(1).strip() if match else ""
+
+
+def skill_description(skill_id: str) -> str:
+    """Look up the skill description from SKILL.md frontmatter."""
+    for skill_path in SKILLS_ROOT.glob(f"*/{skill_id}/SKILL.md"):
+        metadata, _body, _errors = parse_frontmatter(skill_path.read_text(encoding="utf-8"))
+        desc = metadata.get("description", "")
+        if desc:
+            return desc
+    return f"Skill {skill_id}."
+
+
+def skill_category(skill_id: str) -> str:
+    """Return the taxonomy category folder for a skill."""
+    for skill_path in SKILLS_ROOT.glob(f"*/{skill_id}/SKILL.md"):
+        return CANONICAL_TAGS.get(skill_path.parent.parent.name, "pack")
+    return "pack"
 
 
 def primary_skills(body: str) -> list[str]:
@@ -58,12 +86,13 @@ def build_agent_card(path: Path, known_skills: set[str]) -> dict:
     for skill_id in skills:
         if skill_id not in known_skills:
             continue
+        cat = skill_category(skill_id)
         card_skills.append(
             {
                 "id": skill_id,
                 "name": skill_id.replace("-", " ").title(),
-                "description": f"Primary skill for {slug} role.",
-                "tags": [slug.split("-")[0], "pack"],
+                "description": skill_description(skill_id),
+                "tags": [cat, "pack"],
                 "inputModes": ["text", "json"],
                 "outputModes": ["json", "text"],
                 "output_schema_refs": schemas[:3] if schemas else [],
@@ -84,6 +113,8 @@ def build_agent_card(path: Path, known_skills: set[str]) -> dict:
         )
 
     return {
+        "id": f"pack://agent-skills/core/roles/{slug}",
+        "contract_type": "agent-card",
         "name": slug,
         "description": mission,
         "url": f"pack://agent-skills/core/roles/{slug}.md",
@@ -95,6 +126,8 @@ def build_agent_card(path: Path, known_skills: set[str]) -> dict:
             "stateTransitionHistory": True,
         },
         "authentication": {"schemes": ["pack-local"]},
+        "defaultInputModes": ["text", "json"],
+        "defaultOutputModes": ["text", "json"],
         "skills": card_skills,
         "defaultOutputSchemas": schemas,
         "role_file": f"core/roles/{slug}.md",
@@ -116,7 +149,7 @@ def main() -> int:
         entries.append(
             {
                 "role": path.stem,
-                "agent_card": str(out.relative_to(ROOT)),
+                "agent_card": str(out.relative_to(ROOT)).replace("\\", "/"),
                 "url": card["url"],
                 "description": card["description"][:120],
             }

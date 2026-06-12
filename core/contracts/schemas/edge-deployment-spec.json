@@ -19,7 +19,11 @@
     },
     "deployment_target": {
       "type": "string",
-      "enum": ["pages", "workers", "workers_for_platforms"],
+      "enum": [
+        "pages",
+        "workers",
+        "workers_for_platforms"
+      ],
       "description": "Primary Cloudflare deploy surface."
     },
     "version": {
@@ -28,7 +32,9 @@
     },
     "environments": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "minItems": 1,
       "description": "Target environments (preview, production, etc.)."
     },
@@ -43,13 +49,30 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["r2", "kv", "d1", "service", "queue", "analytics_engine", "other"]
+            "enum": [
+              "r2",
+              "kv",
+              "d1",
+              "service",
+              "queue",
+              "analytics_engine",
+              "other"
+            ]
           },
-          "binding_name": { "type": "string" },
-          "resource_id": { "type": "string" },
-          "notes": { "type": "string" }
+          "binding_name": {
+            "type": "string"
+          },
+          "resource_id": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          }
         },
-        "required": ["type", "binding_name"]
+        "required": [
+          "type",
+          "binding_name"
+        ]
       },
       "description": "Worker/Pages runtime bindings declared in Wrangler."
     },
@@ -58,19 +81,27 @@
       "properties": {
         "zones": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "routes": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "custom_domains": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "redirects": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -79,11 +110,15 @@
       "properties": {
         "cache_rules": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "turnstile_sites": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "waf_notes": {
           "type": "string",
@@ -93,7 +128,9 @@
     },
     "secret_names": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Secret identifiers only — never secret values."
     },
     "deploy_steps": {
@@ -101,12 +138,24 @@
       "items": {
         "type": "object",
         "properties": {
-          "order": { "type": "integer" },
-          "action": { "type": "string" },
-          "is_destructive": { "type": "boolean" },
-          "owner": { "type": "string" }
+          "order": {
+            "type": "integer"
+          },
+          "action": {
+            "type": "string"
+          },
+          "is_destructive": {
+            "type": "boolean"
+          },
+          "owner": {
+            "type": "string"
+          }
         },
-        "required": ["order", "action", "is_destructive"]
+        "required": [
+          "order",
+          "action",
+          "is_destructive"
+        ]
       }
     },
     "rollback_plan": {
@@ -114,28 +163,48 @@
       "properties": {
         "strategy": {
           "type": "string",
-          "enum": ["previous_deployment", "revert_commit", "disable_route", "manual_restore"]
+          "enum": [
+            "previous_deployment",
+            "revert_commit",
+            "disable_route",
+            "manual_restore"
+          ]
         },
-        "estimated_time_mins": { "type": "integer" },
+        "estimated_time_mins": {
+          "type": "integer"
+        },
         "data_loss_risk": {
           "type": "string",
-          "enum": ["none", "low", "high"]
+          "enum": [
+            "none",
+            "low",
+            "high"
+          ]
         }
       },
-      "required": ["strategy", "data_loss_risk"]
+      "required": [
+        "strategy",
+        "data_loss_risk"
+      ]
     },
     "smoke_tests": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "documentation_deltas": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Operator doc paths or topics for Technical Writer."
     },
     "residual_risks": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     }
   },
   "required": [
@@ -148,5 +217,75 @@
     "wrangler_config_path",
     "deploy_steps",
     "rollback_plan"
+  ],
+  "examples": [
+    {
+      "contract_type": "edge-deployment-spec",
+      "platform": "cloudflare",
+      "project_ref": "regna/icm-main",
+      "deployment_target": "pages",
+      "version": "v2.4.1-seo-metadata",
+      "environments": [
+        "preview",
+        "production"
+      ],
+      "wrangler_config_path": "wrangler.jsonc",
+      "bindings": [
+        {
+          "type": "kv",
+          "binding_name": "SEO_CACHE",
+          "resource_id": "abc123def456",
+          "notes": "SEO metadata KV namespace"
+        }
+      ],
+      "dns_and_routing": {
+        "zones": [
+          "icm.com.vn"
+        ],
+        "routes": [
+          "icm.com.vn/*"
+        ],
+        "custom_domains": [
+          "icm.com.vn"
+        ],
+        "redirects": []
+      },
+      "cache_and_security": {
+        "cache_rules": [
+          "Cache /*.json for 3600s",
+          "Bypass cache for /admin/*"
+        ],
+        "turnstile_sites": [],
+        "waf_notes": "No WAF changes in this deployment"
+      },
+      "secret_names": [
+        "API_KEY_INTERNAL"
+      ],
+      "deploy_steps": [
+        {
+          "order": 1,
+          "action": "wrangler pages deploy dist/ --env production",
+          "is_destructive": false,
+          "owner": "cloudflare-engineer"
+        },
+        {
+          "order": 2,
+          "action": "Verify isitagentready.com score post-deploy",
+          "is_destructive": false,
+          "owner": "agent-discovery-engineer"
+        }
+      ],
+      "rollback_plan": {
+        "strategy": "previous_deployment",
+        "estimated_time_mins": 5,
+        "data_loss_risk": "none"
+      },
+      "smoke_tests": [
+        "GET icm.com.vn/auth.md returns 200",
+        "GET icm.com.vn/.well-known/mcp/server-card.json returns valid JSON"
+      ],
+      "documentation_deltas": [],
+      "residual_risks": []
+    }
   ]
 }

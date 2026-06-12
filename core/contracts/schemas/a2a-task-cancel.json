@@ -5,17 +5,30 @@
   "description": "Request body for tasks/cancel (A2A 1.0).",
   "type": "object",
   "properties": {
-    "task_id": { "type": "string" },
+    "task_id": {
+      "type": "string"
+    },
     "requested_by": {
       "type": "string",
       "description": "Role or user identity requesting cancel."
     },
-    "cancel_reason": { "type": "string" },
+    "cancel_reason": {
+      "type": "string"
+    },
     "force": {
       "type": "boolean",
       "default": false,
       "description": "When true, cancel even if worker reports in-progress side effects."
     }
   },
-  "required": ["task_id", "cancel_reason"]
+  "required": [
+    "task_id",
+    "cancel_reason"
+  ],
+  "examples": [
+    {
+      "id": "task-cod-slice-01",
+      "reason": "Blocked by missing store courier API credentials"
+    }
+  ]
 }

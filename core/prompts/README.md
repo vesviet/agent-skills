@@ -20,7 +20,7 @@ prompts/
 
 | Asset ID | Role | Version | Min Pass Rate | Cases |
 |----------|------|---------|---------------|-------|
-| [agent-coordinator-phase-gate](golden/agent-coordinator-phase-gate/manifest.yaml) | `agent-coordinator` | 1.0.0 | 90% | 10 |
+| [agent-coordinator-phase-gate](golden/agent-coordinator-phase-gate/manifest.yaml) | `agent-coordinator` | 1.0.0 | 90% | 18 |
 
 ## How To Use
 

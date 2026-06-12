@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/content-writer",
+  "contract_type": "agent-card",
   "name": "content-writer",
   "description": "produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Write for humans first and for machine extractability second: answer-first structure, high fact density, and clear modular formatting so content is citable by both readers and AI answer engines (Google AI Overviews, Perplexity, ChatGPT/SearchGPT).",
   "url": "pack://agent-skills/core/roles/content-writer.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "write-article",
       "name": "Write Article",
-      "description": "Primary skill for content-writer role.",
+      "description": "Plan, research, outline, and draft long-form articles and blog posts with explicit evidence discipline, answer-first structure, GEO/AEO execution, information gain quality gates, E-E-A-T experience signals, and SEO-brief alignment. Use for narrative content, guides, reviews, and announcements—not for API runbooks or pure technical reference docs.",
       "tags": [
-        "content",
+        "foundation",
         "pack"
       ],
       "inputModes": [

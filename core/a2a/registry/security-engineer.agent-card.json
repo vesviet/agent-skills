@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/security-engineer",
+  "contract_type": "agent-card",
   "name": "security-engineer",
   "description": "reduce security risk early by identifying weaknesses in design, code, configuration, dependencies, and operations before they become incidents. In 2025–2026, this extends to assessing AI/LLM-specific attack surfaces (prompt injection, training data poisoning, model output exploitation), enforcing shift-left security practices (threat modeling before design sign-off, SAST/DAST in CI), and treating AI systems as high-risk trust boundary additions that require explicit security review before deployment.",
   "url": "pack://agent-skills/core/roles/security-engineer.md",
@@ -14,11 +16,19 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "security-audit",
       "name": "Security Audit",
-      "description": "Primary skill for security-engineer role.",
+      "description": "Review code, configuration, and service behavior for security risks by checking trust boundaries, secret handling, auth, validation, and operational exposure. Use for focused security review of changes or full-service risk assessment.",
       "tags": [
         "security",
         "pack"
@@ -38,7 +48,7 @@
     {
       "id": "manage-secrets",
       "name": "Manage Secrets",
-      "description": "Primary skill for security-engineer role.",
+      "description": "Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-control, and rollout patterns. Use when code or deployment work touches credentials, tokens, keys, or sensitive configuration.",
       "tags": [
         "security",
         "pack"

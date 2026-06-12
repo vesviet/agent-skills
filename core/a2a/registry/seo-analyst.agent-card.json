@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/seo-analyst",
+  "contract_type": "agent-card",
   "name": "seo-analyst",
   "description": "ensure publishable content meets search intent across traditional search, AI Overviews, and answer engines — with defensible keyword strategy, on-page structure, internal linking, structured data specifications, and metadata. Produce briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation. Optimize for discoverability in Google, AI answer engines (Perplexity, ChatGPT/SearchGPT, Bing AI), and generative search surfaces.",
   "url": "pack://agent-skills/core/roles/seo-analyst.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "optimize-seo",
       "name": "Optimize Seo",
-      "description": "Primary skill for seo-analyst role.",
+      "description": "Research search intent, define keywords, produce SEO content briefs, audit on-page elements, optimize for AI search visibility (GEO/AEO), specify structured data, enforce E-E-A-T quality gates, and deliver metadata and recommendations without owning full article drafting or technical deployment. Use when planning publishable content, reviewing drafts before release, mapping internal links, interpreting Search Console signals, or ensuring AI citation readiness.",
       "tags": [
-        "seo",
+        "foundation",
         "pack"
       ],
       "inputModes": [

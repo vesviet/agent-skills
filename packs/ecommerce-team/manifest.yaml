@@ -1,5 +1,10 @@
 name: ecommerce-team
 description: Global engineering core plus Go Microservices conventions and Ecommerce Microservices overlay.
+version: 1.0.0
+tags:
+  - core
+author: user
+maintained_by: platform-team
 includes:
   - core
   - overlays/go-microservices

@@ -1,5 +1,10 @@
 name: icm-team
 description: Global engineering core plus Astro/Cloudflare conventions plus ICM Factory Direct main site overlay.
+version: 1.0.0
+tags:
+  - core
+author: user
+maintained_by: platform-team
 includes:
   - core
   - overlays/astro-cloudflare

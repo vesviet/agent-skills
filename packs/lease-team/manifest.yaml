@@ -1,5 +1,11 @@
 name: lease-team
-description: Global engineering core plus Lease content overlay.
+description: Global engineering core plus Lease content overlay and SEO publishing sprint cadence for leaseinvietnam and maylanhtreotuong.
+version: 1.0.0
+tags:
+  - core
+author: user
+maintained_by: platform-team
 includes:
   - core
   - overlays/lease-content
+  - overlays/seo-publishing

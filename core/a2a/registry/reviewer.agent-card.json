@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/reviewer",
+  "contract_type": "agent-card",
   "name": "reviewer",
   "description": "raise quality through precise, evidence-based review that catches defects, protects maintainability, and teaches good patterns without creating review theater.",
   "url": "pack://agent-skills/core/roles/reviewer.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "review-code",
       "name": "Review Code",
-      "description": "Primary skill for reviewer role.",
+      "description": "Review concrete code changes for correctness, contract safety, data handling, reliability, security, operations, and test coverage. Use for PR reviews, local change reviews, and pre-merge audits.",
       "tags": [
-        "reviewer",
+        "foundation",
         "pack"
       ],
       "inputModes": [
@@ -38,9 +48,9 @@
     {
       "id": "review-service",
       "name": "Review Service",
-      "description": "Primary skill for reviewer role.",
+      "description": "Review an entire service for release readiness. Use for full-service audits, production-readiness checks, pre-release hardening, and broad reviews that should cover code, contracts, dependencies, rollout safety, and documentation.",
       "tags": [
-        "reviewer",
+        "foundation",
         "pack"
       ],
       "inputModes": [

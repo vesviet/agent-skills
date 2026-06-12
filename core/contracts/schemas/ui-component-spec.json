@@ -22,7 +22,12 @@
     },
     "type": {
       "type": "string",
-      "enum": ["presentational", "stateful", "compositional", "island"],
+      "enum": [
+        "presentational",
+        "stateful",
+        "compositional",
+        "island"
+      ],
       "description": "Component architecture type."
     },
     "props": {
@@ -30,12 +35,24 @@
       "items": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "type": { "type": "string" },
-          "required": { "type": "boolean" },
-          "description": { "type": "string" }
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
         },
-        "required": ["name", "type", "required"]
+        "required": [
+          "name",
+          "type",
+          "required"
+        ]
       }
     },
     "events": {
@@ -43,11 +60,20 @@
       "items": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "payload": { "type": "string" },
-          "when": { "type": "string" }
+          "name": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "string"
+          },
+          "when": {
+            "type": "string"
+          }
         },
-        "required": ["name", "when"]
+        "required": [
+          "name",
+          "when"
+        ]
       },
       "description": "Callbacks or DOM events the parent must handle."
     },
@@ -55,47 +81,125 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["default", "loading", "empty", "error", "disabled", "success", "hover", "focus", "active"]
+        "enum": [
+          "default",
+          "loading",
+          "empty",
+          "error",
+          "disabled",
+          "success",
+          "hover",
+          "focus",
+          "active"
+        ]
       }
     },
     "copy_per_state": {
       "type": "object",
       "description": "User-visible labels or messages keyed by state name.",
-      "additionalProperties": { "type": "string" }
+      "additionalProperties": {
+        "type": "string"
+      }
     },
     "api_fields": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "field": { "type": "string" },
-          "source": { "type": "string" },
-          "required": { "type": "boolean" }
+          "field": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          }
         },
-        "required": ["field"]
+        "required": [
+          "field"
+        ]
       },
       "description": "Data fields the component displays or edits."
     },
     "accessibility": {
       "type": "object",
       "properties": {
-        "role": { "type": "string" },
-        "keyboard_support": { "type": "boolean" },
-        "focus_trap": { "type": "boolean" },
+        "role": {
+          "type": "string"
+        },
+        "keyboard_support": {
+          "type": "boolean"
+        },
+        "focus_trap": {
+          "type": "boolean"
+        },
         "aria_labels": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
     "responsive_breakpoints": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "dependencies": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     }
   },
-  "required": ["component_name", "type", "states"]
+  "required": [
+    "component_name",
+    "type",
+    "states"
+  ],
+  "examples": [
+    {
+      "contract_type": "ui-component-spec",
+      "component_id": "CourierBadgeComponent",
+      "component_name": "Courier Badge",
+      "flow_ref": "store-order-assignment-dashboard",
+      "description": "Shows courier type (store/warehouse) and fallback status for COD orders",
+      "props": [
+        {
+          "name": "courier_type",
+          "type": "string",
+          "required": true,
+          "description": "Either 'store' or 'warehouse'"
+        },
+        {
+          "name": "is_fallback",
+          "type": "boolean",
+          "required": true,
+          "description": "True when warehouse was used as fallback for COD store order"
+        },
+        {
+          "name": "courier_name",
+          "type": "string",
+          "required": false,
+          "description": "Display name of assigned courier"
+        }
+      ],
+      "states": [
+        "default (store courier)",
+        "fallback (warehouse)",
+        "unassigned"
+      ],
+      "accessibility": "aria-label must include courier type and fallback status",
+      "api_dependencies": [
+        "GET /api/v1/orders/:id"
+      ],
+      "design_tokens": [
+        "color.courier.store",
+        "color.courier.fallback.warning"
+      ]
+    }
+  ]
 }

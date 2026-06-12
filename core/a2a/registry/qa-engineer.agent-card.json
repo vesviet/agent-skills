@@ -1,4 +1,6 @@
 {
+  "id": "pack://agent-skills/core/roles/qa-engineer",
+  "contract_type": "agent-card",
   "name": "qa-engineer",
   "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escaped defects across a distributed microservices system. In 2025–2026, this extends to validating AI/LLM systems with non-deterministic output properties, running controlled chaos experiments to prove resilience before production, and enforcing accessibility as a first-class quality gate.",
   "url": "pack://agent-skills/core/roles/qa-engineer.md",
@@ -14,13 +16,21 @@
       "pack-local"
     ]
   },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
   "skills": [
     {
       "id": "write-tests",
       "name": "Write Tests",
-      "description": "Primary skill for qa-engineer role.",
+      "description": "Add or update tests by following repo-local test conventions, choosing the right test scope, isolating dependencies, and validating risky paths before delivery. Use when behavior needs regression coverage or release confidence.",
       "tags": [
-        "qa",
+        "foundation",
         "pack"
       ],
       "inputModes": [
@@ -39,9 +49,9 @@
     {
       "id": "frontend-testing",
       "name": "Frontend Testing",
-      "description": "Primary skill for qa-engineer role.",
+      "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence.",
       "tags": [
-        "qa",
+        "frontend",
         "pack"
       ],
       "inputModes": [
@@ -60,9 +70,9 @@
     {
       "id": "review-service",
       "name": "Review Service",
-      "description": "Primary skill for qa-engineer role.",
+      "description": "Review an entire service for release readiness. Use for full-service audits, production-readiness checks, pre-release hardening, and broad reviews that should cover code, contracts, dependencies, rollout safety, and documentation.",
       "tags": [
-        "qa",
+        "foundation",
         "pack"
       ],
       "inputModes": [
@@ -81,9 +91,9 @@
     {
       "id": "agent-quality-gate",
       "name": "Agent Quality Gate",
-      "description": "Primary skill for qa-engineer role.",
+      "description": "Run and interpret repository quality gates for agent-delivered changes, including validators, lint, tests, build checks, diff sanity checks, and phase-exit evidence. Use when reporting completion, advancing a bug or feature to the next phase, or declaring a pack, role, workflow, or code change ready.",
       "tags": [
-        "qa",
+        "agent",
         "pack"
       ],
       "inputModes": [

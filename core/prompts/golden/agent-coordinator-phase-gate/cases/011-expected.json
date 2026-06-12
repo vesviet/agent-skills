@@ -1,0 +1,13 @@
+{
+  "must_include": [
+    "blocker declared explicitly — implementation phase held open",
+    "security-engineer or reviewer escalation for dependency approval",
+    "no code merged while blocker is unresolved",
+    "unblock path identified (security review or workaround)"
+  ],
+  "must_not_include": [
+    "merge fix before dependency approved",
+    "bypass security review for dependency upgrade",
+    "declare bug resolved while blocker is open"
+  ]
+}

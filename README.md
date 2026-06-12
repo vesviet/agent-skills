@@ -37,6 +37,9 @@ Current overlays:
 - `vesviet-content`: content-writing helpers for Vesviet and Learn Hugo sites
 - `lease-content`: content-writing helpers for Lease in Vietnam and May Lanh Treo Tuong Astro content trees
 - `ecommerce-microservices`: reserved for service-level or platform-specific conventions
+- `astro-cloudflare`: Astro v5 on Cloudflare Pages/Workers conventions
+- `data-analyst-stack`: DuckDB + Metabase + Excel/BI workflow conventions
+- `go-microservices`: Go service and gRPC conventions
 
 Overlay-specific skills are intentionally kept out of the global core inventory.
 
@@ -82,8 +85,9 @@ Overlay-specific skills are intentionally kept out of the global core inventory.
 |--------|-----------------------|
 | Backend | `add-api-endpoint`, `add-event-handler`, `add-service-client`, `scaffold-new-service` |
 | Frontend | `add-ui-component`, `add-page-route`, `integrate-api-client`, `frontend-testing` |
-| Platform | `setup-deployment`, `manage-wrangler-deploy`, `debug-runtime-platform`, `add-telemetry-instrumentation` |
-| Security and Data | `manage-secrets`, `database-maintenance`, `security-audit`, `data-engineer` |
+| Platform | `setup-deployment`, `wrangler`, `debug-runtime-platform`, `add-telemetry-instrumentation` |
+| Commerce | `integrate-payment-gateway`, `handle-checkout-flow`, `manage-product-catalog`, `manage-order-fulfillment` |
+| Security and Data | `manage-secrets`, `database-maintenance`, `security-audit`, `build-data-pipeline` |
 | Documentation | `write-documentation`, `write-tech-radar` |
 
 Full inventory: [core/skills/README.md](core/skills/README.md)

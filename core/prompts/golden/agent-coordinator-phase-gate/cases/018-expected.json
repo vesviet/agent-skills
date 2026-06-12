@@ -1,0 +1,13 @@
+{
+  "must_include": [
+    "preserved behavior validation — no new features gate",
+    "integration tests for all three affected services required before merge",
+    "qa-engineer and technical-lead as validation phase owners",
+    "regression coverage plan: auth flows, user operations, gateway routing"
+  ],
+  "must_not_include": [
+    "merge refactor before integration tests complete across all services",
+    "validate only unit tests for multi-service refactor",
+    "skip technical-lead sign-off on multi-service scope"
+  ]
+}
