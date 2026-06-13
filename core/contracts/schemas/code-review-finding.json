@@ -32,7 +32,15 @@
     },
     "change_type": {
       "type": "string",
-      "enum": ["feature", "bug_fix", "refactor", "migration", "config", "dependency", "security"],
+      "enum": [
+        "feature",
+        "bug_fix",
+        "refactor",
+        "migration",
+        "config",
+        "dependency",
+        "security"
+      ],
       "description": "Nature of the change being reviewed."
     },
     "findings": {
@@ -55,12 +63,26 @@
           },
           "severity": {
             "type": "string",
-            "enum": ["blocking", "important", "follow_up", "suggestion"],
+            "enum": [
+              "blocking",
+              "important",
+              "follow_up",
+              "suggestion"
+            ],
             "description": "blocking = must fix before merge; important = must fix before release; follow_up = track but not blocking; suggestion = advisory."
           },
           "domain": {
             "type": "string",
-            "enum": ["correctness", "security", "data_safety", "reliability", "compatibility", "maintainability", "tests", "observability"],
+            "enum": [
+              "correctness",
+              "security",
+              "data_safety",
+              "reliability",
+              "compatibility",
+              "maintainability",
+              "tests",
+              "observability"
+            ],
             "description": "Review matrix domain this finding falls under."
           },
           "description": {
@@ -73,45 +95,133 @@
           },
           "confidence": {
             "type": "string",
-            "enum": ["confirmed", "likely", "uncertain"],
+            "enum": [
+              "confirmed",
+              "likely",
+              "uncertain"
+            ],
             "description": "How confident the reviewer is that this is actually a problem."
           }
         },
-        "required": ["file", "severity", "domain", "description", "confidence"],
-        "additionalProperties": false
+        "required": [
+          "file",
+          "severity",
+          "domain",
+          "description",
+          "confidence"
+        ]
       }
     },
     "review_matrix": {
       "type": "object",
       "description": "Summary status per review domain. All 8 domains must be explicitly checked (or skipped with justification).",
       "properties": {
-        "correctness": { "type": "string", "enum": ["pass", "fail", "skipped"] },
-        "security": { "type": "string", "enum": ["pass", "fail", "skipped"] },
-        "data_safety": { "type": "string", "enum": ["pass", "fail", "skipped"] },
-        "reliability": { "type": "string", "enum": ["pass", "fail", "skipped"] },
-        "compatibility": { "type": "string", "enum": ["pass", "fail", "skipped"] },
-        "maintainability": { "type": "string", "enum": ["pass", "fail", "skipped"] },
-        "tests": { "type": "string", "enum": ["pass", "fail", "skipped"] },
-        "observability": { "type": "string", "enum": ["pass", "fail", "skipped"] }
+        "correctness": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ]
+        },
+        "security": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ]
+        },
+        "data_safety": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ]
+        },
+        "reliability": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ]
+        },
+        "compatibility": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ]
+        },
+        "maintainability": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ]
+        },
+        "tests": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ]
+        },
+        "observability": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "skipped"
+          ]
+        }
       },
-      "required": ["correctness", "security", "data_safety", "reliability", "compatibility", "maintainability", "tests", "observability"],
-      "additionalProperties": false
+      "required": [
+        "correctness",
+        "security",
+        "data_safety",
+        "reliability",
+        "compatibility",
+        "maintainability",
+        "tests",
+        "observability"
+      ]
     },
     "blast_radius_assessment": {
       "type": "object",
       "description": "Assessment of how far the change's effects extend beyond the changed files.",
       "properties": {
-        "shared_code_paths_checked": { "type": "boolean" },
-        "downstream_consumers_checked": { "type": "boolean" },
-        "adjacent_flows_checked": { "type": "boolean" },
-        "notes": { "type": "string", "description": "What was checked and what was found." }
+        "shared_code_paths_checked": {
+          "type": "boolean"
+        },
+        "downstream_consumers_checked": {
+          "type": "boolean"
+        },
+        "adjacent_flows_checked": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string",
+          "description": "What was checked and what was found."
+        }
       },
-      "required": ["shared_code_paths_checked", "downstream_consumers_checked"],
-      "additionalProperties": false
+      "required": [
+        "shared_code_paths_checked",
+        "downstream_consumers_checked"
+      ]
     },
     "merge_recommendation": {
       "type": "string",
-      "enum": ["approve", "request_changes", "needs_discussion"],
+      "enum": [
+        "approve",
+        "request_changes",
+        "needs_discussion"
+      ],
       "description": "Overall merge decision. Must be supported by review_matrix and findings evidence."
     },
     "residual_risk": {
@@ -120,8 +230,14 @@
     },
     "unrun_checks": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Validation steps not run and the resulting risk exposure."
+    },
+    "ai_code_intent_check": {
+      "type": "boolean",
+      "description": "True if the reviewer explicitly verified the intent and assumptions of AI-generated code, not just syntax."
     }
   },
   "required": [
@@ -132,7 +248,6 @@
     "blast_radius_assessment",
     "merge_recommendation"
   ],
-  "additionalProperties": false,
   "examples": [
     {
       "contract_type": "code-review-finding",
@@ -172,7 +287,9 @@
       },
       "merge_recommendation": "request_changes",
       "residual_risk": "Store service 503 handling not yet tested under load — should be covered by integration test in next QA cycle.",
-      "unrun_checks": ["Integration test against store-service stub under 503 condition"]
+      "unrun_checks": [
+        "Integration test against store-service stub under 503 condition"
+      ]
     }
   ]
 }

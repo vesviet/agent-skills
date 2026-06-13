@@ -28,7 +28,9 @@
     },
     "adr_refs": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "ADR IDs or paths that constrain this implementation."
     },
     "goal_summary": {
@@ -60,7 +62,9 @@
           },
           "depends_on": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "slice_ids that must complete before this slice starts."
           },
           "output_schema_ref": {
@@ -69,17 +73,35 @@
           },
           "risk_level": {
             "type": "string",
-            "enum": ["high", "medium", "low"],
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ],
             "description": "Risk level of this slice for reviewer prioritization."
+          },
+          "trust_zone": {
+            "type": "string",
+            "enum": [
+              "restricted",
+              "standard",
+              "low_risk"
+            ],
+            "description": "restricted = no AI autonomy, deep human review mandatory; standard = AI allowed with standard guardrails; low_risk = boilerplate/scaffolding."
           }
         },
-        "required": ["slice_id", "description", "owner_role"],
-        "additionalProperties": false
+        "required": [
+          "slice_id",
+          "description",
+          "owner_role"
+        ]
       }
     },
     "impact_radius": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Services, APIs, event consumers, clients, or teams affected by this change."
     },
     "quality_gates": {
@@ -107,8 +129,11 @@
           "description": "Instrumentation requirement (e.g. 'OTel spans on new integration points') or 'not_required'."
         }
       },
-      "required": ["tests", "review", "build"],
-      "additionalProperties": false
+      "required": [
+        "tests",
+        "review",
+        "build"
+      ]
     },
     "rollout_notes": {
       "type": "string",
@@ -120,18 +145,106 @@
     },
     "documentation_deltas": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Topics or pages requiring documentation updates — handed off to Technical Writer."
     },
     "open_questions": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Unresolved questions that could affect delivery — escalate to Technical Architect or BA if blocking."
     },
     "readiness_status": {
       "type": "string",
-      "enum": ["planning", "in_progress", "ready_for_review", "blocked", "completed"],
+      "enum": [
+        "planning",
+        "in_progress",
+        "ready_for_review",
+        "blocked",
+        "completed"
+      ],
       "description": "Current plan status for Agent Coordinator phase gate tracking."
+    },
+    "ai_assisted_development_policy": {
+      "type": "object",
+      "description": "Governance policy for AI-generated code in this delivery cycle.",
+      "properties": {
+        "ai_tooling_in_use": {
+          "type": "boolean",
+          "description": "Whether AI coding tools (Copilot, Cursor, agentic tools) will be used for this plan."
+        },
+        "trust_zones_defined": {
+          "type": "boolean",
+          "description": "Whether explicit trust zones have been assigned to all slices."
+        },
+        "review_focus": {
+          "type": "string",
+          "description": "Specific intent and assumption validations required during review."
+        }
+      },
+      "required": [
+        "ai_tooling_in_use",
+        "trust_zones_defined"
+      ]
+    },
+    "progressive_delivery": {
+      "type": "object",
+      "description": "Mandatory rollout strategy for slices with non-trivial blast radius.",
+      "properties": {
+        "feature_flags_required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of slice_ids that must be wrapped in a feature flag before deployment."
+        },
+        "canary_target": {
+          "type": "string",
+          "description": "Definition of the initial rollout subset (e.g. 5% traffic, internal users only)."
+        },
+        "rollback_trigger": {
+          "type": "string",
+          "description": "Specific metric signal that initiates an immediate rollback (e.g. 5xx rate > 1%)."
+        },
+        "observability_requirement": {
+          "type": "string",
+          "description": "Metrics, logs, or traces required to be live BEFORE the feature is enabled."
+        }
+      }
+    },
+    "debt_governance": {
+      "type": "object",
+      "description": "Sprint capacity and compliance controls for technical, cognitive, and security debt.",
+      "properties": {
+        "debt_servicing_allocation_percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of capacity allocated to debt servicing. Role standard requires 15-20%."
+        },
+        "security_compliance": {
+          "type": "object",
+          "properties": {
+            "sbom_verified": {
+              "type": "boolean"
+            },
+            "sca_verified": {
+              "type": "boolean"
+            },
+            "hallucinated_package_check": {
+              "type": "boolean",
+              "description": "Verified no hallucinated imports from AI."
+            }
+          }
+        }
+      }
+    },
+    "dor_checklist_verified": {
+      "type": "boolean",
+      "description": "True if the Definition of Ready (DoR) checklist has been verified for all slices."
     }
   },
   "required": [
@@ -142,7 +255,6 @@
     "quality_gates",
     "readiness_status"
   ],
-  "additionalProperties": false,
   "examples": [
     {
       "contract_type": "technical-delivery-plan",
@@ -166,12 +278,18 @@
           "slice_id": "slice-02-unit-tests",
           "description": "Write unit tests for COD routing branch: happy path, fallback, non-COD isolation.",
           "owner_role": "backend-developer",
-          "depends_on": ["slice-01-command-logic"],
+          "depends_on": [
+            "slice-01-command-logic"
+          ],
           "output_schema_ref": "contracts/schemas/implementation-result.json",
           "risk_level": "low"
         }
       ],
-      "impact_radius": ["DMS orders-service", "Store courier assignment queue", "Warehouse fallback assignment log"],
+      "impact_radius": [
+        "DMS orders-service",
+        "Store courier assignment queue",
+        "Warehouse fallback assignment log"
+      ],
       "quality_gates": {
         "tests": "Unit tests for all 3 AC scenarios from feature ticket; PHPUnit pass",
         "review": "1 Reviewer approval; check COD branch isolation from existing code path",
@@ -181,8 +299,12 @@
       },
       "rollout_notes": "No feature flag required. Change is additive. Deploy to staging first; run smoke test with COD + non-COD order samples.",
       "rollback_notes": "Revert commit is safe — no migration, no schema change, no persistent side effects.",
-      "documentation_deltas": ["Update DMS order assignment runbook with COD routing rules"],
-      "open_questions": ["Confirm whether store manager notification on fallback is in scope for v1 or deferred."],
+      "documentation_deltas": [
+        "Update DMS order assignment runbook with COD routing rules"
+      ],
+      "open_questions": [
+        "Confirm whether store manager notification on fallback is in scope for v1 or deferred."
+      ],
       "readiness_status": "in_progress"
     }
   ]

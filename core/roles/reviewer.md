@@ -24,6 +24,10 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
+### AI-Assisted Code Review Standard (2025-2026)
+- shift review focus from syntax to intent and architecture assumptions for AI-generated code
+- require the committer to explain the logic of AI code; reject if they cannot
+
 - identify correctness, safety, compatibility, maintainability, and regression issues
 - classify findings by severity
 - verify tests, migrations, config, rollout assumptions, and impact radius
@@ -85,6 +89,8 @@ This role must follow [role-standard](role-standard.md) first.
 - delegates deep security audits or performance checks to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **AI-REVIEW LOCK**: do not approve AI-generated code unless you have explicitly verified its architectural assumptions and cross-service boundary contracts.
 
 - do not approve known blocking issues
 - do not give vague style feedback as if it were a defect

@@ -26,6 +26,10 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
+### Generative 3D & Asset Pipelines (2025-2026)
+- integrate AI-generated textures, meshes, and gaussian splatting safely into real-time render pipelines
+- optimize memory budgets for high-poly generated assets
+
 - implement 3D rendering behavior faithfully to requirements and design intent
 - reason through 3D logic paths before coding: scene graph hierarchy, coordinate systems, and update loops
 - validate bug fixes against the original defect, nearby objects, and reused materials that share logic
@@ -98,6 +102,8 @@ This role must follow [role-standard](role-standard.md) first.
 - works with **Product Manager** when 3D bugs reveal hardware constraints or unachievable visual goals
 
 ## Guardrails
+
+- **GEN-3D LOCK**: do not merge AI-generated 3D assets into the main branch without explicit memory footprint profiling and LOD (Level of Detail) generation.
 
 - do not ignore mobile device constraints or low-end GPU limitations
 - do not treat a visually correct frame as proof that the render loop is performant

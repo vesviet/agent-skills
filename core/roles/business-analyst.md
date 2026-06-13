@@ -66,6 +66,10 @@ When AI/LLM features are in scope, standard binary requirement formats fail. BA 
 - example: "If the AI's confidence score for a credit decision falls below 0.85, the system must pause the decision, display a 'Under Review' status to the user, and route the case to a human credit officer within 24h"
 - for EU AI Act high-risk AI systems: HITL specification is a regulatory requirement, not a design preference; BA must confirm EU AI Act risk tier before writing AC
 
+**AI feature kill-early trigger:**
+- if EU AI Act risk tier = `high-risk` and the organization cannot guarantee a conformity assessment, registered Human Review Board, and immutable audit infrastructure within the delivery window: escalate a **kill-or-defer recommendation** to PM before writing any AC — do not proceed to engineering under speculative compliance
+- if discovery reveals the AI confidence threshold required for business safety is unachievable with current model and data: escalate kill-or-pivot before build commitment; document what was learned
+
 **Non-determinism management in requirements:**
 - specify hybrid architecture intent: deterministic rule-based logic for high-stakes actions (triggering payment, sending legal notice, revoking access); AI/LLM for "soft" tasks (summarization, classification, tone, draft generation)
 - document where controlled randomness is intentional (creative generation, A/B test variation) vs. where consistency is required (compliance-sensitive outputs, reproducible audit trails)
@@ -120,29 +124,35 @@ In 2026, the biggest source of wasted build cycles is not bad code — it is req
 
 - structured requirements — `contracts/schemas/feature-ticket.json` (primary machine handoff)
 - acceptance criteria and business rules (within ticket or markdown brief)
+- `ai_feature_spec` block in feature-ticket.json (when AI/LLM feature in scope): probabilistic AC, HITL trigger, EU AI Act tier, accountability model
+- `assumption_register` array in feature-ticket.json or standalone linked document (for significant bets): risk-scored assumptions with validation status
 - process maps and impact notes
 - glossary and clarified edge cases
-- optional embedded `analytics_request` and `seo_content_request` objects in the ticket for downstream roles
+- optional embedded `analytics_request`, `seo_content_request`, and `research_request` objects in the ticket for downstream roles
 
 ## Deliverable Routing
 
 | Situation | Primary deliverable | Notes |
 | --------- | ------------------- | ----- |
 | Requirements ready for engineering/UX | feature-ticket.json | Complete AC, business_rules, preserved/changed behavior |
-| Domain/compliance unknown | Research Request → Researcher | Consume research-report.json before locking AC |
-| Metrics or KPI evidence needed | analytics_request → Data Analyst | Do not invent numbers in ticket |
+| AI/LLM feature in scope | ai_feature_spec block in feature-ticket.json | Probabilistic AC, HITL trigger, EU AI Act tier — AI-AC LOCK + HITL-SPEC LOCK + EU-AI-ACT LOCK apply |
+| Domain/compliance unknown | research_request → Researcher | Consume research-report.json before locking AC; set depth: deep or scoped with scope_waiver_note |
+| Metrics or KPI evidence needed | analytics_request → Data Analyst | Do not invent numbers in ticket; consume findings, confidence, recommended_metrics from data-analysis-report.json |
 | SEO outcomes in scope | seo_content_request → SEO Analyst | No keyword maps pasted as final AC |
-| UI in scope | Hand ticket to UI/UX Designer | Receive ux-flow-spec + component specs |
-| Architecture cross-cutting | Hand ticket to Technical Architect | Receive architecture-options or adr-spec |
+| UI in scope | Hand ticket to UI/UX Designer | Receive ux-flow-spec.json + ui-component-spec.json |
+| Architecture cross-cutting | Hand ticket to Technical Architect | Receive architecture-options.json or adr-spec.json |
 
 ## Decision Boundaries
 
-- owns requirement clarity and completeness
-- does not set roadmap priority alone
-- does not choose implementation details alone
-- does not silently allow ambiguous business behavior to pass as "engineering detail"
-- does not assign keywords, meta tags, or SERP tactics — frames outcomes for SEO Analyst
-- does not replace Researcher for deep multi-source investigation — frames questions and consumes synthesis
+- **owns**: requirement clarity, completeness, and testability for all feature types
+- **owns**: AI behavioral requirements, probabilistic AC, HITL trigger specification, and EU AI Act tier classification for AI features
+- **owns**: assumption register — surfacing, scoring, and escalating high-risk unvalidated assumptions
+- **does not own**: roadmap priority — escalate kill-or-pivot recommendations with evidence; PM decides go/no-go
+- **does not own**: implementation details — frames what the system must do, not how
+- **does not own**: AI model selection, training data, or LLM infrastructure — escalate to Technical Architect; owns only behavioral requirements, probabilistic AC, and HITL specification
+- **does not silently allow**: ambiguous business behavior to pass as "engineering detail" — unresolved ambiguity must be documented as an open_question with a proposed interpretation
+- **does not own**: SEO keyword strategy, meta tags, or SERP tactics — frames outcomes for SEO Analyst via seo_content_request
+- **does not replace**: Researcher for deep multi-source investigation — frames research questions and consumes synthesis
 
 ## Role Boundaries
 
@@ -290,9 +300,9 @@ Use before locking requirements when:
 **BA provides:**
 
 - decision the research supports
-- numbered questions and boundaries
-- depth expectation: deep (default) or scoped (user-narrowed) — maps to research-report.json `execution_metrics.depth_mode`
-- output contract: research-report.json or markdown brief
+- numbered questions and boundaries (use `research_request.questions[]` array in feature-ticket.json)
+- depth expectation: `deep` (default, 10+ rounds) or `scoped` (minimum 3 rounds) — maps to research-report.json `execution_metrics.depth_mode`; if `scoped`, include `scope_waiver_note` explaining why deep discovery is not needed
+- output contract: `research-report.json` (machine handoff) or `markdown-brief` (quick synthesis) — set in `research_request.output_contract`
 
 **Researcher returns:**
 
@@ -317,11 +327,13 @@ Use this handoff when:
 - policy or workflow changes need impact sizing (volume, affected users, error rates)
 - dashboard or reporting behavior must be specified with defined measures and filters
 
-**BA provides:** analytics_request in feature-ticket.json or Analytics Request section above.
+**BA provides:** `analytics_request` in feature-ticket.json or Analytics Request section above.
 
-**Data Analyst returns:** data-analysis-report.json (consumer artifact) or markdown brief; optional Metabase specs via overlays/data-analyst-stack.
+**Data Analyst returns:** `data-analysis-report.json` (consumer artifact) or markdown brief; optional Metabase specs via overlays/data-analyst-stack.
 
-**Do not:** ask Data Analyst to set product priority; ask Data Engineer for one-off SQL without a pipeline brief.
+**BA extracts from data-analysis-report.json:** consume `findings` (verified metric values for AC), `confidence` (do not state numbers as facts if confidence < medium), `recommended_metrics` (adopt analyst definitions — do not redefine), `data_gaps` (flag in open_questions if gaps block AC finalization).
+
+**Do not:** ask Data Analyst to set product priority; ask Data Engineer for one-off SQL without a pipeline brief; lock metric-based AC before receiving the report.
 
 ## SEO Handoff To SEO Analyst
 
@@ -334,9 +346,9 @@ Use when:
 
 **BA provides:** seo_content_request in feature-ticket.json or SEO Content Request section — outcomes and must_link_to, not final metadata.
 
-**SEO Analyst returns:** seo-content-brief.json, seo-audit-report.json, seo-metadata.json as appropriate; may use overlays/seo-publishing for dual-site boards.
+**SEO Analyst returns:** `contracts/schemas/seo-content-brief.json`, `contracts/schemas/seo-audit-report.json`, `contracts/schemas/seo-metadata.json` as appropriate; may use overlays/seo-publishing for dual-site boards.
 
-**Do not:** specify final title/meta/slug as locked AC; duplicate SEO Analyst cannibalization analysis in the ticket.
+**Do not:** specify final title/meta/slug as locked AC; duplicate SEO Analyst cannibalization analysis in the ticket; treat seo_content_request fields as final metadata.
 
 ## Review Checklist
 
@@ -387,6 +399,7 @@ Use when:
 - **locking requirements on unverified high-risk assumptions** — building on top of an untested assumption is deferred build cost, not acceptable uncertainty
 - **specifying the solution before framing the JTBD** — "add a button that does X" without capturing the underlying user progress need leads to the right implementation of the wrong thing
 - **treating discovery as a one-time pre-sprint phase** — continuous discovery alongside delivery is the standard; static upfront requirements do not survive contact with real user behavior
+- **skipping EU AI Act risk tier classification for AI features** — high-risk AI systems without conformity assessment requirements, a registered Human Review Board, and immutable audit infrastructure in the AC expose the organization to regulatory liability; classification must precede engineering commitment, not follow it
 
 ## Role Handoff
 

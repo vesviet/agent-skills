@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "contracts/schemas/seo-audit-report.json",
   "title": "SEO Audit Report",
   "description": "Pre/post-publish audit produced by SEO Analyst using optimize-seo skill. Covers traditional SEO issues, AI extractability, metadata compliance, and technical escalation items. Validates against seo-analyst.md Review Checklist.",
@@ -23,7 +23,9 @@
     "audit_id": {
       "type": "string",
       "description": "Unique identifier for this audit report.",
-      "examples": ["2026-06-12-lease-thu-thiem-pre-publish"]
+      "examples": [
+        "2026-06-12-lease-thu-thiem-pre-publish"
+      ]
     },
     "created_at": {
       "type": "string",
@@ -31,7 +33,13 @@
     },
     "site": {
       "type": "string",
-      "enum": ["leaseinvietnam", "maylanhtreotuong", "vesviet", "learn", "other"]
+      "enum": [
+        "leaseinvietnam",
+        "maylanhtreotuong",
+        "vesviet",
+        "learn",
+        "other"
+      ]
     },
     "audited_url_or_path": {
       "type": "string",
@@ -39,7 +47,11 @@
     },
     "audit_type": {
       "type": "string",
-      "enum": ["pre_publish", "post_publish", "periodic_refresh"],
+      "enum": [
+        "pre_publish",
+        "post_publish",
+        "periodic_refresh"
+      ],
       "description": "Whether this is a pre-publish audit (draft), post-publish audit (live page), or periodic refresh."
     },
     "brief_ref": {
@@ -49,18 +61,33 @@
     "traditional_seo": {
       "type": "object",
       "description": "Traditional SEO on-page findings.",
-      "required": ["issues", "internal_links_audit", "overall_score"],
+      "required": [
+        "issues",
+        "internal_links_audit",
+        "overall_score"
+      ],
       "properties": {
         "issues": {
           "type": "array",
           "description": "Severitized list of SEO issues found. Empty array if no issues.",
           "items": {
             "type": "object",
-            "required": ["severity", "category", "finding", "recommendation"],
+            "required": [
+              "severity",
+              "category",
+              "finding",
+              "recommendation"
+            ],
             "properties": {
               "severity": {
                 "type": "string",
-                "enum": ["critical", "high", "medium", "low", "info"],
+                "enum": [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low",
+                  "info"
+                ],
                 "description": "critical = blocks publish; high = fix before publish; medium = fix in next revision; low/info = advisory."
               },
               "category": {
@@ -81,36 +108,64 @@
                   "other"
                 ]
               },
-              "finding": { "type": "string", "description": "Specific finding with evidence (e.g. title is 72 chars, exceeds 60-char limit)." },
-              "recommendation": { "type": "string", "description": "Actionable fix recommendation." }
-            },
-            "additionalProperties": false
+              "finding": {
+                "type": "string",
+                "description": "Specific finding with evidence (e.g. title is 72 chars, exceeds 60-char limit)."
+              },
+              "recommendation": {
+                "type": "string",
+                "description": "Actionable fix recommendation."
+              }
+            }
           }
         },
         "internal_links_audit": {
           "type": "object",
           "description": "Verification of internal link plan from brief.",
-          "required": ["count_found", "minimum_required", "passes"],
+          "required": [
+            "count_found",
+            "minimum_required",
+            "passes"
+          ],
           "properties": {
-            "count_found": { "type": "integer", "description": "Number of valid internal links found in the draft/page." },
-            "minimum_required": { "type": "integer", "description": "Minimum required per site baseline (typically 3)." },
-            "passes": { "type": "boolean" },
-            "high_value_link_present": { "type": "boolean", "description": "Whether at least one high-value property/* or product/* link is present." },
-            "missing_links": { "type": "array", "items": { "type": "string" }, "description": "Links planned in brief but not found in draft." }
-          },
-          "additionalProperties": false
+            "count_found": {
+              "type": "integer",
+              "description": "Number of valid internal links found in the draft/page."
+            },
+            "minimum_required": {
+              "type": "integer",
+              "description": "Minimum required per site baseline (typically 3)."
+            },
+            "passes": {
+              "type": "boolean"
+            },
+            "high_value_link_present": {
+              "type": "boolean",
+              "description": "Whether at least one high-value property/* or product/* link is present."
+            },
+            "missing_links": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Links planned in brief but not found in draft."
+            }
+          }
         },
         "overall_score": {
           "type": "string",
-          "enum": ["pass", "conditional_pass", "fail"],
+          "enum": [
+            "pass",
+            "conditional_pass",
+            "fail"
+          ],
           "description": "pass = ready to publish; conditional_pass = publish with noted caveats; fail = requires revision."
         },
         "overall_notes": {
           "type": "string",
           "description": "Summary of traditional SEO status and key action items."
         }
-      },
-      "additionalProperties": false
+      }
     },
     "ai_extractability": {
       "type": "object",
@@ -126,95 +181,192 @@
       "properties": {
         "answer_first_structure": {
           "type": "object",
-          "required": ["status"],
+          "required": [
+            "status"
+          ],
           "properties": {
-            "status": { "type": "string", "enum": ["pass", "fail", "partial"] },
-            "notes": { "type": "string", "description": "e.g. 3 of 5 H2 sections have answer-first block; 2 sections bury answer in paragraph 3." }
-          },
-          "additionalProperties": false
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "partial"
+              ]
+            },
+            "notes": {
+              "type": "string",
+              "description": "e.g. 3 of 5 H2 sections have answer-first block; 2 sections bury answer in paragraph 3."
+            }
+          }
         },
         "heading_hierarchy": {
           "type": "object",
           "description": "Checks H1→H2→H3 hierarchy is clean and query-intent aligned.",
-          "required": ["status"],
+          "required": [
+            "status"
+          ],
           "properties": {
-            "status": { "type": "string", "enum": ["pass", "fail", "partial"] },
-            "h1_count": { "type": "integer", "description": "Should be exactly 1." },
-            "issues": { "type": "array", "items": { "type": "string" } }
-          },
-          "additionalProperties": false
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "partial"
+              ]
+            },
+            "h1_count": {
+              "type": "integer",
+              "description": "Should be exactly 1."
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
         },
         "fact_density": {
           "type": "object",
           "description": "Verifiable data points per 500 words. Target: minimum 3.",
-          "required": ["status"],
+          "required": [
+            "status"
+          ],
           "properties": {
-            "status": { "type": "string", "enum": ["pass", "fail", "partial"] },
-            "data_points_found": { "type": "integer" },
-            "word_count_approximate": { "type": "integer" },
-            "notes": { "type": "string" }
-          },
-          "additionalProperties": false
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "partial"
+              ]
+            },
+            "data_points_found": {
+              "type": "integer"
+            },
+            "word_count_approximate": {
+              "type": "integer"
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
         },
         "schema_markup": {
           "type": "object",
           "description": "Whether required schema types from the brief are implemented on the live page.",
-          "required": ["status"],
+          "required": [
+            "status"
+          ],
           "properties": {
-            "status": { "type": "string", "enum": ["pass", "fail", "not_checked", "pending_frontend"] },
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "not_checked",
+                "pending_frontend"
+              ]
+            },
             "types_present": {
               "type": "array",
-              "items": { "type": "string" },
+              "items": {
+                "type": "string"
+              },
               "description": "Schema types found on the page."
             },
             "types_missing": {
               "type": "array",
-              "items": { "type": "string" },
+              "items": {
+                "type": "string"
+              },
               "description": "Schema types required by brief but not yet implemented."
             },
-            "notes": { "type": "string" }
-          },
-          "additionalProperties": false
+            "notes": {
+              "type": "string"
+            }
+          }
         },
         "ai_bot_crawlability": {
           "type": "object",
           "description": "Robots.txt check for OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot.",
-          "required": ["status"],
+          "required": [
+            "status"
+          ],
           "properties": {
             "status": {
               "type": "string",
-              "enum": ["verified_allowed", "blocked", "partial_block", "not_checked"]
+              "enum": [
+                "verified_allowed",
+                "blocked",
+                "partial_block",
+                "not_checked"
+              ]
             },
             "blocked_bots": {
               "type": "array",
-              "items": { "type": "string" },
+              "items": {
+                "type": "string"
+              },
               "description": "List of blocked AI bots if status is blocked or partial_block."
             },
-            "notes": { "type": "string" }
-          },
-          "additionalProperties": false
+            "notes": {
+              "type": "string"
+            }
+          }
         },
         "content_uniqueness": {
           "type": "object",
           "description": "Information gain assessment versus SERP competitors.",
-          "required": ["status"],
+          "required": [
+            "status"
+          ],
           "properties": {
-            "status": { "type": "string", "enum": ["pass", "fail", "partial"] },
-            "information_gain_present": { "type": "boolean" },
-            "notes": { "type": "string", "description": "What unique value the article provides vs top-3 SERP results." }
-          },
-          "additionalProperties": false
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "partial"
+              ]
+            },
+            "information_gain_present": {
+              "type": "boolean"
+            },
+            "notes": {
+              "type": "string",
+              "description": "What unique value the article provides vs top-3 SERP results."
+            }
+          }
         },
         "query_fan_out_coverage": {
           "type": "object",
           "description": "Whether the 3–5 query fan-out sub-questions from the brief are addressed in the article.",
-          "required": ["status"],
+          "required": [
+            "status"
+          ],
           "properties": {
-            "status": { "type": "string", "enum": ["pass", "fail", "partial"] },
-            "questions_covered": { "type": "array", "items": { "type": "string" } },
-            "questions_missing": { "type": "array", "items": { "type": "string" } }
-          },
-          "additionalProperties": false
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "partial"
+              ]
+            },
+            "questions_covered": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "questions_missing": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
         },
         "overall_score": {
           "type": "integer",
@@ -224,57 +376,127 @@
         },
         "overall_status": {
           "type": "string",
-          "enum": ["pass", "conditional_pass", "fail"],
+          "enum": [
+            "pass",
+            "conditional_pass",
+            "fail"
+          ],
           "description": "pass = 70+; conditional_pass = 50–69 with documented caveats; fail = below 50."
         }
-      },
-      "additionalProperties": false
+      }
     },
     "metadata_audit": {
       "type": "object",
       "description": "Audit of title, meta description, and slug against brief and overlay rules.",
-      "required": ["title_audit", "meta_audit", "slug_audit"],
+      "required": [
+        "title_audit",
+        "meta_audit",
+        "slug_audit"
+      ],
       "properties": {
         "title_audit": {
           "type": "object",
-          "required": ["current_title", "char_count", "contains_primary_keyword", "within_limit", "status"],
+          "required": [
+            "current_title",
+            "char_count",
+            "contains_primary_keyword",
+            "within_limit",
+            "status"
+          ],
           "properties": {
-            "current_title": { "type": "string" },
-            "char_count": { "type": "integer" },
-            "contains_primary_keyword": { "type": "boolean" },
-            "within_limit": { "type": "boolean", "description": "True if ≤60 chars or within overlay-specified limit." },
-            "status": { "type": "string", "enum": ["pass", "fail", "needs_revision"] },
-            "recommended_title": { "type": "string", "description": "Revised title if status is fail or needs_revision." }
-          },
-          "additionalProperties": false
+            "current_title": {
+              "type": "string"
+            },
+            "char_count": {
+              "type": "integer"
+            },
+            "contains_primary_keyword": {
+              "type": "boolean"
+            },
+            "within_limit": {
+              "type": "boolean",
+              "description": "True if ≤60 chars or within overlay-specified limit."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "needs_revision"
+              ]
+            },
+            "recommended_title": {
+              "type": "string",
+              "description": "Revised title if status is fail or needs_revision."
+            }
+          }
         },
         "meta_audit": {
           "type": "object",
-          "required": ["current_meta", "char_count", "contains_primary_keyword", "within_limit", "status"],
+          "required": [
+            "current_meta",
+            "char_count",
+            "contains_primary_keyword",
+            "within_limit",
+            "status"
+          ],
           "properties": {
-            "current_meta": { "type": "string" },
-            "char_count": { "type": "integer" },
-            "contains_primary_keyword": { "type": "boolean" },
-            "within_limit": { "type": "boolean", "description": "True if ≤160 chars or within overlay-specified limit." },
-            "status": { "type": "string", "enum": ["pass", "fail", "needs_revision"] },
-            "recommended_meta": { "type": "string" }
-          },
-          "additionalProperties": false
+            "current_meta": {
+              "type": "string"
+            },
+            "char_count": {
+              "type": "integer"
+            },
+            "contains_primary_keyword": {
+              "type": "boolean"
+            },
+            "within_limit": {
+              "type": "boolean",
+              "description": "True if ≤160 chars or within overlay-specified limit."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "needs_revision"
+              ]
+            },
+            "recommended_meta": {
+              "type": "string"
+            }
+          }
         },
         "slug_audit": {
           "type": "object",
-          "required": ["current_slug", "status"],
+          "required": [
+            "current_slug",
+            "status"
+          ],
           "properties": {
-            "current_slug": { "type": "string" },
-            "contains_primary_keyword": { "type": "boolean" },
-            "follows_overlay_conventions": { "type": "boolean" },
-            "status": { "type": "string", "enum": ["pass", "fail", "needs_revision"] },
-            "recommended_slug": { "type": "string" }
-          },
-          "additionalProperties": false
+            "current_slug": {
+              "type": "string"
+            },
+            "contains_primary_keyword": {
+              "type": "boolean"
+            },
+            "follows_overlay_conventions": {
+              "type": "boolean"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "needs_revision"
+              ]
+            },
+            "recommended_slug": {
+              "type": "string"
+            }
+          }
         }
-      },
-      "additionalProperties": false
+      }
     },
     "eeat_audit": {
       "type": "object",
@@ -282,13 +504,26 @@
       "properties": {
         "experience_proof_present": {
           "type": "object",
-          "required": ["status"],
+          "required": [
+            "status"
+          ],
           "properties": {
-            "status": { "type": "string", "enum": ["pass", "fail", "not_required"] },
-            "proof_type_found": { "type": "string", "description": "Type of experience proof found in the draft." },
-            "notes": { "type": "string" }
-          },
-          "additionalProperties": false
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "not_required"
+              ]
+            },
+            "proof_type_found": {
+              "type": "string",
+              "description": "Type of experience proof found in the draft."
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
         },
         "author_entity_present": {
           "type": "boolean",
@@ -296,24 +531,32 @@
         },
         "trust_signals_present": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "Trust signals actually found (source citations, contact info, etc.)."
         },
         "ymyl_elevated_review_done": {
           "type": "boolean",
           "description": "If ymyl_adjacent was true in the brief, whether elevated review was completed."
         }
-      },
-      "additionalProperties": false
+      }
     },
     "cannibalization_check": {
       "type": "object",
       "description": "Final cannibalization verification at audit time (may differ from brief-time check if new posts published since).",
-      "required": ["status", "window_checked"],
+      "required": [
+        "status",
+        "window_checked"
+      ],
       "properties": {
         "status": {
           "type": "string",
-          "enum": ["clear", "risk_found", "exception_documented"]
+          "enum": [
+            "clear",
+            "risk_found",
+            "exception_documented"
+          ]
         },
         "window_checked": {
           "type": "string",
@@ -327,35 +570,72 @@
           "type": "string",
           "description": "If exception_documented, explain why publishing is still appropriate."
         }
-      },
-      "additionalProperties": false
+      }
     },
     "technical_escalations": {
       "type": "array",
       "description": "Technical SEO items requiring Frontend, DevOps, or Cloudflare Engineer action. SEO Analyst specifies; does not implement.",
       "items": {
         "type": "object",
-        "required": ["type", "description", "owner"],
+        "required": [
+          "type",
+          "description",
+          "owner"
+        ],
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["schema_implementation", "canonical", "redirect", "sitemap", "robots_txt", "core_web_vitals", "other"]
+            "enum": [
+              "schema_implementation",
+              "canonical",
+              "redirect",
+              "sitemap",
+              "robots_txt",
+              "rendering_strategy",
+              "core_web_vitals",
+              "other"
+            ],
+            "description": "Technical SEO category. rendering_strategy: SSR/CSR/hydration issues affecting crawlability or CWV. core_web_vitals: INP, LCP, CLS fixes affecting ranking signals."
           },
-          "description": { "type": "string", "description": "Engineering-ready specification for the technical item." },
-          "owner": { "type": "string", "enum": ["frontend-developer", "devops-engineer", "cloudflare-engineer"] },
-          "priority": { "type": "string", "enum": ["must_do_before_publish", "post_publish", "next_sprint"] }
-        },
-        "additionalProperties": false
+          "description": {
+            "type": "string",
+            "description": "Engineering-ready specification for the technical item."
+          },
+          "owner": {
+            "type": "string",
+            "enum": [
+              "frontend-developer",
+              "devops-engineer",
+              "cloudflare-engineer"
+            ]
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "must_do_before_publish",
+              "post_publish",
+              "next_sprint"
+            ]
+          }
+        }
       }
     },
     "handoff": {
       "type": "object",
       "description": "Handoff routing and next steps.",
-      "required": ["status", "action_required"],
+      "required": [
+        "status",
+        "action_required"
+      ],
       "properties": {
         "status": {
           "type": "string",
-          "enum": ["approved_to_publish", "revision_required", "escalated_to_frontend", "escalated_to_researcher"],
+          "enum": [
+            "approved_to_publish",
+            "revision_required",
+            "escalated_to_frontend",
+            "escalated_to_researcher"
+          ],
           "description": "Overall audit outcome."
         },
         "action_required": {
@@ -368,16 +648,119 @@
         },
         "contracts": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "Related contract files.",
-          "examples": [["contracts/schemas/seo-metadata.json"]]
+          "examples": [
+            [
+              "contracts/schemas/seo-metadata.json"
+            ]
+          ]
         },
-        "notes": { "type": "string" }
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "topical_authority_audit": {
+      "type": "object",
+      "description": "Topical authority audit. Checks whether the published content fulfills its pillar-cluster assignment and contributes to site topical depth.",
+      "properties": {
+        "pillar_page_link_present": {
+          "type": "boolean",
+          "description": "Whether the content links to its declared pillar page URL."
+        },
+        "cluster_position_consistent": {
+          "type": "string",
+          "enum": [
+            "consistent",
+            "inconsistent",
+            "not_checked"
+          ],
+          "description": "Whether the content's depth matches its cluster position (pillar vs supporting vs supplementary)."
+        },
+        "information_gain_verified": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "partial"
+              ]
+            },
+            "notes": {
+              "type": "string",
+              "description": "What unique value the article provides vs top-3 SERP results. Required for pass."
+            }
+          },
+          "required": [
+            "status"
+          ]
+        },
+        "internal_link_to_cluster_siblings": {
+          "type": "boolean",
+          "description": "Whether the content links to at least one sibling cluster article to strengthen topical depth."
+        },
+        "overall_status": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "not_checked"
+          ],
+          "description": "pass = pillar link present + information gain verified + cluster position consistent."
+        }
       },
-      "additionalProperties": false
+      "required": [
+        "overall_status"
+      ]
+    },
+    "schema_compliance_audit": {
+      "type": "object",
+      "description": "Schema/structured data compliance audit for post-publish audits. Verifies that required JSON-LD from the brief has been implemented correctly in production.",
+      "properties": {
+        "validation_tool_used": {
+          "type": "string",
+          "description": "Tool used for validation (e.g. 'Google Rich Results Test', 'Schema.org Validator', 'manual JSON-LD inspection')."
+        },
+        "types_validated": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Schema types that were validated in production."
+        },
+        "validation_errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Validation errors found. Empty array if none."
+        },
+        "rich_results_eligible": {
+          "type": "boolean",
+          "description": "Whether Google Rich Results Test confirms eligibility for rich results (FAQ accordion, HowTo steps, etc.)."
+        },
+        "overall_status": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "partial",
+            "not_checked",
+            "pending_frontend"
+          ],
+          "description": "pass = all required schema types present and valid. pending_frontend = schema implementation ticket not yet completed."
+        }
+      },
+      "required": [
+        "overall_status"
+      ]
     }
   },
-  "additionalProperties": false,
   "examples": [
     {
       "audit_id": "2026-06-12-lease-thu-thiem-pre-publish",
@@ -406,25 +789,87 @@
         "overall_notes": "Add FAQ block before publish. All other traditional SEO elements pass."
       },
       "ai_extractability": {
-        "answer_first_structure": { "status": "pass", "notes": "All 5 H2 sections have answer-first block ≤60 words." },
-        "heading_hierarchy": { "status": "pass", "h1_count": 1, "issues": [] },
-        "fact_density": { "status": "pass", "data_points_found": 12, "word_count_approximate": 1650, "notes": "3.6 data points per 500 words — meets target." },
-        "schema_markup": { "status": "pending_frontend", "types_present": [], "types_missing": ["Article", "FAQPage", "BreadcrumbList"], "notes": "Technical ticket raised for Frontend." },
-        "ai_bot_crawlability": { "status": "verified_allowed", "notes": "robots.txt allows OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot." },
-        "content_uniqueness": { "status": "pass", "information_gain_present": true, "notes": "Includes 2026 rental price ranges from live listings and firsthand walkability description not found in top SERP results." },
-        "query_fan_out_coverage": { "status": "pass", "questions_covered": ["Is Thu Thiem good for expats?", "What is the average rent in Thu Thiem?", "How does Thu Thiem compare to District 1?", "What amenities are available?", "Is Thu Thiem safe?"], "questions_missing": [] },
+        "answer_first_structure": {
+          "status": "pass",
+          "notes": "All 5 H2 sections have answer-first block ≤60 words."
+        },
+        "heading_hierarchy": {
+          "status": "pass",
+          "h1_count": 1,
+          "issues": []
+        },
+        "fact_density": {
+          "status": "pass",
+          "data_points_found": 12,
+          "word_count_approximate": 1650,
+          "notes": "3.6 data points per 500 words — meets target."
+        },
+        "schema_markup": {
+          "status": "pending_frontend",
+          "types_present": [],
+          "types_missing": [
+            "Article",
+            "FAQPage",
+            "BreadcrumbList"
+          ],
+          "notes": "Technical ticket raised for Frontend."
+        },
+        "ai_bot_crawlability": {
+          "status": "verified_allowed",
+          "notes": "robots.txt allows OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot."
+        },
+        "content_uniqueness": {
+          "status": "pass",
+          "information_gain_present": true,
+          "notes": "Includes 2026 rental price ranges from live listings and firsthand walkability description not found in top SERP results."
+        },
+        "query_fan_out_coverage": {
+          "status": "pass",
+          "questions_covered": [
+            "Is Thu Thiem good for expats?",
+            "What is the average rent in Thu Thiem?",
+            "How does Thu Thiem compare to District 1?",
+            "What amenities are available?",
+            "Is Thu Thiem safe?"
+          ],
+          "questions_missing": []
+        },
         "overall_score": 82,
         "overall_status": "pass"
       },
       "metadata_audit": {
-        "title_audit": { "current_title": "Thu Thiem Neighborhood Guide 2026 | Expat Renting Tips", "char_count": 55, "contains_primary_keyword": true, "within_limit": true, "status": "pass" },
-        "meta_audit": { "current_meta": "Complete guide to renting in Thu Thiem in 2026. Rental prices, best streets, transport links, and expat tips for District 2's newest neighborhood.", "char_count": 150, "contains_primary_keyword": true, "within_limit": true, "status": "pass" },
-        "slug_audit": { "current_slug": "post/neighborhood/thu-thiem-neighborhood-guide-2026", "contains_primary_keyword": true, "follows_overlay_conventions": true, "status": "pass" }
+        "title_audit": {
+          "current_title": "Thu Thiem Neighborhood Guide 2026 | Expat Renting Tips",
+          "char_count": 55,
+          "contains_primary_keyword": true,
+          "within_limit": true,
+          "status": "pass"
+        },
+        "meta_audit": {
+          "current_meta": "Complete guide to renting in Thu Thiem in 2026. Rental prices, best streets, transport links, and expat tips for District 2's newest neighborhood.",
+          "char_count": 150,
+          "contains_primary_keyword": true,
+          "within_limit": true,
+          "status": "pass"
+        },
+        "slug_audit": {
+          "current_slug": "post/neighborhood/thu-thiem-neighborhood-guide-2026",
+          "contains_primary_keyword": true,
+          "follows_overlay_conventions": true,
+          "status": "pass"
+        }
       },
       "eeat_audit": {
-        "experience_proof_present": { "status": "pass", "proof_type_found": "firsthand_account", "notes": "First-person walkability description and actual lease price comparison included." },
+        "experience_proof_present": {
+          "status": "pass",
+          "proof_type_found": "firsthand_account",
+          "notes": "First-person walkability description and actual lease price comparison included."
+        },
         "author_entity_present": true,
-        "trust_signals_present": ["source_citations", "verifiable_claims"],
+        "trust_signals_present": [
+          "source_citations",
+          "verifiable_claims"
+        ],
         "ymyl_elevated_review_done": false
       },
       "cannibalization_check": {
@@ -445,7 +890,9 @@
         "status": "revision_required",
         "action_required": "Content Writer: add FAQ block (3 questions from query fan-out). After FAQ added, status upgrades to approved_to_publish. Frontend: implement schema after publish.",
         "metadata_contract_ready": true,
-        "contracts": ["contracts/schemas/seo-metadata.json"],
+        "contracts": [
+          "contracts/schemas/seo-metadata.json"
+        ],
         "notes": "FAQ is the only blocker. All other audit elements pass."
       }
     }

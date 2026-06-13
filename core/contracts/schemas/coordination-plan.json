@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "coordination-plan",
   "title": "Coordination Plan",
-  "description": "Structured multi-agent execution plan produced by Agent Coordinator. Defines phases, dependencies, gate conditions, and circuit breakers for complex multi-role workflows. Consumed by all execution roles to understand their phase, sequencing, and reporting obligations. Pairs with a2a-task.json for per-phase task dispatch.",
+  "description": "Structured multi-agent execution plan produced by Agent Coordinator. Defines phases, dependencies, gate conditions, circuit breakers, per-phase token budgets, confidence levels, and interruption recovery checkpoints for complex multi-role workflows. Consumed by all execution roles to understand their phase, sequencing, and reporting obligations. Pairs with a2a-task.json for per-phase task dispatch.",
   "type": "object",
   "properties": {
     "contract_type": {
@@ -30,109 +30,254 @@
       "type": "object",
       "description": "Top-level coordination objective.",
       "properties": {
-        "outcome": { "type": "string", "description": "What success looks like when all phases complete." },
-        "scope": { "type": "string", "description": "What files, services, or systems are in scope." },
+        "outcome": {
+          "type": "string",
+          "description": "What success looks like when all phases complete."
+        },
+        "scope": {
+          "type": "string",
+          "description": "What files, services, or systems are in scope."
+        },
         "work_type": {
           "type": "string",
-          "enum": ["feature", "bug_fix", "refactor", "migration", "content", "deployment", "audit"]
+          "enum": [
+            "feature",
+            "bug_fix",
+            "refactor",
+            "migration",
+            "content",
+            "deployment",
+            "audit",
+            "research",
+            "incident"
+          ],
+          "description": "Work classification. research: multi-role discovery coordination. incident: incident response coordination with SRE/DevOps/Security."
         },
         "risk_tier": {
           "type": "string",
-          "enum": ["routine", "elevated", "agentic", "critical"],
-          "description": "Risk level determining circuit breaker sensitivity."
+          "enum": [
+            "routine",
+            "elevated",
+            "agentic",
+            "critical"
+          ],
+          "description": "Risk level determining circuit breaker sensitivity and HITL gate frequency."
         },
         "trace_id": {
           "type": "string",
-          "description": "Distributed trace ID for A2A observability."
+          "description": "Distributed trace ID (UUID v4) assigned at intake. Propagated on all a2a-task.json delegations and a2a-artifact.json returns for end-to-end correlation."
         }
       },
-      "required": ["outcome", "scope", "work_type"],
-      "additionalProperties": false
+      "required": [
+        "outcome",
+        "scope",
+        "work_type"
+      ]
     },
     "action_classification": {
       "type": "object",
-      "description": "Pre-classified list of actions by reversibility (from Minimal Footprint Principle in role-standard.md).",
+      "description": "Pre-classified list of actions by reversibility (Steer-or-Kill framework). Completed at intake before any delegation. Irreversible actions require explicit written human sign-off before execution.",
       "properties": {
         "routine": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Read-only or trivially reversible actions."
+          "items": {
+            "type": "string"
+          },
+          "description": "Read-only or trivially reversible actions — autonomous execution allowed."
         },
         "risky": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Consequential but reversible actions requiring gate evidence."
+          "items": {
+            "type": "string"
+          },
+          "description": "Consequential but reversible actions — pause for user confirmation before proceeding."
         },
         "irreversible": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Actions with permanent effects — require explicit approval before execution."
+          "items": {
+            "type": "string"
+          },
+          "description": "Actions with permanent effects (production deploy, data deletion, secret rotation, external communications) — require explicit written human sign-off in the current session."
         }
       },
-      "required": ["routine", "risky", "irreversible"],
-      "additionalProperties": false
+      "required": [
+        "routine",
+        "risky",
+        "irreversible"
+      ]
+    },
+    "token_budget": {
+      "type": "object",
+      "description": "Graph-level token budget governance. Estimated at intake before delegation begins. BUDGET LOCK: no phase starts without an estimate; halt if actual exceeds 2× estimate without a documented re-plan.",
+      "properties": {
+        "total_estimated": {
+          "type": "integer",
+          "description": "Estimated total token consumption for the full coordination graph."
+        },
+        "total_actual": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Actual aggregate token consumption across all completed phases. Null until tracking begins."
+        },
+        "budget_alerts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Phases where actual consumption exceeded 2× estimate — document re-plan reason."
+        }
+      }
     },
     "phases": {
       "type": "array",
-      "description": "Ordered execution phases. Each phase produces a gate artifact before the next phase starts.",
+      "description": "Ordered execution phases. Each phase produces a gate artifact before the next phase starts. For parallel groups, write-scope isolation must be confirmed before any parallel phase begins.",
       "minItems": 1,
       "items": {
         "type": "object",
         "properties": {
-          "phase_id": { "type": "string" },
-          "owner": { "type": "string", "description": "Role responsible for this phase." },
-          "objective": { "type": "string", "description": "What this phase accomplishes." },
+          "phase_id": {
+            "type": "string"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Role responsible for this phase. Must be present in core/a2a/.well-known/agent-registry.json."
+          },
+          "objective": {
+            "type": "string",
+            "description": "What this phase accomplishes."
+          },
           "depends_on": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "phase_ids that must complete before this phase starts."
+          },
+          "parallel_group": {
+            "type": "string",
+            "description": "Group label for parallel phases. All phases in the same group may run concurrently only after write-scope isolation is confirmed. If any phase in the group is Risky or Irreversible, the full group must be confirmed before any phase begins."
           },
           "gate_artifact": {
             "type": "string",
-            "description": "Contract schema the phase owner must emit on completion (e.g. implementation-result.json)."
+            "description": "Contract schema the phase owner must emit on completion (e.g. implementation-result.json). Validated for content, not just schema, before phase is marked complete."
           },
           "status": {
             "type": "string",
-            "enum": ["pending", "in_progress", "completed", "blocked", "failed"]
+            "enum": [
+              "pending",
+              "in_progress",
+              "completed",
+              "blocked",
+              "failed",
+              "skipped"
+            ]
           },
           "a2a_task_id": {
             "type": "string",
-            "description": "a2a-task.json id dispatched for this phase."
+            "description": "a2a-task.json id dispatched for this phase. Required when delegation occurred."
+          },
+          "token_budget_estimated": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Estimated token consumption for this phase. Must be set before phase delegation. Null only for phases not yet planned."
+          },
+          "token_budget_actual": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Actual token consumption for this phase after completion. Null until phase completes. Alert if actual > 2× estimated."
+          },
+          "confidence_level": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ],
+            "description": "Coordinator confidence that this phase plan is correct and complete. low = pause and surface to user before delegating."
+          },
+          "confidence_rationale": {
+            "type": "string",
+            "description": "Rationale for the confidence level. Required when confidence_level is low or medium."
           }
         },
-        "required": ["phase_id", "owner", "objective", "status"],
-        "additionalProperties": false
+        "required": [
+          "phase_id",
+          "owner",
+          "objective",
+          "status"
+        ]
       }
     },
     "execution_state": {
       "type": "object",
-      "description": "Current runtime state of the coordination plan.",
+      "description": "Current runtime state of the coordination plan. Updated at every phase gate — serves as the serialized checkpoint for interruption recovery.",
       "properties": {
-        "current_phase": { "type": "string" },
+        "current_phase": {
+          "type": "string"
+        },
         "completed_phases": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
+        },
+        "interruption_recovery_point": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "phase_id of the last verified checkpoint. Resume here after interruption — re-validate the most recent artifact before opening the next phase."
+        },
+        "last_checkpoint_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Timestamp of last coordination-plan.json update. Used to detect stale plans after interruption."
         },
         "circuit_breakers": {
           "type": "array",
           "items": {
             "type": "object",
             "properties": {
-              "condition": { "type": "string", "description": "Condition that would trigger a halt." },
-              "triggered": { "type": "boolean" },
-              "reason": { "type": "string" }
+              "condition": {
+                "type": "string",
+                "description": "Condition that would trigger a halt."
+              },
+              "triggered": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Reason the circuit breaker fired. Null when not triggered."
+              }
             },
-            "required": ["condition", "triggered"],
-            "additionalProperties": false
+            "required": [
+              "condition",
+              "triggered"
+            ]
           }
         }
       },
-      "required": ["current_phase"],
-      "additionalProperties": false
+      "required": [
+        "current_phase"
+      ]
     },
     "escalation_contacts": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Roles to notify on circuit breaker trigger or blocking issue."
     }
   },
@@ -142,7 +287,6 @@
     "phases",
     "execution_state"
   ],
-  "additionalProperties": false,
   "examples": [
     {
       "contract_type": "coordination-plan",
@@ -158,9 +302,19 @@
         "trace_id": "a3f8c2d1-b4e7-9012-cd45-ef678ab90123"
       },
       "action_classification": {
-        "routine": ["Read existing command code", "Read test files"],
-        "risky": ["Modify NewLogicAutoAssign.php to add COD routing branch"],
+        "routine": [
+          "Read existing command code",
+          "Read test files"
+        ],
+        "risky": [
+          "Modify NewLogicAutoAssign.php to add COD routing branch"
+        ],
         "irreversible": []
+      },
+      "token_budget": {
+        "total_estimated": 12000,
+        "total_actual": 10850,
+        "budget_alerts": []
       },
       "phases": [
         {
@@ -170,30 +324,52 @@
           "depends_on": [],
           "gate_artifact": "implementation-result.json",
           "status": "completed",
-          "a2a_task_id": "task-cod-store-routing-slice-01"
+          "a2a_task_id": "task-cod-store-routing-slice-01",
+          "token_budget_estimated": 5000,
+          "token_budget_actual": 4800,
+          "confidence_level": "high",
+          "confidence_rationale": "Requirements clear from feature-ticket.json; existing test suite provides regression baseline."
         },
         {
           "phase_id": "phase-2-review",
           "owner": "reviewer",
           "objective": "Code review — verify reliability, compatibility, blast radius",
-          "depends_on": ["phase-1-implement"],
+          "depends_on": [
+            "phase-1-implement"
+          ],
           "gate_artifact": "code-review-finding.json",
           "status": "completed",
-          "a2a_task_id": "task-cod-review-pr142"
+          "a2a_task_id": "task-cod-review-pr142",
+          "token_budget_estimated": 3000,
+          "token_budget_actual": 2950,
+          "confidence_level": "high",
+          "confidence_rationale": "Implementation artifact complete and content-validated; scope well-bounded."
         },
         {
           "phase_id": "phase-3-qa",
           "owner": "qa-engineer",
           "objective": "QA validation against all AC scenarios; fix F-01 finding and retest",
-          "depends_on": ["phase-2-review"],
+          "depends_on": [
+            "phase-2-review"
+          ],
           "gate_artifact": "test-report.json",
           "status": "completed",
-          "a2a_task_id": "task-cod-qa-validate"
+          "a2a_task_id": "task-cod-qa-validate",
+          "token_budget_estimated": 4000,
+          "token_budget_actual": 3100,
+          "confidence_level": "high",
+          "confidence_rationale": "Review finding F-01 was low severity; fix applied and verified."
         }
       ],
       "execution_state": {
         "current_phase": "done",
-        "completed_phases": ["phase-1-implement", "phase-2-review", "phase-3-qa"],
+        "completed_phases": [
+          "phase-1-implement",
+          "phase-2-review",
+          "phase-3-qa"
+        ],
+        "interruption_recovery_point": "phase-3-qa",
+        "last_checkpoint_at": "2026-06-12T18:45:00+07:00",
         "circuit_breakers": [
           {
             "condition": "Any blocking code-review finding not resolved before QA",
@@ -202,7 +378,10 @@
           }
         ]
       },
-      "escalation_contacts": ["technical-lead", "project-manager"]
+      "escalation_contacts": [
+        "technical-lead",
+        "project-manager"
+      ]
     }
   ]
 }

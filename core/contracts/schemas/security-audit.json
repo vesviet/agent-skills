@@ -92,6 +92,14 @@
           "owner_role"
         ]
       }
+    },
+    "ai_prompt_injection_check": {
+      "type": "boolean",
+      "description": "True if the system was audited for prompt injection and jailbreak vulnerabilities."
+    },
+    "sbom_verification": {
+      "type": "boolean",
+      "description": "True if the Software Bill of Materials (SBOM) was verified for supply-chain integrity."
     }
   },
   "required": [

@@ -25,6 +25,10 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
+### AI Documentation Transparency (2025-2026)
+- document AI system boundaries, fallback behaviors, and prompt-injection risks for developers
+- clearly mark user-facing documentation when describing probabilistic AI features
+
 - create clear documentation for the intended audience
 - structure knowledge so others can find and use it quickly
 - keep docs aligned with product and system behavior from verified sources
@@ -95,6 +99,8 @@ This role must follow [role-standard](role-standard.md) first.
 - delegates deep technical research to **Researcher** via **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **DOC-TRANSPARENCY LOCK**: do not document AI features as deterministic systems; always document the fallback path and accuracy constraints.
 
 - do not document assumptions as facts
 - do not bury critical operational steps in prose

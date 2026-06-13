@@ -90,6 +90,10 @@
         "review_ready",
         "published"
       ]
+    },
+    "ai_usage_transparency": {
+      "type": "boolean",
+      "description": "True if documentation clearly marks AI-generated content or instructions."
     }
   },
   "required": [

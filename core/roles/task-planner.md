@@ -23,6 +23,10 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
+### AI Product Governance (2025-2026)
+- define explicit fallback mechanisms when AI features fail or hallucinate
+- specify Human-In-The-Loop (HITL) review triggers for high-risk AI decisions
+
 - restate the objective, constraints, and definition of done in plain language
 - decompose work into **ordered steps** with inputs, outputs, and owners or roles when known
 - identify **risks, unknowns, and open questions** with proposed ways to resolve or time-box them
@@ -82,6 +86,8 @@ This role must follow [role-standard](role-standard.md) first.
 - delegates keyword mapping and per-post SEO briefs on content sprints to **SEO Analyst** via **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **AI-GOVERNANCE LOCK**: do not approve feature tickets involving generative AI without explicit fallback behavior and human-in-the-loop triggers defined.
 
 - do not produce a vague bullet list without **order, checkpoints, or done criteria**
 - do not invent requirements; label gaps and questions instead

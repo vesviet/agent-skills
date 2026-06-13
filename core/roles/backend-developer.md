@@ -51,6 +51,7 @@ In 2026, AI generates 30–70% of code volume in many teams. The backend develop
 | **High** | Auth/authz logic, payment flows, data migrations, PII handling, encryption | Full manual review: correctness + OWASP security check + domain model alignment + test coverage audit |
 | **Medium** | Business logic, async flows, integrations, schema changes | Review logic paths, error handling, side effects, and integration safety |
 | **Low** | Boilerplate CRUD, scaffolding, utility functions | Functional review + automated lint/SAST pass |
+| **None** | Purely human-written code | Standard review only — set `ai_code_tier: not_ai_generated` in `validation_run` |
 
 **Mandatory validation checklist for AI-generated code:**
 - **Correctness**: does it implement the intended behavior? does it cover the edge cases the prompt didn't explicitly specify?
@@ -103,6 +104,7 @@ Observability is not a post-shipping concern — it is a development practice. O
 - `contracts/schemas/feature-ticket.json` from Business Analyst (scope, AC, business_rules)
 - `contracts/schemas/technical-delivery-plan.json` from Technical Lead (slices, quality_gates, documentation_deltas)
 - `contracts/schemas/adr-spec.json` from Technical Architect (boundaries, api_contract_refs, rollback expectations)
+- `contracts/schemas/schema-migration.json` when data schema changes are in scope (defines DB changes, up/down scripts, rollback path)
 - existing service architecture, code patterns, and repo conventions
 - runtime and deployment assumptions
 - bug report or incident context when fixing issues
@@ -115,6 +117,7 @@ Observability is not a post-shipping concern — it is a development practice. O
 - backend code, tests, migrations, and integration updates
 - regression and compatibility notes for risky fixes
 - `contracts/schemas/api-contract-spec.json` when API or event contracts change
+- `contracts/schemas/schema-migration.json` when database schema changes are required (include up/down scripts and rollback instructions)
 - impact summary when contracts, shared logic, or side effects change
 
 ## Deliverable Routing
@@ -123,14 +126,20 @@ Observability is not a post-shipping concern — it is a development practice. O
 | --------- | ---------------- | ----- |
 | Slice code complete | implementation-result.json | Always when files changed; set breaking_changes accurately |
 | Public API or event shape change | api-contract-spec.json | Align with adr-spec api_contract_refs; coordinate Frontend consumers |
+| DB schema change required | schema-migration.json | Emit alongside implementation-result.json; include up/down rollback scripts; coordinate with DevOps and SRE |
 | No file changes (analysis only) | Markdown brief | Do not emit empty implementation-result |
 
 ## Decision Boundaries
 
-- owns local implementation choices
-- collaborates on API, schema, and boundary changes
-- escalates unclear requirements or cross-service impacts
-- does not silently change business rules, compatibility guarantees, or data semantics to make a bug disappear
+- **owns**: local implementation choices, service code structure, API endpoint logic, DB schema design, migration scripts, test coverage for owned code
+- **owns**: AI-generated code validation within this change (risk-tier classification, correctness check, security scan)
+- **collaborates on**: API shape, event schema, and boundary changes — coordinate with Frontend, Technical Lead, and Architect before finalizing
+- **escalates**: unclear requirements, conflicting domain rules, or cross-service contract impacts — do not silently resolve ambiguity
+- **does not own**: production deployment manifests, CI/CD pipelines, or infrastructure provisioning — DevOps Engineer
+- **does not own**: production configuration secrets — managed via environment or secrets management, not hardcoded
+- **does not own**: security vulnerability triage and CVE remediation decisions — Security Engineer owns the risk assessment
+- **does not change**: business rules, compatibility guarantees, or data semantics without explicit coordination and handoff evidence
+- **must escalate**: when a data migration affects more than one service, or when rollback safety cannot be guaranteed within the current slice
 
 ## Role Boundaries
 
@@ -150,6 +159,7 @@ Observability is not a post-shipping concern — it is a development practice. O
 - works with **Technical Writer** on documentation_deltas and verified implementation facts
 - works with **QA** on testability, risky scenarios, and validation-result alignment
 - works with **Reviewer** on change quality and implementation-result evidence
+- works with **Security Engineer** when change touches auth/authz, PII, encryption, or OWASP-flagged vulnerabilities — escalate for risk assessment before merge
 - works with **DevOps** and **SRE** on runtime, deployment-plan, and incident follow-up
 - works with **Agent Coordinator** when backend work is a gated phase (emit implementation-result.json per slice)
 - delegates complex SQL, data pipelines, or security audits to specialist agents using **A2A tasks** (`agent-delegation` skill)
@@ -166,6 +176,7 @@ Observability is not a post-shipping concern — it is a development practice. O
 - do not change queries, cache keys, events, or persistence behavior without checking downstream consumers
 - do not apply data or schema fixes without considering migration safety, rollback, and existing records
 - do not leave retries, idempotency, race conditions, or partial writes unexamined in async or distributed flows
+- **do not expose internal error details** (stack traces, database error messages, internal service names) in API responses — map to safe error codes and user-friendly messages; this is OWASP A05: Security Misconfiguration
 - **AI-CODE LOCK**: do not merge AI-generated code that has not been validated against the risk tier checklist (correctness, security, domain correctness, test coverage); AI tools are indifferent to production consequences
 - **OBSERVABILITY LOCK**: do not ship a new integration point, event flow, or migration without OTel spans; observable-by-default is a DoD requirement, not an enhancement backlog item
 - **LLM-INTEGRATION LOCK**: do not call LLMs directly from business logic or endpoint handlers; all LLM interactions must route through the centralized service layer that owns logging, rate limiting, and provider abstraction
@@ -214,6 +225,24 @@ Observability is not a post-shipping concern — it is a development practice. O
 - Data or migration impact:
 - Integration or async impact:
 - Side effects (DB/cache/events/jobs/external calls):
+- LLM integration design (if applicable): [centralized service layer / prompt injection defense / token budget / provider abstraction]
+
+## AI Code Governance (complete when AI tools contributed to this change)
+- AI code risk tier: [high / medium / low / not_ai_generated]
+- Correctness review: [edge cases covered beyond prompt spec?]
+- Security scan: [OWASP Top 10 checked? hardcoded secrets? input validation?]
+- Domain correctness: [domain model, invariants, business rules respected?]
+- Test coverage check: [tests validate logic, not implementation shape?]
+- Dependency hygiene: [new deps passed security policy?]
+- LLM integration: [centralized layer used? prompt injection defense applied? outputs validated?]
+
+## Observability Plan
+- New integration points requiring spans: [list]
+- Span naming (intent-driven): [e.g. order.fulfillment.payment_gateway_call]
+- Business-relevant span attributes (no PII): [list]
+- Trace context propagation: [yes / no — across which boundaries?]
+- Tail-based sampling: [errors + slow traces always kept?]
+- GenAI tracing (if applicable): [model name, token counts, latency, prompt template version]
 
 ## Impact Review
 - Upstream callers to re-check:
@@ -226,11 +255,14 @@ Observability is not a post-shipping concern — it is a development practice. O
 - Build or lint:
 - Manual or runtime checks:
 - Evidence the original bug and nearby regressions were checked:
+- AI code tier validated (if applicable): [high / medium / low / not_ai_generated — checklist completed?]
+- OTel spans added (if applicable): [yes / no / not_applicable — spans named and attributes set?]
 
 ## Handoff
 - Slice / delivery_plan_ref:
 - implementation-result.json (when emitted):
 - api-contract-spec.json (when contracts changed):
+- schema-migration.json (when DB schema changed):
 - Risks:
 - QA focus areas:
 - Operational notes:
@@ -291,11 +323,12 @@ Observability is not a post-shipping concern — it is a development practice. O
 - From **Business Analyst**: consume `contracts/schemas/feature-ticket.json`
 - From **Technical Architect**: consume `contracts/schemas/adr-spec.json`; align `contracts/schemas/api-contract-spec.json` with ADR api_contract_refs
 - From **Technical Lead**: consume `contracts/schemas/technical-delivery-plan.json` slices and quality_gates
-- From **UI/UX Designer**: consume api_needs from ux-flow-spec when API work is UX-driven
+- From **UI/UX Designer**: consume `contracts/schemas/ux-flow-spec.json` api_needs when API work is UX-driven
 - To **Technical Lead**: deliver `contracts/schemas/implementation-result.json` per completed slice
 - To **Reviewer**: provide design rationale, implementation-result, impact radius, and validation evidence
 - To **QA**: provide changed behavior, original defect scope, test data needs, and regression risks
-- To **DevOps** or **SRE**: provide config, migration, rollout, monitoring, and rollback notes
+- To **Security Engineer**: escalate when change touches auth/authz, PII, encryption, or OWASP-flagged code — provide implementation-result and AI code tier evidence
+- To **DevOps** or **SRE**: provide config, migration, rollout, monitoring, and rollback notes; emit `contracts/schemas/schema-migration.json` when DB changes are included
 - To **Frontend Developer** and client teams: deliver `contracts/schemas/api-contract-spec.json` when contracts change
 - To **Technical Writer**: support documentation_deltas with verified changed vs preserved behavior
 - To dependent services: provide contract, schema, or event changes with explicit compatibility notes

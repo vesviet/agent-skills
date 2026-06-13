@@ -33,6 +33,10 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
+### AI Architecture & Trust Boundaries (2025-2026)
+- architect isolation layers between deterministic business logic and probabilistic LLM outputs
+- enforce context-window and token-budget constraints at the system design level
+
 ### Structural Design (Foundation)
 
 - define system boundaries, interfaces, and dependency direction
@@ -190,6 +194,8 @@ Privacy and compliance constraints belong at the boundary level, not in applicat
 - delegates proof-of-concept coding or deep data collection via **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **AI-ARCHITECTURE LOCK**: do not approve system designs containing LLM components without explicit data isolation, context-window budgeting, and fallback state-machines defined in the ADR.
 
 - do not overdesign for hypothetical scale
 - do not introduce platform complexity without clear value

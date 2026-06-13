@@ -187,6 +187,7 @@ When research feeds Content Writer or SEO Analyst:
 
 ## Execution Log
 - Minimum rounds: 10 (deep) or 3+ with waiver (scoped)
+- scope_waiver_note: [required if scoped — who narrowed scope and why fewer rounds are sufficient]
 - Round 1 (query / sources / takeaway / AI sources used for query only):
 - Round 2:
 - ...
@@ -222,13 +223,17 @@ When research feeds Content Writer or SEO Analyst:
 ## Sources
 | Source | Type | Credibility | URL | Notes |
 |--------|------|-------------|-----|-------|
-| | primary/secondary/tertiary | High/Med/Low | | |
+| | primary/secondary/tertiary/ai-generated | Primary \| Secondary \| Tertiary \| AI-generated | | |
+
+## AI Source Discipline
+- AI tools used for queries only (not cited): [list tools]
+- AI-citation mismatches [AI-CITATION MISMATCH]: [list or "none"]
+- grounding_completeness: [N/M claims with verifiable URL = X%]
 
 ## Handoff
 - recommended_next_roles (role + rationale):
 - Decisions still required by owner:
 - residual_risks:
-- grounding_completeness: [% of claims with verifiable URL]
 ```
 
 Structured JSON handoff must validate against `contracts/schemas/research-report.json` including `execution_metrics.depth_mode`, `recommended_next_roles`, and scoped `scope_waiver_note` when applicable.
@@ -251,6 +256,7 @@ Structured JSON handoff must validate against `contracts/schemas/research-report
 - all material claims have a clickable, verifiable source URL
 - ungrounded claims labeled [INFERENCE], [UNKNOWN], or [UNVERIFIED]
 - AI-citation mismatches identified and flagged [AI-CITATION MISMATCH]
+- grounding_completeness percentage documented in output
 
 ### Chain-of-Verification (CoVe)
 - CoVe applied to critical claims (mandatory for YMYL-adjacent topics)
@@ -320,5 +326,6 @@ Activation example:
 
     Role: researcher
     Overlay: overlays/lease-content
+    depth_mode: deep
 
 See overlay README for site-specific source priorities.

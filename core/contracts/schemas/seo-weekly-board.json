@@ -22,7 +22,9 @@
     "board_id": {
       "type": "string",
       "description": "Unique board identifier. Convention: seo-weekly-board-YYYY-MM-DD (week start date).",
-      "examples": ["seo-weekly-board-2026-06-09"]
+      "examples": [
+        "seo-weekly-board-2026-06-09"
+      ]
     },
     "created_at": {
       "type": "string",
@@ -45,13 +47,23 @@
     },
     "sprint_mode": {
       "type": "string",
-      "enum": ["dual_site_active", "single_site", "rest"],
+      "enum": [
+        "dual_site_active",
+        "single_site",
+        "rest"
+      ],
       "description": "Sprint mode for the week.",
       "default": "dual_site_active"
     },
     "sites": {
       "type": "array",
-      "items": { "type": "string", "enum": ["leaseinvietnam", "maylanhtreotuong"] },
+      "items": {
+        "type": "string",
+        "enum": [
+          "leaseinvietnam",
+          "maylanhtreotuong"
+        ]
+      },
       "description": "Sites active on this board. Dual-site sprint: both sites."
     },
     "entries": {
@@ -79,7 +91,9 @@
           "entry_id": {
             "type": "string",
             "description": "Unique entry identifier. Convention: YYYY-MM-DD-site-topic-slug.",
-            "examples": ["2026-06-12-lease-thu-thiem"]
+            "examples": [
+              "2026-06-12-lease-thu-thiem"
+            ]
           },
           "date": {
             "type": "string",
@@ -88,7 +102,10 @@
           },
           "site": {
             "type": "string",
-            "enum": ["leaseinvietnam", "maylanhtreotuong"]
+            "enum": [
+              "leaseinvietnam",
+              "maylanhtreotuong"
+            ]
           },
           "topic": {
             "type": "string",
@@ -100,7 +117,9 @@
           },
           "secondary_keywords": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "maxItems": 4,
             "description": "2–4 secondary keywords."
           },
@@ -108,13 +127,23 @@
             "type": "string",
             "description": "Content cluster label per site-mix-and-cannibalization.md.",
             "examples": [
-              "guides", "neighborhood-comparison", "trust-safety", "market-radar",
-              "buying-guide", "technical-explainer", "comparison-review"
+              "guides",
+              "neighborhood-comparison",
+              "trust-safety",
+              "market-radar",
+              "buying-guide",
+              "technical-explainer",
+              "comparison-review"
             ]
           },
           "search_intent": {
             "type": "string",
-            "enum": ["informational", "commercial", "navigational", "transactional"]
+            "enum": [
+              "informational",
+              "commercial",
+              "navigational",
+              "transactional"
+            ]
           },
           "target_path": {
             "type": "string",
@@ -132,7 +161,9 @@
           },
           "internal_links_plan": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "Planned internal link targets (paths or anchors). Minimum 3.",
             "minItems": 3
           },
@@ -142,22 +173,45 @@
           },
           "topical_authority": {
             "type": "object",
-            "required": ["pillar_page_url", "cluster_position", "information_gain"],
+            "required": [
+              "pillar_page_url",
+              "cluster_position",
+              "information_gain"
+            ],
             "properties": {
-              "pillar_page_url": { "type": "string", "description": "URL or path of the pillar page this article supports." },
-              "cluster_position": { "type": "string", "enum": ["pillar", "supporting", "supplementary"] },
-              "information_gain": { "type": "string", "description": "What unique value this article adds beyond existing SERP results." },
+              "pillar_page_url": {
+                "type": "string",
+                "description": "URL or path of the pillar page this article supports."
+              },
+              "cluster_position": {
+                "type": "string",
+                "enum": [
+                  "pillar",
+                  "supporting",
+                  "supplementary"
+                ]
+              },
+              "information_gain": {
+                "type": "string",
+                "description": "What unique value this article adds beyond existing SERP results."
+              },
               "content_freshness_type": {
                 "type": "string",
-                "enum": ["new_topic", "evergreen_refresh", "data_update", "experience_addition"]
+                "enum": [
+                  "new_topic",
+                  "evergreen_refresh",
+                  "data_update",
+                  "experience_addition"
+                ]
               }
-            },
-            "additionalProperties": false
+            }
           },
           "geo_aeo": {
             "type": "object",
             "description": "GEO/AEO readiness fields. geo_ready=true when all required fields are specified.",
-            "required": ["geo_ready"],
+            "required": [
+              "geo_ready"
+            ],
             "properties": {
               "geo_ready": {
                 "type": "boolean",
@@ -170,7 +224,9 @@
               },
               "query_fan_out": {
                 "type": "array",
-                "items": { "type": "string" },
+                "items": {
+                  "type": "string"
+                },
                 "minItems": 3,
                 "maxItems": 5,
                 "description": "3–5 sub-questions from PAA + LLM."
@@ -178,44 +234,74 @@
               "fact_density_target": {
                 "type": "string",
                 "description": "Minimum verifiable data points per 500 words.",
-                "examples": ["3 per 500 words"]
+                "examples": [
+                  "3 per 500 words"
+                ]
               }
-            },
-            "additionalProperties": false
+            }
           },
           "eeat": {
             "type": "object",
             "description": "E-E-A-T requirements for this post.",
-            "required": ["experience_proof_required"],
+            "required": [
+              "experience_proof_required"
+            ],
             "properties": {
               "experience_proof_required": {
                 "type": "string",
-                "enum": ["original_photo", "firsthand_account", "documented_test", "expert_interview", "case_study", "multiple", "none"]
+                "enum": [
+                  "original_photo",
+                  "firsthand_account",
+                  "documented_test",
+                  "expert_interview",
+                  "case_study",
+                  "multiple",
+                  "none"
+                ]
               },
-              "ymyl_adjacent": { "type": "boolean" },
-              "author_entity_required": { "type": "boolean" }
-            },
-            "additionalProperties": false
+              "ymyl_adjacent": {
+                "type": "boolean"
+              },
+              "author_entity_required": {
+                "type": "boolean"
+              }
+            }
           },
           "schema": {
             "type": "object",
             "description": "Schema types planned for this post.",
-            "required": ["types"],
+            "required": [
+              "types"
+            ],
             "properties": {
               "types": {
                 "type": "array",
                 "items": {
                   "type": "string",
-                  "enum": ["Article", "FAQPage", "HowTo", "Product", "BreadcrumbList", "Person", "Organization"]
+                  "enum": [
+                    "Article",
+                    "FAQPage",
+                    "HowTo",
+                    "Product",
+                    "BreadcrumbList",
+                    "Person",
+                    "Organization"
+                  ]
                 },
                 "minItems": 1
               }
-            },
-            "additionalProperties": false
+            }
           },
           "status": {
             "type": "string",
-            "enum": ["planned", "briefed", "drafted", "audited", "published", "carry_over"],
+            "enum": [
+              "planned",
+              "briefed",
+              "drafted",
+              "audited",
+              "published",
+              "carry_over"
+            ],
             "description": "Lifecycle status of this board entry. briefed = seo-content-brief.json produced and geo_ready=true."
           },
           "brief_ref": {
@@ -237,55 +323,101 @@
           "notes": {
             "type": "string"
           }
-        },
-        "additionalProperties": false
+        }
       }
     },
     "guardrails_check": {
       "type": "object",
       "description": "Weekly guardrail verification by SEO Analyst before board is finalized.",
-      "required": ["primary_keyword_uniqueness", "cluster_balance", "high_value_link_quota", "pillar_cluster_balance"],
+      "required": [
+        "primary_keyword_uniqueness",
+        "cluster_balance",
+        "high_value_link_quota",
+        "pillar_cluster_balance"
+      ],
       "properties": {
         "primary_keyword_uniqueness": {
           "type": "object",
           "description": "Verification that no primary keyword intent is reused per site within the 7-day window.",
-          "required": ["leaseinvietnam_status", "maylanhtreotuong_status"],
+          "required": [
+            "leaseinvietnam_status",
+            "maylanhtreotuong_status"
+          ],
           "properties": {
-            "leaseinvietnam_status": { "type": "string", "enum": ["pass", "conflict_found"] },
-            "leaseinvietnam_conflicts": { "type": "array", "items": { "type": "string" } },
-            "maylanhtreotuong_status": { "type": "string", "enum": ["pass", "conflict_found"] },
-            "maylanhtreotuong_conflicts": { "type": "array", "items": { "type": "string" } }
-          },
-          "additionalProperties": false
+            "leaseinvietnam_status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "conflict_found"
+              ]
+            },
+            "leaseinvietnam_conflicts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "maylanhtreotuong_status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "conflict_found"
+              ]
+            },
+            "maylanhtreotuong_conflicts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
         },
         "cluster_balance": {
           "type": "object",
           "description": "Content cluster distribution check — avoid 3+ consecutive posts in same cluster.",
-          "required": ["leaseinvietnam_balance", "maylanhtreotuong_balance"],
+          "required": [
+            "leaseinvietnam_balance",
+            "maylanhtreotuong_balance"
+          ],
           "properties": {
             "leaseinvietnam_balance": {
               "type": "object",
-              "description": "Cluster distribution for Lease this week.",
-              "additionalProperties": { "type": "integer" }
+              "description": "Cluster distribution for Lease this week."
             },
-            "leaseinvietnam_status": { "type": "string", "enum": ["balanced", "imbalanced"] },
+            "leaseinvietnam_status": {
+              "type": "string",
+              "enum": [
+                "balanced",
+                "imbalanced"
+              ]
+            },
             "maylanhtreotuong_balance": {
-              "type": "object",
-              "additionalProperties": { "type": "integer" }
+              "type": "object"
             },
-            "maylanhtreotuong_status": { "type": "string", "enum": ["balanced", "imbalanced"] }
-          },
-          "additionalProperties": false
+            "maylanhtreotuong_status": {
+              "type": "string",
+              "enum": [
+                "balanced",
+                "imbalanced"
+              ]
+            }
+          }
         },
         "high_value_link_quota": {
           "type": "object",
           "description": "At least 1 post per week per site must link to a high-value property/* or product/* page.",
-          "required": ["leaseinvietnam_met", "maylanhtreotuong_met"],
+          "required": [
+            "leaseinvietnam_met",
+            "maylanhtreotuong_met"
+          ],
           "properties": {
-            "leaseinvietnam_met": { "type": "boolean" },
-            "maylanhtreotuong_met": { "type": "boolean" }
-          },
-          "additionalProperties": false
+            "leaseinvietnam_met": {
+              "type": "boolean"
+            },
+            "maylanhtreotuong_met": {
+              "type": "boolean"
+            }
+          }
         },
         "pillar_cluster_balance": {
           "type": "object",
@@ -293,91 +425,174 @@
           "properties": {
             "leaseinvietnam_pillar_gaps": {
               "type": "array",
-              "items": { "type": "string" },
+              "items": {
+                "type": "string"
+              },
               "description": "Pillar pages with fewer than 3 supporting articles."
             },
             "maylanhtreotuong_pillar_gaps": {
               "type": "array",
-              "items": { "type": "string" }
+              "items": {
+                "type": "string"
+              }
             }
-          },
-          "additionalProperties": false
+          }
         },
         "geo_readiness": {
           "type": "object",
           "description": "Count of entries with geo_ready=true vs total planned.",
           "properties": {
-            "total_entries": { "type": "integer" },
-            "geo_ready_count": { "type": "integer" },
-            "not_ready_entry_ids": { "type": "array", "items": { "type": "string" } }
-          },
-          "additionalProperties": false
+            "total_entries": {
+              "type": "integer"
+            },
+            "geo_ready_count": {
+              "type": "integer"
+            },
+            "not_ready_entry_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
         }
-      },
-      "additionalProperties": false
+      }
     },
     "ai_visibility_check": {
       "type": "object",
       "description": "Weekly AI search visibility report. Manual check by SEO Analyst. Filled in weekly rollup.",
       "properties": {
-        "checked_at": { "type": "string", "format": "date-time" },
+        "checked_at": {
+          "type": "string",
+          "format": "date-time"
+        },
         "leaseinvietnam": {
           "type": "array",
           "description": "AI citation presence per keyword for leaseinvietnam.",
           "items": {
             "type": "object",
-            "required": ["keyword"],
+            "required": [
+              "keyword"
+            ],
             "properties": {
-              "keyword": { "type": "string" },
-              "google_ai_overview": { "type": "string", "enum": ["cited", "not_cited", "not_checked"] },
-              "perplexity": { "type": "string", "enum": ["cited", "not_cited", "not_checked"] },
-              "chatgpt": { "type": "string", "enum": ["cited", "not_cited", "not_checked"] },
-              "citation_gap_competitors": { "type": "array", "items": { "type": "string" } },
-              "action_next_week": { "type": "string" }
-            },
-            "additionalProperties": false
+              "keyword": {
+                "type": "string"
+              },
+              "google_ai_overview": {
+                "type": "string",
+                "enum": [
+                  "cited",
+                  "not_cited",
+                  "not_checked"
+                ]
+              },
+              "perplexity": {
+                "type": "string",
+                "enum": [
+                  "cited",
+                  "not_cited",
+                  "not_checked"
+                ]
+              },
+              "chatgpt": {
+                "type": "string",
+                "enum": [
+                  "cited",
+                  "not_cited",
+                  "not_checked"
+                ]
+              },
+              "citation_gap_competitors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "action_next_week": {
+                "type": "string"
+              }
+            }
           }
         },
         "maylanhtreotuong": {
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["keyword"],
+            "required": [
+              "keyword"
+            ],
             "properties": {
-              "keyword": { "type": "string" },
-              "google_ai_overview": { "type": "string", "enum": ["cited", "not_cited", "not_checked"] },
-              "perplexity": { "type": "string", "enum": ["cited", "not_cited", "not_checked"] },
-              "chatgpt": { "type": "string", "enum": ["cited", "not_cited", "not_checked"] },
-              "citation_gap_competitors": { "type": "array", "items": { "type": "string" } },
-              "action_next_week": { "type": "string" }
-            },
-            "additionalProperties": false
+              "keyword": {
+                "type": "string"
+              },
+              "google_ai_overview": {
+                "type": "string",
+                "enum": [
+                  "cited",
+                  "not_cited",
+                  "not_checked"
+                ]
+              },
+              "perplexity": {
+                "type": "string",
+                "enum": [
+                  "cited",
+                  "not_cited",
+                  "not_checked"
+                ]
+              },
+              "chatgpt": {
+                "type": "string",
+                "enum": [
+                  "cited",
+                  "not_cited",
+                  "not_checked"
+                ]
+              },
+              "citation_gap_competitors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "action_next_week": {
+                "type": "string"
+              }
+            }
           }
         }
-      },
-      "additionalProperties": false
+      }
     },
     "handoff": {
       "type": "object",
       "description": "Board handoff routing.",
-      "required": ["status"],
+      "required": [
+        "status"
+      ],
       "properties": {
         "status": {
           "type": "string",
-          "enum": ["draft", "ready_for_content_writer", "in_progress", "completed"],
+          "enum": [
+            "draft",
+            "ready_for_content_writer",
+            "in_progress",
+            "completed"
+          ],
           "description": "Board lifecycle status. ready_for_content_writer = all entries geo_ready=true and guardrails passed."
         },
         "next_actions": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "Ordered list of next steps for the week."
         },
-        "notes": { "type": "string" }
-      },
-      "additionalProperties": false
+        "notes": {
+          "type": "string"
+        }
+      }
     }
   },
-  "additionalProperties": false,
   "examples": [
     {
       "board_id": "seo-weekly-board-2026-06-09",
@@ -386,7 +601,10 @@
       "week_end": "2026-06-15",
       "timezone": "Asia/Ho_Chi_Minh",
       "sprint_mode": "dual_site_active",
-      "sites": ["leaseinvietnam", "maylanhtreotuong"],
+      "sites": [
+        "leaseinvietnam",
+        "maylanhtreotuong"
+      ],
       "entries": [
         {
           "entry_id": "2026-06-12-lease-thu-thiem",
@@ -394,13 +612,22 @@
           "site": "leaseinvietnam",
           "topic": "Thu Thiem Neighborhood Guide 2026",
           "primary_keyword": "thu thiem neighborhood guide",
-          "secondary_keywords": ["renting in thu thiem", "thu thiem expat living", "thu thiem vs district 2"],
+          "secondary_keywords": [
+            "renting in thu thiem",
+            "thu thiem expat living",
+            "thu thiem vs district 2"
+          ],
           "content_cluster": "neighborhood-comparison",
           "search_intent": "informational",
           "target_path": "post/neighborhood/thu-thiem-neighborhood-guide-2026.mdx",
           "meta_description_draft": "Complete guide to renting in Thu Thiem in 2026. Rental prices, best streets, transport links, and expat tips for District 2's newest neighborhood.",
           "target_length_words": 1600,
-          "internal_links_plan": ["/guides/complete-rental-guide", "/guides/hcmc-neighborhoods", "/property/thu-thiem", "/guides/rental-safety"],
+          "internal_links_plan": [
+            "/guides/complete-rental-guide",
+            "/guides/hcmc-neighborhoods",
+            "/property/thu-thiem",
+            "/guides/rental-safety"
+          ],
           "high_value_link": "/property/thu-thiem",
           "topical_authority": {
             "pillar_page_url": "/guides/hcmc-neighborhoods",
@@ -426,7 +653,11 @@
             "author_entity_required": true
           },
           "schema": {
-            "types": ["Article", "FAQPage", "BreadcrumbList"]
+            "types": [
+              "Article",
+              "FAQPage",
+              "BreadcrumbList"
+            ]
           },
           "status": "briefed",
           "brief_ref": "2026-06-12-lease-thu-thiem-neighborhood-guide",
@@ -438,13 +669,22 @@
           "site": "maylanhtreotuong",
           "topic": "Casper vs Daikin: Which Wall-Mount AC is Best for Vietnam Apartments?",
           "primary_keyword": "casper vs daikin may lanh",
-          "secondary_keywords": ["may lanh casper", "may lanh daikin gia re", "may lanh tiet kiem dien"],
+          "secondary_keywords": [
+            "may lanh casper",
+            "may lanh daikin gia re",
+            "may lanh tiet kiem dien"
+          ],
           "content_cluster": "comparison-review",
           "search_intent": "commercial",
           "target_path": "post/so-sanh/casper-vs-daikin-may-lanh-2026.mdx",
           "meta_description_draft": "So sánh chi tiết Casper vs Daikin 2026: giá, tiết kiệm điện, hiệu suất lạnh tại Việt Nam. Tư vấn chọn máy lạnh treo tường phù hợp.",
           "target_length_words": 1500,
-          "internal_links_plan": ["/huong-dan/may-lanh-treo-tuong-tong-hop", "/product/casper-gc-09is35", "/product/daikin-ftky25wavmv", "/so-sanh/so-sanh-may-lanh-tong-hop"],
+          "internal_links_plan": [
+            "/huong-dan/may-lanh-treo-tuong-tong-hop",
+            "/product/casper-gc-09is35",
+            "/product/daikin-ftky25wavmv",
+            "/so-sanh/so-sanh-may-lanh-tong-hop"
+          ],
           "high_value_link": "/product/casper-gc-09is35",
           "topical_authority": {
             "pillar_page_url": "/so-sanh/so-sanh-may-lanh-tong-hop",
@@ -469,7 +709,10 @@
             "author_entity_required": false
           },
           "schema": {
-            "types": ["Article", "FAQPage"]
+            "types": [
+              "Article",
+              "FAQPage"
+            ]
           },
           "status": "planned",
           "notes": "Need documented energy test data. Request from editorial or use spec sheets with local pricing."
@@ -483,9 +726,18 @@
           "maylanhtreotuong_conflicts": []
         },
         "cluster_balance": {
-          "leaseinvietnam_balance": { "neighborhood-comparison": 2, "guides": 1, "trust-safety": 1, "market-radar": 1 },
+          "leaseinvietnam_balance": {
+            "neighborhood-comparison": 2,
+            "guides": 1,
+            "trust-safety": 1,
+            "market-radar": 1
+          },
           "leaseinvietnam_status": "balanced",
-          "maylanhtreotuong_balance": { "comparison-review": 2, "buying-guide": 2, "technical-explainer": 1 },
+          "maylanhtreotuong_balance": {
+            "comparison-review": 2,
+            "buying-guide": 2,
+            "technical-explainer": 1
+          },
           "maylanhtreotuong_status": "balanced"
         },
         "high_value_link_quota": {
@@ -494,12 +746,16 @@
         },
         "pillar_cluster_balance": {
           "leaseinvietnam_pillar_gaps": [],
-          "maylanhtreotuong_pillar_gaps": ["/kien-thuc/kien-thuc-may-lanh"]
+          "maylanhtreotuong_pillar_gaps": [
+            "/kien-thuc/kien-thuc-may-lanh"
+          ]
         },
         "geo_readiness": {
           "total_entries": 2,
           "geo_ready_count": 1,
-          "not_ready_entry_ids": ["2026-06-12-maylanh-casper-vs-daikin"]
+          "not_ready_entry_ids": [
+            "2026-06-12-maylanh-casper-vs-daikin"
+          ]
         }
       },
       "ai_visibility_check": {
@@ -510,7 +766,10 @@
             "google_ai_overview": "not_cited",
             "perplexity": "not_cited",
             "chatgpt": "not_checked",
-            "citation_gap_competitors": ["expatinfrance.com", "propertyguru.com.vn"],
+            "citation_gap_competitors": [
+              "expatinfrance.com",
+              "propertyguru.com.vn"
+            ],
             "action_next_week": "Produce answer-first FAQ article targeting this keyword with higher fact density."
           }
         ],

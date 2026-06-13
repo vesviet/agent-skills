@@ -149,11 +149,16 @@
           "credibility": {
             "type": "string",
             "enum": [
-              "Official",
-              "Authority",
-              "Community",
-              "Unverified"
-            ]
+              "Primary",
+              "Secondary",
+              "Tertiary",
+              "AI-generated"
+            ],
+            "description": "Source tier per researcher source hierarchy: Primary (gov/official/peer-reviewed), Secondary (reputable news/expert), Tertiary (Wikipedia/reference), AI-generated (never cite — query use only)."
+          },
+          "source_type": {
+            "type": "string",
+            "description": "Optional: e.g. government-record, peer-reviewed-journal, news-article, industry-report, official-docs."
           },
           "context_summary": {
             "type": "string"
@@ -199,6 +204,123 @@
         "type": "string"
       },
       "description": "Risks and skipped checks when certainty is limited."
+    },
+    "information_gain": {
+      "type": "object",
+      "description": "Required when handing off to Content Writer or SEO Analyst. Documents unique research value vs top SERP results.",
+      "properties": {
+        "unique_insights": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Findings not present in top-5 SERP results for the target keyword — raw material for information gain."
+        },
+        "firsthand_evidence_available": {
+          "type": "boolean",
+          "description": "Whether primary interviews, original data, or firsthand accounts are accessible and noted for the Writer."
+        },
+        "firsthand_evidence_notes": {
+          "type": "string",
+          "description": "Describe the firsthand evidence if firsthand_evidence_available is true."
+        },
+        "ai_coverage_gap": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Topics where AI Overviews / AI answers are incorrect, incomplete, or missing — high-value citation opportunities."
+        },
+        "ymyl_elevation_required": {
+          "type": "boolean",
+          "description": "True when topic touches health, legal, financial, or safety domains and requires human expert review before publication."
+        },
+        "ymyl_notes": {
+          "type": "string",
+          "description": "Describe which YMYL domain applies and what expert review is recommended."
+        }
+      },
+      "required": [
+        "unique_insights",
+        "firsthand_evidence_available",
+        "ai_coverage_gap",
+        "ymyl_elevation_required"
+      ]
+    },
+    "cove_log": {
+      "type": "object",
+      "description": "Chain-of-Verification audit trail. Mandatory when ymyl_adjacent is true or when handing off critical claims.",
+      "properties": {
+        "ymyl_adjacent": {
+          "type": "boolean",
+          "description": "True when topic touches health, legal, financial, or safety domains — CoVe is mandatory."
+        },
+        "claims_submitted": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Atomic sub-claims submitted to Chain-of-Verification."
+        },
+        "claims_verified": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": { "type": "string" },
+              "source_url": { "type": "string" }
+            },
+            "required": ["claim", "source_url"]
+          },
+          "description": "Claims confirmed against original source document with URL."
+        },
+        "claims_unverified": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": { "type": "string" },
+              "reason": { "type": "string", "description": "Why unverified: source not retrieved, 404, mismatch, etc." }
+            },
+            "required": ["claim", "reason"]
+          },
+          "description": "Claims that could not be confirmed — labeled [UNVERIFIED] in synthesis."
+        }
+      },
+      "required": [
+        "ymyl_adjacent",
+        "claims_submitted"
+      ]
+    },
+    "ai_source_discipline": {
+      "type": "object",
+      "description": "Machine-readable AI source audit trail. Documents AI tools used for query-only and any citation mismatches found.",
+      "properties": {
+        "ai_tools_used_for_queries": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "AI tools used only to generate search queries and identify sub-topics (not cited as sources). E.g. Perplexity, ChatGPT, Google AI Overview."
+        },
+        "ai_citation_mismatches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ai_tool": { "type": "string" },
+              "claimed_url": { "type": "string" },
+              "claimed_fact": { "type": "string" },
+              "mismatch_reason": { "type": "string", "description": "404, content mismatch, hallucinated stat, etc." }
+            },
+            "required": ["ai_tool", "claimed_url", "mismatch_reason"]
+          },
+          "description": "AI-CITATION MISMATCH entries: URLs or facts provided by AI tools that could not be confirmed in original documents."
+        },
+        "grounding_completeness_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of material claims that have a verifiable source URL. Target: 100% for primary claims."
+        }
+      },
+      "required": [
+        "ai_tools_used_for_queries",
+        "ai_citation_mismatches",
+        "grounding_completeness_pct"
+      ]
     }
   },
   "required": [
@@ -213,30 +335,99 @@
     {
       "contract_type": "research-report",
       "report_id": "2026-06-12-cod-courier-routing-patterns",
-      "topic": "COD order courier routing patterns in SE Asian logistics platforms",
+      "objective": "Understand COD order courier routing patterns in SE Asian logistics platforms to inform assignment engine design.",
       "conducted_by": "researcher",
       "created_at": "2026-06-12T08:00:00+07:00",
-      "summary": "Leading SE Asian platforms (Shopee, Lazada, Grab) route COD store orders to dedicated store courier pools with a fallback chain to 3PL couriers. None use a single centralized assignment queue for all COD orders.",
-      "findings": [
+      "execution_metrics": {
+        "depth_mode": "deep",
+        "total_rounds": 11,
+        "sources_analyzed": 8
+      },
+      "synthesis": {
+        "key_findings": [
+          "Store-specific courier pools reduce COD delivery failure rate by 23% vs centralized assignment (Shopee logistics whitepaper 2024)",
+          "Fallback to 3PL on no store courier is standard practice; all platforms log and alert on fallback"
+        ],
+        "inferences": [
+          "[INFERENCE] Centralized queues may increase latency due to cross-zone assignment — not confirmed in reviewed documents"
+        ],
+        "critical_gaps": [
+          "Specific performance benchmarks for COD routing latency not found across all platforms reviewed"
+        ],
+        "confidence_score": "High"
+      },
+      "raw_data_references": [
         {
-          "finding": "Store-specific courier pools reduce COD delivery failure rate by 23% vs centralized assignment (Shopee logistics whitepaper 2024)",
-          "confidence": "high",
-          "source": "Shopee Logistics Engineering Blog 2024"
+          "source_name": "Shopee Logistics Engineering Blog 2024",
+          "url": "https://engineering.shopee.com/logistics-2024",
+          "credibility": "Secondary",
+          "source_type": "industry-report",
+          "context_summary": "Whitepaper on store-specific courier pool performance metrics"
         },
         {
-          "finding": "Fallback to 3PL on no store courier is standard practice; all platforms log and alert on fallback",
-          "confidence": "high",
-          "source": "Grab Delivery Engineering 2023"
+          "source_name": "Grab Delivery Engineering 2023",
+          "url": "https://engineering.grab.com/delivery-2023",
+          "credibility": "Secondary",
+          "source_type": "industry-report",
+          "context_summary": "Documents 3PL fallback chain and alerting pattern"
         }
       ],
-      "sources": [
-        "https://engineering.shopee.com/logistics-2024",
-        "https://engineering.grab.com/delivery-2023"
+      "recommended_next_roles": [
+        {
+          "role": "technical-architect",
+          "rationale": "Research findings provide trade-off basis for assignment engine architecture decision",
+          "open_decisions": ["Centralized vs per-store queue topology", "Fallback SLA thresholds"]
+        },
+        {
+          "role": "business-analyst",
+          "rationale": "Market patterns need translation into acceptance criteria for the routing feature ticket"
+        }
       ],
-      "gaps": [
-        "Specific performance benchmarks for COD routing latency not found"
+      "residual_risks": [
+        "Shopee whitepaper not publicly accessible — summary relies on secondary reporting; direct confirmation pending"
       ],
-      "recommendation": "Implement dedicated store courier routing with fallback and alerting — aligns with industry best practice"
+      "information_gain": {
+        "unique_insights": [
+          "23% failure rate reduction with store-specific pools — not found in top-5 SERP for 'COD courier routing SE Asia'"
+        ],
+        "firsthand_evidence_available": false,
+        "ai_coverage_gap": [
+          "AI Overviews incorrectly state 'all platforms use centralized routing' — contradicted by both Shopee and Grab documentation"
+        ],
+        "ymyl_elevation_required": false
+      },
+      "cove_log": {
+        "ymyl_adjacent": false,
+        "claims_submitted": [
+          "Store-specific courier pools reduce COD delivery failure rate by 23%",
+          "Fallback to 3PL on no store courier is standard practice"
+        ],
+        "claims_verified": [
+          {
+            "claim": "Fallback to 3PL on no store courier is standard practice",
+            "source_url": "https://engineering.grab.com/delivery-2023"
+          }
+        ],
+        "claims_unverified": [
+          {
+            "claim": "Store-specific courier pools reduce COD delivery failure rate by 23%",
+            "reason": "Shopee blog post not publicly retrievable; stat sourced from secondary reporting — labeled [UNVERIFIED] in synthesis"
+          }
+        ]
+      },
+      "ai_source_discipline": {
+        "ai_tools_used_for_queries": ["Perplexity", "Google AI Overview"],
+        "ai_citation_mismatches": [
+          {
+            "ai_tool": "Perplexity",
+            "claimed_url": "https://engineering.shopee.com/cod-routing-2023",
+            "claimed_fact": "Shopee uses centralized routing for all COD orders",
+            "mismatch_reason": "URL returns 404; contradicts 2024 whitepaper finding — flagged [AI-CITATION MISMATCH]"
+          }
+        ],
+        "grounding_completeness_pct": 50
+      }
     }
   ]
 }
+

@@ -47,6 +47,10 @@
       "items": {
         "type": "string"
       }
+    },
+    "vector_db_migration": {
+      "type": "boolean",
+      "description": "True if this migration involves vector embeddings, pgvector, or similar AI search indexes."
     }
   },
   "required": [

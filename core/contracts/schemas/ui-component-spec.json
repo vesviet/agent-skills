@@ -90,16 +90,18 @@
           "success",
           "hover",
           "focus",
-          "active"
+          "active",
+          "generating",
+          "uncertain",
+          "fallback",
+          "overridden",
+          "corrected"
         ]
       }
     },
     "copy_per_state": {
       "type": "object",
-      "description": "User-visible labels or messages keyed by state name.",
-      "additionalProperties": {
-        "type": "string"
-      }
+      "description": "User-visible labels or messages keyed by state name."
     },
     "api_fields": {
       "type": "array",
@@ -139,6 +141,19 @@
           "items": {
             "type": "string"
           }
+        },
+        "aria_live": {
+          "type": "string",
+          "enum": [
+            "off",
+            "polite",
+            "assertive"
+          ],
+          "description": "Required for dynamic AI-generated content updates."
+        },
+        "alt_text_generation_rules": {
+          "type": "string",
+          "description": "Spec for context-aware alt text if component displays AI-generated media."
         }
       }
     },
@@ -152,6 +167,72 @@
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "design_tokens": {
+      "type": "array",
+      "description": "W3C-compliant three-tier design tokens used by this component. No hardcoded values allowed.",
+      "items": {
+        "type": "object",
+        "required": [
+          "token_name",
+          "type",
+          "semantic_purpose"
+        ],
+        "properties": {
+          "token_name": {
+            "type": "string",
+            "examples": [
+              "color-bg-primary-hover"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "color",
+              "dimension",
+              "fontFamily",
+              "fontWeight",
+              "duration",
+              "cubicBezier",
+              "shadow",
+              "other"
+            ]
+          },
+          "semantic_purpose": {
+            "type": "string",
+            "description": "What this token signifies in the context of the component."
+          },
+          "primitive_reference": {
+            "type": "string",
+            "description": "The core primitive token this maps to (e.g. blue-500)."
+          }
+        }
+      }
+    },
+    "ai_confidence_indicators": {
+      "type": "object",
+      "description": "Visual and copy specifications for AI uncertainty states.",
+      "properties": {
+        "high_confidence_ui": {
+          "type": "string"
+        },
+        "medium_confidence_ui": {
+          "type": "string",
+          "examples": [
+            "'Suggested' badge with neutral color"
+          ]
+        },
+        "low_confidence_ui": {
+          "type": "string",
+          "examples": [
+            "'Unverified' badge with warning color + alternative action"
+          ]
+        },
+        "fallback_behavior": {
+          "type": "string",
+          "description": "Graceful degradation when AI fails entirely."
+        }
       }
     }
   },

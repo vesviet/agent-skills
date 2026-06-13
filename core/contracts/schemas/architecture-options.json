@@ -71,6 +71,10 @@
       "items": {
         "type": "string"
       }
+    },
+    "ai_component_trust_boundaries": {
+      "type": "string",
+      "description": "Architectural boundaries for AI/LLM modules."
     }
   },
   "required": [

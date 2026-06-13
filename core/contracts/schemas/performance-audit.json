@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "performance-audit",
   "title": "Performance Audit Result",
-  "description": "Structured output for a frontend or 3D performance audit.",
+  "description": "Structured output for a frontend or 3D performance audit. Produced by Frontend Developer, 3D Graphics Engineer, or specialist audit agents. Consumed by Technical Lead, Agent Coordinator, and QA Engineer as evidence for performance gate decisions. INP (Interaction to Next Paint) is the primary responsiveness metric from 2024 onward — FID is deprecated and must not be used.",
   "type": "object",
   "properties": {
     "contract_type": {
@@ -10,88 +10,170 @@
       "const": "performance-audit",
       "description": "Machine-readable contract discriminator."
     },
+    "audit_id": {
+      "type": "string",
+      "description": "Unique audit identifier. Convention: YYYY-MM-DD-route-slug."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
     "target": {
       "type": "string",
-      "description": "Page, route, scene, or component being audited."
+      "description": "Page route, component, or 3D scene being audited. Use canonical path (e.g. '/checkout', 'ProductCard', 'WorldScene')."
+    },
+    "data_source": {
+      "type": "string",
+      "enum": ["lab", "field", "hybrid"],
+      "description": "lab: Lighthouse / synthetic test on controlled device. field: Chrome User Experience Report (CrUX) or RUM. hybrid: both sources collected. Field data is the authoritative signal for real users — a lab pass does not guarantee field compliance."
+    },
+    "ai_generated_code": {
+      "type": "boolean",
+      "description": "True if AI tools (Cursor, Copilot, v0, or similar) contributed to the code being audited. Triggers mandatory AI-UI governance validation checklist."
+    },
+    "rendering_strategy": {
+      "type": "string",
+      "enum": ["SSG", "SSR", "ISR", "CSR", "partial-hydration", "islands"],
+      "description": "Rendering strategy in use for this route/component. Must be intentional, not an accidental AI default. RENDERING-STRATEGY LOCK applies."
     },
     "metrics": {
       "type": "object",
+      "description": "Measured performance metrics. INP replaces FID as the 2024+ responsiveness metric. For 3D scenes, include fps, memory_mb, and draw_calls.",
       "properties": {
+        "inp_ms": {
+          "type": "number",
+          "description": "Interaction to Next Paint (ms). 2024 replacement for FID. Measures responsiveness across the full session. Target: <200ms (Good), <500ms (Needs Improvement), ≥500ms (Poor)."
+        },
         "lcp_ms": {
           "type": "number",
-          "description": "Largest Contentful Paint in milliseconds."
-        },
-        "fid_ms": {
-          "type": "number",
-          "description": "First Input Delay in milliseconds."
+          "description": "Largest Contentful Paint (ms). Target: <2500ms (Good), <4000ms (Needs Improvement), ≥4000ms (Poor)."
         },
         "cls": {
           "type": "number",
-          "description": "Cumulative Layout Shift score."
+          "description": "Cumulative Layout Shift score. Target: <0.1 (Good), <0.25 (Needs Improvement), ≥0.25 (Poor)."
         },
         "ttfb_ms": {
           "type": "number",
-          "description": "Time to First Byte in milliseconds."
-        },
-        "fps": {
-          "type": "number",
-          "description": "Frames per second (for 3D scenes)."
-        },
-        "memory_mb": {
-          "type": "number",
-          "description": "Peak memory usage in MB."
-        },
-        "draw_calls": {
-          "type": "integer",
-          "description": "Number of draw calls (for 3D scenes)."
+          "description": "Time to First Byte (ms). Target: <800ms."
         },
         "bundle_size_kb": {
           "type": "number",
-          "description": "Total JS bundle size in KB."
+          "description": "Total JS bundle size for this route (KB). Compare against per-route CI budget."
+        },
+        "long_tasks_count": {
+          "type": "integer",
+          "description": "Number of main-thread tasks >50ms. Each long task delays interaction response and degrades INP."
+        },
+        "fps": {
+          "type": "number",
+          "description": "Frames per second (3D scenes only). Target: ≥60fps on target device profile."
+        },
+        "memory_mb": {
+          "type": "number",
+          "description": "Peak memory usage in MB. For 3D scenes and long-lived SPAs."
+        },
+        "draw_calls": {
+          "type": "integer",
+          "description": "Number of draw calls per frame (3D scenes only)."
         }
-      },
-      "description": "Measured performance metrics."
+      }
+    },
+    "crux_data": {
+      "type": "object",
+      "description": "Field data from Chrome User Experience Report (CrUX) for this origin or URL. P75 values represent the 75th percentile of real user measurements. Preferred over lab data. Null when CrUX data is not yet available (new routes or low-traffic pages).",
+      "properties": {
+        "inp_p75_ms": {
+          "type": ["number", "null"],
+          "description": "INP at 75th percentile from CrUX. This is the authoritative INP signal for production."
+        },
+        "lcp_p75_ms": {
+          "type": ["number", "null"],
+          "description": "LCP at 75th percentile from CrUX."
+        },
+        "cls_p75": {
+          "type": ["number", "null"],
+          "description": "CLS at 75th percentile from CrUX."
+        },
+        "ttfb_p75_ms": {
+          "type": ["number", "null"],
+          "description": "TTFB at 75th percentile from CrUX."
+        },
+        "data_period": {
+          "type": "string",
+          "description": "CrUX data collection period (e.g. '2026-05-01 to 2026-06-01', 28-day rolling)."
+        }
+      }
+    },
+    "budget_results": {
+      "type": "object",
+      "description": "Per-metric verdict against defined CI budgets. pass: within budget. warn: within 20% of limit. fail: exceeds limit — blocking defect, requires Technical Lead approval to merge.",
+      "properties": {
+        "inp": {
+          "type": "string",
+          "enum": ["pass", "warn", "fail"],
+          "description": "INP budget verdict. Fail = INP ≥200ms (lab) or ≥200ms p75 (field)."
+        },
+        "lcp": {
+          "type": "string",
+          "enum": ["pass", "warn", "fail"],
+          "description": "LCP budget verdict. Fail = LCP ≥2500ms."
+        },
+        "cls": {
+          "type": "string",
+          "enum": ["pass", "warn", "fail"],
+          "description": "CLS budget verdict. Fail = CLS ≥0.1."
+        },
+        "bundle_size": {
+          "type": "string",
+          "enum": ["pass", "warn", "fail"],
+          "description": "Bundle size budget verdict. Threshold is route-specific per CI configuration."
+        }
+      }
+    },
+    "regression_detected": {
+      "type": "boolean",
+      "description": "True if this audit reveals a performance regression compared to the previous baseline. A regression must be treated as a blocking defect."
     },
     "findings": {
       "type": "array",
+      "description": "Performance issues identified. Each finding must include the affected metric, severity classification, and a concrete remediation recommendation.",
       "items": {
         "type": "object",
         "properties": {
           "issue": {
-            "type": "string"
+            "type": "string",
+            "description": "Description of the performance problem."
+          },
+          "metric_affected": {
+            "type": "string",
+            "enum": ["INP", "LCP", "CLS", "TTFB", "bundle_size", "fps", "memory", "draw_calls", "long_tasks", "other"],
+            "description": "Which CWV or performance dimension this finding affects."
           },
           "severity": {
             "type": "string",
-            "enum": [
-              "critical",
-              "high",
-              "medium",
-              "low"
-            ]
+            "enum": ["critical", "high", "medium", "low"]
           },
           "recommendation": {
-            "type": "string"
+            "type": "string",
+            "description": "Concrete remediation action."
           }
         },
-        "required": [
-          "issue",
-          "severity",
-          "recommendation"
-        ]
+        "required": ["issue", "severity", "recommendation"]
       }
+    },
+    "action_items": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Prioritized list of concrete actions required to remediate findings. Consumed by Technical Lead for sprint planning and by Frontend Developer for implementation."
     },
     "device_profile": {
       "type": "string",
-      "description": "Device or profile used for testing (e.g. 'Desktop Chrome', 'Mobile Safari', 'Low-end Android')."
+      "description": "Device or profile used for lab testing (e.g. 'Desktop Chrome 4x CPU throttle', 'Mobile Safari iPhone 13', 'Low-end Android Moto G4'). Must not be 'MacBook Pro native' — that does not represent real users."
     },
     "verdict": {
       "type": "string",
-      "enum": [
-        "pass",
-        "conditional_pass",
-        "fail"
-      ],
-      "description": "Overall performance verdict."
+      "enum": ["pass", "conditional_pass", "fail"],
+      "description": "Overall performance verdict. conditional_pass: passes with caveats requiring follow-up. fail: blocking defect — do not merge without Technical Lead sign-off."
     }
   },
   "required": [
@@ -103,21 +185,55 @@
   "examples": [
     {
       "contract_type": "performance-audit",
-      "audit_id": "2026-06-12-order-assign-command-perf",
-      "component": "orders-service/NewLogicAutoAssign.php",
-      "baseline_p95_ms": 210,
-      "current_p95_ms": 340,
+      "audit_id": "2026-06-13-checkout-page-cwv",
+      "created_at": "2026-06-13T15:00:00+07:00",
+      "target": "/checkout",
+      "data_source": "hybrid",
+      "ai_generated_code": true,
+      "rendering_strategy": "SSR",
+      "metrics": {
+        "inp_ms": 210,
+        "lcp_ms": 2300,
+        "cls": 0.05,
+        "ttfb_ms": 380,
+        "bundle_size_kb": 142,
+        "long_tasks_count": 3
+      },
+      "crux_data": {
+        "inp_p75_ms": 245,
+        "lcp_p75_ms": 2800,
+        "cls_p75": 0.08,
+        "ttfb_p75_ms": 620,
+        "data_period": "2026-05-15 to 2026-06-12"
+      },
+      "budget_results": {
+        "inp": "warn",
+        "lcp": "pass",
+        "cls": "pass",
+        "bundle_size": "pass"
+      },
       "regression_detected": true,
       "findings": [
         {
-          "finding": "Store courier lookup adds ~130ms per COD order due to N+1 query pattern",
+          "issue": "INP 245ms p75 in field — AI-generated PaymentMethodSelector component registers a synchronous click handler that blocks the main thread for ~80ms on low-end devices",
+          "metric_affected": "INP",
           "severity": "high",
-          "recommendation": "Batch store_id lookups; cache active store courier IDs for 60s"
+          "recommendation": "Wrap the validation logic in scheduler.yield() to release the main thread between validation and UI update; defer analytics call to after paint"
+        },
+        {
+          "issue": "3 long tasks >50ms detected during checkout form initialization — AI-generated code imports full date-fns library (67KB) instead of individual functions",
+          "metric_affected": "long_tasks",
+          "severity": "medium",
+          "recommendation": "Replace import of full date-fns with named imports (e.g. { format, parseISO }); reduces bundle by ~55KB and eliminates parse/execute long task"
         }
       ],
       "action_items": [
-        "Add batch lookup in NewLogicAutoAssign.php store query"
-      ]
+        "Wrap PaymentMethodSelector click handler logic with scheduler.yield() before analytics call",
+        "Replace date-fns wildcard import with named imports in AI-generated CheckoutDatePicker",
+        "Re-run CrUX audit in 28 days to confirm INP p75 returns to <200ms after fixes"
+      ],
+      "device_profile": "Mobile Chrome, Moto G4 emulation, 4x CPU throttle, 3G network",
+      "verdict": "conditional_pass"
     }
   ]
 }

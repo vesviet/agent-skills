@@ -25,6 +25,10 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
+### Edge AI & Serverless Optimization (2025-2026)
+- optimize Workers AI inference latency and caching
+- govern AI/LLM request routing at the edge for cost control
+
 - maintain Wrangler config, deploy scripts, and binding declarations in repo
 - align Astro build output with Pages dist directory or Worker entry expectations
 - document preview vs production resources and secret **names** (never values) in handoffs
@@ -93,6 +97,8 @@ This role must follow [role-standard](role-standard.md) first.
 - delegates pure application debugging to developers using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **EDGE-AI LOCK**: do not deploy Workers AI endpoints without explicit caching and rate-limiting policies to prevent token exhaustion.
 
 - **BOUNDARY LOCK**: do not own Laravel/VPS/non-Cloudflare infra unless explicitly scoped — recommend DevOps or repo-local role
 - do not commit API keys, Turnstile secrets, or `.dev.vars` contents

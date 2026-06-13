@@ -205,6 +205,10 @@
       "items": {
         "type": "string"
       }
+    },
+    "edge_ai_integration": {
+      "type": "boolean",
+      "description": "True if this deployment includes Cloudflare Workers AI or Edge inference."
     }
   },
   "required": [

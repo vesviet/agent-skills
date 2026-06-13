@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "content-handoff",
   "title": "Content Handoff",
-  "description": "Structured handoff from Content Writer to editor, SEO Analyst, or publisher upon completing an article, post, or content piece. Consumed by SEO Analyst (for post-draft audit), Reviewer (for editorial check), and the publishing workflow. Pairs with seo-metadata.json for final publication metadata.",
+  "description": "Structured handoff from Content Writer to editor, SEO Analyst, or publisher upon completing an article, post, or content piece. Consumed by SEO Analyst (for post-draft audit), Reviewer (for editorial check), and the publishing workflow. Pairs with seo-metadata.json for final publication metadata. Includes GEO/AEO execution evidence, typed information gain, E-E-A-T signals, and aligned source credibility per the research-report.json source hierarchy.",
   "type": "object",
   "properties": {
     "contract_type": {
@@ -42,34 +42,160 @@
     "editorial_passes": {
       "type": "integer",
       "minimum": 0,
-      "description": "Number of editorial passes completed before this handoff."
+      "description": "Number of editorial passes completed before this handoff. Minimum 3 when editorial research was performed without Researcher delegation."
     },
     "research_sources": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Sources used in the content. Can be URLs, document names, or data references."
+      "description": "Sources used in the content. Credibility aligned with research-report.json source hierarchy.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL or document reference path."
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable source name."
+          },
+          "credibility": {
+            "type": "string",
+            "enum": ["Primary", "Secondary", "Tertiary", "AI-generated"],
+            "description": "Source tier: Primary (gov/official/peer-reviewed), Secondary (reputable news/expert/industry), Tertiary (Wikipedia/reference), AI-generated (query-use only — never cite)."
+          }
+        },
+        "required": ["url", "credibility"]
+      }
     },
     "unverified_claims": {
       "type": "array",
       "items": { "type": "string" },
-      "description": "Claims that could not be fully verified and may need fact-checking."
+      "description": "Claims that could not be fully verified and may need fact-checking before publication."
     },
     "information_gain": {
-      "type": "string",
-      "description": "How this content adds unique value vs existing content on the topic."
+      "type": "object",
+      "description": "Typed information gain gate — documents what unique value this article adds beyond existing top SERP results. Mandatory quality gate; not optional.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "original_data",
+            "firsthand_account",
+            "local_insight",
+            "expert_interview",
+            "unique_framework",
+            "contrarian_perspective"
+          ],
+          "description": "Primary type of information gain this article delivers."
+        },
+        "description": {
+          "type": "string",
+          "description": "Specific explanation of what this content adds that is not present in top-3 SERP results for the primary keyword."
+        },
+        "gate_passed": {
+          "type": "boolean",
+          "description": "True when information gain is documented and the draft is not merely a rewrite of existing SERP content."
+        }
+      },
+      "required": ["type", "description", "gate_passed"]
+    },
+    "geo_aeo_fields_applied": {
+      "type": "object",
+      "description": "Machine-readable GEO/AEO execution evidence. Consumed by SEO Analyst for post-draft audit and A2A pipeline validation.",
+      "properties": {
+        "answer_first_implemented": {
+          "type": "boolean",
+          "description": "Direct answer block (≤60 words) placed after each H2 heading for informational/commercial queries."
+        },
+        "query_fanout_covered": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "PAA-sourced and LLM-suggested sub-questions addressed in the article body."
+        },
+        "query_fanout_missed": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Sub-questions from brief that were not covered — flagged for SEO Analyst review."
+        },
+        "answer_formats_used": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["definition_block", "numbered_steps", "comparison_table", "bullet_list", "faq_block"]
+          },
+          "description": "Answer formats applied per section, matching the seo-content-brief.json specification."
+        },
+        "fact_density_met": {
+          "type": "boolean",
+          "description": "True when ≥3 verifiable data points (statistics, specific numbers, sourced expert quotes) per 500 words."
+        },
+        "fact_density_notes": {
+          "type": "string",
+          "description": "Optional: note any sections where fact density fell short and why."
+        },
+        "faq_implemented": {
+          "type": "boolean",
+          "description": "True when FAQ block is present (brief or SERP competitors required it)."
+        },
+        "heading_hierarchy_clean": {
+          "type": "boolean",
+          "description": "True when H1 → H2 (query intent) → H3 (sub-questions) hierarchy is consistent."
+        }
+      },
+      "required": [
+        "answer_first_implemented",
+        "fact_density_met",
+        "faq_implemented"
+      ]
+    },
+    "eeat_signals": {
+      "type": "object",
+      "description": "E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) signal audit. Consumed by SEO Analyst and Reviewer.",
+      "properties": {
+        "experience_proof_type": {
+          "type": "string",
+          "enum": [
+            "original_photo",
+            "firsthand_account",
+            "documented_test",
+            "expert_interview",
+            "case_study",
+            "none_required"
+          ],
+          "description": "Type of experience proof signal specified by the SEO brief or required by the domain."
+        },
+        "experience_proof_implemented": {
+          "type": "boolean",
+          "description": "True when the required experience proof type is present in the draft."
+        },
+        "experience_proof_notes": {
+          "type": "string",
+          "description": "If not implemented, explain gap and escalation path. Never fabricate experience signals."
+        },
+        "author_entity_referenced": {
+          "type": "boolean",
+          "description": "True when author name and profile reference are included (required when brief specifies it)."
+        },
+        "trust_signals_present": {
+          "type": "boolean",
+          "description": "True when source citations with links, verifiable claims, and contact/policy references are in place."
+        },
+        "ymyl_domain": {
+          "type": "boolean",
+          "description": "True when content touches health, legal, financial, or safety domains. Elevated E-E-A-T and Researcher delegation required."
+        }
+      },
+      "required": [
+        "experience_proof_type",
+        "experience_proof_implemented",
+        "trust_signals_present",
+        "ymyl_domain"
+      ]
     },
     "internal_links_added": {
       "type": "array",
       "items": { "type": "string" },
-      "description": "Internal page paths linked from this content."
-    },
-    "answer_first_implemented": {
-      "type": "boolean",
-      "description": "Whether Answer-First (direct answer in first paragraph) structure was applied."
-    },
-    "faq_implemented": {
-      "type": "boolean",
-      "description": "Whether an FAQ section was included."
+      "description": "Internal page paths linked from this content (minimum 3 when seo-content-brief.json specifies)."
     },
     "open_questions": {
       "type": "array",
@@ -80,13 +206,17 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["seo-analyst", "reviewer", "publisher", "editor"]
+        "enum": ["seo-analyst", "reviewer", "publisher", "editor", "technical-writer"]
       },
-      "description": "Roles that should act on this content next."
+      "description": "Roles that should act on this content next. technical-writer when content must align with technical source-of-truth docs."
     },
     "source_data": {
       "type": "string",
-      "description": "Reference to any research-report.json, seo-content-brief.json, or other structured input used."
+      "description": "Reference to the primary structured input: research-report.json, seo-content-brief.json, or feature-ticket.json path/ID."
+    },
+    "publish_log_updated": {
+      "type": "boolean",
+      "description": "True when publish-log.md has been updated after confirmed publish (required when overlays/seo-publishing is active)."
     }
   },
   "required": [
@@ -94,34 +224,72 @@
     "content_path",
     "status"
   ],
-  "additionalProperties": false,
   "examples": [
     {
       "contract_type": "content-handoff",
-      "handoff_id": "2026-06-12-how-to-lease-in-vietnam-guide",
-      "created_at": "2026-06-12T11:00:00+07:00",
-      "site": "leaseinvietnam",
-      "content_path": "src/data/post/guides/how-to-lease-in-vietnam-guide.mdx",
+      "handoff_id": "2026-06-13-danh-gia-may-lanh-funiki-inverter",
+      "created_at": "2026-06-13T21:00:00+07:00",
+      "site": "maylanhtreotuong",
+      "content_path": "src/data/post/review/danh-gia-may-lanh-funiki-inverter-2026.mdx",
       "status": "draft_ready",
-      "primary_keyword": "thuê nhà ở Việt Nam hướng dẫn",
-      "word_count": 1580,
-      "editorial_passes": 1,
+      "primary_keyword": "đánh giá máy lạnh Funiki inverter 2026",
+      "word_count": 2100,
+      "editorial_passes": 3,
       "research_sources": [
-        "research-report/vietnam-leasing-market-2026",
-        "https://batdongsan.com.vn/thue-nha-ha-noi"
+        {
+          "url": "https://funiki.com.vn/san-pham/may-lanh-treo-tuong",
+          "label": "Funiki Official Product Page",
+          "credibility": "Primary"
+        },
+        {
+          "url": "https://dienmaycholon.vn/may-lanh/funiki",
+          "label": "Dien May Cho Lon retail listing",
+          "credibility": "Secondary"
+        },
+        {
+          "url": "research-report/funiki-inverter-market-2026",
+          "label": "Researcher report — Funiki market position",
+          "credibility": "Primary"
+        }
       ],
-      "unverified_claims": [],
-      "information_gain": "First-person checklist format covering legal documents required by foreign nationals — not covered by competing posts",
+      "unverified_claims": [
+        "Funiki inverter tiêu thụ điện ít hơn 40% so với dòng thường — cần xác nhận từ spec sheet chính thức"
+      ],
+      "information_gain": {
+        "type": "firsthand_account",
+        "description": "Bao gồm kết quả đo điện năng tiêu thụ thực tế sau 30 ngày sử dụng tại căn hộ 25m² — không có trong top-5 SERP cho từ khóa này",
+        "gate_passed": true
+      },
+      "geo_aeo_fields_applied": {
+        "answer_first_implemented": true,
+        "query_fanout_covered": [
+          "Máy lạnh Funiki inverter có tiết kiệm điện không?",
+          "So sánh Funiki inverter với Daikin cùng phân khúc",
+          "Bảo hành máy lạnh Funiki bao lâu?"
+        ],
+        "query_fanout_missed": [],
+        "answer_formats_used": ["definition_block", "comparison_table", "bullet_list", "faq_block"],
+        "fact_density_met": true,
+        "faq_implemented": true,
+        "heading_hierarchy_clean": true
+      },
+      "eeat_signals": {
+        "experience_proof_type": "documented_test",
+        "experience_proof_implemented": true,
+        "experience_proof_notes": "Kết quả đo điện năng thực tế 30 ngày được ghi nhận trong bài với ảnh đồng hồ điện",
+        "author_entity_referenced": true,
+        "trust_signals_present": true,
+        "ymyl_domain": false
+      },
       "internal_links_added": [
-        "/property/ho-chi-minh-apartments",
-        "/guide/visa-and-residency",
-        "/guide/neighborhood-guide-district-2"
+        "/may-lanh/may-lanh-inverter-la-gi",
+        "/may-lanh/so-sanh-may-lanh-gia-re",
+        "/may-lanh/huong-dan-chon-may-lanh-theo-dien-tich"
       ],
-      "answer_first_implemented": true,
-      "faq_implemented": true,
       "open_questions": [],
       "recommended_next_roles": ["seo-analyst"],
-      "source_data": "seo-content-brief/thuê-nhà-ở-việt-nam-2026-06-10"
+      "source_data": "seo-content-brief/danh-gia-may-lanh-funiki-2026-06-10",
+      "publish_log_updated": false
     }
   ]
 }

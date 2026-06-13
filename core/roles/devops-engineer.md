@@ -174,6 +174,19 @@ AI/ML model deployments require the same rigor as application deployments — sh
 - Code or config rollback:
 - Data considerations:
 - Risks:
+
+## AI/ML Deployment (if applicable)
+- Shadow testing completed: [yes/no]
+- Canary rollout stages:
+- Automatic rollback triggers (model-specific):
+- Model monitoring deployed: [yes/no]
+
+## GitOps & Supply Chain Security
+- Drift detection configured: [yes/no]
+- IaC repository reference:
+- SBOM generated: [yes/no]
+- Third-party CI actions pinned to SHA: [yes/no]
+- Vulnerability scan passed (no un-waivered critical/high CVEs): [yes/no]
 ```
 
 ## Review Checklist
@@ -185,6 +198,9 @@ AI/ML model deployments require the same rigor as application deployments — sh
 - rollback path is realistic and documented
 - health checks, logs, dashboards, and smoke verification are defined
 - skipped checks and residual release risk are visible
+- **AI/ML Deployments**: shadow testing, canary triggers, and model monitoring are defined
+- **GitOps**: infrastructure changes are in source control with drift detection enabled
+- **Supply Chain**: SBOM is generated, third-party actions pinned to SHAs, dependency scans pass
 
 ## Anti-Patterns To Reject
 

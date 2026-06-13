@@ -101,6 +101,10 @@
         "type": "string"
       },
       "description": "Paths to Excel, charts, or query exports."
+    },
+    "ai_hallucination_disclaimer": {
+      "type": "boolean",
+      "description": "True if the data analysis involved AI data extraction and includes a verifiable confidence interval."
     }
   },
   "required": [

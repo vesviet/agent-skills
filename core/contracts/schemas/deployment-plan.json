@@ -82,6 +82,93 @@
         "type": "string"
       },
       "description": "Post-deployment checks to verify health."
+    },
+    "gitops_compliance": {
+      "type": "object",
+      "description": "GitOps discipline adherence.",
+      "properties": {
+        "drift_detection_configured": {
+          "type": "boolean",
+          "description": "Whether automated drift detection is active for this infrastructure."
+        },
+        "iac_repo_ref": {
+          "type": "string",
+          "description": "Repository or path where the infrastructure state is declared."
+        }
+      },
+      "required": [
+        "drift_detection_configured"
+      ]
+    },
+    "supply_chain_security": {
+      "type": "object",
+      "description": "SLSA and supply chain security compliance.",
+      "properties": {
+        "sbom_generated": {
+          "type": "boolean"
+        },
+        "dependencies_pinned_to_sha": {
+          "type": "boolean",
+          "description": "Third-party CI actions and tools use pinned commit SHAs, not mutable tags."
+        },
+        "vulnerability_scan_passed": {
+          "type": "boolean",
+          "description": "CI dependency scan passed with no un-waivered critical/high CVEs."
+        }
+      },
+      "required": [
+        "sbom_generated",
+        "dependencies_pinned_to_sha",
+        "vulnerability_scan_passed"
+      ]
+    },
+    "ai_ml_deployment": {
+      "type": "object",
+      "description": "Specific deployment controls for AI/ML models. Omit if not deploying a model.",
+      "properties": {
+        "shadow_testing_completed": {
+          "type": "boolean"
+        },
+        "automatic_rollback_triggers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Model-specific triggers (e.g. latency P99, output quality score)."
+        },
+        "cold_start_latency_ms": {
+          "type": "integer"
+        },
+        "monitoring_deployed": {
+          "type": "boolean",
+          "description": "True if model monitoring (drift, token cost, etc) is live."
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "description": "Post-deployment health checks and observability.",
+      "properties": {
+        "health_checks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dashboards_or_logs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "smoke_tests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Post-deployment checks to verify health."
+        }
+      }
     }
   },
   "required": [

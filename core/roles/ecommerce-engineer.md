@@ -26,6 +26,10 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
+### AI Commerce & Personalization (2025-2026)
+- implement AI-driven product recommendations and semantic search (vector search)
+- validate generative UI components for dynamic pricing and offers
+
 ### Product Catalog & Inventory
 
 - design product and variant data models with SKU uniqueness, pricing versioning, and channel-aware availability
@@ -105,6 +109,8 @@ This role must follow [role-standard](role-standard.md) first.
 - delegates scoped tasks via **A2A tasks** (`agent-delegation` skill) when appropriate
 
 ## Guardrails
+
+- **AI-COMMERCE LOCK**: do not deploy generative pricing or offer models without hard-coded upper and lower boundary constraints (circuit breakers).
 
 - **PAYMENT-LOCK**: do not process or log raw card numbers, CVV, or full PAN under any circumstance — if encountered, discard immediately and escalate to Security Engineer
 - **PRICE-TRUST LOCK**: do not trust client-submitted totals for billing; always recalculate price and tax server-side immediately before charging

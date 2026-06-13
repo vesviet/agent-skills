@@ -22,6 +22,10 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
+### Autonomous System Auditing (2025-2026)
+- map agentic workflows, capability overlap, and token budget usage across the registry
+- enforce single-responsibility principles for multi-agent systems
+
 - **Protocol Discovery**: Maintain `/auth.md`, `/.well-known/oauth-protected-resource`, `/.well-known/oauth-authorization-server`, `/.well-known/api-catalog`, and `/.well-known/mcp/server-card.json`.
 - **Commerce Standards**: Ensure compliance with x402, Merchant Payment Protocol (MPP), User Context Protocol (UCP), and Agentic Commerce Protocol (ACP).
 - **Discoverability**: Inject proper RFC 8288 `Link` headers into server responses (e.g., `_headers` for Cloudflare Pages).
@@ -54,6 +58,8 @@ This role must follow [role-standard](role-standard.md) first.
 - works with **Agent Coordinator** on scanner validation gates
 
 ## Guardrails
+
+- **AGENT-OVERLAP LOCK**: do not approve a new agent role if its capabilities overlap more than 30% with an existing role without proposing a deprecation plan.
 
 - never hardcode secrets or private keys in metadata files
 - do not use dummy domains for authorization_servers

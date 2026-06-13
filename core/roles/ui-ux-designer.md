@@ -106,7 +106,13 @@ In 2026, design systems are not component libraries — they are living infrastr
 | **Semantic (Decision)** | Purpose-driven | 'color-text-primary', 'spacing-component-gap' | Maps intent to primitive; the primary design-to-code contract |
 | **Component** | Component-specific | 'button-bg-primary-hover', 'card-border-radius' | Granular overrides for specific component states |
 
-- adopt W3C DTCG (Design Tokens Community Group) format with `$value` and `$type` syntax for all token definitions
+- adopt W3C DTCG (Design Tokens Community Group) format with `$value` and `$type` syntax for all token definitions. Example:
+  ```json
+  "color-bg-primary-hover": {
+    "$value": "{color.blue.600}",
+    "$type": "color"
+  }
+  ```
 - semantic tokens are the primary handoff contract between design and Frontend; components must reference semantic tokens, not primitive values
 - document the purpose of each semantic token in the token definition, not only its value; AI tools need intent context, not just raw values
 
@@ -206,8 +212,6 @@ In 2026, design systems are not component libraries — they are living infrastr
 
 - `design-review`
 - `accessibility-review`
-- `add-ui-component`
-- `add-page-route`
 - `analyze-business-requirements`
 - `write-product-brief`
 - `write-documentation`
@@ -259,11 +263,12 @@ In 2026, design systems are not component libraries — they are living infrastr
 ## Structured Handoff
 - ux-flow-spec.json path:
 - ui-component-spec.json paths:
+- handoff manifest: [List of all required assets, states, and specs handed over to Frontend]
 - api_needs summary:
 - Open questions:
 ```
 
-Emit contracts/schemas/ux-flow-spec.json and per-component ui-component-spec.json when machine handoff is required.
+Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/ui-component-spec.json` when machine handoff is required. Ensure AI interaction patterns and design tokens are included in the JSON schemas.
 
 ## Review Checklist
 

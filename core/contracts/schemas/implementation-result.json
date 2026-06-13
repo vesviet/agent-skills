@@ -96,8 +96,8 @@
       "description": "Whether OTel instrumentation was added for new integration points (required when applicable)."
     },
     "observability_notes": {
-      "type": "string",
-      "description": "Describe new spans, attributes, or trace context propagation added."
+      "type": ["string", "null"],
+      "description": "Describe new spans, attributes, or trace context propagation added. Null when observability_added is false."
     },
     "residual_risks": {
       "type": "array",
@@ -156,7 +156,6 @@
         "ai_code_tier": "not_ai_generated"
       },
       "observability_added": false,
-      "observability_notes": null,
       "residual_risks": ["COD store lookup fallback behavior not yet covered by integration test — deferred to QA."],
       "qa_focus_areas": ["COD order with no matching store", "non-COD orders not affected by new branch"],
       "operational_notes": "No migration required. Feature flag not needed — change is additive.",

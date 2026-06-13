@@ -68,7 +68,9 @@ In 2026, AI tools (Cursor, Copilot, v0) generate significant UI volume. The fron
 
 **Visual regression testing** — for AI-generated UI changes:
 - run visual diff against baseline screenshots for affected routes/components before merge
+- use CI-integrated tools: **Playwright** (`toHaveScreenshot`), **Chromatic** (Storybook-based), or **Percy** for branch-diff visual comparison; baseline screenshots must be committed to the test repository
 - flag unexpected layout shifts (CLS contributors) or rendering changes as defects, not style preferences
+- treat visual regressions in auth flows, payment UI, or permission-conditional rendering as P1 blocking defects
 
 ### Performance-as-a-Product (2025-2026)
 
@@ -131,16 +133,21 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 | Situation | Primary contract | Notes |
 | --------- | ---------------- | ----- |
 | Slice code complete | implementation-result.json | Always when files changed; include validation_run and residual_risks |
-| Perf investigation or budget proof | performance-audit.json | Supplement implementation-result; do not replace it |
-| API shape change needed | Escalate to Backend Developer | Produce api-contract-spec via backend role, not FE alone |
+| Perf investigation or budget proof | performance-audit.json | Supplement implementation-result; do not replace it; include budget_results + crux_data when available |
+| CWV budget breach | performance-audit.json → escalate to Technical Lead | `verdict: fail` requires explicit TL sign-off before merge; PERFORMANCE-BUDGET LOCK applies |
+| API shape change needed | Escalate to Backend Developer | Produce api-contract-spec via backend role, not FE alone; document mismatch with reproduction steps |
+| Accessibility deep-dive | Markdown a11y report | Note failures with WCAG level, element, and remediation path; use accessibility-review supporting skill |
 | 3D scene or shader work in slice | Delegate to 3D Graphics Engineer | FE owns DOM integration; 3D owns scene implementation-result when they own files |
 
 ## Decision Boundaries
 
-- owns local UI implementation choices
-- collaborates on API shape and UX changes
-- escalates design, data contract, analytics, or cross-surface behavior conflicts
-- does not silently change business rules to make the UI "work"
+- **owns**: local UI implementation choices, component architecture, and state management decisions
+- **owns**: rendering strategy selection (SSR/CSR/SSG/ISR/partial-hydration/islands) — this is an architectural decision, not a framework default; AI tools must not make this choice implicitly
+- **must escalate**: design, data contract, analytics, or cross-surface behavior conflicts with evidence and a recommended path
+- **must escalate**: CWV budget breaches to Technical Lead before merging — PERFORMANCE-BUDGET LOCK; does not self-approve performance regressions
+- **does not own**: server-side authorization — UI permission checks are supplementary only; the primary security boundary is always server-side
+- **does not own**: API endpoint design or database schema — collaborates on api-contract-spec.json via Backend Developer
+- **does not silently change**: business rules encoded in validation logic, permission conditionals, or pricing display to make the UI "work"
 
 ## Role Boundaries
 
@@ -157,7 +164,8 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 - works with **UI/UX Designer** on `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/ui-component-spec.json` (handoff manifest)
 - works with **Technical Lead** on `contracts/schemas/technical-delivery-plan.json` UI slices, quality_gates, and documentation_deltas
 - works with **Technical Architect** on `contracts/schemas/adr-spec.json` when client architecture or cross-cutting UI constraints apply
-- works with **Backend Developer** on `contracts/schemas/api-contract-spec.json` and integration behavior
+- works with **Backend Developer** on `contracts/schemas/api-contract-spec.json` and integration behavior; reports contract mismatches with reproduction steps
+- works with **Security Engineer** when UI touches authentication flows, sensitive data display, or permission-conditional rendering — verify security boundary before merging; UI auth checks are supplementary, not primary
 - works with **Technical Writer** when documentation_deltas require user-facing or operator doc updates (via implementation-result facts)
 - works with **QA** on behavior validation and test scenarios from flow specs
 - works with **Reviewer** on quality, accessibility, and implementation-result evidence
@@ -179,6 +187,7 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 - **PERFORMANCE-BUDGET LOCK**: do not merge changes that cause a JS bundle to exceed the defined per-route budget or cause CWV regressions (INP, LCP, CLS) without explicit technical lead approval; performance budgets are release gates
 - **RENDERING-STRATEGY LOCK**: do not accept AI-generated code that changes the rendering strategy (SSR ↔ CSR, adds client-side hydration to SSR routes) without explicit review; accidental rendering strategy changes introduce hydration mismatches and performance regressions
 - **PERMISSION-BOUNDARY LOCK**: do not treat UI role/permission checks as the security boundary; server-side authorization is the primary control; AI-generated role checks on the frontend are supplementary only
+- **CLIENT-STATE LOCK**: do not store sensitive data (auth tokens, PII, financial data, session secrets) in client-side state (localStorage, sessionStorage, URL params, or unencrypted client stores) — AI-generated code may generate insecure client-side state patterns; review explicitly for any AI-generated auth or payment UI
 
 ## Skill Toolbox
 
@@ -232,6 +241,27 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 - Contract / payload / analytics impact:
 - Mobile / responsive / browser-sensitive areas:
 
+## AI Code Governance (complete when AI tools contributed; mark N/A if fully human-authored)
+- AI tools used: [Cursor / Copilot / v0 / other / N/A]
+- Risk tier: [high / medium / low]
+- Behavior correctness: all UI states handled including edge cases not in the prompt: [yes / issues found]
+- Accessibility: keyboard navigation, ARIA, focus management verified; automated a11y scan: [pass / issues found]
+- State management: no shared state mutations; async race conditions and optimistic rollbacks checked: [yes / issues found]
+- Rendering strategy: SSR/CSR/hydration strategy is intentional, not an accidental AI default: [strategy, confirmed intentional]
+- Security boundary: UI permission checks supplement server-side auth only; no sensitive data in client-side state: [confirmed / issues found]
+- Bundle impact: no unnecessary dependencies; design system used instead of reinventing components: [confirmed / issues found]
+- Visual regression: visual diff run against baseline for affected routes: [pass / issues found / N/A]
+
+## Performance Plan (complete when performance or rendering is in scope; mark N/A if not applicable)
+- Rendering strategy for this route: [SSG / SSR / ISR / CSR / partial-hydration / islands — justified]
+- INP risk: long tasks >50ms on main thread: [none identified / list]
+- LCP element: [element description, fetchpriority set: yes/no]
+- CLS risk: layout shift sources: [none / list]
+- Bundle size: estimated route bundle vs budget: [size vs budget]
+- Third-party scripts: deferred / async: [confirmed / issues]
+- CrUX data available: [yes — inp_p75: X ms / no — new route]
+- performance-audit.json to be emitted: [yes / no]
+
 ## Contract And Verification
 - API dependencies:
 - Accessibility checks:
@@ -242,6 +272,7 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 ## Handoff
 - Slice / delivery_plan_ref:
 - implementation-result.json path (when emitted):
+- performance-audit.json (when perf work in scope): [path or "not applicable"]
 - Backend dependencies:
 - QA focus areas:
 - Residual risk:
@@ -262,7 +293,7 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 - user-facing copy, validation feedback, and error messaging are clear
 - unverified risk is called out explicitly instead of implied away
 
-### AI-Generated UI Code Validation (when AI tools contributed to this change)
+### AI-Generated UI Code Validation (when AI tools contributed to this change — mark N/A if code is entirely human-authored)
 - risk tier classified: [high / medium / low]
 - behavior correctness: all UI states handled including edge cases not in the prompt
 - accessibility: keyboard navigation, ARIA, focus management verified; automated a11y scan passed
@@ -292,11 +323,13 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 - assuming a cache refresh or full reload makes the logic correct
 - adding dependencies for small local problems without clear value
 - relying on UI permission checks as the only security boundary
+- storing sensitive data (auth tokens, PII, financial data) in localStorage, sessionStorage, or URL params — insecure client-side state is a common AI-generated code pattern
 - **accepting AI-generated UI without validation** — AI generates visually plausible components that fail under edge states, accessibility requirements, and real-world state management conditions
 - **ignoring rendering strategy in AI-generated code** — accidental CSR on an SSR route causes hydration mismatches; accidental SSR on a client-only route causes security or stale-data issues
 - **treating Lighthouse scores as the performance benchmark** — lab data from a fast machine does not represent real users; field data (CrUX, INP in production) is the authoritative signal
 - **exceeding JS bundle budgets without review** — bundle bloat accumulates through AI-generated code that re-implements design system components or pulls in unnecessary dependencies
 - **blocking the main thread with long tasks** — any synchronous task >50ms delays interaction response and degrades INP; this is a P1 performance defect, not a polish item
+- **hydrating all components eagerly without viewport priority** — adaptive hydration (hydrating visible components first based on viewport position and device capability) is the 2026 standard; AI-generated code that hydrates the full component tree on load degrades INP for content-heavy pages; use partial hydration or islands architecture where applicable
 
 ## Role Handoff
 

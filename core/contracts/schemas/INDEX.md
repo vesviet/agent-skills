@@ -29,7 +29,7 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | **Design & Content** | | | |
 | `ux-flow-spec.json` | UX Flow Specification | ✅ | ✅ |
 | `ui-component-spec.json` | UI Component Specification | ✅ | ✅ |
-| `content-handoff.json` | Content Handoff | ❌ | — |
+| `content-handoff.json` | Content Handoff | ✅ | — |
 | `documentation-handoff.json` | Documentation Handoff | ✅ | ✅ |
 | `learning-handoff.json` | Learning Handoff | ✅ | ✅ |
 | `research-report.json` | Research Report Specification | ✅ | ✅ |
@@ -211,11 +211,12 @@ Size: 4,683 bytes
 
 #### `content-handoff.json`
 
-**Content Handoff**  
+**Content Handoff**
+Structured handoff from Content Writer to SEO Analyst, Reviewer, or publisher upon completing an article. Includes typed information gain gate (`information_gain.type` enum with 6 categories), GEO/AEO execution evidence (`geo_aeo_fields_applied`: answer-first, fan-out coverage, answer formats, fact density), E-E-A-T signal audit (`eeat_signals`: experience proof type, YMYL flag), and source credibility tracking aligned with research-report.json source hierarchy. Pairs with seo-metadata.json for final publication metadata.
 
-
-Size: 475 bytes  
-❌ No example
+Required fields: `contract_type`, `content_path`, `status`
+Size: ~7,500 bytes
+✅ Has example
 
 #### `documentation-handoff.json`
 

@@ -24,7 +24,9 @@
     "metadata_id": {
       "type": "string",
       "description": "Unique identifier. Convention: YYYY-MM-DD-site-slug.",
-      "examples": ["2026-06-12-lease-thu-thiem-neighborhood-guide"]
+      "examples": [
+        "2026-06-12-lease-thu-thiem-neighborhood-guide"
+      ]
     },
     "created_at": {
       "type": "string",
@@ -32,7 +34,13 @@
     },
     "site": {
       "type": "string",
-      "enum": ["leaseinvietnam", "maylanhtreotuong", "vesviet", "learn", "other"]
+      "enum": [
+        "leaseinvietnam",
+        "maylanhtreotuong",
+        "vesviet",
+        "learn",
+        "other"
+      ]
     },
     "url_or_path": {
       "type": "string",
@@ -67,7 +75,9 @@
     "slug": {
       "type": "string",
       "description": "Final URL slug (repo-relative or absolute path). Follows site overlay slug conventions. Lowercase, hyphen-separated, no trailing slash.",
-      "examples": ["post/neighborhood/thu-thiem-neighborhood-guide-2026"]
+      "examples": [
+        "post/neighborhood/thu-thiem-neighborhood-guide-2026"
+      ]
     },
     "primary_keyword": {
       "type": "string",
@@ -75,7 +85,9 @@
     },
     "secondary_keywords": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "minItems": 2,
       "maxItems": 4,
       "description": "2–4 secondary keywords targeted in the article body."
@@ -84,7 +96,16 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["Article", "FAQPage", "HowTo", "Product", "BreadcrumbList", "Person", "Organization", "LocalBusiness"]
+        "enum": [
+          "Article",
+          "FAQPage",
+          "HowTo",
+          "Product",
+          "BreadcrumbList",
+          "Person",
+          "Organization",
+          "LocalBusiness"
+        ]
       },
       "minItems": 1,
       "description": "Schema types recommended for this page. Frontend implements JSON-LD per these types. Article is always included."
@@ -113,52 +134,100 @@
         },
         "twitter_card": {
           "type": "string",
-          "enum": ["summary", "summary_large_image"],
+          "enum": [
+            "summary",
+            "summary_large_image"
+          ],
           "description": "Twitter card type."
         }
-      },
-      "additionalProperties": false
+      }
     },
     "frontmatter_fields": {
       "type": "object",
-      "description": "Site-specific frontmatter fields derived from overlay rules (e.g. leaseinvietnam src/content/config.ts). These override the generic fields above when publishing to Astro/Hugo repos. SEO Analyst populates; Content Writer or publisher applies.",
+      "description": "Additional overlay-specific fields can be added here without breaking validation.",
       "properties": {
-        "publishDate": { "type": "string", "format": "date-time", "description": "Publish date in ISO 8601 format." },
-        "updateDate": { "type": "string", "format": "date-time", "description": "Last updated date for evergreen_refresh content." },
-        "category": { "type": "string", "description": "Post category as defined by the site's content collection config." },
-        "tags": { "type": "array", "items": { "type": "string" }, "description": "Post tags for taxonomy." },
-        "draft": { "type": "boolean", "description": "Draft status. Set to false only when publisher confirms ready to go live — SEO Analyst does NOT change this without explicit user instruction." },
-        "image": { "type": "string", "description": "Featured image path or URL for the post." },
-        "author": { "type": "string", "description": "Author name as it appears in frontmatter." }
-      },
-      "additionalProperties": true,
-      "description": "Additional overlay-specific fields can be added here without breaking validation."
+        "publishDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Publish date in ISO 8601 format."
+        },
+        "updateDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last updated date for evergreen_refresh content."
+        },
+        "category": {
+          "type": "string",
+          "description": "Post category as defined by the site's content collection config."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Post tags for taxonomy."
+        },
+        "draft": {
+          "type": "boolean",
+          "description": "Draft status. Set to false only when publisher confirms ready to go live — SEO Analyst does NOT change this without explicit user instruction."
+        },
+        "image": {
+          "type": "string",
+          "description": "Featured image path or URL for the post."
+        },
+        "author": {
+          "type": "string",
+          "description": "Author name as it appears in frontmatter."
+        }
+      }
     },
     "seo_publishing_overlay": {
       "type": "object",
       "description": "Fields for seo-publishing dual-site sprint tracking.",
       "properties": {
-        "sprint_date": { "type": "string", "format": "date" },
-        "content_cluster": { "type": "string" },
-        "pillar_page_url": { "type": "string" },
+        "sprint_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "content_cluster": {
+          "type": "string"
+        },
+        "pillar_page_url": {
+          "type": "string"
+        },
         "geo_ready": {
           "type": "boolean",
           "description": "True when answer-first + query fan-out + schema types are all specified."
         }
-      },
-      "additionalProperties": false
+      }
     },
     "status": {
       "type": "string",
-      "enum": ["draft", "ready_to_publish", "published", "needs_update"],
-      "description": "Metadata lifecycle status. ready_to_publish = approved by audit and safe to apply to CMS/frontmatter."
+      "enum": [
+        "draft",
+        "under_review",
+        "ready_to_publish",
+        "published",
+        "needs_update"
+      ],
+      "description": "Metadata lifecycle status. under_review = produced and awaiting Content Writer or publisher confirmation. ready_to_publish = approved by audit and safe to apply to CMS/frontmatter."
     },
     "notes": {
       "type": "string",
       "description": "Any remaining notes for publisher or Content Writer."
+    },
+    "hreflang": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "hreflang attribute for multi-locale content (e.g. 'vi', 'en', 'en-US'). Null for single-locale sites. Consumed by Frontend when implementing <link rel=\"alternate\" hreflang=\"...\"> tags."
+    },
+    "ai_bots_allowed": {
+      "type": "boolean",
+      "description": "Whether AI crawlers (OAI-SearchBot, PerplexityBot, ClaudeBot) are allowed by robots.txt for this URL. True = allowed (GEO/AEO optimization is meaningful). False = AI citation not achievable without robots.txt change (escalate to Frontend/DevOps)."
     }
   },
-  "additionalProperties": false,
   "examples": [
     {
       "metadata_id": "2026-06-12-lease-thu-thiem-neighborhood-guide",
@@ -173,8 +242,16 @@
       "meta_char_count": 150,
       "slug": "post/neighborhood/thu-thiem-neighborhood-guide-2026",
       "primary_keyword": "thu thiem neighborhood guide",
-      "secondary_keywords": ["renting in thu thiem", "thu thiem expat living", "thu thiem vs district 2"],
-      "schema_types": ["Article", "FAQPage", "BreadcrumbList"],
+      "secondary_keywords": [
+        "renting in thu thiem",
+        "thu thiem expat living",
+        "thu thiem vs district 2"
+      ],
+      "schema_types": [
+        "Article",
+        "FAQPage",
+        "BreadcrumbList"
+      ],
       "canonical_url": null,
       "social": {
         "og_title": "Thu Thiem Neighborhood Guide 2026 — Expat Rental Tips",
@@ -185,7 +262,12 @@
       "frontmatter_fields": {
         "publishDate": "2026-06-12T12:00:00+07:00",
         "category": "neighborhood",
-        "tags": ["thu-thiem", "expat-living", "hcmc-neighborhoods", "renting-guide"],
+        "tags": [
+          "thu-thiem",
+          "expat-living",
+          "hcmc-neighborhoods",
+          "renting-guide"
+        ],
         "draft": false,
         "image": "/images/thu-thiem-neighborhood-2026.jpg",
         "author": "Lease in Vietnam Editorial Team"

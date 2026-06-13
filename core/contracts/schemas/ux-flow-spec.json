@@ -54,6 +54,13 @@
             "items": {
               "type": "string"
             }
+          },
+          "probabilistic_branches": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Paths when AI output is uncertain, rejected, or falls back. Points to other screen_ids."
           }
         },
         "required": [
@@ -151,6 +158,27 @@
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "ai_interaction_patterns": {
+      "type": "object",
+      "description": "Flow-level AI interaction patterns (2025-2026 standards).",
+      "properties": {
+        "transparency_hooks": {
+          "type": "string",
+          "description": "Global rules for 'Why am I seeing this?' affordances in this flow."
+        },
+        "hitl_interface_flows": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "References to screen_ids that serve as Human-In-The-Loop reviewer interfaces."
+        },
+        "system_message_boundaries": {
+          "type": "string",
+          "description": "Capability limits and scope statements communicated to the user."
+        }
       }
     }
   },

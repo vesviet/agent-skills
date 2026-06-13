@@ -21,7 +21,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Use This Role When
 
-- drafting or refreshing **new articles** (blog posts, thought leadership, announcements, explainers, newsletters)
+- drafting **new articles** (blog posts, thought leadership, announcements, explainers, newsletters)
+- **updating or refreshing existing published articles** where facts, statistics, or SERP positions have changed and the content needs a new editorial pass
 - turning research, SEO briefs, or product signals into a coherent narrative with a clear takeaway
 - matching an established editorial format, style guide, or content template (Astro MDX, Hugo Markdown)
 - the brief explicitly calls for **research-first** work or the topic needs fresh evidence
@@ -155,6 +156,7 @@ This role must follow [role-standard](role-standard.md) first.
 - do not ship content that merely restates top SERP results — information gain is mandatory, not optional
 - do not ignore E-E-A-T experience signals specified in the SEO brief — if the brief requires firsthand proof, the draft must include it
 - do not fabricate experience signals (invented anecdotes, fake reviews, or simulated firsthand accounts) — flag gap and escalate
+- **AI PROSE LOCK**: do not submit AI-generated prose as final output without injecting ≥30% unique human insight, local knowledge, or original data — AI tools assist drafting; human editorial value is mandatory
 
 ## Skill Toolbox
 
@@ -165,13 +167,14 @@ This role must follow [role-standard](role-standard.md) first.
 ### Supporting Skills (use when collaborating)
 
 - `write-documentation`
-- `write-tech-radar`
 - `write-product-brief`
 - `analyze-business-requirements`
 - `meeting-review`
 - `agent-delegation`
 
 When working under a site overlay (lease-content, vesviet-content, seo-publishing), additional overlay-specific skills are activated. See the Optional Overlays section and each overlay README for the skill names to load.
+
+> **Overlay-scoped skill**: `write-tech-radar` is only relevant under `overlays/vesviet-content` (Vesviet radar subtree). Activate it only when that overlay is active — do not load it for lease-content or seo-publishing workflows.
 
 ## Output Template
 
@@ -245,11 +248,12 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 ### Content Quality
 - brief audience and goal are reflected in the lead and close
 - research depth matches Research Depth table and is documented
-- information gain documented and gate passed (unique value vs SERP stated)
+- editorial_passes logged in content-handoff.json (minimum 3 when editorial research performed without Researcher delegation)
+- information gain documented and gate passed (unique value vs SERP stated, `information_gain.gate_passed: true`)
 - SEO brief followed when in scope; internal links implemented
 - frontmatter and paths match overlay peers (lease-content / vesviet-content)
 - no invented facts; attributions or gaps are explicit
-- content-handoff.json complete when JSON handoff required
+- content-handoff.json complete with `geo_aeo_fields_applied`, `eeat_signals`, and typed `information_gain` when JSON handoff required
 - SEO audit completed before publish when required
 - publish-log updated after publish when seo-publishing overlay active
 
@@ -288,7 +292,7 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 
 - From **Task Planner**: consume plan/baiviet daily plan or steps; draft after SEO brief exists for gated posts
 - From **Business Analyst** or Product: consume feature-ticket.json positioning and constraints
-- From **Researcher**: consume research-report.json; do not re-run deep discovery unless gaps remain
+- From **Researcher**: consume research-report.json including `information_gain` (unique_insights, ai_coverage_gap) and `cove_log` (verified claims for fact density); do not re-run deep discovery unless gaps remain
 - From **SEO Analyst**: consume seo-content-brief.json; apply seo-metadata.json after audit
 - From Technical Writer or engineering: consume accurate behavior, limits, and terminology
 - To **SEO Analyst**: deliver draft path and content-handoff.json for audit
@@ -321,5 +325,6 @@ Activation example:
     Role: content-writer
     Overlay: overlays/lease-content
     Overlay: overlays/seo-publishing
+    depth_mode: scoped
 
 See each overlay README for paths, schema, and publish-log rules.

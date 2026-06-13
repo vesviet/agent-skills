@@ -24,7 +24,13 @@
     },
     "status": {
       "type": "string",
-      "enum": ["proposed", "accepted", "rejected", "superseded", "deprecated"],
+      "enum": [
+        "proposed",
+        "accepted",
+        "rejected",
+        "superseded",
+        "deprecated"
+      ],
       "description": "Current decision status."
     },
     "feature_ticket_ref": {
@@ -45,12 +51,16 @@
     },
     "affected_services": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Services, repositories, or systems affected by this decision."
     },
     "api_contract_refs": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Paths or IDs of api-contract-spec.json artifacts impacted or created by this ADR."
     },
     "options_considered": {
@@ -60,12 +70,28 @@
       "items": {
         "type": "object",
         "properties": {
-          "option": { "type": "string", "description": "Option name or brief description." },
-          "pros": { "type": "array", "items": { "type": "string" } },
-          "cons": { "type": "array", "items": { "type": "string" } }
+          "option": {
+            "type": "string",
+            "description": "Option name or brief description."
+          },
+          "pros": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         },
-        "required": ["option", "pros", "cons"],
-        "additionalProperties": false
+        "required": [
+          "option",
+          "pros",
+          "cons"
+        ]
       }
     },
     "decision": {
@@ -78,24 +104,34 @@
       "properties": {
         "positive": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "negative": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "neutral": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "Changes or trade-offs that are neither clearly positive nor negative."
         }
       },
-      "required": ["positive", "negative"],
-      "additionalProperties": false
+      "required": [
+        "positive",
+        "negative"
+      ]
     },
     "boundary_rules": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Explicit constraints that all implementing roles must respect (e.g. 'all LLM calls must route through the centralized service layer')."
     },
     "migration_plan": {
@@ -110,6 +146,10 @@
       "type": "string",
       "format": "date",
       "description": "Date by which this ADR should be reviewed for continued validity."
+    },
+    "ai_component_trust_boundaries": {
+      "type": "string",
+      "description": "Architectural boundaries for AI/LLM modules."
     }
   },
   "required": [
@@ -121,7 +161,6 @@
     "decision",
     "consequences"
   ],
-  "additionalProperties": false,
   "examples": [
     {
       "contract_type": "adr-spec",
@@ -133,25 +172,45 @@
       "architecture_options_ref": null,
       "supersedes_adr": null,
       "context": "The existing NewLogicAutoAssign command routes all orders to the warehouse courier pool. COD orders with a store_id need to be assigned to store-specific couriers to reduce delivery failure rates. Modifying the single existing branch risks breaking non-COD order assignment.",
-      "affected_services": ["DMS orders-service", "DMS store-service (read-only lookup)"],
+      "affected_services": [
+        "DMS orders-service",
+        "DMS store-service (read-only lookup)"
+      ],
       "api_contract_refs": [],
       "options_considered": [
         {
           "option": "Add conditional branch inside existing NewLogicAutoAssign.php",
-          "pros": ["Minimal code surface change", "No new entry points"],
-          "cons": ["Increases cyclomatic complexity of existing command", "Harder to isolate and test independently"]
+          "pros": [
+            "Minimal code surface change",
+            "No new entry points"
+          ],
+          "cons": [
+            "Increases cyclomatic complexity of existing command",
+            "Harder to isolate and test independently"
+          ]
         },
         {
           "option": "Extract COD store routing into dedicated service class, called from command",
-          "pros": ["Single Responsibility; testable in isolation", "Future extensions (e.g. store priority rules) can be added without touching command"],
-          "cons": ["More files to create; slightly higher initial cost"]
+          "pros": [
+            "Single Responsibility; testable in isolation",
+            "Future extensions (e.g. store priority rules) can be added without touching command"
+          ],
+          "cons": [
+            "More files to create; slightly higher initial cost"
+          ]
         }
       ],
       "decision": "Option A (conditional branch) for v1 given scope and timeline constraints. Extract to service class in v2 if routing logic grows beyond 3 conditions.",
       "consequences": {
-        "positive": ["Fast to implement; low migration cost; no API contract changes"],
-        "negative": ["Cyclomatic complexity of command increases by 1; test surface slightly wider"],
-        "neutral": ["No persistent side effects; rollback is a clean revert"]
+        "positive": [
+          "Fast to implement; low migration cost; no API contract changes"
+        ],
+        "negative": [
+          "Cyclomatic complexity of command increases by 1; test surface slightly wider"
+        ],
+        "neutral": [
+          "No persistent side effects; rollback is a clean revert"
+        ]
       },
       "boundary_rules": [
         "Non-COD order path must not be modified in this implementation.",

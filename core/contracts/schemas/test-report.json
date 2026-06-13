@@ -34,13 +34,28 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["unit", "integration", "e2e", "smoke", "regression", "performance", "security", "accessibility", "manual"]
+        "enum": [
+          "unit",
+          "integration",
+          "e2e",
+          "smoke",
+          "regression",
+          "performance",
+          "security",
+          "accessibility",
+          "manual"
+        ]
       },
       "description": "Types of tests run in this report."
     },
     "status": {
       "type": "string",
-      "enum": ["passed", "failed", "blocked", "partial"],
+      "enum": [
+        "passed",
+        "failed",
+        "blocked",
+        "partial"
+      ],
       "description": "Overall test run status."
     },
     "scenarios_executed": {
@@ -56,17 +71,30 @@
           },
           "type": {
             "type": "string",
-            "enum": ["unit", "integration", "e2e", "smoke", "manual", "regression"]
+            "enum": [
+              "unit",
+              "integration",
+              "e2e",
+              "smoke",
+              "manual",
+              "regression"
+            ]
           },
-          "passed": { "type": "boolean" },
+          "passed": {
+            "type": "boolean"
+          },
           "evidence": {
             "type": "string",
             "description": "CI run link, screenshot path, log excerpt, or 'manual verified' description."
           },
-          "notes": { "type": "string" }
+          "notes": {
+            "type": "string"
+          }
         },
-        "required": ["name", "passed"],
-        "additionalProperties": false
+        "required": [
+          "name",
+          "passed"
+        ]
       }
     },
     "defects": {
@@ -75,21 +103,52 @@
       "items": {
         "type": "object",
         "properties": {
-          "defect_id": { "type": "string" },
-          "title": { "type": "string" },
-          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
-          "steps_to_reproduce": { "type": "array", "items": { "type": "string" } },
-          "expected_behavior": { "type": "string" },
-          "actual_behavior": { "type": "string" },
-          "linked_code_finding": { "type": "string", "description": "code-review-finding.json finding_id if related." }
+          "defect_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "steps_to_reproduce": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "expected_behavior": {
+            "type": "string"
+          },
+          "actual_behavior": {
+            "type": "string"
+          },
+          "linked_code_finding": {
+            "type": "string",
+            "description": "code-review-finding.json finding_id if related."
+          }
         },
-        "required": ["title", "severity", "steps_to_reproduce", "expected_behavior", "actual_behavior"],
-        "additionalProperties": false
+        "required": [
+          "title",
+          "severity",
+          "steps_to_reproduce",
+          "expected_behavior",
+          "actual_behavior"
+        ]
       }
     },
     "coverage_gaps": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Behaviors or edge cases that could not be tested in this cycle and why."
     },
     "residual_risk": {
@@ -98,7 +157,11 @@
     },
     "release_recommendation": {
       "type": "string",
-      "enum": ["ship", "hold", "ship_with_mitigations"],
+      "enum": [
+        "ship",
+        "hold",
+        "ship_with_mitigations"
+      ],
       "description": "QA recommendation on whether to proceed with release."
     },
     "mitigation_notes": {
@@ -114,7 +177,6 @@
     "scenarios_executed",
     "release_recommendation"
   ],
-  "additionalProperties": false,
   "examples": [
     {
       "contract_type": "test-report",
@@ -123,7 +185,11 @@
       "ticket_ref": "2026-06-12-change-store-order-cod",
       "delivery_plan_ref": "2026-06-12-change-store-order-cod",
       "environment": "staging",
-      "test_types_executed": ["unit", "integration", "smoke"],
+      "test_types_executed": [
+        "unit",
+        "integration",
+        "smoke"
+      ],
       "status": "passed",
       "scenarios_executed": [
         {
@@ -156,7 +222,9 @@
         }
       ],
       "defects": [],
-      "coverage_gaps": ["Load test for COD routing under high batch volume — deferred to next sprint"],
+      "coverage_gaps": [
+        "Load test for COD routing under high batch volume — deferred to next sprint"
+      ],
       "residual_risk": "Batch performance under > 500 concurrent COD orders not validated. Low risk given current store volume.",
       "release_recommendation": "ship",
       "mitigation_notes": null

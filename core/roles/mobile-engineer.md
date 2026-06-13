@@ -26,6 +26,10 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
+### On-Device AI & Privacy (2025-2026)
+- integrate on-device ML models (CoreML, TFLite) to reduce server inference cost and improve latency
+- manage battery and memory constraints for AI tasks
+
 - implement mobile UI and business logic faithfully to requirements, roles, and platform conventions
 - reason through logic paths before coding: entry conditions, navigation transitions, derived state, failure handling, and platform edge cases
 - validate bug fixes against the original defect, related screens, and shared components that reuse the same logic
@@ -100,6 +104,8 @@ This role must follow [role-standard](role-standard.md) first.
 - delegates performance profiling, accessibility deep-dives, or platform-specific research to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **ON-DEVICE-AI LOCK**: do not run high-compute inference on the main thread; battery and thermal impact must be measured.
 
 - do not ignore offline, background, or low-connectivity states for user-facing flows
 - do not treat a visually correct render as proof that logic is correct across platform versions
