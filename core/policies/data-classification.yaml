@@ -6,6 +6,20 @@
 # When in doubt, treat data at the HIGHER sensitivity level.
 
 classification_levels:
+  untrusted:
+    description: "External inputs, User-Generated Content (UGC), or unverified feeds. High risk of Prompt Injection or Data Poisoning."
+    examples:
+      - raw user chat inputs
+      - external API payloads (unverified)
+      - scraped web content
+    logging: allowed_sanitized
+    memory_storage: requires_approval
+    agent_access: allowed
+    handling_rules:
+      - MUST NOT be executed as commands or interpolated into system prompts without strict isolation
+      - MUST NOT be ingested into training datasets or RAG vector stores without sanitation
+    retention_in_context: task_only
+
   public:
     description: "Data that can be freely shared, logged, and returned in agent output."
     examples:

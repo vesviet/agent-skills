@@ -93,6 +93,18 @@ destructive_patterns:
   - pattern: "TRUNCATE TABLE"
     action: drop_database
 
+  # AI / ML / Vector DB destructive operations
+  - pattern: "DELETE /collections/"
+    action: drop_database
+  - pattern: "drop_collection"
+    action: drop_database
+  - pattern: "pinecone delete"
+    action: drop_database
+  - pattern: "--override-model-weights"
+    action: deploy_ai_model
+  - pattern: "clear_memory"
+    action: clear_agent_memory
+
   # Migrations
   - pattern: "migrate"
     action: run_migration

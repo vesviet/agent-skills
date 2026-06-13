@@ -17,6 +17,10 @@ roles:
         - install_dependency
         - modify_public_api_contract
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -43,6 +47,10 @@ roles:
         - run_deployment
         - run_migration
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -61,6 +69,10 @@ roles:
         - purge_cache_zone
         - run_build
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -90,6 +102,10 @@ roles:
         - run_migration
         - shipping_label_generation
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -114,6 +130,10 @@ roles:
         - modify_public_api_contract
         - run_migration
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -132,6 +152,10 @@ roles:
         - export_data
         - run_build
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -160,6 +184,10 @@ roles:
         - push_to_production
         - rollback_deployment
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -175,6 +203,10 @@ roles:
         - delete_file
         - run_build
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -199,6 +231,10 @@ roles:
         - run_migration
         - write_database
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -221,6 +257,10 @@ roles:
         - run_migration
         - write_database
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -244,7 +284,11 @@ roles:
         - push_to_production
         - rollback_deployment
         - run_migration
+        - deploy_ai_model
+        - modify_prompt_template
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
         - delete_branch_main
         - drop_database
         - force_push
@@ -264,6 +308,10 @@ roles:
         - install_dependency
         - modify_public_api_contract
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -287,6 +335,10 @@ roles:
         - install_dependency
         - modify_public_api_contract
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -306,6 +358,10 @@ roles:
         - delete_file
         - run_build
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -328,6 +384,10 @@ roles:
         - run_build
         - run_deployment
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -349,6 +409,10 @@ roles:
         - create_file
         - delete_file
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -371,6 +435,10 @@ roles:
         - install_dependency
         - run_build
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -390,6 +458,10 @@ roles:
       requires_approval:
         - write_file
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - delete_file
         - drop_database
@@ -413,7 +485,11 @@ roles:
         - delete_file
         - modify_environment_config
         - run_migration
+        - deploy_ai_model
+        - modify_prompt_template
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
         - delete_branch_main
         - drop_database
         - force_push
@@ -431,6 +507,10 @@ roles:
         - modify_environment_config
         - run_build
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -454,7 +534,11 @@ roles:
         - run_deployment
         - run_migration
         - write_file
+        - deploy_ai_model
+        - modify_prompt_template
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
         - delete_branch_main
         - drop_database
         - force_push
@@ -472,6 +556,10 @@ roles:
         - install_dependency
         - run_build
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -491,6 +579,10 @@ roles:
         - export_data
         - run_build
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -515,6 +607,10 @@ roles:
         - modify_public_api_contract
         - run_migration
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -537,7 +633,11 @@ roles:
         - modify_environment_config
         - modify_public_api_contract
         - run_migration
+        - deploy_ai_model
+        - modify_prompt_template
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
         - delete_branch_main
         - drop_database
         - force_push
@@ -554,6 +654,10 @@ roles:
         - delete_file
         - run_build
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -575,6 +679,10 @@ roles:
         - delete_file
         - run_build
       denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
