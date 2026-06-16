@@ -41,6 +41,12 @@
       "description": "own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration"
     },
     {
+      "role": "content-manager",
+      "agent_card": "core/a2a/registry/content-manager.agent-card.json",
+      "url": "pack://agent-skills/core/roles/content-manager.md",
+      "description": "định hướng chiến lược nội dung tổng thể của một website — từ xây dựng content pillar architecture, quản lý editorial cal"
+    },
+    {
       "role": "content-writer",
       "agent_card": "core/a2a/registry/content-writer.agent-card.json",
       "url": "pack://agent-skills/core/roles/content-writer.md",

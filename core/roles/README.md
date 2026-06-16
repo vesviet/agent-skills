@@ -76,6 +76,10 @@ All roles in this pack are expected to:
 - [content-writer](content-writer.md)
 - [seo-analyst](seo-analyst.md)
 
+### Content Strategy And Editorial
+
+- [content-manager](content-manager.md)
+
 ### Data And Analytics
 
 - [data-analyst](data-analyst.md)
@@ -133,6 +137,7 @@ All roles in this pack are expected to:
 - Technical Writer
 - SEO Analyst
 - Content Writer
+- Content Manager
 
 ### Operate And Improve
 
@@ -153,6 +158,7 @@ All roles in this pack are expected to:
 ### Content And SEO
 
 - Task Planner
+- Content Manager
 - SEO Analyst
 - Content Writer
 - Researcher
@@ -191,6 +197,7 @@ All roles in this pack are expected to:
 | Technical Writer | `/add-new-feature`, `/service-review-release` |
 | Content Writer | `/add-new-feature`, `/service-review-release` |
 | SEO Analyst | `/add-new-feature`, `/service-review-release` |
+| Content Manager | `/add-new-feature`, `/service-review-release` |
 | Data Analyst | `/add-new-feature`, `/troubleshooting` |
 | Data Engineer | `/troubleshooting`, `/setup-new-service` |
 | Ecommerce Engineer | `/add-new-feature`, `/refactoring`, `/hotfix-production`, `/troubleshooting` |

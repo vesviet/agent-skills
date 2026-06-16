@@ -2,7 +2,27 @@
 
 All notable changes to the agent-skills engineering pack.
 
-## [2.9.0] - 2026-06-12
+## [2.10.0] - 2026-06-16
+
+### Added — Content Manager Role
+
+- **`content-manager` role**: Principal-level role owning full website content strategy — content pillar architecture, editorial calendar, brand voice, content audit & lifecycle, performance measurement, content distribution & repurposing, and SME collaboration. Bridges business goals with daily content production.
+- **A2A agent card** `content-manager.agent-card.json` registered in `core/a2a/.well-known/agent-registry.json`
+- **Content Distribution & Repurposing** responsibility block: content loop design, repurposing matrix (long-form → social → email → video → newsletter), distribution gate guardrail (`DISTRIBUTION GATE`)
+- **SME Collaboration & Thought Leadership** responsibility block: SME roster, structured interview process, YMYL review gate (`SME LOCK`), E-E-A-T experience signal enforcement
+- **Product-led content** direction: `/tools`, `/templates`, `/glossary`, `/calculators` — coordinated with Frontend Developer and Product Manager
+- New guardrails: `DISTRIBUTION GATE`, `SME LOCK`
+- Distribution Plan and SME Roster tables in Output Template
+- Review checklist groups: Distribution & Repurposing, SME & Thought Leadership
+- New collaboration partners: Frontend Developer (interactive tools), Social Media Manager, Email Marketing Specialist, SMEs
+
+### Changed — Roles & Registry
+
+- **`core/roles/README.md`**: added `Content Strategy And Editorial` lifecycle section; `content-manager` registered in Release and Content And SEO lifecycle phases; workflow mapping table updated
+- **`core/a2a/.well-known/agent-registry.json`**: `content-manager` entry added (alphabetical order, between `cloudflare-engineer` and `content-writer`)
+- **`content-manager.md` Mission**: expanded from production-only scope to full lifecycle: sản xuất → phân phối → SME → AI search optimisation
+
+
 
 ### Added — E-commerce Engineer Role & Commerce Skill Taxonomy
 
