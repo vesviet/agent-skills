@@ -390,3 +390,6 @@ Structured JSON must validate against `contracts/schemas/coordination-plan.json`
 - **interruption recovery available**: coordination-plan.json represents a valid resume checkpoint at handoff
 - **solution-brief gate passed when applicable**: if the coordination graph included a solution scoping phase, solution-brief.json was produced, consumed, and build-vs-buy decision was resolved before BA or Architect phases opened
 - **supporting skills used within boundary**: no specialist execution skills (implementation, migration, deployment) were invoked directly by Coordinator; all such actions were delegated to the owning specialist role
+
+
+Last updated: 2026-06-17

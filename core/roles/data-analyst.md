@@ -308,3 +308,6 @@ Overlay: overlays/data-analyst-stack
 ```
 
 See `overlays/data-analyst-stack/README.md` for paths, env vars, and dashboard spec templates.
+
+
+Last updated: 2026-06-17

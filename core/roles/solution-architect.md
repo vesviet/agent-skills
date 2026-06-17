@@ -372,3 +372,6 @@ Emit `contracts/schemas/solution-brief.json` when machine handoff is required.
 - **no ADR emitted**: boundary and structural decisions escalated to Technical Architect with explicit open questions
 - **no feature-ticket AC written**: compliance and scope constraints handed to Business Analyst with explicit handoff notes
 - **stakeholder conflicts resolved or explicitly escalated**: no incompatible constraints silently absorbed into recommendation
+
+
+Last updated: 2026-06-17

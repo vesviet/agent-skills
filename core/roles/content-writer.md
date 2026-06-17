@@ -328,3 +328,6 @@ Activation example:
     depth_mode: scoped
 
 See each overlay README for paths, schema, and publish-log rules.
+
+
+Last updated: 2026-06-17

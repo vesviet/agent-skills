@@ -219,3 +219,6 @@ AI/ML systems have reliability dimensions that standard availability SLOs do not
 - release impact and dependency risk are understood
 - **AI/ML reliability complete** (when AI system in scope): AI-specific SLOs defined (quality, latency, cost, availability), model degradation monitoring active, rollback criteria defined
 - **Proactive reliability**: error budget burn rate alerts configured; chaos experiments documented; automated runbooks in place for known-recoverable incidents
+
+
+Last updated: 2026-06-17

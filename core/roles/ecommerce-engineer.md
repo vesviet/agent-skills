@@ -212,3 +212,6 @@ This role must follow [role-standard](role-standard.md) first.
 - ops and admin flows unblocked for the new feature
 - `contracts/schemas/implementation-result.json` emitted
 - security and PCI-DSS posture reviewed and documented
+
+
+Last updated: 2026-06-17

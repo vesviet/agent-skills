@@ -174,3 +174,6 @@ This role must follow [role-standard](role-standard.md) first.
 - owners and dates are clear
 - risks and validation windows are visible
 - next decisions are unblocked
+
+
+Last updated: 2026-06-17

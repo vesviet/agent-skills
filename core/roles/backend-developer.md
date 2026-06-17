@@ -345,3 +345,6 @@ Observability is not a post-shipping concern — it is a development practice. O
 - **AI-generated code validated**: risk tier assessed, correctness/security/domain/test checklist completed
 - **OTel instrumentation added**: spans on all new integration points with intent-driven names, business attributes, and trace context propagation
 - **LLM integration secured** (when applicable): centralized service layer, prompt injection defense, output validation
+
+
+Last updated: 2026-06-17

@@ -350,3 +350,6 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - **privacy by design applied**: PII flows minimized, retention constraints documented and enforceable, PIA conducted when required
 - **compliance requirements embedded**: applicable regulations noted, audit trail requirements documented, required mechanisms (HITL, explainability) specified for AI Act–regulated systems
 - **trust boundaries documented**: for agentic/MCP systems, tool access allowlist and trust model explicitly defined
+
+
+Last updated: 2026-06-17

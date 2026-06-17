@@ -427,3 +427,6 @@ Use when:
 - research, analytics, and SEO delegations completed or explicitly waived with documented risk
 - **AI feature AC complete** (when AI in scope): behavioral boundaries, probabilistic thresholds, evaluation method, HITL triggers, accountability model, and EU AI Act risk tier documented
 - **assumption register complete** (for significant bets): top-risk assumptions scored, validated or escalated, kill-or-pivot recommendation issued if discovery invalidates the need
+
+
+Last updated: 2026-06-17

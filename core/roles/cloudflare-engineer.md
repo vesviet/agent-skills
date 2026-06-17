@@ -224,3 +224,6 @@ Activation example:
     Overlay: overlays/icm-main
 
 Read overlay README and `astro-cloudflare-conventions.md` before changing Wrangler or bindings.
+
+
+Last updated: 2026-06-17

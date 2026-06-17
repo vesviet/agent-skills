@@ -244,3 +244,6 @@ Emit `contracts/schemas/security-audit.json` when machine handoff is required.
 - unresolved risk is explicitly accepted by the right owner
 - **AI/LLM security complete** (when AI feature in scope): prompt injection mitigated at architecture level, output exploitation paths reviewed, EU AI Act risk tier classified, model integrity verified
 - **Shift-left complete**: threat model produced at design phase; SAST/DAST configured in CI; dependency scan passing
+
+
+Last updated: 2026-06-17

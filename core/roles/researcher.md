@@ -331,3 +331,6 @@ Activation example:
     depth_mode: deep
 
 See overlay README for site-specific source priorities.
+
+
+Last updated: 2026-06-17

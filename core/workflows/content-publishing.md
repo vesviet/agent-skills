@@ -160,6 +160,7 @@ If the article is delayed, mark it as `carry-over` in the log and carry the topi
 ### Related Workflows
 
 - [seo-keyword-brief](seo-keyword-brief.md)
+- [seo-content-lifecycle](seo-content-lifecycle.md)
 - [add-new-feature](add-new-feature.md)
 - [troubleshooting](troubleshooting.md)
 

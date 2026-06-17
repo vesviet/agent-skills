@@ -154,3 +154,6 @@ This role must follow [role-standard](role-standard.md) first.
 - all well-known discovery JSON files are compliant with schemas
 - Edge response headers are configured and live
 - isitagentready.com validation returns 100% success
+
+
+Last updated: 2026-06-17

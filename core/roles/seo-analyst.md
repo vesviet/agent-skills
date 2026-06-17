@@ -337,3 +337,6 @@ Provides cadence, 7-day board template, publish-log rules, and cannibalization g
 - overlays/vesviet-content (Vesviet + Learn Hugo trees)
 
 See each overlay README for activation and paths.
+
+
+Last updated: 2026-06-17

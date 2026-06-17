@@ -168,3 +168,6 @@ This role must follow [role-standard](role-standard.md) first.
 - the student understands their progress and what to focus on next
 
 Emit `contracts/schemas/learning-handoff.json` when machine handoff is required.
+
+
+Last updated: 2026-06-17

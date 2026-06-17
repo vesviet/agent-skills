@@ -242,3 +242,6 @@ Activation example:
     Overlay: overlays/obj-configurator
 
 See overlay README before finalizing scene integration.
+
+
+Last updated: 2026-06-17

@@ -176,7 +176,7 @@ All roles in this pack are expected to:
 
 | Role | Primary Workflows |
 |------|------------------|
-| Agent Coordinator | `/add-new-feature`, `/troubleshooting`, `/hotfix-production`, `/refactoring`, `/service-review-release`, `/agent-a2a-delegation` |
+| Agent Coordinator | `/add-new-feature`, `/troubleshooting`, `/hotfix-production`, `/refactoring`, `/service-review-release`, `/agent-a2a-delegation`, `/data-migration`, `/dependency-upgrade`, `/security-incident-response` |
 | Agent Discovery Engineer | `/build-deploy`, `/setup-new-service`, `/troubleshooting` |
 | Product Manager | `/add-new-feature` |
 | Project Manager | `/add-new-feature`, `/service-review-release` |
@@ -185,24 +185,24 @@ All roles in this pack are expected to:
 | Researcher | `/add-new-feature`, `/troubleshooting` |
 | UI/UX Designer | `/add-new-feature` |
 | Solution Architect | `/add-new-feature`, `/setup-new-service` |
-| Technical Architect | `/setup-new-service`, `/refactoring` |
-| Technical Lead | `/add-new-feature`, `/service-review-release`, `/refactoring` |
-| Backend Developer | `/add-new-feature`, `/refactoring`, `/hotfix-production` |
+| Technical Architect | `/setup-new-service`, `/refactoring`, `/tech-repo-review` |
+| Technical Lead | `/add-new-feature`, `/service-review-release`, `/refactoring`, `/tech-repo-review` |
+| Backend Developer | `/add-new-feature`, `/refactoring`, `/hotfix-production`, `/data-migration`, `/dependency-upgrade` |
 | Frontend Developer | `/add-new-feature`, `/refactoring` |
 | Mobile Engineer | `/add-new-feature`, `/refactoring`, `/troubleshooting`, `/hotfix-production` |
 | 3D Graphics Engineer | `/add-new-feature`, `/refactoring`, `/troubleshooting` |
-| QA Engineer | `/service-review-release` |
-| Reviewer | `/service-review-release` |
-| Security Engineer | `/service-review-release`, `/hotfix-production` |
-| DevOps Engineer | `/build-deploy`, `/setup-new-service`, `/revert-deployment` |
+| QA Engineer | `/service-review-release`, `/qa-validation` |
+| Reviewer | `/service-review-release`, `/tech-repo-review` |
+| Security Engineer | `/service-review-release`, `/hotfix-production`, `/security-incident-response`, `/dependency-upgrade` |
+| DevOps Engineer | `/build-deploy`, `/setup-new-service`, `/revert-deployment`, `/dependency-upgrade` |
 | Cloudflare Engineer | `/build-deploy`, `/setup-new-service`, `/revert-deployment`, `/hotfix-production` |
-| SRE | `/troubleshooting`, `/hotfix-production`, `/revert-deployment` |
+| SRE | `/troubleshooting`, `/hotfix-production`, `/revert-deployment`, `/security-incident-response` |
 | Technical Writer | `/add-new-feature`, `/service-review-release` |
-| Content Writer | `/add-new-feature`, `/service-review-release` |
-| SEO Analyst | `/add-new-feature`, `/service-review-release` |
-| Content Manager | `/add-new-feature`, `/service-review-release` |
+| Content Writer | `/add-new-feature`, `/service-review-release`, `/content-publishing`, `/seo-content-lifecycle` |
+| SEO Analyst | `/add-new-feature`, `/service-review-release`, `/seo-keyword-brief`, `/content-publishing`, `/seo-content-lifecycle` |
+| Content Manager | `/add-new-feature`, `/service-review-release`, `/content-publishing`, `/seo-content-lifecycle` |
 | Data Analyst | `/add-new-feature`, `/troubleshooting` |
-| Data Engineer | `/troubleshooting`, `/setup-new-service` |
+| Data Engineer | `/troubleshooting`, `/setup-new-service`, `/data-migration` |
 | Ecommerce Engineer | `/add-new-feature`, `/refactoring`, `/hotfix-production`, `/troubleshooting` |
 | Teacher | `/add-new-feature`, `/refactoring` |
 
@@ -247,4 +247,4 @@ python3 core/scripts/validate-2026-compliance.py
 
 The validator checks required sections, section order, minimum content depth, toolbox references, duplicate toolbox entries, role inventory, and workflow mapping. The 2026 compliance validator checks A2A/contract coverage, coordinator wiring, full policy coverage, and graph orchestration infrastructure.
 
-Last updated: 2026-05-22
+Last updated: 2026-06-17

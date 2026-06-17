@@ -432,3 +432,6 @@ Accessibility is a first-class quality and legal requirement — not a post-laun
 - **chaos experiment completed** (when applicable): hypothesis documented, graceful degradation confirmed, recovery validated, MTTR within target
 - **WCAG 2.2 compliance validated** (when UI in scope): automated scan + keyboard navigation + screen reader walkthrough for critical flows; defects classified and dispositioned
 - **shift-right triggers defined**: rollback criteria observable in production telemetry before deployment
+
+
+Last updated: 2026-06-17

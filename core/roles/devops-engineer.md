@@ -230,3 +230,6 @@ AI/ML model deployments require the same rigor as application deployments — sh
 - **GitOps compliance**: all infrastructure changes committed to source control; drift detection configured
 - **AI/ML deployment complete** (when model deployed): shadow testing run, canary rollout plan defined, automatic rollback triggers configured, model monitoring deployed
 - **Supply chain**: SBOM generated; third-party CI actions pinned to commit SHAs; dependency vulnerability scan passed
+
+
+Last updated: 2026-06-17

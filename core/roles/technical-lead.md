@@ -360,3 +360,6 @@ Emit `contracts/schemas/technical-delivery-plan.json` when machine handoff is re
 - **Debt Register updated**: new technical, cognitive, and intent debt items logged; sprint debt-servicing allocation documented
 - **SBOM/SCA clean or exceptions documented** for all new or updated dependencies
 - **blameless retrospective complete** when delivery included a production incident
+
+
+Last updated: 2026-06-17

@@ -360,3 +360,6 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 - **AI-generated code validated** (when applicable): risk tier assessed, behavior/a11y/state/rendering/security checklist completed
 - **CWV performance budgets checked**: INP, LCP, CLS within targets; JS bundle size within per-route limit
 - **rendering strategy documented**: SSR/CSR/hydration choice is explicit, not accidental
+
+
+Last updated: 2026-06-17

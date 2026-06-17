@@ -246,3 +246,6 @@ This role must follow [role-standard](role-standard.md) first.
 - tests cover key interactions and risky logic where appropriate
 - `contracts/schemas/implementation-result.json` emitted when code changed
 - platform constraints, residual risk, and blast radius are understood and documented
+
+
+Last updated: 2026-06-17

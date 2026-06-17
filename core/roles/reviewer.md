@@ -214,3 +214,6 @@ Emit `contracts/schemas/code-review-finding.json` when structured handoff to Age
 - required fixes are actionable and unambiguous
 - residual risk and validation gaps are visible and explained
 - `contracts/schemas/code-review-finding.json` emitted when structured handoff is required
+
+
+Last updated: 2026-06-17

@@ -391,3 +391,6 @@ This role must follow [role-standard](role-standard.md) first.
 - **YMYL content có SME review gate** được confirm trước khi đưa vào editorial calendar
 - **không có irreversible actions** (retire pillar, merge content) nào thực hiện mà không có data evidence và explicit user confirmation
 - trade-offs và deferred decisions được document trong output
+
+
+Last updated: 2026-06-17

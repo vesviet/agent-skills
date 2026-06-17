@@ -302,3 +302,6 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 - **hypothesis documented** for significant bets: insight, expected outcome, validation method, kill criteria
 - **AI product requirements complete** (when applicable): agent goal, HITL path, fallback behavior, EU AI Act tier, explainability requirement
 - **post-launch review scheduled**: landing review date set 4–8 weeks after planned ship for any significant product change
+
+
+Last updated: 2026-06-17
