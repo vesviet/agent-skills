@@ -55,6 +55,7 @@ All roles in this pack are expected to:
 
 ### Architecture And Engineering
 
+- [solution-architect](solution-architect.md)
 - [technical-architect](technical-architect.md)
 - [technical-lead](technical-lead.md)
 - [backend-developer](backend-developer.md)
@@ -106,6 +107,7 @@ All roles in this pack are expected to:
 - Product Manager
 - Project Manager
 - Task Planner
+- Solution Architect
 - Technical Architect
 - Technical Lead
 
@@ -182,6 +184,7 @@ All roles in this pack are expected to:
 | Business Analyst | `/add-new-feature` |
 | Researcher | `/add-new-feature`, `/troubleshooting` |
 | UI/UX Designer | `/add-new-feature` |
+| Solution Architect | `/add-new-feature`, `/setup-new-service` |
 | Technical Architect | `/setup-new-service`, `/refactoring` |
 | Technical Lead | `/add-new-feature`, `/service-review-release`, `/refactoring` |
 | Backend Developer | `/add-new-feature`, `/refactoring`, `/hotfix-production` |

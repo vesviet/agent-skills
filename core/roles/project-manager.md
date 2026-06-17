@@ -102,11 +102,11 @@ This role must follow [role-standard](role-standard.md) first.
 ### Primary Skills
 
 - `meeting-review`
-- `agent-graph-orchestration`
 
 ### Supporting Skills (use when collaborating)
 
 - `agent-delegation`
+- `agent-graph-orchestration`
 - `navigate-service`
 - `review-service`
 
@@ -161,6 +161,7 @@ This role must follow [role-standard](role-standard.md) first.
 ## Role Handoff
 
 - From Product: consume priority, scope, and target outcome
+- From **Solution Architect**: consume `contracts/schemas/solution-brief.json` stakeholder summary and open trade-off decisions when an initiative went through solution scoping; use to sequence delivery phases correctly
 - From Technical Lead: consume sequencing, dependencies, impact radius, and validation gates
 - To stakeholders: provide status, risks, and decision needs
 - To delivery roles: provide owners, dates, blockers, and validation windows

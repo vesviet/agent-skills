@@ -1,6 +1,6 @@
 ---
 name: configure-mcp
-description: Use when configuring Model Context Protocol (MCP) servers and WebMCP browser components to make a service natively accessible to AI clients through the standardized MCP discovery stack.
+description: Sets up the full MCP presence for a web service — server card at `/.well-known/mcp/server-card.json`, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.
 ---
 
 # Configure MCP

@@ -693,5 +693,54 @@ roles:
         - run_deployment
         - run_migration
 
+    content-manager:
+      allowed:
+        - create_file
+        - read_database
+        - read_file
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - run_build
+      denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - install_dependency
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
+
+    solution-architect:
+      allowed:
+        - create_file
+        - read_file
+        - run_build
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - install_dependency
+        - modify_public_api_contract
+        - run_migration
+      denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_secrets
+        - push_to_production
+
 # Default: any action not listed for a role requires approval.
 default_policy: requires_approval

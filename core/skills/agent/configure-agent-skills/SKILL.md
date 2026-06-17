@@ -1,6 +1,6 @@
 ---
 name: configure-agent-skills
-description: Use when creating and managing the agentskills.io manifest index to expose API capabilities for agent capability routing and discovery.
+description: Creates and manages the agentskills.io manifest index at `/.well-known/agent-skills/index.json`, exposing structured API capabilities for agent orchestrators and capability-routing infrastructure to auto-discover and invoke. Use when registering, updating, or validating the skill manifest after adding or deprecating API endpoints on a service.
 ---
 
 # Configure Agent Skills

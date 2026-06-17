@@ -1,6 +1,6 @@
 ---
 name: workers-best-practices
-description: Use when reviewing and authoring Cloudflare Workers code against production best practices and security standards.
+description: Reviews and authors Cloudflare Workers code against production best practices — covering async patterns, global state isolation, secret handling, compatibility flags, and TypeScript bindings. Use when writing new Workers, reviewing existing code for production readiness, or correcting violations of Cloudflare's canonical Workers patterns.
 ---
 
 # Workers Best Practices

@@ -1,6 +1,6 @@
 ---
 name: configure-agent-headers
-description: Use when exposing RFC 8288 Link headers and DNS-AID configurations to make a web service natively discoverable by AI agents without requiring a dedicated well-known endpoint scan.
+description: Exposes well-known agentic endpoints via RFC 8288 HTTP Link headers and optional DNS-AID SVCB records, making a web service natively discoverable by AI agents without requiring dedicated well-known endpoint scans. Use when declaring agent-readiness (MCP server, API catalog, OAuth metadata, agent skills) on a Cloudflare Pages or Workers site without changing application routing.
 ---
 
 # Configure Agent Headers

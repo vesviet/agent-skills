@@ -1,7 +1,6 @@
 ---
 name: turnstile-spin
-description: Use when setting up Cloudflare Turnstile CAPTCHA protection end-to-end in a project, verifying configuration, and deploying managed siteverify Workers.
-references: vanilla-html, nextjs-app, nextjs-pages, astro, sveltekit, hugo
+description: Implements end-to-end Cloudflare Turnstile CAPTCHA protection — widget creation, managed siteverify Worker deployment, and frontend integration — turning a "set up Turnstile" request into a validated, working integration. Use when adding bot protection to forms or gated flows in vanilla HTML, Next.js, Astro, SvelteKit, or Hugo projects.
 ---
 
 # Turnstile Spin

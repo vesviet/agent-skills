@@ -1,6 +1,6 @@
 ---
 name: sandbox-sdk
-description: Use when building sandboxed applications for secure code execution, AI code interpreters, or interactive dev environments on Cloudflare Workers.
+description: Builds secure, isolated code execution environments on Cloudflare Workers using the Cloudflare Sandbox SDK — enabling AI code interpreters, interactive dev environments, and sandboxed application runtimes. Use when implementing LLM-generated code execution, user-submitted script running, or any scenario requiring isolated compute with file system access on the Cloudflare edge.
 ---
 
 # Sandbox SDK

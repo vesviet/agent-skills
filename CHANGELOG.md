@@ -2,6 +2,16 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [2.11.0] - 2026-06-17
+
+### Added
+- `seo-content-lifecycle` workflow: End-to-end topic plan, SEO brief, deep research, draft, audit, and publish lifecycle for content roles.
+
+### Fixed
+- `action-boundaries.yaml`: Added missing capability policies for `content-manager` and `solution-architect` roles.
+- `agent-coordinator.md`: Fixed heading formatting to pass strict `validate-roles.py` checks.
+- `validate-skills.py`: Updated `PLACEHOLDER_REFS` to allow backticked terms from `business-analyst.md`.
+
 ## [2.10.0] - 2026-06-16
 
 ### Added — Content Manager Role

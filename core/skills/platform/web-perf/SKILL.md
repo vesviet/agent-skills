@@ -1,6 +1,6 @@
 ---
 name: web-perf
-description: Use when auditing, profiling, debugging, or optimizing web page load performance, Lighthouse scores, or Core Web Vitals.
+description: Analyzes web page performance using Chrome DevTools MCP — measuring Core Web Vitals (LCP, INP, CLS), identifying render-blocking resources, network dependency chains, and caching issues to produce specific, actionable optimization recommendations. Use when auditing Lighthouse scores, debugging slow page loads, profiling Core Web Vitals regressions, or validating performance improvements before release.
 ---
 
 # Web Perf

@@ -133,6 +133,7 @@ Detect and halt on semantic (not just technical) failures:
 
 | Situation | Primary deliverable | Notes |
 | --------- | ------------------- | ----- |
+| Initiative needs solution scoping first | Delegate to Solution Architect | Receive solution-brief.json before BA or Architect phases open; gate on build-vs-buy resolution |
 | Multi-phase feature or bug | coordination-plan.json + a2a-task.json | One output_schema_ref per phase assignee |
 | Long-running phase | a2a-task-progress.json | Stream status to user |
 | Completed delegate work | a2a-artifact.json | Validate against assignee contract |
@@ -194,7 +195,7 @@ Detect and halt on semantic (not just technical) failures:
 - **TRACE LOCK**: do not advance a phase without a `trace_id`-correlated artifact from the delegated role; orphaned artifacts are rejected
 - **BUDGET LOCK**: do not start a delegated phase without a `token_budget_estimated` set in `coordination-plan.json`; halt and document re-plan if actual consumption exceeds 2× the estimate
 - **PROMPT-TRUST REJECTION**: do not rely on prompt instructions alone to enforce safety — all guardrails must be applied at the orchestration control layer
-- **AGENT-REGISTRY LOCK**: do not delegate a phase to an agent whose `agent-card.json` is not present in `core/a2a/.well-known/agent-registry.json` or whose declared capabilities do not include the required gate artifact schema — unverified delegates are a silent failure risk
+- **AGENT-REGISTRY LOCK**: do not delegate a phase to an agent whose `agent-card.json` is not present in `core/a2a/.well-known/agent-registry.json` or whose declared capabilities do not include the required gate artifact schema — unverified delegates are a silent failure risk. **Escape hatch for single-agent / IDE environments**: when no distributed registry exists (i.e., all roles execute as modes of the same agent instance), the registry requirement is satisfied by confirming the target role file exists in `core/roles/` and the role's Primary Skills cover the required output schema; document this as `registry_mode: single-agent` in coordination-plan.json and proceed — do not treat a missing HTTP registry as a blocker in local/IDE deployments.
 
 ## Skill Toolbox
 
@@ -211,29 +212,15 @@ Detect and halt on semantic (not just technical) failures:
 ### Supporting Skills (use when collaborating)
 
 - `agent-memory-compaction`
-- `agent-model-routing` — enable for multi-phase graphs with mixed complexity or tight token budget; see skill section *When Agent Coordinator Enables This*
+- `agent-model-routing` — enable when coordination graph has 3+ phases with mixed complexity or tight token budget; trigger criteria: ≥3 phases of different risk tiers, or estimated total budget exceeds 80% of session limit; see skill section *When Agent Coordinator Enables This*
 - `agent-observability`
 - `agent-prompt-lifecycle`
 - `agent-semantic-memory`
-- `navigate-service`
-- `troubleshoot-service`
-- `review-code`
-- `review-service`
-- `write-tests`
-- `add-api-endpoint`
-- `add-event-handler`
-- `add-service-client`
-- `create-migration`
-- `add-page-route`
-- `add-ui-component`
-- `integrate-api-client`
-- `frontend-testing`
-- `debug-runtime-platform`
-- `setup-deployment`
-- `security-audit`
-- `manage-secrets`
-- `database-maintenance`
-- `write-documentation`
+- `navigate-service` — used to orient in a codebase before delegating, or to validate specialist context claims
+- `troubleshoot-service` — used to assess reproduction evidence during triage, not to replace specialist diagnosis
+- `review-code` — used to validate returned implementation-result.json artifacts, not to replace Reviewer sign-off
+- `review-service` — used to assess phase readiness signals, not to replace full service review by Reviewer role
+- `write-documentation` — used to produce coordination summaries and handoff notes only
 
 ## Output Template
 
@@ -376,7 +363,9 @@ Structured JSON must validate against `contracts/schemas/coordination-plan.json`
 
 - From **User**: consume goal, constraints, urgency, explicit forbidden actions, and desired level of end-to-end control
 - From **Product Manager** or **Business Analyst**: consume `contracts/schemas/feature-ticket.json` (acceptance criteria, scope, AI feature spec, assumption register)
+- From **Solution Architect**: consume `contracts/schemas/solution-brief.json` when solution scoping is a gated phase — use capability gaps, build-vs-buy decision, and compliance constraints to inform phase sequencing and gate criteria
 - From **Technical Lead** or **Technical Architect**: consume `contracts/schemas/technical-delivery-plan.json` slices and quality_gates; consume `contracts/schemas/adr-spec.json` for architectural constraints and rollback expectations
+- To **Solution Architect**: delegate solution scoping phase when an initiative requires build-vs-buy analysis, capability gap mapping, or stakeholder alignment before requirements or architecture work begins; provide business goals and constraints via a2a-task.json; receive solution-brief.json
 - To **Business Analyst**: delegate when requirements are incomplete — provide goal context; receive `contracts/schemas/feature-ticket.json`
 - To **Technical Architect**: provide feature-ticket.json scope; receive `contracts/schemas/adr-spec.json` or `contracts/schemas/architecture-options.json`
 - To **Backend Developer** / **Frontend Developer**: provide scoped `contracts/schemas/a2a-task.json` with current phase goal, files, and validation expectations; receive `contracts/schemas/implementation-result.json`
@@ -399,3 +388,5 @@ Structured JSON must validate against `contracts/schemas/coordination-plan.json`
 - **observability complete**: trace_id propagated end-to-end; all phase artifacts correlated
 - **token budget respected**: no phase consumed 2× estimate without a documented re-plan
 - **interruption recovery available**: coordination-plan.json represents a valid resume checkpoint at handoff
+- **solution-brief gate passed when applicable**: if the coordination graph included a solution scoping phase, solution-brief.json was produced, consumed, and build-vs-buy decision was resolved before BA or Architect phases opened
+- **supporting skills used within boundary**: no specialist execution skills (implementation, migration, deployment) were invoked directly by Coordinator; all such actions were delegated to the owning specialist role

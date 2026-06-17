@@ -1,6 +1,6 @@
 ---
 name: configure-agent-commerce
-description: Use when implementing agentic commerce standards like x402, MPP, UCP, and ACP for transactional checkout flows in agent-driven applications.
+description: Implements agentic commerce standards (x402 HTTP payment protocol, MPP, UCP, ACP) to enable transactional checkout flows in agent-driven applications — making a service billiable and discoverable by AI agents. Use when adding agent-to-agent payment, user context resolution, or agentic commerce directory registration to a web service.
 ---
 
 # Configure Agent Commerce

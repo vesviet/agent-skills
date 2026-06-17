@@ -1,0 +1,134 @@
+{
+  "id": "pack://agent-skills/core/roles/solution-architect",
+  "contract_type": "agent-card",
+  "name": "solution-architect",
+  "description": "translate business goals, stakeholder constraints, and existing capability into a structured solution design that engineering roles can execute without guessing the intent — making build-vs-buy, platform, integration, and vendor trade-offs explicit before requirements are locked or architecture decisions are made.",
+  "url": "pack://agent-skills/core/roles/solution-architect.md",
+  "version": "2.8.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "navigate-service",
+      "name": "Navigate Service",
+      "description": "Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "solution-brief.json"
+      ]
+    },
+    {
+      "id": "conduct-research",
+      "name": "Conduct Research",
+      "description": "Run deep, iterative investigation and deliver triangulated, structured findings. Use when domain knowledge, vendor evaluation, or regulatory context must be established before solution options are assessed.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "solution-brief.json"
+      ]
+    },
+    {
+      "id": "analyze-business-requirements",
+      "name": "Analyze Business Requirements",
+      "description": "Decompose and validate business requirements against stakeholder goals, constraints, and system context. Use when translating business needs into solution constraints and option evaluation criteria.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "solution-brief.json"
+      ]
+    },
+    {
+      "id": "write-tech-radar",
+      "name": "Write Tech Radar",
+      "description": "Draft or update a technology radar entry by summarizing context, trade-offs, recommendation, and adoption guidance. Use when documenting build-vs-buy decisions or platform evaluations.",
+      "tags": [
+        "documentation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "solution-brief.json"
+      ]
+    },
+    {
+      "id": "meeting-review",
+      "name": "Meeting Review",
+      "description": "Run a structured multi-perspective review producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "solution-brief.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "solution-brief.json"
+  ],
+  "role_file": "core/roles/solution-architect.md",
+  "policy_profile": "solution-architect"
+}

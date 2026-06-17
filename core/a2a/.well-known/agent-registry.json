@@ -137,6 +137,12 @@
       "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2025–2026"
     },
     {
+      "role": "solution-architect",
+      "agent_card": "core/a2a/registry/solution-architect.agent-card.json",
+      "url": "pack://agent-skills/core/roles/solution-architect.md",
+      "description": "translate business goals, stakeholder constraints, and existing capability into a structured solution design — making bu"
+    },
+    {
       "role": "task-planner",
       "agent_card": "core/a2a/registry/task-planner.agent-card.json",
       "url": "pack://agent-skills/core/roles/task-planner.md",

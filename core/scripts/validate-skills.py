@@ -55,6 +55,12 @@ PLACEHOLDER_REFS = {
     "restricted",
     "pip-audit",
     "npm audit",
+    "high-risk",
+    "deep",
+    "scoped",
+    "markdown-brief",
+    "findings",
+    "confidence",
 }
 
 

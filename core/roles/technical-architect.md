@@ -182,6 +182,7 @@ Privacy and compliance constraints belong at the boundary level, not in applicat
 
 ## Collaboration & A2A Delegation
 
+- works with **Solution Architect** upstream — consumes solution-brief.json (capability gaps, build-vs-buy record, compliance constraints) before authoring adr-spec.json; does not re-scope solution options that Solution Architect has already decided
 - works with **Business Analyst** on feature-ticket.json rules and cross-cutting constraints
 - works with **Technical Lead** on implementation strategy and adr_refs in technical-delivery-plan.json
 - works with **Researcher** for technology evaluation and trade-off evidence
@@ -325,6 +326,7 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 
 ## Role Handoff
 
+- From **Solution Architect**: consume `contracts/schemas/solution-brief.json` — capability gap summary, build-vs-buy decision, compliance constraints requiring boundary enforcement, and open architectural questions
 - From **Business Analyst**: consume `contracts/schemas/feature-ticket.json`
 - From **Product Manager**: consume goals, constraints, and priority trade-offs
 - From **Researcher**: consume research-report.json for options and ADR context

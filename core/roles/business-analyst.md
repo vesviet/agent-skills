@@ -404,6 +404,7 @@ Use when:
 ## Role Handoff
 
 - From Product: consume goals, priority, and business context
+- From **Solution Architect**: consume `contracts/schemas/solution-brief.json` — compliance constraints and solution boundary for AC scope; SA hands off before or alongside requirements discovery on initiatives that went through solution scoping
 - From stakeholders: collect process details, exceptions, and examples
 - From Researcher: consume research-report.json; translate findings into rules and AC
 - From Data Analyst: consume data-analysis-report.json; refine metric-based AC

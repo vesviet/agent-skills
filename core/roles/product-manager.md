@@ -286,6 +286,7 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 ## Role Handoff
 
 - From stakeholders: collect goals, constraints, and success measures
+- To **Solution Architect**: provide business goals, constraints, roadmap context, and go/no-go authority when a new initiative requires solution scoping before requirements are written; consume `contracts/schemas/solution-brief.json` stakeholder summary and open trade-off decisions requiring PM decision
 - To Business Analyst: hand off scope, impacted users, and rules needing detailed requirements
 - To UX: hand off user journeys and experience constraints
 - To Technical Lead or Architect: hand off priority, stability expectations, acceptance criteria, and trade-offs (via `contracts/schemas/feature-ticket.json`)

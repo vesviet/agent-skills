@@ -288,11 +288,13 @@ Structured JSON handoff must validate against `contracts/schemas/research-report
 
 - From **Business Analyst**: consume Research Request (questions, boundaries, depth_mode); return `contracts/schemas/research-report.json` for rules and AC refinement by BA
 - From **Product Manager**: consume goals, constraints, and open questions
+- From **Solution Architect**: consume vendor evaluation, technology landscape, or regulatory research delegation via A2A task; return `contracts/schemas/research-report.json` — SA consumes findings to populate solution-brief.json options and compliance constraints
 - From **Technical Architect**: consume evaluation criteria and option questions; return findings for architecture-options.json — not ADR decisions
 - From **Data Analyst**: consume `contracts/schemas/data-analysis-report.json` when metrics baselines precede synthesis
 - From **SEO Analyst**: consume scoped domain or compliance questions when SERP depth is insufficient
 - From **Agent Coordinator**: consume phase brief and coordination-plan.json research gate requirements
 - To **Business Analyst**: provide `contracts/schemas/research-report.json` for translation into `contracts/schemas/feature-ticket.json`
+- To **Solution Architect**: provide research-report.json when SA delegated vendor, technology, or regulatory research; SA uses findings for build-vs-buy decision and compliance scoping
 - To **Technical Architect**: provide evidence and trade-offs for architecture-options.json and adr-spec.json (Architect owns outputs)
 - To **Technical Lead**: provide feasibility notes and constraints — not technical-delivery-plan.json
 - To **UI/UX Designer**: provide `contracts/schemas/research-report.json` before ux-flow-spec.json
