@@ -63,6 +63,28 @@ Use:
 - high-severity risk for likely misuse or privilege widening
 - follow-up risk for hardening gaps that should be tracked
 
+### 2026: OWASP Top 10:2025 Standards
+
+Verify the following 2025 additions during audits:
+- **A03: Supply Chain Security**: Enforce Software Bill of Materials (SBOM) generation/validation, verify package signatures, and review third-party code and dependency updates.
+- **A10: Exceptional Conditions**: Audit error-handling paths and exception blocks. Ensure systems fail-closed when encountering uncaught exceptions, properly release resources (e.g. database connections), and do not leak stack traces or internal diagnostic data.
+- **#2 Misconfiguration (Security Misconfiguration)**: Audit configuration settings, default credentials, cloud IAM/resource policies, HTTP security headers, and debug endpoint states to ensure environments are hardened.
+
+### 2026: OWASP Agentic Security Initiative (ASI) Top 10
+
+Analyze vulnerabilities unique to agentic and AI systems:
+- **Indirect Prompt Injection**: Treat external data (RAG documents, emails, search results) consumed by AI agents as untrusted input; do not allow external data to override system prompts.
+- **Insecure Output Handling**: Validate, sanitize, and scope all agentic outputs (e.g. database queries, command lines, API calls) before downstream systems execute them.
+- **Excessive Agency & Trust Boundaries**: Enforce the principle of least privilege on tool access and capabilities granted to AI agents.
+- **Cascading Delegation & HITL**: Ensure multi-agent invocation paths are bounded and that irreversible actions (such as transactions or data deletions) require Human-in-the-Loop (HITL) approval.
+
+### 2026: SLSA Level 3 Supply Chain Verification
+
+Assess the delivery pipeline for supply chain integrity:
+- **Isolated Build Environments**: Confirm that build steps execute on isolated, ephemeral build platforms to prevent cross-build contamination.
+- **Non-Falsifiable Provenance**: Verify that the build platform produces cryptographically signed, authenticated provenance metadata (SBOM, source commits) that cannot be altered.
+- **Hermetic Builds**: Ensure builds resolve dependencies from secure, immutable registries and that internet access is blocked or tightly restricted during execution.
+
 ## Checklist
 
 - [ ] trust boundary identified
@@ -71,6 +93,9 @@ Use:
 - [ ] secret handling checked
 - [ ] runtime exposure checked
 - [ ] findings reported with clear severity
+- [ ] OWASP Top 10:2025 gaps reviewed (A03, A10, #2 Misconfiguration)
+- [ ] OWASP ASI Top 10 checks applied for AI systems
+- [ ] SLSA Level 3 supply chain verification assessed
 
 ## Related Skills
 

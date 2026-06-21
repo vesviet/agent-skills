@@ -19,10 +19,6 @@ Use this skill when a task should be broken into scoped sub-tasks and assigned t
 - issue only task-scoped, time-bound credentials for each delegation leg instead of using persistent shared tokens
 - mitigate transitive trust exploitation in multi-hop delegations by cryptographically verifying the authorization chain (A→B→C) at every hop
 - enforce Zero-Trust inter-agent communication by requiring every single request to be independently authenticated and authorized
-- prevent Confused Deputy vulnerabilities (OWASP ASI03) by ensuring delegators never delegate or grant permissions beyond their own authorization scope, and validate scope constraints at handoff
-- issue only task-scoped, time-bound credentials for each delegation leg instead of using persistent shared tokens
-- mitigate transitive trust exploitation in multi-hop delegations by cryptographically verifying the authorization chain (A→B→C) at every hop
-- enforce Zero-Trust inter-agent communication by requiring every single request to be independently authenticated and authorized
 
 ## Key Concepts
 
