@@ -67,6 +67,10 @@ AI/LLM integrations introduce attack surfaces that are absent from standard OWAS
 - high-risk AI systems require: conformity assessment, human oversight implementation, immutable audit logging, bias and fairness assessment, and data governance documentation
 - Security Engineer must review and sign off on the security components of high-risk AI system compliance before deployment
 
+**Agentic Protocols Security (MCP & ACP):**
+- **Model Context Protocol (MCP)**: exposing APIs via MCP directly to AI Agents creates massive trust boundary implications; require explicit threat modeling for every MCP tool to ensure it respects server-side ABAC/RBAC and cannot be tricked into unauthorized data exfiltration
+- **Agentic Commerce Protocol (ACP)**: review all x402 endpoint integrations to ensure Agents cannot bypass multi-factor authentication (MFA) prompts or limits when spending user funds
+
 ### Shift-Left Security Engineering (2025-2026)
 
 **Threat modeling before design sign-off:**

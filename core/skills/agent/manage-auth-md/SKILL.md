@@ -76,3 +76,7 @@ Use this skill when adding or updating the Agentic Registration Discovery file (
 - **configure-oauth-metadata**: Set up the `/.well-known/oauth-protected-resource` and `/.well-known/oauth-authorization-server` endpoints that `auth.md` references.
 - **debug-workos-integration**: Troubleshoot WorkOS agent registration and scanner failures.
 - **configure-agent-headers**: Expose `auth.md` presence via HTTP Link headers for passive discovery.
+\n### 2026: Auth.md Enhancements
+
+- **auth.md spec evolution (mid-2026):** The `## MCP Servers` section now requires a `transport` field (`streamable-http` or `sse`). The isitagentready.com scanner rejects auth.md files that reference SSE-only MCP servers without a `streamable-http` transport declaration.
+- **Validation before publish:** Run `curl -s "https://isitagentready.com/check?url=YOUR_DOMAIN"` after every auth.md change to catch scanner errors before they affect agent registration flows. Do not rely on manual inspection alone.\n

@@ -2,9 +2,9 @@
   "id": "pack://agent-skills/core/roles/content-manager",
   "contract_type": "agent-card",
   "name": "content-manager",
-  "description": "định hướng chiến lược nội dung tổng thể của một website — từ xây dựng content pillar architecture, quản lý editorial calendar, đến content audit và brand voice. Cầu nối giữa mục tiêu kinh doanh và hoạt động sản xuất nội dung; đảm bảo mọi nội dung xuất bản phục vụ đúng người đọc, đúng mục tiêu, và đúng giai đoạn phát triển của website.",
+  "description": "định hướng chiến lược nội dung tổng thể của một website — từ xây dựng content pillar architecture, quản lý vòng đời nội dung (sản xuất → phân phối → đo lường → refresh), đến khai thác chuyên môn nội bộ (SME) và tối ưu cho AI search. Cầu nối giữa mục tiêu kinh doanh và hoạt động sản xuất nội dung hàng ngày; đảm bảo mọi nội dung xuất bản phục vụ đúng người đọc, đúng mục tiêu, đúng kênh, và đúng giai đoạn phát triển của website.",
   "url": "pack://agent-skills/core/roles/content-manager.md",
-  "version": "1.0.0",
+  "version": "2.11.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -28,7 +28,7 @@
     {
       "id": "write-product-brief",
       "name": "Write Product Brief",
-      "description": "Create content strategy documents, editorial briefs, pillar architecture plans, and brand voice guides. Use for strategic planning outputs that align content goals with business objectives.",
+      "description": "Write or refine a product brief that makes user value, business outcome, preserved behavior, affected users, acceptance boundaries, and trade-offs explicit. Use when a feature, bug fix, workaround, rollback, or scope decision needs a product-facing decision artifact before implementation or release.",
       "tags": [
         "foundation",
         "pack"
@@ -43,13 +43,14 @@
       ],
       "output_schema_refs": [
         "content-handoff.json",
-        "coordination-plan.json"
+        "coordination-plan.json",
+        "seo-content-brief.json"
       ]
     },
     {
       "id": "analyze-business-requirements",
       "name": "Analyze Business Requirements",
-      "description": "Align content strategy with business goals and audience needs. Use when translating product/business inputs into content priorities and KPIs.",
+      "description": "Analyze and write business requirements by making actors, business rules, state transitions, exceptions, preserved behavior, and downstream process impact explicit. Use when a feature, policy change, or bug fix needs implementation-ready requirements and testable acceptance criteria.",
       "tags": [
         "foundation",
         "pack"
@@ -63,13 +64,38 @@
         "text"
       ],
       "output_schema_refs": [
-        "feature-ticket.json"
+        "content-handoff.json",
+        "coordination-plan.json",
+        "seo-content-brief.json"
+      ]
+    },
+    {
+      "id": "write-article",
+      "name": "Write Article",
+      "description": "Plan, research, outline, and draft long-form articles and blog posts with explicit evidence discipline, answer-first structure, GEO/AEO execution, information gain quality gates, E-E-A-T experience signals, and SEO-brief alignment. Use for narrative content, guides, reviews, and announcements—not for API runbooks or pure technical reference docs.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "content-handoff.json",
+        "coordination-plan.json",
+        "seo-content-brief.json"
       ]
     }
   ],
   "defaultOutputSchemas": [
     "content-handoff.json",
-    "coordination-plan.json"
+    "coordination-plan.json",
+    "seo-content-brief.json"
   ],
   "role_file": "core/roles/content-manager.md",
   "policy_profile": "content-manager"

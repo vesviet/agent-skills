@@ -42,6 +42,11 @@ Use this skill to expose well-known agentic endpoints natively via HTTP response
 
 6. **Audit scope**: Check that no internal-only endpoints are leaked via Link headers. Review the list of exposed `rel` types against the domain's actual capabilities.
 
+### 2026: Link Header Security and DNS-AID SVCB Adoption
+
+- Link header security: when exposing `Link: <url>; rel="mcp-server"`, ensure the target URL is under your own domain; third-party URLs in Link headers can enable agent phishing attacks.
+- DNS-AID SVCB adoption status: DNS-AID is still an IETF draft (not RFC) as of mid-2026; implement Link headers as primary discovery mechanism; DNS-AID only as supplementary signal for DNS-aware clients.
+
 ## Output Format
 
 - `public/_headers` or worker response headers file with Link header entries
@@ -64,3 +69,7 @@ Use this skill to expose well-known agentic endpoints natively via HTTP response
 - **configure-mcp**: Set up the MCP server card endpoint declared in Link headers.
 - **manage-api-catalog**: Wire up the RFC 9727 API catalog endpoint declared in Link headers.
 - **configure-agent-skills**: Set up the agent skills index manifest declared in Link headers.
+\n### 2026: Link Headers and SVCB Records
+
+- **RFC 8288 Link header security:** When exposing `Link: <url>; rel="mcp-server"` or similar agent-discovery headers, ensure the target URL is under your own domain or a domain you control. Third-party URLs in Link headers can be abused for open redirect or agent phishing attacks.
+- **DNS-AID SVCB record adoption status:** DNS-AID is still an IETF draft (not RFC) as of mid-2026. Implement Link headers as the primary discovery mechanism and DNS-AID only as a supplementary signal for DNS-aware clients.\n

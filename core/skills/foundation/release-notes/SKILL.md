@@ -139,3 +139,8 @@ Before publishing, verify:
 - **commit-code**: Prepare the release commit and tag
 - **review-service**: Confirm release readiness before communication goes out
 - **write-tech-radar**: Document longer-term technology direction changes
+\n### 2026: Release Automation
+
+- **GitHub Releases automation:** Generate release notes from Conventional Commits via `gh release create --generate-notes` or the GitHub Releases API. Customize the note template in `.github/release.yml` to categorize commits by type (Features, Fixes, Breaking Changes). This avoids hand-writing notes for every release.
+- **Semantic versioning decision rules:** MAJOR bump when a breaking change is introduced (even minor API contract changes). MINOR bump for backward-compatible features. PATCH bump for fixes. Provide a decision table in the checklist to prevent incorrect version bumping.
+- **Deprecation calendar in release notes:** Every release note for a deprecated feature must include the exact sunset date in ISO 8601 format and a link to the migration guide. Consider referencing the RFC 8594 Sunset header specification.\n

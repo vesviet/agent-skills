@@ -4,7 +4,7 @@
   "name": "cloudflare-engineer",
   "description": "own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration, and edge incident recovery — so application teams ship safely on Cloudflare without platform guesswork.",
   "url": "pack://agent-skills/core/roles/cloudflare-engineer.md",
-  "version": "2.8.0",
+  "version": "2.11.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -28,7 +28,7 @@
     {
       "id": "wrangler",
       "name": "Wrangler",
-      "description": "Use when deploying, developing, and managing Cloudflare Workers, KV, R2, D1, Vectorize, Hyperdrive, AI, Containers, Queues, Workflows, Pipelines, and Secrets.",
+      "description": "Deploys, develops, and manages Cloudflare Workers and their bindings — KV, R2, D1, Vectorize, Hyperdrive, Workers AI, Containers, Queues, Workflows, Pipelines, and Secrets — via the Wrangler CLI. Use when setting up a new Worker project, deploying to staging or production, managing secrets, generating TypeScript types, or configuring environment-specific settings.",
       "tags": [
         "platform",
         "pack"
@@ -68,7 +68,7 @@
     {
       "id": "turnstile-spin",
       "name": "Turnstile Spin",
-      "description": "Use when setting up Cloudflare Turnstile CAPTCHA protection end-to-end in a project, verifying configuration, and deploying managed siteverify Workers.",
+      "description": "Implements end-to-end Cloudflare Turnstile CAPTCHA protection — widget creation, managed siteverify Worker deployment, and frontend integration — turning a \"set up Turnstile\" request into a validated, working integration. Use when adding bot protection to forms or gated flows in vanilla HTML, Next.js, Astro, SvelteKit, or Hugo projects.",
       "tags": [
         "platform",
         "pack"
@@ -88,7 +88,7 @@
     {
       "id": "workers-best-practices",
       "name": "Workers Best Practices",
-      "description": "Use when reviewing and authoring Cloudflare Workers code against production best practices and security standards.",
+      "description": "Reviews and authors Cloudflare Workers code against production best practices — covering async patterns, global state isolation, secret handling, compatibility flags, and TypeScript bindings. Use when writing new Workers, reviewing existing code for production readiness, or correcting violations of Cloudflare's canonical Workers patterns.",
       "tags": [
         "platform",
         "pack"
@@ -108,7 +108,7 @@
     {
       "id": "sandbox-sdk",
       "name": "Sandbox Sdk",
-      "description": "Use when building sandboxed applications for secure code execution, AI code interpreters, or interactive dev environments on Cloudflare Workers.",
+      "description": "Builds secure, isolated code execution environments on Cloudflare Workers using the Cloudflare Sandbox SDK — enabling AI code interpreters, interactive dev environments, and sandboxed application runtimes. Use when implementing LLM-generated code execution, user-submitted script running, or any scenario requiring isolated compute with file system access on the Cloudflare edge.",
       "tags": [
         "platform",
         "pack"

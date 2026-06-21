@@ -59,6 +59,11 @@ Before discarding detail, confirm the compact state can answer:
 
 Continue using the compact state as the source of truth. Re-read only the specific files or command output needed for the next action.
 
+### 2026: Production Patterns and Compaction Heuristics
+
+- **mem0 and Zep v2 Production Patterns**: Use mem0 for simple user preference memory. Choose Zep v2 with a temporal knowledge graph when the validity of facts over time is required. Both platforms support automatic extraction and retrieval of long-term state.
+- **Compaction Trigger Heuristics**: Initiate context compaction when context window utilization exceeds 60% of the model limit, which is safer than waiting for 80% when degradation may have already occurred. Alternatively, trigger compaction on a fixed turn count, such as every 20 turns. Always log pre-compaction and post-compaction token counts to monitor efficiency.
+
 ## Output Format
 
 Use this format for a compaction checkpoint:
@@ -118,3 +123,7 @@ Next action:
 - **agent-quality-gate**: Preserve validation evidence before dropping detail
 - **agent-tool-orchestration**: Re-read only the next necessary evidence after compaction
 - **write-documentation**: Convert durable context into repository documentation
+\n### 2026: Memory Strategies
+
+- **mem0/Zep v2 production patterns:** mem0 provides an opinionated memory layer with automatic extraction, storage, and retrieval. Zep v2 adds temporal knowledge graph support. Choose mem0 for simple user preference memory, and Zep v2 when temporal fact validity matters (facts change over time).
+- **Compaction trigger heuristics:** Trigger compaction when context window utilization exceeds 60 percent of the model's limit, not at 80 percent or higher (which is too late). Alternatively, trigger on a fixed turn count (e.g., every 20 turns). Log compaction events with pre/post token counts to measure effectiveness.\n

@@ -75,3 +75,7 @@ Use this skill to create and maintain the `/.well-known/api-catalog` Linkset fil
 - **configure-agent-headers**: Expose the API catalog via HTTP Link headers for passive agent discovery.
 - **configure-agent-skills**: Set up the Agent Skills index manifest for capability-level (not endpoint-level) discovery.
 - **configure-mcp**: Set up the MCP server card — often deployed alongside the API catalog for dual-mode discovery.
+\n### 2026: RFC 9727 and Catalog Versioning
+
+- **RFC 9727 API Catalog implementation:** Publish `/.well-known/api-catalog` returning a `linkset+json` document with `anchor`, `href`, and `type: application/openapi+json` link relations for each API. This enables automated API discovery by agent orchestrators and developer tooling.
+- **API catalog versioning:** Each catalog entry should include a `version` field and a `deprecated` boolean flag. Automated clients (agents, SDKs) use the catalog to select the highest non-deprecated version without human intervention.\n

@@ -83,3 +83,9 @@ Confirm:
 - **review-service**: Check full release readiness after recovery
 - **meeting-review**: Escalate cross-role runtime risk
 - **commit-code**: Prepare source-of-truth fixes for delivery
+\n### 2026: Runtime Platform Debugging Additions
+
+- **Kubernetes debugging toolkit:** Use `kubectl describe pod` for events, `kubectl logs --previous` for crash-loop containers, `kubectl exec -it` for interactive diagnosis, and `kubectl top pods --containers` for per-container CPU/memory without external tools.
+- **Helm drift detection:** Use `helm diff upgrade` (with the helm-diff plugin) to preview changes before applying. Use `helm status` to verify the deployed revision, `helm history` to see rollback targets, and compare `helm get values` against the values file in git to detect config drift.
+- **AI-assisted log analysis:** Pipe logs to LLM-powered analysis tools (such as Datadog Bits AI, Elastic AI Assistant, or Grafana Sift) to surface anomaly patterns. Treat AI-generated diagnosis as a starting hypothesis requiring human validation before any remediation.
+- **CF-specific patterns:** For Cloudflare Workers, use `wrangler tail --format json` piped to `jq` tool for structured log filtering. Use `wrangler deployments list` to identify the exact deployment revision in production.\n

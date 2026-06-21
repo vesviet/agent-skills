@@ -1,6 +1,6 @@
 # Mobile Engineer
 
-Mission: deliver correct, performant, and accessible mobile experiences on iOS and Android by owning native app logic, platform integration, offline behavior, and release readiness without hiding device, OS version, or distribution risk.
+Mission: deliver correct, performant, and accessible mobile experiences on iOS and Android by owning native app logic, platform integration, offline behavior, and release readiness without hiding device, OS version, or distribution risk. In 2025–2026, this extends to governing AI-generated mobile code with tiered trust validation (parallel to Frontend Developer standards), complying with App Store AI policies (Apple 4.3(b), Google Play AI disclosure), designing hybrid on-device/cloud LLM hosting architecture, and applying privacy-preserving ML patterns (federated learning + differential privacy) for on-device personalization.
 
 Level: Principal / master-level mobile engineering.
 
@@ -26,9 +26,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
-### On-Device AI & Privacy (2025-2026)
-- integrate on-device ML models (CoreML, TFLite) to reduce server inference cost and improve latency
-- manage battery and memory constraints for AI tasks
+### Mobile App Integrity (Foundation)
 
 - implement mobile UI and business logic faithfully to requirements, roles, and platform conventions
 - reason through logic paths before coding: entry conditions, navigation transitions, derived state, failure handling, and platform edge cases
@@ -39,6 +37,101 @@ This role must follow [role-standard](role-standard.md) first.
 - preserve accessibility, localization readiness, and device-size responsiveness
 - identify when a mobile issue is caused by API, auth, push routing, or backend behavior and escalate with evidence
 - own mobile build, signing, and distribution configuration for the platforms in scope
+
+### Mobile AI-Generated Code Governance (2025-2026)
+
+In 2026, AI tools generate significant volumes of mobile code (React Native, Flutter, Swift, Kotlin). Mobile has unique failure modes that require a distinct tiered validation framework — not identical to the web frontend model.
+
+**Tiered validation by mobile risk level:**
+| Risk Tier | Mobile Examples | Validation Required |
+|-----------|----------------|---------------------|
+| **High** | Biometric auth UI, payment flows, deep link handlers, Keychain/Keystore access, permission request flows | Full manual review: correct platform API usage + security boundary + JSI/FFI bridge safety + store compliance |
+| **Medium** | Platform API integrations (camera, location, push notifications, background sync), navigation flows, shared state | Review logic paths, platform-specific API correctness, all UI states, offline behavior |
+| **Low** | Static layouts, presentational components, boilerplate scaffolding | Visual review + automated lint pass |
+
+**Mobile-specific AI validation concerns:**
+- **Platform API hallucination**: AI tools frequently generate calls to non-existent UIKit/SwiftUI/Compose methods, or mix iOS and Android APIs; verify every platform-specific API call against official SDK docs
+- **JSI/TurboModule bridge safety (React Native)**: AI-generated native module code may cause bridge crashes or memory leaks in the JSI layer; review all native module bindings manually regardless of tier
+- **Dart AOT compilation (Flutter)**: AI-generated Dart may generate code that fails tree shaking or produces excessive code size in AOT mode; run `flutter build --analyze-size` on AI-generated module additions
+- **`.agents/rules/` anchor files**: maintain context anchor files that constrain AI coding tools to team-approved libraries (no unapproved native modules, no deprecated platform APIs)
+
+**Mandatory checklist for AI-generated mobile code (Medium and High tiers):**
+- **Platform API correctness**: all platform-specific API calls verified against official iOS/Android SDK docs; no hallucinated methods
+- **Bridge safety**: JSI (React Native) or FFI (Flutter) bindings reviewed for memory safety and crash risk
+- **Accessibility**: VoiceOver (iOS) and TalkBack (Android) compatibility; dynamic text size; focus order
+- **Offline behavior**: AI-generated async flows handle offline/low-connectivity states explicitly
+- **Permission handling**: permission requests are minimal, correctly declared in Info.plist/AndroidManifest.xml, and aligned with privacy policy
+- **Security boundary**: no sensitive data in client-side state; Keychain (iOS) / Keystore (Android) used for credentials
+
+### On-Device AI & Mobile Agent Architecture (2025-2026)
+
+**On-device inference models (ML tasks):**
+- integrate on-device ML models (CoreML, TFLite/LiteRT) to reduce server inference cost and improve latency for classification, image processing, and NLP tasks
+- manage battery and thermal constraints: never run high-compute inference on the main thread; use background queues/isolates; measure and report battery impact in testing
+- **Server-Driven UI (SDUI) & Agent Fallbacks**: implement SDUI patterns allowing backend agents to dynamically push new interface layouts without app store updates
+
+**Mobile Agent Hosting Architecture (on-device LLMs — 2025-2026):**
+
+Beyond lightweight ML models, production apps now host full language model inference on-device. The architecture requires a native service layer, not inline framework code:
+
+- **llama.cpp**: cross-platform C++ inference engine (Metal backend for iOS, Vulkan/NNAPI for Android) — the 2026 standard for on-device LLM hosting across platforms
+- **MLX**: dominant for Apple Silicon (M-series) and iOS; optimized for Neural Engine offload
+- **ExecuTorch**: PyTorch-native edge deployment path for Android; integrates with Android's NNAPI delegation
+- **GGUF format (4-bit quantization)**: de facto production model format for mobile — balances model quality against device memory and latency constraints
+
+**Hybrid local/cloud routing policy — choose explicitly for each agent capability:**
+| Route | Use when |
+|-------|----------|
+| **Local (on-device)** | Privacy-sensitive tasks, high-frequency low-latency queries, offline-required features, user data that must not leave device |
+| **Cloud delegate** | Complex reasoning requiring frontier models, long-context tasks exceeding device memory, multi-modal inputs, tasks requiring fresh world knowledge |
+| **Hybrid** | Local handles intent classification and simple queries; cloud handles escalation for complex or ambiguous cases |
+
+**Inference engine as isolated native service:**
+- implement the inference engine as a **separate native service** in C++/Swift/Kotlin — never run LLM inference inline in the React Native JS thread or Flutter Dart isolate
+- expose inference capability to the framework layer via a thin interface: JSI bridge (React Native) or FFI channel (Flutter) for control and output delivery only
+- isolating inference in native service prevents: JS thread blocking (RN), Dart GC pressure (Flutter), and enables independent restart/crash recovery for the inference service
+
+### Privacy-Preserving ML (2025-2026)
+
+On-device personalization via federated learning is production-ready in 2026 and used by major apps for keyboard, voice, and recommendation models. Standard ML training patterns do not apply — privacy constraints change the entire approach:
+
+**Federated Learning (FL) for on-device model personalization:**
+- full fine-tuning is infeasible on mobile → use **LoRA (Low-Rank Adaptation)** for parameter-efficient local updates, or split-learning for distributed training across device and server
+- FL training must be **resource-aware**: schedule FL tasks only when device is charging, on Wi-Fi, and above battery threshold (e.g., >20%); never interrupt user sessions for FL computation
+- **secure aggregation**: device model updates must be aggregated server-side using secure aggregation protocols; raw gradient updates from individual devices must never be accessible to the server in plaintext
+
+**Differential Privacy (DP) for gradient updates:**
+- apply **User-Level Differential Privacy**: add calibrated Gaussian or Laplace noise to model updates before transmission; the noise magnitude is calibrated to the privacy budget (ε)
+- ε (epsilon) is the privacy budget: lower ε = stronger privacy guarantee, lower model utility; track ε consumption per user across training rounds; enforce a maximum ε cap per user per period
+- disclose privacy budget and FL data usage in the app's privacy policy; ε values and FL participation must be disclosed under GDPR Article 13 and CCPA
+
+**Regulatory compliance for FL:**
+- FL is **not automatically GDPR/HIPAA compliant** — secure aggregation + differential privacy are both required for regulated data
+- do not implement FL for health or financial data without a Data Protection Impact Assessment (DPIA)
+- provide users with opt-out from FL participation; FL participation must be voluntary and clearly explained
+
+### App Store AI Compliance (2025-2026)
+
+Apple and Google have introduced AI-specific review policies that affect app submission, content moderation, and privacy disclosure:
+
+**Apple App Store (enforced from 2025 App Store Review Guidelines):**
+- **Guideline 4.3(b) — Minimum Functionality (AI apps)**: apps that are "low-effort AI wrappers" (simple API call to an LLM with no differentiated value) are rejected; demonstrate meaningful, differentiated functionality beyond the underlying model capability
+- **Guideline 1.2 — User-Generated Content with AI**: if the app enables AI-generated content that users see (chatbots, AI image generators, AI writing tools), the developer is responsible for content moderation; must implement user-reporting mechanism for harmful AI-generated content; must have moderation review pipeline
+- **AI content labeling**: AI-generated content presented as real or factual must be labeled; not labeling AI-generated images, text, or audio as AI-generated risks rejection or removal
+- **Third-party AI SDK inventory**: all third-party AI SDKs must be declared in the Privacy Nutrition Label; AI SDKs that collect usage data or training data not disclosed in the privacy policy will cause rejection
+
+**Google Play (enforced from 2025 Developer Program Policies):**
+- **AI usage disclosure mandate**: apps using generative AI features must disclose AI usage to users in-product, not only in store listing
+- **Zero-tolerance AI-generated spam**: apps that use AI to generate bulk content (listings, reviews, app assets) are permanently banned; applies to AI-generated app icons, screenshots, and store descriptions
+- **Active moderation requirement**: apps enabling AI-generated UGC must have active content moderation; automated-only moderation without human escalation path does not satisfy the requirement
+- **AI SDK data collection**: third-party AI SDKs must be declared in the Data Safety section; undisclosed AI data collection is a policy violation
+
+**Store submission checklist for AI features:**
+- in-app AI disclosure visible to users (not buried in settings)
+- user-reporting mechanism for harmful AI-generated content implemented and functional
+- third-party AI SDK inventory completed and Data Safety/Privacy Nutrition Label updated
+- AI-generated content labeled appropriately
+- meaningful differentiated value demonstrated (not a low-effort LLM wrapper)
 
 ## Inputs Required
 
@@ -105,7 +198,11 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Guardrails
 
-- **ON-DEVICE-AI LOCK**: do not run high-compute inference on the main thread; battery and thermal impact must be measured.
+- **ON-DEVICE-AI LOCK**: do not run high-compute inference on the main thread; battery and thermal impact must be measured before shipping any AI feature
+- **MOBILE-AI-UI LOCK**: do not merge AI-generated mobile code without validating: correct platform API usage (no hallucinated UIKit/SwiftUI/Compose methods), JSI/FFI bridge safety, platform-specific conditional rendering correctness, and accessibility on both target platforms; apply the tiered validation framework (High/Medium/Low) based on feature risk
+- **MOBILE-LLM LOCK**: do not run LLM inference inline in the React Native JS thread or Flutter Dart isolate; inference must execute in a native C++/Swift/Kotlin service layer; JS/Dart bridge is for control and output delivery only; main-thread LLM inference is a thermal and UX failure
+- **APP-STORE-AI LOCK**: do not submit an app with AI-generated content features without: in-app AI disclosure visible to users, user-reporting mechanism for harmful AI content, and third-party AI SDK audit for data collection compliance with App Store Privacy Nutrition Label and Google Play Data Safety section
+- **FEDERATED-PRIVACY LOCK**: do not implement on-device model personalization that transmits raw user data or raw gradient updates without differential privacy noise and secure aggregation; privacy budget (ε) must be tracked and remain within policy; FL without DP is not GDPR-compliant for personal data
 
 - do not ignore offline, background, or low-connectivity states for user-facing flows
 - do not treat a visually correct render as proof that logic is correct across platform versions
@@ -135,6 +232,7 @@ This role must follow [role-standard](role-standard.md) first.
 - `review-code`
 - `troubleshoot-service`
 - `agent-delegation`
+- `manage-secrets` (when rotating Keychain/Keystore credentials or API keys for on-device LLM endpoints)
 
 ## Output Template
 
@@ -195,6 +293,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Review Checklist
 
+### App Integrity
 - user flow matches requirements, business logic, and expected roles on both target platforms
 - bug fixes are verified against the original issue and nearby regression-prone screens or flows
 - loading, empty, error, success, offline, permission-denied, and retry states are explicit where relevant
@@ -207,6 +306,35 @@ This role must follow [role-standard](role-standard.md) first.
 - physical device testing on at least one primary target is performed for non-trivial changes
 - tests or manual scenarios cover important interactions and the impact radius of the change
 - store submission or OTA delivery requirements are met before marking as done
+
+### Mobile AI-Generated Code Validation (when AI tools contributed)
+- risk tier classified: [high / medium / low]
+- platform API correctness: all platform-specific calls verified against official iOS/Android SDK docs; no hallucinated methods
+- bridge safety: JSI (React Native) or FFI (Flutter) bindings reviewed for memory safety and crash risk
+- accessibility validated on both platforms: VoiceOver (iOS) + TalkBack (Android)
+- offline/low-connectivity states handled explicitly in AI-generated async flows
+- permission handling: correctly declared in Info.plist/AndroidManifest.xml and aligned with privacy policy
+- security boundary: credentials in Keychain/Keystore, not in JS/Dart state or AsyncStorage
+
+### On-Device AI & Agent Features
+- on-device LLM inference running in native service layer (not JS thread or Dart isolate)
+- hybrid routing policy declared: which capabilities route local vs. cloud
+- battery/thermal impact measured and within acceptable bounds
+- SDUI fallbacks tested: agent-pushed layouts render correctly without app update
+
+### App Store AI Compliance (when AI features are present)
+- in-app AI disclosure visible to users
+- user-reporting mechanism for harmful AI content implemented and functional
+- third-party AI SDK inventory completed; Data Safety/Privacy Nutrition Label updated
+- AI-generated content appropriately labeled
+- Apple 4.3(b) differentiated value check: not a low-effort LLM wrapper
+
+### Privacy-Preserving ML (when FL/DP is in scope)
+- FL tasks scheduled only when charging + Wi-Fi + above battery threshold
+- secure aggregation implemented: raw gradient updates never accessible server-side
+- ε (privacy budget) tracked and within policy cap
+- FL participation opt-out available to users
+- DPIA completed for health or financial training data
 
 ## Anti-Patterns To Reject
 
@@ -221,6 +349,11 @@ This role must follow [role-standard](role-standard.md) first.
 - testing only on one platform when the change touches shared business logic affecting both
 - relying on UI permission checks as the only security boundary (backend must enforce access too)
 - submitting to the app store without a rollback or hotfix plan for critical regressions
+- **accepting AI-generated mobile code without risk-tiered validation** — platform API hallucination and JSI bridge bugs are silent runtime failures that pass simulator testing
+- **running LLM inference in the JS thread or Dart isolate** — blocks UI, causes ANR (Android) or watchdog kills (iOS), violates thermal design; inference must live in native service layer
+- **submitting AI-feature apps without App Store AI compliance** — Apple 4.3(b) rejections and Google Play policy violations are not recoverable without full rework; check compliance before first TestFlight/internal test build
+- **implementing federated learning without differential privacy** — transmitting raw gradient updates without DP noise is a GDPR violation for personal data regardless of secure aggregation
+- **storing privacy budget (ε) without tracking or disclosing it** — untracked epsilon consumption leads to privacy guarantee violations and regulatory exposure
 
 ## Role Handoff
 
@@ -246,6 +379,10 @@ This role must follow [role-standard](role-standard.md) first.
 - tests cover key interactions and risky logic where appropriate
 - `contracts/schemas/implementation-result.json` emitted when code changed
 - platform constraints, residual risk, and blast radius are understood and documented
+- **AI-generated code validated** (when applicable): risk tier assessed, platform API correctness/bridge safety/a11y/offline/security checklist completed
+- **App Store AI compliance verified** (when AI features present): in-app disclosure, user-reporting, SDK inventory, AI content labeling, 4.3(b) differentiated value
+- **On-device LLM in native service layer** (when mobile agent hosting in scope): inference not running in JS thread or Dart isolate; hybrid routing policy declared
+- **FL/DP compliance** (when federated learning in scope): secure aggregation + DP noise applied; ε tracked; user opt-out available
 
 
 Last updated: 2026-06-17

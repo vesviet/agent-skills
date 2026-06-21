@@ -76,3 +76,7 @@ Use this skill to diagnose failures when `isitagentready.com` or another WorkOS 
 - **manage-auth-md**: Fix `auth.md` file content and marker structure.
 - **configure-oauth-metadata**: Fix JSON schema issues in `oauth-authorization-server` and `agent_auth` block.
 - **configure-agent-headers**: Ensure Link headers correctly expose the OAuth metadata well-known paths.
+\n### 2026: WorkOS Scanner Updates
+
+- **WorkOS scanner rule updates for 2026:** The scanner now validates that `agent_auth.registration_endpoint` returns a valid JSON response within 2 seconds. Error code 530 typically indicates Cloudflare WAF blocking the scanner's IP range — allowlist WorkOS scanner CIDR blocks to resolve this.
+- **Common `auth.md` failures:** Typical issues include a missing `## Authentication` heading (which is case-sensitive), the `mcp_server` field not present in the `agent_auth` block, or `redirect_uris` containing localhost URLs in production metadata (which will be rejected by scanner).\n

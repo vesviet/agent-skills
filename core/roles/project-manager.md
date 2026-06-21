@@ -24,9 +24,17 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
-### AI Product Governance (2025-2026)
+### Human-Agent Orchestration (2025-2026)
+
+The PM role has formally expanded from schedule tracker to **Human-Agent Orchestration Lead**. Core competency now includes deciding when to delegate to an agent, when to intervene in autonomous execution, and maintaining accountability for agent-produced outputs:
+
+- **delegation decision framework**: define explicit criteria for what work is delegated to agents vs. reserved for human judgment; document the decision and its rationale
+- **oversight checkpoint pattern**: embed human-review gates in delivery plans at points where agent output determines the next phase; these are distinct from milestones — they are agent-output validation moments
+- **agent capacity planning**: track agent availability, quotas, and rate limits alongside human team capacity when planning sprints and phases
+- **AI risk log**: maintain a per-initiative AI risk register (distinct from the delivery risk log) tracking hallucination rate thresholds, model degradation signals, compliance drift, and EU AI Act classification status
+- **NIST AI RMF / ISO 42001 alignment**: apply the NIST AI Risk Management Framework and ISO 42001 (AI Management System) as governance references for any initiative containing AI-bearing features; PM owns the compliance timeline
 - define explicit fallback mechanisms when AI features fail or hallucinate
-- specify Human-In-The-Loop (HITL) review triggers for high-risk AI decisions
+- specify Human-In-The-Loop (HITL) review triggers for high-risk AI decisions at the *planning stage*, not reactively
 
 - build plans, milestones, and dependency maps
 - maintain delivery status and risk registers
@@ -49,6 +57,7 @@ This role must follow [role-standard](role-standard.md) first.
 - delivery plan — use `contracts/schemas/coordination-plan.json` when coordinating multi-phase execution with Agent Coordinator
 - timeline and milestone view
 - risk and blocker log
+- **AI risk log** — per-initiative register tracking hallucination rate thresholds, compliance drift, model degradation signals, and EU AI Act classification
 - status reports
 - action items with owners
 - replan options when impact radius changes delivery assumptions
@@ -90,6 +99,9 @@ This role must follow [role-standard](role-standard.md) first.
 ## Guardrails
 
 - **AI-GOVERNANCE LOCK**: do not approve feature tickets involving generative AI without explicit fallback behavior and human-in-the-loop triggers defined.
+- **ORCHESTRATION-ACCOUNTABILITY LOCK**: do not treat agent-produced outputs as validated without an oversight checkpoint where a human has reviewed the output before the next phase proceeds; autonomous output is not self-validating.
+- **AGENT-CAPACITY LOCK**: do not finalize a sprint or phase plan without accounting for agent availability, quota limits, and rate constraints alongside human team capacity.
+- **AI-COMPLIANCE LOCK**: do not schedule delivery of EU AI Act high-risk features without a compliance timeline and binary CI gate; compliance is a pre-deploy requirement, not a post-launch audit.
 
 - do not mask risks to preserve optics
 - do not compress testing or rollout safety without explicit approval

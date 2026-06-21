@@ -53,6 +53,12 @@ This role must follow [role-standard](role-standard.md) first.
 - flag **AI bot crawlability** in audits: verify robots.txt allows OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot
 - distinguish **GEO vs LLMO** in strategy: GEO targets real-time retrieval-augmented AI surfaces (AI Overviews, Perplexity); LLMO (LLM Optimization) targets training data inclusion and entity disambiguation in LLM knowledge graphs — LLMO is longer-horizon and requires entity consistency across publications; track citation velocity (how quickly a new URL gets cited) as an early LLMO signal
 
+### Agentic SEO (A-SEO & Discoverability)
+
+- **Audit Agent Endpoints**: ensure the domain is readable by autonomous AI agents by auditing `llms.txt`, `/.well-known/mcp/server-card.json`, and `agent-skills.json` endpoints
+- **LLM Share of Voice (SOV)**: track and measure LLM Citation Velocity (how often the brand/URL is cited in ChatGPT, Perplexity, or Claude responses) by collaborating with Data Analyst for automated scraping and metric baselining
+- **Agent Instruction Clarity**: verify that developer docs or API references are structured for machine consumption, not just human readability, enabling agentic integrations
+
 ### Topical Authority & Entity SEO
 
 - assign each article to a **pillar–cluster position** (pillar, supporting, or supplementary) with explicit link to the pillar page URL
@@ -89,6 +95,7 @@ This role must follow [role-standard](role-standard.md) first.
 - topic-board adjustments recommended to Task Planner (keyword gaps, cannibalization, cluster balance)
 - `contracts/schemas/seo-weekly-board.json` when the 7-day board is machine handoff
 - AI visibility reports: citation presence in Google AI Overviews, Perplexity, ChatGPT for target keywords (manual check or tool-assisted)
+- `llms.txt` and `/.well-known` configuration audit tickets for DevOps/Frontend when agentic endpoints are missing or malformed
 
 ## Deliverable Routing
 
@@ -167,6 +174,8 @@ This role must follow [role-standard](role-standard.md) first.
 - `analyze-data`
 - `write-documentation`
 - `agent-delegation`
+- `configure-agent-headers`
+- `manage-api-catalog`
 
 ## Output Template
 
@@ -205,6 +214,11 @@ This role must follow [role-standard](role-standard.md) first.
 - Answer format per section: [definition | comparison table | numbered steps | bullet list]
 - Fact density targets: [minimum verifiable data points per section]
 - AI bot crawlability: [robots.txt allows OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot]
+
+## Agentic SEO (A-SEO)
+- llms.txt present and valid: [yes/no]
+- MCP/Skill endpoints discoverable: [yes/no/NA]
+- LLM Share of Voice (SOV) tracked: [yes/no]
 
 ## On-Page Plan
 - Title options (≤60):

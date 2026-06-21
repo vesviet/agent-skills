@@ -147,3 +147,8 @@ Skip absent concepts. Do not mark them as findings just because this pack mentio
 - **security-audit**: Deepen security and trust-boundary review
 - **setup-deployment**: Check deployment source-of-truth changes
 - **commit-code**: Prepare reviewed fixes for delivery
+\n### 2026: SLOs and Release Gates
+
+- **SLO/error budget release gates:** Before marking a service release-ready, verify that: (a) SLO dashboards show no active burn rate alerts, (b) error budget remaining for the month is above the team's minimum threshold, and (c) P99 latency is within the service's defined SLO. A release that depletes the remaining error budget should require explicit SRE sign-off.
+- **Chaos engineering pre-release:** For critical services, run a limited chaos experiment (using Chaos Monkey, LitmusChaos, or `toxiproxy`) in staging before release. Verify the service degrades gracefully (not catastrophically) under one dependency failure. Document the experiment result in the release artifact.
+- **SBOM in release readiness:** Attach the current SBOM (CycloneDX/SPDX format) to the release artifact. Verify no new Critical/High CVEs were introduced since the last release using Dependency-Track or the Grype tool.\n

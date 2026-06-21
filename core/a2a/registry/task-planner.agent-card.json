@@ -4,7 +4,7 @@
   "name": "task-planner",
   "description": "produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation checkpoints, and explicit assumptions—so implementers can start without rediscovering the approach.",
   "url": "pack://agent-skills/core/roles/task-planner.md",
-  "version": "2.8.0",
+  "version": "2.11.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

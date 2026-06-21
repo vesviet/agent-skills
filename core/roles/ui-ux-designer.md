@@ -95,6 +95,51 @@ AI features are probabilistic: they produce uncertain, variable, and sometimes w
 - avoid rapid, unpredictable interface updates driven by AI output streaming; provide user controls for pacing or pausing dynamic content
 - for voice and multimodal AI interactions: design graceful fallback to text/visual output when voice input fails or is unavailable
 
+### Agentic UX & Trust Ladder (2025-2026)
+
+In 2026, AI features are not only probabilistic components on a screen — they are increasingly the **primary actor** in user flows, with the human as supervisor or interrupt point. UX must govern the autonomy level of each feature explicitly.
+
+**Trust Ladder — the autonomy governance framework for agentic features:**
+| Tier | What it means | UX requirement |
+|------|--------------|---------------|
+| **Suggest** | Agent proposes; user always initiates the action | Full preview before any effect; easy dismiss |
+| **Verify** | Agent proposes and prepares; user confirms once per action | One-click confirm with consequence preview; undo always visible |
+| **Delegate** | Agent acts within a defined scope; user reviews outcomes | Outcome summary required; audit trail accessible; exception alerts visible |
+| **Automate** | Agent acts fully autonomously; user monitors exceptions only | Status surface mandatory; interrupt/pause control always accessible; exception notification contract defined |
+
+**Autonomy tier declaration:**
+- every agentic feature must declare its Trust Ladder tier in `ux-flow-spec.json` under `autonomy_tier`
+- the UI must surface the current tier visibly — users must know at a glance how much control they have
+- do not ship a feature at a higher tier than the trust the product has earned from its user base; shipping Automate before Suggest→Verify trust is established is the "Autopilot Trap" — a UX failure mode, not a product decision
+- tier upgrades require explicit user opt-in and a trust-building progression (e.g., Suggest for 30 days before offering Delegate)
+
+**Background agent flows — intervention affordances for async contexts:**
+- when an agent operates without an active screen session (background tasks, scheduled workflows, delegated long-running actions), UX must define:
+  - **status surface**: where and how users see what the agent is doing right now
+  - **notification contract**: what events trigger a push notification, what information it contains, and what action it requests
+  - **async interrupt UX**: how a user pauses, redirects, or cancels an in-progress agent task from any context (mobile notification, email, status page)
+  - **completion handoff**: how the agent communicates completion and what review the user is expected to perform
+- design these surfaces with the same fidelity as foreground flows; "it runs in the background" is not a reason to omit the UX spec
+
+### GenUI Component Governance (2025-2026)
+
+When AI dynamically assembles UI in real-time (generative UI / CopilotKit-style patterns), the designer's deliverable changes from **fixed screens** to **design bounds**: the rules that constrain what AI-assembled UI can look like, not the exact layout.
+
+**Component palette definition:**
+- define the allowed component set: which components from the design system are in scope for AI assembly; unlisted components are not available to the AI assembler
+- for each component in the palette: document the allowed states, allowed content types, and prohibited combinations
+- the palette is a design governance contract, not a suggestion — the frontend implementation must enforce it as a runtime constraint
+
+**Assembly rules:**
+- define relationship rules: which components can be composed together, in what order, with what spacing and layout constraints
+- define brand-safety constraints: color combinations that are prohibited, typography pairings that are out-of-bounds, imagery types that are not allowed in AI-generated content
+- document the semantic rules: which content types require which components (e.g., error messages must use the Alert component with error variant, not inline text)
+
+**GenUI drift detection:**
+- after AI-generated UI is assembled and rendered, run design drift detection: verify no hardcoded values, no out-of-palette components, no prohibited combinations
+- treat design-system violations in AI-assembled UI with the same urgency as accessibility failures — they degrade brand coherence and long-term maintainability
+- define a fallback: when AI assembles a UI that violates the palette or assembly rules, what is the safe degraded rendering?
+
 ### Design System as Living Infrastructure (2025-2026)
 
 In 2026, design systems are not component libraries — they are living infrastructure that governs how design intent becomes production code, including when AI generates that code:
@@ -199,6 +244,9 @@ In 2026, design systems are not component libraries — they are living infrastr
 - **AI-OVERCONFIDENCE LOCK**: do not design AI feature interfaces that present AI outputs as absolute truth without confidence indicators and uncertainty states; overconfident AI UI erodes trust when errors occur
 - **TRUST-DESIGN LOCK**: do not design AI features without transparency hooks ("Why am I seeing this?"), source citation where required, and visible human override/undo controls; these are UX requirements, not optional enhancements
 - **TOKEN-EXPORT LOCK**: do not manually export or copy-paste design tokens into code; all token updates must flow through the automated pipeline (design source → PR → Style Dictionary); manual token updates break the single source of truth
+- **AUTONOMY-TIER LOCK**: do not design an agentic feature at a higher autonomy tier (Delegate/Automate) than the trust the product has earned from users at that stage; every agentic feature must declare its `autonomy_tier` in ux-flow-spec.json with a visible tier indicator in the UI; shipping full autonomy before Suggest→Verify trust is established is a UX failure mode, not a product decision
+- **BACKGROUND-AGENT-UX LOCK**: do not ship a background agent feature without a fully specified status surface, notification contract, and async interrupt UX; "it runs in the background" is not a reason to omit the UX spec for foreground control points
+- **GENUI-GOVERNANCE LOCK**: do not allow AI-assembled UI to render without a defined component palette, assembly rules, and brand-safety constraints; AI-generated UI that is unconstrained by a design governance contract is a brand and accessibility risk
 
 ## Skill Toolbox
 
@@ -249,6 +297,21 @@ In 2026, design systems are not component libraries — they are living infrastr
 - HITL interface (if BA specified trigger): [reviewer view / confirm / reject / SLA expiry UX]
 - WCAG 2.2 + AI accessibility: [ARIA live regions for dynamic updates / alt text spec for AI media]
 
+## Agentic Feature (when agent is primary actor)
+- autonomy_tier: [Suggest / Verify / Delegate / Automate]
+- Tier indicator: [how the current tier is displayed to the user]
+- Tier upgrade path: [user opt-in flow to advance to next tier, if applicable]
+- Background agent status surface: [where and how users see agent status]
+- Notification contract: [what events trigger notification + content + requested action]
+- Async interrupt UX: [how user pauses / redirects / cancels in-progress agent task]
+- Completion handoff: [how agent communicates completion + what review user performs]
+
+## GenUI Governance (when AI assembles UI dynamically)
+- Component palette: [allowed components + prohibited combinations]
+- Assembly rules: [layout constraints + brand-safety constraints + semantic rules]
+- GenUI drift detection: [how design violations are detected post-assembly]
+- Fallback rendering: [safe degraded UI when assembly violates palette or rules]
+
 ## Interaction Rules
 - Primary actions:
 - Validation:
@@ -294,6 +357,19 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 - AI accessibility: ARIA live regions specified for dynamic AI content; alt text spec for AI-generated media
 - no overconfident AI presentation: uncertainty states are explicit; AI output not presented as absolute truth
 
+### Agentic UX (when agent is primary actor)
+- `autonomy_tier` declared in ux-flow-spec.json (Suggest / Verify / Delegate / Automate)
+- tier indicator visible in UI: users know at a glance how much control they have
+- tier is appropriate for current product trust level (no Autopilot Trap: not higher than earned trust)
+- background agent flows have: status surface, notification contract, async interrupt UX, and completion handoff specified
+- tier upgrade path designed if higher autonomy is planned in future releases
+
+### GenUI Governance (when AI assembles UI dynamically)
+- component palette defined: allowed components + prohibited combinations documented
+- assembly rules defined: layout constraints + brand-safety + semantic rules
+- GenUI drift detection mechanism specified
+- fallback rendering defined for rule violations
+
 ### Design System
 - semantic tokens used throughout; no hardcoded color, spacing, or typography values in component specs
 - new tokens named and documented with semantic purpose + primitive mapping
@@ -313,6 +389,10 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 - **omitting human override controls** — every AI-driven change must have a visible, primary undo/edit/reject path; burying override in a settings menu is not acceptable for high-consequence AI actions
 - **hardcoding values in component specs** — all visual values must reference semantic tokens; hardcoded colors, spacing, and typography values bypass the design system and cause drift
 - **manually exporting tokens** — manual token exports break the automated pipeline and create version conflicts between design and code
+- **skipping autonomy tier declaration** — agentic features must declare their Trust Ladder tier explicitly; an undeclared tier is an unreviewed autonomy level and a product governance failure
+- **shipping Automate-tier before Suggest→Verify trust is established** (Autopilot Trap) — autonomy tier must match product maturity and earned user trust, not engineering capability
+- **omitting background agent UX spec** — background agent flows require status surface, notification contract, and async interrupt UX; they are not exempt from UX specification because no foreground screen exists
+- **unconstrained GenUI assembly** — AI-assembled UI without a component palette and assembly rules is a brand safety and accessibility risk; every GenUI feature needs a design governance contract
 
 ## Role Handoff
 
@@ -335,6 +415,8 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 - api_needs and open questions visible for downstream roles
 - design system overlay rules applied when active
 - **AI interaction design complete** (when AI in scope): all AI-specific states specified, confidence indicators designed, transparency hooks included, human override patterns designed as primary affordances
+- **agentic UX complete** (when agent is primary actor): `autonomy_tier` declared, tier indicator visible, background agent status surface + notification contract + async interrupt UX + completion handoff specified, Autopilot Trap avoided
+- **GenUI governance complete** (when GenUI in scope): component palette, assembly rules, drift detection, and fallback rendering documented
 - **token compliance verified**: no hardcoded values in specs; all visual decisions reference semantic tokens
 
 ## Optional Overlays

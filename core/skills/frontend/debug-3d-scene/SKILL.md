@@ -14,6 +14,9 @@ Use this skill when a 3D experience behaves incorrectly and the fix depends on u
 - isolate whether the bug lives in assets, scene graph, interaction math, materials, or lifecycle
 - treat shared materials, shaders, merged geometry, and reused interaction hooks as blast-radius multipliers
 - verify the original issue and nearby scene regressions before closing the fix
+- Utilize Chrome DevTools Shader Editor tab to inspect WebGPU pipelines and shader compilation errors natively.
+- Use Spector.js in development to capture and replay WebGL draw calls frame-by-frame while disabling it in production.
+- Leverage R3F DevTools to analyze scene graphs, geometry vertex counts, material types, and render call counts.
 
 ## Suggested Process
 
@@ -76,6 +79,12 @@ Re-check:
 - mobile or low-end GPU behavior if relevant
 - memory or context stability if lifecycle changed
 
+### 2026: Advanced 3D Debugging and Diagnostics Tools
+
+- **WebGPU Debugging**: Use the native Chrome DevTools Shader Editor tab (available in Chrome 124+). This enables inspection of GPU pipelines, binding groups, and shader compilation errors natively without the need for external tooling.
+- **Spector.js for WebGL Diagnostics**: For WebGL-based pipelines, inject Spector.js in development builds. It records and replays draw calls frame-by-frame to identify state and binding issues. Ensure it is entirely disabled in production builds due to the significant performance overhead.
+- **React Three Fiber (R3F) DevTools**: Integrate the `@r3f/dev-tools` panel. This provides a real-time visual inspection of the scene graph, geometry vertex counts, material types, active shaders, and render call counts directly in the browser interface.
+
 ## Output Format
 
 Outputs must summarize the root cause and mitigation, and if the debug involves performance/memory bottlenecks, output must be accompanied by a `contracts/schemas/performance-audit.json` payload.
@@ -115,6 +124,9 @@ Outputs must summarize the root cause and mitigation, and if the debug involves 
 - [ ] shared-risk areas checked
 - [ ] narrow hypothesis tested
 - [ ] original issue and nearby regressions re-checked
+- [ ] Native WebGPU pipelines and shaders are inspected via Chrome DevTools Shader Editor when using WebGPU.
+- [ ] Spector.js is integrated for dev-mode WebGL frame capture and disabled for production.
+- [ ] R3F DevTools is utilized to monitor scene graph, vertex count, and render calls.
 
 ## Related Skills
 
@@ -123,3 +135,8 @@ Outputs must summarize the root cause and mitigation, and if the debug involves 
 - **frontend-testing**: Add regression checks around interaction-sensitive fixes
 - **review-code**: Review risky transform, shader, or lifecycle changes
 - **navigate-service**: Map the 3D code path before debugging
+\n### 2026: Modern 3D Debugging
+
+- **WebGPU debugger integration:** Use `navigator.gpu.requestAdapter()` with the browser's built-in WebGPU inspector (Chrome DevTools Shader Editor tab, available in Chrome 124+) to inspect GPU pipelines and shader compilation errors without external tools.
+- **Spector.js for WebGL diagnosis:** Inject a Spector.js script tag in development builds to record and replay WebGL draw calls frame-by-frame. It identifies redundant state changes, overdraw, and incorrect texture binding sequences. Disable in production due to significant performance overhead.
+- **R3F DevTools:** The `@r3f/dev-tools` panel shows scene graph hierarchy, geometry vertex counts, material types, and render call counts in real-time. This is essential for identifying unexpected re-renders caused by unstable object references in R3F component props.\n

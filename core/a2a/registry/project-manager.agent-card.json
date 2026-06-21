@@ -4,7 +4,7 @@
   "name": "project-manager",
   "description": "turn agreed product scope into an executable plan with clear milestones, dependencies, owners, and risk control.",
   "url": "pack://agent-skills/core/roles/project-manager.md",
-  "version": "2.8.0",
+  "version": "2.11.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -31,26 +31,6 @@
       "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.",
       "tags": [
         "foundation",
-        "pack"
-      ],
-      "inputModes": [
-        "text",
-        "json"
-      ],
-      "outputModes": [
-        "json",
-        "text"
-      ],
-      "output_schema_refs": [
-        "coordination-plan.json"
-      ]
-    },
-    {
-      "id": "agent-graph-orchestration",
-      "name": "Agent Graph Orchestration",
-      "description": "Model multi-phase delivery as a directed graph with parallel branches, phase gates, and A2A delegations per node. Use when coordinating bugs or features across multiple specialist roles, parallel validation tracks, or merge points that require evidence before advancing.",
-      "tags": [
-        "agent",
         "pack"
       ],
       "inputModes": [

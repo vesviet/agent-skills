@@ -98,6 +98,92 @@ Observability is not a post-shipping concern — it is a development practice. O
 **AI-native API design:**
 - serve machine-readable specifications at `/openapi.json` (or equivalent) for all public APIs; this enables AI agents to discover and consume your API without hallucinating interface shapes
 - consider providing an `llms.txt` for API documentation to optimize how AI agents consume your API surface
+- **MCP Server Ownership**: design and build Model Context Protocol (MCP) servers (`configure-mcp`) to expose internal business logic, data models, and specialized tools natively to AI workflows
+
+### MCP Tool Contract Engineering (2025-2026)
+
+A single `configure-mcp` reference is not sufficient. MCP tool definitions are first-class API artifacts and must be engineered with the same versioning and contract discipline as REST or gRPC APIs:
+
+**Schema-first tool definition:**
+- define MCP tool input and output schemas with **JSON Schema** as the source-of-truth (not prompt descriptions); use Zod (TypeScript) or Pydantic (Python) to derive both runtime validation and schema generation from the same definition
+- tool "name" is a stable identifier: once published, a tool name is a public contract; renaming breaks all existing callers without a migration path
+- include explicit `description` fields on all tool parameters; these are consumed by LLMs for routing decisions — vague descriptions cause mis-routing and hallucinated parameters
+
+**MCP Tool SemVer versioning:**
+- version MCP tools with SemVer 2.0.0: **major** = breaking (parameter removed, renamed, or type changed); **minor** = additive (new optional parameter, new field in output); **patch** = bug fix with no schema change
+- expose tool version via the "version" field in the `tools/list` response metadata; clients use this for version negotiation and compatibility checking
+- co-exist major versions during deprecation: when releasing v2 of a tool, serve both `tool_name_v1` and `tool_name_v2` for a defined deprecation window; never remove a version with active callers
+- track tool usage with telemetry (call count, error rate, latency by tool name + version) before deprecating any version; retiring a version with active usage is a production incident
+
+**Tool behavioral contracts:**
+- treat MCP tools as idempotent where possible; document non-idempotent tools explicitly in the tool description
+- define and document error codes in the tool schema; callers (LLM orchestrators) must handle tool errors explicitly — unhandled tool errors cause agent pipeline failures
+- add rate limits and budget limits per tool; tools that call expensive downstream services must not be unbounded
+
+### LLM Structured Output Enforcement (2025-2026)
+
+Prompt injection defense and output sanitization are necessary but not sufficient. In 2026, the production standard for agentic pipelines is **constrained decoding** at the provider level — ensuring LLM responses are schema-valid at generation time, not only validated after generation:
+
+**Constrained decoding via provider native Structured Outputs:**
+- use provider-native structured output APIs where available: `response_format` with JSON Schema (OpenAI gpt-4o and later, Gemini 2.0+, Anthropic Claude 3.5+)
+- structured outputs enforce schema at token generation: the model cannot generate a JSON response that violates the schema; this eliminates the class of parsing failures caused by LLMs that "almost" follow format instructions
+- for self-hosted models (vLLM, SGLang): use XGrammar or Outlines for grammar-constrained decoding; configure at the serving layer, not in application code
+
+**Schema source-of-truth:**
+- define output schemas with **Pydantic** (Python) or **Zod** (TypeScript) as the canonical definition; generate JSON Schema from these definitions for both provider API calls and runtime validation
+- this ensures the schema used for constrained generation and the schema used for runtime validation are identical and maintained as one artifact
+- use **Instructor** (Python) or **Pydantic-AI** for complex multi-step pipelines that require structured extraction, retry-on-validation-error, and schema versioning
+
+**Double-validation pattern:**
+- even with constrained decoding, apply runtime schema validation on the LLM response before acting on it; provider-level enforcement + runtime validation is defense-in-depth
+- on validation failure: retry with clarification prompt (max 2 retries); after retries exhausted, return structured error to the caller — do not fall back to regex parsing
+- never use regex or string matching to parse LLM responses in production pipelines; this is fragile and creates silent corruption when the model's output format drifts
+
+### A2A Receiver Infrastructure (2025-2026)
+
+Backend services that expose capabilities to AI agents must handle incoming A2A task contracts securely and formally. The A2A protocol (Linux Foundation governed) defines a receiver-side contract that goes beyond standard REST endpoint security:
+
+**Agent Card identity verification:**
+- all incoming A2A task requests must include a verifiable Agent Card; verify the Agent Card signature and fetch the well-known endpoint of the calling agent to confirm identity
+- do not trust agent identity claims in request bodies or headers without cryptographic verification; treat unverified agents as unauthenticated callers
+- maintain an agent allowlist: only agents with verified Agent Cards and pre-established trust relationships can invoke A2A endpoints on production services
+
+**Formal task contract validation:**
+- validate incoming A2A task contracts against the formal schema: **I** (inputs), **O** (expected outputs), **S** (state requirements), **R** (resource access requests), **T** (temporal bounds)
+- reject task contracts that request resources or capabilities not declared in the service's own Agent Card; agents cannot request more than what the service advertises
+- check temporal bounds: reject tasks with "deadline" values that exceed the service's maximum processing time SLA; return a structured capacity error, not a timeout
+
+**Pre-execution Policy Decision Points (PDPs):**
+- before executing any A2A task, evaluate the request against a Policy Decision Point that checks: agent trust score, task sensitivity classification, resource impact, and rate limits
+- high-sensitivity tasks (those touching PII, financial data, or external mutations) require elevated trust score; reject or escalate to HITL if trust threshold is not met
+- log every PDP decision with: agent identity, task ID, trust score, sensitivity class, decision (accept/reject/escalate), and timestamp; this log is required for OWASP ASI and EU AI Act audit compliance
+
+**Event-driven A2A for async tasks:**
+- for long-running tasks (>30s), implement event-driven A2A via message brokers (Kafka, MQTT, Pub/Sub) rather than HTTP long-polling; the caller receives a task ID immediately and subscribes for completion events
+- task progress events must follow the A2A streaming protocol: `task-progress.json` events with "partial_result" and "status" fields; callers can cancel in-flight tasks via the A2A cancel endpoint
+- implement clear error attribution: local failure (service error) vs. upstream agent failure (dependency failed) vs. structural contract violation (malformed task contract) must be distinguishable in error responses
+
+### Durable AI Workflow Design (2025-2026)
+
+Long-running AI agent tasks — those involving multiple LLM calls, external API calls, HITL steps, or complex branching — must not be implemented as stateless HTTP request chains. Durable execution frameworks provide checkpoint-based recovery that stateless services cannot:
+
+**When to use durable execution:**
+- any agent task that may take >30 seconds end-to-end
+- any pipeline with a Human-in-the-Loop (HITL) step where human response time is unbounded
+- any workflow that calls multiple external services where partial failure must be retried independently (not restarted from the beginning)
+- any AI task that spans multiple LLM calls where intermediate results must be preserved across infrastructure restarts
+
+**Cloudflare Workflows (edge-native):**
+- wrap every LLM call and external API call in a `step.do()` with an explicit "retries" policy; failed steps retry independently without restarting the entire workflow
+- up to 50,000 concurrent workflow instances; use for per-user, per-tenant, or per-agent task isolation without coordination overhead
+- **Dynamic Workflows**: Cloudflare supports loading different workflow code per execution (per-tenant/per-agent code loading); use for multi-tenant AI systems where tenant-specific logic must be isolated
+- workflow state is durable in Durable Objects; no in-memory state between steps; steps must be idempotent
+
+**Temporal (complex cross-service orchestration):**
+- define Activities (individual units of work: one LLM call, one API call, one DB write) with explicit retry policies, heartbeat timeouts, and schedule-to-close timeouts
+- Workflow code must be deterministic: do not call `rand()`, `time.Now()`, or make direct API calls inside Workflow functions; all non-determinism goes in Activities
+- use `workflow.GetVersion()` (Go) or `workflow.patched()` (Python/TypeScript) to handle in-flight migration safety when changing workflow logic
+- for AI burst workloads: size worker fleets separately for LLM Activities (long duration, high variance) vs. fast local Activities (millisecond range); mixed queues create starvation
 
 ## Inputs Required
 
@@ -181,6 +267,10 @@ Observability is not a post-shipping concern — it is a development practice. O
 - **OBSERVABILITY LOCK**: do not ship a new integration point, event flow, or migration without OTel spans; observable-by-default is a DoD requirement, not an enhancement backlog item
 - **LLM-INTEGRATION LOCK**: do not call LLMs directly from business logic or endpoint handlers; all LLM interactions must route through the centralized service layer that owns logging, rate limiting, and provider abstraction
 - **PROMPT-INJECTION LOCK**: do not interpolate external content (user input, tool outputs, retrieved data) directly into system instructions or LLM prompts; treat all external content as untrusted data with structural separation
+- **MCP-TOOL-CONTRACT LOCK**: do not rename, remove, or change parameter types in an existing MCP tool version; breaking changes require a new major version (SemVer major bump) with both old and new versions co-existing for the full deprecation window; verify active call telemetry before retiring any tool version
+- **STRUCTURED-OUTPUT LOCK**: do not parse LLM responses with regex or string matching in production pipelines; use provider-level schema enforcement (native Structured Outputs API) or constrained decoding (XGrammar/Outlines for self-hosted); even with constrained generation, apply runtime schema validation as defense-in-depth
+- **A2A-RECEIVER LOCK**: do not accept incoming A2A tasks without Agent Card identity verification and formal task contract validation (I, O, S, R, T); never execute agent-supplied tasks without a pre-execution Policy Decision Point that checks trust score, sensitivity classification, and resource impact
+- **DURABLE-WORKFLOW LOCK**: do not implement long-running AI agent tasks (>30s, involving HITL, or spanning multiple external calls) as stateless HTTP request chains; use Cloudflare Workflows or Temporal with checkpoint-based recovery; every LLM call and external API call must be a retryable Step/Activity
 
 ## Skill Toolbox
 
@@ -200,6 +290,7 @@ Observability is not a post-shipping concern — it is a development practice. O
 - `performance-profiling`
 - `review-code`
 - `agent-delegation`
+- `configure-mcp`
 
 ## Output Template
 
@@ -294,6 +385,36 @@ Observability is not a post-shipping concern — it is a development practice. O
 - dependency hygiene: new dependencies passed security policy (age, maintenance, SBOM impact)
 - LLM integration: centralized service layer used, prompt injection defense applied, outputs validated before use
 
+### MCP Tool Contracts (when MCP tools are created or modified)
+- tool names are stable identifiers; no renames without major version bump
+- input/output schemas defined with JSON Schema (Zod/Pydantic source-of-truth)
+- tool version declared in `tools/list` metadata with SemVer
+- both old and new major versions co-exist for the full deprecation window when making breaking changes
+- tool usage telemetry verified before retiring any version
+- behavioral contracts documented: idempotency, error codes, rate limits
+
+### LLM Structured Outputs (when LLM responses are parsed in pipelines)
+- provider-level structured output enforcement configured (native Structured Outputs API or XGrammar/Outlines for self-hosted)
+- Pydantic/Zod schema used as source-of-truth for both generation constraints and runtime validation
+- double-validation applied: constrained generation + runtime schema validation
+- no regex or string matching for LLM response parsing
+- retry-on-validation-error configured (max 2 retries before returning structured error)
+
+### A2A Receiver (when service accepts incoming A2A tasks)
+- Agent Card identity verification implemented for all incoming A2A callers
+- formal task contract validation: I, O, S, R, T fields validated before execution
+- agent allowlist maintained; unverified agents rejected
+- pre-execution PDP checks trust score, sensitivity, resource impact, and rate limits
+- PDP decisions logged with agent identity, task ID, trust score, sensitivity, decision, and timestamp
+- error attribution distinguishes: local failure vs. upstream agent failure vs. contract violation
+
+### Durable Workflows (when AI agent tasks are long-running)
+- durable execution framework used (CF Workflows or Temporal) for tasks >30s or with HITL steps
+- every LLM call and external API call wrapped in retryable Step/Activity
+- Workflow/Activity code is deterministic (no direct API calls or rand() in Workflow functions for Temporal)
+- in-flight migration safety handled with workflow versioning API
+- step-level observability configured
+
 ### Observability
 - OTel spans added on all new integration points (DB, external API, event publish, async job, cache)
 - span names are intent-driven, not generic HTTP method names
@@ -317,6 +438,10 @@ Observability is not a post-shipping concern — it is a development practice. O
 - **shipping a new integration point without OTel instrumentation** — unobservable integrations become silent failure points in production
 - **calling LLMs directly from business logic** — bypassing the centralized service layer loses logging, rate limiting, cost attribution, and provider abstraction
 - **interpolating external content into LLM system instructions** — the primary vector for prompt injection attacks in backend services
+- **renaming or removing an MCP tool without a major version bump** — callers (LLM orchestrators) have the tool name embedded in routing decisions; silent removal causes agent pipeline failures with no clear error signal
+- **parsing LLM responses with regex in production** — format drift causes silent data corruption; use provider-level Structured Outputs or constrained decoding
+- **accepting A2A tasks without Agent Card verification** — unverified agent identity allows privilege escalation by any system that can reach the A2A endpoint
+- **implementing long-running AI pipelines as stateless HTTP chains** — partial failure requires restarting from scratch, HITL steps cannot be awaited, and infrastructure restarts lose all intermediate state
 
 ## Role Handoff
 
@@ -345,6 +470,10 @@ Observability is not a post-shipping concern — it is a development practice. O
 - **AI-generated code validated**: risk tier assessed, correctness/security/domain/test checklist completed
 - **OTel instrumentation added**: spans on all new integration points with intent-driven names, business attributes, and trace context propagation
 - **LLM integration secured** (when applicable): centralized service layer, prompt injection defense, output validation
+- **MCP Tool contracts** (when MCP tools created/modified): SemVer version declared, JSON Schema source-of-truth, tool usage telemetry, deprecation window for breaking changes
+- **LLM Structured Outputs** (when parsing LLM responses in pipelines): provider-level constrained generation + runtime schema validation; no regex parsing
+- **A2A Receiver** (when accepting A2A tasks): Agent Card verification, formal contract validation, PDP gate, decision audit log
+- **Durable Workflow** (when implementing long-running AI tasks): CF Workflows or Temporal used; every LLM/external call is retryable Step/Activity; workflow versioning strategy defined
 
 
 Last updated: 2026-06-17

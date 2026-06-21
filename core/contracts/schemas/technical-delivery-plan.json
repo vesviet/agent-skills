@@ -88,12 +88,139 @@
               "low_risk"
             ],
             "description": "restricted = no AI autonomy, deep human review mandatory; standard = AI allowed with standard guardrails; low_risk = boilerplate/scaffolding."
+          },
+          "feature_flag_config": {
+            "type": "object",
+            "description": "Required for any user-visible slice to enforce feature flag-first delivery.",
+            "properties": {
+              "flag_name": {
+                "type": "string",
+                "description": "Name of the feature flag (e.g. 'enable-new-cod-routing')."
+              },
+              "kill_switch_config": {
+                "type": "string",
+                "description": "Config key or mechanism to force immediate disablement."
+              },
+              "rollout_plan": {
+                "type": "array",
+                "description": "Ordered phases of rollout.",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "internal",
+                    "canary",
+                    "ga"
+                  ]
+                }
+              },
+              "cleanup_target_date": {
+                "type": "string",
+                "format": "date",
+                "description": "Cleanup deadline in YYYY-MM-DD format."
+              }
+            },
+            "required": [
+              "flag_name",
+              "kill_switch_config",
+              "rollout_plan",
+              "cleanup_target_date"
+            ]
+          },
+          "agent_governance": {
+            "type": "object",
+            "description": "Execution parameters and human-in-the-loop gates for hybrid/agent slices.",
+            "properties": {
+              "compute_budget": {
+                "type": "object",
+                "properties": {
+                  "max_usd": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Max API usage budget in USD."
+                  },
+                  "max_iterations": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Max agentic run loops."
+                  }
+                },
+                "required": [
+                  "max_usd"
+                ]
+              },
+              "hitl_checkpoints": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "trigger": {
+                      "type": "string",
+                      "description": "Condition when agent must pause and await approval (e.g., 'pre-migration-apply', 'post-code-gen')."
+                    },
+                    "verification_required": {
+                      "type": "string",
+                      "description": "Description of what a human reviewer must inspect."
+                    }
+                  },
+                  "required": [
+                    "trigger",
+                    "verification_required"
+                  ]
+                }
+              },
+              "agent_output_gates": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Quality checks that must run and pass (e.g., 'golangci-lint pass', 'go test pass')."
+                }
+              }
+            },
+            "required": [
+              "compute_budget",
+              "hitl_checkpoints",
+              "agent_output_gates"
+            ]
+          },
+          "estimation": {
+            "type": "object",
+            "description": "AI estimation with explicit uncertainty bounds (P10/P50/P90).",
+            "properties": {
+              "confidence_level_percent": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Percentage representing confidence in the estimate."
+              },
+              "optimistic_hours": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Optimistic estimate (P10) - works if everything goes perfectly."
+              },
+              "expected_hours": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Expected estimate (P50) - most likely duration."
+              },
+              "pessimistic_hours": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Pessimistic estimate (P90) - worst-case duration."
+              }
+            },
+            "required": [
+              "confidence_level_percent",
+              "optimistic_hours",
+              "expected_hours",
+              "pessimistic_hours"
+            ]
           }
         },
         "required": [
           "slice_id",
           "description",
-          "owner_role"
+          "owner_role",
+          "estimation"
         ]
       }
     },
@@ -190,31 +317,6 @@
         "trust_zones_defined"
       ]
     },
-    "progressive_delivery": {
-      "type": "object",
-      "description": "Mandatory rollout strategy for slices with non-trivial blast radius.",
-      "properties": {
-        "feature_flags_required": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "List of slice_ids that must be wrapped in a feature flag before deployment."
-        },
-        "canary_target": {
-          "type": "string",
-          "description": "Definition of the initial rollout subset (e.g. 5% traffic, internal users only)."
-        },
-        "rollback_trigger": {
-          "type": "string",
-          "description": "Specific metric signal that initiates an immediate rollback (e.g. 5xx rate > 1%)."
-        },
-        "observability_requirement": {
-          "type": "string",
-          "description": "Metrics, logs, or traces required to be live BEFORE the feature is enabled."
-        }
-      }
-    },
     "debt_governance": {
       "type": "object",
       "description": "Sprint capacity and compliance controls for technical, cognitive, and security debt.",
@@ -272,7 +374,30 @@
           "owner_role": "backend-developer",
           "depends_on": [],
           "output_schema_ref": "contracts/schemas/implementation-result.json",
-          "risk_level": "medium"
+          "risk_level": "medium",
+          "trust_zone": "standard",
+          "agent_governance": {
+            "compute_budget": {
+              "max_usd": 2.50,
+              "max_iterations": 5
+            },
+            "hitl_checkpoints": [
+              {
+                "trigger": "pre-migration-apply",
+                "verification_required": "Verify the SQL migration script for store_id column indices."
+              }
+            ],
+            "agent_output_gates": [
+              "golangci-lint pass",
+              "go test ./... pass"
+            ]
+          },
+          "estimation": {
+            "confidence_level_percent": 90,
+            "optimistic_hours": 1.5,
+            "expected_hours": 3.0,
+            "pessimistic_hours": 6.0
+          }
         },
         {
           "slice_id": "slice-02-unit-tests",
@@ -282,7 +407,24 @@
             "slice-01-command-logic"
           ],
           "output_schema_ref": "contracts/schemas/implementation-result.json",
-          "risk_level": "low"
+          "risk_level": "low",
+          "trust_zone": "standard",
+          "agent_governance": {
+            "compute_budget": {
+              "max_usd": 1.00,
+              "max_iterations": 3
+            },
+            "hitl_checkpoints": [],
+            "agent_output_gates": [
+              "go test ./... pass"
+            ]
+          },
+          "estimation": {
+            "confidence_level_percent": 95,
+            "optimistic_hours": 1.0,
+            "expected_hours": 2.0,
+            "pessimistic_hours": 3.0
+          }
         }
       ],
       "impact_radius": [

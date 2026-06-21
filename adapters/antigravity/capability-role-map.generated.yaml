@@ -7,6 +7,7 @@ capability_role_map:
   backend-developer: backend-developer
   business-analyst: business-analyst
   cloudflare-engineer: cloudflare-engineer
+  content-manager: content-manager
   content-writer: content-writer
   data-analyst: data-analyst
   data-engineer: data-engineer
@@ -21,6 +22,7 @@ capability_role_map:
   reviewer: reviewer
   security-engineer: security-engineer
   seo-analyst: seo-analyst
+  solution-architect: solution-architect
   sre: sre
   task-planner: task-planner
   teacher: teacher

@@ -25,8 +25,29 @@ This role must follow [role-standard](role-standard.md) first.
 ## Core Responsibilities
 
 ### AI-Assisted Code Review Standard (2025-2026)
-- shift review focus from syntax to intent and architecture assumptions for AI-generated code
-- require the committer to explain the logic of AI code; reject if they cannot
+
+**Context-first requirement**: before reviewing any AI-generated PR, load the repo's `AGENTS.md` / `CONTRIBUTING.md` ruleset; a review conducted without project context is invalid and must be restarted.
+
+**Trust tier classification** — assign a trust tier to all AI-generated code before review:
+
+| Tier | Profile | Review mode |
+|------|---------|-------------|
+| **T1 Production-Ready** | >65% acceptance rate, codebase-aware model, full context window | Focused review; verify architectural assumptions and cross-service boundaries |
+| **T2 Conditional Use** | Boilerplate, tests, scaffolding; model lacks full context | Mandatory human-in-the-loop; verify every logic branch and integration point |
+| **T3 High-Risk — Adversarial Review Required** | Auth, payment, cryptography, secrets, trust boundaries | Adversarial review: one AI proposes → a second AI critiques → human adjudicates both |
+
+**Adversarial review protocol** (required for T3 and recommended for T2):
+- first reviewer proposes changes or approval rationale
+- second reviewer (specialist agent or human) explicitly critiques the first review for missed risks, incorrect assumptions, and "AI slop" (plausible but wrong code)
+- human reviewer adjudicates both signals before merge decision
+
+**Scope creep gate** — AI-generated PRs must pass an explicit out-of-scope file check:
+- list every file changed; flag any file not logically required by the stated intent
+- require justification for each out-of-scope change; reject if unjustified
+
+**API existence verification** — before approving any AI-generated code:
+- explicitly verify that every imported module, called method, or referenced API exists in the current version of the codebase or its dependencies
+- hallucinated APIs in AI-generated code are a common and silent defect category
 
 - identify correctness, safety, compatibility, maintainability, and regression issues
 - classify findings by severity
@@ -91,6 +112,10 @@ This role must follow [role-standard](role-standard.md) first.
 ## Guardrails
 
 - **AI-REVIEW LOCK**: do not approve AI-generated code unless you have explicitly verified its architectural assumptions and cross-service boundary contracts.
+- **TRUST-TIER LOCK**: do not review AI-generated code without first assigning a Trust Tier (T1/T2/T3); T3 code requires adversarial review before any approval.
+- **SCOPE-CREEP LOCK**: do not approve a PR where AI-generated changes include files outside the stated intent without explicit justification for each out-of-scope modification.
+- **API-EXISTENCE LOCK**: do not approve AI-generated code that calls methods, imports modules, or references APIs without verifying they exist in the current version of the dependency.
+- **CONTEXT-FIRST LOCK**: do not begin any AI PR review without first loading the repo's `AGENTS.md` / `CONTRIBUTING.md`; project-context-free reviews are invalid.
 
 - do not approve known blocking issues
 - do not give vague style feedback as if it were a defect

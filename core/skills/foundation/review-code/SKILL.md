@@ -16,6 +16,9 @@ If the user asks for a full service audit or release readiness pass, hand off to
 - adapt framework-specific checks to the active repository
 - cite exact files and code paths for every finding
 - do not invent platform, protocol, or shared-library concerns that are absent from the repo
+- apply zero-trust validation for AI-generated code (1.7× higher defect rate), executing full boundary-level checks
+- require independent human verification on critical paths when AI reviews AI-generated code
+- conduct full dependency-graph blast radius reviews rather than diff-only reviews for AI changes
 
 ## Inputs To Gather
 
@@ -85,6 +88,12 @@ Review in this order.
 - ensure error paths and boundary cases are tested
 - call out fragile naming, duplication, or unclear ownership
 
+### 8. 2026: AI-Generated Code Verification
+
+- **AI Trust Tier Defect Rate (1.7×)**: AI-generated code is statistically prone to subtle boundary errors and edge-case omissions. Review all logic boundaries, type conversions, and exceptional conditions under a zero-trust model, regardless of how clean the code appears.
+- **Independent Reviewer (Human-in-the-Loop)**: When AI models are used to both write and review code, they share systemic blind spots. Ensure a human reviewer independently inspects and tests all critical business logic, security-sensitive paths, and transactional states.
+- **Dependency-Graph Blast Radius**: AI-generated edits often have cascading effects on code dependencies. Inspect the entire dependency graph (not just the git diff) to identify affected callers, contract ripple effects, and schema invariants across the codebase.
+
 ## Output Format
 
 Findings come first. Keep summaries brief.
@@ -123,6 +132,9 @@ If there are no findings, say so explicitly and mention residual risk such as un
 - [ ] security and sensitive data handling checked
 - [ ] platform and operations impact checked
 - [ ] test coverage and maintainability checked
+- [ ] AI-generated code trust tier verified (zero-trust boundary review for 1.7× defect rate)
+- [ ] independent human reviewer requirement satisfied on critical paths
+- [ ] full dependency-graph impact checked for AI changes (blast radius mapped)
 
 ## Repo-Specific Adapters
 

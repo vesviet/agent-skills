@@ -17,6 +17,10 @@ Use this skill with the **UI/UX Designer** role when user-facing behavior must b
 - set `flow_id` on every component spec to match the parent flow
 - identify adjacent flows or reused patterns that could be affected
 - do not implement production UI — hand off specs to Frontend Developer
+- apply progressive disclosure to hide secondary options until primary actions are taken
+- design agent UX flows to include delegation confirmations, progress indicators, and recoverable interrupts
+- use Figma variables to prototype dynamic, real-world data states including empty states and error messages
+
 
 ## Deliverable Decision
 
@@ -55,6 +59,24 @@ Document adjacent flows, permissions, analytics_events, and api_needs.
 
 Publish UX handoff manifest (flow path + component paths) for Frontend and QA.
 
+### 2026: Agent UX Flow Patterns
+
+- Design clear confirmation screens when delegating high-impact tasks to background agents.
+- Include persistent progress indicators showing current agent sub-task status and elapsed time.
+- Provide recoverable interrupt states, allowing users to pause, edit context, or stop the agent at any point.
+
+### 2026: Figma Variables for Flow Prototyping
+
+- Use Figma variables to simulate dynamic data inputs and switch between real-data edge cases.
+- Create prototypes representing long names, empty states, and validation error messages before engineering handoff.
+- Link state transitions to interactive component parameters to test UX responsiveness.
+
+### 2026: Progressive Disclosure UX Design
+
+- Keep the initial view clean by showing only the obvious primary action.
+- Disclose advanced options, settings, and complex configuration contextually after the primary action is selected.
+- Avoid cognitive overload by grouping advanced settings into collapsible panels or secondary screens.
+
 ## Output Format
 
 Markdown brief (see `core/roles/ui-ux-designer.md` template) **plus** JSON contracts when machine handoff is required.
@@ -68,6 +90,9 @@ Markdown brief (see `core/roles/ui-ux-designer.md` template) **plus** JSON contr
 - [ ] api_needs and open_questions captured
 - [ ] design system overlay rules respected
 - [ ] handoff manifest complete
+- [ ] agent UX flow patterns (delegation confirmations, progress indicators, cancelability) specified
+- [ ] Figma variables used to prototype dynamic data states (empty states, errors, long values)
+- [ ] progressive disclosure applied to separate primary actions from advanced configuration options
 
 ## Related Skills
 
@@ -77,3 +102,8 @@ Markdown brief (see `core/roles/ui-ux-designer.md` template) **plus** JSON contr
 - **add-ui-component**: Frontend implementation — not design delivery
 - **add-page-route**: Route-level wiring after specs exist
 - **frontend-testing**: QA validation patterns for designed states
+\n### 2026: Agent UX and Prototyping
+
+- **Agent UX flow patterns:** When the agent IS the primary actor (not the user), design for delegation confirmation screens, agent progress indicators, and recoverable interrupt states. Users need to understand what the agent is doing and be able to stop it at any point.
+- **Figma Variables for flow prototyping:** Use Figma Variables (number/string/color types) to simulate dynamic data in prototypes — avoid static placeholder text. Show real-data states (long names, empty states, error messages) in the prototype before implementation.
+- **Progressive disclosure in flow design:** Reveal complexity in stages. The first action should be obvious with no learning curve. Advanced options should appear contextually after the primary action is taken. Apply this pattern for all flows with more than 3 user decisions.\n

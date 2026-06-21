@@ -74,3 +74,7 @@ Use this skill when exposing API capabilities or developer instructions through 
 - **configure-mcp**: Expose model context server capability endpoint — often co-deployed with agent skills manifest.
 - **manage-api-catalog**: Wire up RFC 9727 API catalog linkset — complementary discovery mechanism.
 - **configure-agent-headers**: Expose the well-known agent skills path via HTTP Link headers for passive discovery.
+\n### 2026: Manifest Evolution
+
+- **agentskills.io manifest versioning strategy:** Increment the manifest `version` field on every change to the index. Clients should cache the manifest with `ETag` and `Last-Modified` headers and revalidate before each session. Avoid breaking changes by deprecating skills (set `status: deprecated`) before removing them from the index.
+- **Skill capability schema evolution:** Adding new fields to a skill's capability schema is backward-compatible. Removing or renaming fields is breaking. Use the same Expand-contract migration pattern as API versioning.\n

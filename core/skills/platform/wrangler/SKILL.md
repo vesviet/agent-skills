@@ -45,3 +45,9 @@ Fetch the **latest** information before writing or reviewing Wrangler commands a
 - **workers-best-practices**: Review and implement worker codebase design patterns.
 - **durable-objects**: Configure and deploy Durable Objects class instances.
 - **debug-workers-edge**: Diagnose runtime execution failures.
+\n### 2026: Wrangler v4 Patterns
+
+- **Wrangler v4 default-local mode change:** ALL `wrangler dev` commands now default to local mode in v4. The `--remote` flag is now required to bind against real production resources. Update any existing CI runbooks that assumed `--remote` as default to add the explicit flag.
+- **Framework auto-detection:** `wrangler deploy` in v4 auto-detects Next.js, Astro, Nuxt, and SvelteKit projects. It installs the appropriate adapter and generates a `wrangler.jsonc` file automatically — relevant for non-Cloudflare-native project migrations.
+- **Version-then-Deploy model:** Upload a new code Version independently of traffic (`wrangler versions upload`), then promote it separately (`wrangler deployments create`). This enables rolling updates, instant rollbacks, and canary traffic splits without a full redeploy.
+- **Workers Builds native CI:** Cloudflare's GitHub/GitLab native integration auto-builds and deploys on push. Pin the wrangler version in external CI via the `CLOUDFLARE_API_TOKEN` secret. Set `PAGES_WRANGLER_MAJOR_VERSION=4` for Pages projects.\n

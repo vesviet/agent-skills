@@ -4,7 +4,7 @@
   "name": "ecommerce-engineer",
   "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale.",
   "url": "pack://agent-skills/core/roles/ecommerce-engineer.md",
-  "version": "2.8.0",
+  "version": "2.11.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -108,7 +108,7 @@
     {
       "id": "configure-agent-commerce",
       "name": "Configure Agent Commerce",
-      "description": "Use when implementing agentic commerce standards like x402, MPP, UCP, and ACP for transactional checkout flows in agent-driven applications.",
+      "description": "Implements agentic commerce standards (x402 HTTP payment protocol, MPP, UCP, ACP) to enable transactional checkout flows in agent-driven applications — making a service billiable and discoverable by AI agents. Use when adding agent-to-agent payment, user context resolution, or agentic commerce directory registration to a web service.",
       "tags": [
         "agent",
         "pack"

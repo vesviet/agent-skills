@@ -142,3 +142,7 @@ Next safe action:
 - **agent-handoff**: Produce a concise continuation or completion summary
 - **navigate-service**: Gather codebase context for service work
 - **meeting-review**: Structure multi-perspective decisions
+\n### 2026: Context Window Optimization
+
+- **Position-aware context assembly:** Avoid "lost-in-the-middle" degradation in large-context models. Place the most critical instructions at the beginning AND end of the context window. Use LLMLingua-2 compression for middle-of-context content that must be preserved but can be compressed.
+- **Anthropic/Gemini context caching:** For repeated large system prompts (tools list, documents), use Anthropic's prompt caching or Gemini's `cachedContent` API to reduce TTFT and token costs by 60 to 90 percent.\n

@@ -1,6 +1,6 @@
 {
   "contract_type": "agent-registry",
-  "pack_version": "2.8.0",
+  "pack_version": "2.11.0",
   "protocol_version": "1.0",
   "generated_from": "core/roles",
   "agents": [
@@ -44,7 +44,7 @@
       "role": "content-manager",
       "agent_card": "core/a2a/registry/content-manager.agent-card.json",
       "url": "pack://agent-skills/core/roles/content-manager.md",
-      "description": "định hướng chiến lược nội dung tổng thể của một website — từ xây dựng content pillar architecture, quản lý editorial cal"
+      "description": "định hướng chiến lược nội dung tổng thể của một website — từ xây dựng content pillar architecture, quản lý vòng đời nội "
     },
     {
       "role": "content-writer",
@@ -131,16 +131,16 @@
       "description": "ensure publishable content meets search intent across traditional search, AI Overviews, and answer engines — with defens"
     },
     {
+      "role": "solution-architect",
+      "agent_card": "core/a2a/registry/solution-architect.agent-card.json",
+      "url": "pack://agent-skills/core/roles/solution-architect.md",
+      "description": "translate business goals, stakeholder constraints, and existing capability into a structured solution design that engine"
+    },
+    {
       "role": "sre",
       "agent_card": "core/a2a/registry/sre.agent-card.json",
       "url": "pack://agent-skills/core/roles/sre.md",
       "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2025–2026"
-    },
-    {
-      "role": "solution-architect",
-      "agent_card": "core/a2a/registry/solution-architect.agent-card.json",
-      "url": "pack://agent-skills/core/roles/solution-architect.md",
-      "description": "translate business goals, stakeholder constraints, and existing capability into a structured solution design — making bu"
     },
     {
       "role": "task-planner",

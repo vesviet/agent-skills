@@ -4,7 +4,7 @@
   "name": "seo-analyst",
   "description": "ensure publishable content meets search intent across traditional search, AI Overviews, and answer engines — with defensible keyword strategy, on-page structure, internal linking, structured data specifications, and metadata. Produce briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation. Optimize for discoverability in Google, AI answer engines (Perplexity, ChatGPT/SearchGPT, Bing AI), and generative search surfaces.",
   "url": "pack://agent-skills/core/roles/seo-analyst.md",
-  "version": "2.8.0",
+  "version": "2.11.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

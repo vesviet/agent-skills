@@ -73,6 +73,10 @@ The data engineer owns the data supply chain for AI systems — not the ML team,
 - deduplication: duplicate training examples bias model behavior; implement deduplication as a pipeline step, not a one-time cleanup
 - PII scrubbing: training data must be audited and scrubbed for PII before ingestion into any model training job; document the scrubbing logic as a pipeline step with row-count evidence
 
+**Agent-readable Data Layer (MCP):**
+- expose curated data products not just to BI tools, but directly to autonomous AI Agents via the Model Context Protocol (MCP) or secure Tool APIs
+- build and configure MCP servers (`configure-mcp`) that wrap the data warehouse, allowing agents to query semantic layers without accessing raw databases
+
 ### Data Contracts as Engineering Artifacts (2025-2026)
 
 Informal documentation is not a data contract. In 2026, data contracts are machine-readable, version-controlled, and automatically validated:
@@ -173,6 +177,7 @@ Informal documentation is not a data contract. In 2026, data contracts are machi
 - `security-audit`
 - `add-telemetry-instrumentation`
 - `agent-delegation`
+- `configure-mcp`
 
 ## Output Template
 

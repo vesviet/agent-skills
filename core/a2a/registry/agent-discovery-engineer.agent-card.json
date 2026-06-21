@@ -4,7 +4,7 @@
   "name": "agent-discovery-engineer",
   "description": "Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance across all 19 checks of the Agent Readiness standards (e.g., isitagentready.com). This covers Protocol Discovery, Commerce Standards, Discoverability, and Bot Access Control.",
   "url": "pack://agent-skills/core/roles/agent-discovery-engineer.md",
-  "version": "2.8.0",
+  "version": "2.11.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -46,7 +46,7 @@
     {
       "id": "configure-oauth-metadata",
       "name": "Configure Oauth Metadata",
-      "description": "Use when configuring well-known OAuth and OpenID endpoints, particularly the agent_auth block for agentic registration.",
+      "description": "Configures well-known OAuth 2.0 and OpenID Connect discovery endpoints (`oauth-protected-resource`, `oauth-authorization-server`, `openid-configuration`) including the `agent_auth` block required for agentic registration flows. Use when setting up or correcting OAuth metadata for AI agent authentication, WorkOS agentic registration, or any service that exposes agent-accessible authorization endpoints.",
       "tags": [
         "agent",
         "pack"
@@ -64,7 +64,7 @@
     {
       "id": "debug-workos-integration",
       "name": "Debug Workos Integration",
-      "description": "Use when troubleshooting WorkOS Agentic Registration, Auth.md scanner errors, and SSO/Directory Sync issues.",
+      "description": "Diagnoses and resolves failures reported by WorkOS Agentic Registration scanners, `isitagentready.com`, and SSO/Directory Sync validators — including DNS errors, malformed `agent_auth` schemas, incorrect `auth.md` markers, and non-resolving endpoint URLs. Use when a WorkOS or agentic readiness scanner rejects metadata, returns a 530 error, or reports specific rule violations in OAuth or auth.md configuration.",
       "tags": [
         "agent",
         "pack"
@@ -82,7 +82,7 @@
     {
       "id": "configure-mcp",
       "name": "Configure Mcp",
-      "description": "Use when configuring Model Context Protocol (MCP) servers and WebMCP browser components to make a service natively accessible to AI clients through the standardized MCP discovery stack.",
+      "description": "Sets up the full MCP presence for a web service — server card at `/.well-known/mcp/server-card.json`, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.",
       "tags": [
         "agent",
         "pack"
@@ -100,7 +100,7 @@
     {
       "id": "configure-agent-commerce",
       "name": "Configure Agent Commerce",
-      "description": "Use when implementing agentic commerce standards like x402, MPP, UCP, and ACP for transactional checkout flows in agent-driven applications.",
+      "description": "Implements agentic commerce standards (x402 HTTP payment protocol, MPP, UCP, ACP) to enable transactional checkout flows in agent-driven applications — making a service billiable and discoverable by AI agents. Use when adding agent-to-agent payment, user context resolution, or agentic commerce directory registration to a web service.",
       "tags": [
         "agent",
         "pack"
@@ -118,7 +118,7 @@
     {
       "id": "configure-agent-headers",
       "name": "Configure Agent Headers",
-      "description": "Use when exposing RFC 8288 Link headers and DNS-AID configurations to make a web service natively discoverable by AI agents without requiring a dedicated well-known endpoint scan.",
+      "description": "Exposes well-known agentic endpoints via RFC 8288 HTTP Link headers and optional DNS-AID SVCB records, making a web service natively discoverable by AI agents without requiring dedicated well-known endpoint scans. Use when declaring agent-readiness (MCP server, API catalog, OAuth metadata, agent skills) on a Cloudflare Pages or Workers site without changing application routing.",
       "tags": [
         "agent",
         "pack"
@@ -154,7 +154,7 @@
     {
       "id": "configure-agent-skills",
       "name": "Configure Agent Skills",
-      "description": "Use when creating and managing the agentskills.io manifest index to expose API capabilities for agent capability routing and discovery.",
+      "description": "Creates and manages the agentskills.io manifest index at `/.well-known/agent-skills/index.json`, exposing structured API capabilities for agent orchestrators and capability-routing infrastructure to auto-discover and invoke. Use when registering, updating, or validating the skill manifest after adding or deprecating API endpoints on a service.",
       "tags": [
         "agent",
         "pack"

@@ -202,3 +202,8 @@ describe("MyDO", () => {
 ## Related Skills
 - **wrangler**: Manage deployment environments and bindings.
 - **debug-workers-edge**: Troubleshoot execution at the edge.
+\n### 2026: Durable Objects Enhancements
+
+- **Actor Model Abstraction:** The `@cloudflare/actors` library (mid-2025) provides an official high-level actor-model abstraction over Durable Objects. It offers SQL schema migration helpers, alarm lifecycle management, and storage abstractions. This is now the Cloudflare-recommended approach for complex DOs — prefer this over the raw DO API.
+- **Outbound connection keep-alive (June 2026):** Durable Objects now stay alive for the duration of active outbound connections (up to 15 minutes). This prevents mid-stream eviction during LLM token streaming — a critical pattern for AI agent hosting inside DOs.
+- **SQLite storage:** There is a 10 GB limit per DO instance. Storage billing started January 7 2026. Plan capacity accordingly, and use `VACUUM` to reclaim space after bulk deletes to avoid hitting the storage limit unexpectedly.\n

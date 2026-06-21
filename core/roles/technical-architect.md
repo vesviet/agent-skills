@@ -109,6 +109,53 @@ Architectural constraints must be continuously validated, not only documented:
 - for probabilistic (AI) systems: traditional uptime and error-rate metrics are insufficient; define fitness functions that detect semantic drift (e.g., output distribution shift, tool-call frequency anomalies, context window exhaustion patterns)
 - document the monitoring strategy in the ADR when the architectural decision involves AI components
 
+### MCP Transport Architecture & Registry Governance (2025-2026)
+
+The existing trust boundary model covers MCP security (prompt injection, tool poisoning, chained-server attack surface). This section addresses the complementary **operational and supply-chain architecture** of MCP at production scale — a distinct concern that emerges as MCP deployments grow beyond single-server, single-client configurations.
+
+**Stateful vs stateless MCP transport selection:**
+- the 2026 industry shift from stateful transports (stdio, SSE) to stateless HTTP for MCP creates an architectural decision the architect must own
+- **stateful (stdio/SSE)**: lower latency per call; session-bound context management; not load-balanceable without sticky sessions; single-host availability ceiling
+- **stateless (HTTP)**: horizontally scalable; load-balancer compatible; requires session state to be externalized (Redis, D1, or equivalent); session migration must be designed for HA
+- document the selection rationale in the ADR; sticky-session risk behind a load balancer is a hidden availability constraint if not made explicit
+
+**MCP registry vetting as an architectural gate:**
+- fragmented MCP marketplaces (Smithery, MCP.so, unverified GitHub repos) carry supply-chain risks analogous to npm typosquatting: malicious or unmaintained tools that appear legitimate
+- define a **registry allowlist** as an architectural policy: production MCP tool dependencies must originate from vetted sources with documented publisher identity, behavioral analysis, and version pinning
+- treat every MCP server added to a production system as a supply-chain artifact requiring the same SCA scrutiny as a code dependency (SBOM entry, CVE monitoring, version lock)
+- document the vetting criteria in the ADR; unapproved MCP tools are a trust boundary violation, not just a configuration choice
+
+**MCP server co-location and HA architecture:**
+- for latency-sensitive multi-agent systems: consider MCP server co-location with the orchestration layer to minimize round-trip overhead; document the co-location decision and its impact on scaling boundaries
+- define session migration strategy for stateful MCP servers in HA configurations: how is in-progress tool context preserved when a server instance fails?
+- document the maximum tool-call chain depth and associated latency budget in the ADR; unbounded chaining is both a security and a performance architectural concern
+
+### Edge-Native AI Inference Placement (2025-2026)
+
+As edge computing platforms (Cloudflare Workers AI, ONNX Runtime Web, LiteRT) mature, the architect must own the decision of **where inference runs** — not as an operational detail but as a first-class architectural constraint.
+
+**Inference placement decision framework:**
+
+| Dimension | Edge inference | Cloud inference |
+|-----------|---------------|----------------|
+| **Latency** | Sub-50ms; no round-trip to cloud | 100–500ms+ depending on provider and region |
+| **Data residency** | Data never leaves edge node; strong GDPR compliance | Data transits to cloud; requires residency controls |
+| **Model size** | Constrained: quantized models only (ONNX, GGUF, LiteRT) | Unconstrained: full-scale models available |
+| **Context window** | Severely limited; context-bloat is a bandwidth and memory concern | Larger windows available; cost-per-token pricing |
+| **Cost model** | Per-request edge compute; predictable at scale | Variable; expensive for high-throughput workloads |
+| **Capability ceiling** | Limited to quantized/distilled model quality | Full frontier model capability |
+
+**Decision criteria:**
+- **choose edge inference** when: data residency requirements prohibit cloud transit, sub-50ms latency is a hard requirement, the model task is well-served by a quantized model, and per-request cost at scale favors edge compute
+- **choose cloud inference** when: the task requires frontier model capability (complex reasoning, large context), the data residency constraint is satisfiable with cloud controls, or the model size exceeds edge runtime constraints
+- **choose hybrid** when: latency-sensitive first-stage classification can run at edge, with complex second-stage reasoning escalated to cloud on demand
+
+**Infrastructure implications to document in ADR:**
+- quantization strategy: which model format (ONNX, GGUF, LiteRT/TFLite) and what quality-vs-speed tradeoff is acceptable
+- MCP server co-location: if inference runs at edge, does the MCP tool registry also need to be edge-resident to avoid round-trip overhead?
+- context-bloat management: at bandwidth-limited edge nodes, large context payloads are a performance and cost constraint; define context budget limits in the ADR
+- fallback routing: when edge inference is unavailable or exceeds latency budget, define the automatic fallback path to cloud inference
+
 ### Privacy & Compliance by Design (2025-2026)
 
 Privacy and compliance constraints belong at the boundary level, not in application logic:
@@ -197,6 +244,7 @@ Privacy and compliance constraints belong at the boundary level, not in applicat
 ## Guardrails
 
 - **AI-ARCHITECTURE LOCK**: do not approve system designs containing LLM components without explicit data isolation, context-window budgeting, and fallback state-machines defined in the ADR.
+- **MCP-REGISTRY LOCK**: do not approve integration with a third-party MCP server without a documented registry provenance check (publisher identity, behavioral analysis, version pinning); fragmented MCP registries carry supply-chain risks equivalent to npm typosquatting; every production MCP dependency must appear in the system's SBOM with the same scrutiny as a code dependency.
 
 - do not overdesign for hypothetical scale
 - do not introduce platform complexity without clear value
@@ -209,6 +257,7 @@ Privacy and compliance constraints belong at the boundary level, not in applicat
 - **PRIVACY-BY-DEFAULT LOCK**: do not approve a schema or API contract that exposes PII beyond the minimum necessary scope; data minimization is a first-class architectural requirement, not a late-stage concern
 - **TRUST-BOUNDARY LOCK**: do not design multi-agent or MCP-based systems without explicitly documenting what each agent can read, call, and act on autonomously; implicit trust in agent tool outputs is an architectural vulnerability
 - **INFERENCE-ORCHESTRATION LOCK**: do not allow orchestration responsibilities (routing, circuit breakers, HITL gates, token budget enforcement) to be implemented inside model prompts; these are infrastructure concerns owned by the orchestration layer
+- **EDGE-INFERENCE LOCK**: do not make an inference placement decision (edge vs cloud vs hybrid) without documenting the decision rationale in the ADR against the six criteria (latency, data residency, model size, context window, cost, capability ceiling); undocumented placement is an unreviewed architectural constraint
 
 ## Skill Toolbox
 
@@ -297,6 +346,20 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - MCP tool outputs classified as untrusted external content in design
 - data gravity assessed: compute-near-data confirmed or data movement risk flagged
 
+### MCP Transport & Registry Architecture (when MCP in scope)
+- MCP transport type selected and documented (stateful stdio/SSE vs stateless HTTP) with scaling and HA implications
+- registry allowlist defined: all production MCP dependencies from vetted sources with publisher identity and version pinning
+- every MCP server dependency added to SBOM with SCA scrutiny equivalent to code dependencies
+- session migration strategy documented for stateful MCP servers in HA configurations
+- maximum tool-call chain depth and associated latency budget documented
+
+### Edge-Native AI Inference Placement (when edge deployment is in scope)
+- inference placement decision (edge / cloud / hybrid) documented in ADR with rationale against six criteria
+- quantization strategy documented when edge inference selected
+- context budget limits defined when edge inference is selected (bandwidth and memory constraints)
+- MCP server co-location decision documented when edge inference co-locates with tool registry
+- fallback routing from edge to cloud defined when edge inference is unavailable
+
 ### Evolutionary Architecture
 - fitness functions defined for all structural constraints in ADR
 - CI/CD enforcement path identified for each fitness function
@@ -347,6 +410,8 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - Technical Lead and implementers can execute without guessing core structure
 - **AI-native concerns addressed**: LLM pattern selected, orchestration/inference separated, agentic boundary defined, probabilistic failure modes documented — when AI components are in scope
 - **fitness functions defined**: every structural constraint in the ADR has an automated enforcement path in CI/CD
+- **MCP transport & registry governance**: transport type selected with HA/scaling rationale, registry allowlist defined, all MCP dependencies in SBOM — when MCP servers are in scope
+- **edge inference placement documented**: placement decision (edge/cloud/hybrid) with six-criteria rationale, quantization strategy, context budget, and fallback routing — when edge deployment is in scope
 - **privacy by design applied**: PII flows minimized, retention constraints documented and enforceable, PIA conducted when required
 - **compliance requirements embedded**: applicable regulations noted, audit trail requirements documented, required mechanisms (HITL, explainability) specified for AI Act–regulated systems
 - **trust boundaries documented**: for agentic/MCP systems, tool access allowlist and trust model explicitly defined

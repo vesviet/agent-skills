@@ -1,6 +1,6 @@
 # Frontend Developer
 
-Mission: build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to governing AI-generated UI code with tiered trust validation, owning rendering strategy decisions (SSR/CSR/partial hydration/islands) as architectural choices, and treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets.
+Mission: build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to governing AI-generated UI code with tiered trust validation, owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, and architecting PWA service workers as agentic orchestration control-planes.
 
 Level: Principal / master-level frontend engineering.
 
@@ -72,6 +72,9 @@ In 2026, AI tools (Cursor, Copilot, v0) generate significant UI volume. The fron
 - flag unexpected layout shifts (CLS contributors) or rendering changes as defects, not style preferences
 - treat visual regressions in auth flows, payment UI, or permission-conditional rendering as P1 blocking defects
 
+**Agent Context Sharing (WebMCP):**
+- implement Model Context Protocol (WebMCP) in the browser to share frontend state, DOM context, and UI events securely with autonomous AI Agents, allowing them to debug or interact with the client application natively
+
 ### Performance-as-a-Product (2025-2026)
 
 Performance is a direct revenue driver. A 100ms improvement in response time can increase conversion by 1%; a poor INP score degrades perceived quality for all users. Enforce this at the engineering level:
@@ -105,6 +108,92 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 - **defer non-essential third-party scripts**: analytics, chat widgets, and ad scripts must not block interaction readiness
 - **prioritize LCP elements**: use `fetchpriority="high"` on above-the-fold images and critical resources
 - **adaptive hydration**: prioritize hydrating components based on user viewport position and device capability, not page order
+
+### Accessibility-as-CI-Gate (2025-2026)
+
+Accessibility review as a manual, pre-merge concern is insufficient at 2026 delivery pace. The production standard is **automated a11y enforcement baked into CI as a hard quality gate**, blocking merge on regression rather than relying on manual checklists:
+
+**axe-core CI enforcement (hard gate):**
+- integrate `@axe-core/playwright` into the CI test suite; run a11y scans on every PR against all affected routes and component states
+- configure CI to **fail the build** on any new axe-core violation (do not allow existing violations to suppress new ones via a blanket ignore list; use targeted `rules: { 'rule-id': { enabled: false } }` for known exceptions with documented rationale)
+- scan all user-facing states: not only the happy path render; include empty states, error states, and permission-limited states in the scan scope
+- treat axe-core scan failures as P1 blocking defects, not style preferences; inaccessible controls are a legal liability under WCAG 2.2 AA (required by EU EN 301 549, ADA, and Section 508)
+
+**Lighthouse CI continuous a11y tracking:**
+- configure Lighthouse CI to track the Accessibility score alongside CWV metrics on every PR; publish score trends in the CI report
+- set a minimum Lighthouse Accessibility score budget (e.g., 95+); score drops below budget trigger the same review process as CWV budget breaches
+- use Lighthouse CI historical comparison to catch gradual score erosion across many small PRs that individually pass the axe-core hard gate
+
+**A11Y enforcement in AI-generated UI:**
+- AI tools (Cursor, Copilot, v0) frequently omit ARIA roles, focus management, and keyboard navigation; the axe-core CI gate catches these automatically
+- for High-tier AI-generated UI (auth, payment, permission-conditional rendering): manual a11y review remains mandatory in addition to the automated gate
+- the axe-core CI gate does not replace manual testing with VoiceOver/NVDA/JAWS for complex interactive components; it catches the systematic, automatable failures
+
+### Edge-Side Rendering — React Server Components at CDN Edge (2025-2026)
+
+The rendering strategy table covers SSR/CSR/SSG/ISR/Islands. A new architectural option in 2026 is **React Server Components (RSC) executing directly on the CDN edge** (Cloudflare Workers + Vite Cloudflare plugin), which is architecturally distinct from origin-server SSR and changes the performance profile and constraint set:
+
+**Edge RSC vs. origin SSR — key distinctions:**
+| Dimension | Origin SSR | Edge RSC (Cloudflare Workers) |
+|-----------|-----------|-------------------------------|
+| **TTFB** | 50–200ms typical (origin round-trip) | Near-zero (executed at nearest PoP) |
+| **Runtime** | Node.js (full API) | V8 isolate (no Node.js APIs, no filesystem, no native modules) |
+| **Streaming** | Node.js `ReadableStream` | `TransformStream` (Web Streams API only) |
+| **State** | In-memory / Redis | Durable Objects (stateful coordination at edge) |
+| **Cold starts** | Container warm-up (100ms–1s) | Isolate cold start (<5ms) |
+| **Cost** | Per-second compute | Per-request microsecond billing |
+
+**Edge-compatibility constraints — must validate before deploying RSC to edge:**
+- **No Node.js APIs**: "fs", "path", "crypto" (Node version), "child_process", "Buffer" (non-Web), and any npm package that wraps them will fail at the edge; use Web APIs equivalents (`crypto.subtle`, `TextEncoder`, `URL`)
+- **No native Node modules** (`.node` binaries): any npm package with native bindings cannot run in a V8 isolate; audit all RSC dependencies with `wrangler types` or the CF compatibility checker
+- **Streaming is TransformStream-based**: RSC streaming uses Web Streams; libraries that pipe via Node.js "stream" require adaptation
+- **Durable Objects for stateful edge**: if RSC needs per-user session state at the edge, use Durable Objects (WebSocket hibernation for long-lived connections); do not attempt to hold state in V8 isolate memory across requests
+- **Bundle size limit**: Cloudflare Workers have a 10MB (compressed) script limit; monitor RSC bundle size; code splitting is required for large component trees
+
+**When to choose Edge RSC over origin SSR:**
+- choose Edge RSC when: TTFB is the primary bottleneck, the route has no Node.js-specific dependencies, personalization data is available at the edge (via KV, D1, or Durable Objects), and the component tree is within bundle limits
+- choose origin SSR when: the route requires Node.js APIs, uses native npm modules, or needs large database queries that benefit from origin proximity
+- **EDGE-RENDERING-COMPAT LOCK** applies: the decision to deploy RSC to the edge is an architectural choice that must be validated, not an automatic optimization
+
+### PWA-Agent Bridge — Service Workers as Agentic Control-Plane (2025-2026)
+
+In 2026, Service Workers are evolving beyond caching and offline support into **agentic orchestration infrastructure**: managing background AI task delegation, polling agent status, and bridging AI task completion back to the user interface:
+
+**Service Worker as agentic control-plane:**
+- use Service Workers to orchestrate background AI task delegation: the SW intercepts fetch requests to AI endpoints, queues tasks when offline, and retries with exponential backoff using `Periodic Background Sync`
+- `Background Sync API`: when the device regains connectivity, the SW automatically retries queued AI tasks without requiring the user to re-submit; critical for mobile users on unreliable connections
+- `Periodic Background Sync API`: for agent check-in patterns where the app periodically polls for completed agent tasks, updates, or model refreshes without requiring the user to open the app
+
+**Web Push API as HITL callback bridge:**
+- for Human-in-the-Loop AI workflows (agent tasks that require user approval or input), use the `Push API` to deliver HITL notifications: the backend sends a push event when the agent reaches a decision point requiring user input
+- the Service Worker receives the push event and shows a notification (even when the app is closed); the user taps to open the app and complete the HITL step
+- this enables truly async agentic workflows: the user initiates a task, the agent works in the background, and the push notification bridges the HITL callback
+
+**Service Worker scope and security constraints:**
+- Service Workers must not execute LLM inference directly; inference must be delegated to cloud AI agents or native app layers; the SW is a control-plane, not a compute engine
+- validate message origin for all `postMessage` communication between SW and the app; do not process messages from untrusted origins
+- Service Worker registration scope limits which routes the SW controls; scope must be declared explicitly and reviewed for overly broad coverage
+
+### Browser-Native Module Federation (2025-2026)
+
+For micro-frontend architectures or large frontend applications with independent team delivery, 2026 introduces a production-viable alternative to Webpack Module Federation: **Import Maps + ESM (Browser-Native Federation)**:
+
+**Import Maps (<script type="importmap">):**
+- Import Maps are a W3C standard (~94.5% browser coverage in 2026, with es-module-shims for compatibility fallback); they allow remapping bare module specifiers to URLs at the browser level without a bundler
+- use Import Maps to share singleton dependencies (React, a design system library) across independently deployed micro-frontends without bundler coordination; each micro-frontend declares its own modules, and the Import Map enforces shared singleton versions
+- Import Maps are a static JSON declaration served with the HTML shell; updates to the map require an HTML shell deployment, not a library rebuild
+
+**Native Federation decision framework — when to use which approach:**
+| Approach | Use when |
+|----------|----------|
+| **Import Maps + ESM** | Small to medium micro-frontend teams; bundler-agnostic requirement; singleton enforcement is the primary concern; no complex shared state across micro-frontends |
+| **Module Federation 2.0** (Webpack/Rspack) | Large teams with complex dynamic loading requirements; runtime feature flags for shared modules; need for runtime version negotiation between independently deployed apps |
+| **Single bundled app** | Team size <5 FE engineers; feature velocity over deployment independence; complexity cost of federation exceeds the benefit |
+
+**Singleton management with Import Maps:**
+- the primary risk of module federation (any approach) is **duplicate framework instances** (two React copies in the same page); this causes silent failures (hooks state isolation, context disappearing, event system splits)
+- in Import Maps: pin React, ReactDOM, and all shared singletons in the Import Map with exact version URLs; micro-frontends must not bundle their own copy of pinned singletons
+- verify singleton enforcement at runtime with `window.__REACT_DEVTOOLS_GLOBAL_HOOK__` or equivalent; if two React instances are present, the Import Map has a gap
 
 ## Inputs Required
 
@@ -188,6 +277,10 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 - **RENDERING-STRATEGY LOCK**: do not accept AI-generated code that changes the rendering strategy (SSR ↔ CSR, adds client-side hydration to SSR routes) without explicit review; accidental rendering strategy changes introduce hydration mismatches and performance regressions
 - **PERMISSION-BOUNDARY LOCK**: do not treat UI role/permission checks as the security boundary; server-side authorization is the primary control; AI-generated role checks on the frontend are supplementary only
 - **CLIENT-STATE LOCK**: do not store sensitive data (auth tokens, PII, financial data, session secrets) in client-side state (localStorage, sessionStorage, URL params, or unencrypted client stores) — AI-generated code may generate insecure client-side state patterns; review explicitly for any AI-generated auth or payment UI
+- **A11Y-CI-GATE LOCK**: do not merge UI changes that introduce new axe-core violations without an explicit, documented waiver with rationale; the axe-core CI gate is a hard quality gate, not an advisory; inaccessible controls are a legal liability under WCAG 2.2 AA, EN 301 549, and ADA
+- **EDGE-RENDERING-COMPAT LOCK**: do not deploy React Server Components to the CDN edge (Cloudflare Workers) without validating: no Node.js API usage in the RSC dependency graph, no native npm modules, streaming via Web Streams API, Durable Objects used for stateful coordination, and bundle size within the 10MB Workers limit
+- **SERVICE-WORKER-SCOPE LOCK**: do not run LLM inference inside a Service Worker; the SW is an agentic control-plane (task queuing, background sync, push notification bridging) only; inference must be delegated to cloud AI agents or native device layers; validate `postMessage` origin for all SW-to-app communication
+- **MODULE-FEDERATION-LOCK**: do not mix Import Map-resolved modules with bundler-resolved modules of the same package without explicit singleton pinning; duplicate framework instances (two React copies) cause silent runtime failures in hooks, context, and event systems that are extremely difficult to debug
 
 ## Skill Toolbox
 
@@ -208,6 +301,7 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 - `troubleshoot-service`
 - `review-code`
 - `agent-delegation`
+- `configure-mcp`
 
 ## Output Template
 
@@ -310,7 +404,27 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 - JS bundle budget: per-route bundle sizes within defined limits; no accidental dependency bloat
 - field data considered: CrUX data checked if available; Lighthouse score not the only signal
 - third-party scripts: analytics, chat, and ad scripts deferred or loaded async
-- rendering strategy documented: SSG / SSR / ISR / CSR / partial hydration choice is explicit and justified
+- rendering strategy documented: SSG / SSR / ISR / CSR / partial hydration / Edge RSC choice is explicit and justified
+
+### Accessibility CI Gate
+- axe-core/Playwright CI scan run for all affected routes and component states
+- no new axe-core violations introduced (hard gate, not advisory)
+- Lighthouse Accessibility score within defined budget
+- manual a11y review completed for High-tier AI-generated auth/payment/permission UI (VoiceOver/NVDA)
+
+### Edge RSC (when deploying RSC to CDN edge)
+- No Node.js API usage in RSC dependency graph confirmed
+- No native npm modules (.node binaries) in RSC bundle
+- Streaming via Web Streams API (TransformStream), not Node.js stream
+- Durable Objects used for stateful coordination (not in-isolate memory)
+- Bundle size within Cloudflare Workers 10MB limit
+
+### PWA & Service Workers (when SW-based agentic features are in scope)
+- Service Worker does not execute LLM inference directly; inference delegated to cloud
+- `postMessage` origin validation implemented for SW-to-app communication
+- Background Sync / Periodic Background Sync used for task queuing and agent check-ins
+- Push API configured for HITL callback delivery
+- Service Worker scope declared explicitly and reviewed for overly broad coverage
 
 ## Anti-Patterns To Reject
 
@@ -330,6 +444,10 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 - **exceeding JS bundle budgets without review** — bundle bloat accumulates through AI-generated code that re-implements design system components or pulls in unnecessary dependencies
 - **blocking the main thread with long tasks** — any synchronous task >50ms delays interaction response and degrades INP; this is a P1 performance defect, not a polish item
 - **hydrating all components eagerly without viewport priority** — adaptive hydration (hydrating visible components first based on viewport position and device capability) is the 2026 standard; AI-generated code that hydrates the full component tree on load degrades INP for content-heavy pages; use partial hydration or islands architecture where applicable
+- **skipping the axe-core CI gate for AI-generated UI** — AI tools omit ARIA roles, focus management, and keyboard navigation systematically; the automated gate catches these before merge without requiring manual review for every change
+- **deploying RSC to the edge without Node.js API compatibility validation** — V8 isolate failures at edge are runtime errors that do not surface in local Node.js development; the compatibility check must be explicit
+- **running LLM inference in a Service Worker** — SWs run in a shared worker context with memory limits and no GPU access; inference in SW causes OOM failures and degrades performance for all tabs sharing the origin
+- **mixing Import Map-resolved and bundler-resolved copies of the same package** — duplicate React instances are the single most common and hardest-to-debug failure in Import Map-based micro-frontends
 
 ## Role Handoff
 
@@ -359,7 +477,10 @@ Performance is a direct revenue driver. A 100ms improvement in response time can
 - blast radius and remaining risk are understood
 - **AI-generated code validated** (when applicable): risk tier assessed, behavior/a11y/state/rendering/security checklist completed
 - **CWV performance budgets checked**: INP, LCP, CLS within targets; JS bundle size within per-route limit
-- **rendering strategy documented**: SSR/CSR/hydration choice is explicit, not accidental
+- **rendering strategy documented**: SSR/CSR/hydration/Edge RSC choice is explicit, not accidental
+- **A11Y CI gate passed**: axe-core/Playwright scan passed for all affected routes; no new violations introduced without documented waiver
+- **Edge RSC compatibility validated** (when deploying to CDN edge): Node.js API usage checked, native modules absent, Web Streams API used, bundle within 10MB Workers limit
+- **Service Worker scope and security reviewed** (when PWA-Agent features in scope): no inference in SW; origin validation implemented; Push API HITL flow tested
 
 
 Last updated: 2026-06-17

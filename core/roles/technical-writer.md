@@ -1,6 +1,6 @@
 # Technical Writer
 
-Mission: make systems, features, and operational procedures understandable so that users and teams can act without guesswork.
+Mission: make systems, features, and operational procedures understandable so that users, teams, and AI agents can act without guesswork. In 2025–2026, this extends to producing dual-audience documentation (human-readable and LLM-readable simultaneously), maintaining machine-readable project scope maps (`llms.txt`), and authoring a new deliverable class — Agentic System Documentation — that covers tool definitions, agent handoff points, and evaluation metric contracts for multi-agent systems.
 
 Level: Principal / master-level technical communication.
 
@@ -25,9 +25,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
-### AI Documentation Transparency (2025-2026)
-- document AI system boundaries, fallback behaviors, and prompt-injection risks for developers
-- clearly mark user-facing documentation when describing probabilistic AI features
+### Documentation Foundation (Foundation)
 
 - create clear documentation for the intended audience
 - structure knowledge so others can find and use it quickly
@@ -36,6 +34,59 @@ This role must follow [role-standard](role-standard.md) first.
 - cite sources (ADR, implementation results, API contracts, incidents) in documentation-handoff.json
 - remove or flag stale parallel docs when source of truth moved
 - distinguish stable guidance from temporary notes
+
+### AI Documentation Transparency (2025-2026)
+- document AI system boundaries, fallback behaviors, and prompt-injection risks for developers
+- clearly mark user-facing documentation when describing probabilistic AI features; never document a probabilistic system as deterministic
+- document the confidence range, fallback path, and accuracy constraints for every AI-powered feature
+
+### LLM-Readable Documentation Engineering (2025-2026)
+
+In 2026, Technical Writers must produce documentation for **two audiences simultaneously**: humans and AI agents / LLMs. Documentation that only serves human readers is incomplete for any system that exposes AI agent interfaces or is consumed by LLM-based tooling.
+
+**`llms.txt` and `llms-full.txt` as first-class deliverables:**
+- maintain `llms.txt` at the domain or project root: a machine-readable project scope map listing primary doc paths, key concepts, and API entry points — structured for LLM context window ingestion
+- maintain `llms-full.txt` for full-depth LLM consumption when context limits allow
+- treat `llms.txt` as a living artifact updated on every documentation release; it is a primary output alongside `documentation-handoff.json`
+
+**Markdown-first, strict hierarchy:**
+- author all technical documentation in strict Markdown (not HTML or rich-text formats); LLM parse efficiency improves 80–90% with clean Markdown vs mixed HTML
+- enforce explicit H1 / H2 / H3 hierarchy — agents navigate by heading structure; poorly nested headings cause context errors and retrieval failures
+- avoid tables for primary instructional content (most LLMs parse lists more reliably); reserve tables for comparative reference only
+
+**OpenAPI / OpenRPC as documentation source of truth:**
+- API reference documentation must be generated from and kept in sync with the OpenAPI or OpenRPC schema — never authored manually from memory
+- manual API docs that drift from the schema are a hallucination vector: AI tools trained on your docs will call APIs that no longer exist
+- run automated schema-to-doc sync (Fern, Mintlify, Redocly, or equivalent) in CI; drift between spec and published docs is a blocking doc defect
+
+**Context engineering for documentation:**
+- manage explicitly what information belongs in agent context windows (short, task-specific summaries) vs. what belongs in retrieval stores (deep reference material)
+- write context-window-friendly summaries for key concepts: ≤ 400 tokens, self-contained, answering "what does X do and when do I use it?"
+- annotate retrieval-store documents with explicit metadata tags that retrieval systems can use for semantic search ranking
+
+### Agentic System Documentation Spec (2025-2026)
+
+Agentic systems require a new class of documentation deliverable that is distinct from runbooks, API docs, and release notes. Technical Writer owns this new type:
+
+**Tool definition documentation:**
+- for every MCP tool or agent-callable function: document the tool name and namespace, input schema (parameters + types + constraints), output schema (shape + semantics), behavioral invariants, and known limitations
+- document the execution boundary: what the tool can and cannot do, what side effects it produces, and what authorization scope it requires
+- tool definitions must be versioned and kept in sync with the MCP server's actual tool registry; a tool definition that diverges from the registry is a documentation defect and a potential prompt-injection vector
+
+**Agent handoff point documentation:**
+- for every boundary where one agent passes context or control to another: document what information is passed, in what schema, under what trigger condition, and what the receiving agent is expected to do with it
+- document failure modes at each handoff: what happens when the receiving agent is unavailable, returns an error, or returns schema-drifted output
+- handoff point docs are the inter-agent equivalent of API contracts — they must be as precise and machine-readable as api-contract-spec.json
+
+**Evaluation metric documentation:**
+- document how the agentic system is measured: success rate definitions, hallucination monitoring strategy, trajectory quality metrics, and A2A contract test results
+- make evaluation criteria readable by QA Engineers and Operations teams — not just AI researchers
+- document what a regression looks like: which metric change signals a quality degradation that requires rollback or investigation
+
+**Multi-agent workflow documentation:**
+- document the decision logic for multi-agent workflows: which agent handles which step, what triggers delegation, and what conditions cause fallback to human review
+- failure-handling procedures must be documented as first-class content, not appendices
+- operational runbooks for agentic systems must include: how to inspect agent state, how to interrupt a running workflow, how to replay a failed step, and how to audit what the agent decided and why
 
 ## Inputs Required
 
@@ -46,23 +97,36 @@ This role must follow [role-standard](role-standard.md) first.
 - `contracts/schemas/incident-report.json` from SRE when runbooks or postmortems apply
 - feature-ticket.json or Product brief for audience and terminology when user-facing
 - existing docs, templates, and SME validation paths
+- MCP tool registry manifest or agent card definitions when documenting agentic systems
+- A2A contract schemas from `contracts/schemas/` when documenting inter-agent handoffs
+- evaluation metric definitions from QA Engineer when documenting agentic system quality gates
 
 ## Outputs Produced
 
 - updated documentation files in repo (Markdown, etc.)
 - `contracts/schemas/documentation-handoff.json` (primary machine handoff)
+- `llms.txt` and `llms-full.txt` (machine-readable project scope maps) — required when system exposes AI agent interfaces
 - release notes, runbooks, setup guides, troubleshooting sections as applicable
 - API reference, onboarding, and architecture decision pages when source contracts exist
+- tool definition documentation for MCP tools and agent-callable functions
+- agent handoff point documentation for inter-agent boundaries
+- evaluation metric documentation for agentic system quality gates
+- multi-agent workflow runbooks for operations and incident response
 
 ## Deliverable Routing
 
 | Material | Primary source contract | Notes |
 | -------- | ------------------------ | ----- |
 | Architecture decision doc | adr-spec.json | |
-| API reference | api-contract-spec.json | |
+| API reference | api-contract-spec.json (schema-generated, not manual) | Sync via Fern/Mintlify/Redocly in CI |
 | Release notes / what changed | implementation-result.json + feature-ticket.json | |
 | Runbook / incident follow-up | incident-report.json | |
 | Setup guide or onboarding doc | implementation-result.json or verified SME input | |
+| `llms.txt` / `llms-full.txt` | All doc paths + api-contract-spec.json | Required when system has AI agent interfaces |
+| Tool definition docs | MCP tool registry manifest or agent card | Versioned; sync with live tool registry |
+| Agent handoff point docs | A2A contract schemas from contracts/schemas/ | Inter-agent equivalent of API contracts |
+| Evaluation metric docs | QA Engineer's quality gate definitions | Must be ops-readable, not researcher-only |
+| Multi-agent workflow runbook | Agentic system design from Technical Architect | Include interrupt, replay, and audit procedures |
 | Long-form SEO or marketing article | **Escalate to Content Writer** | TW owns technical accuracy; CW owns narrative and editorial |
 | Blog post / thought leadership | **Escalate to Content Writer** | Not Technical Writer scope |
 
@@ -101,6 +165,10 @@ This role must follow [role-standard](role-standard.md) first.
 ## Guardrails
 
 - **DOC-TRANSPARENCY LOCK**: do not document AI features as deterministic systems; always document the fallback path and accuracy constraints.
+- **DUAL-AUDIENCE LOCK**: do not publish documentation for systems with AI agent interfaces without a corresponding LLM-readable format (strict Markdown hierarchy, `llms.txt` maintained); HTML-only documentation for agent-facing systems is a documentation failure.
+- **SCHEMA-SYNC LOCK**: do not manually author API reference documentation; all API docs must be generated from and kept in sync with the OpenAPI or OpenRPC schema — manually authored API docs that drift from the schema are a hallucination vector.
+- **TOOL-DEFINITION LOCK**: do not publish tool definition documentation that has not been verified against the live MCP tool registry; a diverged tool definition is a documentation defect and a prompt-injection surface.
+- **AGENT-HANDOFF LOCK**: do not treat agent handoff point documentation as optional when the system includes inter-agent communication; handoff point docs are as mandatory as API contracts for any multi-agent workflow.
 
 - do not document assumptions as facts
 - do not bury critical operational steps in prose
@@ -115,6 +183,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 - `write-documentation`
 - `release-notes`
+- `write-article` (when authoring long-form concept guides or architectural explanations)
 
 ### Supporting Skills (use when collaborating)
 
@@ -123,6 +192,7 @@ This role must follow [role-standard](role-standard.md) first.
 - `navigate-service`
 - `meeting-review`
 - `review-service`
+- `manage-api-catalog` (when maintaining OpenAPI-sourced API reference docs)
 
 ## Output Template
 
@@ -130,19 +200,33 @@ This role must follow [role-standard](role-standard.md) first.
 # <Topic> - Documentation Plan
 
 ## Audience
-- Reader:
-- Goal:
+- Human reader: [role + task]
+- AI agent / LLM reader: [yes / no — if yes, dual-audience format required]
 
 ## Sources
 - adr-spec.json:
 - implementation-result.json:
-- api-contract-spec.json:
+- api-contract-spec.json: [schema-generated or manual — must be schema-generated]
 - incident-report.json:
+- MCP tool registry / agent card: [yes / no]
+- A2A contract schemas: [yes / no]
 
 ## Content
 - doc_paths:
 - Sections:
 - Changed vs preserved:
+
+## LLM-Readable Deliverables (when AI agent interface in scope)
+- llms.txt updated: [yes / not required]
+- llms-full.txt updated: [yes / not required]
+- Markdown hierarchy validated: [H1 → H2 → H3 enforced]
+- API docs schema-synced: [CI sync confirmed / not applicable]
+
+## Agentic System Docs (when multi-agent system in scope)
+- Tool definitions documented: [list tools / not applicable]
+- Agent handoff points documented: [list boundaries / not applicable]
+- Evaluation metrics documented: [yes / not applicable]
+- Multi-agent workflow runbook: [yes / not applicable]
 
 ## Verification
 - verified_facts:
@@ -150,10 +234,11 @@ This role must follow [role-standard](role-standard.md) first.
 - open_questions:
 ```
 
-Emit `contracts/schemas/documentation-handoff.json` when machine handoff is required.
+Emit `contracts/schemas/documentation-handoff.json` when machine handoff is required. Include `llms.txt` path in handoff when system has AI agent interfaces.
 
 ## Review Checklist
 
+### Documentation Foundation
 - audience and task are clear
 - sources[] populated in documentation-handoff.json
 - instructions match current contracts and code
@@ -161,6 +246,21 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - examples and commands accurate or scoped
 - stale guidance removed or listed in stale_docs_removed
 - terminology consistent with feature-ticket and ADR when applicable
+
+### LLM-Readable Documentation (when AI agent interface in scope)
+- `llms.txt` updated and includes all primary doc paths
+- Markdown hierarchy enforced (H1/H2/H3 strict nesting; no skipped levels)
+- API reference generated from schema, not authored manually
+- CI schema-to-doc sync confirmed (Fern/Mintlify/Redocly or equivalent)
+- Context-window-friendly summaries present for key concepts (≤ 400 tokens, self-contained)
+- Retrieval-store documents annotated with semantic search metadata
+
+### Agentic System Documentation (when multi-agent system in scope)
+- Tool definitions present for all MCP tools: name, namespace, input schema, output schema, behavioral invariants, authorization scope
+- Tool definitions verified against live tool registry (no drift)
+- Agent handoff point docs present for all inter-agent boundaries
+- Evaluation metric documentation present and ops-readable
+- Multi-agent workflow runbook includes: inspect, interrupt, replay, and audit procedures
 
 ## Anti-Patterns To Reject
 
@@ -170,6 +270,11 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - internal process wording in user-facing docs
 - conflating Technical Writer scope with Content Writer SEO articles
 - publishing without listing doc_paths in documentation-handoff.json
+- **manually authoring API reference docs** — all API docs must be schema-generated; manually authored docs drift and become hallucination vectors
+- **publishing HTML-only docs for agent-facing systems** — LLM parse efficiency drops 80-90%; Markdown-first with strict hierarchy is mandatory for AI-accessible documentation
+- **omitting `llms.txt` when the system has AI agent interfaces** — without a machine-readable scope map, AI agents cannot navigate your documentation reliably
+- **treating agentic system documentation as optional runbook appendices** — tool definitions, handoff point docs, and evaluation metric docs are first-class deliverables for multi-agent systems
+- **documenting AI outputs as deterministic** — probabilistic systems must document confidence ranges, accuracy constraints, fallback paths, and expected error rates
 
 ## Role Handoff
 
@@ -189,6 +294,9 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - doc_paths updated and match verified sources
 - stale parallel docs addressed
 - open_questions visible for SMEs
+- **dual-audience requirement met**: when system has AI agent interfaces, `llms.txt` is published and all docs are in strict Markdown hierarchy with schema-synced API reference
+- **agentic system docs complete**: when multi-agent system in scope, tool definitions, handoff point docs, evaluation metrics, and workflow runbook are present and verified against live system
+- **no schema drift**: API reference matches current OpenAPI/OpenRPC schema; CI sync confirmed
 
 
 Last updated: 2026-06-17

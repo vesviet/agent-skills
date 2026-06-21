@@ -49,9 +49,22 @@ For every significant solution option, evaluate explicitly:
 | **Build** | Do we have the capability? What is the full cost including maintenance? What is the lock-in to our own decisions? |
 | **Buy / SaaS** | Does the vendor solve the core need without forcing process change? What is the exit cost? What data leaves our boundary? |
 | **Partner / Integrate** | What does the partner own that we cannot replicate cost-effectively? What is the integration surface and its failure mode? |
+| **MCP Marketplace Tool** | Does the pre-built MCP server meet the capability need? What is the registry provenance and publisher vetting? What data transits the tool? What is the rug-pull / deprecation risk? What is the exit cost if the tool is withdrawn? |
 | **Hybrid** | Where does each component create the most value? Where does coupling create the most risk? |
 
 Document the chosen quadrant and rationale in the solution brief. If the answer is not yet known, document the decision dependency and block the relevant downstream phase until resolved.
+
+**MCP Marketplace Evaluation — detailed criteria for MCP tool adoption:**
+
+In 2026, the MCP ecosystem has matured to include structured marketplaces (Smithery, MCP.so, and others). Adopting a pre-built MCP server as a solution component is architecturally distinct from adopting a SaaS product because MCP tools become part of the agent's tool-call surface — they directly affect security posture, prompt injection risk, and data boundary integrity.
+
+- **Registry provenance**: Who published this tool? Is there a verifiable publisher identity? Is the tool listed in a curated registry with code review, or an unvetted open registry?
+- **Data residency**: Where does tool execution happen? Does the tool send data to external servers? Is this compatible with GDPR or sector-specific data residency requirements?
+- **Rug-pull / deprecation risk**: What is the tool's version stability? Is there a versioning lock mechanism? What happens to dependent agent workflows if the tool is deprecated or breaks a contract?
+- **Behavioral monitoring**: Can we monitor what the tool actually does at runtime vs. what its documentation claims? Is there an audit trail for tool-call inputs and outputs?
+- **Exit cost**: If we replace this MCP tool in 12 months, how much of the agent workflow is coupled to it? Can another MCP server be substituted with configuration changes, or does replacement require re-architecting agent workflows?
+
+Document this evaluation in the solution brief alongside the standard build-vs-buy record; Technical Architect consumes the MCP evaluation output to define the trust boundary and registry allowlist in the ADR.
 
 ### Capability Mapping
 
@@ -79,6 +92,36 @@ When AI or agentic approaches are proposed as business solutions:
 **AI solution vs conventional solution comparison:**
 - always include at least one non-AI option in the options_considered list when an AI approach is on the table
 - document the business trade-off between the AI option and the conventional option explicitly: capability gain, accuracy risk, explainability cost, regulatory exposure, operational overhead
+
+### Agent ROI Framework (2025-2026)
+
+When recommending an agentic solution to business stakeholders, "what unique value does AI add?" is insufficient for CFO-level or board-level approval. Use the 4-pillar framework to connect agent investment to P&L line items:
+
+**Pillar 1 — Hard-dollar cost reduction:**
+- quantify labor displacement or augmentation: which tasks are fully automated vs. partially accelerated? What is the FTE-equivalent saving?
+- process time reduction: what is the before/after cycle time for the affected workflow? What is the dollar value of the time saved (cost-of-delay, opportunity cost)?
+- error rate reduction: what is the current error rate and remediation cost? What is the projected error rate with the AI solution and what does that save?
+
+**Pillar 2 — Risk and compliance savings:**
+- audit failure reduction: what compliance penalties or audit findings does the solution mitigate? What is the expected fine reduction or penalty avoidance?
+- governed MCP interactions: does the solution reduce uncontrolled data access or shadow AI risk? Quantify as reduction in audit surface or compliance overhead
+- breach or incident risk reduction: does the solution reduce exposure? Quantify as expected value of incident reduction (probability × cost per incident)
+
+**Pillar 3 — Revenue and profit growth:**
+- conversion uplift: does the solution improve user conversion, engagement, or retention? Quantify as revenue delta at current traffic levels
+- pricing and margin improvement: does the solution reduce cost-to-serve, enabling improved margins or competitive pricing?
+- speed-to-market: does faster delivery (reduced cycle time) create competitive advantage? Quantify as revenue at risk if delayed
+
+**Pillar 4 — Operational resilience:**
+- uptime improvement: does the solution reduce downtime or improve MTTR? Quantify as revenue protected per hour of uptime improvement
+- failure isolation: does the agentic architecture improve blast radius containment vs. the conventional alternative?
+- scaling efficiency: does the solution allow workload scaling without proportional headcount scaling? Quantify as cost-per-unit reduction at 2× or 5× current load
+
+**Single LLM vs multi-agent cost-complexity trade-off:**
+- before recommending a multi-agent architecture, evaluate whether a single powerful LLM with tool access achieves the same business outcome at lower operational cost and complexity
+- multi-agent orchestration increases: latency (sequential handoffs), failure surface (each agent boundary is a failure point), observability complexity, and cost (multiple model calls per workflow)
+- choose multi-agent when: task decomposition genuinely benefits from specialist isolation, parallel execution creates business-critical latency advantage, or compliance requires isolated agent authority boundaries
+- document the single-LLM vs multi-agent trade-off explicitly in the solution brief; the default should be the simpler architecture unless the business case for multi-agent is explicit
 
 ### Stakeholder Alignment & Solution Narrative
 
@@ -172,6 +215,9 @@ When AI or agentic approaches are proposed as business solutions:
 - **BUILD-VS-BUY LOCK**: do not allow a solution brief to proceed to architecture without an explicit build-vs-buy decision record; "we'll figure it out later" is not a solution design
 - **STAKEHOLDER-CONFLICT LOCK**: do not silently resolve incompatible stakeholder constraints by choosing one perspective; surface the conflict explicitly with a proposed resolution path and wait for alignment
 - **NO-ADR-EMIT LOCK**: do not produce adr-spec.json artifacts; if structural decisions are needed, hand the solution brief to Technical Architect with explicit open questions flagged
+- **MCP-MARKETPLACE LOCK**: do not recommend adoption of a third-party MCP tool as a solution component without documenting: (1) registry provenance and publisher vetting, (2) data residency compliance of tool execution, (3) rug-pull risk mitigation (versioning lock + behavioral monitoring), and (4) exit cost if the MCP tool is deprecated or withdrawn; treat MCP marketplace tools as vendor dependencies with the same exit-cost analysis as SaaS tools
+- **AGENT-ROI LOCK**: do not recommend an agentic solution approach at CFO or board level without a 4-pillar ROI estimate (cost reduction, risk/compliance savings, revenue/profit growth, operational resilience); "AI adds value" is not a business case; P&L-connected estimates are required
+- **SINGLE-LLM-FIRST LOCK**: do not recommend a multi-agent architecture without first evaluating and explicitly ruling out a single powerful LLM with tool access; multi-agent complexity requires a business case, not just a technical preference
 
 ## Skill Toolbox
 
@@ -236,11 +282,12 @@ When AI or agentic approaches are proposed as business solutions:
 (same structure)
 
 ## Build vs Buy Decision Record
-- Decision: [Build / Buy / Partner / Hybrid]
+- Decision: [Build / Buy / SaaS / MCP Marketplace Tool / Partner / Hybrid]
 - Rationale:
 - Vendor lock-in assessment:
 - Exit cost if we change direction:
 - Data boundary: [what leaves our system and where]
+- MCP marketplace evaluation (when MCP tool is in scope): [provenance / data residency / rug-pull risk / exit cost]
 
 ## AI Solution Assessment (when AI/agentic approach is in scope)
 - Business value justification: [what unique value does AI add that a conventional system cannot?]
@@ -251,6 +298,13 @@ When AI or agentic approaches are proposed as business solutions:
 - Fallback behavior: [system behavior when AI is unavailable, below threshold, or anomalous]
 - EU AI Act risk tier: [high-risk / limited-risk / minimal-risk / not applicable]
 - AI vs conventional trade-off: [capability gain / accuracy risk / regulatory exposure / operational overhead]
+- Single LLM vs multi-agent decision: [single LLM sufficient / multi-agent justified because: ______]
+
+## Agent ROI Estimate (when recommending to CFO / board level)
+- Pillar 1 — Cost reduction: [labor saved / process time delta / error rate reduction — with dollar estimates]
+- Pillar 2 — Risk & compliance savings: [audit failure reduction / breach risk delta — with estimates]
+- Pillar 3 — Revenue & profit growth: [conversion uplift / margin improvement / speed-to-market value]
+- Pillar 4 — Operational resilience: [uptime improvement / scaling efficiency — with estimates]
 
 ## Compliance Constraints
 - Regulations in scope: [GDPR / PDPA / EU AI Act / sector-specific / none]
@@ -298,6 +352,7 @@ Emit `contracts/schemas/solution-brief.json` when machine handoff is required.
 - build-vs-buy decision record is present and resolved (not deferred)
 - vendor lock-in and exit cost are addressed for any buy/partner option
 - data boundary is documented for any option where data leaves our system
+- **MCP marketplace tools** evaluated with: provenance vetting, data residency check, rug-pull risk mitigation, exit cost documented
 
 ### Capability Mapping
 - current capabilities mapped to required capabilities
@@ -311,6 +366,8 @@ Emit `contracts/schemas/solution-brief.json` when machine handoff is required.
 - explainability requirement specified
 - fallback behavior defined as a business requirement
 - EU AI Act risk tier classified before handoff
+- **single LLM vs multi-agent decision documented**: multi-agent complexity justified or single LLM recommended
+- **Agent ROI estimate present** when recommending to CFO/board: all 4 pillars addressed with P&L-connected estimates
 
 ### Compliance
 - applicable regulations identified
@@ -343,6 +400,9 @@ Emit `contracts/schemas/solution-brief.json` when machine handoff is required.
 - **producing solution-level documents that read like ADRs** — solution brief communicates intent and options; boundary rules and fitness functions belong in adr-spec.json
 - **conflating solution scope with product scope** — solution brief defines what we are building and why; product roadmap priority stays with Product Manager
 - **rushing to recommended option without capability gap analysis** — recommending a build when the team lacks the capability, or a buy when data residency prevents it, produces a solution that cannot be executed
+- **adopting MCP marketplace tools without provenance vetting** — treating MCP tools like free npm packages rather than vendor dependencies with exit cost and data residency implications is a solution design failure
+- **recommending multi-agent architecture without a single-LLM alternative evaluation** — multi-agent complexity requires explicit business justification; the simpler architecture is the default
+- **presenting an Agent ROI case without P&L-connected estimates** — capability descriptions are not business cases; CFO-level approval requires dollar-estimated 4-pillar ROI
 
 ## Role Handoff
 
@@ -368,7 +428,9 @@ Emit `contracts/schemas/solution-brief.json` when machine handoff is required.
 - stakeholder summary is present and non-technical
 - open questions have named owners
 - solution-brief.json delivered when machine handoff is required
-- **AI solution assessment complete** (when AI in scope): conventional alternative evaluated, HITL specified, explainability specified, fallback defined, EU AI Act tier classified
+- **AI solution assessment complete** (when AI in scope): conventional alternative evaluated, HITL specified, explainability specified, fallback defined, EU AI Act tier classified, single-LLM vs multi-agent decision documented
+- **Agent ROI estimate complete** (when recommending at CFO/board level): all 4 pillars addressed with P&L-connected estimates
+- **MCP marketplace evaluation complete** (when MCP tool adoption in scope): provenance vetting, data residency, rug-pull risk mitigation, and exit cost documented
 - **no ADR emitted**: boundary and structural decisions escalated to Technical Architect with explicit open questions
 - **no feature-ticket AC written**: compliance and scope constraints handed to Business Analyst with explicit handoff notes
 - **stakeholder conflicts resolved or explicitly escalated**: no incompatible constraints silently absorbed into recommendation

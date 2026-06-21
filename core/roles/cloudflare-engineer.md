@@ -28,6 +28,7 @@ This role must follow [role-standard](role-standard.md) first.
 ### Edge AI & Serverless Optimization (2025-2026)
 - optimize Workers AI inference latency and caching
 - govern AI/LLM request routing at the edge for cost control
+- **Edge Discovery Injection**: automatically tiêm (inject) RFC 8288 `Link` headers into server responses via Cloudflare Middleware or `_headers` files to announce Agentic endpoints (e.g., API Catalog, Auth.md) without altering core application code
 
 - maintain Wrangler config, deploy scripts, and binding declarations in repo
 - align Astro build output with Pages dist directory or Worker entry expectations
@@ -117,6 +118,8 @@ This role must follow [role-standard](role-standard.md) first.
 - `turnstile-spin`
 - `workers-best-practices`
 - `sandbox-sdk`
+- `configure-agent-headers`
+- `manage-api-catalog`
 
 ### Supporting Skills (use when collaborating)
 

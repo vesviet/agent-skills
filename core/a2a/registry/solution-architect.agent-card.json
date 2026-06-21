@@ -2,9 +2,9 @@
   "id": "pack://agent-skills/core/roles/solution-architect",
   "contract_type": "agent-card",
   "name": "solution-architect",
-  "description": "translate business goals, stakeholder constraints, and existing capability into a structured solution design that engineering roles can execute without guessing the intent — making build-vs-buy, platform, integration, and vendor trade-offs explicit before requirements are locked or architecture decisions are made.",
+  "description": "translate business goals, stakeholder constraints, and existing capability into a structured solution design that engineering roles can execute without guessing the intent — making build-vs-buy, platform, integration, and vendor trade-offs explicit before requirements are locked or architecture decisions are made. In 2025–2026, this extends to evaluating AI/agentic solution patterns, assessing feasibility of LLM-augmented workflows as business solutions, and surfacing compliance obligations (EU AI Act, GDPR) as solution-level constraints before engineering commits.",
   "url": "pack://agent-skills/core/roles/solution-architect.md",
-  "version": "2.8.0",
+  "version": "2.11.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -48,7 +48,7 @@
     {
       "id": "conduct-research",
       "name": "Conduct Research",
-      "description": "Run deep, iterative investigation and deliver triangulated, structured findings. Use when domain knowledge, vendor evaluation, or regulatory context must be established before solution options are assessed.",
+      "description": "Execute iterative, deeply-verified research to discover, validate, and synthesize complex information. Use for deep (10+ round) or scoped (3+ round with waiver) investigation before architecture, product, or content decisions. Applies AI-era source discipline (primary source hierarchy, Chain-of-Verification, hallucination mitigation, grounding protocol) and delivers information gain assessment for SEO/content handoffs. Primary skill for the Researcher role.",
       "tags": [
         "foundation",
         "pack"
@@ -68,7 +68,7 @@
     {
       "id": "analyze-business-requirements",
       "name": "Analyze Business Requirements",
-      "description": "Decompose and validate business requirements against stakeholder goals, constraints, and system context. Use when translating business needs into solution constraints and option evaluation criteria.",
+      "description": "Analyze and write business requirements by making actors, business rules, state transitions, exceptions, preserved behavior, and downstream process impact explicit. Use when a feature, policy change, or bug fix needs implementation-ready requirements and testable acceptance criteria.",
       "tags": [
         "foundation",
         "pack"
@@ -88,7 +88,7 @@
     {
       "id": "write-tech-radar",
       "name": "Write Tech Radar",
-      "description": "Draft or update a technology radar entry by summarizing context, trade-offs, recommendation, and adoption guidance. Use when documenting build-vs-buy decisions or platform evaluations.",
+      "description": "Draft or update a technology radar entry by summarizing context, trade-offs, recommendation, and adoption guidance in a concise decision-oriented format. Use when documenting technology choices, trials, or directional guidance.",
       "tags": [
         "documentation",
         "pack"
@@ -108,7 +108,7 @@
     {
       "id": "meeting-review",
       "name": "Meeting Review",
-      "description": "Run a structured multi-perspective review producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions.",
+      "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.",
       "tags": [
         "foundation",
         "pack"

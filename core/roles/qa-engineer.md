@@ -60,9 +60,21 @@ When the change involves LLM pipelines, AI agents, or AI-generated outputs, dete
 
 **Trajectory evaluation for agentic workflows:**
 - for multi-step agent workflows: evaluate the **reasoning process (trajectory)** alongside the final output — a correct answer produced by flawed reasoning is untrustworthy
-- validate at each level: unit (individual tools in isolation), integration (tool-call sequences), end-to-end (full workflow against golden scenarios)
+- validate at each level: unit (individual tools in isolation), **A2A contract** (inter-agent schema boundaries), integration (tool-call sequences), end-to-end (full workflow against golden scenarios)
 - validate tool-call accuracy: correct parameters, correct tool selection, no unauthorized tool chaining
 - test intermediate outputs explicitly: a hallucination at step 2 can cascade to a catastrophic failure at step 8
+
+**A2A Inter-Agent Contract Testing** — a named test layer between integration and E2E:
+- treat every agent-to-agent boundary as a consumer/producer contract (analogous to Pact tests for APIs)
+- each contract specifies: expected input schema, expected output schema, behavioral invariants, and error envelope
+- run contract tests in CI whenever any agent's output schema changes; a schema change that breaks a downstream agent is a blocking defect
+- use `contracts/schemas/` as the source of truth for A2A contracts; drift between the schema file and actual agent output must be detected automatically
+
+**MCP Tool Schema Drift Detection** — a named test type for MCP-integrated systems:
+- detect when an upstream MCP tool's schema changes without notification (silent schema drift is a prompt-injection vector)
+- pin expected tool schemas at integration time; run a schema diff in CI against the live tool registry
+- flag any upstream schema change as a blocking gate requiring explicit re-validation of the affected agent workflows
+- validate registry-level tool permissions: ensure agents cannot discover or chain tools outside their authorized registry scope
 
 **AI-specific failure modes to always test:**
 - **hallucination cascade**: verify that intermediate step errors are caught before they propagate through the pipeline
@@ -174,9 +186,12 @@ Accessibility is a first-class quality and legal requirement — not a post-laun
   - caching/search: validate invalidation/indexing and stale-read behavior where it matters
 - **AI-SYSTEM LOCK**: do not use exact-match assertions to validate LLM or agent outputs; exact-match tests create false confidence and brittle suites for non-deterministic systems
 - **TRAJECTORY LOCK**: do not evaluate agentic workflows only by final output; validate intermediate steps and reasoning trajectory — a correct final answer from a hallucinating intermediate step is an unvalidated system
+- **A2A-CONTRACT LOCK**: do not ship a change that modifies any agent output schema without running A2A contract tests against all downstream agent consumers; schema drift is a silent breaking change
+- **MCP-SCHEMA-DRIFT LOCK**: do not treat an MCP-integrated workflow as validated if upstream tool schemas have not been pinned and diff-checked; undetected schema drift is a prompt-injection surface
 - **CHAOS-GATE LOCK**: do not declare resilience validated without at least one controlled fault injection experiment for high-risk changes; "it hasn't failed yet" is not evidence of resilience
 - **ACCESSIBILITY LOCK**: do not declare UI changes accessible based on automated scan results alone; keyboard navigation and screen reader walkthroughs of critical flows are required for WCAG 2.2 compliance claims
 - **GOLDEN-DATASET LOCK**: do not use an LLM-as-Judge for deployment gating until it has been calibrated against human-annotated benchmarks; an uncalibrated judge produces false confidence
+- **COMPLIANCE-GATE LOCK**: do not ship AI features subject to EU AI Act high-risk classification or NIST AI RMF requirements without binary CI gate confirmation; compliance validation is a pre-deploy gate, not a post-deploy audit
 
 ## Skill Toolbox
 

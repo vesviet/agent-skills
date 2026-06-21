@@ -97,6 +97,48 @@ For any slice with non-trivial blast radius, define in the delivery plan:
 - track transitive dependency vulnerabilities as security debt items in the register, not just direct dependencies
 - AI-generated code may reference non-existent packages (hallucinated names) — validate all AI-introduced imports against verified package registries before merge
 
+### Agentic Engineering Team Model (2025-2026)
+
+As development teams adopt autonomous coding agents (GitHub Copilot Workspace, Claude Code, Cursor Agent, etc.) for multi-step task completion, the Technical Lead's role evolves from *reviewing AI-assisted commits* to *governing agent task execution*.
+
+**Agent task scope definition:**
+- define explicit scope boundaries for any autonomous coding agent task before it begins: what files it may modify, what external systems it may call, and what architectural constraints apply
+- a valid agent task must have: (1) a single logical slice boundary, (2) an explicit output schema or acceptance criteria, (3) a defined validation gate before the output enters human review
+- agent tasks that span more than one logical slice boundary require human checkpoints between slices; unbounded multi-slice agent tasks are governance failures regardless of final output quality
+- context injection quality is a TL responsibility: agents produce better-scoped output when injected with ADR constraints, trust zone definitions, and AGENTS.md guardrails at task initialization — poor context injection is a TL-owned quality gap
+
+**Comprehension debt governance:**
+- when a team ships code that developers cannot explain (because an agent wrote a full feature without full comprehension), this creates **comprehension debt** — a high-severity variant of intent debt
+- log comprehension debt items in the Debt Register with: the agent task ID, the scope of unexplained code, the business risk if the code has a latent defect, and the scheduled comprehension review
+- do not allow comprehension debt items to accumulate across more than two sprints; unexplained code in production is a latent incident waiting to surface
+- comprehension debt in Restricted zones (auth, payment, security) is P0 and must be resolved before the next sprint begins
+
+**Human checkpoint policy for agent tasks:**
+- define in the delivery plan which agent tasks require mid-task human review vs. end-of-task review
+- **Restricted zone** agent tasks: human review at each logical boundary, not only at completion
+- **Standard zone** agent tasks: end-of-task review with intent + assumption validation
+- **Low-risk zone** agent tasks: standard code review gate with no additional checkpoint requirement
+- agent tasks that fail their validation gate must be explicitly triaged: rework, decompose, or escalate — not silently re-run
+
+### Shadow AI Governance & Tool Inventory (2025-2026)
+
+Research consistently shows 90%+ of developers use AI coding tools — approved or not. Without a governance layer, organizations have no audit trail for the provenance of AI-generated code and no mechanism to enforce consistency of AI coding standards across the team. Technical Lead owns this governance.
+
+**AI tool inventory:**
+- maintain a team-level **Approved AI Tool List**: tools that have been evaluated for security posture, data handling, and code quality alignment with team standards
+- new AI tools must pass an evaluation before use on production codebases: What data does it send to external servers? What are its known failure modes? How does it handle Restricted-zone code?
+- publish the Approved AI Tool List to the team; define a clear process for requesting addition of a new tool
+
+**Shadow AI detection:**
+- treat unapproved AI tool usage as equivalent to using an unapproved third-party service: a security and auditability concern, not a personal preference
+- define signals that indicate Shadow AI usage: commits with patterns not consistent with the team's approved tools, code style anomalies, imports from non-existent packages (hallucinated names from tools with weaker guardrails)
+- address Shadow AI use through process improvement (make approved tools easier to use) before escalating to enforcement; the goal is safety and auditability, not restriction
+
+**Centralized AI usage audit logging:**
+- for high-security or regulated environments: require AI tool usage to be logged at the team or org level; audit logs should capture: tool used, timestamp, which codebase area was modified, and which developer
+- audit logs for AI-generated code in Restricted zones are a compliance artifact; they must be retained with the same policy as access logs
+- review AI usage patterns in retrospectives: are team members using AI in Restricted zones without declaring it? Is the comprehension debt rate increasing? Is the hallucinated import rate increasing?
+
 ### Release Readiness Standard (2025-2026)
 
 **Definition of Ready (DoR)** — a slice must not enter implementation without:
@@ -208,6 +250,9 @@ A slice that fails DoR must be returned to the owning role for clarification bef
 - **OBSERVABILITY-FIRST LOCK**: do not declare a slice release-ready if observability (metrics, alerts) is not live before the feature is enabled; instrument first, release second
 - **SBOM/SCA LOCK**: do not merge slices with new or updated dependencies without SCA clearance; flag new critical/high CVEs as blocking; validate AI-introduced imports against verified registries
 - **BLAME LOCK**: do not conduct incident retrospectives that name individuals as root cause; the root cause is always a systemic gap in process, tooling, review depth, or guardrails
+- **AGENT-SCOPE LOCK**: do not approve an autonomous coding agent task that spans more than one logical slice boundary without defined human checkpoints between slices; agent tasks must have explicitly scoped context, output schema, and a validation gate before output enters the code review pipeline; unbounded agent tasks in Restricted or Standard zones are governance failures
+- **COMPREHENSION-DEBT LOCK**: do not allow comprehension debt items (AI-generated code the team cannot explain) to remain unresolved in Restricted zones beyond the current sprint; log all comprehension debt in the Debt Register and schedule resolution within two sprints maximum
+- **SHADOW-AI LOCK**: do not treat unapproved AI tool usage as a personal preference; any AI tool operating on production codebase that is not on the Approved AI Tool List is a security and auditability concern requiring explicit evaluation and approval
 
 ## Skill Toolbox
 
@@ -291,6 +336,15 @@ Emit `contracts/schemas/technical-delivery-plan.json` when machine handoff is re
 - SAST/SCA automated guardrails specified for AI-contributed code
 - AI-introduced imports validated against verified package registries (hallucinated packages)
 
+### Agentic Engineering Governance
+- every autonomous coding agent task has: single-slice scope boundary, explicit output schema or AC, and defined validation gate
+- multi-slice agent tasks have documented human checkpoints between boundaries
+- context injection quality reviewed: agent tasks initialized with ADR constraints, trust zone definitions, and AGENTS.md guardrails
+- Approved AI Tool List is current and published to team; any new tool has passed evaluation
+- Shadow AI signals reviewed: imports from unrecognized packages, code style anomalies inconsistent with approved tooling
+- Comprehension debt items logged in Debt Register: Restricted-zone items resolved within current sprint; others within two sprints
+- Regulated/high-security environments: AI usage audit logging in place for Restricted-zone modifications
+
 ### Progressive Delivery
 - non-trivial blast-radius slices have feature flag defined
 - canary target, rollback trigger, and observability requirement documented
@@ -360,6 +414,7 @@ Emit `contracts/schemas/technical-delivery-plan.json` when machine handoff is re
 - **Debt Register updated**: new technical, cognitive, and intent debt items logged; sprint debt-servicing allocation documented
 - **SBOM/SCA clean or exceptions documented** for all new or updated dependencies
 - **blameless retrospective complete** when delivery included a production incident
+- **agentic engineering governance in place**: Approved AI Tool List current, all agent tasks have scoped context + output schema + validation gate, comprehension debt items logged and scheduled
 
 
 Last updated: 2026-06-17

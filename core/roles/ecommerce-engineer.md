@@ -29,6 +29,7 @@ This role must follow [role-standard](role-standard.md) first.
 ### AI Commerce & Personalization (2025-2026)
 - implement AI-driven product recommendations and semantic search (vector search)
 - validate generative UI components for dynamic pricing and offers
+- **Agentic Commerce Protocol (ACP)**: implement HTTP x402 payment protocols allowing autonomous AI Agents to discover, negotiate, and checkout on behalf of users
 
 ### Product Catalog & Inventory
 

@@ -62,6 +62,11 @@ When AI/LLM features or agentic capabilities are in scope, PM owns the following
 - **HITL (Human-in-the-Loop) mandate**: for high-stakes decisions (financial, hiring, medical, legal, access control) — AI must be the assistant, not the autonomous decision-maker; human confirmation path is a product requirement, not a tech nicety
 - **User trust as a metric**: track trust deficits (unexpected AI behavior, unexplained overrides, opaque outputs) as product incidents with the same urgency as functional bugs
 
+**Agent-to-Agent (A2A) UX & Commerce:**
+- **Agentic Interfaces**: design product capabilities not just for human screens, but for autonomous AI agents (e.g., exposing APIs, structuring documentation, managing agent skills via `configure-agent-skills`)
+- **Agentic Monetization**: identify opportunities for Agent-to-Agent commerce where external AI assistants can purchase or consume internal services on behalf of users, utilizing standardized protocols (`configure-agent-commerce`)
+- **Human Handoff**: clearly design the UX boundary where an Agent pauses execution to request user confirmation or payment approval
+
 ### Hypothesis-Driven Discovery (2025-2026)
 
 In 2026, AI-accelerated development makes building faster than ever; the primary product risk has shifted from "can we build it?" to **"should we build it?"** PM owns the learning system:
@@ -184,6 +189,8 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 - `navigate-service`
 - `write-tech-radar`
 - `review-service`
+- `configure-agent-commerce`
+- `configure-agent-skills`
 
 ## Output Template
 
