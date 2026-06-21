@@ -2,6 +2,15 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [3.0.0] - 2026-06-22
+
+### Changed
+- **Major 2026 Standards Upgrade:** Upgraded all 85 skills across 9 clusters (Agent, Backend, Commerce, Documentation, Education, Foundation, Frontend, Platform, Security-Data) to 2026 industry standards.
+- **Roles Upgrade:** Upgraded all 31 Agent Roles (Tech Lead, Tech Architect, Frontend Developer, UI/UX Designer, etc.) with new 2026 guardrails (e.g., `AI-PAIR-GOVERNANCE`, `AGENT-UX-LOCK`, `ZERO-TRUST-A2A`).
+- **A2A Security:** Introduced strict Zero-Trust A2A communication rules and Confused Deputy Prevention (OWASP ASI03) to delegation skills.
+- **Platform Enhancements:** Added support for Wrangler v4, Cloudflare Remote Bindings, and Durable Objects Actor Model patterns.
+- **Data & Security:** Upgraded pgvector index maintenance (`CONCURRENTLY`) for Postgres 17 and added K8s debugging tools.
+
 ## [2.11.0] - 2026-06-17
 
 ### Added
