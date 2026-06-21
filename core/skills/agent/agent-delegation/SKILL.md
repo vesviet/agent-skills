@@ -15,6 +15,10 @@ Use this skill when a task should be broken into scoped sub-tasks and assigned t
 - failed delegations trigger retry with clarified input, escalation, or explicit failure — never silent acceptance
 - track token usage and model used for every delegation for cost observability
 - respect the risk tier: vibe tasks need minimal oversight, engineering tasks need full validation
+- prevent Confused Deputy vulnerabilities (OWASP ASI03) by ensuring delegators never delegate or grant permissions beyond their own authorization scope, and validate scope constraints at handoff
+- issue only task-scoped, time-bound credentials for each delegation leg instead of using persistent shared tokens
+- mitigate transitive trust exploitation in multi-hop delegations by cryptographically verifying the authorization chain (A→B→C) at every hop
+- enforce Zero-Trust inter-agent communication by requiring every single request to be independently authenticated and authorized
 
 ## Key Concepts
 
@@ -90,6 +94,15 @@ If the artifact status is `failed`, `blocked`, or `partial`:
 - decide: retry with clarified input, escalate to a different role, or accept partial results with documented risk
 - never silently accept a failed delegation
 
+### 6. 2026: Secure Inter-Agent Delegation
+
+To satisfy the 2026 security requirements:
+
+- **Confused Deputy Prevention**: Before dispatching a task, verify that the required permissions and data scopes do not exceed what the delegator currently holds. The receiving agent must perform scope-validation on the task payload during the handoff phase.
+- **Task-Scoped Credentials**: Generate a unique, short-lived cryptographic credential for the specific delegation leg. Avoid reusing authorization keys or sharing persistent tokens.
+- **Transitive Trust Chain Verification**: When an agent delegates a task that was itself delegated (multi-hop delegation, e.g., A→B→C), package a verifiable delegation chain. The final worker must validate the signatures and scopes of all preceding agents in the path.
+- **Zero-Trust Communication**: Treat every interaction as untrusted. Authenticate and authorize every API call, status poll, or streaming update message independently.
+
 ## Output Schema
 
 Use: `contracts/schemas/a2a-task.json` (outgoing) and `contracts/schemas/a2a-artifact.json` (incoming)
@@ -106,6 +119,10 @@ Use: `contracts/schemas/a2a-task.json` (outgoing) and `contracts/schemas/a2a-art
 - [ ] success criteria verified against evidence
 - [ ] failures handled explicitly (retry, escalate, or document risk)
 - [ ] token usage and model recorded for cost tracking
+- [ ] delegation scope validated to prevent granting permissions exceeding delegator limits (Confused Deputy prevention)
+- [ ] task-scoped, time-bound credentials generated for the delegation leg (no persistent shared tokens)
+- [ ] transitive trust chain (multi-hop path validation) verified for all sub-delegations
+- [ ] zero-trust inter-agent communication parameters configured and authenticated
 
 ## Related Skills
 

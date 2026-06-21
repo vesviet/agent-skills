@@ -14,6 +14,9 @@ Use this skill when a task requires connecting an application to a payment provi
 - handle idempotency keys for all charge/capture operations to prevent double-billing
 - validate webhook signatures before processing any inbound event
 - store only tokenized references (e.g., `customer_id`, `payment_method_id`) — never raw payment credentials
+- prefer dynamic payment methods (e.g., the "automatic_payment_methods" options in Stripe) to configure payment methods dynamically from the gateway dashboard instead of static backend arrays
+- support programmatic Machine Payments Protocol (MPP) and HTTP 402 Payment Required challenges for autonomous agent checkout flows
+- handle asynchronous clearing states explicitly for slow-settling Account-to-Account (A2A) and bank transfer transactions via webhook events
 
 ## Suggested Process
 
@@ -48,6 +51,25 @@ Answer before building:
 - implement retry logic with exponential backoff for transient network errors only — never retry a charge without user intent
 - log payment events with metadata only (order_id, status, provider_event_id) — zero card data
 
+### 2026: Modern Payment Paradigms
+
+#### Stripe Dynamic Payment Methods
+- Configure "automatic_payment_methods" with enabled set to true when creating the payment intent. Avoid passing hardcoded lists of payment method types in the backend request.
+- This allows the payment elements UI to render and prioritize available payment methods (cards, BNPL, bank transfers) dynamically based on client location, currency, and dashboard settings.
+
+#### Buy Now Pay Later (BNPL) messaging
+- Integrate BNPL messaging elements (e.g., "stripe-payment-method-messaging" or equivalent provider widget) early in the purchase funnel, such as on the product detail and cart pages.
+- Pass the item price, currency, and consumer country dynamically to the element to display accurate Klarna/Affirm payment split calculations (e.g., "4 payments of $25").
+
+#### Account-to-Account (A2A) Pay by Bank
+- Use bank-to-bank direct rails (such as TrueLayer, Plaid, or Stripe Pay by Bank) to lower card processing fees.
+- Account for slow-settling transactions by managing intermediate status webhooks (e.g., "processing", "pending", and "settled") in the database state machine. Keep order state as payment pending and lock inventory with a TTL while waiting for bank settlement.
+
+#### Programmatic Agent Payments (x402 / MPP)
+- For machine-to-machine or autonomous AI agent checkouts, avoid interactive frontend redirects.
+- Respond to unauthorized agent requests with an HTTP 402 Payment Required status code, accompanied by payment headers containing the payment link, provider details, or link headers.
+- Support programmatic card and A2A billing via Stripe Machine Payments Protocol (MPP) or SetupIntents configured with "setup_future_usage" set to "off_session" to charge stored methods programmatically.
+
 ### 5. Test and Validate
 
 - run against provider sandbox with documented test card numbers
@@ -66,6 +88,10 @@ Answer before building:
 - [ ] no card numbers, CVV, or PAN in logs or API responses
 - [ ] sandbox tested end-to-end including failure cases
 - [ ] webhook replay tested for idempotency
+- [ ] dynamic payment methods enabled ("automatic_payment_methods" set to true)
+- [ ] BNPL promotional messaging elements integrated on product detail and cart pages
+- [ ] A2A bank settlement flow webhook states handled dynamically with inventory TTL locks
+- [ ] HTTP 402/MPP programmatic checkout path supported and tested for non-interactive agent payments
 
 ## Related Skills
 
@@ -74,3 +100,4 @@ Answer before building:
 - **manage-secrets**: Rotate or audit gateway API keys
 - **security-audit**: Review payment integration for PCI exposure
 - **add-api-endpoint**: Scaffold the payment and webhook controller endpoints
+- **configure-agent-commerce**: Implement x402 HTTP billing, MPP endpoints, and agent commerce registration

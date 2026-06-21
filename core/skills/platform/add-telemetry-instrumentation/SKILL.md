@@ -14,6 +14,10 @@ Use this skill when code changes need matching observability so operators can un
 - keep telemetry names, labels, and dimensions stable enough for dashboards and alerts
 - avoid high-cardinality labels unless the repo explicitly supports them
 - never log secrets, credentials, tokens, or unnecessary sensitive data
+- use stable OpenTelemetry GenAI conventions (opt in via `OTEL_SEMCONV_STABILITY_OPT_IN`) for LLM/agent tracking
+- design hierarchical trace spans using `create_agent` operation types and step attributes for agent reasoning
+- configure Cloudflare Workers native observability using the `observability` block in `wrangler.jsonc` and OTLP push
+- capture GPU infrastructure metrics prefixed with `hw.gpu.*` via OTel Collector and DCGM exporter integration
 
 ## Suggested Process
 
@@ -53,6 +57,46 @@ Verify that the telemetry can support dashboards, alerts, incident triage, and r
 
 Confirm that logs, metrics labels, and trace attributes do not expose secrets, credentials, tokens, or unnecessary personal data.
 
+### 2026: OpenTelemetry GenAI Semantic Conventions
+
+When instrumenting Generative AI and Large Language Model (LLM) operations:
+- Opt into stable OpenTelemetry semantic conventions by setting the environment variable `OTEL_SEMCONV_STABILITY_OPT_IN` to enable standardized trace/metric formats.
+- Trace and standardize LLM requests using the following specific attributes:
+  - `gen_ai.system`: Standardized name of the model provider (e.g., `openai`, `anthropic`, `vertex_ai`).
+  - `gen_ai.request.model`: The specific model name requested (e.g., `gpt-4o`, `claude-3-5-sonnet`).
+  - `gen_ai.usage.input_tokens`: The count of input/prompt tokens.
+  - `session.id`: Correlation ID mapping LLM calls to a specific user session or agent workflow instance.
+
+### 2026: Agent Reasoning Trace Spans
+
+To visualize and debug complex multi-step agent reasoning chains:
+- Initiate agent execution using a root span with operation type `create_agent`.
+- Structure intermediate steps, tool calls, and planning actions as hierarchical child spans nested under the root agent span.
+- Enrich every agent span with the following semantic attributes:
+  - `agent.name`: Name or role of the agent executing the work (e.g., `orchestrator`, `explorer`).
+  - `agent.step_type`: The type of action or step being run (e.g., `reasoning`, `tool_call`, `planning`, `compaction`).
+
+### 2026: Cloudflare Workers OpenTelemetry Configuration
+
+For edge deployments utilizing Cloudflare Workers:
+- Enable native Cloudflare observability by adding the `observability` configuration block to `wrangler.jsonc` (or `wrangler.toml`):
+  ```jsonc
+  {
+    "observability": {
+      "enabled": true,
+      "head_sampling_rate": 1.0
+    }
+  }
+  ```
+- For external trace shipping, configure direct OTLP push over HTTP/HTTPS (using libraries like `@microlabs/otel-cf-workers` or custom exporters) to export telemetry payload directly to downstream collector backends (e.g., Honeycomb, Datadog).
+
+### 2026: GPU Metrics Collection
+
+For model inference and GPU-accelerated computing nodes:
+- Expose GPU hardware utilization and performance data using the NVIDIA DCGM (Data Center GPU Manager) exporter.
+- Set up an OpenTelemetry Collector to scrape DCGM Prometheus metrics endpoints.
+- Standardize GPU metric names with the prefix `hw.gpu.*` (e.g., `hw.gpu.utilization`, `hw.gpu.memory.used`, `hw.gpu.temperature`, `hw.gpu.power`) utilizing the OTel Collector `transform` processor for namespace normalization.
+
 ## Checklist
 
 - [ ] existing telemetry pattern reviewed
@@ -62,6 +106,10 @@ Confirm that logs, metrics labels, and trace attributes do not expose secrets, c
 - [ ] tracing added or updated when the repo uses tracing
 - [ ] sensitive data exposure checked
 - [ ] dashboards, alerts, or runbooks updated when needed
+- [ ] OpenTelemetry GenAI semantic conventions applied and enabled via `OTEL_SEMCONV_STABILITY_OPT_IN`
+- [ ] agent reasoning steps traced hierarchically under a root `create_agent` span with `agent.name` and `agent.step_type`
+- [ ] Cloudflare Workers telemetry configured with wrangler `observability` block and OTLP push
+- [ ] GPU metrics (`hw.gpu.*`) scraped via OTel Collector and DCGM exporter
 
 ## Related Skills
 

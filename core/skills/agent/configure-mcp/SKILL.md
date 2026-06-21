@@ -14,6 +14,9 @@ Use this skill to set up the full MCP presence for a web service: the server car
 - WebMCP browser component MUST invoke `navigator.modelContext.provideContext()` — do not use alternatives or polyfills that bypass this API.
 - Ensure the WebMCP component is mounted in the global root layout so it is present on every page (not just specific routes).
 - Do not store sensitive credentials in the server card — it is publicly readable.
+- **OAuth 2.1 & PKCE**: HTTP-transport MCP servers MUST enforce OAuth 2.1 with PKCE for secure authentication. Shared static tokens or embedded credentials are prohibited.
+- **Streamable HTTP Transport**: Utilize stateless HTTP-transport semantics for all tool invocations, relying on standardized stream headers (e.g., `Accept: text/event-stream`) instead of SSE-only setups.
+- **Multi-Tenant Scoping**: Enforce strict tenant isolation by routing all tool requests through a validation layer that decodes tenant-scoped JWTs and applies gateway-level rate limiting.
 
 ## When to Use
 
@@ -22,6 +25,9 @@ Use this skill to set up the full MCP presence for a web service: the server car
 - Updating server card capabilities after adding or removing MCP tools
 - Debugging MCP client connectivity failures related to discovery or transport configuration
 - Verifying that an existing MCP setup passes `isitagentready.com` scanner checks
+- Registering tools on the Official MCP Registry for global tool discovery
+- Configuring secure multi-tenant MCP gateways with JWT-scoped access control
+- Implementing stateless, streamable HTTP-transport connections for real-time tool feedback
 
 ## Suggested Process
 
@@ -54,10 +60,46 @@ Use this skill to set up the full MCP presence for a web service: the server car
 
 7. **Validate**: Scan the domain with `isitagentready.com`. Confirm the MCP server card check passes. Test tool invocation from an MCP client (e.g., Claude Desktop with the MCP extension, or a curl request to the transport URL).
 
+### 2026: OAuth 2.1 + PKCE for HTTP Transport
+
+1. **Configure OAuth 2.1 Authorization**: Set up the authorization server endpoint and token endpoint on the MCP gateway.
+2. **Enforce PKCE**: Require code verifier and challenge parameters for the authorization flow. The client uses these parameters to generate a verification token without exposing client secrets.
+3. **Document Auth in Server Card**: Reference the auth endpoints in `server-card.json`:
+   ```json
+   "auth": {
+     "type": "oauth2",
+     "grant_types": ["authorization_code"],
+     "authorization_endpoint": "https://auth.example.com/oauth/authorize",
+     "token_endpoint": "https://auth.example.com/oauth/token",
+     "pkce": true
+   }
+   ```
+
+### 2026: Streamable HTTP Transport
+
+1. **Define Stateless Semantics**: Ensure the MCP server maintains no persistent session memory on the server side. Every tool invocation request must carry the tenant/auth token.
+2. **Establish Stream Headers**: Require the client to set `Accept: text/event-stream` and `Content-Type: application/json`.
+3. **Stream Chunks**: Stream response chunks back to the client using chunked transfer encoding, writing each tool progress update or output segment as a structured event message.
+
+### 2026: Official MCP Registry Discovery
+
+1. **Prepare Registry Manifest**: Package the server card, tool schemas, and capabilities into the registry submission schema.
+2. **Register Server**: Submit the manifest to the Official MCP Registry.
+3. **Verify Indexing**: Confirm the registry exposes the tools and schemas to registered client discovery services.
+
+### 2026: Multi-Tenant MCP Pattern
+
+1. **JWT Verification**: Intercept every incoming tool request at the gateway. Validate the JSON Web Token (JWT) in the `Authorization: Bearer <JWT>` header.
+2. **Scope Context**: Extract the tenant ID and user scopes from the validated JWT payload. Inject this tenant context into the request context (`context.Context`).
+3. **Enforce Isolation**: Ensure all database queries and tool actions are strictly scoped using the tenant context.
+4. **Gateway Rate Limiting**: Apply token-bucket rate limiting at the gateway level based on the tenant ID and user ID extracted from the JWT.
+
 ## Output Format
 
 - `/.well-known/mcp/server-card.json` — server discovery metadata
 - Root layout update: WebMCP provider component mounted globally
+- Official MCP Registry submission manifest
+- JWT authorization middleware and rate limiting config files
 
 ## Checklist
 
@@ -70,6 +112,12 @@ Use this skill to set up the full MCP presence for a web service: the server car
 - [ ] CORS headers allow AI browser extensions to fetch the server card.
 - [ ] Link header pointing to server card is configured (`configure-agent-headers`).
 - [ ] `isitagentready.com` scanner confirms MCP server card is readable.
+- [ ] HTTP-transport MCP server enforces OAuth 2.1 with PKCE.
+- [ ] Server card lists OAuth 2.1 endpoints and designates PKCE requirement.
+- [ ] HTTP transport uses streamable stateless semantics with correct headers (`Accept: text/event-stream`).
+- [ ] MCP server is registered on the Official MCP Registry for discovery.
+- [ ] Tool requests are authenticated via JWT-scoped validation per tenant.
+- [ ] Gateway-level rate limiting is enforced on a per-tenant/per-user basis.
 
 ## Related Skills
 

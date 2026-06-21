@@ -15,6 +15,9 @@ Use with the **Technical Lead** role after requirements and architecture inputs 
 - define quality_gates matching change risk — not schedule pressure
 - emit `contracts/schemas/technical-delivery-plan.json` for machine handoff
 - do not implement production code — delegate slices to developer roles
+- **Feature flag-first delivery**: every user-visible slice needs flag name, kill-switch, rollout plan (internal → canary → GA), and cleanup target date
+- **Hybrid human+agent slice ownership**: specify compute budget, HITL checkpoints, and agent output gates for agent-implemented slices
+- **AI estimation with explicit uncertainty bounds**: use confidence intervals and three-point estimates (optimistic, expected, pessimistic) rather than point estimates
 
 ## Suggested Process
 
@@ -24,15 +27,15 @@ Read feature-ticket.json, adr-spec.json, and any UX/API specs. List non-negotiab
 
 ### 2. Decompose Slices
 
-Break work into independently reviewable slices with owners, dependencies, and acceptance signals. Order by dependency and risk.
+Break work into independently reviewable slices with owners, dependencies, and acceptance signals. Order by dependency and risk. Define whether the slice is owned by an Agent, Human, or Hybrid team, setting up necessary compute budgets and human-in-the-loop checkpoints.
 
 ### 3. Define Impact And Gates
 
-Document impact_radius (modules, shared logic, regression-prone areas). Set quality_gates per slice — tests, review depth, staging checks — proportional to risk.
+Document impact_radius (modules, shared logic, regression-prone areas). Set quality_gates per slice — tests, review depth, staging checks — proportional to risk. Apply three-point AI estimation to each slice, capturing optimistic (P10), expected (P50), and pessimistic (P90) duration bounds with a confidence interval.
 
 ### 4. Plan Rollout And Docs
 
-Note rollout/rollback steps and documentation_deltas for Technical Writer. Flag slices that need Coordinator sequencing.
+Note rollout/rollback steps and documentation_deltas for Technical Writer. Flag slices that need Coordinator sequencing. For every user-visible slice, design the feature flag configuration (flag name, kill-switch strategy, progressive rollout stages, and cleanup target date).
 
 ### 5. Emit Plan
 
@@ -61,6 +64,9 @@ Validate and output `contracts/schemas/technical-delivery-plan.json`. Hand off t
 - [ ] adr and ticket constraints reflected in slices
 - [ ] dependencies and owners explicit
 - [ ] impact_radius and rollback documented
+- [ ] every user-visible slice has feature flag name, kill-switch, rollout plan, and cleanup target date
+- [ ] hybrid slices have compute budgets, HITL checkpoints, and agent output gates defined
+- [ ] all slices estimated with explicit uncertainty bounds (optimistic, expected, pessimistic)
 - [ ] documentation_deltas listed for Technical Writer
 - [ ] technical-delivery-plan.json valid
 
