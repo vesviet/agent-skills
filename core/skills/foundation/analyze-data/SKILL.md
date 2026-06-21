@@ -66,6 +66,28 @@ Produce:
 - optional Excel/HTML export for stakeholders
 - open questions and data gaps
 
+## 2026 Modern Data Workflows
+
+### 2026: AI/LLM-Assisted Data Exploration
+- Use AI-assisted exploration tools such as Vanna.ai, BigQuery text-to-SQL, or Databricks Genie to generate SQL queries from natural language inputs.
+- Always cross-reference AI-generated queries and schema interpretations against ground truth schemas and data dictionaries to prevent hallucination.
+- Document and verify any generated queries before committing them to analytical repositories.
+
+### 2026: DuckDB in Analytical Workflows
+- Utilize DuckDB for fast, serverless local analysis of Parquet, CSV, or Apache Iceberg data formats.
+- Integrate MotherDuck to run serverless cloud queries, enabling hybrid local-to-cloud workflows and easy sharing of datasets.
+- Ensure query memory limits and thread counts are configured appropriately for large datasets.
+
+### 2026: Vector Database Exploration
+- Query pgvector, Qdrant, or Weaviate to perform nearest-neighbor searches and similarity matching.
+- Apply metadata filtering alongside vector similarity criteria to restrict searches to appropriate sub-segments of data.
+- Profile and document query latency under varying recall levels.
+
+### 2026: dbt Lineage as Data Provenance
+- Use the ref() function lineage graph in dbt to map and trace data dependencies from source seeds to target models.
+- Maintain compliance with metadata registries such as dbt Docs, Atlan, or Alation to establish auditable data lineage.
+- Document column-level lineage and verify constraints for all core metrics.
+
 ## Checklist
 
 - [ ] business question and metric definitions are explicit

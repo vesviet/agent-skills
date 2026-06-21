@@ -79,6 +79,24 @@ Cover:
 - accessibility-sensitive states
 - prop or slot/children variations that are easy to break
 
+## 2026 Component Architecture
+
+### 2026: RSC Boundary Placement Leaf Pattern
+- Push the "use client" directive as deep down the React component tree as possible (the leaf pattern) to maximize Server-side rendering (SSR) benefits.
+- Keep React Server Components (RSC) at the top of the tree, and pass Interactive Client Components down as children or props into those Server Components.
+- Minimize the amount of client-side state managed high up in the component tree to avoid unnecessary re-renders.
+
+### 2026: AI-Generated Component Governance Checklist
+- Verify that AI-generated UI components conform strictly to existing design tokens and color scales.
+- Run an automated axe-devtools scan to catch color contrast, screen reader labels, and keyboard navigation issues.
+- Strip any custom, inline, or non-repository CSS files and rules to prevent style pollution.
+- Conduct a peer code review on all generated components to ensure they meet project code style and safety standards.
+
+### 2026: Lit v3 Web Components Bridging
+- Wrap Lit v3 Web Components in a React wrapper using the `@lit/react` library to expose them cleanly as React components.
+- Ensure that properties, events, and lifecycle hooks are mapped correctly to React props and callbacks.
+- Verify component cleanup and event listener detachment are executed correctly when components unmount.
+
 ## Checklist
 
 - [ ] similar component pattern reviewed

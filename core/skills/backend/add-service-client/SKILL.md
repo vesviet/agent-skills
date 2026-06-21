@@ -69,6 +69,34 @@ Cover:
 - timeout or unavailable dependency behavior
 - response-mapping edge cases
 
+### 2026: Connect Protocol for Inter-service RPC
+
+The Connect Protocol serves as the preferred inter-service RPC framework due to its flexibility and performance characteristics:
+- **Dual Compatibility**: Connect operates seamlessly over both HTTP/1.1 and HTTP/2 transport layers, making it highly robust in environments with varying network capabilities.
+- **Client Ecosystem**: Utilize `connectrpc/connect-go` for Go-based services and `connectrpc/connect-es` for TypeScript/JavaScript applications.
+- **Protocol Negotiation**: It supports native gRPC, gRPC-Web, and the Connect protocol itself via dynamic content-type negotiation, enabling browser access without custom proxies.
+
+### 2026: mTLS for Zero-Trust Identity
+
+Zero-trust service-to-service communication relies on Mutual TLS (mTLS) to establish cryptographically verifiable identities without API keys or JWTs:
+- **SPIFFE/SPIRE Integration**: Issue dynamic client certificates via a trusted internal CA managed by SPIFFE/SPIRE for automatic identity rotation.
+- **Authentication Decision Table**:
+  * mTLS: Best for internal, low-latency, zero-trust backend communications where network control and client identity verification are required.
+  * OIDC Workload Identity: Best for cross-cloud or cloud-native platform integrations (e.g., AWS EKS to Google Cloud Run) leveraging cloud-provider IAM.
+  * JSON Web Tokens (JWT): Best for user-delegated context propagation or stateless edge-to-service authentication.
+
+### 2026: xDS Proxyless Load Balancing
+
+Proxyless load balancing allows services to communicate directly with control planes for routing without relying on sidecar proxies:
+- **xDS Control Plane**: Configure gRPC clients in Go and Java to query the xDS API directly to retrieve dynamic endpoint routing tables.
+- **Performance Benefits**: Eliminates sidecar hop latency, lowers CPU/memory footprints, and simplifies container configurations.
+
+### 2026: Model Context Protocol (MCP) Client Integrations
+
+When service clients interact with external or internal Model Context Protocol (MCP) tool servers, they must enforce standard reliability patterns:
+- **Transport Reliability**: Wrap MCP clients with explicit timeouts, exponential backoff retries, and circuit breakers using libraries like Sentinel or Go's resilient round-trippers.
+- **Secure Authentication**: Ensure all outbound requests to tool servers include correct auth payloads (such as API keys, Bearer tokens, or OAuth client credentials) mapped safely from secret stores.
+
 ## Checklist
 
 - [ ] existing client pattern reviewed
@@ -78,6 +106,10 @@ Cover:
 - [ ] error mapping reviewed
 - [ ] observability instrumented (OTel span on outbound call)
 - [ ] tests added or updated
+- [ ] Connect protocol used for browser-accessible inter-service RPC
+- [ ] mTLS configured via SPIFFE/SPIRE client certificates for backend identity
+- [ ] proxyless xDS client load balancing configured for high-throughput paths
+- [ ] MCP tool server client wrapped with timeouts, retries, and circuit breakers
 
 ## Related Skills
 

@@ -78,6 +78,28 @@ Cover:
 - loading state
 - mutation side effects or cache updates
 
+## 2026 API Integration Standards
+
+### 2026: OpenAPI Codegen Pipeline Orval
+- Configure Orval as the code generation pipeline to automatically convert OpenAPI specifications into TanStack Query v5 queries, MSW (Mock Service Worker) mocks, and TypeScript types.
+- Leverage the queryOptions pattern to write reusable, type-safe query configurations across components.
+- Ensure that MSW mocks are updated and run in test and development environments when schemas change.
+
+### 2026: React 19 use() vs TanStack Query
+- Use React 19's `use()` hook to read promises directly in Server-rendered components, facilitating React Server Component (RSC) streaming and lazy data resolution.
+- Keep TanStack Query for interactive client-side operations that require cache invalidation, background refetching, or request deduplication.
+- Avoid nesting client-side query hooks when RSC-based streaming can resolve initial page load data.
+
+### 2026: React 19 useActionState for Mutations
+- Utilize React 19's `useActionState` hook for handling straightforward form actions and state updates.
+- Keep `useMutation` from TanStack Query for complex mutations that require advanced cache manipulation, pagination updates, or optimistic UI responses.
+- Ensure validation errors returned from actions are correctly bound back to the UI inputs.
+
+### 2026: Streaming AI Responses
+- Handle streaming responses using `ReadableStream` and `TextDecoderStream` to parse chunked responses.
+- Implement token-by-token UI updates via a `useReducer` pattern to avoid unnecessary re-renders during rapid stream updates.
+- Provide clear cancellation hooks to allow users to abort active stream requests.
+
 ## Checklist
 
 - [ ] local data-fetching pattern reviewed

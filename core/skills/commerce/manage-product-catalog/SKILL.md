@@ -52,6 +52,32 @@ Clarify before building:
 - implement idempotent upsert by SKU to safely re-run sync without duplicating products
 - log sync runs with counts of created, updated, and failed records
 
+### 2026: Semantic Vector Search Layer
+
+Modern catalogs utilize a semantic vector search layer alongside traditional keyword search to improve product discovery:
+- **Embedding Generation**: Generate high-dimensional vector embeddings for product titles and descriptions on write/update operations using models like `text-embedding-3-large` or Cohere `embed-v4`.
+- **Vector Storage**: Store and index these embeddings in vector databases or extensions such as `pgvector` or Pinecone.
+- **Hybrid Search Fusion**: Combine keyword-based search (BM25) and dense vector search results using Reciprocal Rank Fusion (RRF) to provide highly accurate, contextual search results.
+
+### 2026: AI-Generated Product Content Governance
+
+Automated generation of product copy and metadata requires strict quality gates to preserve brand integrity and accuracy:
+- **Review Gate**: Impose a mandatory human-review gate before setting the status of any AI-generated product description to published.
+- **Audit Metadata**: Track content generation lineage by saving audit fields: `generated_by`, `reviewed_by`, `generated_at`, and `generation_model`.
+- **Brand Voice Validation**: Run automated checks for compliance with brand guidelines, banned words, and product claim accuracy prior to review.
+
+### 2026: Event Sourcing for Real-Time Inventory
+
+Decouple inventory updates from catalog writes using asynchronous event-driven state mutation:
+- **Publish Mutations**: Publish all inventory adjustments and reservations immediately to messaging systems like Apache Kafka or Cloudflare Queues.
+- **Consumer Processing**: Let downstream catalog search indexes, fulfillment dispatchers, and external AI shopping agents consume these updates to ensure eventual consistency without database locking.
+
+### 2026: Knowledge Graph for Product Relationships
+
+Utilize graphical data models to capture and traverse complex product relationships and user behaviors:
+- **Graph Databases**: Model recommendations, compatibility matrices, and bundles using graph databases such as Neo4j or Amazon Neptune.
+- **GraphRAG Pattern**: Feed structured subgraphs into LLM retrieval chains (GraphRAG) to ground automated customer recommendations in verifiable catalog relationships.
+
 ## Checklist
 
 - [ ] SKU uniqueness enforced at database level
@@ -62,6 +88,11 @@ Clarify before building:
 - [ ] product publish/unpublish guarded by review or approval step
 - [ ] catalog sync is idempotent by SKU if external source is used
 - [ ] low-stock alerting threshold configured for ops team
+- [ ] semantic vector embeddings generated and stored on product write
+- [ ] hybrid search (BM25 and dense vectors) combined using RRF fusion
+- [ ] AI-generated product content audited and verified by human-review gate
+- [ ] inventory updates published via Kafka or Cloudflare Queues
+- [ ] product knowledge graph structured to drive Recommendations/GraphRAG
 
 ## Related Skills
 
