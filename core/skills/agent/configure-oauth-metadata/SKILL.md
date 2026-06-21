@@ -16,6 +16,10 @@ Use this skill when configuring `/.well-known/oauth-protected-resource`, `/.well
 - Define `credential_types_supported` nested inside the identity type blocks (e.g., `anonymous.credential_types_supported`), NOT at the root of `agent_auth`.
 - Both `anonymous` and `identity_assertion` credential paths must be documented if the service supports them.
 - All endpoints must be served with `Content-Type: application/json` and appropriate CORS headers.
+- enforce PKCE (Proof Key for Code Exchange) as mandatory for all agent OAuth flows, asserting `code_challenge_methods_supported: ["S256"]` in authorization metadata
+- support OpenID Connect (OIDC) Dynamic Client Registration by exposing a POST endpoint that accepts the Agent Card JSON as input
+- bind issued access tokens cryptographically to agent identities using the `azp` and agent DID claims in the JWT payload
+- validate that the `agent_auth` configuration complies with isitagentready.com and WorkOS requirements
 
 ## When to Use
 
@@ -64,6 +68,20 @@ Use this skill when configuring `/.well-known/oauth-protected-resource`, `/.well
 6. **Expose via Link headers**: Use `configure-agent-headers` to add Link headers pointing to both well-known files for passive agent discovery.
 
 7. **Run scanner validation**: Test with `isitagentready.com` or the WorkOS scanner. Review the diagnostic output against specific rule names — e.g., "anonymous registration requires anonymous.credential_types_supported" maps to a specific nesting requirement.
+
+### 2026: Mandatory PKCE and Token Binding
+
+To secure machine-to-machine interactions and prevent authorization code interception, A2A OAuth flows require strict PKCE and cryptographic token binding:
+- **Mandatory PKCE**: All client authorization requests must use PKCE with SHA-256 challenge. The authorization server metadata must declare `"code_challenge_methods_supported": ["S256"]`.
+- **Authorized Presenter**: The token payload must contain the `azp` (Authorized Party) claim, which identifies the client agent that was issued the token.
+- **DID Token Binding**: The token must bind the agent's DID. The JWT claims include the agent's public key identifier or DID URI in custom claims to ensure only the holder of the agent's private key can present the token.
+
+### 2026: OIDC Dynamic Client Registration
+
+Dynamic registration allows new worker agents to register as OAuth clients on-the-fly:
+- **Registration Endpoint**: Expose a registration endpoint (`register_uri`) responding to POST requests.
+- **Payload Schema**: The endpoint accepts OIDC Dynamic Client Registration payloads containing client metadata or directly accepting the worker's signed Agent Card JSON.
+- **Client Credentials**: Upon validation of the Agent Card signature and capabilities, the server registers the client and returns a client identifier and registration access token.
 
 ## Checklist
 

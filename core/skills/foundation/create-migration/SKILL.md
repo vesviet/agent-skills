@@ -129,6 +129,28 @@ If the migration is data-sensitive or long-running, also reason through:
 - idempotency expectations
 - impact on replicas, readers, or older code
 
+## 2026 Modern Migration Workflows
+
+### 2026: Zero-Downtime Schema Changes
+- Avoid plain ALTER TABLE operations on tables with more than 10 million rows to prevent long-running table locks.
+- Utilize online DDL tools such as gh-ost for MySQL/MariaDB, or pg_repack/pgroll for PostgreSQL, to perform schema upgrades in a non-blocking manner.
+- Test migrations on a copy of production volume to verify lock durations and replication lag.
+
+### 2026: Expand-Contract Pattern
+- Phase 1: Expand the schema by adding the new column, table, or structure as a nullable or optional field while keeping the old structure intact.
+- Phase 2: Migrate and backfill existing data from the old structure to the new structure in batched, throttled operations.
+- Phase 3: Contract the schema by removing the old column, table, or structure after confirming all application reads and writes have fully transitioned.
+
+### 2026: Vector Index Migrations
+- Use `CREATE INDEX CONCURRENTLY` when building vector indexes (such as HNSW or IVFFlat) to prevent blocking concurrent writes.
+- Run a database `VACUUM` command after mass inserts of vector data to update internal storage maps.
+- Execute a recall@10 benchmark evaluation on the newly built index to verify search retrieval quality before promoting it to production.
+
+### 2026: Cloudflare D1 and SQLite Migration Patterns
+- Use wrangler migrations to manage schema versioning and local test environments.
+- Be aware that SQLite does not support ALTER COLUMN operations, meaning column modifications require rebuilding the table using a temporary structure.
+- Always run local tests on a SQLite replica to ensure schema modifications are valid before deploying.
+
 ## Safety Guidelines
 
 - prefer additive changes over destructive changes

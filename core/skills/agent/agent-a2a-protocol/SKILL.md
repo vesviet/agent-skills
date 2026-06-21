@@ -17,6 +17,11 @@ Use this skill for **complete A2A 1.0** behavior beyond single-hop `agent-delega
 - wrap HTTP calls in `a2a-jsonrpc-envelope.json` (JSON-RPC 2.0)
 - validate every artifact against the task's `output_schema_ref`
 - never assume the worker has context beyond `input_data` and `messages`
+- verify A2A v1.0 signed Agent Cards containing the `securitySchemes` field for bearer and oauth2 schemes
+- validate Ed25519 signatures and verify pinned keys on all incoming Agent Cards
+- negotiate streamable HTTP transports via chunked transfer encoding and `application/json-seq` formats
+- publish lifecycle events for `task_started`, `task_progress`, `task_completed`, `task_failed`, and `task_cancelled`
+- secure push notifications by validating webhook URLs with HMAC signatures
 
 ## A2A Operations Map
 
@@ -100,6 +105,34 @@ When the client cannot hold SSE open:
 
 - attach `a2a-push-notification-config.json` to the task
 - worker emits terminal event to `callback_url` on completed / failed / canceled
+
+### 2026: Signed Agent Cards
+
+A2A v1.0 introduces cryptographically signed Agent Cards to guarantee identity and configuration integrity:
+- **Signature verification**: Agent Cards are signed using Ed25519. The signature must be verified against pinned public keys before accepting the card.
+- **Security Schemes**: The Agent Card JSON includes a `securitySchemes` field defining acceptable authentication methods, specifically supporting bearer token (`bearer`) and OAuth 2.0 (`oauth2`) schemes.
+- **Key pinning**: Agent systems pin public keys to prevent identity spoofing during lookup.
+
+### 2026: Streamable HTTP Transport
+
+For high-frequency and long-running communications, A2A v1.0 supports streamable HTTP transports:
+- **HTTP Chunked Encoding**: The server uses standard chunked transfer encoding (`Transfer-Encoding: chunked`) to stream responses dynamically.
+- **Record Sequencing**: Streams are structured as `application/json-seq` records (RFC 7464), separated by a record separator (`\x1e`) and a newline (`\n`).
+- **Negotiation**: Clients must send the `Accept: application/json-seq` header to initiate streaming communication.
+
+### 2026: Task Lifecycle Events
+
+Task lifecycle tracking relies on a standardized set of events to ensure consistent state synchronization:
+- **Standard Events**: The protocol emits `task_started`, `task_progress`, `task_completed`, `task_failed`, and `task_cancelled` events.
+- **Delivery Mechanisms**: Events are sent via Server-Sent Events (SSE) or as record sequences (`application/json-seq`).
+- **State mapping**: These events map directly to updates in the state tracker and trigger local callbacks in real-time.
+
+### 2026: Webhook HMAC Push Notifications
+
+Webhook push notifications allow asynchronous updates to be pushed securely to the delegator:
+- **Registration**: Tasks configure a webhook URL for status callbacks.
+- **HMAC Signatures**: Every callback payload is signed with an HMAC signature (using SHA-256) included in a custom header (`X-A2A-Signature`).
+- **Signature Verification**: Receivers compute the HMAC of the payload using a shared secret and compare it to the header to prevent tampering.
 
 ## Scatter-Gather
 

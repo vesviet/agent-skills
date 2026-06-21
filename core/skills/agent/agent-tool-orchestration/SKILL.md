@@ -20,6 +20,10 @@ Use this skill when a task needs disciplined tool selection and sequencing acros
 - validate tool inputs and outputs against their declared contracts
 - check `core/policies/action-boundaries.yaml` before any state-changing action when a role is active
 - check `core/policies/data-classification.yaml` before logging, returning, or persisting sensitive data
+- enable parallel tool execution as default using `asyncio.gather` or thread pools for non-interdependent operations
+- choose between ReAct (linear action spaces) and LATS (Monte Carlo Tree Search tree exploration) based on task complexity
+- enforce strict tool call budget management, monitoring max budgets and raising a `budget_exhausted` event if exceeded
+- instrument all tool calls using OpenTelemetry (OTel) with child spans and detailed semantic attributes
 
 ## Policy-As-Code (2026)
 
@@ -36,7 +40,7 @@ Before state-changing tools (write, delete, shell that mutates, install, migrati
 5. when no role entry exists, apply `default_policy: requires_approval`
 6. map IDE/MCP tool names through `core/policies/mcp-tool-map.yaml` when the platform tool label differs from policy action ids
 
-Policies complement `core/rules/code.md`; policies take precedence for enforceable action decisions. Optional runtime: `adapters/cursor/hooks.template.json` invokes `core/scripts/hooks/check-policy.py`.
+*Policies complement `core/rules/code.md`; policies take precedence for enforceable action decisions. Optional runtime: `adapters/cursor/hooks.template.json` invokes `core/scripts/hooks/check-policy.py`.*
 
 ## MCP And Context Engineering
 
@@ -111,6 +115,28 @@ After edits:
 - run targeted validators or lints
 - inspect failures before changing more code
 - rerun the smallest check that proves the fix
+
+### 2026: Parallel Tool Execution
+
+Orchestration engines must maximize throughput by parallelizing independent tool calls:
+- **Default Concurrency**: Execute independent file reads, searches, and remote API calls in parallel using async frameworks (e.g., `asyncio.gather` in Python) or thread pools.
+- **Dependency Resolvers**: Compute tool execution dependency DAGs before running, ensuring sequential execution is reserved only for dependent inputs/outputs.
+- **Error Propagation**: Handle failures in parallel execution blocks cleanly, capturing partial successes without blocking the entire workflow.
+
+### 2026: LATS vs ReAct Decision Framework
+
+Match the reasoning pattern to the complexity and risk level of the objective:
+- **ReAct (Reasoning and Action)**: Use for straightforward, linear tasks where the action space is well-defined and a sequential loop is sufficient.
+- **LATS (Language Agent Tree Search)**: Deploy for highly complex, multi-path coding or reasoning tasks. LATS implements Monte Carlo Tree Search (MCTS) to sample, evaluate (using LLM-as-a-judge nodes), and backtrack along multiple execution branches.
+- **Backtracking**: Allow the agent to roll back the tool execution path to a previous checkpoint state if a node evaluation score drops.
+
+### 2026: Tool Budget Enforcement and OTel Instrumentation
+
+Ensure cost boundaries and complete operational observability:
+- **Budget Tracking**: Configure a maximum monetary and count budget for each orchestration loop. Monitor usage per tool call (incorporating LLM token costs and paid API fees).
+- **Event Emitting**: Raise a `budget_exhausted` event immediately when the budget limit is reached, halting state mutations and performing clean rollbacks.
+- **OTel Spans**: Wrap each tool execution in an OpenTelemetry child span under the main task transaction.
+- **Span Attributes**: Tag spans with standard semantic attributes including tool name, arguments, input size, execution duration, cost, and exit status.
 
 ## Output Format
 

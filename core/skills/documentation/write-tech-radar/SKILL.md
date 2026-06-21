@@ -16,6 +16,9 @@ Use this skill when a team needs a technology radar, adoption note, or concise e
 - capture trade-offs, not just benefits
 - separate observed facts from inferred judgment
 - keep the entry useful to future readers who were not in the original discussion
+- link radar entries to architectural decision records (ADRs) using the MADR format
+- track AI tool adoption actively via dedicated AI Tools rings or a sub-radar
+- ensure all radar entries follow a consistent inline template detailing ring, quadrant, rationale, links, and lifecycle justification
 
 ## Suggested Process
 
@@ -66,6 +69,26 @@ Check:
 - internal jargon is minimized
 - unsupported claims are removed or softened
 
+### 2026: Tech Radar Structuring and AI Tool Tracking
+
+To capture architecture-aligned decisions and rapid AI developments:
+
+- **ADR Integration**: Every radar entry representing a significant shift must link directly to an Architectural Decision Record in MADR format (Markdown Architectural Decision Records), ensuring full lineage from high-level assessment to concrete technical design.
+- **AI Tool Adoption Tracking**: Separate AI tools, libraries, and sub-agents into a dedicated "AI Tools" ring or sub-radar. This tracks:
+  - **Adopt**: Verified AI tools integrated safely into standard development flows.
+  - **Trial**: AI tools undergoing sandbox security and efficiency audits.
+  - **Assess**: New AI technologies being monitored for enterprise-grade maturity.
+  - **Hold**: AI systems restricted due to data privacy or licensing risks.
+- **Standard Radar Entry Template**: Use the following inline block format for all technology additions:
+  ```yaml
+  name: "Technology Name"
+  ring: "Adopt / Trial / Assess / Hold"
+  quadrant: "Languages & Frameworks / Tools / Platforms / Infrastructure"
+  rationale: "Brief summary of technical or business motivation."
+  adr_link: "Relative path or URL to the MADR file."
+  justification: "Detailed context explaining why this specific lifecycle state is selected."
+  ```
+
 ## Checklist
 
 - [ ] decision scope identified
@@ -74,6 +97,9 @@ Check:
 - [ ] trade-offs captured
 - [ ] adoption guidance included
 - [ ] wording kept concise and decision-oriented
+- [ ] ADR references provided in MADR format
+- [ ] AI tool adoption explicitly tracked under AI Tools rings
+- [ ] Inline radar entry template fully populated with lifecycle justification
 
 ## Related Skills
 

@@ -16,6 +16,11 @@ Use this skill when prompt changes need structured versioning, automated evaluat
 - log the rationale for every prompt change
 - separate structural changes (adding a block) from behavioral changes (modifying instructions)
 - do not claim a prompt improvement without measurable evidence
+- optimize prompts programmatically using DSPy framework compilation, signatures, and MIPROv2 optimizers
+- integrate prompt tracking platforms including PromptLayer, LangSmith, or Phoenix for production monitoring
+- enforce A/B testing validation with statistical significance (p < 0.05) before full promotion
+- track prompt drift by calculating the cosine similarity of embedding centroids of prompt outputs
+- implement evaluation-driven promotion gates utilizing golden datasets and LLM-as-judge scorers
 
 ## Key Concepts
 
@@ -107,6 +112,27 @@ After deployment:
 - run sampled outputs through the LLM-as-a-Judge weekly
 - track key metrics: format compliance rate, hallucination rate, user correction rate
 - trigger re-evaluation if any metric degrades beyond threshold
+
+### 2026: DSPy Automatic Prompt Optimization
+
+Prompt engineering shifts from manual template editing to programmatic optimization using DSPy:
+- **Signatures and Modules**: Define model behavior using formal DSPy signatures (specifying input/output roles and types) rather than raw string instructions.
+- **Bootstrap Optimizers**: Utilize optimization algorithms (such as `BootstrapFewShotWithRandomSearch` or `MIPROv2`) to automatically compile few-shot examples and instruction variations.
+- **Versioned Artifacts**: Save compiled DSPy program state files (JSON configuration and parameters) under version control alongside source code.
+
+### 2026: Prompt Tracking and A/B Testing
+
+Maintain continuous visibility and statistical rigor for prompt updates:
+- **Observability Platforms**: Integrate tracking platforms such as PromptLayer, LangSmith, or Phoenix to trace prompts, model configurations, and output histories.
+- **A/B Testing**: Run prompt variations in parallel against production traffic splits.
+- **Statistical Significance**: Validate performance differences using statistical tests and require a p-value less than 0.05 (p < 0.05) before full deployment.
+
+### 2026: Embedding-Based Prompt Drift Detection
+
+Detect gradual changes in prompt performance or model behavior over time:
+- **Centroid Embeddings**: Calculate vector embeddings for sample production prompt outputs on a recurring basis.
+- **Cosine Similarity**: Measure the cosine similarity between the current output embedding centroid and the baseline centroid established during initial evaluation.
+- **Alerting Thresholds**: Trigger alert notifications and prompt re-evaluation when cosine similarity drops below the acceptable threshold.
 
 ## Output Format
 

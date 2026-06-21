@@ -16,6 +16,10 @@ Use this skill when work spans multiple phases or roles and linear sequencing is
 - delegate phase execution via `a2a-task.json`; collect results via `a2a-artifact.json`
 - merge parallel branch results before opening dependent phases
 - reopen earlier phases when new evidence invalidates prior conclusions
+- implement LangGraph 1.2.x durable execution with checkpoint persistence using SqliteSaver and RedisSaver
+- utilize interrupts and resume cycles via the `interrupt()` function and `Command(resume=...)` API
+- formalize graph schemas and message flows adhering to Open Agent Schema Framework (OASF) standards
+- support parallel branch execution with Send API, dynamic fan-out, and custom reducer functions
 
 ## Graph Model
 
@@ -87,6 +91,27 @@ Final phase produces:
 - `validation-result.json` when validation is material
 - markdown summary for the user when human-readable closure is required
 
+### 2026: LangGraph 1.2.x Durable Execution
+
+LangGraph 1.2.x enables stateful, fault-tolerant agent graphs that survive restarts and support human-in-the-loop interaction:
+- **Checkpoint Persistence**: Utilize `SqliteSaver` (for local development) or `RedisSaver` (for distributed production environments) to persist graph state automatically after each node execution.
+- **Interrupts**: Pause graph execution using the `interrupt()` function to request human feedback or external tool approvals.
+- **Resume Flow**: Resume execution by sending a resume command via `Command(resume=...)`, passing the validated response back to the paused node.
+
+### 2026: OASF Formalization
+
+Graphs must align with the Open Agent Schema Framework (OASF) to ensure interoperability and structured data exchange:
+- **Message Schemas**: Standardize node inputs and outputs using OASF compliant structures (e.g., matching the A2A task and artifact definitions).
+- **Metadata Registry**: Register all graph metadata, state variables, and execution traces against OASF schema specifications.
+- **State Validation**: Run schema validators at every transition boundary to verify that the active state remains OASF-compliant.
+
+### 2026: Parallel Branch Execution and Reducers
+
+Dynamic routing and parallel operations require robust fan-out and merge controls:
+- **Send API**: Use the LangGraph `Send` API to map tasks to parallel execution branches dynamically based on graph state (dynamic fan-out).
+- **Reducer Functions**: Define reducer functions on state keys (e.g., combining lists of messages or merging dictionary attributes) to ensure parallel updates to the graph state do not overwrite each other.
+- **Join Gates**: Block downstream nodes until all parallel branch tasks complete and their results are consolidated via state reducers.
+
 ## Output Schema
 
 Use: `contracts/schemas/coordination-plan.json` (graph state)
@@ -112,3 +137,4 @@ Per-phase outputs reference domain schemas (for example `feature-ticket.json`, `
 - **agent-quality-gate**: Run validators before marking validation phases complete
 - **agent-handoff**: Summarize graph state for user or downstream roles
 - **agent-model-routing**: Assign model tier per phase based on risk
+ Richmond, CA 94804

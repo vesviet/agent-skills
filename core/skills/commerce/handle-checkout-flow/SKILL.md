@@ -50,6 +50,32 @@ Define the full funnel before building:
 - on success: persist the confirmed order, release inventory lock, send confirmation email, and redirect to confirmation page
 - on failure: release inventory lock, surface payment error, allow retry without re-entering non-payment data
 
+### 2026: Agentic Checkout Architecture
+
+Agentic Checkout enables AI agents to autonomously execute purchase transactions under the Agentic Commerce Protocol (ACP) and User Context Protocol (UCP):
+- **Authorization & Limits**: Implement pre-authorization gates and spending limits per agent session or customer ID to control transactional risk.
+- **Merchant of Record (MoR)**: Define clear MoR assignments to handle fraud liability, chargeback handling, and regional taxes for agentic transactions.
+- **Programmatic Checkout**: Ensure the end-to-end checkout pipeline supports headless execution without interactive browser sessions, relying on standardized structured responses.
+
+### 2026: Address Validation Lifecycle
+
+Validating the shipping address is a mandatory, isolated step that must occur before tax calculation or shipping carrier requests:
+- **API Standards**: Integrate Google Maps Address Validation, Loqate, or Smarty Streets APIs to standardize raw user inputs into verified, carrier-compliant address structures.
+- **Error Handling**: Promptly catch validation errors (e.g., missing apartment number, invalid zip codes) and resolve them programmatically or reject with precise error subcodes.
+
+### 2026: Stripe Tax Integration and Decision Tree
+
+Selecting the correct tax calculation service depends on the merchant's scale, transaction volume, and operational context:
+- **Stripe Tax**: Recommended for startups and mid-market merchants operating within the Stripe payment ecosystem who require quick integration.
+- **TaxJar**: Ideal for multi-channel merchants (e.g., Shopify + Custom Web App) with moderate transaction volumes and standard ERP requirements.
+- **Avalara AvaTax**: Designed for enterprise organizations with high transaction volumes, complex Nexus rules, custom ERP systems, and localized tax needs.
+
+### 2026: Economic Nexus Threshold Monitoring
+
+Merchants must actively track regional sales thresholds to ensure compliance with local tax registration laws:
+- **Nexus Monitoring**: Track US state-by-state transaction count and sales volume thresholds programmatically.
+- **Alerting**: Alert internal operations teams when approaching 80% of any state's economic nexus threshold (e.g., 200 transactions or $100,000 in sales) to trigger timely registration.
+
 ## Checklist
 
 - [ ] cart totals recalculated server-side before every charge
@@ -60,6 +86,10 @@ Define the full funnel before building:
 - [ ] inventory locked before charge, released on failure
 - [ ] order confirmation and email sent after successful payment
 - [ ] guest and authenticated paths tested independently
+- [ ] agentic checkout spending limits and pre-authorization gates enforced
+- [ ] address validation performed via verified API before tax/shipping calculations
+- [ ] Stripe Tax, TaxJar, or Avalara chosen based on transaction volume and ERP needs
+- [ ] economic nexus threshold monitoring and low-nexus alerts configured
 
 ## Related Skills
 

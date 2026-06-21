@@ -87,6 +87,28 @@ At each layer boundary:
 - produce `data-pipeline-spec.json` or equivalent contract when machine handoff is required
 - update docs or README with pipeline freshness, ownership, and re-run instructions
 
+## 2026 Data Engineering Patterns
+
+### 2026: dbt 1.9 Microbatch Incremental Strategy
+- Configure dbt 1.9 microbatch incremental strategy (`incremental_strategy: 'microbatch'`) by specifying `event_time`, `begin`, and other relevant configs to enable auto-retry and partition-based updates.
+- Ensure the model's SQL references input streams with filtering on target microbatch execution windows.
+- Test microbatch bounds locally to confirm backfill and incremental behaviors are correctly aligned.
+
+### 2026: Apache Iceberg as Lakehouse Storage Layer
+- Integrate dbt-duckdb with Apache Iceberg to handle time-travel queries, schema evolution, and partition pruning.
+- Use Iceberg metadata catalogs to orchestrate transactional writes and queries over modern lakehouse storage layouts.
+- Track metadata files and storage sizes to manage catalog cleanup tasks periodically.
+
+### 2026: EU AI Act Training Data Lineage
+- Leverage dbt DAG data provenance to map dependencies from raw training files to final training dataset outputs.
+- Retain all data lineage metadata for a minimum of 10 years to comply with EU AI Act data governance and auditability requirements.
+- Audit ingestion pipelines to verify that no toxic, protected, or biased attributes propagate into downstream model inputs.
+
+### 2026: DuckDB in Production Patterns
+- Deploy DuckDB using embedded models, MotherDuck serverless integration, or as an Iceberg query engine for analytical workloads up to 100GB.
+- Maintain separate development/production environments and manage memory limits under concurrent querying environments.
+- Optimize query execution plans by checking catalog statistics and partitioning layouts.
+
 ## Common Pitfalls
 
 - comparing floats read as strings causes false positives — normalize before diff

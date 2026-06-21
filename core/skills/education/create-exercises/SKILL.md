@@ -13,6 +13,9 @@ Use this skill to generate practical tasks, tests, or mock exams strictly follow
 - Follow a structured cognitive matrix (e.g., Bloom's Taxonomy: Remember → Understand → Apply → Analyze/Evaluate).
 - Calibrate difficulty ratio to the student's grade, goal, and prior knowledge.
 - Avoid notations, formulas, or problem-solving methods not yet taught in the target curriculum.
+- Establish an AI-assisted exercise generation workflow featuring Bloom's Taxonomy filtering and a mandatory human review gate.
+- Calibrate exercise difficulty dynamically using Item Response Theory and moving average metrics to maintain a 70-80% target success rate.
+- Integrate spaced repetition triggers based on SM-2 or SM-15 algorithms into the question scheduler.
 
 ## Suggested Process
 
@@ -22,6 +25,66 @@ Use this skill to generate practical tasks, tests, or mock exams strictly follow
 4. **Define the Answer Key & Rubric**: Create a precise grading rubric down to the required partial point steps.
 5. **Review for Edge Cases**: Ensure no questions fall outside the defined curriculum scope.
 
+### 2026: Exercise Engineering and Spaced Repetition
+
+To meet modern digital education requirements, three key practices must be implemented in the exercise generation flow:
+
+#### 1. AI-Assisted Exercise Generation Workflow
+When using Large Language Models to generate exercises, follow a structured generative pipeline:
+- **Bloom's Taxonomy Filtering**: System prompts must specify the target cognitive level (e.g., Remember, Understand, Apply, Analyze, Evaluate, Create). For example, a prompt asking for "Apply" level should generate real-world scenario questions requiring formula usage, not just concept definitions.
+- **Taxonomy Level Breakdown**:
+  - **Remember**: Recall facts and basic concepts. (Exercise format: Multiple choice, flashcards, definition matching).
+  - **Understand**: Explain ideas or concepts. (Exercise format: Summarization, grouping, concept mapping).
+  - **Apply**: Use information in new situations. (Exercise format: Calculations, code execution, simulation tasks).
+  - **Analyze**: Draw connections among ideas. (Exercise format: Bug identification, architectural comparison, diagram analysis).
+  - **Evaluate**: Justify a stand or decision. (Exercise format: Code review reviews, security posture audits, trade-off analyses).
+  - **Create**: Produce new or original work. (Exercise format: System design, writing complete modules, project prototyping).
+- **Cognitive Complexity Guardrails**: Restrict AI output from generating overly complex or convoluted language that confuses the target grade level.
+- **Human Review Gate**: AI-generated questions are treated as drafts. A qualified educator must review, edit, and approve every question before it is compiled into a student quiz or exam database.
+
+#### Cognitive Matrix and Exercise Alignment Table
+
+| Bloom's Level | Cognitive Process | Target Task Type | Assessment Criteria | Example Exercise |
+|---|---|---|---|---|
+| Remember | Retrieving relevant knowledge | Multiple-choice questions | Accurate recall of facts | "Define the time complexity of binary search." |
+| Understand | Constructing meaning | Concept mapping, explanations | Clear explanation of patterns | "Explain how a hash collision is resolved in Java." |
+| Apply | Carrying out or using a procedure | Practical calculations, coding | Execution accuracy and output | "Implement a function to reverse a linked list." |
+| Analyze | Breaking material into parts | Debugging, parsing log traces | Identification of root cause | "Determine the memory leak source from this pprof output." |
+| Evaluate | Making judgments based on criteria | Code reviews, design critique | Structural and safety arguments | "Review this SQL schema design for N+1 vulnerabilities." |
+| Create | Putting elements together | System architecture design | Design novelty and integration | "Design a distributed notification system for 10M users." |
+
+#### 2. Adaptive Difficulty Calibration
+Exercise sets should adapt dynamically to student performance to optimize engagement and prevent frustration:
+- **Item Response Theory (IRT)**: Model student ability and question difficulty as parameters. Questions are selected based on the student's probability of answering correctly, aiming for optimal information gain.
+- **Mathematical Calibration (Rasch Model)**:
+  - We use the One-Parameter Logistic Model to compute probability:
+  - $$P(X_i = 1 | \theta, \beta_i) = \frac{e^{\theta - \beta_i}}{1 + e^{\theta - \beta_i}}$$
+  - Where $\theta$ represents student ability and $\beta_i$ represents item difficulty.
+- **Three-Parameter Logistic Model (3PL)**:
+  - For multiple-choice questions with guessing factors:
+  - $$P(X_i = 1 | \theta, a_i, b_i, c_i) = c_i + (1 - c_i) \frac{e^{a_i(\theta - b_i)}}{1 + e^{a_i(\theta - b_i)}}$$
+  - Where $a_i$ is discrimination, $b_i$ is difficulty, and $c_i$ is the pseudo-guessing probability.
+- **Moving Average Baseline**: Track the student's recent performance using a rolling moving average (e.g., the last 10 exercises).
+- **Target Success Rate**: Calibrate the difficulty of the next question block to maintain a 70-80% student success rate. This level of challenge is high enough to stimulate learning but low enough to build confidence.
+
+#### 3. Spaced Repetition Triggers
+Retention-optimized courses must trigger reviews at calculated intervals using cognitive science models:
+- **SM-2 Algorithm Integration**: Schedule reviews based on the SuperMemo-2 algorithm. Calculate intervals ($I$) using response quality ($q$ from 0 to 5) and easiness factor ($EF$):
+  - $I(1) = 1$ day
+  - $I(2) = 6$ days
+  - For $n > 2$: $I(n) = I(n-1) \times EF$
+  - Adjust $EF$ based on performance: $EF' = EF + (0.1 - (5 - q) \times (0.08 + (5 - q) \times 0.02))$
+- **SM-15 Algorithm Integration**: For fine-grained adaptive systems, use the SuperMemo-15 algorithm, which models memory retention based on three variables: difficulty, stability, and retrievability.
+- **Retrievability Math**:
+  - $$R = e^{-\ln(2) \cdot \frac{t}{S}}$$
+  - Where $t$ is elapsed time since last review and $S$ is memory stability.
+- **Scheduler Integration**: Connect the exercise engine to a background scheduling worker. When a student completes a review, calculate the next review date and queue the notification or study block accordingly.
+- **Database Schema Schema**:
+  - `card_id` - Identifier for the flashcard or exercise.
+  - `repetitions` - Number of successful consecutive reviews.
+  - `easiness_factor` - The difficulty multiplier.
+  - `next_review_due` - Timestamp of next scheduled review.
+
 ## Checklist
 
 - [ ] Test format and duration are clearly stated.
@@ -30,6 +93,11 @@ Use this skill to generate practical tasks, tests, or mock exams strictly follow
 - [ ] Difficulty ratio reflects the educational goal (foundational vs advanced prep).
 - [ ] Answer key provides granular point breakdowns.
 - [ ] Language and terminology match official textbooks or standards for that level.
+- [ ] AI-assisted generation workflow filters by Bloom's Taxonomy level.
+- [ ] Human review gate is defined and implemented before student assignment.
+- [ ] Difficulty calibration maps against Item Response Theory (IRT) model.
+- [ ] Student success metrics are tracked using a moving average aiming at a 70-80% target rate.
+- [ ] Spaced repetition schedules are triggered and integrated with SM-2 or SM-15 schedulers.
 
 ## Related Skills
 
