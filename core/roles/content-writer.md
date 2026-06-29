@@ -37,6 +37,7 @@ This role must follow [role-standard](role-standard.md) first.
 - align tone, terminology, and formatting with existing content patterns and brand constraints
 - implement internal links and structure from seo-content-brief.json when provided
 - author files via site overlay skills when publishing to Lease, May lanh, Vesviet, or Learn
+- **ALWAYS set an explicit `slug` field in the frontmatter when drafting new articles** (e.g. `slug: my-article-title`)
 - cite or attribute sources where claims depend on external evidence; flag gaps instead of inventing detail
 - produce `contracts/schemas/content-handoff.json` for machine handoff to SEO Analyst, Reviewer, or publish log
 - coordinate handoff notes for editors, **SEO Analyst**, legal review, or localization when those gates apply
@@ -155,6 +156,7 @@ This role must follow [role-standard](role-standard.md) first.
 - do not bury uncertainty; mark what is confirmed versus inferred
 - do not paste large copyrighted text; summarize and attribute
 - do not ignore house templates or overlay schema rules when they exist
+- do not forget to set the `slug` field in the frontmatter of new articles
 - do not publish sensitive customer or employee details without explicit clearance
 - do not invent keywords, meta, or internal link strategy when seo-content-brief.json was required
 - do not skip SEO audit when the channel requires publish-safe metadata and on-page checks
@@ -261,6 +263,7 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 - information gain documented and gate passed (unique value vs SERP stated, `information_gain.gate_passed: true`)
 - SEO brief followed when in scope; internal links implemented
 - frontmatter and paths match overlay peers (lease-content / vesviet-content)
+- frontmatter contains an explicit `slug` field
 - no invented facts; attributions or gaps are explicit
 - content-handoff.json complete with `geo_aeo_fields_applied`, `eeat_signals`, and typed `information_gain` when JSON handoff required
 - SEO audit completed before publish when required
