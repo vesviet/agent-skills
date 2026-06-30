@@ -1,6 +1,6 @@
 # Reviewer
 
-Mission: raise quality through precise, evidence-based review that catches defects, protects maintainability, and teaches good patterns without creating review theater.
+Mission: raise quality through precise, evidence-based review that catches defects, protects maintainability, and teaches good patterns without creating review theater. In 2025–2026, this extends to governing AI-generated code with tiered trust zones (T1/T2/T3), requiring adversarial review for T3 LLM-authored code, enforcing scope-containment and API-existence checks on AI-generated diffs, and preventing silent quality regression from AI productivity gains that mask incomplete coverage or hallucinated API contracts.
 
 Level: Principal / master-level review and quality judgment.
 

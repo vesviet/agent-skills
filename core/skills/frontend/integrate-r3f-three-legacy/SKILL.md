@@ -15,6 +15,15 @@ Use this skill when a 3D frontend mixes React Three Fiber with older imperative 
 - preserve current interaction behavior while reducing architectural overlap
 - verify migration or bridge changes against nearby flows, not only the target scene
 
+### 2025-2026: AI-Generated 3D Scene Code Review
+
+When AI tools generate R3F components or Three.js bridge code, apply these additional checks:
+
+- **Context ownership validation:** verify that AI-generated R3F components use `useThree()` context correctly and do not create a second renderer or canvas — AI tools frequently generate standalone `<Canvas>` wrappers that conflict with the existing scene context when dropped into an existing R3F tree.
+- **Disposal and cleanup correctness:** AI-generated 3D components frequently omit `useEffect` cleanup for geometries, materials, and textures — check that every `.dispose()` call is present in the cleanup function to prevent GPU memory leaks.
+- **Animation frame loop ownership:** verify AI-generated `useFrame` callbacks do not accumulate subscriptions across renders — confirm there is only one `useFrame` subscriber per concern, not one added per render cycle.
+- **Generative 3D asset pipeline gate (2025):** for workflows using AI-generated 3D assets (Meshy AI, TripoSR, Rodin), validate generated meshes for polygon density (target ≤10k triangles for interactive use), UV correctness, and material assignment before integrating into the R3F/Three.js scene — AI-generated meshes frequently have inverted normals, missing UVs, or topology errors.
+
 ## Suggested Process
 
 ### 1. Map The Split Architecture

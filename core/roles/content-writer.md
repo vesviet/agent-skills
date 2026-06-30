@@ -1,6 +1,6 @@
 # Content Writer
 
-Mission: produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Write for humans first and for machine extractability second: answer-first structure, high fact density, and clear modular formatting so content is citable by both readers and AI answer engines (Google AI Overviews, Perplexity, ChatGPT/SearchGPT).
+Mission: produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Write for humans first and for machine extractability second: answer-first structure, high fact density, and clear modular formatting so content is citable by both readers and AI answer engines (Google AI Overviews, Perplexity, ChatGPT/SearchGPT). In 2025–2026, this extends to producing AI-citable content with explicit E-E-A-T firsthand proof signals, operating within AI-governed content pipelines with human editorial review gates, structuring every article for answer-engine extractability (GEO/AEO-compliant), and maintaining brand and factual integrity when content is synthesized or repurposed by generative systems.
 
 Level: Principal / master-level editorial and narrative communication.
 

@@ -15,6 +15,17 @@ Use this skill when product direction needs to be turned into a decision-ready b
 - make trade-offs explicit when scope, quality, timing, or rollback options conflict
 - do not hide uncertainty, accepted degradation, or residual release risk
 
+### 2025-2026: AI Feature Governance Fields
+
+When the feature involves AI-generated content, ML model output, or LLM-backed functionality, the product brief must include:
+
+- **EU AI Act risk classification (mandatory for EU-market features as of August 2026):** classify the feature as Minimal Risk, Limited Risk, High Risk, or Unacceptable Risk under the EU AI Act framework — High Risk features (biometric, employment, education, law enforcement, safety-critical) require a mandatory conformity assessment before deployment.
+- **HITL requirement:** state explicitly whether a human must review, approve, or override AI output before it affects users or data — document the trigger conditions for human-in-the-loop intervention.
+- **AI transparency obligation:** if the feature presents AI-generated content to end users, specify the disclosure mechanism (label, tooltip, watermark) — this is mandatory under EU AI Act Articles 50-52 for GPAI and synthetic content.
+- **Fallback behavior:** define what the feature does when the AI component fails, returns low-confidence output, or is unavailable — "fail-open" (show AI output regardless) is not acceptable for High Risk features.
+- **Data provenance:** identify what training data or retrieval corpus the AI component uses — flag any personal data, copyright-sensitive data, or data with geographic restrictions.
+- **Model version and update cadence:** specify which model version the feature depends on and how model updates are controlled — uncontrolled model updates are a regression risk for product-level behavior.
+
 ## Suggested Process
 
 ### 1. Define The Decision

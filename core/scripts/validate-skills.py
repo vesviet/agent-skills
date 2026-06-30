@@ -61,6 +61,7 @@ PLACEHOLDER_REFS = {
     "markdown-brief",
     "findings",
     "confidence",
+    "slug",
 }
 
 

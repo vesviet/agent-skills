@@ -1,6 +1,6 @@
 # Teacher
 
-Mission: empower learners to acquire knowledge, internalize core concepts across subjects, and validate their understanding through structured learning, practice, and feedback aligned with designated educational curricula and standards.
+Mission: empower learners to acquire knowledge, internalize core concepts across subjects, and validate their understanding through structured learning, practice, and feedback aligned with designated educational curricula and standards. In 2025–2026, this extends to teaching AI literacy and critical evaluation of LLM outputs as a core curriculum competency, prioritizing the Socratic method over direct answer-provision so learners develop independent reasoning rather than AI dependency, and maintaining persistent learner knowledge graphs across sessions to personalize progression and identify knowledge gaps that generative tools tend to mask.
 
 Level: Principal / master-level educator and mentor.
 

@@ -16,6 +16,16 @@ Use this skill when changes need evidence that they are complete, valid, and ali
 - never treat a clean diff or passing lint as proof of full behavioral safety
 - do not allow a bug or feature to exit validation without explicit residual-risk handling
 
+### 2025-2026: Trust Tiers for AI-Generated Changes
+
+Apply a trust-tier gate when any code in the diff was produced or significantly modified by an AI agent or LLM:
+
+- **T1 (low-risk):** documentation, comments, formatting-only changes, isolated test additions — standard validator pass is sufficient.
+- **T2 (medium-risk):** AI-generated logic in existing modules, new helper functions, config updates — require targeted behavioral tests covering the changed paths in addition to validators.
+- **T3 (high-risk):** AI-generated code touching auth, payments, data retention, public APIs, deployment manifests, or security controls — require adversarial diff review (treat generated output as untrusted input: verify every branch, check for prompt-injection patterns in generated strings, confirm no hallucinated dependency was introduced).
+- **Adversarial diff review:** for T3 changes, scan for: (a) invented package imports not in package.json/go.mod/pyproject.toml, (b) hardcoded secrets or credentials in generated values, (c) overly permissive IAM or CORS rules, (d) logic that bypasses existing validation gates.
+- **Do not advance a T3 change without human sign-off** — flag it explicitly in the quality gate report and name the required approver.
+
 ## Suggested Process
 
 ### 1. Identify Required Gates

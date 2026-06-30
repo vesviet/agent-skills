@@ -1,6 +1,6 @@
 # Ecommerce Engineer
 
-Mission: design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale.
+Mission: design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to implementing Agentic Commerce Protocol (ACP) enabling autonomous AI agents to discover, negotiate, and transact on behalf of users, governing AI-driven product recommendations and semantic vector search, validating generative UI components for dynamic pricing and offers against PCI-DSS and accuracy requirements, and treating agentic commerce flows as first-class security boundaries.
 
 Level: Principal / master-level commerce engineering and platform leadership.
 

@@ -5,34 +5,104 @@ description: Extract and format micro-content variants (social threads, newslett
 
 # Repurpose Content
 
-**Context:** Modern content distribution requires a single narrative to be adapted into multiple native formats. This skill ensures that when an agent writes a core piece of content (like a blog post or whitepaper), it extracts high-value micro-content variants for omnichannel distribution without losing the core message or tone.
+Modern content distribution requires a single narrative to be adapted into multiple native formats. Use this skill when a core piece of content (blog post, whitepaper, case study) needs to be extracted into high-value micro-content variants for omnichannel distribution without losing core message, tone, or E-E-A-T signals.
 
 ## Core Rules
 
-- **Native Format Alignment:** A LinkedIn post is not just a shortened article; it requires a hook, spaced lines, and a professional-insight tone. A Twitter thread requires numbered segments, tight constraints, and an engaging opener.
-- **Do Not Hallucinate Constraints:** If repurposing an article into a script, explicitly denote visual cues (e.g., `[B-Roll: ... ]`). Do not invent facts that were not in the original text.
-- **Maintain E-E-A-T / Information Gain:** Ensure the unique insight from the main article is preserved in the short-form variant.
+- **Native Format Alignment:** adapt to channel conventions — LinkedIn posts need a hook and spaced lines; Twitter/X threads need numbered segments and tight word counts; video scripts need `[Visual/Hook]` markers and ≤150 words for 60-second formats.
+- **No Fact Invention:** do not introduce claims, statistics, or examples not present in the source article; flag gaps and note they need original sourcing.
+- **Preserve E-E-A-T / Information Gain:** the unique insight, firsthand evidence, and source attribution from the main article must survive in the short-form variant — do not strip credentials, citations, or expert quotes when adapting.
+- **Channel Ownership:** handoff labeled variants clearly; do not choose distribution channels unless explicitly requested.
+- **Source Must Exist:** do not generate repurposed content from a non-existent source — request or write the primary article first using `write-article`.
+
+### 2025-2026: AI-Assisted Repurposing Governance
+
+- **Human editorial gate is mandatory** when AI generates channel variants: treat AI output as a first draft requiring human review before publish — do not ship AI-repurposed content directly.
+- **AI content labeling:** follow the platform's native AI content disclosure requirements (Meta, LinkedIn, and TikTok each have their own mandatory AI label policies as of 2025) — apply the appropriate label or flag for manual application.
+- **GEO/AEO-safe adaptation:** when the source article is indexed for Google AI Overviews or Perplexity citation, preserve fact density and structured statements in newsletter and social variants — stripping factual depth reduces AI citability of the core article.
+- **Do not repurpose AI-generated source material without verifying its accuracy first** — repurposing amplifies errors; validate the source article's claims before distributing variants.
 
 ## Suggested Process
 
-1. **Analyze Source:** Read the primary article/document. Identify the core thesis, the top 3 most interesting statistics/facts, and the call to action (CTA).
-2. **Select Variants:** Based on the requested channels (e.g., Twitter, LinkedIn, Newsletter, TikTok).
-3. **Draft Variants:** 
-   - *Twitter/X Thread:* 5-7 tweets. Hook -> Problem -> Insight 1 -> Insight 2 -> Conclusion/CTA.
-   - *LinkedIn Post:* Text-only format or carousel script. Use an engaging question hook, bulleted insights, and a community-driven closing question.
-   - *Short Video Script (TikTok/Reels/Shorts):* 30-60 second read time (~75-150 words). Include `[Visual/Hook]`, `[Body]`, and `[Outro/CTA]` markers.
-4. **Review against constraints:** Are the variants too long? Do they sound like AI or do they sound like native social content?
-5. **Handoff:** Output the variants clearly labeled for the requester.
+### 1. Analyze Source
+Read the primary article. Identify: core thesis, top 3 most impactful statistics or facts, E-E-A-T proof elements (author credentials, firsthand account, citations), and the primary CTA.
 
-## Related Skills
+### 2. Select Channels and Variants
+Based on the requested distribution channels:
+- **Twitter/X Thread:** 5-7 tweets — Hook → Problem → Insight 1 → Insight 2 → Conclusion/CTA
+- **LinkedIn Post:** 150-300 words — question hook, bulleted insights, community question closing; text-only or carousel script
+- **Newsletter Snippet:** 80-120 words — answer-first summary + link back to full article
+- **Short Video Script (TikTok/Reels/Shorts):** 30-60 second read (~75-150 words) — `[Visual/Hook]`, `[Body]`, `[Outro/CTA]`
+- **Email Subject + Preview:** ≤60 chars subject, ≤90 chars preview text
 
-- **write-article**: Use when drafting the core content from scratch.
-- **optimize-seo**: Use when ensuring the core content is search-friendly before repurposing.
+### 3. Draft Each Variant
+- preserve the source's unique insight in each variant
+- use native channel vocabulary and formatting
+- do not shorten by removing factual claims — shorten by removing context the channel audience already has
+
+### 4. Review Against Constraints
+- are variants within channel length limits?
+- do they preserve the core E-E-A-T signal?
+- do they pass a "would a human write this?" check — not formulaic AI fill?
+- is every statistic present in the source?
+
+### 5. Handoff
+Output variants clearly labeled by channel. Flag any fact or credential that was omitted for length and needs reinstatement if the audience is more expert.
+
+## Output Format
+
+```
+## Repurposed Variants — <Article Title>
+
+Source: <URL or file path>
+Channels requested: <list>
+
+---
+
+### Twitter/X Thread
+Tweet 1: <hook>
+Tweet 2: <insight>
+...
+
+### LinkedIn Post
+<post body>
+
+### Newsletter Snippet
+Subject: <subject line>
+Preview: <preview text>
+Body: <80-120 word snippet>
+
+### Short Video Script
+[Visual/Hook]: ...
+[Body]: ...
+[Outro/CTA]: ...
+
+---
+AI governance: [ ] human editorial review completed before publish
+AI label applied: [ ] yes / [ ] not required for this channel
+```
+
+## Anti-Patterns To Reject
+
+- repurposing before verifying the source article's factual accuracy
+- stripping firsthand proof (photos, credentials, case study data) to hit word count
+- generating variants with invented examples or statistics not in the source
+- publishing AI-generated social variants without human editorial review
+- applying the same word count and tone across all channels — each must be native
 
 ## Checklist
 
-- [ ] Source article's core thesis and key facts identified.
-- [ ] Variants drafted using channel-native formatting (spacing, hooks, threads).
-- [ ] No new/unverified facts were invented during shortening.
-- [ ] CTA (Call to Action) is present and context-appropriate in each variant.
-- [ ] Visual cues or multimedia prompts are properly formatted.
+- [ ] source article's core thesis and key facts identified
+- [ ] E-E-A-T signals (credentials, citations, firsthand proof) mapped from source
+- [ ] variants drafted using channel-native formatting (spacing, hooks, threads)
+- [ ] no facts invented or imported from outside the source
+- [ ] CTA is present and context-appropriate in each variant
+- [ ] visual cues or multimedia prompts formatted for video scripts
+- [ ] AI content label policy checked for each target platform (2025 requirements)
+- [ ] human editorial review gate confirmed before publish
+
+## Related Skills
+
+- **write-article**: Use when drafting the core content from scratch before repurposing.
+- **optimize-seo**: Use when ensuring the core content is GEO/AEO-optimized before repurposing for AI-cited surfaces.
+- **conduct-research**: Use when source material lacks sufficient factual depth to repurpose credibly.

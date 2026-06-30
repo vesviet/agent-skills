@@ -16,6 +16,15 @@ Use this skill when a frontend change needs a new page, screen, or route-level f
 - update route-aware tests when the page contract changes
 - if any code in this change was AI-generated, validate it per the risk tier defined in the frontend-developer role before accepting
 
+### 2025-2026: AI-Generated Route Wiring Review
+
+When AI tools generate page or route scaffolding, apply these additional checks before merging:
+
+- **Auth guard completeness:** verify the generated route has the correct authentication and authorization guards — AI-generated routes frequently omit auth wrappers on sensitive pages or apply overly permissive default access.
+- **Data loading correctness:** confirm the generated data-loading pattern (loader function, `useEffect`, SWR/React Query hook) matches the repo's established pattern and handles loading, error, and empty states explicitly — AI-generated loaders often assume happy-path only.
+- **Stale data and cache invalidation:** check that generated mutations or navigations trigger appropriate cache invalidations — AI-generated code frequently omits `invalidateQueries` or router cache refresh after mutations.
+- **Deep-link and URL parameter handling:** verify that AI-generated route parameter handling validates input (type coercion, missing param fallbacks) — raw URL parameters are user-controlled input and must not be used without validation.
+
 ## Suggested Process
 
 ### 1. Inspect Nearby Routes

@@ -247,4 +247,4 @@ python3 core/scripts/validate-2026-compliance.py
 
 The validator checks required sections, section order, minimum content depth, toolbox references, duplicate toolbox entries, role inventory, and workflow mapping. The 2026 compliance validator checks A2A/contract coverage, coordinator wiring, full policy coverage, and graph orchestration infrastructure.
 
-Last updated: 2026-06-17
+Last updated: 2026-06-30

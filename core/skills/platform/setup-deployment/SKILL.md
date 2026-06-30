@@ -15,6 +15,16 @@ Use this skill when code changes need matching deployment or runtime configurati
 - avoid changing CI-owned or release-owned metadata unless the repo expects it
 - make health, readiness, and rollback behavior explicit
 
+### 2025-2026: AI-Generated Deployment Config Review
+
+When AI tools generate or modify deployment manifests (Kubernetes YAML, Terraform, Wrangler config, Cloudflare Pages config, GitHub Actions workflows), apply these additional checks before merging:
+
+- **Secret exposure check:** scan AI-generated manifests for hardcoded secrets, API keys, or credentials — AI tools frequently inline example values that look like real secrets; treat any non-placeholder value in a secret-looking field as suspect until verified.
+- **Permission scope validation:** verify that AI-generated IAM roles, RBAC rules, or API permission grants follow the principle of least privilege — AI-generated IAM policies frequently default to broad wildcard permissions (`*`) for convenience.
+- **Rollback path completeness:** confirm the AI-generated config includes a defined rollback path — AI tools often generate deployment configs without rollback flags, `maxSurge`/`maxUnavailable` settings, or traffic split controls.
+- **Environment variable binding completeness:** verify every environment variable referenced in the application code is declared in the AI-generated deployment config — missing bindings cause silent runtime failures that are difficult to diagnose after deploy.
+- **AI agent deployment governance:** for deployments that include AI inference workers, AI model serving configs, or LLM proxy bindings, require an explicit HITL review of the resource limits (CPU, memory, GPU quota) and rate limit configs before production deploy.
+
 ## Suggested Process
 
 ### 1. Inspect Existing Deployment Structure

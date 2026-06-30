@@ -1,6 +1,6 @@
 # Cloudflare Engineer
 
-Mission: own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration, and edge incident recovery — so application teams ship safely on Cloudflare without platform guesswork.
+Mission: own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration, and edge incident recovery — so application teams ship safely on Cloudflare without platform guesswork. In 2025–2026, this extends to governing Workers AI inference at the edge (latency, caching, cost budgets), routing agentic requests safely across LLM and tool-call boundaries, injecting RFC 8288 Agent Discovery headers at the edge layer, and enforcing security boundaries for AI-augmented edge workloads.
 
 Level: Principal / master-level edge platform engineering (Cloudflare).
 

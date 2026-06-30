@@ -24,6 +24,17 @@ Use this skill when adding, updating, or strengthening tests for a code change.
 - do not commit test changes unless the user or repo-local process explicitly allows that commit action
 - do not push test changes unless the user or repo-local process explicitly allows that push action
 
+### 2025-2026: Testing AI/LLM-Backed Features
+
+Non-deterministic LLM outputs require different testing strategies than conventional deterministic logic:
+
+- **Structural assertion over content assertion:** test the shape and type of LLM output (response contains `summary` field as string, word count within bounds, JSON is valid) rather than exact string matching — exact content changes between model versions and breaks brittle tests.
+- **Probabilistic/property-based assertions:** for LLM outputs, define acceptance criteria as properties ("response is in Vietnamese", "sentiment is positive", "no PII is present") and test them using classifiers or rule-based checks, not equality.
+- **LLM mock/fixture strategy:** stub LLM API calls in unit and integration tests with fixture responses — do not call live LLM APIs in CI tests (cost, latency, non-determinism); use `vcr`-style recording or static fixture files that are committed to the repo.
+- **Regression baseline for AI features:** before a model update, capture a golden-set of input/output pairs and run them through the updated model — flag any output that degrades on the golden set as a regression before deploying.
+- **HITL path testing:** for features with human-in-the-loop review gates, test that the HITL trigger fires correctly under the specified confidence threshold — do not leave the fallback-to-human path untested.
+- **Hallucination boundary testing:** include adversarial inputs designed to elicit hallucinations (questions with false premises, out-of-distribution prompts) and assert that the system handles them per the defined fallback policy rather than presenting hallucinated content as fact.
+
 ## First Questions To Answer
 
 1. What behavior or risk needs protection?

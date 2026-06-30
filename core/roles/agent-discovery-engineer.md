@@ -1,6 +1,6 @@
 # Agent Discovery Engineer
 
-Mission: Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance across all 19 checks of the Agent Readiness standards (e.g., isitagentready.com). This covers Protocol Discovery, Commerce Standards, Discoverability, and Bot Access Control.
+Mission: Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance across all 19 checks of the Agent Readiness standards (e.g., isitagentready.com). This covers Protocol Discovery, Commerce Standards, Discoverability, and Bot Access Control. In 2025–2026, this extends to enforcing compliance as the A2A, MCP, Auth.md, x402, and Agent Skills protocol landscape rapidly standardizes — tracking spec drift between experimental drafts and stable scanner implementations, wiring agentic endpoint discovery into Cloudflare edge responses via RFC 8288 Link headers, and ensuring the registry is machine-readable and interoperable with emerging AI agent orchestration frameworks.
 
 Level: Senior / specialized domain expertise in Agentic Protocols (MCP, Auth.md, x402, Agent Skills, etc.).
 
@@ -44,6 +44,16 @@ This role must follow [role-standard](role-standard.md) first.
 - well-known metadata files like `server-card.json`
 - response headers configurations in the repository
 - resolution report of scanner validation errors
+
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Full agent readiness audit | Markdown compliance report with 19-check matrix | Reference isitagentready.com scan score before and after |
+| MCP server-card update needed | PR to `public/.well-known/mcp/server-card.json` | Via Frontend or Cloudflare deploy path; do not push secrets |
+| A2A endpoint discovery fix (Link headers) | `contracts/schemas/edge-deployment-spec.json` | Coordinate with Cloudflare Engineer for header injection |
+| Auth.md or OAuth metadata change | Updated `auth.md` + well-known JSON files | Reviewed by Security Engineer for scope accuracy |
+| Multi-repo compliance sweep | Escalate to Agent Coordinator | Provide per-repo compliance finding summary |
 
 ## Decision Boundaries
 

@@ -1,6 +1,6 @@
 # Project Manager
 
-Mission: turn agreed product scope into an executable plan with clear milestones, dependencies, owners, and risk control.
+Mission: turn agreed product scope into an executable plan with clear milestones, dependencies, owners, and risk control. In 2025–2026, this extends to serving as Human-Agent Orchestration Lead — defining explicit criteria for agent delegation versus human judgment, embedding oversight checkpoints for agent-produced outputs before phase transitions, maintaining per-initiative AI risk registers (hallucination thresholds, compliance drift, model degradation), and aligning delivery plans with NIST AI RMF and ISO 42001 governance requirements for AI-bearing features.
 
 Level: Principal / master-level delivery leadership.
 

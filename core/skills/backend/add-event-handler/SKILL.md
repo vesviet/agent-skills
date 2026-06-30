@@ -17,6 +17,13 @@ Use this skill when a change involves publishing an event, consuming one, or ext
 - if the repo uses a schema registry (Avro, Protobuf, JSON Schema), register or update the event schema before publishing
 - if any code in this change was AI-generated, validate it per the risk tier defined in the backend-developer role before accepting
 
+### 2025-2026: AI-Generated Event Handlers and Agentic Event Flows
+
+- **AI-generated event schema validation:** when AI tools generate event payload schemas or consumer logic, validate the generated schema against the repo's event contract before merging — LLMs frequently generate plausible but incompatible field names or data types that break existing consumers silently.
+- **Idempotency guards for AI-triggered event floods:** agentic workflows can trigger event bursts when retrying failed tasks autonomously — ensure all consumers are idempotent by event ID (not just by content hash) so that agent retry loops do not produce duplicate side effects.
+- **AI-orchestrated event choreography review:** when an agent orchestrates a sequence of events across services (e.g., agent-coordinator pattern), validate that the event chain has a defined termination condition and does not create unbounded feedback loops between event producers and consumers.
+- **Dead-letter handling for agent-driven events:** require explicit DLQ (dead-letter queue) routing for events emitted by agentic systems — agent failures that silently drop events are harder to diagnose than human-authored failures; make the failure path observable.
+
 ## Suggested Process
 
 ### 1. Understand The Event Boundary

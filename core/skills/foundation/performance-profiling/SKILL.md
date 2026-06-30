@@ -24,6 +24,17 @@ Use this skill when investigating slow paths, memory growth, concurrency bottlen
 - do not profile production without explicit approval and a safety plan
 - validate improvements with repeatable measurements, not intuition
 
+### 2025-2026: AI/ML Workload Profiling
+
+As AI inference, embedding generation, and LLM-backed features become standard service components, include these dimensions when relevant:
+
+- **Model inference latency:** measure and baseline the p50/p95/p99 latency of LLM API calls, embedding model calls, or on-device inference separately from the rest of the service — AI inference is often the dominant latency source and should be profiled independently.
+- **GPU utilization and memory:** for services running models locally (vLLM, Ollama, ONNX Runtime), profile GPU utilization, VRAM usage, and tensor allocation patterns — use NVIDIA `nvitop`, `nvidia-smi`, or PyTorch Profiler; for CPU-only inference use `perf` or `py-spy`.
+- **Batch queue depth and throughput:** for services that batch inference requests, profile queue depth under load and batch fill efficiency — under-batching wastes GPU; over-batching increases tail latency.
+- **Token rate and context window pressure:** for LLM-backed features, measure tokens-per-second and prompt token count — context window exhaustion causes silent truncation that degrades output quality, not a hard error.
+- **Embedding cache hit rate:** for RAG or semantic search systems, measure the embedding cache hit rate — redundant embedding calls are the most common preventable AI cost spike.
+- **AI inference cost accounting:** attribute inference API cost ($ per request) alongside latency — report both for AI-powered paths so optimization decisions can weigh both user experience and cost impact.
+
 ## First Questions To Answer
 
 1. What symptom matters most: latency, throughput, CPU, memory, or contention?
