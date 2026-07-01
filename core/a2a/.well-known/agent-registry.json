@@ -183,6 +183,18 @@
       "agent_card": "core/a2a/registry/ui-ux-designer.agent-card.json",
       "url": "pack://agent-skills/core/roles/ui-ux-designer.md",
       "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2"
+    },
+    {
+      "role": "system-engineer",
+      "agent_card": "core/a2a/registry/system-engineer.agent-card.json",
+      "url": "pack://agent-skills/core/roles/system-engineer.md",
+      "description": "design, implement, and optimize complex systems end-to-end — from hardware and OS configuration through network topology, middleware, application runtime, and AI inference infrastructure — ensuring every layer operates efficiently and meets measurable non-functional requirements"
+    },
+    {
+      "role": "aws-engineer",
+      "agent_card": "core/a2a/registry/aws-engineer.agent-card.json",
+      "url": "pack://agent-skills/core/roles/aws-engineer.md",
+      "description": "build, operate, and optimize AWS-native managed services — EC2, EKS, RDS, Lambda, S3, VPC, Amazon Bedrock, and SageMaker — using Infrastructure as Code, IAM least-privilege design, FinOps enforcement, and AWS-native observability"
     }
   ]
 }

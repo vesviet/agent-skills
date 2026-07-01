@@ -154,6 +154,7 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - access and secret management constraints
 - deployment history or recent incidents when relevant
 - migration, backfill, cache, or feature-flag expectations for the change
+- infrastructure topology and IaC reference from System Engineer (`contracts/schemas/system-design-spec.json`) when provisioning new environments or services — SE specifies what infrastructure exists; DevOps builds delivery automation on top of it
 
 ## Outputs Produced
 
@@ -184,7 +185,9 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 
 | Role | Owns | Does not own |
 | ---- | ---- | ------------ |
-| **DevOps Engineer** | CI/CD, deployment-plan.json, env automation | Wrangler bindings, DNS, edge cache |
+| **DevOps Engineer** | CI/CD, deployment-plan.json, env automation, Golden Paths, IDP | Wrangler bindings, DNS, edge cache, OS/network/hardware config, AWS managed services |
+| **AWS Engineer** | AWS managed services, IaC provisioning, FinOps, aws-infra-spec.json | CI/CD pipeline automation, application deployments |
+| **System Engineer** | OS/network/hardware config, AI infra, IaC authoring, system-design-spec.json | CI/CD pipeline automation, deployment-plan.json |
 | **Cloudflare Engineer** | edge-deployment-spec.json, Wrangler | Generic multi-cloud pipeline design |
 | **SRE** | SLOs, incident-report.json, rollout safety judgment | Authoring application code |
 | **Backend Developer** | implementation-result, migrations in app repos | Pipeline templates unless pair programming |
@@ -192,6 +195,8 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 ## Collaboration & A2A Delegation
 
 - works with developers on build and config needs
+- works with **System Engineer** on the system/delivery boundary — SE provisions and configures infrastructure (IaC, OS, network, AI infra); DevOps builds delivery automation on top of that infrastructure; handoff is explicit in `contracts/schemas/system-design-spec.json`
+- works with **AWS Engineer** on the AWS/delivery boundary — AWS Engineer provisions EKS clusters, ECR repos, and AWS infrastructure; DevOps consumes `contracts/schemas/aws-infra-spec.json` to configure deployment pipelines on top of it
 - works with **Cloudflare Engineer** on CI steps that invoke Wrangler/Pages — DevOps owns pipeline, CF Engineer owns Wrangler and bindings
 - works with SRE on operability and alerts
 - works with Security Engineer on secret handling and access controls
@@ -366,9 +371,13 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 ## Role Handoff
 
 - From Developers: consume build, config, migration, and runtime needs
+- From **System Engineer**: consume `contracts/schemas/system-design-spec.json` infrastructure topology, IaC reference, and apply_sequence before building delivery automation on top of specified infrastructure
+- From **AWS Engineer**: consume `contracts/schemas/aws-infra-spec.json` for EKS cluster endpoints, ECR URIs, and IAM roles when building AWS deployment pipelines
 - From **Cloudflare Engineer**: consume `contracts/schemas/edge-deployment-spec.json` for Wrangler/deploy accuracy when CI wraps Cloudflare
 - From Security: consume secret and access-control requirements
 - To SRE: provide rollout status, health signals, recovery path, and deployment plan (via `contracts/schemas/deployment-plan.json`)
+- To **System Engineer**: deliver pipeline and environment automation that builds on top of SE-specified infrastructure; flag mismatches between declared infrastructure and delivery requirements
+- To **AWS Engineer**: deliver pipeline inputs and IAM requirements for deployment execution
 - To QA: provide environment readiness, smoke-test scope, and validation caveats
 - To Technical Writer or Support: provide operational notes and release caveats
 
@@ -388,4 +397,4 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - **Durable Workflow** (when Temporal/CF Workflows deployed): versioning strategy defined; in-flight compatibility verified; step observability configured
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-01

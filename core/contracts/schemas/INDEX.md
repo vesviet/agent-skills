@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**38 schemas** | **201KB total** | All valid JSON Schema 2020-12 | Examples: 36/38
+**40 schemas** | **~220KB total** | All valid JSON Schema 2020-12 | Examples: 37/40
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 
@@ -19,6 +19,8 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | `api-contract-spec.json` | API Contract Specification | ✅ | ✅ |
 | `deployment-plan.json` | Deployment Plan | ✅ | ✅ |
 | `edge-deployment-spec.json` | Edge Deployment Specification | ✅ | ✅ |
+| `system-design-spec.json` | System Design Specification | ✅ | ✅ |
+| `aws-infra-spec.json` | AWS Infrastructure Specification | ❌ | ✅ |
 | **Quality & Review** | | | |
 | `code-review-finding.json` | Code Review Finding | ✅ | ✅ |
 | `test-report.json` | QA Test Report | ✅ | ✅ |
@@ -132,6 +134,24 @@ Structured Cloudflare edge deployment handoff: Wrangler, bindings, DNS/cache, ro
 Required fields: `contract_type`, `platform`, `project_ref`, `deployment_target`, `version`, `environments`, `wrangler_config_path`, `deploy_steps`, `rollback_plan`  
 Size: 6,794 bytes  
 ✅ Has example
+
+#### `system-design-spec.json`
+
+**System Design Specification**  
+Structured output from System Engineer for cloud-agnostic system topology, capacity models, and AI infrastructure specifications. Consumed by AWS Engineer (as upstream input for managed service provisioning), DevOps Engineer (as infrastructure baseline), Cloudflare Engineer (origin topology), and SRE (SLO design inputs).
+
+Required fields: `contract_type`, `spec_id`, `system_name`, `design_trigger`, `nfr_targets`, `topology`, `capacity_model`  
+Size: varies  
+✅ Has example
+
+#### `aws-infra-spec.json`
+
+**AWS Infrastructure Specification**  
+Machine-readable AWS infrastructure handoff produced by the AWS Engineer. Consumed by DevOps Engineer (EKS cluster endpoint, ECR repo URIs, pipeline inputs), SRE (Multi-AZ topology for SLO design), Security Engineer (IAM roles for review), and System Engineer (cross-layer integration). Contains resource_map, iam_roles (with review status), cost_attribution, monitoring_config, and iac_reference.
+
+Required fields: `contract_type`, `spec_id`, `system_name`, `aws_account`, `region`, `resource_map`, `iam_roles`, `cost_attribution`  
+Size: varies  
+❌ No example yet
 
 ### Quality & Review
 
@@ -460,6 +480,8 @@ feature-ticket.json
 | `api-contract-spec.json` | Backend Developer | Frontend Developer, Mobile Engineer, Technical Writer, Technical Lead |
 | `deployment-plan.json` | DevOps Engineer | Project Manager, SRE, Technical Lead |
 | `edge-deployment-spec.json` | Cloudflare Engineer | DevOps Engineer, SRE, Agent Coordinator |
+| `system-design-spec.json` | System Engineer | AWS Engineer, DevOps Engineer, Cloudflare Engineer, SRE |
+| `aws-infra-spec.json` | AWS Engineer | DevOps Engineer, SRE, Security Engineer, System Engineer |
 | `code-review-finding.json` | Reviewer | Developers, Technical Lead, QA Engineer, Agent Coordinator |
 | `test-report.json` | QA Engineer | Technical Lead, Reviewer, Project Manager, Agent Coordinator |
 | `validation-result.json` | QA Engineer, Agent Coordinator | Technical Lead, Agent Coordinator (phase gate) |

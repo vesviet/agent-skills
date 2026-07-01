@@ -1,0 +1,97 @@
+{
+  "id": "pack://agent-skills/core/roles/aws-engineer",
+  "contract_type": "agent-card",
+  "name": "aws-engineer",
+  "description": "Build, operate, and optimize AWS-native managed services — EC2, EKS, RDS, Lambda, S3, VPC, Amazon Bedrock, and SageMaker — using Infrastructure as Code, IAM least-privilege design, FinOps enforcement, and AWS-native observability. Authors all IAM roles and policies (reviewed by Security Engineer before production apply). Primary deliverable: aws-infra-spec.json for handoff to DevOps Engineer, SRE, and Security Engineer.",
+  "url": "pack://agent-skills/core/roles/aws-engineer.md",
+  "version": "1.0.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "aws-infrastructure",
+      "name": "AWS Infrastructure",
+      "description": "Provision, configure, and optimize AWS managed services following IaC-first discipline. Use when provisioning VPC, EC2, EKS, RDS, Lambda, S3, Bedrock, or SageMaker infrastructure; authoring IAM roles and policies; enforcing FinOps tagging and rightsizing; or configuring CloudWatch, X-Ray, and AWS Config observability.",
+      "tags": [
+        "platform",
+        "infrastructure",
+        "aws",
+        "cloud",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "aws-infra-spec.json"
+      ]
+    },
+    {
+      "id": "setup-deployment",
+      "name": "Setup Deployment",
+      "description": "Configure and manage deployment pipelines and automation. Use when setting up CI/CD for AWS workloads or configuring EKS deployment pipelines.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "deployment-plan.json"
+      ]
+    },
+    {
+      "id": "add-telemetry-instrumentation",
+      "name": "Add Telemetry Instrumentation",
+      "description": "Add observability instrumentation to AWS infrastructure — CloudWatch alarms, X-Ray tracing, Container Insights, and Config Rules.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "aws-infra-spec.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "aws-infra-spec.json"
+  ],
+  "role_file": "core/roles/aws-engineer.md",
+  "policy_profile": "aws-engineer"
+}

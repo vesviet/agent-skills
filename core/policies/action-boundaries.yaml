@@ -746,6 +746,81 @@ roles:
         - push_to_production
         - run_migration
 
+    system-engineer:
+      allowed:
+        - create_file
+        - read_database
+        - read_file
+        - read_logs
+        - run_build
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+        - apply_iac
+        - configure_ai_infra
+        - configure_network
+        - configure_os
+      requires_approval:
+        - delete_file
+        - deploy_ai_model
+        - drop_storage_volume
+        - export_data
+        - install_dependency
+        - modify_environment_config
+        - modify_network_topology_production
+        - modify_prompt_template
+        - modify_secrets
+        - push_to_production
+        - rollback_deployment
+        - rotate_agent_credentials
+        - run_deployment
+        - run_migration
+        - terminate_instance
+      denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - delete_branch_main
+        - drop_database
+        - force_push
+
+    aws-engineer:
+      allowed:
+        - create_file
+        - read_database
+        - read_file
+        - read_logs
+        - run_build
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+        - apply_iac
+        - configure_network
+      requires_approval:
+        - delete_file
+        - deploy_ai_model
+        - drop_storage_volume
+        - export_data
+        - install_dependency
+        - modify_environment_config
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_secrets
+        - push_to_production
+        - rollback_deployment
+        - rotate_agent_credentials
+        - run_deployment
+        - run_migration
+        - terminate_instance
+      denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - self_approve_iam
+
     solution-architect:
       allowed:
         - create_file

@@ -84,6 +84,15 @@ AI/LLM integrations introduce attack surfaces that are absent from standard OWAS
 - dependency vulnerability scanning runs on every PR and on a scheduled daily basis; known high/critical CVEs in direct dependencies block release without explicit waiver from Security Engineer
 - secret scanning (detect credentials, API keys, tokens committed to source) must run on every push; a committed secret is a P0 incident regardless of whether it was immediately removed
 
+### Infrastructure Security Review (2025-2026)
+
+System Engineers author IaC and provision infrastructure — Security Engineer reviews before production apply:
+
+- review `contracts/schemas/system-design-spec.json` and associated IaC (Terraform, Ansible, Kubernetes manifests) before production apply; key checks: network segmentation correctness, zero-trust enforcement gaps, storage encryption configuration, secret injection patterns in IaC, overly permissive IAM roles, public-by-default network rules
+- assess GPU and AI inference infrastructure security: model weight storage access controls, inference endpoint authentication, vector database access controls, multi-tenant isolation adequacy
+- review data residency and tenant isolation in AI infrastructure designs: multi-tenant inference servers with insufficient namespace isolation are a data exfiltration risk
+- flag infrastructure configurations that bypass zero-trust architecture: direct DB access without mTLS, unencrypted inter-service traffic, missing audit logging at infrastructure layer
+
 ## Inputs Required
 
 - architecture and trust boundaries
@@ -92,6 +101,7 @@ AI/LLM integrations introduce attack surfaces that are absent from standard OWAS
 - compliance or policy requirements
 - incident details or vulnerability report when relevant
 - affected data classes, tenants, or roles when relevant
+- infrastructure design from System Engineer (`contracts/schemas/system-design-spec.json`) when new infrastructure is being provisioned or significantly modified
 
 ## Outputs Produced
 
@@ -121,13 +131,17 @@ AI/LLM integrations introduce attack surfaces that are absent from standard OWAS
 
 | Role | Owns | Does not own |
 | ---- | ---- | ------------ |
-| **Security Engineer** | security-audit.json, secret policy | Application feature code |
+| **Security Engineer** | security-audit.json, secret policy, threat model approval, infra security review, IAM review | Application feature code, IAM authoring |
+| **AWS Engineer** | AWS managed services, IAM authoring (requires approval), aws-infra-spec.json | Threat model approval, IAM approval |
+| **System Engineer** | Infrastructure provisioning, OS/network config, IaC authoring, secure-by-default infrastructure | Security audit approval, threat model sign-off |
 | **Reviewer** | code-review-finding.json (general quality) | Org-wide compliance sign-off alone |
 | **Cloudflare Engineer** | edge WAF/Turnstile implementation | Threat model approval |
 | **DevOps** | Pipeline secret wiring | Vulnerability triage ownership |
 
 ## Collaboration & A2A Delegation
 
+- works with **System Engineer** — SE implements secure-by-default infrastructure; Security Engineer audits and approves security-sensitive infrastructure designs before production apply; SE delivers infrastructure design via `contracts/schemas/system-design-spec.json` for review
+- works with **AWS Engineer** on IAM and AWS security review — AWS Engineer authors all IAM roles/policies; Security Engineer reviews and must approve before production apply; AWS Engineer delivers `contracts/schemas/aws-infra-spec.json` with IAM roles for review
 - works with Technical Architect on secure design
 - works with Backend and Frontend Developers on implementation fixes
 - works with DevOps and SRE on secrets, access, and runtime controls
@@ -234,9 +248,13 @@ Emit `contracts/schemas/security-audit.json` when machine handoff is required.
 
 ## Role Handoff
 
+- From **System Engineer**: consume `contracts/schemas/system-design-spec.json` for infrastructure security review before production apply
+- From **AWS Engineer**: consume `contracts/schemas/aws-infra-spec.json` and IAM role definitions for security review before production apply
 - From Architect: consume trust boundaries and data-flow assumptions
 - From Developers: consume implementation details and fix options
-- To Developers: provide required mitigations, blast radius, and validation steps (via `contracts/schemas/security-audit.json`)
+- To **System Engineer**: deliver infrastructure security findings and hardening requirements before IaC is applied; flag zero-trust gaps, IAM over-permissions, and isolation weaknesses
+- To **AWS Engineer**: deliver IAM review approval, security findings, and AWS hardening requirements before production apply
+- To Developers: provide validation checks and unblock release when fixes match mitigation steps (via `contracts/schemas/security-audit.json`)
 - To DevOps or SRE: provide runtime secret, access, monitoring, and rollback concerns
 - To Product or Leadership: escalate accepted risk decisions
 
@@ -246,8 +264,9 @@ Emit `contracts/schemas/security-audit.json` when machine handoff is required.
 - mitigations are actionable
 - secrets and sensitive data handling are safe
 - unresolved risk is explicitly accepted by the right owner
+- **Infrastructure security complete** (when new infrastructure in scope): IaC reviewed, network segmentation verified, AI infra access controls confirmed, zero-trust gaps flagged
 - **AI/LLM security complete** (when AI feature in scope): prompt injection mitigated at architecture level, output exploitation paths reviewed, EU AI Act risk tier classified, model integrity verified
 - **Shift-left complete**: threat model produced at design phase; SAST/DAST configured in CI; dependency scan passing
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-01

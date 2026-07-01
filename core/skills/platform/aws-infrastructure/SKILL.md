@@ -1,0 +1,47 @@
+---
+name: aws-infrastructure
+description: Provision, configure, and optimize AWS managed services following IaC-first discipline. Use when provisioning VPC, EC2, EKS, RDS, Lambda, S3, Bedrock, or SageMaker infrastructure; authoring IAM roles and policies; enforcing FinOps tagging and rightsizing; or configuring CloudWatch, X-Ray, and AWS Config observability.
+---
+
+# AWS Infrastructure
+
+Use this skill when designing or deploying AWS-native infrastructure, configuring IAM roles and policies, applying FinOps cost-optimization strategies, or setting up observability for AWS services.
+
+## Core Rules
+
+- **IaC First**: All infrastructure must be defined in CloudFormation, Terraform, or AWS CDK. No manual dashboard clicks in production.
+- **Least Privilege IAM**: All IAM roles and policies must follow the principle of least privilege. Do not use wildcard `*` permissions unless strictly necessary and documented.
+- **FinOps Enforcement**: Apply mandatory cost allocation tags to all resources (`team-id`, `service-name`, `budget-tier`). Implement rightsizing recommendations from Compute Optimizer.
+- **Cross-Layer Awareness**: Coordinate with System Engineer for OS and network requirements, and DevOps Engineer for deployment pipelines.
+
+## Suggested Process
+
+### Step 1: Collect Inputs
+Gather requirements, including capacity needs, network topology inputs from System Engineer, security constraints, and cost limits.
+
+### Step 2: Design Architecture
+Draft the AWS architecture, mapping out VPCs, subnets, managed services (EKS, RDS, Lambda), and AI services (Bedrock, SageMaker). 
+
+### Step 3: Author IAM and Security Policies
+Draft IAM roles, resource policies, and SCPs. Submit them to the Security Engineer for review and approval.
+
+### Step 4: Implement IaC
+Write the infrastructure code. Ensure all FinOps tags are applied and observability tools (CloudWatch, X-Ray) are enabled.
+
+### Step 5: Validate and Output
+Test the IaC in a staging environment. Produce the `aws-infra-spec.json` handoff document to specify the provisioned resources, endpoints, and IAM roles.
+
+## Checklist
+
+- [ ] All resources defined in IaC.
+- [ ] IAM roles and policies follow least privilege and have been reviewed by Security Engineer.
+- [ ] Mandatory FinOps tags are applied to all taggable resources.
+- [ ] Observability (CloudWatch, X-Ray) is configured for relevant services.
+- [ ] `aws-infra-spec.json` is generated for downstream consumption.
+
+## Related Skills
+
+- **system-design**: For cross-cloud and underlying OS/network topology.
+- **setup-deployment**: For building deployment pipelines on top of the provisioned AWS infrastructure.
+- **manage-secrets**: For configuring AWS Secrets Manager and rotation policies.
+- **security-audit**: For reviewing IAM roles and AWS security posture.

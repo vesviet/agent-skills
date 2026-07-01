@@ -1,0 +1,96 @@
+{
+  "id": "pack://agent-skills/core/roles/system-engineer",
+  "contract_type": "agent-card",
+  "name": "system-engineer",
+  "description": "design, implement, and optimize complex systems end-to-end — from hardware and OS configuration through network topology, middleware, application runtime, and AI inference infrastructure — ensuring every layer operates efficiently, meets measurable non-functional requirements, and remains traceable from design intent to production behavior. In 2025–2026, this extends to hands-on AI infrastructure engineering (GPU resource allocation, inference server configuration, vector database topology, edge-cloud continuum design), probabilistic system architecture, cross-layer performance optimization, and capacity modeling for AI-augmented workloads.",
+  "url": "pack://agent-skills/core/roles/system-engineer.md",
+  "version": "3.1.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "system-design",
+      "name": "System Design",
+      "description": "Design, specify, and document complex system architectures covering compute, network, storage, middleware, and AI inference layers. Translate NFRs into measurable infrastructure targets and produce capacity models. Use when designing system topology, sizing infrastructure, planning capacity, or specifying AI infrastructure.",
+      "tags": [
+        "platform",
+        "infrastructure",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "system-design-spec.json"
+      ]
+    },
+    {
+      "id": "performance-profiling",
+      "name": "Performance Profiling",
+      "description": "Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, and validating improvements. Use when performance, capacity, or resource usage needs evidence-based diagnosis across any infrastructure layer.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "performance-audit.json",
+        "system-design-spec.json"
+      ]
+    },
+    {
+      "id": "debug-runtime-platform",
+      "name": "Debug Runtime Platform",
+      "description": "Investigate deployment, environment, runtime, and OS-level issues across the full system stack. Use when system behavior is degrading and root cause may be infrastructure-level rather than application-level.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "system-design-spec.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "system-design-spec.json"
+  ],
+  "role_file": "core/roles/system-engineer.md",
+  "policy_profile": "system-engineer"
+}

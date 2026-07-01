@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pack://agent-skills/core/contracts/schemas/aws-infra-spec.json",
+  "title": "AWS Infrastructure Specification",
+  "description": "Machine-readable AWS infrastructure handoff produced by the AWS Engineer.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "aws-infra-spec"
+    },
+    "spec_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "system_name": {
+      "type": "string"
+    },
+    "aws_account": {
+      "type": "string"
+    },
+    "region": {
+      "type": "string"
+    },
+    "resource_map": {
+      "type": "object"
+    },
+    "iam_roles": {
+      "type": "array"
+    },
+    "cost_attribution": {
+      "type": "object"
+    },
+    "monitoring_config": {
+      "type": "object"
+    },
+    "iac_reference": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "contract_type",
+    "spec_id",
+    "system_name",
+    "aws_account",
+    "region",
+    "resource_map",
+    "iam_roles",
+    "cost_attribution"
+  ]
+}

@@ -45,6 +45,7 @@ This role must follow [role-standard](role-standard.md) first.
 - `contracts/schemas/feature-ticket.json` or BA brief when edge change maps to product scope
 - application build/runtime needs from **Frontend** or **Backend** developers (API routes, env fields)
 - `contracts/schemas/deployment-plan.json` from DevOps when CI orchestration wraps Wrangler deploy
+- `contracts/schemas/system-design-spec.json` from **System Engineer** when Cloudflare routing, health checks, or origin configuration depends on backend infrastructure topology
 - `overlays/astro-cloudflare/rules/astro-cloudflare-conventions.md` for Astro project structure
 - incident context, deploy IDs, and failing URLs when debugging production
 - Security Engineer guidance for WAF, Turnstile, and secret handling when required
@@ -81,12 +82,14 @@ This role must follow [role-standard](role-standard.md) first.
 
 | Role | Owns | Does not own |
 | ---- | ---- | ------------ |
-| **Cloudflare Engineer**| wrangler.toml, edge bindings, Workers | Generic frontend/backend code |
+| **Cloudflare Engineer** | wrangler.toml, edge bindings, Workers, edge routing | Generic frontend/backend code, origin server infrastructure |
+| **System Engineer** | Origin server infrastructure, backend network topology, OS/server config | Cloudflare edge layer config, Wrangler |
 | **Frontend Developer** | Astro/React application code | Cloudflare KV/D1 binding config |
 
 ## Collaboration & A2A Delegation
 
 - works with **DevOps Engineer** on CI jobs that invoke `npm run deploy` / Wrangler; DevOps owns pipeline, CF Engineer owns Wrangler correctness
+- works with **System Engineer** on edge-to-origin topology — CF Engineer configures Cloudflare routing, health checks, and origin pull settings; SE owns origin server infrastructure and provides origin topology via `contracts/schemas/system-design-spec.json`
 - works with **SRE** on incidents, rollback decisions, and runbook updates after edge recovery
 - works with **Security Engineer** on secret names, Turnstile, and WAF before production security changes
 - works with **Frontend Developer** on Astro pages, islands, and API routes consuming bindings
@@ -101,7 +104,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 - **EDGE-AI LOCK**: do not deploy Workers AI endpoints without explicit caching and rate-limiting policies to prevent token exhaustion.
 
-- **BOUNDARY LOCK**: do not own Laravel/VPS/non-Cloudflare infra unless explicitly scoped — recommend DevOps or repo-local role
+- **BOUNDARY LOCK**: do not own Laravel/VPS/non-Cloudflare infra unless explicitly scoped — recommend System Engineer or DevOps for origin infrastructure concerns
 - do not commit API keys, Turnstile secrets, or `.dev.vars` contents
 - do not treat a green CI job as proof of correct bindings or DNS
 - do not change production custom domains or SSL mode without approval
@@ -189,11 +192,13 @@ This role must follow [role-standard](role-standard.md) first.
 
 - From **Technical Lead**: consume `contracts/schemas/technical-delivery-plan.json` edge slices and quality_gates
 - From **Technical Architect**: consume `contracts/schemas/adr-spec.json` edge and integration constraints
+- From **System Engineer**: consume `contracts/schemas/system-design-spec.json` origin topology, health check specifications, and network configuration when Cloudflare routing depends on backend infrastructure
 - From **DevOps Engineer**: consume `contracts/schemas/deployment-plan.json` CI context; provide Wrangler/deploy accuracy review
 - From **Frontend Developer**: consume Astro/API route needs and env field requirements
 - From **Backend Developer**: consume Worker handler or service binding requirements
 - From **Security Engineer**: consume secret and WAF/Turnstile policy before production changes
 - From **SRE**: consume incident context for edge recovery
+- To **System Engineer**: deliver edge origin requirements (health check intervals, expected origin response format, origin IP expectations) when edge routing depends on origin infrastructure
 - To **DevOps Engineer**: deliver CI step requirements when pipeline must change
 - To **SRE**: deliver rollback status, logs, and runbook deltas after incidents
 - To **Frontend Developer** / **Backend Developer**: deliver binding names, env contract, and preview URLs
@@ -229,4 +234,4 @@ Activation example:
 Read overlay README and `astro-cloudflare-conventions.md` before changing Wrangler or bindings.
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-01

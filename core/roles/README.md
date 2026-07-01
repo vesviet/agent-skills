@@ -65,14 +65,19 @@ All roles in this pack are expected to:
 - [ecommerce-engineer](ecommerce-engineer.md)
 - [security-engineer](security-engineer.md)
 
+### Platform, Infrastructure & Systems
+
+- [system-engineer](system-engineer.md)
+- [aws-engineer](aws-engineer.md)
+- [devops-engineer](devops-engineer.md)
+- [cloudflare-engineer](cloudflare-engineer.md)
+- [sre](sre.md)
+
 ### Quality, Delivery, And Operations
 
 - [agent-discovery-engineer](agent-discovery-engineer.md)
 - [qa-engineer](qa-engineer.md)
 - [reviewer](reviewer.md)
-- [devops-engineer](devops-engineer.md)
-- [cloudflare-engineer](cloudflare-engineer.md)
-- [sre](sre.md)
 - [technical-writer](technical-writer.md)
 - [content-writer](content-writer.md)
 - [seo-analyst](seo-analyst.md)
@@ -114,6 +119,7 @@ All roles in this pack are expected to:
 - Solution Architect
 - Technical Architect
 - Technical Lead
+- System Engineer
 
 ### Implementation
 
@@ -124,11 +130,13 @@ All roles in this pack are expected to:
 - E-commerce Engineer
 - Technical Lead
 - Security Engineer
+- System Engineer
 
 ### Validation
 
 - Agent Coordinator
 - QA Engineer
+- AWS Engineer
 - Reviewer
 - Mobile Engineer
 - Technical Lead
@@ -151,6 +159,8 @@ All roles in this pack are expected to:
 - SRE
 - DevOps Engineer
 - Cloudflare Engineer
+- AWS Engineer
+- System Engineer
 - Reviewer
 - Product Manager
 
@@ -198,6 +208,8 @@ All roles in this pack are expected to:
 | QA Engineer | `/service-review-release`, `/qa-validation` |
 | Reviewer | `/service-review-release`, `/tech-repo-review` |
 | Security Engineer | `/service-review-release`, `/hotfix-production`, `/security-incident-response`, `/dependency-upgrade` |
+| System Engineer | `/setup-new-service`, `/build-deploy`, `/revert-deployment`, `/troubleshooting`, `/tech-repo-review` |
+| AWS Engineer | `/setup-new-service`, `/build-deploy`, `/troubleshooting`, `/refactoring` |
 | DevOps Engineer | `/build-deploy`, `/setup-new-service`, `/revert-deployment`, `/dependency-upgrade` |
 | Cloudflare Engineer | `/build-deploy`, `/setup-new-service`, `/revert-deployment`, `/hotfix-production` |
 | SRE | `/troubleshooting`, `/hotfix-production`, `/revert-deployment`, `/security-incident-response` |
@@ -252,4 +264,4 @@ python3 core/scripts/validate-2026-compliance.py
 
 The validator checks required sections, section order, minimum content depth, toolbox references, duplicate toolbox entries, role inventory, and workflow mapping. The 2026 compliance validator checks A2A/contract coverage, coordinator wiring, full policy coverage, and graph orchestration infrastructure.
 
-Last updated: 2026-06-30
+Last updated: 2026-07-01

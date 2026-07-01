@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 77 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **84 total** (run `validate-skills.py` for the live total).
+**Counts:** 79 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **86 total** (run `validate-skills.py` for the live total).
 
 ## Taxonomy
 
@@ -80,11 +80,13 @@ Cross-cutting portable skills:
 - `integrate-r3f-three-legacy`
 - `optimize-3d-assets`
 
-### Platform (11)
+### Platform (13)
 
-Delivery, runtime, and Cloudflare-specific skills:
+Delivery, runtime, Cloudflare-specific, cloud, and system infrastructure skills:
 
+- `aws-infrastructure`
 - `setup-deployment`
+- `system-design`
 - `wrangler`
 - `debug-workers-edge`
 - `debug-runtime-platform`
@@ -138,6 +140,7 @@ Overlay-specific skills (site stacks, ICM, content data) live under `overlays/*/
 | Visual / IA critique (no code) | `design-review` | UI/UX or Reviewer |
 | a11y conformance | `accessibility-review` | QA + Frontend |
 | Generic CI/CD deploy | `setup-deployment` | DevOps Engineer |
+| System topology & capacity | `system-design` | System Engineer |
 | Cloudflare Workers/Pages | `wrangler` | Cloudflare Engineer |
 | MCP server configuration | `configure-mcp` | Cloudflare Engineer |
 | Agentic commerce flows | `configure-agent-commerce` | Backend Developer |
