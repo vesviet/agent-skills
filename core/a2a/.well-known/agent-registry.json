@@ -1,6 +1,6 @@
 {
   "contract_type": "agent-registry",
-  "pack_version": "2.11.0",
+  "pack_version": "3.1.0",
   "protocol_version": "1.0",
   "generated_from": "core/roles",
   "agents": [
@@ -44,7 +44,7 @@
       "role": "content-manager",
       "agent_card": "core/a2a/registry/content-manager.agent-card.json",
       "url": "pack://agent-skills/core/roles/content-manager.md",
-      "description": "định hướng chiến lược nội dung tổng thể của một website — từ xây dựng content pillar architecture, quản lý vòng đời nội "
+      "description": "direct the overall content strategy of a website — from building content pillar architecture, managing the content lifec"
     },
     {
       "role": "content-writer",
@@ -83,6 +83,12 @@
       "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business "
     },
     {
+      "role": "mmo-engineer",
+      "agent_card": "core/a2a/registry/mmo-engineer.agent-card.json",
+      "url": "pack://agent-skills/core/roles/mmo-engineer.md",
+      "description": "Design, deploy, and operate end-to-end Make Money Online (MMO) operations. Maximize ROI through advanced stealth automat"
+    },
+    {
       "role": "mobile-engineer",
       "agent_card": "core/a2a/registry/mobile-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/mobile-engineer.md",
@@ -98,7 +104,7 @@
       "role": "project-manager",
       "agent_card": "core/a2a/registry/project-manager.agent-card.json",
       "url": "pack://agent-skills/core/roles/project-manager.md",
-      "description": "turn agreed product scope into an executable plan with clear milestones, dependencies, owners, and risk control."
+      "description": "turn agreed product scope into an executable plan with clear milestones, dependencies, owners, and risk control. In 2025"
     },
     {
       "role": "qa-engineer",
@@ -170,7 +176,7 @@
       "role": "technical-writer",
       "agent_card": "core/a2a/registry/technical-writer.agent-card.json",
       "url": "pack://agent-skills/core/roles/technical-writer.md",
-      "description": "make systems, features, and operational procedures understandable so that users and teams can act without guesswork."
+      "description": "make systems, features, and operational procedures understandable so that users, teams, and AI agents can act without gu"
     },
     {
       "role": "ui-ux-designer",

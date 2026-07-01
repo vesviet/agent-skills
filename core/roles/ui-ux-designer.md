@@ -425,6 +425,7 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 | ------- | ---- |
 | overlays/ui-design-system | Flow + component handoff conventions (recommended for all product UI work) |
 | overlays/maydiengiaisaigon | Elomus / MDG e-commerce visual and interaction tokens |
+| overlays/donthan-web | Web-first layout and livestream UI rules for Donthan.com |
 
 Activation example:
 

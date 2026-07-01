@@ -2,11 +2,11 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 76 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **83 total** (run `validate-skills.py` for the live total).
+**Counts:** 77 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **84 total** (run `validate-skills.py` for the live total).
 
 ## Taxonomy
 
-### Agent (20)
+### Agent (21)
 
 Agent operating discipline, orchestration, and agentic web standards:
 
@@ -22,6 +22,7 @@ Agent operating discipline, orchestration, and agentic web standards:
 - `agent-semantic-memory`
 - `agent-tool-orchestration`
 - `agent-quality-gate`
+- `manage-agent-identity`
 
 #### Agent Infrastructure & Agentic Web Standards (8)
 

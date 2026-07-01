@@ -2,9 +2,9 @@
   "id": "pack://agent-skills/core/roles/3d-graphics-engineer",
   "contract_type": "agent-card",
   "name": "3d-graphics-engineer",
-  "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGL/WebGPU implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility.",
+  "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGL/WebGPU implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility. In 2025–2026, this extends to governing AI-generated 3D assets (gaussian splatting, neural radiance fields, generative textures and meshes) with explicit quality and performance gates before pipeline integration, validating generative content against fidelity and memory budgets, and enforcing safe composition patterns for procedural and AI-authored geometry in real-time scenes.",
   "url": "pack://agent-skills/core/roles/3d-graphics-engineer.md",
-  "version": "2.11.0",
+  "version": "3.1.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

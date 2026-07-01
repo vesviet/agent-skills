@@ -1,6 +1,6 @@
 ---
 name: manage-mmo-assets
-description: Manage and share MMO assets (Business Managers, Via, Pixels/Datasets, Anti-Detect profiles) using Role-Based Access Control (RBAC) while enforcing strict isolation to prevent cascading bans.
+description: Manage and share MMO assets (Business Managers, Via, Pixels/Datasets, Anti-Detect profiles) using Role-Based Access Control (RBAC) while enforcing strict isolation to prevent cascading bans. Use when onboarding new ad accounts, sharing BMs with team members, auditing asset health, or recovering from a cascading ban incident.
 ---
 
 # Manage MMO Assets
@@ -23,8 +23,11 @@ Use this skill to securely acquire, organize, and share valuable marketing asset
 - [ ] All assets are cataloged and access is strictly governed by RBAC.
 - [ ] No raw passwords or cookies are transmitted via insecure channels.
 - [ ] Isolation mapping confirms zero IP or admin overlap between restricted and clean assets.
+- [ ] Backup assets (Vias/BMs) are kept cleanly separated from any restricted assets.
+- [ ] Asset catalog is up to date (no stale/orphaned entries).
+- [ ] Recovery plan documented in case of cascading ban event.
 
 ## Related Skills
 
-- `deploy-mmo-infrastructure`: For setting up the ADB environments.
-- `setup-tracking-system`: For configuring the tracking assets (Pixels/Datasets).
+- **deploy-mmo-infrastructure**: Set up the ADB environments for asset access.
+- **setup-tracking-system**: Configure tracking assets (Pixels/Datasets) referenced in the catalog.

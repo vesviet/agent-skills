@@ -1,6 +1,6 @@
 ---
 name: generate-mmo-content
-description: Use AI APIs to procedurally generate landing pages, creatives, and "spun" content for large-scale campaign deployment. Includes hard caps on API usage.
+description: Use AI APIs to procedurally generate landing pages, creatives, and spin content for large-scale campaign deployment at scale. Use when launching new creatives, scaling content volume for A/B testing, or refreshing ad sets. Includes hard caps on API usage.
 ---
 
 # Generate MMO Content
@@ -25,8 +25,10 @@ Use this skill to automate the creation of marketing assets at scale, allowing r
 - [ ] Hard caps on API usage (Budget-Lock) are implemented in the code.
 - [ ] Output variations are sufficiently distinct to avoid basic duplicate content filters.
 - [ ] Generated artifacts are properly formatted and ready for deployment.
+- [ ] API cost for this run is within the declared budget cap.
+- [ ] Generated content does not violate compliance rules (no phishing or prohibited content categories).
 
 ## Related Skills
 
-- `setup-deployment`: For deploying the generated landing pages to a CDN or host.
-- `analyze-campaign-roi`: For factoring the API cost of generation into the total ROI.
+- **setup-deployment**: Deploy generated landing pages to a CDN or hosting provider.
+- **analyze-campaign-roi**: Factor AI API costs into the total campaign ROI calculation.

@@ -2,9 +2,9 @@
   "id": "pack://agent-skills/core/roles/devops-engineer",
   "contract_type": "agent-card",
   "name": "devops-engineer",
-  "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollout safety, configuration integrity, and recovery paths. In 2025–2026, this extends to governing AI/ML model deployment pipelines with the same rigor as application deployments, enforcing GitOps-first infrastructure with automated drift detection, and applying supply chain security (SLSA, SBOM) to all delivery artifacts.",
+  "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollout safety, configuration integrity, and recovery paths. In 2025–2026, this extends to operating as an internal platform product team (Platform Engineering / IDP), governing AI/ML model deployment pipelines with the same rigor as application deployments, enforcing GitOps-first infrastructure with automated drift detection, applying supply chain security (SLSA, SBOM) to all delivery artifacts, managing AI inference cost via FinOps enforcement, and establishing governance frameworks for AI-assisted incident response.",
   "url": "pack://agent-skills/core/roles/devops-engineer.md",
-  "version": "2.11.0",
+  "version": "3.1.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

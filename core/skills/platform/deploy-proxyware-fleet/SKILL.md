@@ -1,6 +1,6 @@
 ---
 name: deploy-proxyware-fleet
-description: Containerize and orchestrate massive fleets of passive income nodes (Honeygain, EarnApp) with proxy routing and resource limits.
+description: Containerize and orchestrate massive fleets of passive income nodes (Honeygain, EarnApp, Pawns.app) with proxy routing and resource limits. Use when scaling bandwidth monetization nodes, migrating from datacenter to residential routing, or expanding an existing fleet.
 ---
 
 # Deploy Proxyware Fleet
@@ -23,10 +23,12 @@ Use this skill to handle the large-scale deployment of bandwidth monetization ap
 
 - [ ] Containers are routed through Residential IPs (not Datacenter IPs).
 - [ ] CPU and memory limits are explicitly defined for every proxyware service.
-- [ ] Hardware/OS spoofing is applied where required by platform TOS.
+- [ ] Hardware/OS spoofing is applied where required by platform detection.
 - [ ] Orchestration files (`docker-compose.yml`) are validated.
+- [ ] Network routing (WireGuard/VPN/proxy-chains) is tested end-to-end before scaling.
+- [ ] Fleet earnings baseline recorded before and after deployment for ROI validation.
 
 ## Related Skills
 
-- `deploy-mmo-infrastructure`: For setting up the core proxy networks.
-- `setup-deployment`: For generic deployments.
+- **deploy-mmo-infrastructure**: Set up the core proxy networks the fleet will route through.
+- **setup-deployment**: Generic deployments for non-MMO infrastructure.

@@ -5,6 +5,7 @@
   "description": "Pre-draft handoff from SEO Analyst to Content Writer. Produced by the optimize-seo skill. Validates against seo-analyst.md Output Template and Review Checklist.",
   "type": "object",
   "required": [
+    "contract_type",
     "brief_id",
     "created_at",
     "site",
@@ -19,6 +20,11 @@
     "handoff"
   ],
   "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "seo-content-brief",
+      "description": "Machine-readable contract discriminator."
+    },
     "$schema": {
       "type": "string",
       "description": "Optional pointer to this schema file for validation tooling."

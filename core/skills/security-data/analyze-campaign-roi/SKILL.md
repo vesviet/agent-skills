@@ -1,6 +1,6 @@
 ---
 name: analyze-campaign-roi
-description: Analyze S2S conversion data, monitor ad account die-rates, and autonomously calculate/optimize campaign ROI based on proxy and API costs.
+description: Analyze S2S conversion data, monitor ad account die-rates, and calculate campaign ROI based on proxy and API costs. Use when evaluating campaign profitability, diagnosing tracking attribution gaps, comparing offer performance, or deciding to pause or scale ad spend.
 ---
 
 # Analyze Campaign ROI
@@ -22,10 +22,12 @@ Use this skill to perform financial and risk analysis of MMO campaigns, combinin
 
 - [ ] Revenue data is successfully ingested from S2S trackers.
 - [ ] Operational costs (proxies, API, die-rate) are factored into the ROI calculation.
-- [ ] Sensitive financial data is handled securely.
-- [ ] Actionable recommendations (pause/scale) are generated.
+- [ ] Sensitive financial data is handled securely and not exposed in untrusted logs.
+- [ ] Actionable recommendations (pause/scale) are generated for each campaign.
+- [ ] Underperforming proxy subnets or creatives are identified.
+- [ ] Analysis output is structured and ready for handoff to task-planner or mmo-engineer.
 
 ## Related Skills
 
-- `setup-tracking-system`: For configuring the data sources analyzed by this skill.
-- `analyze-data`: For generic data analysis tasks outside of MMO context.
+- **setup-tracking-system**: Configure the S2S data sources analyzed by this skill.
+- **analyze-data**: Generic data analysis tasks outside the MMO context.

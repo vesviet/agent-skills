@@ -1,6 +1,6 @@
 ---
 name: create-automation-script
-description: Build Playwright/Puppeteer automation scripts that connect via CDP to Anti-Detect browsers or use C++ patched engines. Implements behavioral mimicry to bypass AI detection.
+description: Build Playwright/Puppeteer automation scripts that connect via CDP to Anti-Detect browsers or use C++ patched engines. Implements behavioral mimicry to bypass AI detection. Use when building multi-account automation, login flows, ad account warm-up sequences, or scraping high-trust platforms.
 ---
 
 # Create Automation Script
@@ -21,12 +21,14 @@ Use this skill to develop the core engine for MMO automation (farming, scraping,
 
 ## Checklist
 
-- [ ] Script connects via CDP or uses a C++ patched engine (no raw Playwright).
+- [ ] Script connects via CDP or uses a C++ patched engine (no raw Playwright launch).
 - [ ] Randomized delays and human-like typing/scrolling are implemented.
-- [ ] `playwright-stealth` JS-injection is avoided.
-- [ ] Script passes basic bot-detection tests.
+- [ ] playwright-stealth JS-injection is avoided for high-risk operations.
+- [ ] Script passes basic bot-detection tests (CreepJS, Cloudflare Turnstile).
+- [ ] Script includes error handling and retry logic for network failures.
+- [ ] CDP connection to Anti-Detect Browser profile is verified before execution.
 
 ## Related Skills
 
-- `deploy-mmo-infrastructure`: For provisioning the Anti-Detect Browsers the script will connect to.
-- `turnstile-spin`: For handling Cloudflare challenges.
+- **deploy-mmo-infrastructure**: Provision the Anti-Detect Browsers the script will connect to.
+- **turnstile-spin**: Handle Cloudflare Turnstile challenges encountered during automation.

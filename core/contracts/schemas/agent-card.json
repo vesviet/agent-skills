@@ -159,6 +159,33 @@
           "format": "date-time"
         }
       }
+    },
+    "ap2_capabilities": {
+      "type": "object",
+      "description": "Agent Payments Protocol (AP2) capabilities — A2A sub-protocol launched April 2026 for agent-to-agent economic transactions.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether this agent supports AP2 payment flows."
+        },
+        "accepted_currencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Currency codes this agent can accept (e.g. ['USD', 'USDC'])."
+        },
+        "payment_endpoint": {
+          "type": "string",
+          "format": "uri",
+          "description": "AP2 payment endpoint URL. Required when enabled=true."
+        },
+        "max_transaction_usd": {
+          "type": "number",
+          "description": "Maximum transaction value in USD this agent will autonomously approve. Transactions above this require human approval."
+        }
+      }
     }
   },
   "required": [

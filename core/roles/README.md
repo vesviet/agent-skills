@@ -90,6 +90,10 @@ All roles in this pack are expected to:
 
 - [teacher](teacher.md)
 
+### Performance Marketing And MMO
+
+- [mmo-engineer](mmo-engineer.md)
+
 
 ## Lifecycle Mapping
 
@@ -205,6 +209,7 @@ All roles in this pack are expected to:
 | Data Engineer | `/troubleshooting`, `/setup-new-service`, `/data-migration` |
 | Ecommerce Engineer | `/add-new-feature`, `/refactoring`, `/hotfix-production`, `/troubleshooting` |
 | Teacher | `/add-new-feature`, `/refactoring` |
+| MMO Engineer | `/add-new-feature`, `/troubleshooting` |
 
 ## Usage Notes
 

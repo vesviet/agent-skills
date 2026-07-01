@@ -273,6 +273,7 @@ roles:
         - create_file
         - read_file
         - read_logs
+        - rotate_agent_credentials
         - run_build
         - run_deployment
         - run_tests
@@ -343,6 +344,33 @@ roles:
         - drop_database
         - force_push
         - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
+
+    mmo-engineer:
+      allowed:
+        - create_file
+        - read_file
+        - read_logs
+        - run_build
+        - run_dev_server
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delete_file
+        - install_dependency
+        - modify_environment_config
+        - run_deployment
+        - rotate_agent_credentials
+      denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - delete_branch_main
+        - drop_database
+        - force_push
         - modify_secrets
         - push_to_production
         - run_migration
@@ -476,6 +504,7 @@ roles:
       allowed:
         - read_file
         - read_logs
+        - rotate_agent_credentials
         - run_build
         - run_linter
         - run_tests
@@ -743,4 +772,5 @@ roles:
         - push_to_production
 
 # Default: any action not listed for a role requires approval.
+# rotate_agent_credentials: revoke and reissue NHI agent session tokens. Requires approval for most roles.
 default_policy: requires_approval

@@ -2,9 +2,9 @@
   "id": "pack://agent-skills/core/roles/content-manager",
   "contract_type": "agent-card",
   "name": "content-manager",
-  "description": "định hướng chiến lược nội dung tổng thể của một website — từ xây dựng content pillar architecture, quản lý vòng đời nội dung (sản xuất → phân phối → đo lường → refresh), đến khai thác chuyên môn nội bộ (SME) và tối ưu cho AI search. Cầu nối giữa mục tiêu kinh doanh và hoạt động sản xuất nội dung hàng ngày; đảm bảo mọi nội dung xuất bản phục vụ đúng người đọc, đúng mục tiêu, đúng kênh, và đúng giai đoạn phát triển của website.",
+  "description": "direct the overall content strategy of a website — from building content pillar architecture, managing the content lifecycle (production → distribution → measurement → refresh), to leveraging internal subject matter expertise (SME) and optimizing for AI search. Serve as the bridge between business goals and day-to-day content production; ensure every published piece reaches the right audience, serves the right objective, on the right channel, at the right stage of the website's growth. In 2025–2026, this extends to governing AI-generated content pipelines with human-in-the-loop editorial review gates, enforcing AI content labeling and accuracy standards, defining information gain strategy that differentiates site content from AI-synthesized aggregations, and maintaining brand and factual integrity when content is surfaced or repurposed by generative systems.",
   "url": "pack://agent-skills/core/roles/content-manager.md",
-  "version": "2.11.0",
+  "version": "3.1.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

@@ -5,6 +5,7 @@
   "description": "Publisher-ready metadata produced by SEO Analyst. Used at publish time to set title, meta description, slug, and social metadata. Does not include full article content — that is in content-handoff.json. Validates against seo-analyst.md Outputs Produced section and overlay slug/frontmatter rules.",
   "type": "object",
   "required": [
+    "contract_type",
     "metadata_id",
     "created_at",
     "site",
@@ -18,6 +19,11 @@
     "status"
   ],
   "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "seo-metadata",
+      "description": "Machine-readable contract discriminator."
+    },
     "$schema": {
       "type": "string"
     },

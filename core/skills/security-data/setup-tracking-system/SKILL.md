@@ -1,6 +1,6 @@
 ---
 name: setup-tracking-system
-description: Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta Conversion API (CAPI), and tracker setups (Voluum/Binom) without relying solely on client-side cookies.
+description: Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta Conversion API (CAPI), and tracker setups (Voluum/Binom) without relying solely on client-side cookies. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps.
 ---
 
 # Setup Tracking System
@@ -21,12 +21,14 @@ Use this skill to deploy highly accurate, privacy-bypassing tracking systems nec
 
 ## Checklist
 
-- [ ] S2S postback URLs are configured and verified.
+- [ ] S2S postback URLs are configured and verified with correct click ID parameters.
 - [ ] Meta CAPI (or equivalent API) is integrated and receiving payloads.
 - [ ] Traffic filtering rules (cloaking/bot blocking) are active.
 - [ ] Test conversion successfully registered in both tracker and ad network.
+- [ ] Data flow validated end-to-end across all hops before scaling budget.
+- [ ] Postback firing rate is above 80% (flag if below for attribution investigation).
 
 ## Related Skills
 
-- `analyze-campaign-roi`: For analyzing the data collected by this tracking system.
-- `integrate-api-client`: For writing the actual frontend integration code if required.
+- **analyze-campaign-roi**: Analyze the data collected by this tracking system for ROI optimization.
+- **integrate-api-client**: Write frontend integration code if client-side component is required.

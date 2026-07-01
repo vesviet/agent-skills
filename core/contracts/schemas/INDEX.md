@@ -36,11 +36,11 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | `data-analysis-report.json` | Data Analysis Report | ✅ | ✅ |
 | `schema-migration.json` | Schema Migration Plan | ✅ | ✅ |
 | **SEO & Publishing** | | | |
-| `seo-content-brief.json` | SEO Content Brief | ✅ | — |
-| `seo-audit-report.json` | SEO Audit Report | ✅ | — |
-| `seo-metadata.json` | SEO Metadata | ✅ | — |
-| `seo-weekly-board.json` | SEO Weekly Board | ✅ | — |
-| `series-article.json` | Series Article | ✅ | — |
+| `seo-content-brief.json` | SEO Content Brief | ✅ | ✅ |
+| `seo-audit-report.json` | SEO Audit Report | ✅ | ✅ |
+| `seo-metadata.json` | SEO Metadata | ✅ | ✅ |
+| `seo-weekly-board.json` | SEO Weekly Board | ✅ | ✅ |
+| `series-article.json` | Series Article | ✅ | ✅ |
 | **A2A Protocol (Agent-to-Agent)** | | | |
 | `a2a-task.json` | A2A Task Delegation | ✅ | — |
 | `a2a-task-status.json` | A2A Task Status | ✅ | — |

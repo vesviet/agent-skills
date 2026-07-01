@@ -1,6 +1,6 @@
 ---
 name: deploy-mmo-infrastructure
-description: Deploy and manage proxy pools (Residential/4G) and Anti-Detect Browser orchestration environments (via Docker/Terraform) ensuring zero IP/footprint leaks.
+description: Deploy and manage proxy pools (Residential/4G) and Anti-Detect Browser orchestration environments (via Docker/Terraform) ensuring zero IP/footprint leaks. Use when deploying a new MMO operation, expanding to new ad accounts, or migrating proxy infrastructure.
 ---
 
 # Deploy MMO Infrastructure
@@ -24,9 +24,11 @@ Use this skill to provision highly anonymous, isolated infrastructure required f
 - [ ] Proxy provider endpoints are configured securely (no exposed credentials).
 - [ ] Isolation mapping (1:1 IP to Profile) is explicitly defined in configurations.
 - [ ] Docker/Terraform orchestration files are syntactically valid and tested.
-- [ ] Leak test has been performed (or instructions for the user to perform it are provided).
+- [ ] Leak test has been performed (DNS and WebRTC leaks checked).
+- [ ] Subnet uniqueness is verified — no shared subnets across isolated profiles.
+- [ ] Handoff documentation provided for the automation team.
 
 ## Related Skills
 
-- `deploy-proxyware-fleet`: For containerizing bandwidth monetization nodes.
-- `setup-deployment`: For generic CI/CD and deployment tasks outside of MMO context.
+- **deploy-proxyware-fleet**: Containerize bandwidth monetization nodes within the provisioned infrastructure.
+- **setup-deployment**: Generic CI/CD and deployment tasks outside the MMO context.

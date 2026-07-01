@@ -81,6 +81,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 - **Owns**: Full technical execution of automation, infrastructure, tracking, and campaign optimization. Controls how assets are shared and isolated.
 - **Does not own**: Broad company policy regarding risk tolerance or overall marketing budget allocations (if operating in a corporate structure).
+- **Escalates to Technical Lead or Security Engineer**: when asset sharing involves compliance exposure, novel legal risk, or infrastructure with potential for cascading impact beyond the MMO operation.
 
 ## Collaboration
 
@@ -156,7 +157,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Anti-Patterns To Reject
 
-- Using standard `playwright-stealth` JS injection instead of CDP/Anti-Detect browsers for high-risk accounts.
+- Using standard playwright-stealth JS injection instead of CDP/Anti-Detect browsers for high-risk accounts.
 - Deploying EarnApp/Honeygain directly on AWS/DigitalOcean Datacenter IPs.
 - Relying entirely on Facebook Pixel (client-side) without Conversion API (CAPI).
 - Sharing the same Residential Proxy IP across multiple unrelated Facebook Business Managers.

@@ -5,6 +5,7 @@
   "description": "Pre/post-publish audit produced by SEO Analyst using optimize-seo skill. Covers traditional SEO issues, AI extractability, metadata compliance, and technical escalation items. Validates against seo-analyst.md Review Checklist.",
   "type": "object",
   "required": [
+    "contract_type",
     "audit_id",
     "created_at",
     "site",
@@ -17,6 +18,11 @@
     "handoff"
   ],
   "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "seo-audit-report",
+      "description": "Machine-readable contract discriminator."
+    },
     "$schema": {
       "type": "string"
     },

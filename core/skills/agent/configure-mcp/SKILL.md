@@ -119,6 +119,57 @@ Use this skill to set up the full MCP presence for a web service: the server car
 - [ ] Tool requests are authenticated via JWT-scoped validation per tenant.
 - [ ] Gateway-level rate limiting is enforced on a per-tenant/per-user basis.
 
+
+### ⚠️ 2026: Stateless Architecture Migration (MCP 2026-07-28)
+
+> **Breaking change incoming**: The MCP spec `2026-07-28` (publishing ~late July 2026) transitions MCP from stateful sessions to **fully stateless requests**. A 12-month deprecation window applies for older implementations.
+
+**What is changing:**
+
+| | Current (2025-03-26) | New (2026-07-28) |
+|---|---|---|
+| Session ID | Required handshake | **Removed** |
+| Capabilities negotiation | One-time at session start | **Per-request in `_meta`** |
+| Server discovery | Implicit from card | **`server/discover` RPC method** |
+| Governance | Anthropic | **AAIF (Linux Foundation)** |
+
+**Migration steps:**
+
+1. **Add `_meta` to every request**: include `protocol_version`, `client_id`, and `capabilities` in the `_meta` field of every tool call request body.
+   ```json
+   {
+     "_meta": {
+       "protocol_version": "2026-07-28",
+       "client_id": "my-agent-client",
+       "capabilities": { "tools": true, "resources": false }
+     },
+     "method": "tools/call",
+     "params": { ... }
+   }
+   ```
+
+2. **Remove session establishment logic**: delete handshake endpoints, session ID tracking, and session state from server implementations. Every request must be self-contained.
+
+3. **Implement `server/discover`**: add a `server/discover` RPC endpoint that returns supported protocol versions and capabilities. This replaces static capability negotiation.
+   ```json
+   { "method": "server/discover", "params": {} }
+   // Response:
+   { "supported_versions": ["2026-07-28", "2025-03-26"], "capabilities": { "tools": true } }
+   ```
+
+4. **Update `mcp_version` in server card**: set `"mcp_version": "2026-07-28"` in `/.well-known/mcp/server-card.json` after migration.
+
+5. **Backward compatibility**: during the 12-month deprecation window, support both `2025-03-26` (stateful) and `2026-07-28` (stateless) by inspecting `_meta.protocol_version` on incoming requests.
+
+**Checklist (for 2026-07-28 readiness):**
+- [ ] All tool request handlers read client identity and capabilities from `_meta`, not session state.
+- [ ] `server/discover` RPC endpoint implemented and tested.
+- [ ] Session ID generation and handshake code removed or gated behind legacy version check.
+- [ ] `mcp_version` in server card updated to `"2026-07-28"`.
+- [ ] `isitagentready.com` scan passes with new stateless server card.
+
+---
+
 ## Related Skills
 
 - **configure-agent-skills**: Set up the agent skills manifest — often deployed alongside MCP for capability routing.

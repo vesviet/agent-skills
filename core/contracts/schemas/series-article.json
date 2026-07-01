@@ -5,10 +5,16 @@
   "description": "Schema for a series article output, validating required frontmatter fields and body structure before publishing.",
   "type": "object",
   "required": [
+    "contract_type",
     "frontmatter",
     "body"
   ],
   "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "series-article",
+      "description": "Machine-readable contract discriminator."
+    },
     "frontmatter": {
       "type": "object",
       "required": [

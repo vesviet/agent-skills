@@ -5,6 +5,7 @@
   "description": "7-day dual-site topic board for machine handoff between Task Planner, SEO Analyst, and Content Writer. Produced by the optimize-seo skill under the seo-publishing overlay. Mirrors the markdown plan/baiviet/plan-YYYY-MM-DD.md board in structured JSON. Validates against overlays/seo-publishing/rules/topic-board-template.md and site-mix-and-cannibalization.md.",
   "type": "object",
   "required": [
+    "contract_type",
     "board_id",
     "created_at",
     "week_start",
@@ -16,6 +17,11 @@
     "handoff"
   ],
   "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "seo-weekly-board",
+      "description": "Machine-readable contract discriminator."
+    },
     "$schema": {
       "type": "string"
     },

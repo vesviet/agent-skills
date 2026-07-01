@@ -2,9 +2,9 @@
   "id": "pack://agent-skills/core/roles/technical-writer",
   "contract_type": "agent-card",
   "name": "technical-writer",
-  "description": "make systems, features, and operational procedures understandable so that users and teams can act without guesswork.",
+  "description": "make systems, features, and operational procedures understandable so that users, teams, and AI agents can act without guesswork. In 2025–2026, this extends to producing dual-audience documentation (human-readable and LLM-readable simultaneously), maintaining machine-readable project scope maps (`llms.txt`), and authoring a new deliverable class — Agentic System Documentation — that covers tool definitions, agent handoff points, and evaluation metric contracts for multi-agent systems.",
   "url": "pack://agent-skills/core/roles/technical-writer.md",
-  "version": "2.11.0",
+  "version": "3.1.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -49,6 +49,26 @@
       "id": "release-notes",
       "name": "Release Notes",
       "description": "Draft, structure, and review release notes for a software change so that users, operators, and downstream consumers understand what changed, what broke compatibility, and what action they must take. Use when shipping a feature, fix, or breaking change that requires external communication.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "documentation-handoff.json"
+      ]
+    },
+    {
+      "id": "write-article",
+      "name": "Write Article",
+      "description": "Plan, research, outline, and draft long-form articles and blog posts with explicit evidence discipline, answer-first structure, GEO/AEO execution, information gain quality gates, E-E-A-T experience signals, and SEO-brief alignment. Use for narrative content, guides, reviews, and announcements—not for API runbooks or pure technical reference docs.",
       "tags": [
         "foundation",
         "pack"

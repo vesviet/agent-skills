@@ -2,6 +2,25 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [3.1.0] - 2026-07-01
+
+### Added
+- `mmo-engineer` role to handle Performance Marketing and MMO automation.
+- `manage-agent-identity` skill to manage NHI lifecycle, aligned with OWASP ASI03.
+- `rotate_agent_credentials` action to `action-boundaries.yaml`.
+- AP2 (Agent Payments Protocol) capability support to `agent-card.json`.
+- OTel GenAI experimental observability guide (`otel-genai.md`).
+- Missing `donthan-web` overlay README.
+
+### Changed
+- Expanded `role-standard.md` to cover all 10 OWASP ASI risks.
+- Added MCP 2026-07-28 stateless migration steps to `configure-mcp` skill.
+- Added `contract_type` discriminator to all 5 SEO schemas.
+
+### Fixed
+- Fixed trigger phrases, checklist requirements, and `playwright-stealth` references across 7 MMO skills.
+- Fixed `mmo-engineer` decision boundaries and added to role inventory.
+
 ## [3.0.0] - 2026-06-22
 
 ### Changed
