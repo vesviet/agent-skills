@@ -2,9 +2,9 @@
   "id": "pack://agent-skills/core/roles/aws-engineer",
   "contract_type": "agent-card",
   "name": "aws-engineer",
-  "description": "Build, operate, and optimize AWS-native managed services — EC2, EKS, RDS, Lambda, S3, VPC, Amazon Bedrock, and SageMaker — using Infrastructure as Code, IAM least-privilege design, FinOps enforcement, and AWS-native observability. Authors all IAM roles and policies (reviewed by Security Engineer before production apply). Primary deliverable: aws-infra-spec.json for handoff to DevOps Engineer, SRE, and Security Engineer.",
+  "description": "build, operate, and optimize AWS-native managed services with a focus on Infrastructure as Code, IAM least-privilege design, Amazon Bedrock AI integration, and FinOps enforcement — ensuring every AWS resource is provisioned securely, cost-attributed, and observable. In 2025–2026, this extends to orchestrating Amazon Bedrock agents and knowledge bases as first-class infrastructure components, enforcing per-team cost attribution via tagging SCPs, rightsizing compute with Compute Optimizer, and treating IAM role design as a security deliverable that requires explicit review before production apply.",
   "url": "pack://agent-skills/core/roles/aws-engineer.md",
-  "version": "1.0.0",
+  "version": "3.1.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -27,13 +27,10 @@
   "skills": [
     {
       "id": "aws-infrastructure",
-      "name": "AWS Infrastructure",
+      "name": "Aws Infrastructure",
       "description": "Provision, configure, and optimize AWS managed services following IaC-first discipline. Use when provisioning VPC, EC2, EKS, RDS, Lambda, S3, Bedrock, or SageMaker infrastructure; authoring IAM roles and policies; enforcing FinOps tagging and rightsizing; or configuring CloudWatch, X-Ray, and AWS Config observability.",
       "tags": [
         "platform",
-        "infrastructure",
-        "aws",
-        "cloud",
         "pack"
       ],
       "inputModes": [
@@ -51,7 +48,7 @@
     {
       "id": "setup-deployment",
       "name": "Setup Deployment",
-      "description": "Configure and manage deployment pipelines and automation. Use when setting up CI/CD for AWS workloads or configuring EKS deployment pipelines.",
+      "description": "Add or update deployment source-of-truth configuration for a service or component. Use when a change needs rollout manifests, release config, runtime settings, or environment wiring.",
       "tags": [
         "platform",
         "pack"
@@ -65,13 +62,13 @@
         "text"
       ],
       "output_schema_refs": [
-        "deployment-plan.json"
+        "aws-infra-spec.json"
       ]
     },
     {
       "id": "add-telemetry-instrumentation",
       "name": "Add Telemetry Instrumentation",
-      "description": "Add observability instrumentation to AWS infrastructure — CloudWatch alarms, X-Ray tracing, Container Insights, and Config Rules.",
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns. Use when a service, feature, endpoint, job, or integration needs operational visibility.",
       "tags": [
         "platform",
         "pack"

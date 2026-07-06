@@ -8,6 +8,7 @@ __pycache__/
 .vscode/
 .idea/
 core/observability/spans/*.jsonl
-
+.agents
+audit
 # Agent session workspaces
 .agents/implementer_*/

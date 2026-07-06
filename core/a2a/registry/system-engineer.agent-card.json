@@ -28,10 +28,9 @@
     {
       "id": "system-design",
       "name": "System Design",
-      "description": "Design, specify, and document complex system architectures covering compute, network, storage, middleware, and AI inference layers. Translate NFRs into measurable infrastructure targets and produce capacity models. Use when designing system topology, sizing infrastructure, planning capacity, or specifying AI infrastructure.",
+      "description": "Design, specify, and document complex system architectures covering compute, network, storage, middleware, and AI inference layers. Translate NFRs into measurable infrastructure targets and produce capacity models. Use when designing or reviewing system topology, sizing infrastructure, planning capacity, or specifying AI infrastructure (GPU, inference servers, vector databases).",
       "tags": [
         "platform",
-        "infrastructure",
         "pack"
       ],
       "inputModes": [
@@ -49,7 +48,7 @@
     {
       "id": "performance-profiling",
       "name": "Performance Profiling",
-      "description": "Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, and validating improvements. Use when performance, capacity, or resource usage needs evidence-based diagnosis across any infrastructure layer.",
+      "description": "Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, and validating improvements with repo-local tools. Use when performance, capacity, or resource usage needs evidence-based diagnosis.",
       "tags": [
         "foundation",
         "pack"
@@ -63,14 +62,13 @@
         "text"
       ],
       "output_schema_refs": [
-        "performance-audit.json",
         "system-design-spec.json"
       ]
     },
     {
       "id": "debug-runtime-platform",
       "name": "Debug Runtime Platform",
-      "description": "Investigate deployment, environment, runtime, and OS-level issues across the full system stack. Use when system behavior is degrading and root cause may be infrastructure-level rather than application-level.",
+      "description": "Investigate deployment, environment, runtime, and rollout issues that are not purely application-code bugs. Use when the service behaves differently across environments or when deployment health is unclear.",
       "tags": [
         "platform",
         "pack"

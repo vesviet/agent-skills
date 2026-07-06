@@ -4,6 +4,7 @@ capability_role_map:
   3d-graphics-engineer: 3d-graphics-engineer
   agent-coordinator: agent-coordinator
   agent-discovery-engineer: agent-discovery-engineer
+  aws-engineer: aws-engineer
   backend-developer: backend-developer
   business-analyst: business-analyst
   cloudflare-engineer: cloudflare-engineer
@@ -25,6 +26,7 @@ capability_role_map:
   seo-analyst: seo-analyst
   solution-architect: solution-architect
   sre: sre
+  system-engineer: system-engineer
   task-planner: task-planner
   teacher: teacher
   technical-architect: technical-architect
