@@ -56,7 +56,7 @@ fi
 
 # Check 2b: confirm the Worker is the managed template (not a customer-written
 # replacement) by looking for the _worker metadata field. If absent, the user
-# deployed a custom Worker; surface it so the agent can alert them.
+# deployed a custom Worker; surface it so the system can alert them.
 worker_meta=$(echo "$dummy" | (jq -r '._worker.worker_version // "missing"' 2>/dev/null || echo "missing"))
 if [ "$worker_meta" = "missing" ]; then
   echo "validate: _worker metadata missing from response; this is not the managed Spin Worker template." >&2

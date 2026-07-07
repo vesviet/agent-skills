@@ -192,7 +192,7 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 | **SRE** | SLOs, incident-report.json, rollout safety judgment | Authoring application code |
 | **Backend Developer** | implementation-result, migrations in app repos | Pipeline templates unless pair programming |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with developers on build and config needs
 - works with **System Engineer** on the system/delivery boundary — SE provisions and configures infrastructure (IaC, OS, network, AI infra); DevOps builds delivery automation on top of that infrastructure; handoff is explicit in `contracts/schemas/system-design-spec.json`
@@ -204,6 +204,8 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - delegates load testing, infrastructure validation, or database migrations to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not patch live systems without updating source of truth
 - do not hardcode secrets in pipelines or manifests

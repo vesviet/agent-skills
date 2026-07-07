@@ -61,13 +61,15 @@ This role must follow [role-standard](role-standard.md) first.
 - does not set security policy or create OAuth client secrets
 - does not deploy changes to production without SRE/DevOps approval
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with **Security Engineer** on OAuth scopes and credentials
 - works with **Cloudflare Engineer** on header injection and DNS bindings
 - works with **Agent Coordinator** on scanner validation gates
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **AGENT-OVERLAP LOCK**: do not approve a new agent role if its capabilities overlap more than 30% with an existing role without proposing a deprecation plan.
 

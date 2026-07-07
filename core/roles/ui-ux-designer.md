@@ -218,7 +218,7 @@ In 2026, design systems are not component libraries — they are living infrastr
 | **Frontend Developer** | React/Vue code, HTML/CSS | ux-flow-spec.json |
 | **Business Analyst** | feature-ticket.json (requirements) | Screen layouts |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with **Product Manager** on value, scope, and trade-offs
 - works with **Business Analyst** on actors, rules, and acceptance criteria from feature-ticket.json
@@ -231,6 +231,8 @@ In 2026, design systems are not component libraries — they are living infrastr
 - delegates deep accessibility audit or moderated usability testing via **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not optimize visuals at the expense of usability
 - do not ignore empty, loading, error, and success states

@@ -88,7 +88,7 @@ This role must follow [role-standard](role-standard.md) first.
 | **3D Graphics Engineer**| 3D models, shaders, R3F scenes | 2D DOM UI, backend APIs |
 | **Frontend Developer** | 2D DOM UI, page routing | 3D models, shaders |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with **UI/UX Designer** on `contracts/schemas/ux-flow-spec.json` interaction and visual states
 - works with **Frontend Developer** on canvas/DOM integration, React state, and slice ownership boundaries
@@ -102,6 +102,8 @@ This role must follow [role-standard](role-standard.md) first.
 - works with **Product Manager** when 3D bugs reveal hardware constraints or unachievable visual goals
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **GEN-3D LOCK**: do not merge AI-generated 3D assets into the main branch without explicit memory footprint profiling and LOD (Level of Detail) generation.
 

@@ -161,7 +161,7 @@ Produce a structured contract that downstream roles can use directly:
 ## Data Triangulation & Conflicts
 -
 
-## Critical Gaps (What remains unknown)
+## Crucial Gaps (What remains unknown)
 -
 
 ## Information Gain Assessment

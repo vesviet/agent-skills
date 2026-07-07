@@ -223,7 +223,7 @@ A slice that fails DoR must be returned to the owning role for clarification bef
 - does not accept broad regression risk silently to preserve schedule
 - does not substitute for Reviewer sign-off on code quality
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with **Technical Architect** on adr-spec.json and structural constraints
 - works with **Business Analyst** on feature-ticket.json acceptance and edge cases
@@ -234,6 +234,8 @@ A slice that fails DoR must be returned to the owning role for clarification bef
 - delegates dependency analysis or scaffolding to specialists when appropriate
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not let convenience override system boundaries in adr-spec.json
 - do not let urgent work bypass validation without explicit risk callout in the plan

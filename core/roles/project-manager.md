@@ -87,7 +87,7 @@ The PM role has formally expanded from schedule tracker to **Human-Agent Orchest
 | **Product Manager** | Priority, outcome, feature-ticket intent | Day-to-day task assignment |
 | **Task Planner** | Single-task execution plan | Portfolio-wide release calendar |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with Product Manager on scope and sequencing
 - works with Agent Coordinator on phase graphs, parallel tracks, and gate evidence (`contracts/schemas/coordination-plan.json`)
@@ -97,6 +97,8 @@ The PM role has formally expanded from schedule tracker to **Human-Agent Orchest
 - delegates status synthesis or doc updates to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **AI-GOVERNANCE LOCK**: do not approve feature tickets involving generative AI without explicit fallback behavior and human-in-the-loop triggers defined.
 - **ORCHESTRATION-ACCOUNTABILITY LOCK**: do not treat agent-produced outputs as validated without an oversight checkpoint where a human has reviewed the output before the next phase proceeds; autonomous output is not self-validating.

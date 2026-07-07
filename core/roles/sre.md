@@ -117,7 +117,7 @@ AI/ML systems have reliability dimensions that standard availability SLOs do not
 | **Cloudflare Engineer** | edge-deployment-spec.json, edge recovery | Application domain logic |
 | **QA** | test-report.json, validation-result.json | Code review findings |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with DevOps on deployment and observability
 - works with **Cloudflare Engineer** on edge incidents, rollback, and `contracts/schemas/edge-deployment-spec.json` smoke/rollback evidence
@@ -127,6 +127,8 @@ AI/ML systems have reliability dimensions that standard availability SLOs do not
 - delegates log analysis, anomaly detection, or runbook generation to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not accept noisy alerts as normal
 - do not optimize reliability without understanding user impact

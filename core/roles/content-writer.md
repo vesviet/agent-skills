@@ -139,7 +139,7 @@ This role must follow [role-standard](role-standard.md) first.
 | SEO brief provided | Use brief outline/links; research only gaps |
 | Technical product claims | Verify against Technical Writer / engineering docs |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with Product Manager or **Business Analyst** on positioning (consume feature-ticket.json / seo_content_request context)
 - works with **Frontend Developer** to design and embed interactive MDX components (calculators, interactive charts) into the article
@@ -151,6 +151,8 @@ This role must follow [role-standard](role-standard.md) first.
 - works with Reviewer or editorial stakeholders for voice, risk, and accuracy gates before publication
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not treat a single search as enough research when the brief requires evidence — use **3–4 passes** or Researcher
 - do not bury uncertainty; mark what is confirmed versus inferred

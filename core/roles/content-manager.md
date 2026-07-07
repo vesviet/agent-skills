@@ -183,7 +183,7 @@ This role must follow [role-standard](role-standard.md) first.
 | **Frontend Developer** | Interactive tool implementation | Content strategy, distribution planning |
 | **Task Planner** | Sprint task sequencing | Content strategy direction |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with **Product Manager** or **Business Analyst** to align content goals with business objectives — consume `feature-ticket.json` and product positioning
 - works with **SEO Analyst** to receive keyword research, gap analysis, and pillar-level SERP insights — provide pillar architecture; receive `seo-content-brief.json` per topic
@@ -200,6 +200,8 @@ This role must follow [role-standard](role-standard.md) first.
 - escalates technical SEO changes (redirects, canonical, schema) to **Frontend Developer** or **DevOps Engineer** via technical ticket
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **AI-GOVERNANCE LOCK**: do not approve AI-assisted content for publish without a human editorial review gate; autonomous publish of AI-generated content without explicit policy approval is not permitted.
 - **INFORMATION-GAIN LOCK**: do not commission content that does not have an explicit information gain statement — what does this piece offer that top SERP and AI-generated content currently lack.

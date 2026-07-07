@@ -79,7 +79,7 @@ Anti-pattern:
 ```jsonc
 {
   "vars": {
-    "API_KEY": "sk-live-abc123..."  // Secret in version control
+    "APP_TOKEN": "sk-live-abc123..."  // Secret in version control
   }
 }
 ```
@@ -285,7 +285,7 @@ Enable `observability` in wrangler config before deploying to production. Use `h
 // Structured JSON — searchable and filterable
 console.log(JSON.stringify({ message: "incoming request", method: request.method, path: url.pathname }));
 
-// Error severity
+// Error level
 console.error(JSON.stringify({ message: "request failed", error: e instanceof Error ? e.message : String(e) }));
 ```
 

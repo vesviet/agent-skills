@@ -236,7 +236,7 @@ Long-running AI agent tasks — those involving multiple LLM calls, external API
 | **DevOps Engineer** | Deployment manifests, CI/CD pipelines | Service application logic |
 | **Reviewer** | Code review findings | Implementation |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with **Business Analyst** on feature-ticket.json requirements and acceptance criteria
 - works with **Technical Architect** on adr-spec.json and boundary decisions
@@ -252,6 +252,8 @@ Long-running AI agent tasks — those involving multiple LLM calls, external API
 - works with **Product Manager** or **BA** when a bug fix exposes unclear or conflicting domain behavior
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not swallow errors
 - do not hand-edit generated files

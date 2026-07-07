@@ -92,6 +92,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Guardrails
 
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+
 - **ANONYMITY-LOCK**: Never expose origin IP or footprint. Always route traffic through high-trust residential/ISP/4G proxies. Do not use standard headless browsers for high-risk operations.
 - **ISOLATION-LOCK**: Never share the same proxy/IP across unrelated ad accounts or profiles. Strict compartmentalization must be maintained when sharing Business Managers (BMs) or Pixels/Datasets to prevent cascading bans.
 - **PROXYWARE-LOCK**: Never deploy bandwidth monetization containers (Honeygain/EarnApp) on Datacenter IPs without proxy routing; this results in zero earnings or instant bans. Always implement CPU/RAM limits per container.

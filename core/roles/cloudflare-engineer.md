@@ -86,7 +86,7 @@ This role must follow [role-standard](role-standard.md) first.
 | **System Engineer** | Origin server infrastructure, backend network topology, OS/server config | Cloudflare edge layer config, Wrangler |
 | **Frontend Developer** | Astro/React application code | Cloudflare KV/D1 binding config |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with **DevOps Engineer** on CI jobs that invoke `npm run deploy` / Wrangler; DevOps owns pipeline, CF Engineer owns Wrangler correctness
 - works with **System Engineer** on edge-to-origin topology — CF Engineer configures Cloudflare routing, health checks, and origin pull settings; SE owns origin server infrastructure and provides origin topology via `contracts/schemas/system-design-spec.json`

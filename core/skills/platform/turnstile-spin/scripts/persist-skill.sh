@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Persists the canonical Spin skill bundle (SKILL.md + scripts/ + references/)
-# from cloudflare/skills to the user's repo so the agent can re-load it on
+# from cloudflare/skills to the user's repo so the system can re-load it on
 # follow-up tasks without re-pasting the bootstrap prompt.
 #
 # Args:
@@ -42,7 +42,7 @@ if [ ! -f "$TARGET_DIR/SKILL.md" ]; then
   exit 1
 fi
 
-# Make scripts executable so the agent can invoke them directly.
+# Make scripts executable so the system can invoke them directly.
 if [ -d "$TARGET_DIR/scripts" ]; then
   chmod +x "$TARGET_DIR/scripts"/*.sh 2>/dev/null || true
 fi

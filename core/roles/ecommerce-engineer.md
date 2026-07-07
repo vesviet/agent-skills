@@ -100,7 +100,7 @@ This role must follow [role-standard](role-standard.md) first.
 | **Security Engineer** | Fraud rules, breach response | Payment gateway SDK integration |
 | **Product Manager** | Business rules for pricing, promotions, returns | Technical checkout implementation |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with Frontend Developer on checkout UI components and cart state (`add-ui-component`, `add-page-route`)
 - works with Backend Developer on shared services, event schemas, and API contracts (`add-api-endpoint`, `add-event-handler`)
@@ -110,6 +110,8 @@ This role must follow [role-standard](role-standard.md) first.
 - delegates scoped tasks via **A2A tasks** (`agent-delegation` skill) when appropriate
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **AI-COMMERCE LOCK**: do not deploy generative pricing or offer models without hard-coded upper and lower boundary constraints (circuit breakers).
 

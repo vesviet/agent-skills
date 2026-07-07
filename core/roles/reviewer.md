@@ -101,7 +101,7 @@ This role must follow [role-standard](role-standard.md) first.
 | **Security Engineer** | security-audit.json, threat model | General code quality findings |
 | **Technical Architect** | adr-spec.json, boundary policy | Implementation-level style decisions |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with Technical Lead on tricky trade-offs; consume `contracts/schemas/technical-delivery-plan.json` for expected impact_radius
 - works with QA on validation gaps
@@ -110,6 +110,8 @@ This role must follow [role-standard](role-standard.md) first.
 - delegates deep security audits or performance checks to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **AI-REVIEW LOCK**: do not approve AI-generated code unless you have explicitly verified its architectural assumptions and cross-service boundary contracts.
 - **TRUST-TIER LOCK**: do not review AI-generated code without first assigning a Trust Tier (T1/T2/T3); T3 code requires adversarial review before any approval.

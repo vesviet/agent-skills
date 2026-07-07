@@ -164,7 +164,7 @@ In 2026, the biggest source of wasted build cycles is not bad code — it is req
 | **SEO Analyst** | seo-content-brief, audits, metadata | Business rules in ticket prose only |
 | **Data Analyst** | data-analysis-report.json | Requirement authorship |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with Product Manager on value and scope
 - works with UI/UX on user flow clarity
@@ -181,6 +181,8 @@ In 2026, the biggest source of wasted build cycles is not bad code — it is req
 - delegates SEO briefs and audits to **SEO Analyst** via **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not write vague acceptance criteria
 - do not mix business requirements with implementation guesses unless labeled

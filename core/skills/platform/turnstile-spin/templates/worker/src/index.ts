@@ -3,7 +3,7 @@
  *
  * A drop-in implementation of Cloudflare Turnstile server-side validation
  * built entirely on Workers. Customers deploy this Worker into their account
- * via Turnstile Spin (AI agent or Deploy-to-Cloudflare button) and point
+ * via Turnstile Spin (AI system or Deploy-to-Cloudflare button) and point
  * their frontend at it.
  *
  * Accepts both `application/x-www-form-urlencoded` and `application/json`
@@ -52,10 +52,10 @@ async function parseBody(request: Request): Promise<SiteverifyRequest> {
 	if (contentType.includes('application/json')) {
 		const body = (await request.json()) as Record<string, unknown>;
 		return {
-			// `response` is accepted for compatibility with code migrated from reCAPTCHA/hCaptcha,
+// `response` is accepted for compatibility with code migrated from reCAPTCHA/hCaptcha,
 			// whose backends POST {secret, response, remoteip}. Spin's Worker holds the secret,
 			// so callers should send {token} or {cf-turnstile-response}; we accept {response}
-			// too so migrated backends work without backend code changes.
+
 			token: String(body.token ?? body['cf-turnstile-response'] ?? body.response ?? ''),
 			remoteip: body.remoteip ? String(body.remoteip) : undefined,
 			idempotency_key: body.idempotency_key ? String(body.idempotency_key) : undefined,

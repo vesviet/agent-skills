@@ -145,7 +145,7 @@ Aim to leave behind one of these:
 
 ## Discussion
 
-### Issue 1: <title>
+### Problem 1: <title>
 
 - Architecture: concern or support
 - Engineering: implementation view
@@ -155,7 +155,7 @@ Aim to leave behind one of these:
 - Impact radius: users, systems, or teams affected
 - Recommendation: concrete next step
 
-### Issue 2: <title>
+### Problem 2: <title>
 
 - ...
 

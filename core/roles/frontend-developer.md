@@ -247,7 +247,7 @@ For micro-frontend architectures or large frontend applications with independent
 | **UI/UX Designer** | ux-flow-spec.json, design system | React/Vue code implementation |
 | **QA Engineer** | End-to-end testing, test reports | Feature implementation |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with **Business Analyst** on feature-ticket.json scope and acceptance criteria
 - works with **UI/UX Designer** on `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/ui-component-spec.json` (handoff manifest)
@@ -263,6 +263,8 @@ For micro-frontend architectures or large frontend applications with independent
 - works with **Product Manager** or **BA** when bug fixes reveal ambiguous requirements or unintended legacy behavior
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not ignore edge states
 - do not treat a visually correct render as proof that logic is correct

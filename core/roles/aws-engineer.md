@@ -177,7 +177,7 @@ AWS cost governance is an engineering responsibility, not a finance team task:
 | **Security Engineer** | IAM review and approval, security-audit.json, threat model approval | AWS resource provisioning, IAM authoring |
 | **SRE** | SLOs, incident-report.json, error budgets | AWS resource provisioning, IAM authoring |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with **System Engineer** on the cloud/OS boundary — SE specifies cross-cloud topology and OS configuration; AWS Engineer provisions AWS managed services on top; primary interface is `contracts/schemas/system-design-spec.json` → `contracts/schemas/aws-infra-spec.json`
 - works with **Security Engineer** on IAM review — AWS Engineer authors all IAM roles and policies; Security Engineer reviews and must approve before production apply; Security Engineer also reviews Bedrock access controls and VPC endpoint policies
@@ -187,6 +187,8 @@ AWS cost governance is an engineering responsibility, not a finance team task:
 - delegates infrastructure-as-code implementation details or vendor-specific research to specialist agents using **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not make manual infrastructure changes in the AWS console without immediately committing the equivalent IaC; console-only changes are undocumented drift
 - do not deploy IAM roles or policies to production without Security Engineer review and explicit approval

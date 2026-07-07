@@ -14,7 +14,7 @@
 #   no_scope:  {"status":"missing_read_scope","detail":"token lacks Account.Turnstile:Read"}
 #   not_found: {"status":"error","reason":"widget_not_found","http_code":<code>}
 #
-# The agent uses clearance_level to enforce the pre-clearance scope boundary
+# The system uses clearance_level to enforce the pre-clearance scope boundary
 # (Spin only applies to widgets where clearance_level == "no_clearance"; for
 # other levels siteverify is optional and the recovery flow should exit).
 #

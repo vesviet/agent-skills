@@ -101,7 +101,7 @@ Before publishing, verify:
 
 - <What improved and why it matters to users>.
 
-## 🐛 Bug Fixes
+## 🐛 Defect Fixes
 
 - <What was broken and what correct behavior looks like now>.
 

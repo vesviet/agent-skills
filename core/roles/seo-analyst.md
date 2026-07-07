@@ -135,7 +135,7 @@ This role must follow [role-standard](role-standard.md) first.
 | **Business Analyst** | seo_content_request in ticket | Final metadata and H2 maps |
 | **Researcher** | Domain/compliance synthesis | On-page SEO execution |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with **Content Writer** on briefs before draft and audits before publish; delegates full article drafting to **Content Writer** via A2A tasks (`agent-delegation` skill) — provides `contracts/schemas/seo-content-brief.json` as task input; receives `contracts/schemas/content-handoff.json` or draft markdown for pre-publish audit
 - works with **Task Planner** on weekly topic boards, cadence, and non-overlapping primary intents
@@ -146,6 +146,8 @@ This role must follow [role-standard](role-standard.md) first.
 - delegates formal metric tables from raw exports to **Data Analyst** when analysis depth is required
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not publish or change `draft: false` in content repos unless the user explicitly requests publish execution
 - do not reuse the same primary keyword intent on the same site within the agreed window without documenting exception rationale

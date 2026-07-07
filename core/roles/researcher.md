@@ -123,7 +123,7 @@ When research feeds Content Writer or SEO Analyst:
 | **Business Analyst** | feature-ticket.json, AC | Deep market research |
 | **Product Manager**| write-product-brief | External domain research |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with **Business Analyst** on Research Request framing and consuming findings into feature-ticket.json (BA owns ticket)
 - works with **Product Manager** on goals, constraints, and open questions

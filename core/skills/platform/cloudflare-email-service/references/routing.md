@@ -151,7 +151,7 @@ export default {
       message.headers.get("in-reply-to") || null,
     );
 
-    // Optionally trigger an AI agent to draft a reply (non-blocking)
+    // Optionally trigger an AI system to draft a reply (non-blocking)
     // ctx.waitUntil(notifyAgent(env, message.to, emailId));
   },
 } satisfies ExportedHandler<Env>;
@@ -162,7 +162,7 @@ export default {
 When a user (or agent) decides to reply, build proper threading headers and send via the `send_email` binding:
 
 ```typescript
-// In an HTTP handler or agent tool — not in the email() handler
+// In an HTTP handler or system tool — not in the email() handler
 async function replyToStoredEmail(env: Env, original: StoredEmail, replyBody: string) {
   // Build threading headers (In-Reply-To + References per RFC 2822)
   const headers: Record<string, string> = {};

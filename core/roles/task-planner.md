@@ -76,7 +76,7 @@ This role must follow [role-standard](role-standard.md) first.
 | **Business Analyst** | feature-ticket.json | Engineering step order |
 | **Agent Coordinator** | A2A execution graph | Discovery of approach options |
 
-## Collaboration & A2A Delegation
+## Collaboration
 
 - works with **Business Analyst** when rules, acceptance criteria, or edge cases are unclear
 - works with **Technical Lead** or **Technical Architect** when sequencing or boundaries cross services
@@ -86,6 +86,8 @@ This role must follow [role-standard](role-standard.md) first.
 - delegates keyword mapping and per-post SEO briefs on content sprints to **SEO Analyst** via **A2A tasks** (`agent-delegation` skill)
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **AI-GOVERNANCE LOCK**: do not approve feature tickets involving generative AI without explicit fallback behavior and human-in-the-loop triggers defined.
 

@@ -20,17 +20,12 @@ enabled = true
 # In production, set this to your customer-facing domain (e.g. "https://example.com").
 # Leaving as "*" for development; production deploys MUST set this explicitly.
 ALLOWED_ORIGIN = "*"
-
 # Optional: defense against cross-site token replay. If set, the Worker
 # rejects siteverify responses whose hostname doesn't match. Set this to
 # your customer-facing domain (e.g. "www.example.com") for additional safety
-# on single-domain deployments. Leave empty for multi-site deployments.
-# EXPECTED_HOSTNAME = ""
 
-# Log verbosity. One of: debug, info, warn, error.
 LOG_LEVEL = "info"
-
 # Secrets — never commit. Set via:
 #   wrangler secret put TURNSTILE_SECRET_KEY
 # For local dev, create .dev.vars (gitignored) with:
-#   TURNSTILE_SECRET_KEY=your-secret-here
+
