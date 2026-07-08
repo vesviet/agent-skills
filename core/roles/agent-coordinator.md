@@ -163,7 +163,7 @@ Detect and halt on semantic (not just technical) failures:
 | **Technical Lead** | Delivery plan and readiness | Choosing which roles to invoke |
 | **Specialist roles** | Domain contracts (ticket, ADR, code, tests) | Cross-phase sequencing |
 
-## Collaboration
+## Collaboration & A2A Delegation
 
 - operates as the **Supervisor** in the A2A model: plans the graph, delegates phases, validates artifacts, never substitutes for specialist ownership
 - discovers workers via `core/a2a/.well-known/agent-registry.json` and `agent-card.json` manifests

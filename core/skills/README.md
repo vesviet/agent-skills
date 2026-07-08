@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 79 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **86 total** (run `validate-skills.py` for the live total).
+**Counts:** 88 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **95 total** (run `validate-skills.py` for the live total).
 
 ## Taxonomy
 
@@ -37,11 +37,12 @@ Configuration and compliance skills for agentic-ready web presence (MCP, RFC 972
 - `manage-api-catalog`
 - `manage-auth-md`
 
-### Foundation (21)
+### Foundation (23)
 
 Cross-cutting portable skills:
 
 - `analyze-business-requirements`
+- `analyze-campaign-roi`
 - `analyze-data`
 - `accessibility-review`
 - `commit-code`
@@ -49,6 +50,7 @@ Cross-cutting portable skills:
 - `create-migration`
 - `design-review`
 - `design-ux-flow`
+- `generate-mmo-content`
 - `incident-report`
 - `meeting-review`
 - `navigate-service`
@@ -80,9 +82,11 @@ Cross-cutting portable skills:
 - `integrate-r3f-three-legacy`
 - `optimize-3d-assets`
 
-### Platform (13)
+> Note: `create-automation-script` is classified under Platform (stealth/CDP automation is infrastructure-level).
 
-Delivery, runtime, Cloudflare-specific, cloud, and system infrastructure skills:
+### Platform (15)
+
+Delivery, runtime, Cloudflare-specific, cloud, system infrastructure, and MMO automation skills:
 
 - `aws-infrastructure`
 - `setup-deployment`
@@ -92,7 +96,10 @@ Delivery, runtime, Cloudflare-specific, cloud, and system infrastructure skills:
 - `debug-runtime-platform`
 - `add-telemetry-instrumentation`
 - `cloudflare-email-service`
+- `create-automation-script`
 - `durable-objects`
+- `deploy-mmo-infrastructure`
+- `deploy-proxyware-fleet`
 - `sandbox-sdk`
 - `turnstile-spin`
 - `web-perf`
@@ -107,12 +114,14 @@ E-commerce catalog, checkout, payment, and fulfillment:
 - `manage-product-catalog`
 - `manage-order-fulfillment`
 
-### Security And Data (4)
+### Security And Data (5)
 
 - `manage-secrets`
 - `database-maintenance`
+- `manage-mmo-assets`
 - `security-audit`
 - `build-data-pipeline`
+- `setup-tracking-system`
 
 ### Documentation (2)
 
