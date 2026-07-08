@@ -130,6 +130,8 @@ This role must follow [role-standard](role-standard.md) first.
 - `web-perf`
 - `setup-deployment`
 - `debug-runtime-platform`
+- `debug-workers-edge`
+- `supply-chain-security`
 - `manage-secrets`
 - `navigate-service`
 - `commit-code`

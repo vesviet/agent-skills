@@ -1,6 +1,6 @@
 ---
 name: accessibility-review
-description: Audit UI for keyboard navigation, focus order, screen-reader labels, color contrast, motion preferences, and ARIA correctness against WCAG-oriented criteria. Use when validating user-facing flows before release, after design specs land, or when fixing reported a11y defects.
+description: Audit UI for keyboard navigation, focus order, screen-reader labels, color contrast, motion preferences, and ARIA correctness against WCAG 2.2 criteria (including Focus Appearance 2.4.11/12, Target Size 2.5.8, Accessible Authentication 3.3.8/9). Use automated CI gates via @axe-core/playwright for regression detection alongside manual screen-reader testing. Use when validating user-facing flows before release, after design specs land, or when fixing reported a11y defects.
 ---
 
 # Accessibility Review

@@ -296,6 +296,7 @@ For micro-frontend architectures or large frontend applications with independent
 ### Supporting Skills (use when collaborating)
 
 - `accessibility-review`
+- `setup-design-system`
 - `performance-profiling`
 - `navigate-service`
 - `commit-code`

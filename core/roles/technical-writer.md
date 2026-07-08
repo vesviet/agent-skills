@@ -185,6 +185,7 @@ Agentic systems require a new class of documentation deliverable that is distinc
 
 - `write-documentation`
 - `release-notes`
+- `configure-llms-txt`
 - `write-article` (when authoring long-form concept guides or architectural explanations)
 
 ### Supporting Skills (use when collaborating)

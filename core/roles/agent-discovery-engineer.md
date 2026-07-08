@@ -92,6 +92,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Supporting Skills (use when collaborating)
 
+- `manage-agent-identity`
+- `configure-llms-txt`
 - `commit-code`
 - `agent-delegation`
 

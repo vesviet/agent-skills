@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 88 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **95 total** (run `validate-skills.py` for the live total).
+**Counts:** 91 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **98 total** (run `validate-skills.py` for the live total).
 
 ## Taxonomy
 
@@ -37,7 +37,7 @@ Configuration and compliance skills for agentic-ready web presence (MCP, RFC 972
 - `manage-api-catalog`
 - `manage-auth-md`
 
-### Foundation (23)
+### Foundation (25)
 
 Cross-cutting portable skills:
 
@@ -45,6 +45,7 @@ Cross-cutting portable skills:
 - `analyze-campaign-roi`
 - `analyze-data`
 - `accessibility-review`
+- `ai-risk-assessment`
 - `commit-code`
 - `conduct-research`
 - `create-migration`
@@ -64,6 +65,8 @@ Cross-cutting portable skills:
 - `write-article`
 - `write-product-brief`
 - `write-tests`
+- `write-documentation`
+- `write-tech-radar`
 
 ### Backend (4)
 
@@ -84,12 +87,13 @@ Cross-cutting portable skills:
 
 > Note: `create-automation-script` is classified under Platform (stealth/CDP automation is infrastructure-level).
 
-### Platform (15)
+### Platform (17)
 
 Delivery, runtime, Cloudflare-specific, cloud, system infrastructure, and MMO automation skills:
 
 - `aws-infrastructure`
 - `setup-deployment`
+- `supply-chain-security`
 - `system-design`
 - `wrangler`
 - `debug-workers-edge`
@@ -114,7 +118,7 @@ E-commerce catalog, checkout, payment, and fulfillment:
 - `manage-product-catalog`
 - `manage-order-fulfillment`
 
-### Security And Data (5)
+### Security And Data (6)
 
 - `manage-secrets`
 - `database-maintenance`
@@ -123,8 +127,9 @@ E-commerce catalog, checkout, payment, and fulfillment:
 - `build-data-pipeline`
 - `setup-tracking-system`
 
-### Documentation (2)
+### Documentation (3)
 
+- `configure-llms-txt`
 - `write-documentation`
 - `write-tech-radar`
 

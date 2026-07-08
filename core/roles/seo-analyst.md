@@ -175,6 +175,7 @@ This role must follow [role-standard](role-standard.md) first.
 - `analyze-business-requirements`
 - `analyze-data`
 - `write-documentation`
+- `configure-llms-txt`
 - `agent-delegation`
 - `configure-agent-headers`
 - `manage-api-catalog`

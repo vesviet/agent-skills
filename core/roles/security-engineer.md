@@ -167,6 +167,8 @@ System Engineers author IaC and provision infrastructure — Security Engineer r
 
 - `security-audit`
 - `manage-secrets`
+- `supply-chain-security`
+- `ai-risk-assessment`
 
 ### Supporting Skills (use when collaborating)
 

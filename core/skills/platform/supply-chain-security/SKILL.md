@@ -1,0 +1,161 @@
+---
+name: supply-chain-security
+description: Implement software supply chain security by generating SBOMs (CycloneDX/SPDX), enforcing SLSA build provenance levels, integrating artifact signing (Sigstore), and maintaining VEX context for vulnerability management. Use when hardening CI/CD pipelines, generating per-build inventory, achieving SLSA Level 2 or 3 compliance, or auditing third-party dependencies including MCP server registries.
+---
+
+# Supply Chain Security
+
+Use this skill when hardening the software supply chain against tampering, undisclosed vulnerabilities, and dependency risks. Applies to application builds, AI/ML pipeline artifacts, MCP server registries, and agent skill registries.
+
+## Core Rules
+
+- **SBOM-first**: generate a Software Bill of Materials for every production artifact — at build time, not post-deploy.
+- **SLSA incremental**: target SLSA Level 2 as minimum baseline; Level 3 for production workloads with external consumers.
+- **Artifact signing**: sign all release artifacts cryptographically (Sigstore/cosign preferred); never ship unsigned artifacts to external registries.
+- **VEX context**: complement every SBOM with VEX (Vulnerability Exploitability eXchange) to declare which CVEs are not exploitable in this deployment context.
+- **Living SBOM**: feed SBOMs into continuous monitoring (Dependency-Track or SCA) — a static snapshot is insufficient.
+- **MCP registry governance**: treat every MCP server dependency as a supply-chain artifact; include in SBOM with publisher provenance check, behavioral analysis, and version pinning.
+- **AI-generated code provenance**: apply the same SLSA provenance checks to AI-generated code as to human-authored code; do not assume AI output is clean.
+
+### 2025-2026: Agentic Supply Chain Extension (OWASP ASI04)
+
+Per OWASP ASI Top 10 2026 (ASI04 — Agentic Supply Chain):
+- every skill, tool, or plugin pulled from an external registry must be version-pinned and schema-validated before invocation
+- every MCP server dependency must appear in the system's SBOM with publisher identity verification
+- treat unverified skills and tools as untrusted until schema-validated against the pack's known schema
+
+## SLSA Levels Reference
+
+| Level | Requirement | Practical Target |
+|---|---|---|
+| **L1** | Provenance exists | Minimum for new projects |
+| **L2** | Tamper-resistant provenance (signed) | Enterprise baseline 2026 |
+| **L3** | Hardened build environment (hermetic) | Production with external consumers |
+| **L4** | Two-party review + hermetic | High-assurance / regulated |
+
+## SBOM Format Selection
+
+| Format | Use Case |
+|---|---|
+| **CycloneDX** | DevSecOps pipelines, vulnerability management, VEX support |
+| **SPDX** | Legal review, license compliance, formal documentation workflows |
+| **Both** | Mature orgs with both DevSecOps and legal review requirements |
+
+## Suggested Process
+
+### 1. SBOM Generation (CI Integration)
+
+Integrate SBOM generation into the CI/CD pipeline on every build:
+
+```yaml
+# GitHub Actions example (CycloneDX)
+- name: Generate SBOM
+  uses: CycloneDX/gh-dotnet-generate-sbom@v1
+  with:
+    path: ./
+    out: ./sbom.json
+    json: true
+
+- name: Store SBOM with artifact
+  uses: actions/upload-artifact@v4
+  with:
+    name: sbom-${{ github.sha }}
+    path: ./sbom.json
+```
+
+Key rules:
+- store SBOM alongside the build artifact (not separately)
+- include version, license, hash, and source commit for every component
+- for MCP server dependencies: add publisher identity, behavioral analysis status, version-pinned hash
+
+### 2. SLSA Provenance (Level 2+)
+
+Generate provenance metadata documenting how the artifact was built:
+
+```yaml
+# GitHub Actions — SLSA provenance via slsa-framework/slsa-github-generator
+jobs:
+  build:
+    outputs:
+      digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - name: Build
+        id: build
+        run: |
+          docker build -t myapp:${{ github.sha }} .
+          echo "digest=$(docker inspect --format='{{index .RepoDigests 0}}' myapp:${{ github.sha }})" >> $GITHUB_OUTPUT
+
+  provenance:
+    needs: build
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v2
+    with:
+      image: myapp
+      digest: ${{ needs.build.outputs.digest }}
+```
+
+### 3. Artifact Signing (Sigstore/cosign)
+
+```bash
+# Sign container image
+cosign sign --key cosign.key myregistry/myapp:$TAG
+
+# Verify signature
+cosign verify --key cosign.pub myregistry/myapp:$TAG
+
+# Sign SBOM
+cosign attest --key cosign.key --type cyclonedx myregistry/myapp:$TAG
+```
+
+### 4. VEX Document (Vulnerability Exploitability)
+
+```json
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "vulnerabilities": [
+    {
+      "id": "CVE-2024-XXXXX",
+      "analysis": {
+        "state": "not_affected",
+        "justification": "code_not_reachable",
+        "detail": "Vulnerable code path is not invoked in this deployment configuration"
+      },
+      "affects": [{ "ref": "pkg:npm/affected-package@1.2.3" }]
+    }
+  ]
+}
+```
+
+### 5. Continuous Monitoring
+
+Feed SBOMs into Dependency-Track or equivalent SCA tool:
+- configure alerts for new CVEs affecting components in SBOM
+- set policy: reject builds when critical/high CVEs exist without VEX justification
+- review MCP server SBOMs on every registry update, not just on initial adoption
+
+## Checklist
+
+- [ ] SBOM generated at build time (CycloneDX or SPDX format selected based on use case)
+- [ ] SBOM stored alongside build artifact in registry
+- [ ] SLSA Level 2+ provenance generated and attached to artifact
+- [ ] All release artifacts cryptographically signed (cosign/Sigstore)
+- [ ] VEX context documented for all known CVEs affecting this deployment
+- [ ] SBOMs fed into continuous monitoring (Dependency-Track or SCA tool)
+- [ ] MCP server dependencies: publisher identity verified, version-pinned, behavioral analysis complete
+- [ ] AI-generated code passes same provenance checks as human-authored code
+- [ ] OWASP ASI04 supply chain posture confirmed: no unverified skills/tools in active toolbox
+
+## Output Format
+
+- `sbom.cdx.json` or `sbom.spdx.json` — Bill of Materials for the artifact
+- `provenance.intoto.jsonl` — SLSA provenance attestation
+- `vex.cdx.json` — Vulnerability Exploitability eXchange document
+- Updated `contracts/schemas/deployment-plan.json` when supply chain attestations are a deploy gate
+
+## Related Skills
+
+- **setup-deployment**: deployment source-of-truth — supply-chain-security outputs are a pre-deploy gate
+- **manage-secrets**: securely store signing keys and registry credentials
+- **security-audit**: holistic security review that references SBOM findings
+- **configure-mcp**: every MCP server added must have SBOM entry and registry provenance check

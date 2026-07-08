@@ -193,6 +193,7 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 - `review-service`
 - `configure-agent-commerce`
 - `configure-agent-skills`
+- `ai-risk-assessment`
 
 ## Output Template
 

@@ -275,6 +275,7 @@ Privacy and compliance constraints belong at the boundary level, not in applicat
 - `scaffold-new-service`
 - `review-code`
 - `security-audit`
+- `supply-chain-security`
 - `setup-deployment`
 - `agent-delegation`
 
