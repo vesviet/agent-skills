@@ -2,6 +2,12 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [3.2.0] - 2026-07-16
+
+### Added
+- `## When to Use` section (with concrete trigger bullets) to all 74 skills and roles that previously lacked it, improving execution consistency across the pack.
+- Concrete code examples to 12 thin infrastructure/MMO skills (`aws-infrastructure`, `deploy-mmo-infrastructure`, `deploy-proxyware-fleet`, `create-automation-script`, `debug-runtime-platform`, `turnstile-spin`, `add-api-endpoint`, `setup-tracking-system`, `manage-mmo-assets`, `analyze-campaign-roi`, `generate-mmo-content`, `repurpose-content`).
+
 ## [3.1.0] - 2026-07-01
 
 ### Added
