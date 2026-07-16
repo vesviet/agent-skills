@@ -219,6 +219,7 @@ AWS cost governance is an engineering responsibility, not a finance team task:
 - `conduct-research` (when evaluating new AWS service options)
 - `agent-delegation` (when delegating to specialist agents)
 - `database-maintenance` (when RDS/DynamoDB maintenance is in scope)
+- `incident-report` (when emitting structured incident handoff to SRE or Agent Coordinator)
 
 ## Output Template
 

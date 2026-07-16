@@ -11,6 +11,14 @@ You are the agent. Run the wizard below by invoking the scripts under `scripts/`
 
 Canonical instructions live at [`developers.cloudflare.com/turnstile/spin`](https://developers.cloudflare.com/turnstile/spin/). If the docs page and this file disagree, trust the docs page.
 
+## When to Use
+
+- adding bot protection to a form or gated flow (login, signup, checkout)
+- integrating Turnstile into vanilla HTML, Next.js, Astro, SvelteKit, or Hugo
+- deploying a managed `siteverify` Worker and wiring server-side validation
+- choosing the least-intrusive widget mode for a given risk level
+- re-triggering the widget on token expiry or backend validation failure
+
 ## Core Rules
 - Do NOT write the Turnstile secret to disk. Only pass it via stdin to `wrangler secret put`.
 - Do NOT skip validation (Step 11).

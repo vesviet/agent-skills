@@ -7,6 +7,13 @@ description: Add or modify a page, screen, or route by following the repo's navi
 
 Use this skill when a frontend change needs a new page, screen, or route-level flow.
 
+## When to Use
+
+- frontend work needs a new route/page
+- modifying route-level data loading or layout
+- wiring auth or navigation per repo pattern
+- adding screen-level behavior
+
 ## Core Rules
 
 - follow the repo's routing and layout pattern

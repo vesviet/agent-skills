@@ -7,6 +7,13 @@ description: Debug 3D scene behavior by tracing scene graph structure, transform
 
 Use this skill when a 3D experience behaves incorrectly and the fix depends on understanding scene state, transforms, asset wiring, or render lifecycle rather than only surface UI symptoms.
 
+## When to Use
+
+- a Three.js / R3F / WebGL / WebGPU scene has rendering bugs
+- interaction or raycasting bugs in a 3D scene
+- clipping, context loss, or camera math problems
+- suspicious material/transform/render-loop behavior
+
 ## Core Rules
 
 - capture the exact 3D symptom before changing code

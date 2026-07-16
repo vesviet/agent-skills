@@ -7,6 +7,28 @@ description: Manage and share MMO assets (Business Managers, Via, Pixels/Dataset
 
 Use this skill to securely acquire, organize, and share valuable marketing assets without triggering platform security algorithms or risking entire network closures ("chết chùm").
 
+## When to Use
+
+- onboarding new ad accounts, Vias, or Business Managers (BMs)
+- sharing assets with teammates via RBAC instead of raw cookies
+- auditing asset health / IP overlap across silos
+- compartmentalizing clean backups away from restricted assets
+- responding to or recovering from a cascading ban ("chết chùm") incident
+
+## Example (compartmentalization map)
+
+```yaml
+silos:
+  - id: silo-a
+    assets: [bm-101, via-22, adacct-7]
+    proxy_subnet: 10.20.0.0/24
+    admins: [ops-lead]
+  - id: silo-b
+    assets: [bm-102, via-23, adacct-8]
+    proxy_subnet: 10.30.0.0/24   # no IP/admin overlap with silo-a
+    admins: [growth-lead]
+```
+
 ## Core Rules
 
 - **ISOLATION-LOCK**: Never share the same residential proxy IP across unrelated ad accounts or profiles.

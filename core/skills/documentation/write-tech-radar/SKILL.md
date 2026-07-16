@@ -9,6 +9,13 @@ Use this skill when a team needs a technology radar, adoption note, or concise e
 
 **Role routing:** Binding architecture decisions → **Technical Architect** with `contracts/schemas/adr-spec.json`. Delivery sequencing → **Technical Lead** with `technical-delivery-plan.json`. Runbooks and API docs → **Technical Writer** with `write-documentation`. This skill is for **radar-style** adopt/hold/trial guidance, not a substitute for ADRs.
 
+## When to Use
+
+- documenting a technology choice or trial
+- giving directional adoption guidance
+- summarizing context + trade-offs + recommendation
+- concise decision-oriented entry
+
 ## Core Rules
 
 - optimize for decision clarity, not essay length

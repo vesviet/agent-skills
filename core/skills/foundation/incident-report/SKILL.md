@@ -14,6 +14,13 @@ Use this skill when a production incident, degradation, or security event requir
 - a postmortem or retrospective requires evidence-backed findings
 - incident action items need owners and timelines to prevent recurrence
 
+## When to Use
+
+- a production failure or degradation occurs
+- a security event requires formal comms
+- capturing timeline + root cause
+- defining prevention action items
+
 ## Core Rules
 
 - do not close an incident without explicit action items and owners

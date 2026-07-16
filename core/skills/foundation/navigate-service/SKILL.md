@@ -7,6 +7,13 @@ description: Navigate and understand an unfamiliar service by mapping its entryp
 
 Use this skill when the user asks to understand, explore, or orient within a specific service or bounded component.
 
+## When to Use
+
+- exploring an unfamiliar service
+- locating behavior before a change
+- mapping entrypoints, flows, dependencies
+- gathering context before review/debug
+
 ## Core Rules
 
 - prefer repo-local structure over generic examples

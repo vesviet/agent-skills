@@ -7,6 +7,13 @@ description: Plan, research, outline, and draft long-form articles and blog post
 
 Use this skill with the **Content Writer** role when the deliverable is a publishable article (Markdown, MDX, or Hugo/Astro content files). In 2025-2026, articles must optimize for three discovery surfaces simultaneously: traditional search (SEO), direct-answer engines (AEO), and generative AI citation (GEO).
 
+## When to Use
+
+- drafting guides, reviews, or announcements
+- narrative long-form content (not API runbooks)
+- aligning with an SEO brief + GEO/AEO
+- applying E-E-A-T and information-gain gates
+
 ## Core Rules
 
 ### Research & Evidence Integrity

@@ -7,6 +7,13 @@ description: Read from and write to persistent memory stores so agents retain co
 
 Use this skill when the agent needs to persist or retrieve knowledge that outlives a single conversation.
 
+## When to Use
+
+- starting work in a known repo
+- after fixing a non-obvious bug
+- after discovering a codebase convention
+- the same mistake has occurred more than once
+
 ## Core Rules
 
 - write to memory only when the knowledge is reusable across future tasks

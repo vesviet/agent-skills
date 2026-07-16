@@ -7,6 +7,13 @@ description: Optimize 3D assets and rendering inputs by reviewing model formats,
 
 Use this skill when the main problem is not scene logic alone, but the cost or quality of the 3D assets flowing into the runtime.
 
+## When to Use
+
+- heavy GLTF/OBJ assets slow the experience
+- texture bloat or long load times
+- frame drops or GPU/memory pressure
+- reviewing geometry density and compression
+
 ## Core Rules
 
 - optimize the biggest asset bottlenecks first instead of micro-tuning unrelated code

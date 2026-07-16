@@ -7,6 +7,13 @@ description: Review code, configuration, and service behavior for security risks
 
 Use this skill when reviewing a change, service, or deployment for security posture and obvious risk.
 
+## When to Use
+
+- focused security review of a change
+- full-service risk assessment
+- checking trust boundaries, secrets, auth, validation
+- AI/ML review via OWASP ASI + NIST + ISO 42001
+
 ## Core Rules
 
 - focus on real trust boundaries and attack surfaces

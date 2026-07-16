@@ -7,6 +7,13 @@ description: Create and maintain the llms.txt and llms-full.txt files for a doma
 
 Use this skill to implement the `llms.txt` standard for any domain that serves documentation, APIs, or content that AI agents, LLMs, or automated tools should be able to discover and ingest efficiently.
 
+## When to Use
+
+- a site/API has AI agent interfaces
+- optimizing for GEO / Agentic SEO
+- implementing dual-audience doc standard
+- creating llms.txt / llms-full.txt
+
 ## Core Rules
 
 - **Placement**: host at `/llms.txt` at the root of the domain (e.g., `example.com/llms.txt`) — not in a subdirectory.

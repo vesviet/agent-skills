@@ -7,6 +7,13 @@ description: Add, update, rotate, or review secret handling by following the rep
 
 Use this skill when a change involves creating, rotating, wiring, or auditing secrets and other sensitive configuration.
 
+## When to Use
+
+- code/deploy touches credentials or tokens
+- adding, updating, or rotating keys
+- reviewing secret access control
+- sensitive configuration rollout
+
 ## Core Rules
 
 - never place real secret values in source-controlled user-visible artifacts unless the repo explicitly stores encrypted secret material that way

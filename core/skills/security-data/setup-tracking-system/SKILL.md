@@ -5,7 +5,31 @@ description: Configure advanced privacy-first tracking including Server-to-Serve
 
 # Setup Tracking System
 
-Use this skill to deploy highly accurate, privacy-bypassing tracking systems necessary for MMO operations in a cookieless landscape.
+Use this skill to deploy highly accurate, privacy-first tracking systems necessary for MMO operations in a cookieless landscape.
+
+## When to Use
+
+- launching a new campaign and wiring conversion postbacks
+- migrating from pixel-only to Server-to-Server (S2S) tracking
+- integrating Meta Conversion API (CAPI) for higher match quality
+- diagnosing attribution gaps or low postback fire rates
+- configuring cloaking / bot-traffic filtering rules in a tracker
+
+## Example (S2S postback with click ID + payout)
+
+```
+# Voluum/Binom postback URL fired by the affiliate network on conversion
+https://tracker.example.com/postback?cid={clickid}&payout={payout}&txid={txid}
+
+# Meta CAPI server-side event (Node)
+await fetch(`https://graph.facebook.com/v19.0/${PIXEL_ID}/events?access_token=${CAPI_TOKEN}`, {
+  method: "POST",
+  body: JSON.stringify({
+    data: [{ event_name: "Purchase", event_time: Math.floor(Date.now()/1000),
+             user_data: { em: [hash(email)] }, custom_data: { value: payout, currency: "USD" } }]
+  })
+});
+```
 
 ## Core Rules
 

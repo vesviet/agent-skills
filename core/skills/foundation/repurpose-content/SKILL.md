@@ -7,6 +7,14 @@ description: Extract and format micro-content variants (social threads, newslett
 
 Modern content distribution requires a single narrative to be adapted into multiple native formats. Use this skill when a core piece of content (blog post, whitepaper, case study) needs to be extracted into high-value micro-content variants for omnichannel distribution without losing core message, tone, or E-E-A-T signals.
 
+## When to Use
+
+- a published long-form article needs social/newsletter/video variants
+- distributing one narrative across LinkedIn, X, newsletter, and short video
+- the source already exists and you only need derivative formats
+- you must preserve E-E-A-T and fact density for GEO/AEO citability
+- AI-generated variants need a human editorial gate before publish
+
 ## Core Rules
 
 - **Native Format Alignment:** adapt to channel conventions — LinkedIn posts need a hook and spaced lines; Twitter/X threads need numbered segments and tight word counts; video scripts need `[Visual/Hook]` markers and ≤150 words for 60-second formats.

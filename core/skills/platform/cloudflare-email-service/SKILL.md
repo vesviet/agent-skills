@@ -102,6 +102,13 @@ Read the reference that matches your situation. You don't need all of them.
 - **[references/cli-and-mcp.md](references/cli-and-mcp.md)** — Domain setup, wrangler commands, MCP tools. For first-time setup.
 - **[references/deliverability.md](references/deliverability.md)** — SPF/DKIM/DMARC, bounces, suppressions, best practices.
 
+## When to Use
+
+- sending transactional email from a Worker/app
+- configuring Email Routing or Agents SDK email
+- setting up SPF/DKIM/DMARC deliverability
+- wrangler email binding or REST API setup
+
 ## Core Rules
 - Serve transactional emails only (do not use for bulk/marketing sends).
 - Verify the sender domain via wrangler CLI or the Cloudflare Dashboard before sending.

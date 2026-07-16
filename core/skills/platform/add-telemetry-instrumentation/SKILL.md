@@ -7,6 +7,13 @@ description: Add or update logging, metrics, and tracing by following the repo's
 
 Use this skill when code changes need matching observability so operators can understand traffic, failures, latency, and dependency behavior.
 
+## When to Use
+
+- a service/endpoint/feature needs visibility
+- adding logs, metrics, or traces (OTel)
+- tracing AI/LLM token usage and RAG steps
+- correlating multi-agent workflow spans
+
 ## Core Rules
 
 - follow the repo's existing logging, metrics, and tracing patterns

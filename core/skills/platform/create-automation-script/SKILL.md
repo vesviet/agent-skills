@@ -7,6 +7,31 @@ description: Build Playwright/Puppeteer automation scripts that connect via CDP 
 
 Use this skill to develop the core engine for MMO automation (farming, scraping, ad deployment) with an absolute focus on stealth and evading advanced bot-detection systems.
 
+## When to Use
+
+- building multi-account login or warm-up automation
+- scripting ad account creation/deployment at scale
+- scraping high-trust platforms (Meta, Google, TikTok)
+- connecting to an Anti-Detect Browser via CDP instead of a raw launch
+- validating stealth before a production run against bot-detection pages
+
+## Example (CDP connection + behavioral delays)
+
+```typescript
+import { chromium } from "playwright";
+
+const browser = await chromium.connectOverCDP("http://adspower-gw:50325");
+const context = browser.contexts()[0];
+const page = await context.newPage();
+
+// organic, randomized typing — never instant fill
+await page.click("#email");
+for (const ch of "user@example.com") {
+  await page.keyboard.type(ch, { delay: 100 + Math.random() * 400 });
+}
+await page.mouse.move(200, 300, { steps: 12 }); // Bezier-like path
+```
+
 ## Core Rules
 
 - **BEHAVIORAL-LOCK**: Any script interacting with high-trust platforms (Meta, Google, TikTok) MUST include organic delays and mouse movement emulation. Never execute instantaneous actions.

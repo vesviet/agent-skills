@@ -7,6 +7,13 @@ description: Connect frontend code to backend APIs by following the repo's reque
 
 Use this skill when frontend code needs to call a backend API or when an existing integration must change.
 
+## When to Use
+
+- a UI needs to read backend data
+- a UI needs to mutate backend state
+- wiring auth, caching, or error handling for API calls
+- following the repo's client/state patterns
+
 ## Core Rules
 
 - reuse the repo's existing data-fetching and mutation pattern

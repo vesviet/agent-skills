@@ -7,6 +7,28 @@ description: Add or modify a service endpoint by updating the local API contract
 
 Use this skill when a service needs a new endpoint or when an existing endpoint must change shape or behavior.
 
+## When to Use
+
+- creating a brand-new HTTP/RPC entrypoint in a service
+- evolving an existing endpoint's request/response shape
+- adding auth/authz middleware to a route
+- splitting or versioning an endpoint under an API namespace
+- changing the contract that Frontend or A2A consumers depend on
+
+## Example (Express-style boundary with validation + authz)
+
+```typescript
+app.post(
+  "/v1/orders",
+  requireAuth,                 // auth/authz middleware per repo pattern
+  validate(createOrderSchema), // boundary validation
+  async (req, res) => {
+    const order = await orderService.create(req.user.id, req.body);
+    res.status(201).json(order);
+  }
+);
+```
+
 ## Core Rules
 
 - follow the repo's existing contract and routing pattern

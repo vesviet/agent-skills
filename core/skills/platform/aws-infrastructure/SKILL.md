@@ -7,6 +7,42 @@ description: Provision, configure, and optimize AWS managed services following I
 
 Use this skill when designing or deploying AWS-native infrastructure, configuring IAM roles and policies, applying FinOps cost-optimization strategies, or setting up observability for AWS services.
 
+## When to Use
+
+- provisioning a new VPC, EKS cluster, RDS instance, Lambda, or S3 bucket via IaC
+- authoring or reviewing IAM roles, SCPs, or resource policies for least privilege
+- applying FinOps cost-allocation tags and rightsizing recommendations
+- enabling CloudWatch / X-Ray / AWS Config observability on a service
+- producing the `aws-infra-spec.json` handoff for DevOps or System Engineer
+
+## Example (Terraform)
+
+```hcl
+resource "aws_instance" "app" {
+  ami           = "ami-0abcdef1234567890"
+  instance_type = "t3.micro"
+
+  tags = {
+    "team-id"      = "growth"
+    "service-name" = "checkout"
+    "budget-tier"  = "standard"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "cpu" {
+  alarm_name          = "checkout-cpu-high"
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 80
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = 300
+  evaluation_periods  = 2
+  dimensions = {
+    InstanceId = aws_instance.app.id
+  }
+}
+```
+
 ## Core Rules
 
 - **IaC First**: All infrastructure must be defined in CloudFormation, Terraform, or AWS CDK. No manual dashboard clicks in production.

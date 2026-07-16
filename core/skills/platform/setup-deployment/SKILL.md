@@ -7,6 +7,13 @@ description: Add or update deployment source-of-truth configuration for a servic
 
 Use this skill when code changes need matching deployment or runtime configuration.
 
+## When to Use
+
+- a change needs rollout manifests
+- updating release config or runtime settings
+- wiring environment-specific values
+- editing deployment source-of-truth
+
 ## Core Rules
 
 - edit the repo's deployment source of truth, not just the live runtime

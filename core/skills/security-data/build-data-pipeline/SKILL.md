@@ -21,6 +21,13 @@ For one-off queries, comparisons, or stakeholder reports from existing tables, u
 - implementing data quality gates with Great Expectations, Soda, or dbt tests
 - generating formatted Excel or HTML reports as a scheduled or repeatable pipeline output
 
+## When to Use
+
+- the work needs a repeatable owned pipeline
+- ETL/ELT, warehousing, or dbt modeling
+- Kafka streaming or Airflow orchestration
+- not a one-off analytical query
+
 ## Core Rules
 
 - treat all source inputs as **read-only** — never modify source files

@@ -7,6 +7,13 @@ description: Manage working context across long or multi-step agent tasks by tra
 
 Use this skill when the work requires preserving the user's latest request, repository constraints, current phase state, evidence gathered so far, and the next safe action.
 
+## When to Use
+
+- a task spans many files or phases
+- resuming after interruption
+- tracking intent, evidence, and assumptions
+- reliable bug/feature control across phases
+
 ## Core Rules
 
 - let the newest user request steer the current work

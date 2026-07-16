@@ -7,6 +7,13 @@ description: Create a structured, curriculum-aligned learning plan or syllabus. 
 
 Use this skill to structure a personalized or generalized study plan, ensuring strict alignment with the designated educational standards and curriculum scope for the target learners.
 
+## When to Use
+
+- planning a study schedule or syllabus
+- building an exam-prep roadmap
+- creating a grade-transition plan
+- structuring curriculum-aligned learning
+
 ## Core Rules
 
 - Always map the plan to the standard academic calendar or the specific timeframe of the learner.

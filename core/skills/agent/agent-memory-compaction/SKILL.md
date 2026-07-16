@@ -7,6 +7,13 @@ description: Compact long-running agent conversation context into a minimal work
 
 Use this skill when accumulated conversation context is larger than the task needs and the work should continue from a smaller, accurate state.
 
+## When to Use
+
+- a chat grows long and context gets noisy
+- work needs a clean resume checkpoint
+- dropping stale detail while keeping goals/constraints
+- bug/feature control across many turns
+
 ## Core Rules
 
 - preserve the newest user request and any explicit corrections

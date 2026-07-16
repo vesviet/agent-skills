@@ -7,6 +7,13 @@ description: Implement the full A2A 1.0 task lifecycle including Agent Card disc
 
 Use this skill for **complete A2A 1.0** behavior beyond single-hop `agent-delegation`. Required for Antigravity deployments and Coordinator scatter-gather patterns.
 
+## When to Use
+
+- integrating multi-agent systems with structured A2A 1.0 communication
+- exposing an agent service via Agent Cards and JSON-RPC invoke/stream
+- operating as Antigravity and needing SSE progress + task handoffs
+- coordinating scatter-gather across multiple agents
+
 ## Core Rules
 
 - publish or consume **Agent Cards** (`agent-card.json`) before delegating

@@ -7,6 +7,13 @@ description: Builds secure, isolated code execution environments on Cloudflare W
 
 Build secure, isolated code execution environments on Cloudflare Workers.
 
+## When to Use
+
+- running LLM-generated code in isolation
+- executing user-submitted scripts safely
+- needing sandboxed compute with file access on edge
+- building an AI code interpreter / dev environment
+
 ## Core Rules
 - Do NOT use internal clients (`CommandClient`, `FileClient`) - use standard `sandbox.*` wrapper methods.
 - The Worker entrypoint script MUST explicitly include `export { Sandbox } from '@cloudflare/sandbox'`.

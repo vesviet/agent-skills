@@ -7,6 +7,13 @@ description: Design educational assignments, practice tests, and quizzes followi
 
 Use this skill to generate practical tasks, tests, or mock exams strictly following the educational standards and curriculum matrices specified for the target learners.
 
+## When to Use
+
+- generating practice tests or quizzes
+- building exam-prep materials
+- mapping exercises to curriculum objectives
+- designing assignments for a learning goal
+
 ## Core Rules
 
 - Strictly adhere to the requested testing formats (e.g., short quiz, unit test, mid-term, final).

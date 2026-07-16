@@ -18,6 +18,13 @@ Enable **`agent-model-routing`** (Supporting skill) when:
 
 Skip explicit routing when the task is a **single-phase** handoff to one specialist, or when the user pinned a model for the whole session.
 
+## When to Use
+
+- orchestrating multi-step workflows with mixed complexity
+- delegating sub-tasks to cheaper or stronger models
+- token costs need active budget management
+- a sub-task's risk tier changes the model choice
+
 ## Core Rules
 
 - match model capability to task complexity — do not use premium models for routine work

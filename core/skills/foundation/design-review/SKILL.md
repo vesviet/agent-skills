@@ -7,6 +7,13 @@ description: Review UX flows, visual hierarchy, interaction patterns, and design
 
 Use this skill with **UI/UX Designer** or **Reviewer** when the deliverable is design quality and spec completeness—not code correctness.
 
+## When to Use
+
+- validating ui-component-spec or ux-flow-spec
+- critiquing marketing/product UI (no app code)
+- checking visual hierarchy + design-system alignment
+- reviewing interaction patterns vs goals
+
 ## Core Rules
 
 - review against declared user goals, preserved behavior, and feature-ticket when provided

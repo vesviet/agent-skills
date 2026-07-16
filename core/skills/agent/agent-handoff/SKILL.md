@@ -7,6 +7,13 @@ description: Produce concise agent handoffs, status updates, and completion summ
 
 Use this skill when another person or future session needs to understand the current state without rereading the entire conversation, especially when work is moving across phases or owners.
 
+## When to Use
+
+- pausing or resuming work across sessions
+- handing work to another owner/phase
+- reporting completed engineering work
+- preserving decisions, changed files, and blockers
+
 ## Core Rules
 
 - lead with the current outcome or blocker

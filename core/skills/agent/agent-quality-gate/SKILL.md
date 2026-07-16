@@ -7,6 +7,13 @@ description: Run and interpret repository quality gates for agent-delivered chan
 
 Use this skill when changes need evidence that they are complete, valid, and aligned with repo-local checks before a phase can close.
 
+## When to Use
+
+- reporting a change as complete to a user or phase
+- advancing a bug/feature to the next phase
+- declaring a pack, role, workflow, or code change ready
+- producing phase-exit evidence (validators, lint, tests, build)
+
 ## Core Rules
 
 - run the repo's own validators before declaring completion

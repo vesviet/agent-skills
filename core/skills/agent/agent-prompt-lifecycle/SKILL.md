@@ -7,6 +7,13 @@ description: Manage prompt assets through their full lifecycle including version
 
 Use this skill when prompt changes need structured versioning, automated evaluation, and production observability rather than ad-hoc editing and gut-feel assessment.
 
+## When to Use
+
+- creating or updating a prompt definition
+- reviewing/auditing prompts in roles or skills
+- evaluating prompts against golden datasets
+- detecting prompt drift before promotion
+
 ## Core Rules
 
 - treat prompt definitions as versioned assets, not disposable text

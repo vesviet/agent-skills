@@ -146,6 +146,7 @@ AI/ML systems have reliability dimensions that standard availability SLOs do not
 - `troubleshoot-service`
 - `add-telemetry-instrumentation`
 - `performance-profiling`
+- `incident-report`
 
 ### Supporting Skills (use when collaborating)
 

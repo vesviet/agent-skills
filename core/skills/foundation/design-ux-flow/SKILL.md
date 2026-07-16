@@ -7,6 +7,13 @@ description: Design or refine a UX flow by defining user goals, preserved behavi
 
 Use this skill with the **UI/UX Designer** role when user-facing behavior must become structured specs for engineering.
 
+## When to Use
+
+- a feature/bugfix needs a UX/UI brief
+- defining screen states and edge cases
+- mapping interaction rules and adjacent-flow impact
+- handing a spec to frontend and QA
+
 ## Core Rules
 
 - design for user understanding, not only visual polish

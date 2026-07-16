@@ -7,6 +7,24 @@ description: Investigate deployment, environment, runtime, and rollout issues th
 
 Use this skill when the application code may be fine, but the running environment, rollout, or platform behavior is not.
 
+## When to Use
+
+- a service behaves differently across staging and production
+- deployment health is unclear after a rollout
+- the failure looks like config/secret/network, not app logic
+- you need to compare desired state (git) with running state (cluster)
+- a rollback or reconcile is required before escalating to app debugging
+
+## Example (compare desired vs running on Kubernetes)
+
+```bash
+kubectl rollout status deploy/checkout
+kubectl get deploy checkout -o jsonpath='{.spec.template.spec.containers[0].image}'
+kubectl describe pod -l app=checkout | grep -E "Image:|Env:|Warning"
+kubectl logs --previous deploy/checkout   # crash-loop before last restart
+helm diff upgrade checkout ./charts/checkout   # detect git vs live drift
+```
+
 ## Core Rules
 
 - compare desired state with running state before patching anything

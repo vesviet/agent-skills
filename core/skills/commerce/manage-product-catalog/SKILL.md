@@ -7,6 +7,13 @@ description: Build or maintain a product catalog including product creation, var
 
 Use this skill when the task involves designing the data model or implementing the CRUD operations for products, product variants, categories, pricing, and stock levels in an e-commerce context.
 
+## When to Use
+
+- adding or updating product data
+- variant management (size, color, SKU)
+- pricing or inventory sync across channels
+- structuring catalog data
+
 ## Core Rules
 
 - every sellable unit must have a unique SKU; never allow duplicate SKUs within the same catalog

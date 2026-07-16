@@ -7,6 +7,13 @@ description: Integrate or migrate between React Three Fiber and legacy imperativ
 
 Use this skill when a 3D frontend mixes React Three Fiber with older imperative Three.js code and the real work is defining safe boundaries between the two systems rather than only fixing one component in isolation.
 
+## When to Use
+
+- a 3D app mixes R3F with imperative Three.js
+- migrating legacy Three.js into R3F safely
+- managing global bridge state between paradigms
+- controlling scene ownership and cleanup boundaries
+
 ## Core Rules
 
 - define one clear owner for render loop, scene mutation, and disposal in each code path

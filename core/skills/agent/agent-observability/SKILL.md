@@ -7,6 +7,13 @@ description: Trace agent reasoning chains, tool call sequences, context injectio
 
 Use this skill when agent behavior needs to be traceable, debuggable, and measurable beyond simple pass/fail checks.
 
+## When to Use
+
+- deploying agents to production
+- diagnosing unexpected or wrong agent outputs
+- attributing token/cost across tenants
+- building evaluation datasets from real failures
+
 ## Core Rules
 
 - trace every tool call, reasoning decision, and context injection at session level

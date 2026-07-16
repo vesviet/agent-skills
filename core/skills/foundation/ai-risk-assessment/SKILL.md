@@ -7,6 +7,13 @@ description: Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure
 
 Use this skill when a product, feature, or system involves AI/ML components that require structured risk governance before delivery commitment or continued operation. Applies NIST AI RMF 1.0 and the NIST AI 600-1 GenAI Profile alongside EU AI Act risk classification.
 
+## When to Use
+
+- onboarding a new AI feature
+- scoping an AI system for delivery
+- periodic AI governance audit
+- classifying EU AI Act tiers + risk register
+
 ## Core Rules
 
 - **Not a checklist**: NIST AI RMF is a "thinking structure" — apply it to inform decisions, not to fill boxes mechanically.

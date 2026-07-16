@@ -9,6 +9,13 @@ Reviews and authors Cloudflare Workers code against production best practices.
 
 Your knowledge of Cloudflare Workers APIs, types, and configuration may be outdated. **Prefer retrieval over pre-training** for any Workers code task — writing or reviewing.
 
+## When to Use
+
+- writing new Cloudflare Workers
+- reviewing Workers for production readiness
+- fixing async/global-state/secret violations
+- applying canonical Workers TypeScript patterns
+
 ## Core Rules
 - Enable Node.js compatibility using the `nodejs_compat` flag in `wrangler.jsonc` when libraries depend on Node.js built-ins.
 - Stream large or unknown payloads; never call `await response.text()` on unbounded data.

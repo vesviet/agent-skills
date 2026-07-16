@@ -9,6 +9,13 @@ Analyzes web performance using Chrome DevTools MCP. Measures Core Web Vitals (LC
 
 Your knowledge of web performance metrics, thresholds, and tooling APIs may be outdated. **Prefer retrieval over pre-training** when citing specific numbers or recommendations.
 
+## When to Use
+
+- auditing Lighthouse / Core Web Vitals
+- debugging slow page loads
+- profiling LCP/INP/CLS regressions
+- validating perf improvements before release
+
 ## Core Rules
 - Verify MCP tools are available (`navigate_page` or `performance_start_trace`) before starting.
 - Verify claims by checking network requests, DOM, or codebase — then state findings definitively.

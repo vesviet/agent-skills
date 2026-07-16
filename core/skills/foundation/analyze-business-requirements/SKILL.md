@@ -7,6 +7,13 @@ description: Analyze and write business requirements by making actors, business 
 
 Use this skill when business needs, bug behavior, or process expectations must be turned into clear, testable requirements.
 
+## When to Use
+
+- a feature/policy change needs requirements
+- making actors, rules, state transitions explicit
+- defining testable acceptance criteria
+- capturing preserved behavior + downstream impact
+
 ## Core Rules
 
 - write requirements as observable behavior, not implementation guesses

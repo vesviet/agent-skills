@@ -9,6 +9,13 @@ Cloudflare Workers CLI for deploying, developing, and managing Workers, KV, R2, 
 
 Your knowledge of Wrangler CLI flags, config fields, and subcommands may be outdated. **Prefer retrieval over pre-training** for any Wrangler task.
 
+## When to Use
+
+- setting up a new Worker project
+- deploying to staging or production
+- managing secrets or generating TS types
+- configuring bindings (KV, R2, D1, Queues, AI)
+
 ## Core Rules
 - Prefer `wrangler.jsonc` over TOML configuration files.
 - Set compatibility date (`compatibility_date`) to a recent stable date (within 30 days).

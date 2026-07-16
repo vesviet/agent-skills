@@ -7,6 +7,13 @@ description: Turn architecture decisions and requirements into a delivery-ready 
 
 Use with the **Technical Lead** role after requirements and architecture inputs exist.
 
+## When to Use
+
+- Technical Lead breaking down implementation work
+- producing slices with quality gates
+- defining impact radius and rollout notes
+- planning for dev/QA/release
+
 ## Core Rules
 
 - preserve business and system behavior called out in feature-ticket.json and adr-spec.json

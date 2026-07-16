@@ -7,6 +7,13 @@ description: Add or improve frontend test coverage by choosing the right UI test
 
 Use this skill when adding or updating tests for frontend components, pages, routes, or client-driven state.
 
+## When to Use
+
+- frontend behavior needs regression coverage
+- adding UI release confidence before ship
+- validating rendering, interaction, or a11y states
+- covering network-driven component states
+
 ## Core Rules
 
 - follow the repo's existing frontend test stack before adding a new one

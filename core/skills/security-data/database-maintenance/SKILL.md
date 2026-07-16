@@ -7,6 +7,13 @@ description: Plan or perform operational database maintenance by following the r
 
 Use this skill when a task is operationally focused on keeping a data store healthy, safe, or recoverable rather than just changing application schema.
 
+## When to Use
+
+- cleanup, backfill, or index work
+- restore preparation or repair tasks
+- operational data changes
+- following backup/rollback verification
+
 ## Core Rules
 
 - understand the operational goal before running maintenance

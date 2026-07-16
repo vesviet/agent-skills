@@ -7,6 +7,13 @@ description: Add or modify a service-to-service client or downstream integration
 
 Use this skill when a service must call another internal service, external API, or shared platform dependency.
 
+## When to Use
+
+- one service needs to call another system
+- adding/modifying a downstream integration
+- wiring transport, timeout, retry, and auth
+- mapping errors from the remote service
+
 ## Core Rules
 
 - reuse the repo's existing client abstraction pattern

@@ -7,6 +7,13 @@ description: Design and implement the end-to-end checkout flow including cart ma
 
 Use this skill when the task involves building, extending, or debugging the steps a customer takes from adding an item to cart through to receiving an order confirmation.
 
+## When to Use
+
+- building/fixing the purchase funnel
+- cart, tax/shipping, discount/coupon logic
+- order confirmation step
+- end-to-end checkout from cart to payment
+
 ## Core Rules
 
 - treat cart state as eventually consistent — never trust client-side totals for final billing; always recalculate server-side before charge

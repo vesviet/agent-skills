@@ -7,6 +7,13 @@ description: Diagnose Cloudflare Pages and Workers failures at the edge — 5xx,
 
 Use with the **Cloudflare Engineer** role for platform-layer failures. Escalate to `troubleshoot-service` when evidence points to application logic inside API handlers.
 
+## When to Use
+
+- 5xx or binding errors on Cloudflare runtime
+- Wrangler deploy failures
+- DNS/cache issues only on edge
+- context loss after deploy
+
 ## Core Rules
 
 - compare local preview vs deployed behavior before changing production

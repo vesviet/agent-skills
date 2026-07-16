@@ -7,6 +7,13 @@ description: Add or modify event publishers, consumers, or subscriber flows by f
 
 Use this skill when a change involves publishing an event, consuming one, or extending an event-driven workflow.
 
+## When to Use
+
+- adding event publishers or consumers
+- modifying subscriber flows
+- enforcing idempotency / delivery semantics
+- event-driven service work
+
 ## Core Rules
 
 - follow the repo's event naming and payload conventions

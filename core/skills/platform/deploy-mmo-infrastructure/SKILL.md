@@ -7,6 +7,32 @@ description: Deploy and manage proxy pools (Residential/4G) and Anti-Detect Brow
 
 Use this skill to provision highly anonymous, isolated infrastructure required for Make Money Online (MMO) operations, preventing tracking, fingerprinting, and cascading bans.
 
+## When to Use
+
+- deploying a new MMO operation from scratch
+- expanding to new ad accounts that need fresh, isolated IPs
+- migrating proxy infrastructure or rotating residential/4G pools
+- standing up Anti-Detect Browser orchestration (Docker/Terraform) for a team
+- verifying zero IP/footprint leaks before handing infra to the automation team
+
+## Example (Terraform 1:1 profile↔proxy binding)
+
+```hcl
+resource "docker_container" "adb_profile" {
+  name  = "adb-profile-01"
+  image = "camoufox/adbp:latest"
+
+  env = [
+    "PROXY_URL=http://residential-gw:8801" # dedicated IP, never shared
+  ]
+
+  # hard isolation: one container, one proxy endpoint
+  networks_advanced {
+    name = "mmo-isolated-net"
+  }
+}
+```
+
 ## Core Rules
 
 - **ANONYMITY-LOCK**: Validate that the origin IP is fully masked before allowing any traffic to flow through the provisioned infrastructure.

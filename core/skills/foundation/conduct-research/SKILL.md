@@ -7,6 +7,13 @@ description: Execute iterative, deeply-verified research to discover, validate, 
 
 Use this skill when a task requires deep discovery before architectural, product, or business implementation. It is specifically built for roles like `Researcher` that require aggressive triangulation, deep validation, and AI-era source integrity.
 
+## When to Use
+
+- deep (10+ round) or scoped (3+ round) investigation
+- before architecture/product/content decisions
+- validating sources with Chain-of-Verification
+- producing information-gain assessment for handoffs
+
 ## Core Rules
 
 ### Research Integrity

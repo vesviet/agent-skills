@@ -9,6 +9,13 @@ Use this skill when a change needs clear technical documentation or when existin
 
 **Role routing:** Long-form **articles, blogs, guides, and SEO posts** → **Content Writer** role with `write-article`. **README, runbooks, API docs, setup guides** → **Technical Writer** role. Content Writer may use this skill for structure and clarity patterns only—not as a substitute for `write-article` on publishable posts.
 
+## When to Use
+
+- README updates or service docs
+- runbooks or integration notes
+- explaining a change
+- following repo doc structure + source-of-truth
+
 ## Core Rules
 
 - write for the intended audience, not for the author

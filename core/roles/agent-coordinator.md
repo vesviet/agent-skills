@@ -223,6 +223,7 @@ Detect and halt on semantic (not just technical) failures:
 - `review-code` — used to validate returned implementation-result.json artifacts, not to replace Reviewer sign-off
 - `review-service` — used to assess phase readiness signals, not to replace full service review by Reviewer role
 - `write-documentation` — used to produce coordination summaries and handoff notes only
+- `incident-report` — used to emit structured incident handoff when coordinating cross-role incident response
 
 ## Output Template
 

@@ -7,6 +7,13 @@ description: Configure a scalable design system, styling framework, and componen
 
 Use this skill when configuring the foundational styling architecture, design tokens, and component infrastructure of a frontend repository. This goes beyond adding a single component — it establishes the rules by which all future components will be built.
 
+## When to Use
+
+- initializing a new frontend project's styling
+- migrating to a unified CSS strategy
+- setting up a component library (Tailwind, Radix, Storybook)
+- standardizing design tokens across the app
+
 ## Core Rules
 
 - **Source of Truth:** establish a single source of truth for design tokens (colors, typography, spacing) and do not allow hardcoded magic values in components.

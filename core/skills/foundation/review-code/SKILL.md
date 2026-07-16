@@ -9,6 +9,13 @@ Use this skill to review concrete changes, not to explain architecture in the ab
 
 If the user asks for a full service audit or release readiness pass, hand off to `review-service`.
 
+## When to Use
+
+- PR reviews or local change reviews
+- pre-merge audits
+- checking correctness, security, and test coverage
+- validating contracts and data handling
+
 ## Core Rules
 
 - review the actual changed behavior, not only style or formatting

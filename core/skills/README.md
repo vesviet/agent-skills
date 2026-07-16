@@ -59,14 +59,13 @@ Cross-cutting portable skills:
 - `performance-profiling`
 - `plan-technical-delivery`
 - `release-notes`
+- `repurpose-content`
 - `review-code`
 - `review-service`
 - `troubleshoot-service`
 - `write-article`
 - `write-product-brief`
 - `write-tests`
-- `write-documentation`
-- `write-tech-radar`
 
 ### Backend (4)
 
@@ -75,7 +74,7 @@ Cross-cutting portable skills:
 - `add-service-client`
 - `scaffold-new-service`
 
-### Frontend (7)
+### Frontend (8)
 
 - `add-ui-component`
 - `add-page-route`
@@ -84,6 +83,7 @@ Cross-cutting portable skills:
 - `integrate-api-client`
 - `integrate-r3f-three-legacy`
 - `optimize-3d-assets`
+- `setup-design-system`
 
 > Note: `create-automation-script` is classified under Platform (stealth/CDP automation is infrastructure-level).
 
@@ -164,12 +164,12 @@ Overlay-specific skills (site stacks, ICM, content data) live under `overlays/*/
 
 ### Priority 2
 
-- `3d-material-pipeline`
-- `product-discovery`
+- `3d-material-pipeline` (not yet created)
+- `product-discovery` (not yet created)
 
 ### Priority 3
 
-- `frontend-state-management`
+- `frontend-state-management` (not yet created)
 
 ## Naming Rules
 

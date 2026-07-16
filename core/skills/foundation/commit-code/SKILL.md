@@ -9,6 +9,13 @@ Use this skill when a change is complete and needs to be prepared for commit in 
 
 This skill covers commit preparation and commit creation. It does not imply permission to push, tag, or publish a release.
 
+## When to Use
+
+- the user explicitly asks to prepare/create a commit
+- packaging a finished change for delivery
+- running repo-local validation + release-note rules
+- applying approval rules before commit
+
 ## Core Rules
 
 - do not create a commit unless the user or repo-local process explicitly allows that specific commit action

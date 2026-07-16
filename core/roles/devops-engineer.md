@@ -242,6 +242,7 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - `configure-mcp`
 - `manage-api-catalog`
 - `durable-objects` (when deploying or troubleshooting Cloudflare Durable Objects used as Workflow state)
+- `incident-report` (when emitting post-deployment incident or rollback handoff to SRE)
 
 ## Output Template
 

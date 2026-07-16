@@ -14,6 +14,13 @@ Use this skill when a release, deployment, or version bump requires communicatio
 - a changelog or release communication needs to be written and reviewed
 - internal teams need a structured summary of what changed for handoff or support
 
+## When to Use
+
+- shipping a feature, fix, or breaking change
+- external communication of what changed
+- calling out compatibility breaks and required actions
+- structuring user/operator-facing notes
+
 ## Core Rules
 
 - write for the audience, not for the implementation team — use user-facing language, not internal jargon

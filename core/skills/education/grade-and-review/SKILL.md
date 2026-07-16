@@ -7,6 +7,13 @@ description: Evaluate learner work and provide constructive feedback on the desi
 
 Use this skill to assess a student's completed exercise, assign scores based on the specified grading scale, and provide constructive, psychologically supportive feedback tailored to the learner's level.
 
+## When to Use
+
+- grading assignments or submissions
+- providing improvement feedback
+- applying a designated grading scale
+- reviewing learner work at any level
+
 ## Core Rules
 
 - Always score out of the designated maximum (e.g., 10-point scale, 100-point scale, or letter grades).

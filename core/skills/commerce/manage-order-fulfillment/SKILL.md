@@ -7,6 +7,13 @@ description: Implement and manage the post-purchase order lifecycle including or
 
 Use this skill when the task involves the operations and engineering required to move a confirmed order through packing, shipping, delivery tracking, and post-delivery actions (returns, refunds, exchanges).
 
+## When to Use
+
+- building post-purchase order lifecycle
+- packing, shipping labels, carrier tracking
+- refund or return processing
+- fulfillment after successful payment
+
 ## Core Rules
 
 - treat order data as `confidential` — customer PII (address, phone) must never appear in logs or public API responses

@@ -7,6 +7,13 @@ description: Implement software supply chain security by generating SBOMs (Cyclo
 
 Use this skill when hardening the software supply chain against tampering, undisclosed vulnerabilities, and dependency risks. Applies to application builds, AI/ML pipeline artifacts, MCP server registries, and agent skill registries.
 
+## When to Use
+
+- hardening CI/CD pipelines
+- generating SBOMs (CycloneDX/SPDX)
+- achieving SLSA Level 2/3 provenance
+- auditing third-party deps including MCP registries
+
 ## Core Rules
 
 - **SBOM-first**: generate a Software Bill of Materials for every production artifact — at build time, not post-deploy.

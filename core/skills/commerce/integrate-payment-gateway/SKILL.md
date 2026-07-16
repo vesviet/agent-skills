@@ -7,6 +7,13 @@ description: Integrate or extend a payment gateway (Stripe, VNPay, PayPal, Momo,
 
 Use this skill when a task requires connecting an application to a payment provider's API, including initial setup, webhook handling, refund flows, and PCI-DSS-compliant implementation.
 
+## When to Use
+
+- adding/replacing a payment provider
+- auditing checkout, refund, or webhook flow
+- Stripe, VNPay, PayPal, Momo, etc.
+- payment integration in e-commerce
+
 ## Core Rules
 
 - never log, store, or return raw card numbers, CVV, or full PAN data — treat all card data as `restricted` per `core/policies/data-classification.yaml`

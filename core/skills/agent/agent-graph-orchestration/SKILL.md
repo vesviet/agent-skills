@@ -7,6 +7,13 @@ description: Model multi-phase delivery as a directed graph with parallel branch
 
 Use this skill when work spans multiple phases or roles and linear sequencing is insufficient. It complements `agent-delegation` (single hop) and `agent-tool-orchestration` (tool phases).
 
+## When to Use
+
+- coordinating bugs/features across multiple specialist roles
+- multiple parallel validation tracks with merge points
+- phase gates requiring evidence before advancing
+- linear sequencing is insufficient for the work
+
 ## Core Rules
 
 - represent the work as a **phase graph**: nodes are phases with owners; edges are dependencies

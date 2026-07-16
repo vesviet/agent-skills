@@ -9,6 +9,13 @@ Use this skill when a normal single-angle review is not enough and the user need
 
 This skill does not require real subagents. By default, synthesize the needed perspectives in one response. Only use delegated or parallel agents when the user explicitly asks for them.
 
+## When to Use
+
+- wanting cross-functional review before deciding
+- reviewing a proposal, code area, or risky change
+- producing a decision-ready trade-off artifact
+- aligning before building/shipping/changing course
+
 ## Core Rules
 
 - keep the review focused on a decision, risk, or next action

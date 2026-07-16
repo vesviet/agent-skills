@@ -7,6 +7,13 @@ description: Add or evolve a reusable UI component by following the repo's desig
 
 Use this skill when a frontend change needs a new reusable component or a meaningful update to an existing one.
 
+## When to Use
+
+- building a new reusable UI component
+- evolving a shared presentation element
+- following the design system + a11y rules
+- defining component state boundaries
+
 ## Core Rules
 
 - follow the repo's existing design system before inventing a new pattern

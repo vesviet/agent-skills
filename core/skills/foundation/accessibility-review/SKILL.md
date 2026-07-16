@@ -7,6 +7,13 @@ description: Audit UI for keyboard navigation, focus order, screen-reader labels
 
 Use this skill with **QA Engineer**, **Frontend Developer**, or **UI/UX Designer** when accessibility conformance must be verified explicitly.
 
+## When to Use
+
+- validating user-facing flows before release
+- after design specs land
+- fixing reported a11y defects
+- running @axe-core/playwright gates + screen-reader checks
+
 ## Core Rules
 
 - target WCAG 2.1 Level AA unless the repo documents a different bar

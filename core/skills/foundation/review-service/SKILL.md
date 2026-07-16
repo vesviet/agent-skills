@@ -7,6 +7,13 @@ description: Review an entire service for release readiness. Use for full-servic
 
 Use this skill for an end-to-end service review, not a narrow code diff.
 
+## When to Use
+
+- full-service release-readiness audit
+- pre-release hardening
+- broad review across code, contracts, deps, rollout, docs
+- production-readiness check
+
 ## Core Rules
 
 - decide whether the service is ready to ship, not only whether code looks clean

@@ -7,6 +7,13 @@ description: Write or refine a product brief that makes user value, business out
 
 Use this skill when product direction needs to be turned into a decision-ready brief that engineering, QA, UX, and stakeholders can act on without guessing.
 
+## When to Use
+
+- a feature/bugfix needs a decision artifact
+- defining user value + business outcome
+- setting acceptance boundaries and trade-offs
+- before implementation or release
+
 ## Core Rules
 
 - define the user or business outcome before discussing implementation

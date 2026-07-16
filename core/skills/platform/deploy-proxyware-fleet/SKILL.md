@@ -7,6 +7,36 @@ description: Containerize and orchestrate massive fleets of passive income nodes
 
 Use this skill to handle the large-scale deployment of bandwidth monetization applications (Proxyware) using containerization, ensuring the fleet remains profitable and undetected by platform anti-abuse systems.
 
+## When to Use
+
+- scaling Honeygain / EarnApp / Pawns.app nodes beyond a single host
+- migrating nodes from datacenter IPs to residential routing
+- adding a new proxyware app to an existing fleet
+- capping resource consumption to protect the host from node bloat
+- recording an earnings baseline before/after a fleet change for ROI
+
+## Example (docker-compose with residential routing + resource caps)
+
+```yaml
+services:
+  earnapp:
+    image: proxyware/earnapp:latest
+    network_mode: "container:vpn-gateway" # exit via residential VPN, never DC IP
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+  honeygain:
+    image: proxyware/honeygain:latest
+    network_mode: "container:vpn-gateway"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+```
+
 ## Core Rules
 
 - **PROXYWARE-LOCK**: Never deploy EarnApp/Honeygain directly on a Datacenter IP without residential proxy routing; this results in instant bans or zero earnings.

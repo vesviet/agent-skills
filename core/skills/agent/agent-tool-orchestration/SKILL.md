@@ -7,6 +7,13 @@ description: Plan and sequence agent tool use by choosing the smallest reliable 
 
 Use this skill when a task needs disciplined tool selection and sequencing across exploration, triage, editing, validation, and reporting.
 
+## When to Use
+
+- a task needs multiple searches, edits, commands, or checks
+- deciding the smallest reliable tool per step
+- parallelizing independent reads safely
+- avoiding unsafe shell while triaging a bug/feature
+
 ## Core Rules
 
 - prefer specialized tools over shell commands when available

@@ -7,6 +7,13 @@ description: Bootstrap a new service or bounded component from repo-local templa
 
 Use this skill when a repo needs a brand-new service, worker, or similar bounded component.
 
+## When to Use
+
+- creating a new service, worker, or deployable unit
+- bootstrapping from repo-local templates
+- no fixed framework/layout assumed
+- standing up a bounded component
+
 ## Core Rules
 
 - start from the repo's template or nearest valid example

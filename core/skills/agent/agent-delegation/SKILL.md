@@ -7,6 +7,13 @@ description: Delegate scoped sub-tasks from a supervisor agent to specialist wor
 
 Use this skill when a task should be broken into scoped sub-tasks and assigned to specialist agents rather than handled monolithically in a single context.
 
+## When to Use
+
+- a task exceeds one agent's role boundary
+- parallel specialist work is needed
+- isolated context reduces hallucination risk
+- handing scoped sub-tasks to worker agents
+
 ## Core Rules
 
 - every delegation must include a self-contained task description, input data, output schema reference, and success criteria
