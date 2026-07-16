@@ -40,6 +40,16 @@ Current overlays:
 - `astro-cloudflare`: Astro v5 on Cloudflare Pages/Workers conventions
 - `data-analyst-stack`: DuckDB + Metabase + Excel/BI workflow conventions
 - `go-microservices`: Go service and gRPC conventions
+- `data-engineer-rabity`: data engineering conventions for the Rabity stack
+- `donthan-web`: web content/SEO helpers for Don Than site
+- `golf-icm`: Golf catalog conventions for the ICM Cloudflare site
+- `icm-main`: ICM Factory main site conventions
+- `laravel-filament`: Laravel + Filament admin conventions
+- `maydiengiaisaigon`: content/SEO helpers for May Dien Gia Sai Gon
+- `obj-configurator`: OBJ product configurator conventions
+- `seo-publishing`: SEO publishing cadence and board conventions
+- `sport-icm`: Sport catalog conventions for the ICM Cloudflare site
+- `ui-design-system`: shared UI/design-system conventions
 
 Overlay-specific skills are intentionally kept out of the global core inventory.
 
@@ -105,6 +115,14 @@ Core workflows live in [core/workflows/README.md](core/workflows/README.md).
 - `/setup-new-service`
 - `/troubleshooting`
 - `/agent-a2a-delegation`
+- `/content-publishing`
+- `/data-migration`
+- `/dependency-upgrade`
+- `/qa-validation`
+- `/security-incident-response`
+- `/seo-content-lifecycle`
+- `/seo-keyword-brief`
+- `/tech-repo-review`
 
 ## Quality Gates
 
