@@ -78,4 +78,6 @@ For end-to-end delivery, assign **Agent Coordinator**:
 - Pack contracts: `core/contracts/README.md`
 - A2A skill: `core/skills/agent/agent-a2a-protocol/SKILL.md`
 - User guide: `USER_GUIDE_v2.md` (full contract table and role examples)
+- Cursor/Kiro adapter: `adapters/cursor/README.md`
+- Claude Code adapter: `adapters/claude/CLAUDE_ADAPTER.md`
 - Official A2A: https://a2a-protocol.org/latest/specification/

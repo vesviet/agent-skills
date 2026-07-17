@@ -2,7 +2,7 @@
 
 Packs describe how to assemble the portable core with zero or more overlays for a target team. Each pack has a `manifest.yaml` that declares which `core` and `overlays/` to include.
 
-## Available Packs (12)
+## Available Packs (13)
 
 | Pack | Manifest | Composition |
 |------|----------|-------------|
@@ -18,6 +18,7 @@ Packs describe how to assemble the portable core with zero or more overlays for 
 | `data-analyst-team` | [manifest.yaml](data-analyst-team/manifest.yaml) | `core` + `overlays/data-analyst-stack` |
 | `data-engineer-team` | [manifest.yaml](data-engineer-team/manifest.yaml) | `core` + `overlays/data-engineer-rabity` |
 | `content-sprint-team` | [manifest.yaml](content-sprint-team/manifest.yaml) | `core` + `overlays/seo-publishing` |
+| `donthan-team` | [manifest.yaml](donthan-team/manifest.yaml) | `core` + `overlays/donthan-web` |
 
 ## Manifest Format
 

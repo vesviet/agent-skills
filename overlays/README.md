@@ -9,7 +9,7 @@ Use an overlay when:
 - a workflow assumes one repository family or publishing pipeline
 - a pack needs local conventions that do not belong in the global core
 
-## Current Overlays (15)
+## Current Overlays (16)
 
 ### Stack Overlays (tech-specific, project-agnostic)
 
@@ -29,6 +29,7 @@ Use an overlay when:
 | [sport-icm](sport-icm/README.md) | Sport ICM niche catalog (Astro/Cloudflare, sportswear) | `astro-cloudflare` |
 | [obj-configurator](obj-configurator/README.md) | OBJ 3D Configurator (Astro + R3F/Three.js, WebGL) | `astro-cloudflare` |
 | [ecommerce-microservices](ecommerce-microservices/README.md) | Ecommerce microservices platform | `go-microservices` |
+| [donthan-web](donthan-web/README.md) | Donthan.com livestream platform (web-first desktop UX) | standalone (no stack overlay) |
 
 ### Content & Domain Overlays (domain-specific, project-agnostic)
 

@@ -1,0 +1,8 @@
+{
+  "a2a-discovery": {
+    "registryURL": "pack://agent-skills/core/a2a/.well-known/agent-registry.json",
+    "syncInterval": 3600,
+    "notificationTimeout": 10,
+    "discoveryDelay": 5
+  }
+}

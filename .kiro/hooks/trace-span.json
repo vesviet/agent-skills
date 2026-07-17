@@ -1,0 +1,13 @@
+{
+  "name": "Trace Span Logger (agent-skills)",
+  "version": "1.0.0",
+  "description": "Append lightweight JSONL trace span to core/observability/spans/ after each tool call for agent observability and session replay.",
+  "when": {
+    "type": "postToolUse",
+    "toolTypes": ["*"]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "AGENT_SKILLS_ROOT=/home/user/personalized/agent-skills AGENT_ACTIVE_ROLE=${AGENT_ACTIVE_ROLE:-agent-coordinator} python3 /home/user/personalized/agent-skills/core/scripts/hooks/log-trace-span.py"
+  }
+}

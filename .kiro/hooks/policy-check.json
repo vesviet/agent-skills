@@ -1,0 +1,13 @@
+{
+  "name": "Policy Check (agent-skills)",
+  "version": "1.0.0",
+  "description": "Check tool action against action-boundaries.yaml before write, shell, or delete operations. Advisory mode: warns on requires_approval, blocks on denied.",
+  "when": {
+    "type": "preToolUse",
+    "toolTypes": ["write", "shell"]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "AGENT_SKILLS_ROOT=/home/user/personalized/agent-skills AGENT_ACTIVE_ROLE=${AGENT_ACTIVE_ROLE:-agent-coordinator} python3 /home/user/personalized/agent-skills/core/scripts/hooks/check-policy.py"
+  }
+}

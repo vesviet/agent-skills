@@ -1,6 +1,8 @@
 # Donthan Web Overlay
 
-Overlay rules for **Donthan.com** — a web-first live-streaming platform.
+Project-specific conventions for **Donthan.com** — a web-first live-streaming platform with desktop-priority UX.
+
+**Status:** Active (standalone — no stack overlay dependency)
 
 ## Scope
 
@@ -8,6 +10,7 @@ This overlay applies when working on the Donthan.com front-end. It overrides or 
 
 - Layout architecture (web-first, no mobile-first bottom-nav patterns)
 - UX conventions for desktop livestream interfaces
+- Component and navigation patterns optimised for wide-viewport streaming layouts
 
 ## Rules
 
@@ -17,4 +20,4 @@ This overlay applies when working on the Donthan.com front-end. It overrides or 
 
 ## Activation
 
-Load this overlay when the active repository is `donthan-web` or when the user explicitly references Donthan.com UX work.
+Load this overlay when the active repository is `donthan-web` or when the user explicitly references Donthan.com UX work. No pack currently wraps this overlay — activate manually or create `packs/donthan-team/manifest.yaml` when a team pack is needed.

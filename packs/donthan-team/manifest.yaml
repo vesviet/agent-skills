@@ -1,0 +1,10 @@
+name: donthan-team
+description: Global engineering core plus Donthan.com web-first livestream UX overlay.
+version: 1.0.0
+tags:
+  - core
+author: user
+maintained_by: platform-team
+includes:
+  - core
+  - overlays/donthan-web

@@ -27,7 +27,7 @@ When the user assigns you a Role, you MUST:
 
 Available roles: `core/roles/README.md`
 
-## A2A 1.0 & Antigravity (v2.4)
+## A2A 1.0 & Antigravity (pack 3.1.0)
 
 When operating as an AI agent (like **Antigravity**) under this pack, you MUST:
 
@@ -49,8 +49,10 @@ Core skills are organized under `core/skills/` by taxonomy:
 - `core/skills/backend/`
 - `core/skills/frontend/`
 - `core/skills/platform/`
+- `core/skills/commerce/`
 - `core/skills/security-data/`
 - `core/skills/documentation/`
+- `core/skills/education/`
 
 Optional repo-specific skills live under `overlays/` and should only be loaded when the active repository actually needs them.
 
@@ -74,4 +76,9 @@ Available workflows: `core/workflows/README.md`
 | All roles | `core/roles/README.md` |
 | All skills | `core/skills/README.md` |
 | All workflows | `core/workflows/README.md` |
+| A2A registry | `core/a2a/.well-known/agent-registry.json` |
+| Antigravity adapter | `adapters/antigravity/ANTIGRAVITY.md` |
+| Cursor/Kiro hooks | `adapters/cursor/README.md` |
+| Claude adapter | `adapters/claude/CLAUDE_ADAPTER.md` |
+| Action boundaries | `core/policies/action-boundaries.yaml` |
 | Overlay index | `overlays/README.md` |

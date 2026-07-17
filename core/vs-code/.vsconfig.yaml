@@ -1,0 +1,9 @@
+a2a-discovery:
+  # Path to the pack-level A2A registry used for role/agent discovery
+  registryURL: pack://agent-skills/core/a2a/.well-known/agent-registry.json
+  # How often (seconds) to re-sync the registry
+  syncInterval: 3600
+  # Timeout (seconds) for discovery notifications
+  notificationTimeout: 10
+  # Delay (seconds) before starting discovery on activation
+  discoveryDelay: 5
