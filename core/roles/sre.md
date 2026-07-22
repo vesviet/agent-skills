@@ -129,6 +129,12 @@ AI/ML systems have reliability dimensions that standard availability SLOs do not
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not accept noisy alerts as normal
 - do not optimize reliability without understanding user impact
@@ -150,7 +156,7 @@ AI/ML systems have reliability dimensions that standard availability SLOs do not
 
 ### Supporting Skills (use when collaborating)
 
-- `agent-observability` — trace and cost analysis for agent-assisted incident investigation
+- `agent-observability`
 - `agent-semantic-memory`
 - `navigate-service`
 - `database-maintenance`
@@ -215,7 +221,7 @@ AI/ML systems have reliability dimensions that standard availability SLOs do not
 
 ## Definition Of Done
 
-- `contracts/schemas/incident-report.json` emitted when incident handoff required
+- `contracts/schemas/incident-report.json`
 - operational risk is explicit
 - monitoring and recovery path are improved
 - recurring failure modes have owners

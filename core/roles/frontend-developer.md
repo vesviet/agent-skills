@@ -265,6 +265,12 @@ For micro-frontend architectures or large frontend applications with independent
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not ignore edge states
 - do not treat a visually correct render as proof that logic is correct
@@ -424,7 +430,7 @@ For micro-frontend architectures or large frontend applications with independent
 
 ### PWA & Service Workers (when SW-based agentic features are in scope)
 - Service Worker does not execute LLM inference directly; inference delegated to cloud
-- `postMessage` origin validation implemented for SW-to-app communication
+- `postMessage`
 - Background Sync / Periodic Background Sync used for task queuing and agent check-ins
 - Push API configured for HITL callback delivery
 - Service Worker scope declared explicitly and reviewed for overly broad coverage
@@ -476,7 +482,7 @@ For micro-frontend architectures or large frontend applications with independent
 - original bug is fixed without obvious regression in affected flows
 - accessibility basics are covered
 - tests cover key interactions and risky logic where appropriate
-- `contracts/schemas/implementation-result.json` emitted when code changed
+- `contracts/schemas/implementation-result.json`
 - blast radius and remaining risk are understood
 - **AI-generated code validated** (when applicable): risk tier assessed, behavior/a11y/state/rendering/security checklist completed
 - **CWV performance budgets checked**: INP, LCP, CLS within targets; JS bundle size within per-route limit

@@ -102,6 +102,12 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Guardrails
 
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
 - **EDGE-AI LOCK**: do not deploy Workers AI endpoints without explicit caching and rate-limiting policies to prevent token exhaustion.
 
 - **BOUNDARY LOCK**: do not own Laravel/VPS/non-Cloudflare infra unless explicitly scoped — recommend System Engineer or DevOps for origin infrastructure concerns
@@ -211,7 +217,7 @@ This role must follow [role-standard](role-standard.md) first.
 ## Definition Of Done
 
 - Wrangler and repo deploy source of truth updated
-- `contracts/schemas/edge-deployment-spec.json` emitted when edge handoff required
+- `contracts/schemas/edge-deployment-spec.json`
 - bindings verified in preview or documented residual risk
 - rollback path and smoke tests defined for production-impacting changes
 - no secret values in user-visible artifacts

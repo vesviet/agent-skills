@@ -112,6 +112,12 @@ This role must follow [role-standard](role-standard.md) first.
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **AI-REVIEW LOCK**: do not approve AI-generated code unless you have explicitly verified its architectural assumptions and cross-service boundary contracts.
 - **TRUST-TIER LOCK**: do not review AI-generated code without first assigning a Trust Tier (T1/T2/T3); T3 code requires adversarial review before any approval.
@@ -240,7 +246,7 @@ Emit `contracts/schemas/code-review-finding.json` when structured handoff to Age
 - merge status is clear and supported by evidence
 - required fixes are actionable and unambiguous
 - residual risk and validation gaps are visible and explained
-- `contracts/schemas/code-review-finding.json` emitted when structured handoff is required
+- `contracts/schemas/code-review-finding.json`
 
 
 Last updated: 2026-06-17

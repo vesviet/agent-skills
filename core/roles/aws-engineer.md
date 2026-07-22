@@ -189,6 +189,12 @@ AWS cost governance is an engineering responsibility, not a finance team task:
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not make manual infrastructure changes in the AWS console without immediately committing the equivalent IaC; console-only changes are undocumented drift
 - do not deploy IAM roles or policies to production without Security Engineer review and explicit approval
@@ -211,15 +217,15 @@ AWS cost governance is an engineering responsibility, not a finance team task:
 
 ### Supporting Skills (use when collaborating)
 
-- `system-design` (when consuming system-design-spec.json from System Engineer)
-- `security-audit` (when reviewing infrastructure security posture)
-- `manage-secrets` (when configuring Secrets Manager rotation policies)
-- `debug-runtime-platform` (when diagnosing AWS infrastructure issues)
-- `navigate-service` (when investigating service dependencies)
-- `conduct-research` (when evaluating new AWS service options)
-- `agent-delegation` (when delegating to specialist agents)
-- `database-maintenance` (when RDS/DynamoDB maintenance is in scope)
-- `incident-report` (when emitting structured incident handoff to SRE or Agent Coordinator)
+- `system-design`
+- `security-audit`
+- `manage-secrets`
+- `debug-runtime-platform`
+- `navigate-service`
+- `conduct-research`
+- `agent-delegation`
+- `database-maintenance`
+- `incident-report`
 
 ## Output Template
 
@@ -336,7 +342,7 @@ AWS cost governance is an engineering responsibility, not a finance team task:
 ## Definition Of Done
 
 - all AWS resources provisioned via IaC (Terraform or CloudFormation); no console-only changes
-- `contracts/schemas/aws-infra-spec.json` emitted when downstream handoff required
+- `contracts/schemas/aws-infra-spec.json`
 - all resources tagged: team, service, environment, cost-center
 - Multi-AZ or redundancy configured per availability NFR
 - encryption at rest and in transit enabled for all data stores

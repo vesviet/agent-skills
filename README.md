@@ -71,6 +71,8 @@ Overlay-specific skills are intentionally kept out of the global core inventory.
 | [agent-tool-orchestration](core/skills/agent/agent-tool-orchestration/SKILL.md) | Choose, sequence, and validate tool use safely with MCP awareness |
 | [agent-quality-gate](core/skills/agent/agent-quality-gate/SKILL.md) | Run validators, lints, tests, builds, and diff checks |
 | [agent-handoff](core/skills/agent/agent-handoff/SKILL.md) | Summarize state, validation, blockers, and next actions |
+| [agent-panel-meeting](core/skills/agent/agent-panel-meeting/SKILL.md) | Orchestrate 6-round multi-role cross-examination panel meetings |
+
 
 ### Foundation
 

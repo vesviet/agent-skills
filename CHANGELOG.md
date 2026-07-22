@@ -2,6 +2,15 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [3.3.0] - 2026-07-22
+
+### Added
+- `agent-panel-meeting` skill (`core/skills/agent/agent-panel-meeting/SKILL.md`) for orchestrating 6-round multi-role cross-examination panel meetings for feature and architecture designs.
+
+### Changed
+- Standardized all 32 role definitions in `core/roles/` with 2026 guardrail LOCKs (`BOUNDARY LOCK`, `SECURITY LOCK`, `IRREVERSIBLE ACTION LOCK`, `TRACE LOCK`, `UNCERTAINTY LOCK`) and optimized skill toolbox token footprints.
+- Updated policy boundaries in `core/policies/action-boundaries.yaml` to include complete policy definitions for `3d-graphics-engineer`.
+
 ## [3.2.0] - 2026-07-16
 
 ### Added

@@ -4,7 +4,7 @@
 a2a:
   enabled: true
   protocol_version: "1.0"
-  pack_version: "3.1.0"  # sync with VERSION file
+  pack_version: "3.3.0"  # sync with VERSION file
 
   discovery:
     registry: "core/a2a/.well-known/agent-registry.json"

@@ -153,6 +153,12 @@ This role must follow [role-standard](role-standard.md) first.
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not treat a single search as enough research when the brief requires evidence — use **3–4 passes** or Researcher
 - do not bury uncertainty; mark what is confirmed versus inferred
@@ -183,7 +189,7 @@ This role must follow [role-standard](role-standard.md) first.
 - `analyze-business-requirements`
 - `meeting-review`
 - `agent-delegation`
-- `repurpose-content` (if available for micro-content extraction)
+- `repurpose-content`
 
 When working under a site overlay (lease-content, vesviet-content, seo-publishing), additional overlay-specific skills are activated. See the Optional Overlays section and each overlay README for the skill names to load.
 

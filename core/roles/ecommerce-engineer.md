@@ -112,6 +112,12 @@ This role must follow [role-standard](role-standard.md) first.
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **AI-COMMERCE LOCK**: do not deploy generative pricing or offer models without hard-coded upper and lower boundary constraints (circuit breakers).
 
@@ -213,7 +219,7 @@ This role must follow [role-standard](role-standard.md) first.
 - state machine, idempotency, and PCI-safe data handling verified
 - webhook delivery tested end-to-end including replay and failure scenarios
 - ops and admin flows unblocked for the new feature
-- `contracts/schemas/implementation-result.json` emitted
+- `contracts/schemas/implementation-result.json`
 - security and PCI-DSS posture reviewed and documented
 
 

@@ -182,6 +182,12 @@ Detect and halt on semantic (not just technical) failures:
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not create commits, push branches, create tags, publish packages, or trigger releases
 - delivery ends at validated handoff; do not add `commit-code` to this role's toolbox or invoke it without the user explicitly switching to a commit-capable role
@@ -210,20 +216,21 @@ Detect and halt on semantic (not just technical) failures:
 - `agent-context-management`
 - `agent-quality-gate`
 - `agent-handoff`
+- `agent-panel-meeting`
 
 ### Supporting Skills (use when collaborating)
 
 - `agent-memory-compaction`
-- `agent-model-routing` — enable when coordination graph has 3+ phases with mixed complexity or tight token budget; trigger criteria: ≥3 phases of different risk tiers, or estimated total budget exceeds 80% of session limit; see skill section *When Agent Coordinator Enables This*
+- `agent-model-routing`
 - `agent-observability`
 - `agent-prompt-lifecycle`
 - `agent-semantic-memory`
-- `navigate-service` — used to orient in a codebase before delegating, or to validate specialist context claims
-- `troubleshoot-service` — used to assess reproduction evidence during triage, not to replace specialist diagnosis
-- `review-code` — used to validate returned implementation-result.json artifacts, not to replace Reviewer sign-off
-- `review-service` — used to assess phase readiness signals, not to replace full service review by Reviewer role
-- `write-documentation` — used to produce coordination summaries and handoff notes only
-- `incident-report` — used to emit structured incident handoff when coordinating cross-role incident response
+- `navigate-service`
+- `troubleshoot-service`
+- `review-code`
+- `review-service`
+- `write-documentation`
+- `incident-report`
 
 ## Output Template
 

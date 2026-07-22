@@ -202,6 +202,12 @@ This role must follow [role-standard](role-standard.md) first.
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **AI-GOVERNANCE LOCK**: do not approve AI-assisted content for publish without a human editorial review gate; autonomous publish of AI-generated content without explicit policy approval is not permitted.
 - **INFORMATION-GAIN LOCK**: do not commission content that does not have an explicit information gain statement — what does this piece offer that top SERP and AI-generated content currently lack.
@@ -222,18 +228,18 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Primary Skills
 
-- `write-product-brief` — for creating content strategy documents and editorial briefs
-- `analyze-business-requirements` — for aligning content goals with business objectives
-- `write-article` — for creating brand voice examples or sample briefs (not for drafting production articles)
+- `write-product-brief`
+- `analyze-business-requirements`
+- `write-article`
 
 ### Supporting Skills (use when collaborating)
 
-- `conduct-research` — when competitive intelligence or audience research is needed
-- `analyze-data` — when working with GSC/analytics data for content audits
-- `optimize-seo` — when reviewing pillar-level SEO alignment with SEO Analyst
-- `write-documentation` — when creating brand voice guides or style guides
-- `agent-delegation` — when delegating tasks to Content Writer, SEO Analyst, or Researcher
-- `meeting-review` — when synthesizing output from editorial planning meetings
+- `conduct-research`
+- `analyze-data`
+- `optimize-seo`
+- `write-documentation`
+- `agent-delegation`
+- `meeting-review`
 
 ## Output Template
 

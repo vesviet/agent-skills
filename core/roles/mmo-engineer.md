@@ -93,6 +93,12 @@ This role must follow [role-standard](role-standard.md) first.
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **ANONYMITY-LOCK**: Never expose origin IP or footprint. Always route traffic through high-trust residential/ISP/4G proxies. Do not use standard headless browsers for high-risk operations.
 - **ISOLATION-LOCK**: Never share the same proxy/IP across unrelated ad accounts or profiles. Strict compartmentalization must be maintained when sharing Business Managers (BMs) or Pixels/Datasets to prevent cascading bans.
@@ -150,12 +156,12 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Review Checklist
 
-- `ANONYMITY-LOCK` verified: Origin IP is hidden, Residential/4G proxies active.
-- `ISOLATION-LOCK` verified: No overlap of IPs or assets between isolated profiles.
-- `TRACKING-LOCK` verified: S2S / Meta CAPI postbacks are receiving data accurately.
-- `BEHAVIORAL-LOCK` verified: Automation scripts avoid robotic, instantaneous actions.
-- `PROXYWARE-LOCK` verified: Containers have CPU/RAM limits and are routed through Residential IPs.
-- `BUDGET-LOCK` verified: API and ad spend limits are hardcoded or configured in the platform.
+- `ANONYMITY-LOCK`
+- `ISOLATION-LOCK`
+- `TRACKING-LOCK`
+- `BEHAVIORAL-LOCK`
+- `PROXYWARE-LOCK`
+- `BUDGET-LOCK`
 
 ## Anti-Patterns To Reject
 
@@ -178,6 +184,6 @@ This role must follow [role-standard](role-standard.md) first.
 - Tracking systems accurately attribute conversions via S2S.
 - Infrastructure (Cloaking/Proxyware) is deployed, stable, and respecting resource limits.
 - Assets (BMs/Profiles) are securely shared without triggering cascading bans.
-- `contracts/schemas/implementation-result.json` emitted for any codebase additions.
+- `contracts/schemas/implementation-result.json`
 
 Last updated: 2026-07-01

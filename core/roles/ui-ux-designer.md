@@ -233,6 +233,12 @@ In 2026, design systems are not component libraries — they are living infrastr
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not optimize visuals at the expense of usability
 - do not ignore empty, loading, error, and success states
@@ -360,7 +366,7 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 - no overconfident AI presentation: uncertainty states are explicit; AI output not presented as absolute truth
 
 ### Agentic UX (when agent is primary actor)
-- `autonomy_tier` declared in ux-flow-spec.json (Suggest / Verify / Delegate / Automate)
+- `autonomy_tier`
 - tier indicator visible in UI: users know at a glance how much control they have
 - tier is appropriate for current product trust level (no Autopilot Trap: not higher than earned trust)
 - background agent flows have: status surface, notification contract, async interrupt UX, and completion handoff specified

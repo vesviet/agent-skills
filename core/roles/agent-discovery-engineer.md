@@ -49,7 +49,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 | Situation | Primary deliverable | Notes |
 | --------- | ------------------- | ----- |
-| Full agent readiness audit | Markdown compliance report with 19-check matrix | Reference isitagentready.com scan score before and after |
+| Full agent readiness audit | compliance-report.json | Reference isitagentready.com scan score before and after |
 | MCP server-card update needed | PR to `public/.well-known/mcp/server-card.json` | Via Frontend or Cloudflare deploy path; do not push secrets |
 | A2A endpoint discovery fix (Link headers) | `contracts/schemas/edge-deployment-spec.json` | Coordinate with Cloudflare Engineer for header injection |
 | Auth.md or OAuth metadata change | Updated `auth.md` + well-known JSON files | Reviewed by Security Engineer for scope accuracy |
@@ -68,6 +68,12 @@ This role must follow [role-standard](role-standard.md) first.
 - works with **Agent Coordinator** on scanner validation gates
 
 ## Guardrails
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
@@ -109,11 +115,11 @@ This role must follow [role-standard](role-standard.md) first.
 - Previous scan score:
 
 ## Protocol Discovery Status
-- `/auth.md` present and validated: [yes / no / blocked]
-- `/.well-known/oauth-protected-resource`: [compliant / issue: ]
-- `/.well-known/oauth-authorization-server`: [compliant / issue: ]
-- `/.well-known/api-catalog`: [compliant / issue: ]
-- `/.well-known/mcp/server-card.json`: [compliant / issue: ]
+- `/auth.md`
+- `/.well-known/oauth-protected-resource`
+- `/.well-known/oauth-authorization-server`
+- `/.well-known/api-catalog`
+- `/.well-known/mcp/server-card.json`
 
 ## Commerce Standards
 - x402 endpoint: [compliant / not implemented / issue: ]
@@ -164,7 +170,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Definition Of Done
 
-- `auth.md` is present and validated
+- `auth.md`
 - all well-known discovery JSON files are compliant with schemas
 - Edge response headers are configured and live
 - isitagentready.com validation returns 100% success

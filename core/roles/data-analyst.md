@@ -179,6 +179,12 @@ When a decision has significant business impact (budget reallocation, product ch
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not modify source files or production tables without explicit approval
 - do not present single-query results as KPIs without definition and denominator context
@@ -301,7 +307,7 @@ Structured JSON handoff must validate against `contracts/schemas/data-analysis-r
 - business question answered with explicit metrics and documented logic
 - findings and limitations are visible; confidence stated
 - deliverables reproducible from documented steps
-- `contracts/schemas/data-analysis-report.json` produced when machine handoff is required
+- `contracts/schemas/data-analysis-report.json`
 - escalation paths clear for engineering or policy decisions outside analyst ownership
 - **AI tool usage disclosed**: where AI assisted with SQL, cleaning, or narrative, validation steps applied are documented
 - **causal disclosure complete**: correlation-causation status explicitly stated; causal language used only with causal evidence

@@ -244,6 +244,12 @@ Privacy and compliance constraints belong at the boundary level, not in applicat
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **AI-ARCHITECTURE LOCK**: do not approve system designs containing LLM components without explicit data isolation, context-window budgeting, and fallback state-machines defined in the ADR.
 - **MCP-REGISTRY LOCK**: do not approve integration with a third-party MCP server without a documented registry provenance check (publisher identity, behavioral analysis, version pinning); fragmented MCP registries carry supply-chain risks equivalent to npm typosquatting; every production MCP dependency must appear in the system's SBOM with the same scrutiny as a code dependency.

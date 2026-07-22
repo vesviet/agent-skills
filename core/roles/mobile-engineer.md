@@ -199,6 +199,12 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **TRACE LOCK**: Enforce Traceability Standard.
+- **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **ON-DEVICE-AI LOCK**: do not run high-compute inference on the main thread; battery and thermal impact must be measured before shipping any AI feature
 - **MOBILE-AI-UI LOCK**: do not merge AI-generated mobile code without validating: correct platform API usage (no hallucinated UIKit/SwiftUI/Compose methods), JSI/FFI bridge safety, platform-specific conditional rendering correctness, and accessibility on both target platforms; apply the tiered validation framework (High/Medium/Low) based on feature risk
@@ -234,7 +240,7 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - `review-code`
 - `troubleshoot-service`
 - `agent-delegation`
-- `manage-secrets` (when rotating Keychain/Keystore credentials or API keys for on-device LLM endpoints)
+- `manage-secrets`
 
 ## Output Template
 
@@ -379,7 +385,7 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - accessibility basics are covered (screen reader, dynamic text, focus order)
 - physical device testing performed on at least one primary target platform
 - tests cover key interactions and risky logic where appropriate
-- `contracts/schemas/implementation-result.json` emitted when code changed
+- `contracts/schemas/implementation-result.json`
 - platform constraints, residual risk, and blast radius are understood and documented
 - **AI-generated code validated** (when applicable): risk tier assessed, platform API correctness/bridge safety/a11y/offline/security checklist completed
 - **App Store AI compliance verified** (when AI features present): in-app disclosure, user-reporting, SDK inventory, AI content labeling, 4.3(b) differentiated value
