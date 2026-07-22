@@ -2,6 +2,8 @@
 
 Global engineering skill pack for software delivery work.
 
+**Version 3.3.1** strengthens policy enforcement and contract reliability: runtime hooks now block approval-required and denied operations, and bundled contract examples are checked against their required fields and discriminators.
+
 The repository is now split into a portable **core** plus optional **overlays** so global teams can reuse the foundation without inheriting repo-specific or brand-specific assumptions.
 
 As of 2026, the core pack reflects the industry shift from ad-hoc prompting to **Context Engineering** and **PromptOps**: prompts are treated as versioned, testable assets; tool integration follows the **Model Context Protocol (MCP)** standard; and prompt quality is measured through automated evaluation rather than gut-feel assessment.

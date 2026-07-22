@@ -28,7 +28,9 @@
   "examples": [
     {
       "id": "task-cod-slice-01",
-      "reason": "Blocked by missing store courier API credentials"
+      "reason": "Blocked by missing store courier API credentials",
+      "task_id": "task-example-001",
+      "cancel_reason": "No longer required."
     }
   ]
 }

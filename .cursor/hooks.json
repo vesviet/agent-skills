@@ -9,25 +9,24 @@
     ],
     "preToolUse": [
       {
-        "command": "AGENT_SKILLS_ROOT=/home/user/personalized/agent-skills python3 /home/user/personalized/agent-skills/core/scripts/hooks/check-policy.py",
+        "command": "python3 core/scripts/hooks/check-policy.py",
         "matcher": "Shell|run_terminal_cmd|write|delete|write_file|delete_file|create_file|edit_file|move_file"
       }
     ],
     "beforeMCPExecution": [
       {
-        "command": "AGENT_SKILLS_ROOT=/home/user/personalized/agent-skills python3 /home/user/personalized/agent-skills/core/scripts/hooks/check-policy.py",
+        "command": "python3 core/scripts/hooks/check-policy.py",
         "matcher": "*"
       }
     ],
     "postToolUse": [
       {
-        "command": "AGENT_SKILLS_ROOT=/home/user/personalized/agent-skills python3 /home/user/personalized/agent-skills/core/scripts/hooks/log-trace-span.py",
+        "command": "python3 core/scripts/hooks/log-trace-span.py",
         "matcher": "*"
       }
     ]
   },
   "environment": {
-    "AGENT_SKILLS_ROOT": "/home/user/personalized/agent-skills",
     "AGENT_ACTIVE_ROLE": "agent-coordinator",
     "AGENT_TRACE_ID": ""
   }

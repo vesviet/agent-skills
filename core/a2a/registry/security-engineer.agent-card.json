@@ -4,7 +4,7 @@
   "name": "security-engineer",
   "description": "reduce security risk early by identifying weaknesses in design, code, configuration, dependencies, and operations before they become incidents. In 2025–2026, this extends to assessing AI/LLM-specific attack surfaces (prompt injection, training data poisoning, model output exploitation), enforcing shift-left security practices (threat modeling before design sign-off, SAST/DAST in CI), and treating AI systems as high-risk trust boundary additions that require explicit security review before deployment.",
   "url": "pack://agent-skills/core/roles/security-engineer.md",
-  "version": "3.1.0",
+  "version": "3.3.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -28,7 +28,7 @@
     {
       "id": "security-audit",
       "name": "Security Audit",
-      "description": "Review code, configuration, and service behavior for security risks by checking trust boundaries, secret handling, auth, validation, and operational exposure. Use for focused security review of changes or full-service risk assessment.",
+      "description": "Review code, configuration, and service behavior for security risks by checking trust boundaries, secret handling, auth, validation, and operational exposure. For AI/ML systems, apply OWASP ASI Top 10 2026 (ASI01–ASI10), NIST AI RMF Measure function, and ISO/IEC 42001:2023 controls assessment. Use for focused security review of changes or full-service risk assessment.",
       "tags": [
         "security",
         "pack"
@@ -51,6 +51,46 @@
       "description": "Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-control, and rollout patterns. Use when code or deployment work touches credentials, tokens, keys, or sensitive configuration.",
       "tags": [
         "security",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "security-audit.json"
+      ]
+    },
+    {
+      "id": "supply-chain-security",
+      "name": "Supply Chain Security",
+      "description": "Implement software supply chain security by generating SBOMs (CycloneDX/SPDX), enforcing SLSA build provenance levels, integrating artifact signing (Sigstore), and maintaining VEX context for vulnerability management. Use when hardening CI/CD pipelines, generating per-build inventory, achieving SLSA Level 2 or 3 compliance, or auditing third-party dependencies including MCP server registries.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "security-audit.json"
+      ]
+    },
+    {
+      "id": "ai-risk-assessment",
+      "name": "Ai Risk Assessment",
+      "description": "Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure/Manage) and NIST AI 600-1 GenAI Profile (12 risk categories), classify EU AI Act risk tiers, and produce an AI risk register covering hallucination thresholds, model degradation signals, bias exposure, and compliance drift. Use when onboarding a new AI feature, scoping an AI system for delivery, or conducting a periodic AI governance audit.",
+      "tags": [
+        "foundation",
         "pack"
       ],
       "inputModes": [

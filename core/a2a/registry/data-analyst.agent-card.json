@@ -4,7 +4,7 @@
   "name": "data-analyst",
   "description": "answer business questions with reproducible, well-documented analysis from tabular and warehouse data — defining metrics clearly, separating evidence from interpretation, and delivering stakeholder-ready reports without owning production pipeline infrastructure. In 2025–2026, this extends to using AI tools as analysis accelerators while owning all interpretation and causal reasoning decisions, and applying causal inference methods for high-stakes decisions rather than reporting correlation as causation.",
   "url": "pack://agent-skills/core/roles/data-analyst.md",
-  "version": "3.1.0",
+  "version": "3.3.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

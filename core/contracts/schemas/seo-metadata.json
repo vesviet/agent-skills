@@ -285,7 +285,8 @@
         "geo_ready": true
       },
       "status": "ready_to_publish",
-      "notes": "Apply frontmatter_fields to the MDX file before publish. Schema implementation (Article + FAQPage + BreadcrumbList) is a post-publish Frontend task per audit technical escalation."
+      "notes": "Apply frontmatter_fields to the MDX file before publish. Schema implementation (Article + FAQPage + BreadcrumbList) is a post-publish Frontend task per audit technical escalation.",
+      "contract_type": "seo-metadata"
     }
   ]
 }

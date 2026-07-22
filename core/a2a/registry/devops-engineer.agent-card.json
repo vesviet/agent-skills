@@ -4,7 +4,7 @@
   "name": "devops-engineer",
   "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollout safety, configuration integrity, and recovery paths. In 2025–2026, this extends to operating as an internal platform product team (Platform Engineering / IDP), governing AI/ML model deployment pipelines with the same rigor as application deployments, enforcing GitOps-first infrastructure with automated drift detection, applying supply chain security (SLSA, SBOM) to all delivery artifacts, managing AI inference cost via FinOps enforcement, and establishing governance frameworks for AI-assisted incident response.",
   "url": "pack://agent-skills/core/roles/devops-engineer.md",
-  "version": "3.1.0",
+  "version": "3.3.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -68,7 +68,27 @@
     {
       "id": "add-telemetry-instrumentation",
       "name": "Add Telemetry Instrumentation",
-      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns. Use when a service, feature, endpoint, job, or integration needs operational visibility.",
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.input_tokens, gen_ai.request.model), multi-agent workflow correlation, RAG step spans, and tool invocation traces.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "deployment-plan.json"
+      ]
+    },
+    {
+      "id": "supply-chain-security",
+      "name": "Supply Chain Security",
+      "description": "Implement software supply chain security by generating SBOMs (CycloneDX/SPDX), enforcing SLSA build provenance levels, integrating artifact signing (Sigstore), and maintaining VEX context for vulnerability management. Use when hardening CI/CD pipelines, generating per-build inventory, achieving SLSA Level 2 or 3 compliance, or auditing third-party dependencies including MCP server registries.",
       "tags": [
         "platform",
         "pack"

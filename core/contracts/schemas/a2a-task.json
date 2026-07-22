@@ -133,7 +133,16 @@
             "text": "Implement COD store routing in NewLogicAutoAssign.php per slice-01 of technical-delivery-plan 2026-06-12-change-store-order-cod"
           }
         ]
-      }
+      },
+      "task_id": "task-example-001",
+      "delegator": "agent-coordinator",
+      "assignee_role": "backend-developer",
+      "task_description": "Implement the assigned slice.",
+      "output_schema_ref": "contracts/schemas/implementation-result.json",
+      "success_criteria": [
+        "Implementation result validates against its contract."
+      ],
+      "risk_tier": "engineering"
     }
   ]
 }

@@ -124,7 +124,14 @@
       "verified_facts": [
         "COD orders with store_id route to store courier; fallback to warehouse with warning log on no active courier"
       ],
-      "release_notes_snippet": "COD orders with a store_id are now routed to store-specific couriers for faster delivery. Warehouse fallback applies when no store courier is available."
+      "release_notes_snippet": "COD orders with a store_id are now routed to store-specific couriers for faster delivery. Warehouse fallback applies when no store courier is available.",
+      "topic": "Example documentation update",
+      "audience": "developers",
+      "doc_paths": [
+        "docs/example.md"
+      ],
+      "doc_type": "setup_guide",
+      "status": "published"
     }
   ]
 }

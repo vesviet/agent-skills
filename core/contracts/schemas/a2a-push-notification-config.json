@@ -49,7 +49,12 @@
       "token": "bearer-token-placeholder",
       "authentication": {
         "scheme": "Bearer"
-      }
+      },
+      "task_id": "task-example-001",
+      "callback_url": "https://example.invalid/a2a-notify",
+      "events": [
+        "task.completed"
+      ]
     }
   ]
 }

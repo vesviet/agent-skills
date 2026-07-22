@@ -202,7 +202,7 @@
       "name": "Backend Developer Agent",
       "description": "Implements backend features, APIs, and migrations following principal engineering standards",
       "url": "https://api.personalized.dev/agents/backend-developer",
-      "version": "2.6.4",
+      "version": "3.3.1",
       "skills": [
         {
           "id": "add-api-endpoint",
@@ -222,7 +222,12 @@
       "defaultOutputModes": [
         "text/plain",
         "application/json"
-      ]
+      ],
+      "protocol_version": "1.0",
+      "capabilities": {
+        "streaming": true,
+        "stateTransitionHistory": true
+      }
     }
   ]
 }

@@ -2,6 +2,14 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [3.3.1] - 2026-07-22
+
+### Changed
+- Hardened runtime policy hooks: approval-required operations now stop with a distinct non-zero status, denied operations remain blocked, and the bundled YAML fallback correctly reads nested policy mappings without PyYAML.
+- Updated the Cursor hook configuration to use portable repository-relative commands and documented the blocking behavior.
+- Corrected bundled JSON contract examples and extended contract validation to check example required fields and discriminators.
+- Synced contract documentation with the current 40-schema inventory.
+
 ## [3.3.0] - 2026-07-22
 
 ### Added

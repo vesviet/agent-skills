@@ -28,7 +28,7 @@ cp adapters/cursor/hooks.template.json .cursor/hooks.json
 | Hook event | Action | Effect |
 |------------|--------|--------|
 | `sessionStart` | `echo` reminder | Prompt to load `core/rules/code.md` |
-| `preToolUse` | `check-policy.py` | Advisory check: warns on `requires_approval`, exits 1 on `denied` |
+| `preToolUse` | `check-policy.py` | Blocks `requires_approval` (exit 2) and `denied` (exit 1) actions |
 | `beforeMCPExecution` | `check-policy.py` | Same check for MCP tool calls |
 | `postToolUse` | `log-trace-span.py` | Appends JSONL span to `core/observability/spans/` |
 
@@ -51,7 +51,7 @@ The pack ships 3 hooks under `.kiro/hooks/`:
 | File | Trigger | Action |
 |------|---------|--------|
 | `role-gate.json` | `preTaskExecution` | Remind agent to load rules + role + policy before acting |
-| `policy-check.json` | `preToolUse` (write, shell) | Run `check-policy.py` advisory check |
+| `policy-check.json` | `preToolUse` (write, shell) | Run `check-policy.py` enforcement check |
 | `trace-span.json` | `postToolUse` (*) | Append trace span JSONL |
 
 ```bash
@@ -75,7 +75,7 @@ preToolUse / beforeMCPExecution
   └── fallback to keyword inference
         │
         ├── action in role.denied       → exit 1 (POLICY DENIED)
-        ├── action in role.requires_approval → print advisory warning, exit 0
+        ├── action in role.requires_approval → exit 2 (POLICY APPROVAL REQUIRED)
         └── action in role.allowed      → silent pass, exit 0
 ```
 

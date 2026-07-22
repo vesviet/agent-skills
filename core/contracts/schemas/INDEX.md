@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**40 schemas** | **~220KB total** | All valid JSON Schema 2020-12 | Examples: 37/40
+**40 schemas** | **~220KB total** | Bundled examples checked by `validate-contracts.py` | Examples: 39/40
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 

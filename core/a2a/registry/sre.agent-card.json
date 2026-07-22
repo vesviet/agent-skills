@@ -4,7 +4,7 @@
   "name": "sre",
   "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2025–2026, this extends to defining AI/ML-specific SLOs (output quality, inference latency, token cost budget, model drift), treating model degradation as a reliability incident, and operating proactive reliability practices (chaos engineering, error budget burn rate alerts, automated runbooks).",
   "url": "pack://agent-skills/core/roles/sre.md",
-  "version": "3.1.0",
+  "version": "3.3.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -68,7 +68,7 @@
     {
       "id": "add-telemetry-instrumentation",
       "name": "Add Telemetry Instrumentation",
-      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns. Use when a service, feature, endpoint, job, or integration needs operational visibility.",
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.input_tokens, gen_ai.request.model), multi-agent workflow correlation, RAG step spans, and tool invocation traces.",
       "tags": [
         "platform",
         "pack"
@@ -89,6 +89,26 @@
       "id": "performance-profiling",
       "name": "Performance Profiling",
       "description": "Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, and validating improvements with repo-local tools. Use when performance, capacity, or resource usage needs evidence-based diagnosis.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "incident-report.json"
+      ]
+    },
+    {
+      "id": "incident-report",
+      "name": "Incident Report",
+      "description": "Capture, structure, and communicate an incident from triage through resolution and prevention. Use when a production failure, degradation, or security event requires a formal timeline, impact assessment, root cause analysis, and follow-up action items.",
       "tags": [
         "foundation",
         "pack"

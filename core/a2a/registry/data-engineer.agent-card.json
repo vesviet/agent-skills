@@ -4,7 +4,7 @@
   "name": "data-engineer",
   "description": "design, build, and maintain reliable data pipelines and storage layers so analysts and applications can trust timely, well-modeled, and governable data products. In 2025–2026, this extends to engineering data supply chains for AI/ML systems (embeddings, feature stores, multimodal lakehouses), enforcing data contracts as machine-readable engineering artifacts with automated validation, and owning real-time freshness requirements for AI-native applications.",
   "url": "pack://agent-skills/core/roles/data-engineer.md",
-  "version": "3.1.0",
+  "version": "3.3.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

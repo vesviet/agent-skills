@@ -65,7 +65,7 @@
     {
       "jsonrpc": "2.0",
       "id": "req-001",
-      "method": "tasks/send",
+      "method": "agent.invoke",
       "params": {
         "id": "task-001"
       }

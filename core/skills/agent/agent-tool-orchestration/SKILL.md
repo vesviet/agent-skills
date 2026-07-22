@@ -47,7 +47,7 @@ Before state-changing tools (write, delete, shell that mutates, install, migrati
 5. when no role entry exists, apply `default_policy: requires_approval`
 6. map IDE/MCP tool names through `core/policies/mcp-tool-map.yaml` when the platform tool label differs from policy action ids
 
-*Policies complement `core/rules/code.md`; policies take precedence for enforceable action decisions. Optional runtime: `adapters/cursor/hooks.template.json` invokes `core/scripts/hooks/check-policy.py`.*
+*Policies complement `core/rules/code.md`; policies take precedence for enforceable action decisions. Optional runtime: `adapters/cursor/hooks.template.json` invokes `core/scripts/hooks/check-policy.py`; approval-required and denied actions return non-zero exit codes.*
 
 ## MCP And Context Engineering
 

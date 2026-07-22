@@ -116,7 +116,7 @@
     {
       "contract_type": "incident-report",
       "incident_id": "INC-2026-06-12-order-assign-failure",
-      "severity": "high",
+      "severity": "SEV-2",
       "started_at": "2026-06-12T10:00:00+07:00",
       "resolved_at": "2026-06-12T10:45:00+07:00",
       "title": "COD order assignment failing for store 42 due to store-service 503",
@@ -140,7 +140,8 @@
       "action_items": [
         "Add index on store_couriers.store_id (Data Engineer)",
         "Add store-service circuit breaker to COD routing (Backend Developer)"
-      ]
+      ],
+      "status": "resolved"
     }
   ]
 }

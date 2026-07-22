@@ -798,7 +798,8 @@
           "Task Planner: fill remaining entries for 2026-06-13 to 2026-06-15"
         ],
         "notes": "Board partially complete. Thu Thiem entry briefed and ready for Content Writer. Casper/Daikin entry needs brief and documented test data."
-      }
+      },
+      "contract_type": "seo-weekly-board"
     }
   ]
 }

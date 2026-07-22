@@ -86,15 +86,15 @@ destructive_patterns:
   # Database destructive operations
   - pattern: "drop database"
     action: drop_database
-  - pattern: "DROP DATABASE"
+  - pattern: "drop database"
     action: drop_database
-  - pattern: "DROP TABLE"
+  - pattern: "drop table"
     action: drop_database
-  - pattern: "TRUNCATE TABLE"
+  - pattern: "truncate table"
     action: drop_database
 
   # AI / ML / Vector DB destructive operations
-  - pattern: "DELETE /collections/"
+  - pattern: "delete /collections/"
     action: drop_database
   - pattern: "drop_collection"
     action: drop_database

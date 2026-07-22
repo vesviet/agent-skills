@@ -113,7 +113,7 @@
     {
       "contract_type": "security-audit",
       "audit_id": "2026-06-12-cod-routing-security",
-      "scope": "NewLogicAutoAssign.php — COD store routing changes",
+    "scope": "NewLogicAutoAssign.php — COD store routing changes",
       "audit_type": "code_review",
       "overall_status": "pass",
       "findings": [],
@@ -123,7 +123,9 @@
         "sensitive_data": "pass",
         "security_misconfiguration": "pass"
       },
-      "recommendation": "No security issues found. Store courier lookup uses prepared statements. No secrets exposed."
+      "recommendation": "No security issues found. Store courier lookup uses prepared statements. No secrets exposed.",
+    "target": "NewLogicAutoAssign.php — COD store routing changes",
+      "overall_risk_score": "pass"
     }
   ]
 }

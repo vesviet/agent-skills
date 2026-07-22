@@ -126,7 +126,30 @@
       "internal_links": [
         "/property/ho-chi-minh-retail-stores",
         "/guide/store-manager-dashboard"
-      ]
+      ],
+      "frontmatter": {
+        "title": "Example series article title",
+        "date": "2026-07-22T09:00:00+07:00",
+        "draft": false,
+        "description": "An example article that satisfies the series article contract.",
+        "ShowToc": true,
+        "TocOpen": true,
+        "weight": 1,
+        "categories": [
+          "Engineering"
+        ],
+        "tags": [
+          "example",
+          "series"
+        ]
+      },
+      "body": {
+        "prerequisite_block": true,
+        "sections": 3,
+        "production_failure": true,
+        "cta_link": true,
+        "code_snippets_linted": true
+      }
     }
   ]
 }

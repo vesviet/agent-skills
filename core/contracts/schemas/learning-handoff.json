@@ -107,7 +107,16 @@
         "docs/order-assignment-runbook.md",
         "orders-service/app/Console/Commands/NewLogicAutoAssign.php"
       ],
-      "assessment_criteria": "Can explain when COD routing branch activates and what happens when store service is unavailable"
+      "assessment_criteria": "Can explain when COD routing branch activates and what happens when store service is unavailable",
+      "subject": "Science",
+      "grade": "8",
+      "artifact_type": "learning_plan",
+      "goals": [
+        "Understand the core concept."
+      ],
+      "next_steps": [
+        "Complete the practice exercise."
+      ]
     }
   ]
 }

@@ -900,7 +900,8 @@
           "contracts/schemas/seo-metadata.json"
         ],
         "notes": "FAQ is the only blocker. All other audit elements pass."
-      }
+      },
+      "contract_type": "seo-audit-report"
     }
   ]
 }

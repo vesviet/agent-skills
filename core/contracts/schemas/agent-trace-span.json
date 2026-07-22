@@ -83,7 +83,9 @@
         "store_id": "42",
         "courier_type": "store",
         "is_fallback": false
-      }
+      },
+      "role": "agent-coordinator",
+      "operation": "validate"
     }
   ]
 }

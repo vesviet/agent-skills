@@ -212,7 +212,10 @@
         }
       ],
       "rollback_plan": "Revert deployment to previous build. No migration rollback required.",
-      "monitoring": "Watch order assignment error rate for 30 min post-deploy. Alert if > 0.5%."
+      "monitoring": "Watch order assignment error rate for 30 min post-deploy. Alert if > 0.5%.",
+      "environments": [
+        "staging"
+      ]
     }
   ]
 }

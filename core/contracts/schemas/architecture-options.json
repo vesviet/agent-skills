@@ -120,7 +120,9 @@
       "recommendation": "A",
       "recommendation_rationale": "Given v1 scope and single rule, Option A is proportionate. Extract to service class in v2 if routing logic grows.",
       "open_questions": [],
-      "decision_deferred_to": "adr-spec/adr-005-order-state-machine"
+      "decision_deferred_to": "adr-spec/adr-005-order-state-machine",
+      "title": "Example architecture decision",
+      "context": "Choose an approach for the requested change."
     }
   ]
 }

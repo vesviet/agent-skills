@@ -280,7 +280,8 @@
       "design_tokens": [
         "color.courier.store",
         "color.courier.fallback.warning"
-      ]
+      ],
+      "type": "presentational"
     }
   ]
 }

@@ -4,7 +4,7 @@
   "name": "agent-coordinator",
   "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality gates, and driving work from intake to validated handoff without losing context or skipping safety. In 2025–2026, this means treating multi-agent systems as distributed software: enforcing deterministic state transitions, applying runtime guardrails (not prompt-based trust), maintaining end-to-end trace observability, managing token budgets as a design constraint, and applying explicit HITL gates before irreversible actions.",
   "url": "pack://agent-skills/core/roles/agent-coordinator.md",
-  "version": "3.1.0",
+  "version": "3.3.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -161,6 +161,28 @@
       "id": "agent-handoff",
       "name": "Agent Handoff",
       "description": "Produce concise agent handoffs, status updates, and completion summaries that preserve phase state, decisions, changed files, validation evidence, blockers, and next actions. Use when pausing, resuming, handing work to another session, or reporting completed engineering work across bug or feature control flows.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-panel-meeting",
+      "name": "Agent Panel Meeting",
+      "description": "Orchestrate a 6-round, multi-role cross-examination panel meeting to debate architecture, code, or features and produce a final decision-ready JSON contract with trade-offs and residual risks. Use when rigorous cross-functional alignment is required before deciding, building, or shipping.",
       "tags": [
         "agent",
         "pack"

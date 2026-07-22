@@ -4,7 +4,7 @@
   "name": "business-analyst",
   "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules, edge cases, or downstream impact. In 2025–2026, this extends to writing behavioral requirements for AI/LLM features with probabilistic acceptance criteria and HITL escalation triggers, and to maintaining a living assumption register that makes the riskiest unverified beliefs visible before engineering builds.",
   "url": "pack://agent-skills/core/roles/business-analyst.md",
-  "version": "3.1.0",
+  "version": "3.3.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -69,6 +69,26 @@
       "id": "navigate-service",
       "name": "Navigate Service",
       "description": "Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    },
+    {
+      "id": "ai-risk-assessment",
+      "name": "Ai Risk Assessment",
+      "description": "Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure/Manage) and NIST AI 600-1 GenAI Profile (12 risk categories), classify EU AI Act risk tiers, and produce an AI risk register covering hallucination thresholds, model degradation signals, bias exposure, and compliance drift. Use when onboarding a new AI feature, scoping an AI system for delivery, or conducting a periodic AI governance audit.",
       "tags": [
         "foundation",
         "pack"

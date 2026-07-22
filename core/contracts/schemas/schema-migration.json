@@ -74,7 +74,13 @@
       "estimated_duration_seconds": 5,
       "data_loss_risk": "none",
       "rollback_safe": true,
-      "pre_deploy_check": "Verify table has < 1M rows; run EXPLAIN on query before applying"
+      "pre_deploy_check": "Verify table has < 1M rows; run EXPLAIN on query before applying",
+      "migration_name": "example_migration",
+      "changes": [
+        "Add the required index."
+      ],
+      "is_destructive": false,
+      "requires_downtime": false
     }
   ]
 }

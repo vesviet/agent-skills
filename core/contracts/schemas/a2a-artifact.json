@@ -130,7 +130,8 @@
           "type": "text",
           "text": "{\"contract_type\":\"implementation-result\",\"slice_id\":\"slice-01-command-logic\",...}"
         }
-      ]
+      ],
+      "status": "completed"
     }
   ]
 }

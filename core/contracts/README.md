@@ -23,7 +23,7 @@ feature-ticket.json          ← Business Analyst
           → validation-result.json ← Agent Coordinator (phase gate)
 ```
 
-## All Schemas (38 total)
+## All Schemas (40 total)
 
 ### Engineering Delivery
 - `feature-ticket.json` — Business requirements and AC
@@ -92,7 +92,7 @@ Use: `contracts/schemas/implementation-result.json`
 npx ajv validate -s contracts/schemas/implementation-result.json -d my-output.json
 ```
 
-Contracts should be validated against the JSON Schema meta-schema before use. Invalid schemas will produce unpredictable constrained decoding behavior.
+The bundled validator verifies JSON parsing, required top-level metadata, and required fields/discriminators in each bundled example. Validate production payloads with a Draft 2020-12 implementation before constrained decoding or cross-system exchange.
 
 ## When To Create A New Schema
 

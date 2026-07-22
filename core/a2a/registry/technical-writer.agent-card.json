@@ -4,7 +4,7 @@
   "name": "technical-writer",
   "description": "make systems, features, and operational procedures understandable so that users, teams, and AI agents can act without guesswork. In 2025–2026, this extends to producing dual-audience documentation (human-readable and LLM-readable simultaneously), maintaining machine-readable project scope maps (`llms.txt`), and authoring a new deliverable class — Agentic System Documentation — that covers tool definitions, agent handoff points, and evaluation metric contracts for multi-agent systems.",
   "url": "pack://agent-skills/core/roles/technical-writer.md",
-  "version": "3.1.0",
+  "version": "3.3.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -51,6 +51,26 @@
       "description": "Draft, structure, and review release notes for a software change so that users, operators, and downstream consumers understand what changed, what broke compatibility, and what action they must take. Use when shipping a feature, fix, or breaking change that requires external communication.",
       "tags": [
         "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "documentation-handoff.json"
+      ]
+    },
+    {
+      "id": "configure-llms-txt",
+      "name": "Configure Llms Txt",
+      "description": "Create and maintain the llms.txt and llms-full.txt files for a domain or project, making documentation and content discoverable by AI agents, LLMs, and automated tools per the llmstxt.org specification. Use when a site or API has AI agent interfaces, when optimizing for Generative Engine Optimization (GEO) and Agentic SEO (A-SEO), or when implementing the dual-audience documentation standard required by technical-writer role.",
+      "tags": [
+        "documentation",
         "pack"
       ],
       "inputModes": [

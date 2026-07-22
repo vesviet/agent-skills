@@ -845,7 +845,8 @@
           "contracts/schemas/seo-metadata.json",
           "contracts/schemas/seo-audit-report.json"
         ]
-      }
+      },
+      "contract_type": "seo-content-brief"
     }
   ]
 }

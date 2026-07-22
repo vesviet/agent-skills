@@ -28,46 +28,66 @@ def pack_root() -> Path:
     return Path(__file__).resolve().parents[3]
 
 
+def _parse_scalar(value: str) -> str:
+    value = value.strip()
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in ("\"", "'"):
+        return value[1:-1]
+    return value
+
+
 def _parse_yaml_minimal(text: str) -> dict:
-    """Minimal YAML-like parser for flat key:value and list entries (fallback only)."""
-    result: dict = {}
-    current_key: str | None = None
-    current_list: list | None = None
-    for line in text.splitlines():
-        stripped = line.strip()
+    """Parse the mapping/list YAML subset used by the bundled policy files."""
+    lines = []
+    for raw_line in text.splitlines():
+        stripped = raw_line.strip()
         if not stripped or stripped.startswith("#"):
             continue
-        if not line.startswith(" ") and ":" in line:
-            # Top-level key
-            k, _, v = line.partition(":")
-            k = k.strip()
-            v = v.strip()
-            if v:
-                result[k] = v
-                current_key = None
-                current_list = None
+        lines.append((len(raw_line) - len(raw_line.lstrip(" ")), stripped))
+
+    def parse_node(index: int, indent: int):
+        if index >= len(lines) or lines[index][0] < indent:
+            return None, index
+        is_list = lines[index][0] == indent and lines[index][1].startswith("- ")
+        value: dict | list = [] if is_list else {}
+
+        while index < len(lines) and lines[index][0] == indent:
+            _, content = lines[index]
+            if is_list:
+                if not content.startswith("- "):
+                    break
+                item = content[2:].strip()
+                if ":" in item:
+                    key, raw_value = item.split(":", 1)
+                    entry = {key.strip(): _parse_scalar(raw_value)}
+                    index += 1
+                    if index < len(lines) and lines[index][0] > indent:
+                        child, index = parse_node(index, lines[index][0])
+                        if isinstance(child, dict):
+                            entry.update(child)
+                    value.append(entry)
+                    continue
+                value.append(_parse_scalar(item))
+                index += 1
+                continue
+
+            if ":" not in content:
+                index += 1
+                continue
+            key, raw_value = content.split(":", 1)
+            key = key.strip()
+            raw_value = raw_value.strip()
+            index += 1
+            if raw_value:
+                value[key] = _parse_scalar(raw_value)
+            elif index < len(lines) and lines[index][0] > indent:
+                child, index = parse_node(index, lines[index][0])
+                value[key] = child
             else:
-                current_key = k
-                result[k] = {}
-                current_list = None
-        elif line.startswith("  ") and not line.startswith("    ") and ":" in line:
-            # Second-level key
-            k, _, v = line.strip().partition(":")
-            k = k.strip()
-            v = v.strip()
-            if current_key:
-                if isinstance(result.get(current_key), dict):
-                    result[current_key][k] = v or []
-                    current_list = k
-        elif line.startswith("    ") and stripped.startswith("- "):
-            # List item under second-level key
-            item = stripped[2:].strip()
-            if current_key and current_list:
-                if isinstance(result.get(current_key, {}).get(current_list), list):
-                    result[current_key][current_list].append(item)
-                else:
-                    result[current_key][current_list] = [item]
-    return result
+                value[key] = {}
+        return value, index
+
+    parsed, _ = parse_node(0, 0)
+    return parsed if isinstance(parsed, dict) else {}
 
 
 def load_yaml(path: Path) -> dict:
@@ -158,7 +178,7 @@ def main() -> int:
     decision = check_action(role, action, boundaries)
 
     result = {
-        "advisory": True,
+        "advisory": False,
         "role": role,
         "tool": tool,
         "command": command[:120] if command else "",
@@ -169,10 +189,15 @@ def main() -> int:
 
     print(json.dumps(result))
 
-    # Exit non-zero only for hard denials — advisory mode for requires_approval
     if decision == "denied":
         print(f"POLICY DENIED: role '{role}' cannot perform '{action}'", file=sys.stderr)
         return 1
+    if decision == "requires_approval":
+        print(
+            f"POLICY APPROVAL REQUIRED: role '{role}' needs approval for '{action}'",
+            file=sys.stderr,
+        )
+        return 2
 
     return 0
 

@@ -4,7 +4,7 @@
   "name": "qa-engineer",
   "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escaped defects across a distributed microservices system. In 2025–2026, this extends to validating AI/LLM systems with non-deterministic output properties, running controlled chaos experiments to prove resilience before production, and enforcing accessibility as a first-class quality gate.",
   "url": "pack://agent-skills/core/roles/qa-engineer.md",
-  "version": "3.1.0",
+  "version": "3.3.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

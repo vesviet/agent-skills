@@ -67,7 +67,8 @@
           "text": "slice-01 completed. See implementation-result.json."
         }
       ],
-      "messageId": "msg-001"
+      "messageId": "msg-001",
+      "message_id": "msg-001"
     }
   ]
 }

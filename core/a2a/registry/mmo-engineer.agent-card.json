@@ -4,7 +4,7 @@
   "name": "mmo-engineer",
   "description": "Design, deploy, and operate end-to-end Make Money Online (MMO) operations. Maximize ROI through advanced stealth automation, privacy-first tracking (S2S), anti-detect infrastructure, AI-driven content generation, secure asset sharing, and large-scale proxyware farming, adapting to the 2025-2026 landscape of fingerprinting and bot detection.",
   "url": "pack://agent-skills/core/roles/mmo-engineer.md",
-  "version": "3.1.0",
+  "version": "3.3.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -70,7 +70,7 @@
       "name": "Create Automation Script",
       "description": "Build Playwright/Puppeteer automation scripts that connect via CDP to Anti-Detect browsers or use C++ patched engines. Implements behavioral mimicry to bypass AI detection. Use when building multi-account automation, login flows, ad account warm-up sequences, or scraping high-trust platforms.",
       "tags": [
-        "frontend",
+        "platform",
         "pack"
       ],
       "inputModes": [
@@ -150,7 +150,7 @@
       "name": "Analyze Campaign Roi",
       "description": "Analyze S2S conversion data, monitor ad account die-rates, and calculate campaign ROI based on proxy and API costs. Use when evaluating campaign profitability, diagnosing tracking attribution gaps, comparing offer performance, or deciding to pause or scale ad spend.",
       "tags": [
-        "security",
+        "foundation",
         "pack"
       ],
       "inputModes": [
