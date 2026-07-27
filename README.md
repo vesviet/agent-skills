@@ -2,7 +2,7 @@
 
 Global engineering skill pack for software delivery work.
 
-**Version 3.3.1** strengthens policy enforcement and contract reliability: runtime hooks now block approval-required and denied operations, and bundled contract examples are checked against their required fields and discriminators.
+**Version 3.4.0** refreshes the pack to current 2026 standards — the MCP 2026-07-28 stateless spec with AAIF (Linux Foundation) governance, the corrected EU AI Act timeline, the agentic commerce protocol landscape (ACP, UCP, MPP, x402, AP2), first-party on-device LLM frameworks, and the European Accessibility Act — and adds the `audit-content` skill plus the `content-audit` workflow for the content refresh cycle.
 
 The repository is now split into a portable **core** plus optional **overlays** so global teams can reuse the foundation without inheriting repo-specific or brand-specific assumptions.
 
@@ -92,6 +92,7 @@ Overlay-specific skills are intentionally kept out of the global core inventory.
 | [conduct-research](core/skills/foundation/conduct-research/SKILL.md) | Deep or scoped research before decisions |
 | [design-review](core/skills/foundation/design-review/SKILL.md) | UX/spec design critique before build |
 | [accessibility-review](core/skills/foundation/accessibility-review/SKILL.md) | WCAG-oriented a11y audit |
+| [audit-content](core/skills/foundation/audit-content/SKILL.md) | Content refresh cycle: audit, read, research latest standards, update, re-audit |
 
 ### Delivery Domains
 
@@ -120,6 +121,7 @@ Core workflows live in [core/workflows/README.md](core/workflows/README.md).
 - `/troubleshooting`
 - `/agent-a2a-delegation`
 - `/content-publishing`
+- `/content-audit`
 - `/data-migration`
 - `/dependency-upgrade`
 - `/qa-validation`
@@ -148,13 +150,15 @@ This pack includes adapter files for all major AI coding agents:
 
 | Agent | Adapter File | Auto-Loads |
 |-------|-------------|------------|
-| OpenAI Codex | `core/skills/*/*/agents/openai.yaml` plus overlay skill adapters when installed | Skills via `$skill-name` |
+| OpenAI Codex | `AGENTS.md` + `core/codex/` (README + `.a2a-config.json`) + `core/skills/*/*/agents/openai.yaml` | Rules via AGENTS.md; skills via `$skill-name` |
 | Cursor | `.cursorrules` + `.cursor/rules/agent-skills.md` | Rules, roles, skills, workflows |
 | Claude Code | `CLAUDE.md` | Rules, roles, skills, workflows |
-| AGENTS-compatible tools | `AGENTS.md` | Rules, roles, skills, workflows |
-| GitHub Copilot | `.github/copilot-instructions.md` | Rules and pack navigation |
+| Kiro | `.kiro/steering/agent-skills.md` (always-on) + `.kiro/hooks/*.json` | Rules via steering; policy/role/trace hooks |
+| Kilo Code | `AGENTS.md` + `.kilocode/rules/agent-skills.md` | Rules, roles, skills, workflows |
+| VS Code (Copilot) | `.github/copilot-instructions.md` + `AGENTS.md` (+ MCP via `.vscode/mcp.json`) | Rules and pack navigation |
+| AGENTS-compatible tools (Windsurf, etc.) | `AGENTS.md` | Rules, roles, skills, workflows |
 
-All adapters point back to the same source of truth in `core/`.
+`AGENTS.md` is the shared open standard read natively by Codex, Cursor, Kilo Code, Windsurf, and VS Code Copilot. All adapters point back to the same source of truth in `core/`.
 
 ## Installation
 

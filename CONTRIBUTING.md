@@ -160,11 +160,27 @@ cases_dir: cases/
 
 ---
 
+## Releasing a New Version
+
+The pack uses semantic versioning. Bump the version when a set of changes is ready to publish:
+
+- **MAJOR** — breaking changes to contracts, role/skill structure, or validator expectations.
+- **MINOR** — new skills, roles, or workflows; broad standards refreshes; additive capability.
+- **PATCH** — fixes, wording, and defect cleanup with no new capability.
+
+When releasing:
+
+1. Update `VERSION` (single source of the number).
+2. Add a dated section to `CHANGELOG.md` (`## [X.Y.Z] - YYYY-MM-DD`) with `Added` / `Changed` / `Fixed` groups. Describe product/content changes only — no internal process metadata per `core/rules/code.md`.
+3. Sync the version-carrying docs so they match `VERSION`: `README.md` (version summary line), `AGENTS.md` (A2A section header), `CLAUDE.md` (Pack version line), `.cursorrules` (A2A section header), `USER_GUIDE_v2.md` (intro), and `core/codex/.a2a-config.json` (`pack_version`).
+4. Run `python3 core/scripts/validate-all.py` — must pass before the release is considered done.
+5. Do not create a commit, tag, or release until the user explicitly confirms.
+
 ## Rules for All Contributions
 
 - do not touch `.env`, `.dev.vars`, or credential files
 - do not weaken any parity group defined in `core/adapter-parity.md`
 - do not add repo-specific paths, brand content, or org-local conventions to `core/` — use overlays
-- adapter files (`AGENTS.md`, `CLAUDE.md`, `.cursorrules`, `copilot-instructions.md`) mirror `core/rules/code.md` — update all five when rules change
+- adapter files mirror `core/rules/code.md` — when rules change, update every adapter enforced by `core/scripts/validate-rules.py` and listed in `core/adapter-parity.md` (currently `.cursorrules`, `.cursor/rules/agent-skills.md`, `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`, `.kiro/steering/agent-skills.md`, `.kilocode/rules/agent-skills.md`). Codex/Windsurf/VS Code Copilot read `AGENTS.md` directly.
 - run `validate-all.py` before considering any change complete
 - do not create a commit until explicitly confirmed per `core/rules/code.md`

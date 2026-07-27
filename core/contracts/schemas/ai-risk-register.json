@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ai-risk-register",
+  "title": "AI Risk Register",
+  "description": "Structured output from the ai-risk-assessment skill (owned by Business Analyst, Project Manager, or Security Engineer). Applies NIST AI RMF 1.0 (Govern/Map/Measure/Manage), the NIST AI 600-1 GenAI Profile, EU AI Act risk classification, and OWASP ASI alignment. A living delivery artifact maintained across the AI system lifecycle; consumed by Product Manager, Technical Architect, Security Engineer, and Agent Coordinator before delivery commitment.",
+  "type": "object",
+  "properties": {
+    "contract_type": { "type": "string", "const": "ai-risk-register", "description": "Machine-readable contract discriminator." },
+    "register_id": { "type": "string", "description": "Unique identifier. Convention: airr-NNN-slug or system slug." },
+    "assessment_date": { "type": "string", "format": "date" },
+    "assessor": { "type": "string", "description": "Role or person accountable for the assessment." },
+    "review_due": { "type": "string", "format": "date" },
+    "system_context": {
+      "type": "object",
+      "description": "NIST AI RMF Map function - system contextualization.",
+      "properties": {
+        "intended_use": { "type": "string" },
+        "users_and_stakeholders": { "type": "string" },
+        "data_sources": { "type": "string", "description": "Training, validation, and retrieval sources." },
+        "deployment_environment": { "type": "string", "enum": ["edge", "cloud", "on-prem", "hybrid"] },
+        "dependency_chain": { "type": "string", "description": "Models, APIs, third-party services relied upon." }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "description": "NIST AI RMF Govern function - accountability and oversight.",
+      "properties": {
+        "owner": { "type": "string" },
+        "policy_profile": { "type": "string", "enum": ["acceptable-use", "restricted", "prohibited"] },
+        "human_oversight_mechanism": { "type": "string", "description": "HITL gates, monitoring, or kill-switch." },
+        "review_cadence": { "type": "string" },
+        "escalation_path": { "type": "string" }
+      },
+      "required": ["owner", "human_oversight_mechanism"]
+    },
+    "eu_ai_act": {
+      "type": "object",
+      "description": "EU AI Act classification. Determine before writing acceptance criteria.",
+      "properties": {
+        "risk_tier": { "type": "string", "enum": ["unacceptable", "high-risk", "limited-risk", "minimal-risk", "not-applicable"] },
+        "classification_rationale": { "type": "string" },
+        "conformity_assessment_required": { "type": "boolean" },
+        "audit_logging_required": { "type": "boolean" },
+        "hitl_required": { "type": "boolean" },
+        "bias_assessment_required": { "type": "boolean" },
+        "target_compliance_date": { "type": "string", "format": "date", "description": "High-risk standalone: 2027-12-02; embedded in products: 2028-08-02. Article 50 transparency + GPAI: 2026-08-02." }
+      },
+      "required": ["risk_tier"]
+    },
+    "nist_600_1_risks": {
+      "type": "object",
+      "description": "NIST AI RMF Measure function keyed to the AI 600-1 GenAI Profile.",
+      "properties": {
+        "hallucination_threshold": { "type": "string", "description": "Acceptable error rate before intervention." },
+        "model_degradation_signal": { "type": "string", "description": "Metric that triggers model review." },
+        "bias_exposure": { "type": "string" },
+        "data_privacy_classification": { "type": "string" },
+        "ip_risk": { "type": "string", "description": "Training data provenance status." },
+        "categories": {
+          "type": "array",
+          "description": "Assessment of the 12 GenAI risk categories relevant to this system.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string",
+                "enum": [
+                  "confabulation",
+                  "cbrn_information_hazards",
+                  "cyberattacks_malicious_code",
+                  "data_privacy",
+                  "environmental_impacts",
+                  "harmful_bias_homogenization",
+                  "human_ai_configuration",
+                  "information_integrity",
+                  "intellectual_property",
+                  "obscene_harmful_content",
+                  "value_chain_component",
+                  "societal_macro_harms"
+                ]
+              },
+              "in_scope": { "type": "boolean" },
+              "severity": { "type": "string", "enum": ["high", "medium", "low"] },
+              "mitigation": { "type": "string" }
+            },
+            "required": ["category", "in_scope"]
+          }
+        }
+      },
+      "required": ["hallucination_threshold", "model_degradation_signal"]
+    },
+    "agentic": {
+      "type": "object",
+      "description": "Extension for agentic AI systems (autonomous agents, multi-agent workflows).",
+      "properties": {
+        "autonomy_tier": { "type": "string", "enum": ["supervised", "semi-autonomous", "fully-autonomous"] },
+        "action_reversibility_audit": { "type": "string", "description": "Irreversible actions require explicit human approval gates." },
+        "owasp_asi_alignment": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "asi_id": { "type": "string", "description": "e.g. ASI01 through ASI10." },
+              "applicable": { "type": "boolean" },
+              "mitigation": { "type": "string" }
+            },
+            "required": ["asi_id", "applicable"]
+          }
+        },
+        "cascading_failure_analysis": { "type": "string" }
+      }
+    },
+    "compliance_drift_indicators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "signal": { "type": "string" },
+          "threshold": { "type": "string" },
+          "responsible": { "type": "string" }
+        },
+        "required": ["signal", "threshold"]
+      }
+    },
+    "residual_risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "risk": { "type": "string" },
+          "accepted_by": { "type": "string" },
+          "accepted_date": { "type": "string", "format": "date" },
+          "review_date": { "type": "string", "format": "date" }
+        },
+        "required": ["risk"]
+      }
+    }
+  },
+  "required": ["contract_type", "governance", "eu_ai_act", "nist_600_1_risks", "residual_risks"],
+  "examples": [
+    {
+      "contract_type": "ai-risk-register",
+      "register_id": "airr-007-support-triage",
+      "assessment_date": "2026-07-27",
+      "assessor": "business-analyst",
+      "review_due": "2026-10-27",
+      "system_context": {
+        "intended_use": "Classify and route inbound support tickets",
+        "users_and_stakeholders": "Support agents, customers",
+        "data_sources": "Ticket text, historical category labels",
+        "deployment_environment": "cloud",
+        "dependency_chain": "Internal LLM gateway, category taxonomy service"
+      },
+      "governance": {
+        "owner": "product-manager",
+        "policy_profile": "restricted",
+        "human_oversight_mechanism": "HITL gate on refund/credit/account-closure categories; confidence-gated auto-routing",
+        "review_cadence": "quarterly",
+        "escalation_path": "Product Manager decides on risk acceptance"
+      },
+      "eu_ai_act": {
+        "risk_tier": "limited-risk",
+        "classification_rationale": "Assistive classification with human oversight on high-stakes categories; not an Annex III use case",
+        "conformity_assessment_required": false,
+        "audit_logging_required": true,
+        "hitl_required": true,
+        "bias_assessment_required": true,
+        "target_compliance_date": "2026-08-02"
+      },
+      "nist_600_1_risks": {
+        "hallucination_threshold": "Auto-route only above 0.80 confidence; below routes to human queue",
+        "model_degradation_signal": "7-day rolling classification accuracy < 0.90 triggers model review",
+        "bias_exposure": "Language/locale skew in ticket routing",
+        "data_privacy_classification": "internal - ticket text may contain PII",
+        "ip_risk": "Provider model; no customer data used for training",
+        "categories": [
+          { "category": "confabulation", "in_scope": true, "severity": "medium", "mitigation": "Confidence gating + deterministic fallback" },
+          { "category": "harmful_bias_homogenization", "in_scope": true, "severity": "medium", "mitigation": "Quarterly bias audit on routing outcomes by locale" },
+          { "category": "data_privacy", "in_scope": true, "severity": "high", "mitigation": "Region-pinned inference; no content in telemetry by default" }
+        ]
+      },
+      "agentic": {
+        "autonomy_tier": "semi-autonomous",
+        "action_reversibility_audit": "Routing is reversible (re-queue); no irreversible actions performed by the classifier",
+        "owasp_asi_alignment": [
+          { "asi_id": "ASI06", "applicable": true, "mitigation": "Treat retrieved ticket context as untrusted; no instruction execution from ticket body" }
+        ],
+        "cascading_failure_analysis": "Model unavailability degrades to deterministic keyword router; no downstream auto-actions"
+      },
+      "compliance_drift_indicators": [
+        { "signal": "Auto-route accuracy", "threshold": "< 0.90 over 7 days", "responsible": "data-analyst" }
+      ],
+      "residual_risks": [
+        { "risk": "Gradual model drift on new product categories", "accepted_by": "product-manager", "accepted_date": "2026-07-27", "review_date": "2026-10-27" }
+      ]
+    }
+  ]
+}

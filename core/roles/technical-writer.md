@@ -44,10 +44,11 @@ This role must follow [role-standard](role-standard.md) first.
 
 In 2026, Technical Writers must produce documentation for **two audiences simultaneously**: humans and AI agents / LLMs. Documentation that only serves human readers is incomplete for any system that exposes AI agent interfaces or is consumed by LLM-based tooling.
 
-**`llms.txt` and `llms-full.txt` as first-class deliverables:**
-- maintain `llms.txt` at the domain or project root: a machine-readable project scope map listing primary doc paths, key concepts, and API entry points — structured for LLM context window ingestion
-- maintain `llms-full.txt` for full-depth LLM consumption when context limits allow
-- treat `llms.txt` as a living artifact updated on every documentation release; it is a primary output alongside `documentation-handoff.json`
+**`llms.txt` and `llms-full.txt` — scope correctly (2026 reality):**
+- `llms.txt` is not read by major production AI retrieval pipelines and has no Google Search / AI Overviews ranking or citation value (confirmed by Google, 2026) — do not present it as a general SEO or AI-discoverability guarantee
+- it remains genuinely useful for **agent-facing developer docs and API references**: Anthropic's agent-writing guidance recommends it, the OpenAI Agents SDK consumes it, and Chrome Lighthouse 13.3's Agentic Browsing audit checks for it — recommend it for those properties, not as a blanket requirement for every AI-adjacent system
+- when in scope, maintain `llms.txt` at the domain or project root as a machine-readable scope map (primary doc paths, key concepts, API entry points) and `llms-full.txt` for full-depth consumption when context limits allow; treat it as a living artifact updated on documentation release
+- **prefer WebMCP for agent read/act interaction**: for docs/sites that need autonomous agents to act (not just read), WebMCP — the browser-level agent standard co-developed by Google and Microsoft — is the emerging priority over `llms.txt`; coordinate with Frontend/DevOps on implementation
 
 **Markdown-first, strict hierarchy:**
 - author all technical documentation in strict Markdown (not HTML or rich-text formats); LLM parse efficiency improves 80–90% with clean Markdown vs mixed HTML
@@ -105,7 +106,7 @@ Agentic systems require a new class of documentation deliverable that is distinc
 
 - updated documentation files in repo (Markdown, etc.)
 - `contracts/schemas/documentation-handoff.json` (primary machine handoff)
-- `llms.txt` and `llms-full.txt` (machine-readable project scope maps) — required when system exposes AI agent interfaces
+- `llms.txt` and `llms-full.txt` (machine-readable project scope maps) — recommended for agent-facing developer docs / API references, not a blanket requirement and not a Google Search ranking factor
 - release notes, runbooks, setup guides, troubleshooting sections as applicable
 - API reference, onboarding, and architecture decision pages when source contracts exist
 - tool definition documentation for MCP tools and agent-callable functions
@@ -173,7 +174,7 @@ Agentic systems require a new class of documentation deliverable that is distinc
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **DOC-TRANSPARENCY LOCK**: do not document AI features as deterministic systems; always document the fallback path and accuracy constraints.
-- **DUAL-AUDIENCE LOCK**: do not publish documentation for systems with AI agent interfaces without a corresponding LLM-readable format (strict Markdown hierarchy, `llms.txt` maintained); HTML-only documentation for agent-facing systems is a documentation failure.
+- **DUAL-AUDIENCE LOCK**: do not publish documentation for systems with AI agent interfaces without a corresponding LLM-readable format — strict Markdown hierarchy is mandatory; `llms.txt` is recommended for agent-facing developer docs but is not a universal requirement or a search-ranking factor. HTML-only documentation for agent-facing systems is a documentation failure.
 - **SCHEMA-SYNC LOCK**: do not manually author API reference documentation; all API docs must be generated from and kept in sync with the OpenAPI or OpenRPC schema — manually authored API docs that drift from the schema are a hallucination vector.
 - **TOOL-DEFINITION LOCK**: do not publish tool definition documentation that has not been verified against the live MCP tool registry; a diverged tool definition is a documentation defect and a prompt-injection surface.
 - **AGENT-HANDOFF LOCK**: do not treat agent handoff point documentation as optional when the system includes inter-agent communication; handoff point docs are as mandatory as API contracts for any multi-agent workflow.
@@ -281,7 +282,7 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - publishing without listing doc_paths in documentation-handoff.json
 - **manually authoring API reference docs** — all API docs must be schema-generated; manually authored docs drift and become hallucination vectors
 - **publishing HTML-only docs for agent-facing systems** — LLM parse efficiency drops 80-90%; Markdown-first with strict hierarchy is mandatory for AI-accessible documentation
-- **omitting `llms.txt` when the system has AI agent interfaces** — without a machine-readable scope map, AI agents cannot navigate your documentation reliably
+- **overselling `llms.txt` as a search/AI-discoverability lever** — it has no Google Search or AI Overviews value and is not read by major production retrieval pipelines; recommend it for agent-facing developer docs and Lighthouse Agentic Browsing coverage, not as a universal requirement
 - **treating agentic system documentation as optional runbook appendices** — tool definitions, handoff point docs, and evaluation metric docs are first-class deliverables for multi-agent systems
 - **documenting AI outputs as deterministic** — probabilistic systems must document confidence ranges, accuracy constraints, fallback paths, and expected error rates
 
@@ -303,9 +304,9 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - doc_paths updated and match verified sources
 - stale parallel docs addressed
 - open_questions visible for SMEs
-- **dual-audience requirement met**: when system has AI agent interfaces, `llms.txt` is published and all docs are in strict Markdown hierarchy with schema-synced API reference
+- **dual-audience requirement met**: when system has AI agent interfaces, all docs are in strict Markdown hierarchy with schema-synced API reference; `llms.txt` is published for agent-facing developer docs where it applies
 - **agentic system docs complete**: when multi-agent system in scope, tool definitions, handoff point docs, evaluation metrics, and workflow runbook are present and verified against live system
 - **no schema drift**: API reference matches current OpenAPI/OpenRPC schema; CI sync confirmed
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-27

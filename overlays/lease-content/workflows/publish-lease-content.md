@@ -1,8 +1,8 @@
 # Publish Lease Content
 
-Role: `content-writer`
+Role: `content-manager`, `content-writer`, `reviewer`, `cloudflare-engineer`
 
-Workflow for adding or updating content in the Lease in Vietnam and Máy Lạnh Treo Tường Astro sites. Use when publishing new posts, property listings, or product pages.
+Workflow for adding or updating content in the Lease in Vietnam and Máy Lạnh Treo Tường Astro v5 sites. Use when publishing new posts, property listings, or product pages.
 
 ## Checklist
 
@@ -10,8 +10,9 @@ Workflow for adding or updating content in the Lease in Vietnam and Máy Lạnh 
 - [ ] **Step 2** — Read schema and sibling content
 - [ ] **Step 3** — Draft frontmatter
 - [ ] **Step 4** — Write content body
-- [ ] **Step 5** — Run local Astro build check
-- [ ] **Step 6** — Review and commit
+- [ ] **Step 5** — Information Gain & AI Governance Review
+- [ ] **Step 6** — Run local Astro build check
+- [ ] **Step 7** — Review, commit, and deploy
 
 ---
 
@@ -55,8 +56,8 @@ Use the schema-required fields first, then optional fields if available:
 ---
 title: ""
 description: ""
-publishDate: "YYYY-MM-DD+07:00"
-updateDate: "YYYY-MM-DD+07:00"
+pubDate: "YYYY-MM-DD+07:00"
+updatedDate: "YYYY-MM-DD+07:00"
 # property / product specific fields below
 # price, bedrooms, brand, model, hp, bestFor, notFor, dataSources ...
 ---
@@ -78,9 +79,20 @@ Role: `content-writer`
 
 ---
 
-## Step 5 — Run local Astro build check
+## Step 5 — Information Gain & AI Governance Review
 
-Role: `devops-engineer`
+Role: `reviewer` or `content-manager`
+
+**AI-GOVERNANCE LOCK**: All AI-assisted content must pass human-in-the-loop editorial review before publishing.
+1. **Information Gain**: Does this article provide unique value (firsthand accounts, real-world data, expert quotes) that top SERP results and AI-synthesized overviews lack?
+2. **E-E-A-T Verification**: Are author credentials and real-world failure/success stories present?
+3. **Hallucination Check**: Ensure zero raw AI hallucinations or generic boilerplate phrasing remains.
+
+---
+
+## Step 6 — Run local Astro build check
+
+Role: `devops-engineer` or `cloudflare-engineer`
 
 ```bash
 cd /path/to/site
@@ -94,13 +106,14 @@ Fix any Zod schema validation errors before committing. Common errors:
 
 ---
 
-## Step 6 — Review and commit
+## Step 7 — Review, commit, and deploy
 
-Role: `content-writer`
+Role: `content-writer`, `cloudflare-engineer`
 
 1. Review rendered output locally (`npm run dev` → preview URL).
 2. Confirm no broken links, missing images, or placeholder text.
 3. Commit: `git add src/data/<path> && git commit -m "feat(content): add <slug>"`.
-4. Push to trigger Cloudflare Pages deploy (or deploy manually via Wrangler).
+4. Push to remote repository to trigger the Cloudflare Pages CI pipeline.
+5. `cloudflare-engineer` monitors the Cloudflare deployment status and edge cache invalidation.
 
 **Stop** if build fails — do not commit broken content.

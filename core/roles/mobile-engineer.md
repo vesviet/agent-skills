@@ -72,12 +72,14 @@ In 2026, AI tools generate significant volumes of mobile code (React Native, Flu
 
 **Mobile Agent Hosting Architecture (on-device LLMs — 2025-2026):**
 
-Beyond lightweight ML models, production apps now host full language model inference on-device. The architecture requires a native service layer, not inline framework code:
+Beyond lightweight ML models, production apps now host full language model inference on-device. In 2026, prefer the OS-integrated first-party frameworks when the built-in model meets the need — they are free, privacy-preserving, and manage inference isolation and hardware offload for you — and reserve bundled third-party engines for custom, fine-tuned, or cross-platform models:
 
-- **llama.cpp**: cross-platform C++ inference engine (Metal backend for iOS, Vulkan/NNAPI for Android) — the 2026 standard for on-device LLM hosting across platforms
-- **MLX**: dominant for Apple Silicon (M-series) and iOS; optimized for Neural Engine offload
+- **Apple Foundation Models framework (default on iOS 26+)**: native Swift API to the on-device model powering Apple Intelligence (image input, guided generation, tool calling, context management, and on-device→Private Cloud Compute escalation); use `Core AI` when you need to run curated open models (Qwen, Mistral, etc.) on Apple silicon. Requires capable hardware (A17 Pro / M-series); gate the feature and provide a fallback on unsupported devices
+- **Android AICore + Gemini Nano (default on Android)**: access the on-device model via ML Kit GenAI APIs; availability is device- and OEM-dependent — detect capability at runtime and provide a cloud or classic fallback
+- **llama.cpp**: cross-platform C++ inference engine (Metal backend for iOS, Vulkan/NNAPI for Android) — use for custom/cross-platform models not served by the platform framework
+- **MLX**: Apple Silicon (M-series) and iOS; optimized for Neural Engine offload when bundling a custom model
 - **ExecuTorch**: PyTorch-native edge deployment path for Android; integrates with Android's NNAPI delegation
-- **GGUF format (4-bit quantization)**: de facto production model format for mobile — balances model quality against device memory and latency constraints
+- **GGUF format (4-bit quantization)**: de facto production model format for bundled mobile models — balances model quality against device memory and latency constraints
 
 **Hybrid local/cloud routing policy — choose explicitly for each agent capability:**
 | Route | Use when |
@@ -87,9 +89,12 @@ Beyond lightweight ML models, production apps now host full language model infer
 | **Hybrid** | Local handles intent classification and simple queries; cloud handles escalation for complex or ambiguous cases |
 
 **Inference engine as isolated native service:**
-- implement the inference engine as a **separate native service** in C++/Swift/Kotlin — never run LLM inference inline in the React Native JS thread or Flutter Dart isolate
+- when bundling a custom engine (llama.cpp, MLX, ExecuTorch), implement it as a **separate native service** in C++/Swift/Kotlin — never run LLM inference inline in the React Native JS thread or Flutter Dart isolate. When using a platform framework (Apple Foundation Models, Android AICore), the OS manages inference isolation — still invoke it off the main thread and stream results back
 - expose inference capability to the framework layer via a thin interface: JSI bridge (React Native) or FFI channel (Flutter) for control and output delivery only
 - isolating inference in native service prevents: JS thread blocking (RN), Dart GC pressure (Flutter), and enables independent restart/crash recovery for the inference service
+
+**Privacy-preserving cloud escalation:**
+- for the hybrid route, prefer a privacy-preserving cloud escalation path when the platform provides one (Apple Private Cloud Compute) so escalated requests keep the on-device privacy posture; document what data leaves the device and under which route
 
 ### Privacy-Preserving ML (2025-2026)
 
@@ -325,8 +330,10 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - security boundary: credentials in Keychain/Keystore, not in JS/Dart state or AsyncStorage
 
 ### On-Device AI & Agent Features
-- on-device LLM inference running in native service layer (not JS thread or Dart isolate)
-- hybrid routing policy declared: which capabilities route local vs. cloud
+- platform framework preferred when it meets the need (Apple Foundation Models / Android AICore + Gemini Nano); bundled third-party engine justified only for custom/cross-platform models
+- device-capability gating + fallback in place for on-device LLM features (A17 Pro/M-series for Apple Intelligence; device/OEM support for Gemini Nano)
+- on-device LLM inference running off the main thread (native service layer for bundled engines; OS-managed for platform frameworks)
+- hybrid routing policy declared: which capabilities route local vs. cloud; privacy-preserving cloud escalation (e.g. Private Cloud Compute) used where available
 - battery/thermal impact measured and within acceptable bounds
 - SDUI fallbacks tested: agent-pushed layouts render correctly without app update
 
@@ -389,8 +396,8 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - platform constraints, residual risk, and blast radius are understood and documented
 - **AI-generated code validated** (when applicable): risk tier assessed, platform API correctness/bridge safety/a11y/offline/security checklist completed
 - **App Store AI compliance verified** (when AI features present): in-app disclosure, user-reporting, SDK inventory, AI content labeling, 4.3(b) differentiated value
-- **On-device LLM in native service layer** (when mobile agent hosting in scope): inference not running in JS thread or Dart isolate; hybrid routing policy declared
+- **On-device LLM hosting** (when mobile agent hosting in scope): platform framework (Apple Foundation Models / Android AICore) preferred where sufficient; device-capability gating + fallback in place; inference off the main thread; hybrid routing policy declared
 - **FL/DP compliance** (when federated learning in scope): secure aggregation + DP noise applied; ε tracked; user opt-out available
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-27

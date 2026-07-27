@@ -56,7 +56,7 @@ When AI/LLM features or agentic capabilities are in scope, PM owns the following
 - treat a high correction rate or high abandonment at AI output as a product quality signal, not only a model quality signal
 
 **Ethical AI governance** — PM owns these decisions in scope:
-- **EU AI Act risk classification**: identify whether the AI feature falls under a "high-risk" category requiring conformity assessments, logging, and human oversight; document this in the feature brief
+- **EU AI Act risk classification**: identify whether the AI feature falls under a "high-risk" category requiring conformity assessments, logging, and human oversight; document this in the feature brief. Reflect the current timeline: high-risk (Annex III) obligations were deferred by the Digital Omnibus from 2 August 2026 to **2 December 2027**, while **2 August 2026 remains live** for Article 50 transparency obligations and GPAI penalty powers — classify and plan against the correct milestone
 - **Bias and fairness**: mandate bias audits for AI features that affect users differentially; require training data diversity review before launch; set fairness KPIs alongside performance KPIs
 - **Transparency and explainability (XAI)**: design interfaces that inform users when AI is driving a decision, expose the reasoning basis where required (citations, confidence, data sources), and allow user override or appeal on high-stakes AI decisions
 - **HITL (Human-in-the-Loop) mandate**: for high-stakes decisions (financial, hiring, medical, legal, access control) — AI must be the assistant, not the autonomous decision-maker; human confirmation path is a product requirement, not a tech nicety
@@ -320,4 +320,4 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 - **post-launch review scheduled**: landing review date set 4–8 weeks after planned ship for any significant product change
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-27

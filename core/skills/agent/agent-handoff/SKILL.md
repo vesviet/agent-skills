@@ -112,7 +112,8 @@ Next action:
 - **agent-tool-orchestration**: Explain relevant tool or command outcomes
 - **write-documentation**: Turn handoff context into durable docs
 - **commit-code**: Prepare approved changes after completion
-\n### 2026: A2A Contracts and Delta Handoffs
+
+### 2026: A2A Contracts and Delta Handoffs
 
 - **A2A task contract as handoff artifact:** When handing off to another agent, produce a structured `a2a-task.json` with UUID v4 task ID, `input_schema`, `context_snapshot`, and `success_criteria`. The receiving agent uses this contract to validate its own output — not just the human-readable summary.
-- **State delta vs. full state:** In handoffs between long-running agent sessions, transmit only the state delta (what changed since last checkpoint) plus a pointer to the full state in durable storage. This avoids context window bloat when handoff documents grow across many iterations.\n
+- **State delta vs. full state:** In handoffs between long-running agent sessions, transmit only the state delta (what changed since last checkpoint) plus a pointer to the full state in durable storage. This avoids context window bloat when handoff documents grow across many iterations.

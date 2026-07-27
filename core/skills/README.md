@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 91 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **98 total** (run `validate-skills.py` for the live total).
+**Counts:** 92 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **99 total** (run `validate-skills.py` for the live total).
 
 ## Taxonomy
 
@@ -37,7 +37,7 @@ Configuration and compliance skills for agentic-ready web presence (MCP, RFC 972
 - `manage-api-catalog`
 - `manage-auth-md`
 
-### Foundation (25)
+### Foundation (26)
 
 Cross-cutting portable skills:
 
@@ -45,6 +45,7 @@ Cross-cutting portable skills:
 - `analyze-campaign-roi`
 - `analyze-data`
 - `accessibility-review`
+- `audit-content`
 - `ai-risk-assessment`
 - `commit-code`
 - `conduct-research`

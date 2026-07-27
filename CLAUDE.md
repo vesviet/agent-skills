@@ -1,6 +1,6 @@
 # Agent Skills — Global Engineering Pack (Claude Code)
 
-Pack version: **3.3.1** | Protocol: **A2A 1.0** | Adapter: `adapters/claude/`
+Pack version: **3.4.0** | Protocol: **A2A 1.0** | Adapter: `adapters/claude/`
 
 This repository contains a reusable, language-agnostic engineering skill pack for software delivery.
 
@@ -139,6 +139,9 @@ python3 core/scripts/generate-a2a-registry.py
 | Agent cards | `core/a2a/registry/<role>.agent-card.json` |
 | Antigravity adapter | `adapters/antigravity/ANTIGRAVITY.md` |
 | Cursor/Kiro hooks | `adapters/cursor/README.md` |
+| Kiro steering | `.kiro/steering/agent-skills.md` |
+| Kilo Code rules | `.kilocode/rules/agent-skills.md` |
+| Codex adapter | `core/codex/README.md` |
 | Claude adapter | `adapters/claude/CLAUDE_ADAPTER.md` |
 | Action boundaries | `core/policies/action-boundaries.yaml` |
 | MCP tool map | `core/policies/mcp-tool-map.yaml` |

@@ -75,7 +75,7 @@ The data engineer owns the data supply chain for AI systems — not the ML team,
 
 **Agent-readable Data Layer (MCP):**
 - expose curated data products not just to BI tools, but directly to autonomous AI Agents via the Model Context Protocol (MCP) or secure Tool APIs
-- build and configure MCP servers (`configure-mcp`) that wrap the data warehouse, allowing agents to query semantic layers without accessing raw databases
+- build and configure MCP servers (`configure-mcp`) that wrap the data warehouse, allowing agents to query semantic layers without accessing raw databases; design against the MCP 2026-07-28 stateless protocol core so warehouse-backed MCP servers scale horizontally, and scope agent access with the hardened auth model (OAuth Resource Server + RFC 8707) rather than shared warehouse credentials
 
 ### Data Contracts as Engineering Artifacts (2025-2026)
 
@@ -273,4 +273,4 @@ Informal documentation is not a data contract. In 2026, data contracts are machi
 - **AI/ML data product complete** (when applicable): embedding freshness SLA defined, feature parity validated, training data PII-scrubbed with evidence, lineage tracked programmatically
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-27

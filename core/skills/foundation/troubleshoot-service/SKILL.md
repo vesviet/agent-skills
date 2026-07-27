@@ -219,8 +219,9 @@ Use this for rapid troubleshooting:
 - **commit-code**: Prepare the fix for delivery
 - **performance-profiling**: Investigate latency, memory, or load-related failures
 - **meeting-review**: Escalate for structured technical review
-\n### 2026: Modern Troubleshooting Practices
+
+### 2026: Modern Troubleshooting Practices
 
 - **Distributed tracing as primary debugging tool:** When a service behaves unexpectedly, start with the distributed trace (Jaeger, Tempo, Datadog APM) before reading logs. The trace shows the exact causal chain across services and identifies the first failure point. Use the trace waterfall view to isolate whether the failure is in the service under investigation or a dependency.
 - **AI log analysis patterns:** Use AI-powered log summarization (Datadog Bits AI, Elastic AI Assistant) to surface the signal from high-volume log noise. Provide the AI with the failing trace ID as context. Verify any AI-identified root cause against raw evidence before acting.
-- **K8s-specific troubleshooting:** The `kubectl describe pod` events section shows OOMKilled, CrashLoopBackOff, and ImagePullBackOff with reasons. Resource limits (CPU throttling visible in `kubectl top`) are a frequent cause of latency spikes that do not appear in application logs at all.\n
+- **K8s-specific troubleshooting:** The `kubectl describe pod` events section shows OOMKilled, CrashLoopBackOff, and ImagePullBackOff with reasons. Resource limits (CPU throttling visible in `kubectl top`) are a frequent cause of latency spikes that do not appear in application logs at all.

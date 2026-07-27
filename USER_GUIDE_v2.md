@@ -1,14 +1,14 @@
-# Agent-Skills v2.6: User Guide (A2A 1.0 + Antigravity)
+# Agent-Skills User Guide (A2A 1.0 + Antigravity)
 
-> This guide covers the core concepts introduced in v2.0 and updated through v2.6. For the full A2A lifecycle and Antigravity adapter setup, see `adapters/antigravity/ANTIGRAVITY.md`.
+> Pack version **3.4.0**. This guide covers the core concepts of the multi-agent system. For the full A2A lifecycle and Antigravity adapter setup, see `adapters/antigravity/ANTIGRAVITY.md`.
 >
-> **Note:** This file will be renamed to `USER_GUIDE.md` at the next major version to avoid a stale version number in the filename.
+> **Note:** The filename keeps its `_v2` suffix for link stability; it will be renamed to `USER_GUIDE.md` at the next major version.
 
-Welcome to the **Agent-Skills v2.6** ecosystem. This system transforms standard AI coding assistants into an **Autonomous Swarm Environment**. Instead of having one general AI try to do everything, you now have a team of highly specialized, policy-driven "Virtual Employees" that can talk to each other using strict Data Contracts.
+Welcome to the **Agent-Skills** ecosystem (pack 3.4.0). This system transforms standard AI coding assistants into an **Autonomous Swarm Environment**. Instead of having one general AI try to do everything, you now have a team of highly specialized, policy-driven "Virtual Employees" that can talk to each other using strict Data Contracts.
 
 ---
 
-## 1. Core Concepts of v2.6
+## 1. Core Concepts
 
 - **Policy-as-Code:** Agents cannot run destructive commands (like dropping databases or pushing to production) without explicit permission. This is governed by `core/policies/action-boundaries.yaml`.
 - **A2A Delegation:** Agents can spin up sub-agents to do specialized work (e.g., a Backend Developer asking a Data Engineer to write a complex SQL migration).
@@ -41,7 +41,7 @@ When a QA Agent finds a bug (e.g., `test-report.json` says "failed"), you don't 
 
 ## 3. A2A Delegation (Agent-to-Agent)
 
-In v2.6, you don't need to micromanage everything. Agents know when a task is out of their depth and can delegate it.
+You don't need to micromanage everything. Agents know when a task is out of their depth and can delegate it.
 
 **How it works:**
 If you ask the `@reviewer` to audit a large Pull Request containing a tricky authentication flow, the Reviewer will:

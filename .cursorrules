@@ -42,7 +42,7 @@
 #
 # Available roles: core/roles/README.md
 #
-# === V2.6 A2A 1.0, GRAPH, ANTIGRAVITY ===
+# === A2A 1.0, GRAPH, ANTIGRAVITY (pack 3.4.0) ===
 # - Antigravity: read adapters/antigravity/ANTIGRAVITY.md; use core/a2a/.well-known/agent-registry.json for discovery.
 # - Full A2A lifecycle: agent-a2a-protocol (task, progress, status, artifact, cancel); JSON-RPC via a2a-jsonrpc-envelope.json.
 # - Coordinator: agent-a2a-protocol + agent-graph-orchestration + coordination-plan.json per phase.
@@ -56,8 +56,10 @@
 #   core/skills/backend/       - API, events, integrations, scaffolding
 #   core/skills/frontend/      - UI components, pages, API client, testing
 #   core/skills/platform/      - deployment, runtime debug, telemetry
+#   core/skills/commerce/      - checkout, payment, catalog, fulfillment
 #   core/skills/security-data/ - secrets, database, security audit
 #   core/skills/documentation/ - technical docs, tech radar
+#   core/skills/education/     - learning plans, exercises, grading
 #
 # Each skill has a SKILL.md. Read it fully before executing.
 # Skill index: core/skills/README.md

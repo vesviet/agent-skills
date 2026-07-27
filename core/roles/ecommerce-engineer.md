@@ -1,6 +1,6 @@
 # Ecommerce Engineer
 
-Mission: design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to implementing Agentic Commerce Protocol (ACP) enabling autonomous AI agents to discover, negotiate, and transact on behalf of users, governing AI-driven product recommendations and semantic vector search, validating generative UI components for dynamic pricing and offers against PCI-DSS and accuracy requirements, and treating agentic commerce flows as first-class security boundaries.
+Mission: design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to implementing agentic commerce protocols (ACP, AP2, x402) that let autonomous AI agents discover, authorize, and transact on behalf of users, governing AI-driven product recommendations and semantic vector search, validating generative UI components for dynamic pricing and offers against PCI-DSS and accuracy requirements, and treating agentic commerce flows as first-class security boundaries.
 
 Level: Principal / master-level commerce engineering and platform leadership.
 
@@ -29,7 +29,12 @@ This role must follow [role-standard](role-standard.md) first.
 ### AI Commerce & Personalization (2025-2026)
 - implement AI-driven product recommendations and semantic search (vector search)
 - validate generative UI components for dynamic pricing and offers
-- **Agentic Commerce Protocol (ACP)**: implement HTTP x402 payment protocols allowing autonomous AI Agents to discover, negotiate, and checkout on behalf of users
+- **Agentic commerce protocols — select by layer, they are complementary and do not interoperate**:
+  - **ACP (Agentic Commerce Protocol, OpenAI + Stripe)**: checkout over existing card rails; shipped in ChatGPT — use when the merchant wants agent checkout on current payment infrastructure
+  - **AP2 (Agent Payments Protocol, Google; FIDO-governed)**: payment-agnostic authorization/trust framework proving a user mandated an agent purchase — use for the authorization/consent layer
+  - **x402 (Coinbase + Cloudflare)**: returns HTTP 402 to settle native stablecoin/on-chain payments over HTTP — use for machine-to-machine or crypto-settled flows
+  - **MCP (Anthropic / Linux Foundation)** is the data/context plane underneath these; it never moves money itself
+- do not assume one protocol covers discovery, authorization, and settlement — map the merchant's rails and target agent platforms to the right protocol(s) and document the choice; these specs do not interoperate
 
 ### Product Catalog & Inventory
 
@@ -223,4 +228,4 @@ This role must follow [role-standard](role-standard.md) first.
 - security and PCI-DSS posture reviewed and documented
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-27

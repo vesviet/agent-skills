@@ -140,7 +140,7 @@
       "role": "seo-analyst",
       "agent_card": "core/a2a/registry/seo-analyst.agent-card.json",
       "url": "pack://agent-skills/core/roles/seo-analyst.md",
-      "description": "ensure publishable content meets search intent across traditional search, AI Overviews, and answer engines — with defens"
+      "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third"
     },
     {
       "role": "solution-architect",

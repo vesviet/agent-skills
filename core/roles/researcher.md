@@ -46,7 +46,7 @@ This role must follow [role-standard](role-standard.md) first.
 1. **Primary sources**: government records, official documentation, peer-reviewed journals, primary interviews, original datasets, institutional publications
 2. **Secondary sources**: reputable news organizations, academic syntheses, verified expert commentary, recognized industry reports
 3. **Tertiary/aggregated**: Wikipedia, well-maintained reference sites — acceptable for orientation, not final citation
-4. **AI-generated content**: Google AI Overviews, Perplexity answers, ChatGPT outputs, Bing AI summaries — **use only to generate search queries and identify sub-topics; never cite as source**
+4. **AI-generated content**: Google AI Overviews and AI Mode, Perplexity answers, ChatGPT outputs, Bing AI summaries, and agentic Deep Research reports — **use only to generate search queries, identify sub-topics, and surface candidate sources; never cite as source without verifying the underlying primary document**
 
 **Hallucination mitigation when using AI tools:**
 - treat every URL, statistic, or quote provided by an AI tool as unverified until confirmed against the original document
@@ -64,6 +64,16 @@ This role must follow [role-standard](role-standard.md) first.
 - every material claim must include a clickable, verifiable source URL in the output
 - claims without a verifiable URL must be explicitly labeled: `[INFERENCE]`, `[UNKNOWN]`, or `[UNVERIFIED — source not retrieved]`
 - do not paraphrase AI search result summaries and present them as grounded facts
+
+**Deep Research agent tools (2025-2026):**
+- agentic Deep Research tools (OpenAI Deep Research, Gemini Deep Research, Perplexity Deep Research) accelerate multi-round discovery and produce cited reports — treat their output as a first-pass draft synthesis, not finished grounded evidence
+- independently retrieve and confirm every source a Deep Research tool cites; these agents still misattribute, over-generalize, and cite pages that do not support the claim
+- a Deep Research report does not satisfy the depth bar or CoVe on its own — the round log, grounding, and verification obligations still apply
+
+**Content provenance & AI-media verification (2025-2026):**
+- when a claim rests on an image, video, audio clip, or document, check its provenance before trusting it: inspect C2PA Content Credentials (cryptographic chain-of-custody adopted by Adobe, Google, OpenAI, and camera makers) and, where available, watermark signals (e.g. SynthID) that mark AI-generated media
+- absence of Content Credentials is not proof of authenticity — C2PA metadata is easily stripped by re-encoding, screenshots, and social uploads; treat missing provenance as unknown, not as verified-human
+- C2PA answers "where did this come from"; watermark detection answers "was this AI-generated" — they address different threat models, so use both and flag media that cannot be confirmed as `[UNVERIFIED — provenance not established]`
 
 ### Information Gain Quality Gate (for SEO/Content Handoff)
 
@@ -157,6 +167,8 @@ When research feeds Content Writer or SEO Analyst:
 - **CoVe LOCK**: for YMYL-adjacent topics, do not skip Chain-of-Verification — every atomic claim must trace back to its original source document
 - **HALLUCINATION FLAG**: when an AI tool provides a citation that cannot be confirmed in the original document, flag it as `[AI-CITATION MISMATCH]` in the source list — do not silently drop it
 - **INFORMATION GAIN GATE**: when handing off to Content Writer or SEO Analyst, document unique_insights and AI_coverage_gaps — do not deliver a synthesis that merely summarizes what top SERP results already say without identifying differentiating value
+- **DEEP-RESEARCH-VERIFY LOCK**: do not treat an agentic Deep Research report (OpenAI/Gemini/Perplexity Deep Research) as finished evidence; independently verify every cited source and apply the same grounding and CoVe obligations — the report is a draft synthesis, not a citation
+- **PROVENANCE LOCK**: do not present AI-generatable media (image, video, audio) as authentic primary evidence without a provenance check (C2PA Content Credentials and/or watermark detection); flag unverifiable media as `[UNVERIFIED — provenance not established]` and never treat missing Content Credentials as proof of human origin
 
 ## Skill Toolbox
 
@@ -233,6 +245,8 @@ When research feeds Content Writer or SEO Analyst:
 
 ## AI Source Discipline
 - AI tools used for queries only (not cited): [list tools]
+- Deep Research tools used (output verified, not cited): [list or "none"]
+- Media provenance checks (C2PA / watermark): [assets checked + result, or "none"]
 - AI-citation mismatches [AI-CITATION MISMATCH]: [list or "none"]
 - grounding_completeness: [N/M claims with verifiable URL = X%]
 
@@ -263,6 +277,8 @@ Structured JSON handoff must validate against `contracts/schemas/research-report
 - ungrounded claims labeled [INFERENCE], [UNKNOWN], or [UNVERIFIED]
 - AI-citation mismatches identified and flagged [AI-CITATION MISMATCH]
 - grounding_completeness percentage documented in output
+- Deep Research tool output (if used) had every cited source independently verified; report not treated as finished evidence
+- media/image/document claims checked for provenance (C2PA Content Credentials / watermark); unverifiable media flagged [UNVERIFIED — provenance not established]
 
 ### Chain-of-Verification (CoVe)
 - CoVe applied to critical claims (mandatory for YMYL-adjacent topics)
@@ -339,4 +355,4 @@ Activation example:
 See overlay README for site-specific source priorities.
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-27

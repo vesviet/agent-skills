@@ -1,16 +1,26 @@
 ---
 name: configure-agent-commerce
-description: Implements agentic commerce standards (x402 HTTP payment protocol, MPP, UCP, ACP) to enable transactional checkout flows in agent-driven applications — making a service billiable and discoverable by AI agents. Use when adding agent-to-agent payment, user context resolution, or agentic commerce directory registration to a web service.
+description: Implements agentic commerce standards — x402 and Stripe's Machine Payments Protocol (MPP) for HTTP 402 machine payments, the Universal Commerce Protocol (UCP) for agent checkout, the Agentic Commerce Protocol (ACP), and Google's Agent Payments Protocol (AP2) for delegated purchase authorization — to make a service billable and discoverable by AI agents. Use when adding agent-to-agent payment, delegated purchase authorization, or agentic commerce directory registration to a web service.
 ---
 
 # Configure Agent Commerce
 
-Use this skill when integrating agent-driven checkout and commerce discovery flows using agentic standards: the x402 HTTP payment protocol, Merchant Payment Protocol (MPP), User Context Protocol (UCP), and Agentic Commerce Protocol (ACP).
+Use this skill when integrating agent-driven checkout and commerce discovery flows using agentic standards: the x402 HTTP payment protocol, Stripe's Machine Payments Protocol (MPP), the Universal Commerce Protocol (UCP), the Agentic Commerce Protocol (ACP), and Google's Agent Payments Protocol (AP2).
+
+## Protocol Landscape (2026 — correct names and layering)
+
+These standards are complementary layers, not interchangeable, and they do not interoperate — select by layer and document the choice:
+
+- **MCP** (Anthropic / AAIF-Linux Foundation): the tool/data discovery plane underneath commerce; it never moves money itself.
+- **UCP — Universal Commerce Protocol** (Google + Shopify): agent product discovery, capability negotiation, and checkout. (Note: UCP is *not* "User Context Protocol".)
+- **ACP — Agentic Commerce Protocol** (OpenAI + Stripe): agent checkout over existing card rails; shipped in ChatGPT.
+- **MPP — Machine Payments Protocol** (Stripe + Tempo/Paradigm) and **x402** (Coinbase + Cloudflare): HTTP 402 machine-payment settlement (fiat, cards, and stablecoins).
+- **AP2 — Agent Payments Protocol** (Google; FIDO Alliance-governed): payment-agnostic authorization/mandate layer proving a user delegated a purchase to an agent.
 
 ## Core Rules
 
-- Adhere strictly to the x402 and Merchant Payment Protocol (MPP) metadata requirements.
-- Expose the User Context Protocol (UCP) endpoint at the documented path for consumer preference resolution.
+- Adhere strictly to the x402 and Machine Payments Protocol (MPP) metadata requirements.
+- Expose agent checkout via the Universal Commerce Protocol (UCP) at the documented path; resolve user delegation limits and preferences through an AP2 mandate / delegated-authorization context, not by conflating it with UCP.
 - Maintain up-to-date `.well-known` endpoints for Agentic Commerce Protocol (ACP) discovery.
 - Never expose payment credentials or secret keys — only reference identifiers and public metadata.
 - x402 responses must return HTTP 402 with a `WWW-Authenticate: X-Payment-Required` header and a JSON payment manifest.
@@ -22,8 +32,9 @@ Use this skill when integrating agent-driven checkout and commerce discovery flo
 ## When to Use
 
 - Adding paywall or metered access for AI agents (agent-to-agent billing via x402)
-- Integrating agent payment flows with crypto or programmable payment rails (MPP)
-- Exposing user context (preferences, identity, tier) to trusted agents via UCP
+- Integrating agent payment settlement over fiat, cards, or stablecoins (Stripe MPP, x402)
+- Exposing agent checkout (discovery → capability negotiation → checkout) via UCP
+- Resolving delegated purchase authority (spending limits, mandates) via AP2 / delegated-authorization context
 - Making a service discoverable in agentic commerce directories via ACP
 
 ## Suggested Process
@@ -31,7 +42,7 @@ Use this skill when integrating agent-driven checkout and commerce discovery flo
 1. **Define commerce scope**: Identify which endpoints require payment, which are free, and which require UCP context before serving.
 2. **Set up x402 paywall**: Implement the `402 Payment Required` response for paywalled endpoints — include a valid payment manifest with accepted tokens, amounts, and network identifiers.
 3. **Implement MPP endpoint**: Mount the Merchant Payment Protocol handler to receive and verify token payment proofs from agent clients.
-4. **Mount UCP endpoint**: Expose the User Context Protocol endpoint (`/ucp` or per spec path) to resolve consumer preferences for authenticated agent sessions.
+4. **Mount checkout + delegation endpoints**: Expose UCP (Universal Commerce Protocol) checkout at its spec path for agent discovery and checkout; resolve consumer delegation limits and preferences for authenticated agent sessions via an AP2 mandate / delegated-authorization context (not "UCP").
 5. **Expose ACP well-known**: Create `/.well-known/acp.json` (or per ACP spec path) so agent commerce directories can auto-discover supported payment methods and scopes.
 6. **Validate agent-side flow**: Test the full payment cycle — agent sends 402 request → receives manifest → pays → retries with proof → receives resource.
 7. **Review security posture**: Confirm payment proof validation is server-side, not bypassable client-side. Confirm UCP tokens are scoped and non-transferable.
@@ -65,9 +76,9 @@ Stripe Machine Payments Protocol (MPP) enables automated billing and payment pro
 Standardizing the discovery and execution interfaces is critical for multi-agent interoperability:
 - **ACP Manifest**: Publish the Agentic Commerce Protocol (ACP) configuration at the standardized endpoint `/.well-known/acp-manifest.json`.
 - **Manifest Properties**: The manifest must declare supported payment protocols, accepted tokens, pricing tiers, and endpoint mappings.
-- **User Context Protocol (UCP)**: Expose consumer context attributes to allow agents to retrieve user preferences, organizational policies, and billing limits safely.
+- **Delegated authorization context (AP2 mandate / delegated tokens)**: Expose consumer context attributes so agents can retrieve user preferences, organizational policies, and billing limits safely. This is the AP2/delegation layer — do not label it "UCP" (UCP is the Universal Commerce Protocol checkout layer).
 - **ACP Manifest Structure**: The `/.well-known/acp-manifest.json` schema details the capabilities and payment rails supported by the endpoint. It registers the standard schemas (`acp_v1`), support for payment methods (e.g., `stripe_mpp` or `cryptographic_transfer`), metadata for discovery, and URI templates for payment verification.
-- **User Context Protocol (UCP) Delegation**: When an user delegates commerce actions to an agent, the agent presents a delegation token (`delegation_token` in headers) to the UCP endpoint. This token specifies the user's spending allowances, shipping preference overrides, and authorized merchants, allowing the service to process the transaction with explicit bounds.
+- **Delegated purchase authority (AP2 mandate)**: When a user delegates commerce actions to an agent, the agent presents a delegation token (`delegation_token` in headers) to the delegated-authorization endpoint. This token specifies the user's spending allowances, shipping preference overrides, and authorized merchants, allowing the service to process the transaction with explicit bounds.
 
 ### 2026: Agent Customer Identity and DID Mapping
 
@@ -97,7 +108,7 @@ The dynamic negotiation between agent and service follows a strict programmatic 
 - `/.well-known/acp.json` — discovery metadata
 - x402 payment manifest (inline in 402 response body)
 - MPP handler endpoint returning `200 OK` on valid proof
-- UCP endpoint returning consumer context object
+- UCP checkout endpoint + AP2 delegated-authorization endpoint returning consumer context object
 - `/.well-known/acp-manifest.json` — agentic commerce schema manifest configuration
 
 ## Checklist
@@ -105,7 +116,7 @@ The dynamic negotiation between agent and service follows a strict programmatic 
 - [ ] x402 endpoints return `402 Payment Required` with correct `WWW-Authenticate` header.
 - [ ] Payment manifest JSON includes accepted token types, amounts, and network IDs.
 - [ ] MPP endpoint verifies payment proof server-side before granting access.
-- [ ] User Context Protocol endpoint correctly resolves consumer preferences.
+- [ ] UCP (Universal Commerce Protocol) checkout endpoint is exposed; delegated-authorization (AP2 mandate) context correctly resolves consumer spending limits and preferences.
 - [ ] ACP discovery file exists at the well-known path and passes schema validation.
 - [ ] API responses use correct media types for agent consumption (`application/json`).
 - [ ] Client validation rejects malformed or replayed payment proofs.

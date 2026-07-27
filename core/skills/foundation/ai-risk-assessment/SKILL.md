@@ -112,7 +112,7 @@ eu_ai_act:
   target_compliance_date: "2027-12-02"  # standalone high-risk systems deadline
 ```
 
-> ⚠️ **Deadline note**: EU AI Act high-risk system enforcement — standalone: 2 December 2027; embedded in products: 2 August 2028 (AI Omnibus update). Use this date in planning, not "2026."
+> ⚠️ **Deadline note**: EU AI Act high-risk system enforcement — standalone: 2 December 2027; embedded in products: 2 August 2028 (AI Omnibus update). Use this date for high-risk planning, not "2026." Separately, do not treat 2026 as empty: **Article 50 transparency obligations and GPAI penalty powers became applicable 2 August 2026** — those are not deferred.
 
 ## AI Risk Register Template
 

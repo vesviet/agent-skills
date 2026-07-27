@@ -97,7 +97,7 @@ Observability is not a post-shipping concern — it is a development practice. O
 
 **AI-native API design:**
 - serve machine-readable specifications at `/openapi.json` (or equivalent) for all public APIs; this enables AI agents to discover and consume your API without hallucinating interface shapes
-- consider providing an `llms.txt` for API documentation to optimize how AI agents consume your API surface
+- an `llms.txt` may help coding agents consume API documentation, but it has no search-ranking value and is not read by major production AI retrieval pipelines — treat it as optional developer-doc convenience, not a discoverability guarantee; prefer an MCP server (and, for browser-driven agents, WebMCP) as the primary machine-consumption surface
 - **MCP Server Ownership**: design and build Model Context Protocol (MCP) servers (`configure-mcp`) to expose internal business logic, data models, and specialized tools natively to AI workflows
 
 ### MCP Tool Contract Engineering (2025-2026)
@@ -484,4 +484,4 @@ Long-running AI agent tasks — those involving multiple LLM calls, external API
 - **Durable Workflow** (when implementing long-running AI tasks): CF Workflows or Temporal used; every LLM/external call is retryable Step/Activity; workflow versioning strategy defined
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-27

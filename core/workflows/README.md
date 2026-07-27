@@ -21,6 +21,7 @@ This directory contains reusable, longer-form workflows that sit above the indiv
 | [seo-keyword-brief](seo-keyword-brief.md) | SEO Analyst: research intent, define keywords, map topical authority, produce seo-content-brief.json |
 | [content-publishing](content-publishing.md) | Brief → draft → SEO audit → publish → publish-log (Content Writer + SEO Analyst + User) |
 | [seo-content-lifecycle](seo-content-lifecycle.md) | End-to-end: Topic plan → SEO brief → Deep research → Draft → Audit → Publish (All Content Roles) |
+| [content-audit](content-audit.md) | Content Manager: baseline audit → read → research latest standards → update → SEO re-audit → republish |
 | [tech-repo-review](tech-repo-review.md) | Holistic repo health audit: architecture fitness, code quality, security posture, dependency health, docs |
 | [qa-validation](qa-validation.md) | QA: coverage audit → risk-based test plan → execute → release confidence verdict |
 

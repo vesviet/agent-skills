@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**40 schemas** | **~220KB total** | Bundled examples checked by `validate-contracts.py` | Examples: 39/40
+**42 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 40/42
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 
@@ -10,6 +10,9 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 
 | Schema | Title | Has Example | Has `contract_type` |
 |--------|-------|:-----------:|:-------------------:|
+| **Solution & Governance** | | | |
+| `solution-brief.json` | Solution Brief | ✅ | ✅ |
+| `ai-risk-register.json` | AI Risk Register | ✅ | ✅ |
 | **Engineering Delivery** | | | |
 | `feature-ticket.json` | Feature Ticket Specification | ✅ | ✅ |
 | `technical-delivery-plan.json` | Technical Delivery Plan | ✅ | ✅ |
@@ -60,6 +63,24 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 ---
 
 ## Detailed Schema Descriptions
+
+### Solution & Governance
+
+#### `solution-brief.json`
+
+**Solution Brief**  
+Primary machine-readable handoff from the Solution Architect, produced before requirements or architecture are locked. Consumed by Technical Architect (for adr-spec.json), Business Analyst (for feature-ticket.json), Product Manager (go/no-go), and Agent Coordinator (solution scoping gate). Captures problem framing, capability gaps, build-vs-buy decision (including MCP marketplace evaluation), AI feasibility, agent ROI, and compliance constraints.
+
+Required fields: `contract_type`, `problem_statement`, `options_considered`, `build_vs_buy_decision`, `recommendation`  
+✅ Has example
+
+#### `ai-risk-register.json`
+
+**AI Risk Register**  
+Structured output from the ai-risk-assessment skill (owned by Business Analyst, Project Manager, or Security Engineer). Applies NIST AI RMF 1.0, the NIST AI 600-1 GenAI Profile, EU AI Act risk classification, and OWASP ASI alignment. A living lifecycle artifact consumed by Product Manager, Technical Architect, Security Engineer, and Agent Coordinator before delivery commitment.
+
+Required fields: `contract_type`, `governance`, `eu_ai_act`, `nist_600_1_risks`, `residual_risks`  
+✅ Has example
 
 ### Engineering Delivery
 
@@ -472,6 +493,8 @@ feature-ticket.json
 
 | Schema | Produced by | Consumed by |
 |--------|-------------|-------------|
+| `solution-brief.json` | Solution Architect | Technical Architect, Business Analyst, Product Manager, Agent Coordinator, Researcher |
+| `ai-risk-register.json` | Business Analyst, Project Manager, Security Engineer | Product Manager, Technical Architect, Security Engineer, Agent Coordinator |
 | `feature-ticket.json` | Business Analyst | Technical Architect, Technical Lead, Backend/Frontend Developer, Data Analyst, SEO Analyst |
 | `technical-delivery-plan.json` | Technical Lead | Backend Developer, Frontend Developer, Mobile Engineer, QA Engineer, Reviewer, Agent Coordinator |
 | `adr-spec.json` | Technical Architect | Backend Developer, Frontend Developer, Mobile Engineer, Cloudflare Engineer |

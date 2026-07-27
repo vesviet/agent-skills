@@ -2,6 +2,27 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [3.4.0] - 2026-07-27
+
+### Added
+- `audit-content` foundation skill (`core/skills/foundation/audit-content/SKILL.md`) for the content refresh cycle: baseline audit → read → research latest standards → update → post-update SEO/GEO/AEO audit. Added to the Content Manager Primary Skill Toolbox.
+- `content-audit` workflow (`core/workflows/content-audit.md`): Content Manager-led refresh cycle coordinating Data Analyst, Researcher, Content Writer, and SEO Analyst from baseline audit through post-update SEO re-audit and republish.
+- Two contract schemas that roles/skills referenced but were missing: `solution-brief.json` (Solution Architect scoping handoff) and `ai-risk-register.json` (ai-risk-assessment output; NIST AI RMF + 600-1, EU AI Act tier, OWASP ASI). Contract inventory: 40 → 42.
+- Adapter coverage for the AGENTS.md-standard ecosystem: Kiro-native steering (`.kiro/steering/agent-skills.md`), Kilo Code native rules (`.kilocode/rules/agent-skills.md`), and a Codex adapter (`core/codex/README.md` + A2A 1.0-versioned `.a2a-config.json`). Both new rule mirrors are now parity-enforced by `validate-rules.py`; the Agent Compatibility table documents Kiro, Kilo Code, and VS Code Copilot.
+
+### Changed
+- Refreshed role definitions to current 2026 standards:
+  - **EU AI Act timeline** corrected across `technical-architect`, `solution-architect`, `project-manager`, `product-manager`, and `business-analyst`: high-risk (Annex III) obligations deferred to 2 December 2027 (embedded-in-product high-risk to 2 August 2028), with Article 50 transparency obligations and GPAI penalty powers live from 2 August 2026.
+  - **MCP 2026-07-28** stateless protocol core, AAIF (Linux Foundation) governance, and hardened authorization (OAuth Resource Server, RFC 8707, Enterprise-Managed Authorization) reflected in `technical-architect`, `devops-engineer`, and `data-engineer`.
+  - **Agentic commerce protocol landscape** corrected in `configure-agent-commerce` and `ecommerce-engineer`: ACP (OpenAI/Stripe), UCP (Universal Commerce Protocol, Google/Shopify), MPP (Stripe Machine Payments Protocol), x402 (Coinbase/Cloudflare), and AP2 (Google/FIDO) with accurate names and layering.
+  - `agent-coordinator`: inter-agent trust controls — signed Agent Card verification (OWASP ASI07) and task-scoped, non-inherited identity per delegation (OWASP ASI03).
+  - `mobile-engineer`: first-party on-device LLM frameworks (Apple Foundation Models, Android AICore + Gemini Nano) with device-capability gating.
+  - `ui-ux-designer`: European Accessibility Act (enforceable 28 June 2025) as the accessibility compliance driver (WCAG 2.2 AA / EN 301 549).
+  - `seo-analyst`, `content-writer`, `technical-writer`, `backend-developer`: Google AI Mode, `llms.txt` scoped to agent-facing docs (no Search ranking value), and WebMCP as the emerging agent-interaction surface.
+  - `researcher`: agentic Deep Research tool verification discipline and content-provenance checks (C2PA Content Credentials + watermark detection).
+  - `system-engineer`: SGLang and NVIDIA Dynamo inference serving plus disaggregated prefill/decode.
+- Corrected malformed literal 2026-section headings and trailing characters across `agent/`, `frontend/`, and `foundation/` skills.
+
 ## [3.3.1] - 2026-07-22
 
 ### Changed

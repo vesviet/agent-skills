@@ -109,8 +109,9 @@ Markdown brief (see `core/roles/ui-ux-designer.md` template) **plus** JSON contr
 - **add-ui-component**: Frontend implementation — not design delivery
 - **add-page-route**: Route-level wiring after specs exist
 - **frontend-testing**: QA validation patterns for designed states
-\n### 2026: Agent UX and Prototyping
+
+### 2026: Agent UX and Prototyping
 
 - **Agent UX flow patterns:** When the agent IS the primary actor (not the user), design for delegation confirmation screens, agent progress indicators, and recoverable interrupt states. Users need to understand what the agent is doing and be able to stop it at any point.
 - **Figma Variables for flow prototyping:** Use Figma Variables (number/string/color types) to simulate dynamic data in prototypes — avoid static placeholder text. Show real-data states (long names, empty states, error messages) in the prototype before implementation.
-- **Progressive disclosure in flow design:** Reveal complexity in stages. The first action should be obvious with no learning curve. Advanced options should appear contextually after the primary action is taken. Apply this pattern for all flows with more than 3 user decisions.\n
+- **Progressive disclosure in flow design:** Reveal complexity in stages. The first action should be obvious with no learning curve. Advanced options should appear contextually after the primary action is taken. Apply this pattern for all flows with more than 3 user decisions.

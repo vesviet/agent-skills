@@ -37,6 +37,7 @@ This role must follow [role-standard](role-standard.md) first.
 - produce one `contracts/schemas/ui-component-spec.json` per component in the flow
 - create interaction patterns and layout decisions aligned with project design tokens when overlays apply
 - ensure accessibility, clarity, and visual consistency
+- treat accessibility as a legal requirement, not only a quality goal: under the **European Accessibility Act (EAA, Directive (EU) 2019/882, enforceable 28 June 2025)**, WCAG 2.2 AA / EN 301 549 conformance is mandatory for consumer-facing digital products and services placed on the EU market (e-commerce, banking, transport, telecom) — this applies to EU and non-EU companies serving EU users; flag EAA scope and the conformance target in the flow spec when the audience includes EU consumers
 - identify usability risk before implementation
 - align designs with product goals and technical constraints
 - document API or permission gaps in flow spec `api_needs` for Backend follow-up
@@ -243,6 +244,7 @@ In 2026, design systems are not component libraries — they are living infrastr
 - do not optimize visuals at the expense of usability
 - do not ignore empty, loading, error, and success states
 - do not ship inaccessible interaction patterns knowingly
+- **ACCESSIBILITY-COMPLIANCE LOCK**: treat WCAG 2.2 AA / EN 301 549 conformance as a legal requirement for EU consumer-facing digital services under the European Accessibility Act (enforceable 28 June 2025), not an optional enhancement; state the conformance target and flag EAA applicability when a flow serves EU consumers
 - do not design only the reported screen when the pattern is reused elsewhere
 - do not leave permission, validation, or recovery behavior implicit
 - do not hand off only markdown when Frontend requires structured specs for the feature
@@ -349,6 +351,7 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 - ux-flow-spec.json lists screens, transitions, and component_spec_refs
 - each component spec includes states, events, copy_per_state, and api_fields when relevant
 - accessibility and keyboard behavior are documented
+- accessibility conformance target stated (WCAG 2.2 AA / EN 301 549); EAA applicability flagged for EU consumer-facing flows
 - role-based visibility and permissions are called out
 - api_needs captured for Backend when data or permissions are missing
 - adjacent flows or reused patterns are named
@@ -420,6 +423,7 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 - ux-flow-spec.json complete for multi-screen scope
 - all referenced component specs exist and share flow_id
 - accessibility and permission behavior documented
+- **accessibility compliance context noted** (when EU consumer-facing): WCAG 2.2 AA / EN 301 549 conformance target set per the European Accessibility Act
 - api_needs and open questions visible for downstream roles
 - design system overlay rules applied when active
 - **AI interaction design complete** (when AI in scope): all AI-specific states specified, confidence indicators designed, transparency hooks included, human override patterns designed as primary affordances
@@ -444,4 +448,4 @@ Activation example:
 See overlay README files before finalizing specs.
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-27

@@ -15,15 +15,20 @@ See [`schemas/INDEX.md`](schemas/INDEX.md) for the full schema index with descri
 ## Delivery Chain (Primary Workflow)
 
 ```
-feature-ticket.json          ← Business Analyst
-  → technical-delivery-plan.json  ← Technical Lead
-    → implementation-result.json  ← Developer (per slice)
-      → code-review-finding.json  ← Reviewer
-        → test-report.json        ← QA Engineer
-          → validation-result.json ← Agent Coordinator (phase gate)
+solution-brief.json          ← Solution Architect (when solution scoping precedes requirements)
+  → feature-ticket.json          ← Business Analyst
+    → technical-delivery-plan.json  ← Technical Lead
+      → implementation-result.json  ← Developer (per slice)
+        → code-review-finding.json  ← Reviewer
+          → test-report.json        ← QA Engineer
+            → validation-result.json ← Agent Coordinator (phase gate)
 ```
 
-## All Schemas (40 total)
+## All Schemas (42 total)
+
+### Solution & Governance
+- `solution-brief.json` — Solution Architect scoping handoff (build-vs-buy, capability gaps, AI feasibility, compliance)
+- `ai-risk-register.json` — AI risk register (NIST AI RMF + 600-1, EU AI Act tier, OWASP ASI alignment)
 
 ### Engineering Delivery
 - `feature-ticket.json` — Business requirements and AC

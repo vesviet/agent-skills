@@ -86,11 +86,15 @@ AI inference infrastructure is a full system engineering domain — not an appli
 | Serving stack | Best for | Key config levers |
 |-------------|----------|------------------|
 | **vLLM** | High-throughput LLM serving, continuous batching | '--max-model-len', '--tensor-parallel-size', '--max-num-batches', '--quantization' |
+| **SGLang** | High-throughput serving with RadixAttention prefix caching, structured/constrained decoding | prefix cache config, tensor/data parallel size, chunked prefill, quantization |
 | **TensorRT-LLM** | NVIDIA-optimized low-latency inference | precision (fp16/int8/int4), engine build config, paged attention |
+| **NVIDIA Dynamo** | Distributed, multi-node orchestration above vLLM/SGLang/TRT-LLM; disaggregated serving at scale | KV-aware routing, prefill/decode worker pools, NIXL KV transport (NVLink/InfiniBand) |
 | **Triton Inference Server** | Multi-model, multi-framework, ensemble pipelines | model repository layout, dynamic batching config, instance groups |
 | **Ollama** | Local/dev inference, small team deployments | model pull, NUMA configuration, context length |
 
 - configure continuous batching parameters: batch size, max tokens per iteration, and prefill/decode ratio based on expected request mix
+- **disaggregated prefill/decode serving (2025-2026)**: for large-scale or latency-sensitive workloads, separate the compute-bound prefill phase and the memory-bandwidth-bound decode phase into independent GPU pools that scale independently (via NVIDIA Dynamo or SGLang/vLLM disaggregation); this requires a fast interconnect (RDMA/NVLink/InfiniBand) to transfer the KV cache between pools — document whether the interconnect justifies disaggregation, since it only pays off on the right infrastructure
+- pair disaggregation with **KV-aware / prefix-aware routing**: route a request to the replica that already holds its prefix in cache to avoid redundant prefill; this works on any hardware and is often the higher-ROI first step before full disaggregation
 - define model warmup strategy: pre-load model at startup, warm with synthetic requests before receiving live traffic; cold-start LLM services are a reliability risk
 - configure KV cache size: balance between per-request context length support and concurrent request capacity
 
@@ -354,7 +358,8 @@ The System Engineer implements infrastructure directly — this is not delegated
 
 ### AI Infrastructure (when in scope)
 - [ ] GPU VRAM allocation accounts for model weights + KV cache + activation memory + batch overhead
-- [ ] inference server chosen and key configuration parameters specified with rationale
+- [ ] inference server chosen (vLLM / SGLang / TensorRT-LLM / Triton / Ollama) and key configuration parameters specified with rationale
+- [ ] disaggregated prefill/decode vs co-located decision documented, with interconnect (RDMA/NVLink) justification when disaggregation is selected; KV/prefix-aware routing considered
 - [ ] vector database type and index parameters specified with recall-latency trade-off documented
 - [ ] embedding pipeline topology specified
 - [ ] edge vs. cloud inference routing decision documented
@@ -411,4 +416,4 @@ The System Engineer implements infrastructure directly — this is not delegated
 - **all design decisions trace to measurable NFRs or explicit business requirements**
 
 
-Last updated: 2026-07-01
+Last updated: 2026-07-27

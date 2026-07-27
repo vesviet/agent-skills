@@ -19,8 +19,16 @@ Both sites use the **PaperMod** theme, Vietnamese or English copy is acceptable 
 ## Core Rules
 
 - **never guess frontmatter**: open two or three recent files in the **same subtree** (`posts/`, `series/<name>/`, `radar/`, `docs/`) and copy delimiter style, keys, and ordering
+- **YAML Safety Enforcement**: Both `vesviet` and `learn` require strict inline array syntax for arrays in YAML to prevent parser crash errors:
+  - ✅ **CORRECT**: `categories: ["Backend", "Golang"]`
+  - ❌ **INCORRECT**: 
+    ```yaml
+    categories:
+      - Backend
+      - Golang
+    ```
 - **Vesviet** content most often uses YAML frontmatter (`---` … `---`) with fields such as `title`, `date`, `draft`, `description`, `tags`, `categories`, and for long pieces `ShowToc` / `TocOpen`; **radar** pages may set `mermaid: true` and `categories: [Tech Radar]`
-- **Learn** mixes **TOML** frontmatter (`+++` … `+++`) on some `posts/` files (e.g. `title`, `date`, `slug`, `draft`, `summary`) and **YAML** on many `series/` `_index.md` files—match the folder you are editing
+- **Learn** strictly enforces **YAML** across all new migrations (including `posts/` and `series/`). Ensure parity with the 2026 standardized schemas.
 - use **Asia/Ho_Chi_Minh** style offsets in `date` when exemplars do (e.g. `+07:00`)
 - internal links follow existing patterns: `/posts/.../`, `/series/.../`, `/radar/.../` (trailing slash when sibling links use it)
 - **radar** and long-form **Vesviet** posts are Hugo `content/posts`-style pages under `content/radar/` with their own section; do not invent a new top-level folder without checking `hugo.toml` and nav
@@ -55,7 +63,7 @@ Confirm `draft` flag, `title`/`description` or `summary`, slug vs filename, and 
 ## Checklist
 
 - [ ] correct site root (`vesviet/content` vs `learn/content`) chosen
-- [ ] frontmatter delimiter and keys match peers in the same directory
+- [ ] frontmatter uses YAML with strict inline array notation (`categories: ["..."]`)
 - [ ] `date`, tags/categories, and optional `ShowToc` / `TocOpen` / `mermaid` align with exemplars
 - [ ] slug, filename, and permalinks match Hugo config and existing link style
 - [ ] voice and structure match nearby content in that subtree

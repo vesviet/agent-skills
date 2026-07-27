@@ -136,8 +136,9 @@ See `core/roles/business-analyst.md` for full handoff rules for Researcher, Data
 - **meeting-review**: Resolve conflicting assumptions or policies
 - **write-documentation**: Capture finalized terminology or process guidance
 - **review-service**: Validate whether implementation still matches the intended process
-\n### 2026: AI-Assisted Requirements Analysis
+
+### 2026: AI-Assisted Requirements Analysis
 
 - **LLM-as-judge validation for AI-assisted AC:** When acceptance criteria were generated or refined with LLM assistance, validate using an independent LLM-as-judge evaluation (DeepEval, RAGAS) scoring for clarity, completeness, and internal consistency. AI-generated AC can pass human review while containing subtle contradictions.
 - **Living requirements traceability:** Link requirements to design docs, code modules, and test cases using AI-assisted traceability tools (Trace.space, getleo.ai). This is especially critical for EU AI Act compliance and regulated industries requiring chain-of-causality audit trails.
-- **Agentic AC format:** When the downstream delivery involves AI agents, write acceptance criteria as deterministic, observable assertions (not prose intent) so agents can auto-validate implementation output.\n
+- **Agentic AC format:** When the downstream delivery involves AI agents, write acceptance criteria as deterministic, observable assertions (not prose intent) so agents can auto-validate implementation output.

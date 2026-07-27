@@ -6,7 +6,7 @@ Adapters may differ in syntax and style, but they must not weaken the operating 
 
 ## Required Parity Groups
 
-Every adapter must preserve these five groups:
+Every adapter must preserve these six groups:
 
 ### 1. Rule Source Of Truth
 
@@ -50,6 +50,36 @@ The adapter must preserve all of the following:
 - process one workflow step at a time
 - mark completion before moving on
 - respect the `Role:` ownership line in workflow steps
+
+### 6. Policy-As-Code Enforcement
+
+The adapter must reference the machine-readable policy layer that governs state-changing actions:
+
+- `core/policies/action-boundaries.yaml`
+- `core/policies/data-classification.yaml`
+
+It must make clear that action boundaries and data classification are checked before state-changing actions. Adapters that also cover MCP tool mapping should reference `core/policies/mcp-tool-map.yaml`, but the two files above are the required minimum.
+
+## Enforcement
+
+Parity is machine-checked by `core/scripts/validate-rules.py`, which validates these adapter files against the parity groups above:
+
+- `.cursorrules`
+- `.cursor/rules/agent-skills.md`
+- `CLAUDE.md`
+- `AGENTS.md`
+- `.github/copilot-instructions.md`
+- `.kiro/steering/agent-skills.md` (Kiro-native always-on steering)
+- `.kilocode/rules/agent-skills.md` (Kilo Code native rules)
+
+A change to `core/rules/code.md` or to any parity group must be mirrored across all of these adapters, and `validate-rules.py` must pass before the change is considered done. Codex, Windsurf, and VS Code Copilot read the root `AGENTS.md` (the shared open standard) rather than a dedicated mirror.
+
+### Forbidden Wording
+
+Adapters (and the source rules) must not contain:
+
+- exposed "thought process" narration in user-visible artifacts
+- `P0`/`P1`/`P2` severity labels — use `Blocking`, `Important`, and `Follow-Up` instead
 
 ## Notes
 

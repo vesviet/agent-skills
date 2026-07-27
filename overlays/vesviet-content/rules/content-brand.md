@@ -6,6 +6,7 @@ Voice, style, structure, and publishing constraints for the Vesviet portfolio si
 
 - **`content-writer`**: Must adhere to these rules when drafting content.
 - **`seo-analyst`**: Must audit against these rules (frontmatter, GEO/AEO answer-first formats, internal linking) before publish.
+- **`reviewer`**: Must enforce AI Governance, Information Gain, and E-E-A-T requirements before code review passes.
 
 ## Directory Structure
 
@@ -39,16 +40,23 @@ TocOpen: true
 - **Tone**: Professional, technical deep-dive. Get straight to the point, no fluff.
 - **Alerts**: Use GitHub Markdown Alerts strategically (`> [!NOTE]`, `> [!WARNING]`, `> [!TIP]`, `> [!IMPORTANT]`, `> [!CAUTION]`) to highlight key information instead of bold text.
 
+## 2026 Information Gain & E-E-A-T Requirements
+
+To combat the commoditization of AI-generated content, all in-depth articles MUST include explicit Information Gain:
+- **Firsthand Experience**: The writer must include real-world anecdotes or "Production Failure" stories to prove human expertise.
+- **Expert Quotes & Sourcing**: If applicable, quote Subject Matter Experts (SMEs). Never rely solely on AI-synthesized knowledge.
+- **Zero Raw Hallucinations**: Do not inject generic boilerplate phrasing. Every technical claim must be verifiable.
+
 ## Assets & Internal Linking
 
 - **Images**: Store all image files in `static/images/` or `assets/images/`.
 - **Image Links**: Use absolute root-relative paths in Markdown (e.g., `![Alt Text](/images/filename.png)`).
 - **Internal Links**: Use standard Markdown linking pointing directly to the slug (e.g., `[Link Text](/posts/magento-still-worth-investing-2026)`).
 
-## Series & Production Failure Rules (Legacy)
+## Series & Production Failure Rules
 
 - **Production Failure stories**: Use the standardized template:
-  ```
+  ```markdown
   > 🔥 **[Production Failure]: <Title>**
   > **Symptom:** ...
   > **Root Cause:** ...

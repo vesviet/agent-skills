@@ -16,6 +16,8 @@ ADAPTERS = (
     ROOT / "CLAUDE.md",
     ROOT / "AGENTS.md",
     ROOT / ".github" / "copilot-instructions.md",
+    ROOT / ".kiro" / "steering" / "agent-skills.md",
+    ROOT / ".kilocode" / "rules" / "agent-skills.md",
 )
 
 SOURCE_REQUIRED = (

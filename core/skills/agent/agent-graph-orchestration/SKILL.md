@@ -144,4 +144,3 @@ Per-phase outputs reference domain schemas (for example `feature-ticket.json`, `
 - **agent-quality-gate**: Run validators before marking validation phases complete
 - **agent-handoff**: Summarize graph state for user or downstream roles
 - **agent-model-routing**: Assign model tier per phase based on risk
- Richmond, CA 94804

@@ -12,9 +12,10 @@ Use this workflow when creating a new series or adding parts to an existing seri
 |------|-------|
 | Plan series structure | `task-planner` |
 | Draft content (Vietnamese) | `content-writer` |
+| Translation Orchestration | `agent-coordinator` (teamwork_preview) |
 | Translate to English | `content-writer` |
 | Code linting review | `reviewer` |
-| Content conformance review | `reviewer` |
+| AI Governance & Conformance | `reviewer` |
 | Commit and push | `content-writer` or `backend-developer` |
 
 ## Steps
@@ -39,22 +40,26 @@ For each part:
 2. Include: Prerequisite block, numbered sections, code snippets with docstrings, Production Failure story, CTA/Next Step link.
 3. Set `draft: true` until review passes.
 
-### Step 4 — Review and Fix
+### Step 4 — Review and Fix (AI Governance)
 
-1. Run code linting checks (Python: `py_compile`/`flake8`, Go: `gofmt`/unused imports).
-2. Review frontmatter conformance against `content-brand.md` rules.
-3. Fix all blocking issues before proceeding.
+Role: `reviewer`
+1. **AI Governance Gate**: Ensure all content meets Information Gain standards (firsthand experience, real-world failure stories). Reject any raw AI hallucinations or generic filler.
+2. Run code linting checks (Python: `py_compile`/`flake8`, Go: `gofmt`/unused imports).
+3. Review frontmatter conformance against `content-brand.md` rules.
+4. Fix all blocking issues before proceeding.
 
 ### Step 5 — Translate to English (Vesviet site)
 
+Role: `agent-coordinator` or `teamwork_preview`
 1. Create the same directory structure under `vesviet/content/series/<series-slug>/`.
-2. Translate all parts maintaining identical code snippets (only translate comments and strings).
+2. Invoke specialized subagents (`content-writer`) in parallel to translate all parts, maintaining identical code snippets (only translate comments and strings).
 3. Update cross-site links to use absolute URLs where needed.
 
-### Step 6 — Final Review
+### Step 6 — Final Translation Review
 
+Role: `reviewer`
 1. Run `reviewer` role on the English translation for consistency with existing Vesviet series.
-2. Verify no unused imports, no placeholder content, no broken internal links.
+2. Verify no unused imports, no placeholder content, no broken internal links, and strict adherence to English terminology.
 
 ### Step 7 — Commit and Push
 
@@ -74,7 +79,8 @@ For each part:
 - [ ] `_index.md` created with TOC and `draft: false`
 - [ ] All parts drafted with required structure (prerequisite, failure story, CTA)
 - [ ] Code snippets pass linting (no unused imports, valid syntax)
-- [ ] English translation completed for Vesviet site
+- [ ] AI Governance passed (no hallucinations, Information Gain verified)
+- [ ] English translation parallelized and completed for Vesviet site
 - [ ] Cross-site links use absolute URLs
 - [ ] Reviewer approved both Vietnamese and English versions
 - [ ] Both repos committed and pushed

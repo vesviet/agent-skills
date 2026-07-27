@@ -27,7 +27,7 @@ When the user assigns you a Role, you MUST:
 
 Available roles: `core/roles/README.md`
 
-## A2A 1.0 & Antigravity (pack 3.3.1)
+## A2A 1.0 & Antigravity (pack 3.4.0)
 
 When operating as an AI agent (like **Antigravity**) under this pack, you MUST:
 
@@ -79,6 +79,9 @@ Available workflows: `core/workflows/README.md`
 | A2A registry | `core/a2a/.well-known/agent-registry.json` |
 | Antigravity adapter | `adapters/antigravity/ANTIGRAVITY.md` |
 | Cursor/Kiro hooks | `adapters/cursor/README.md` |
+| Kiro steering | `.kiro/steering/agent-skills.md` |
+| Kilo Code rules | `.kilocode/rules/agent-skills.md` |
+| Codex adapter | `core/codex/README.md` |
 | Claude adapter | `adapters/claude/CLAUDE_ADAPTER.md` |
 | Action boundaries | `core/policies/action-boundaries.yaml` |
 | Overlay index | `overlays/README.md` |

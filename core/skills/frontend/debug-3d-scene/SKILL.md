@@ -142,8 +142,3 @@ Outputs must summarize the root cause and mitigation, and if the debug involves 
 - **frontend-testing**: Add regression checks around interaction-sensitive fixes
 - **review-code**: Review risky transform, shader, or lifecycle changes
 - **navigate-service**: Map the 3D code path before debugging
-\n### 2026: Modern 3D Debugging
-
-- **WebGPU debugger integration:** Use `navigator.gpu.requestAdapter()` with the browser's built-in WebGPU inspector (Chrome DevTools Shader Editor tab, available in Chrome 124+) to inspect GPU pipelines and shader compilation errors without external tools.
-- **Spector.js for WebGL diagnosis:** Inject a Spector.js script tag in development builds to record and replay WebGL draw calls frame-by-frame. It identifies redundant state changes, overdraw, and incorrect texture binding sequences. Disable in production due to significant performance overhead.
-- **R3F DevTools:** The `@r3f/dev-tools` panel shows scene graph hierarchy, geometry vertex counts, material types, and render call counts in real-time. This is essential for identifying unexpected re-renders caused by unstable object references in R3F component props.\n

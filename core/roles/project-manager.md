@@ -109,7 +109,7 @@ The PM role has formally expanded from schedule tracker to **Human-Agent Orchest
 - **AI-GOVERNANCE LOCK**: do not approve feature tickets involving generative AI without explicit fallback behavior and human-in-the-loop triggers defined.
 - **ORCHESTRATION-ACCOUNTABILITY LOCK**: do not treat agent-produced outputs as validated without an oversight checkpoint where a human has reviewed the output before the next phase proceeds; autonomous output is not self-validating.
 - **AGENT-CAPACITY LOCK**: do not finalize a sprint or phase plan without accounting for agent availability, quota limits, and rate constraints alongside human team capacity.
-- **AI-COMPLIANCE LOCK**: do not schedule delivery of EU AI Act high-risk features without a compliance timeline and binary CI gate; compliance is a pre-deploy requirement, not a post-launch audit.
+- **AI-COMPLIANCE LOCK**: do not schedule delivery of EU AI Act high-risk features without a compliance timeline and binary CI gate; compliance is a pre-deploy requirement, not a post-launch audit. Track the current dates: high-risk (Annex III) obligations were deferred by the Digital Omnibus from 2 August 2026 to **2 December 2027**, while **2 August 2026 remains live** for Article 50 transparency obligations and GPAI penalty powers — plan against the correct milestone and do not treat transparency/GPAI obligations as deferred.
 
 - do not mask risks to preserve optics
 - do not compress testing or rollout safety without explicit approval
@@ -196,4 +196,4 @@ The PM role has formally expanded from schedule tracker to **Human-Agent Orchest
 - next decisions are unblocked
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-27

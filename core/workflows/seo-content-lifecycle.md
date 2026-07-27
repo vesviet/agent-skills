@@ -91,6 +91,7 @@ Role: **Technical Lead**, **Content Writer**
 
 - [seo-keyword-brief](seo-keyword-brief.md)
 - [content-publishing](content-publishing.md)
+- [content-audit](content-audit.md)
 - [qa-validation](qa-validation.md)
 
 ### Related Skills

@@ -60,3 +60,30 @@ Write a Python verification script (`verify_roles_audit.py`) that lists all Mark
 ### Audit Verification
 - [ ] `verify_roles_audit.py` successfully runs and passes, confirming 100% coverage of all roles.
 - [ ] `roles_audit_report.md` contains specific findings (compliance, content quality, and cross-referencing results) for each audited role.
+
+## Follow-up — 2026-07-27
+
+# Latest-Standards Refresh & Content-Audit Capability
+
+Audit roles and skills case by case against the latest 2026 standards ("chuẩn mới nhất") and update them where they are stale, then package the result as a new pack release.
+
+## Requirements
+
+### R1. Latest-Standards Role & Skill Audit
+Audit `core/roles/` and `core/skills/` against current 2026 standards and correct genuine freshness gaps only (no invented edits). Verified reference points include: the EU AI Act timeline (Digital Omnibus deferral), the MCP 2026-07-28 stateless spec and AAIF governance, the agentic commerce protocol landscape (ACP/UCP/MPP/x402/AP2), first-party on-device LLM frameworks, the European Accessibility Act, Google AI Mode, and content-provenance standards (C2PA + watermarking).
+
+### R2. Content-Audit Capability
+Add an `audit-content` skill and a `content-audit` workflow for the Content Manager content-refresh cycle: baseline audit → read → research latest standards → update → post-update SEO/GEO/AEO re-audit → republish.
+
+### R3. Defect Cleanup
+Fix the systemic malformed literal `\n### 2026:` section headings and trailing characters across `agent/`, `frontend/`, and `foundation/` skills.
+
+### R4. Release Packaging
+Bump the pack to 3.4.0 and synchronize the version-carrying docs (VERSION, README, AGENTS.md, CLAUDE.md, .cursorrules, USER_GUIDE, CHANGELOG).
+
+## Acceptance Criteria
+
+- [ ] `python3 core/scripts/validate-all.py` passes after every change.
+- [ ] Freshness corrections are grounded in verifiable current sources, not invented.
+- [ ] `audit-content` skill and `content-audit` workflow are wired into the Content Manager role and pass validation.
+- [ ] Version and CHANGELOG reflect the 3.4.0 release consistently across all adapter docs.

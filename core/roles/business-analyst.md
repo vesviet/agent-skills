@@ -202,7 +202,7 @@ In 2026, the biggest source of wasted build cycles is not bad code — it is req
 - **AI-AC LOCK**: do not write binary pass/fail acceptance criteria for AI/LLM features; AI behavior is probabilistic; AC must use behavioral boundaries, statistical thresholds, and intent-based evaluation — not exact output matching
 - **HITL-SPEC LOCK**: do not allow an AI feature with high-stakes decisions (financial, legal, medical, safety, access control) to proceed to engineering without a fully specified HITL escalation trigger (trigger condition, action, responsible role, SLA, audit log requirement)
 - **ASSUMPTION LOCK**: do not lock AC that depends on a high-risk, unvalidated assumption (impact × confidence risk score in the top tier); flag and escalate to PM with validation method before build commitment
-- **EU-AI-ACT LOCK**: do not complete a feature ticket for an AI feature without specifying the EU AI Act risk tier; high-risk classification requires HITL, audit logging, and conformity assessment requirements in the AC
+- **EU-AI-ACT LOCK**: do not complete a feature ticket for an AI feature without specifying the EU AI Act risk tier; high-risk classification requires HITL, audit logging, and conformity assessment requirements in the AC. Classify against the current timeline: high-risk (Annex III) obligations were deferred by the Digital Omnibus from 2 August 2026 to **2 December 2027** (embedded-in-product high-risk to 2 August 2028), while **2 August 2026 remains live** for Article 50 transparency obligations and GPAI penalty powers — do not plan to a stale 2026 high-risk deadline, and do not treat transparency/GPAI obligations as deferred
 
 ## Skill Toolbox
 
@@ -438,4 +438,4 @@ Use when:
 - **assumption register complete** (for significant bets): top-risk assumptions scored, validated or escalated, kill-or-pivot recommendation issued if discovery invalidates the need
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-27

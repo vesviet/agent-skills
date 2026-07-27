@@ -1,52 +1,46 @@
-# Leaseinvietnam Content Rules
+# Astro v5 Content Collection Schema
 
-Content schema and writing guidelines for the `leaseinvietnam` repository, based on the `src/data` audit.
+This rule enforces the mandatory schema requirements for Astro v5 `content` collections used in `leaseinvietnam` and `maylanhtreotuong`. 
 
-## Role Integration & Workflow
+## 1. Post Collection (`src/content/post/`)
+Every blog post or article must include the following YAML frontmatter exactly as defined in the Zod schema (`src/content/config.ts`):
 
-- **`content-writer`**: Must adhere to these rules and schemas when drafting posts or property listings.
-- **`seo-analyst`**: Audits the content for on-page SEO, internal linking, and adherence to the daily sprint (1 post/day/site).
-- **Daily Sprint**: Content production often runs in dual-site sprint mode alongside `maylanhtreotuong`. 
-
-## Directory Structure & Assets
-
-- **`src/data/post/`**: All blog posts must be placed inside a specific lowercase, hyphenated category subdirectory (e.g., `guides/`, `living/`, `market-radar/`). Root-level post files are strictly prohibited.
-- **`src/data/property/`**: All property listings are placed directly at the root of this folder.
-- **Images**: When referencing images from `src/assets/images/` inside a post, the relative path must account for the category directory nesting (e.g., `../../../assets/images/filename.jpg`).
-
-## Post Content Schema (`src/data/post/`)
-
-Every new blog post must include the following mandatory frontmatter:
 ```yaml
 ---
-title: "..."
-category: "..." # Must match the parent folder name
-tags: ["...", "..."]
-publishDate: "YYYY-MM-DD"
+title: "Primary H1 Title (60 chars max)"
+description: "SEO Meta Description (150 chars max, must contain primary keyword)"
+pubDate: 2026-07-27T08:00:00Z
+updatedDate: 2026-07-27T10:00:00Z # Optional but recommended for refreshed content
+heroImage: "/images/posts/your-image.jpg"
+categories: ["Architecture", "Backend"] # Explicit inline array required
+tags: ["Astro", "Cloudflare"] # Explicit inline array required
+canonicalURL: "https://example.com/original-source/" # Use only if syndicated
+draft: false
 ---
 ```
 
-## Property Content Schema (`src/data/property/`)
+## 2. Property / Product Collection (`src/content/property/` or `src/content/product/`)
+Commercial/transactional pages have strict requirements for localized metadata:
 
-Every new property listing must include the following mandatory frontmatter fields:
 ```yaml
 ---
-title: "..."
-publishDate: "YYYY-MM-DDTHH:MM:SSZ"
-excerpt: "..."
-image: "..." # Absolute URL or relative path
-price: 00000000
+title: "Product/Property Name"
+price: 15000000
 currency: "VND"
-bedrooms: 0
-bathrooms: 0
-area: 0
-location: "..."
-propertyType: "..."
-tags: ["...", "..."]
+location: "District 1, HCMC" # For leaseinvietnam
+specs: 
+  capacity: "1 HP" # For maylanhtreotuong
+  inverter: true
+images: ["/images/products/main.jpg", "/images/products/detail.jpg"]
+draft: false
 ---
 ```
 
-## Writing Tone (Properties)
+## 3. JSON-LD & Schema.org Integration
+- **`post` collection**: Automatically mapped to `TechArticle` or `Article` by the SEO layout component.
+- **`product` collection**: Must provide `price` and `currency` for the `Product` JSON-LD schema generation.
+- **NEVER** use manual `<script type="application/ld+json">` tags in Astro Markdown unless explicitly bypassing the built-in SEO component.
 
-- **Transparent Analysis**: Property descriptions must go beyond standard sales pitches. Present a clear, balanced view of both the **"Value Proposition"** (What you get) and the **"Trade-offs"** (What you give up / The downsides). 
-- Use headings like *"What This Location Gets You (And What It Doesn't)"* to establish trust with the expat audience.
+## 4. Markdown Formatting Rules
+- **No HTML Mixed**: Rely strictly on Markdown. Astro MDX handles components if needed, but standard `.md` files should be pure markdown.
+- **Internal Links**: Must point to absolute paths without extensions (e.g., `[Máy lạnh Inverter](/danh-muc/may-lanh-inverter/)`).

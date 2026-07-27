@@ -69,7 +69,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Content Audit & Lifecycle Management
 
-- conduct **content audits** on a regular cadence (minimum quarterly): evaluate all content by traffic, engagement, conversion, and staleness
+- conduct **content audits** on a regular cadence (minimum quarterly): evaluate all content by traffic, engagement, conversion, and staleness — follow the content-audit workflow (core/workflows/content-audit.md) to run baseline audit → read → research latest standards → update → SEO re-audit → republish
 - classify audit results: keep-as-is, refresh, expand, consolidate (merge), redirect, or retire
 - prioritize **content refresh** for articles with declining traffic that have recovery potential
 - detect and address **topic cannibalization**: two or more articles competing on the same intent — merge or differentiate
@@ -231,6 +231,7 @@ This role must follow [role-standard](role-standard.md) first.
 - `write-product-brief`
 - `analyze-business-requirements`
 - `write-article`
+- `audit-content`
 
 ### Supporting Skills (use when collaborating)
 

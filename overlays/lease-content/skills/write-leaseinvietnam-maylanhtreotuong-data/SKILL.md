@@ -26,6 +26,12 @@ Both projects load `**/*.{md,mdx}` from those folders via Astro glob loaders; fr
 - **dates**: use `publishDate` / `updateDate` / `priceCheckedDate` in ISO-like strings consistent with peers (`+07:00` or `Z` as used locally)
 - **claims and specs**: for products and legal/rental content, ground statements in `dataSources`, official links, or user-provided research; flag uncertain specs instead of inventing them
 
+## 2026 SEO & AI Governance Baselines
+
+- **Content Length & Depth**: Informational guides (`post`) must target a minimum of 1,400+ words unless tightly scoped.
+- **Internal Linking**: You must include at least 3 internal links. Specifically, link from informational posts to high-value commercial pages (`property` or `product`).
+- **No Raw AI Hallucinations**: Do not inject generic filler, repetitive phrasing, or hallucinated facts. Rely strictly on multi-pass research and provided sources.
+
 ## Suggested Process
 
 ### 1. Select Repo And Collection
@@ -60,6 +66,8 @@ List fields that need SME verification (prices, legal claims, model numbers) for
 - [ ] MDX imports and components match existing posts in that site
 - [ ] prices, specs, and legal/rental claims are sourced or explicitly flagged
 - [ ] internal links and slugs follow patterns used in nearby content
+- [ ] SEO minimums met (1,400+ words, 3+ internal links to commercial pages)
+- [ ] AI governance rules followed (zero raw hallucinations or generic filler)
 
 ## Related Skills
 

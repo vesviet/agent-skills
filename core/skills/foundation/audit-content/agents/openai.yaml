@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit Content"
+  short_description: "Refresh cycle: audit, read, research latest standards, update, SEO audit"
+  default_prompt: "Use $audit-content to run a full refresh cycle on this existing article — baseline audit, read, research the latest standards, update the content, then re-audit for SEO/GEO/AEO readiness."

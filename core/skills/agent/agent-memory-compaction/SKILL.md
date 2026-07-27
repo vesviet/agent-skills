@@ -130,7 +130,8 @@ Next action:
 - **agent-quality-gate**: Preserve validation evidence before dropping detail
 - **agent-tool-orchestration**: Re-read only the next necessary evidence after compaction
 - **write-documentation**: Convert durable context into repository documentation
-\n### 2026: Memory Strategies
+
+### 2026: Memory Strategies
 
 - **mem0/Zep v2 production patterns:** mem0 provides an opinionated memory layer with automatic extraction, storage, and retrieval. Zep v2 adds temporal knowledge graph support. Choose mem0 for simple user preference memory, and Zep v2 when temporal fact validity matters (facts change over time).
-- **Compaction trigger heuristics:** Trigger compaction when context window utilization exceeds 60 percent of the model's limit, not at 80 percent or higher (which is too late). Alternatively, trigger on a fixed turn count (e.g., every 20 turns). Log compaction events with pre/post token counts to measure effectiveness.\n
+- **Compaction trigger heuristics:** Trigger compaction when context window utilization exceeds 60 percent of the model's limit, not at 80 percent or higher (which is too late). Alternatively, trigger on a fixed turn count (e.g., every 20 turns). Log compaction events with pre/post token counts to measure effectiveness.

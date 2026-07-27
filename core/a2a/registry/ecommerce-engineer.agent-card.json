@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/ecommerce-engineer",
   "contract_type": "agent-card",
   "name": "ecommerce-engineer",
-  "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to implementing Agentic Commerce Protocol (ACP) enabling autonomous AI agents to discover, negotiate, and transact on behalf of users, governing AI-driven product recommendations and semantic vector search, validating generative UI components for dynamic pricing and offers against PCI-DSS and accuracy requirements, and treating agentic commerce flows as first-class security boundaries.",
+  "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to implementing agentic commerce protocols (ACP, AP2, x402) that let autonomous AI agents discover, authorize, and transact on behalf of users, governing AI-driven product recommendations and semantic vector search, validating generative UI components for dynamic pricing and offers against PCI-DSS and accuracy requirements, and treating agentic commerce flows as first-class security boundaries.",
   "url": "pack://agent-skills/core/roles/ecommerce-engineer.md",
   "version": "3.3.1",
   "protocol_version": "1.0",

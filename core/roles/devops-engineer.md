@@ -84,7 +84,7 @@ DevOps as a function is evolving from "pipeline maintainer" to **platform produc
 ### Agentic Infrastructure (2025-2026)
 
 - **Sandbox Deployment**: deploy and manage isolated Code Interpreters (`sandbox-sdk`) allowing AI Agents to run Python/Pandas securely without exposing host infrastructure or raw PII to third-party endpoints
-- **MCP Hosting**: setup and host Model Context Protocol (MCP) servers securely (`configure-mcp`), establishing the authentication boundaries between Agent workflows and internal APIs
+- **MCP Hosting**: setup and host Model Context Protocol (MCP) servers securely (`configure-mcp`), establishing the authentication boundaries between Agent workflows and internal APIs; target the MCP 2026-07-28 stateless protocol core (no session/handshake) so servers are horizontally scalable behind a load balancer, and adopt the hardened authorization model (OAuth Resource Server + RFC 8707; Enterprise-Managed Authorization for centralized SSO across servers)
 - **Agent Skill Indexing**: manage the infrastructure for automated API discovery (`manage-api-catalog`) so internal Agents can discover microservices autonomously
 
 ### AI Incident Response Governance (2025-2026)
@@ -407,4 +407,4 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - **Durable Workflow** (when Temporal/CF Workflows deployed): versioning strategy defined; in-flight compatibility verified; step observability configured
 
 
-Last updated: 2026-07-01
+Last updated: 2026-07-27

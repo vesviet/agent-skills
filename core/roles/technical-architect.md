@@ -114,10 +114,15 @@ Architectural constraints must be continuously validated, not only documented:
 The existing trust boundary model covers MCP security (prompt injection, tool poisoning, chained-server attack surface). This section addresses the complementary **operational and supply-chain architecture** of MCP at production scale — a distinct concern that emerges as MCP deployments grow beyond single-server, single-client configurations.
 
 **Stateful vs stateless MCP transport selection:**
-- the 2026 industry shift from stateful transports (stdio, SSE) to stateless HTTP for MCP creates an architectural decision the architect must own
-- **stateful (stdio/SSE)**: lower latency per call; session-bound context management; not load-balanceable without sticky sessions; single-host availability ceiling
-- **stateless (HTTP)**: horizontally scalable; load-balancer compatible; requires session state to be externalized (Redis, D1, or equivalent); session migration must be designed for HA
+- the MCP 2026-07-28 spec revision makes the **protocol core stateless** — it removes the connection handshake, the session, and server-initiated requests — so stateless HTTP is now the default direction of the protocol, not merely one option; design new MCP integrations stateless-first and treat stateful session assumptions as legacy that must be justified
+- **stateful (stdio/SSE, pre-2026-07-28)**: lower latency per call; session-bound context management; not load-balanceable without sticky sessions; single-host availability ceiling — document a migration path off session-bound assumptions
+- **stateless (HTTP, current core)**: horizontally scalable; load-balancer compatible; requires any residual session state to be externalized (Redis, D1, or equivalent); session migration must be designed for HA
+- account for the spec's companion capabilities when scoping: Tasks, MCP Apps, the Extensions framework, and authorization hardening (a formal deprecation policy now applies)
 - document the selection rationale in the ADR; sticky-session risk behind a load balancer is a hidden availability constraint if not made explicit
+
+**MCP authorization model:**
+- MCP servers are classified as OAuth Resource Servers; clients must implement RFC 8707 Resource Indicators so a malicious server cannot obtain tokens scoped to another — treat this as a mandatory auth-boundary requirement in the ADR
+- for enterprise deployments, the **Enterprise-Managed Authorization** extension (now stable; adopted by Anthropic, Microsoft, Okta) centralizes authorization across connected MCP servers with a single sign-on — prefer it over per-server credential handling; escalate to Security Engineer for posture review
 
 **MCP registry vetting as an architectural gate:**
 - fragmented MCP marketplaces (Smithery, MCP.so, unverified GitHub repos) carry supply-chain risks analogous to npm typosquatting: malicious or unmaintained tools that appear legitimate
@@ -169,6 +174,7 @@ Privacy and compliance constraints belong at the boundary level, not in applicat
 **Compliance as architectural layer:**
 - treat regulatory requirements (GDPR, EU AI Act, PDPA, CMMC, etc.) as structural constraints that shape boundary definitions — document which regulations apply in the ADR
 - for AI systems subject to the EU AI Act: document the system's risk tier, required human oversight mechanisms, and explainability requirements in adr-spec.json
+- track the current EU AI Act timeline in scoping: high-risk (Annex III) obligations were deferred by the Digital Omnibus from 2 August 2026 to **2 December 2027**, while **2 August 2026 remains live** for Article 50 transparency obligations, GPAI penalty powers, and market surveillance authority; do not design to a stale August-2026 high-risk deadline, but do not treat transparency/GPAI obligations as deferred
 - audit trail: any architectural decision that affects auditability (immutable event logs, access logs, model decision logs) must document how the audit trail is maintained, stored, and queryable
 - compliance validation must be automated where possible: static checks, schema validators, and policy-as-code rules — not manual checklists
 
@@ -426,4 +432,4 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - **trust boundaries documented**: for agentic/MCP systems, tool access allowlist and trust model explicitly defined
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-27

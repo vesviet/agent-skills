@@ -162,8 +162,9 @@ If deployment or release configuration changed:
 - **review-service**: Confirm release readiness for broad changes
 - **setup-deployment**: Validate deployment source-of-truth changes
 - **manage-secrets**: Keep sensitive values out of committed artifacts
-\n### 2026: AI Commits and Security
+
+### 2026: AI Commits and Security
 
 - **Commit signing enforcement:** GPG or SSH key signing provides identity verification and prevents commit impersonation. `git config commit.gpgsign true` enables signing globally. DCO (`Signed-off-by: Name <email>`) provides IP provenance for open-source projects and some regulated orgs. Check the repo CONTRIBUTING.md for which is required.
 - **`git-blame-ignore-revs` for AI/bulk commits:** When an AI agent performs bulk reformatting or AI-assisted refactoring, add the resulting commit hash to the `.git-blame-ignore-revs` file so `git blame` continues to point to the human authors of business logic. This avoids polluting blame history.
-- **Semantic Release awareness:** Conventional Commits feed automated release tools (Semantic Release, Release Please) that bump SemVer and generate changelogs automatically. Warn that fully automated releases can produce low-quality changelogs — consider using Changesets for human-curated bundling in monorepos.\n
+- **Semantic Release awareness:** Conventional Commits feed automated release tools (Semantic Release, Release Please) that bump SemVer and generate changelogs automatically. Warn that fully automated releases can produce low-quality changelogs — consider using Changesets for human-curated bundling in monorepos.

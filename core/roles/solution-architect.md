@@ -88,6 +88,7 @@ When AI or agentic approaches are proposed as business solutions:
 - specify explainability requirement: must the system explain its output to the user, auditor, or regulator? — this is a solution constraint, not a UI choice
 - specify fallback behavior: what does the system do when the AI component is unavailable, below confidence threshold, or produces anomalous output? — document this in the solution brief as a business requirement
 - classify EU AI Act risk tier at solution scoping, not post-engineering: high-risk classification means conformity assessment, audit logging, and human oversight are solution requirements that affect option selection and cost estimates
+- reflect the current EU AI Act timeline in cost/feasibility estimates: high-risk (Annex III) obligations were deferred by the Digital Omnibus from 2 August 2026 to **2 December 2027**, while **2 August 2026 remains live** for Article 50 transparency obligations and GPAI penalty powers — do not scope compliance cost to a stale August-2026 high-risk deadline, and do not treat transparency/GPAI obligations as deferred
 
 **AI solution vs conventional solution comparison:**
 - always include at least one non-AI option in the options_considered list when an AI approach is on the table
@@ -444,4 +445,4 @@ Emit `contracts/schemas/solution-brief.json` when machine handoff is required.
 - **stakeholder conflicts resolved or explicitly escalated**: no incompatible constraints silently absorbed into recommendation
 
 
-Last updated: 2026-06-17
+Last updated: 2026-07-27

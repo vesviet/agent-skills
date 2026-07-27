@@ -48,13 +48,14 @@ The most mature teams feed production failures back into their evaluation loop:
 
 ### OpenTelemetry For GenAI
 
-Use OpenTelemetry semantic conventions for generative AI to ensure portability:
+Use OpenTelemetry GenAI semantic conventions (Development status) to ensure portability. See `core/observability/otel-genai.md` for the full mapping. Core attributes:
 
-- `gen_ai.system`: model provider
-- `gen_ai.request.model`: model name
-- `gen_ai.usage.input_tokens`: tokens consumed
-- `gen_ai.usage.output_tokens`: tokens generated
-- `gen_ai.response.finish_reason`: why generation stopped
+- `gen_ai.operation.name`: operation type — use a spec enum value (`chat`, `generate_content`, `execute_tool`, `invoke_agent`, `plan`, ...), never invented names
+- `gen_ai.provider.name`: provider flavor (`anthropic`, `openai`, `gcp.vertex_ai`, ...) — replaces the deprecated `gen_ai.system`
+- `gen_ai.request.model` / `gen_ai.response.model`: requested and responding model
+- `gen_ai.usage.input_tokens` / `gen_ai.usage.output_tokens`: tokens consumed and generated (plus `gen_ai.usage.reasoning.output_tokens` for reasoning models)
+- `gen_ai.response.finish_reasons`: why generation stopped (plural array)
+- `gen_ai.conversation.id`: session/thread correlation (use the standard OTel `trace_id` for span correlation)
 
 ### Cost Attribution
 
