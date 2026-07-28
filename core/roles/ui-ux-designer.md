@@ -239,8 +239,6 @@ In 2026, design systems are not component libraries — they are living infrastr
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not optimize visuals at the expense of usability
 - do not ignore empty, loading, error, and success states
 - do not ship inaccessible interaction patterns knowingly
@@ -265,10 +263,10 @@ In 2026, design systems are not component libraries — they are living infrastr
 - `design-ux-flow`
 - `meeting-review`
 - `navigate-service`
+- `design-review`
 
 ### Supporting Skills (use when collaborating)
 
-- `design-review`
 - `accessibility-review`
 - `analyze-business-requirements`
 - `write-product-brief`

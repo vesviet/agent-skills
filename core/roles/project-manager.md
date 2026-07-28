@@ -104,8 +104,6 @@ The PM role has formally expanded from schedule tracker to **Human-Agent Orchest
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - **AI-GOVERNANCE LOCK**: do not approve feature tickets involving generative AI without explicit fallback behavior and human-in-the-loop triggers defined.
 - **ORCHESTRATION-ACCOUNTABILITY LOCK**: do not treat agent-produced outputs as validated without an oversight checkpoint where a human has reviewed the output before the next phase proceeds; autonomous output is not self-validating.
 - **AGENT-CAPACITY LOCK**: do not finalize a sprint or phase plan without accounting for agent availability, quota limits, and rate constraints alongside human team capacity.

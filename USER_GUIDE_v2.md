@@ -4,7 +4,7 @@
 >
 > **Note:** The filename keeps its `_v2` suffix for link stability; it will be renamed to `USER_GUIDE.md` at the next major version.
 
-Welcome to the **Agent-Skills** ecosystem (pack 3.4.0). This system transforms standard AI coding assistants into an **Autonomous Swarm Environment**. Instead of having one general AI try to do everything, you now have a team of highly specialized, policy-driven "Virtual Employees" that can talk to each other using strict Data Contracts.
+Welcome to the **Agent-Skills** ecosystem (pack 3.5.0). This system transforms standard AI coding assistants into an **Autonomous Swarm Environment**. Instead of having one general AI try to do everything, you now have a team of highly specialized, policy-driven "Virtual Employees" that can talk to each other using strict Data Contracts.
 
 ---
 

@@ -172,8 +172,6 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not optimize for output over outcomes
 - do not commit to deadlines without engineering input
 - do not hide trade-offs or unresolved assumptions

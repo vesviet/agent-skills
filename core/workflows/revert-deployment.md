@@ -67,8 +67,8 @@ Revert the deployment source-of-truth to the previous known good state:
 - ensure the rollback follows the same delivery path as the original deploy
 - do not make manual runtime patches that bypass the source of truth
 
-Do not create a commit until the user or local release process explicitly allows that commit action.
-Do not push, create a tag, or publish a release until the user or local release process explicitly allows that specific action.
+Do not create a commit until the user explicitly confirms that commit action.
+Do not push, create a tag, or publish a release until the user explicitly confirms that specific action.
 
 Use skill: `setup-deployment`
 

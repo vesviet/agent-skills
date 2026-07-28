@@ -117,8 +117,8 @@ Before committing or pushing:
 - confirm contract changes are versioned appropriately
 - follow the repo's release gate and approval requirements
 
-Do not create a commit until the user or local policy explicitly allows that commit action.
-Do not push, tag, or publish until the user or local policy explicitly allows that specific action.
+Do not create a commit until the user explicitly confirms that commit action.
+Do not push, tag, or publish until the user explicitly confirms that specific action.
 
 #### 8. Verify Rollout
 

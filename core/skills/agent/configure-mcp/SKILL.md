@@ -1,6 +1,6 @@
 ---
 name: configure-mcp
-description: Sets up the full MCP presence for a web service — server card at `/.well-known/mcp/server-card.json`, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.
+description: Sets up the full MCP presence for a web service — experimental Server Card discovery, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.
 ---
 
 # Configure MCP
@@ -9,9 +9,10 @@ Use this skill to set up the full MCP presence for a web service: the server car
 
 ## Core Rules
 
-- The Server Card MUST be placed at `/.well-known/mcp/server-card.json` — this path is non-negotiable per the MCP spec.
+- Server Cards are an **experimental MCP extension** (SEP-2127, `experimental-ext-server-card`), not part of the core spec. The extension's path is `/.well-known/mcp-server-card`. This pack additionally serves `/.well-known/mcp/server-card.json` for compatibility with existing scanners — serve both and treat neither as mandated by the core spec.
+- Because Server Cards are experimental, verify the current extension status and path before relying on them for production discovery; prefer the Official MCP Registry when a client supports it.
 - The server card JSON MUST include all required fields: `name`, `description`, `mcp_version`, `transport` (with `url` and `type`), and `capabilities`.
-- WebMCP browser component MUST invoke `navigator.modelContext.provideContext()` — do not use alternatives or polyfills that bypass this API.
+- WebMCP browser components should invoke `navigator.modelContext.provideContext()`. Note that `navigator.modelContext` is a W3C **draft proposal**, experimental and flag-gated in Chromium browsers only — feature-detect before calling, and treat a polyfill as a legitimate compatibility choice rather than a violation.
 - Ensure the WebMCP component is mounted in the global root layout so it is present on every page (not just specific routes).
 - Do not store sensitive credentials in the server card — it is publicly readable.
 - **OAuth 2.1 & PKCE**: HTTP-transport MCP servers MUST enforce OAuth 2.1 with PKCE for secure authentication. Shared static tokens or embedded credentials are prohibited.
@@ -38,7 +39,7 @@ Use this skill to set up the full MCP presence for a web service: the server car
    {
      "name": "My Service MCP",
      "description": "MCP server for order management operations",
-     "mcp_version": "2025-03-26",
+     "mcp_version": "2026-07-28",
      "transport": {
        "type": "http",
        "url": "https://api.example.com/mcp"
@@ -120,16 +121,19 @@ Use this skill to set up the full MCP presence for a web service: the server car
 - [ ] Gateway-level rate limiting is enforced on a per-tenant/per-user basis.
 
 
-### ⚠️ 2026: Stateless Architecture Migration (MCP 2026-07-28)
+### ⚠️ Stateless Architecture Migration (MCP 2026-07-28)
 
-> **Breaking change incoming**: The MCP spec `2026-07-28` (publishing ~late July 2026) transitions MCP from stateful sessions to **fully stateless requests**. A 12-month deprecation window applies for older implementations.
+> **Breaking change**: The MCP spec revision `2026-07-28` transitions MCP from stateful sessions to **fully stateless requests**. A 12-month deprecation window applies for older implementations.
+>
+> Revision order, newest last: `2025-03-26` → `2025-06-18` → `2025-11-25` → `2026-07-28`. The immediate predecessor is **`2025-11-25`**, so that is the version a current-but-unmigrated server most likely reports.
 
 **What is changing:**
 
-| | Current (2025-03-26) | New (2026-07-28) |
+| | Pre-migration (`2025-11-25` and earlier) | New (`2026-07-28`) |
 |---|---|---|
 | Session ID | Required handshake | **Removed** |
 | Capabilities negotiation | One-time at session start | **Per-request in `_meta`** |
+| Protocol version over HTTP | Negotiated at session start | **Per-request: `_meta` plus the `MCP-Protocol-Version` header** |
 | Server discovery | Implicit from card | **`server/discover` RPC method** |
 | Governance | Anthropic | **AAIF (Linux Foundation)** |
 
@@ -154,12 +158,12 @@ Use this skill to set up the full MCP presence for a web service: the server car
    ```json
    { "method": "server/discover", "params": {} }
    // Response:
-   { "supported_versions": ["2026-07-28", "2025-03-26"], "capabilities": { "tools": true } }
+   { "supported_versions": ["2026-07-28", "2025-11-25"], "capabilities": { "tools": true } }
    ```
 
-4. **Update `mcp_version` in server card**: set `"mcp_version": "2026-07-28"` in `/.well-known/mcp/server-card.json` after migration.
+4. **Update `mcp_version` in server card**: set `"mcp_version": "2026-07-28"` in the server card after migration.
 
-5. **Backward compatibility**: during the 12-month deprecation window, support both `2025-03-26` (stateful) and `2026-07-28` (stateless) by inspecting `_meta.protocol_version` on incoming requests.
+5. **Backward compatibility**: during the 12-month deprecation window, support the stateless `2026-07-28` alongside the stateful predecessors (`2025-11-25`, and older if clients require them) by inspecting `_meta.protocol_version` and the `MCP-Protocol-Version` header on incoming requests.
 
 **Checklist (for 2026-07-28 readiness):**
 - [ ] All tool request handlers read client identity and capabilities from `_meta`, not session state.

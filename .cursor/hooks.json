@@ -4,7 +4,7 @@
   "hooks": {
     "sessionStart": [
       {
-        "command": "echo 'agent-skills 3.1.0: load core/rules/code.md + active role before acting'"
+        "command": "echo 'agent-skills: load core/rules/code.md + active role before acting'"
       }
     ],
     "preToolUse": [
@@ -20,6 +20,12 @@
       }
     ],
     "postToolUse": [
+      {
+        "command": "python3 core/scripts/hooks/log-trace-span.py",
+        "matcher": "*"
+      }
+    ],
+    "sessionEnd": [
       {
         "command": "python3 core/scripts/hooks/log-trace-span.py",
         "matcher": "*"

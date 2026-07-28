@@ -129,14 +129,14 @@ This role must follow [role-standard](role-standard.md) first.
 - `sandbox-sdk`
 - `configure-agent-headers`
 - `manage-api-catalog`
+- `cloudflare-email-service`
+- `debug-workers-edge`
+- `web-perf`
 
 ### Supporting Skills (use when collaborating)
 
-- `cloudflare-email-service`
-- `web-perf`
 - `setup-deployment`
 - `debug-runtime-platform`
-- `debug-workers-edge`
 - `supply-chain-security`
 - `manage-secrets`
 - `navigate-service`

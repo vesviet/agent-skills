@@ -2,7 +2,9 @@
 
 Global engineering skill pack for software delivery work.
 
-**Version 3.4.0** refreshes the pack to current 2026 standards — the MCP 2026-07-28 stateless spec with AAIF (Linux Foundation) governance, the corrected EU AI Act timeline, the agentic commerce protocol landscape (ACP, UCP, MPP, x402, AP2), first-party on-device LLM frameworks, and the European Accessibility Act — and adds the `audit-content` skill plus the `content-audit` workflow for the content refresh cycle.
+**Version 3.5.0** is a corrective release from a full-pack audit. It fixes external-standard claims that were wrong or unsourced (WCAG 2.2 criterion numbering and a non-existent ARIA attribute, x402 v2 header names, ACP discovery paths, A2A event and signing details, the MCP baseline revision), resolves role ownership contradictions and policy-boundary conflicts, restores the strict commit gate across all workflows, and adds four validators so each of those drift classes fails the quality gate instead of passing silently.
+
+Version 3.4.0 refreshed the pack to 2026 standards — the MCP 2026-07-28 stateless spec with AAIF (Linux Foundation) governance, the corrected EU AI Act timeline, the agentic commerce protocol landscape (ACP, UCP, MPP, x402, AP2), first-party on-device LLM frameworks, and the European Accessibility Act — and added the `audit-content` skill plus the `content-audit` workflow.
 
 The repository is now split into a portable **core** plus optional **overlays** so global teams can reuse the foundation without inheriting repo-specific or brand-specific assumptions.
 
@@ -135,11 +137,26 @@ Core workflows live in [core/workflows/README.md](core/workflows/README.md).
 Run these validators after editing core rules, skills, roles, or workflows (includes 2026 compliance):
 
 ```bash
+python3 core/scripts/validate-all.py
+```
+
+`validate-all.py` runs all 16 validators. Individual gates when iterating:
+
+```bash
 python3 core/scripts/validate-rules.py
 python3 core/scripts/validate-skills.py
 python3 core/scripts/validate-roles.py
 python3 core/scripts/validate-workflows.py
-python3 core/scripts/validate-all.py
+python3 core/scripts/validate-version-sync.py        # VERSION vs registry, cards, adapters
+python3 core/scripts/validate-indexes.py             # index coverage and declared counts
+python3 core/scripts/validate-policy-consistency.py  # action-boundaries vs roles
+python3 core/scripts/validate-skill-ownership.py     # Primary owners and workflow reachability
+```
+
+After editing `core/roles/` or bumping `VERSION`, regenerate the A2A registry:
+
+```bash
+python3 core/scripts/generate-a2a-registry.py
 ```
 
 The validators enforce structure and references inside the **core** pack. Overlays can adopt the same patterns, but the current validation gate treats core as the portable source of truth.

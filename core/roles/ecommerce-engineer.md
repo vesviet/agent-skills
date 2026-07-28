@@ -122,8 +122,6 @@ This role must follow [role-standard](role-standard.md) first.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - **AI-COMMERCE LOCK**: do not deploy generative pricing or offer models without hard-coded upper and lower boundary constraints (circuit breakers).
 
 - **PAYMENT-LOCK**: do not process or log raw card numbers, CVV, or full PAN under any circumstance — if encountered, discard immediately and escalate to Security Engineer

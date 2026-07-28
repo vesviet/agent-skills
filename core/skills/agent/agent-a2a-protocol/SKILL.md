@@ -24,11 +24,12 @@ Use this skill for **complete A2A 1.0** behavior beyond single-hop `agent-delega
 - wrap HTTP calls in `a2a-jsonrpc-envelope.json` (JSON-RPC 2.0)
 - validate every artifact against the task's `output_schema_ref`
 - never assume the worker has context beyond `input_data` and `messages`
-- verify A2A v1.0 signed Agent Cards containing the `securitySchemes` field for bearer and oauth2 schemes
-- validate Ed25519 signatures and verify pinned keys on all incoming Agent Cards
-- negotiate streamable HTTP transports via chunked transfer encoding and `application/json-seq` formats
-- publish lifecycle events for `task_started`, `task_progress`, `task_completed`, `task_failed`, and `task_cancelled`
-- secure push notifications by validating webhook URLs with HMAC signatures
+- verify A2A v1.0 signed Agent Cards, reading acceptable authentication methods from the card's `securitySchemes` field (which may declare `bearer`, `oauth2`, `apiKey`, or OIDC)
+- verify Agent Card JWS signatures by resolving the key from the card's `kid` / `jku` JWK Set; card signing is a spec **SHOULD**, and the signing algorithm is chosen by the issuer, not fixed by the spec
+- publish streaming lifecycle events using the `event` enum in `contracts/schemas/a2a-task-progress.json`: `task.created`, `task.status`, `task.message`, `task.artifact`, `task.completed`, `task.failed`, `task.canceled`
+- validate webhook push notification callbacks against the credentials declared in the task's `PushNotificationConfig.authentication`, and validate the callback URL against SSRF before registering it
+
+**Spec vs pack convention.** The A2A specification streams `TaskStatusUpdateEvent` and `TaskArtifactUpdateEvent` over SSE, with task states named `TASK_STATE_*`. The `task.*` event names and the `agent.invoke` / `agent.stream` JSON-RPC methods used throughout this pack are the **Antigravity adapter binding**, not spec wire names — the spec operations are `message/send`, `message/stream`, `tasks/get`, and `tasks/cancel`. When targeting a non-Antigravity A2A peer, use the spec names and treat this pack's names as a local alias layer.
 
 ## A2A Operations Map
 
@@ -113,33 +114,33 @@ When the client cannot hold SSE open:
 - attach `a2a-push-notification-config.json` to the task
 - worker emits terminal event to `callback_url` on completed / failed / canceled
 
-### 2026: Signed Agent Cards
+### Signed Agent Cards
 
-A2A v1.0 introduces cryptographically signed Agent Cards to guarantee identity and configuration integrity:
-- **Signature verification**: Agent Cards are signed using Ed25519. The signature must be verified against pinned public keys before accepting the card.
-- **Security Schemes**: The Agent Card JSON includes a `securitySchemes` field defining acceptable authentication methods, specifically supporting bearer token (`bearer`) and OAuth 2.0 (`oauth2`) schemes.
-- **Key pinning**: Agent systems pin public keys to prevent identity spoofing during lookup.
+A2A v1.0 adds cryptographically signed Agent Cards to guarantee identity and configuration integrity:
+- **Signature format**: Cards carry detached JWS signatures over the card canonicalized per RFC 8785 (JCS). The spec does **not** mandate a signing algorithm — read it from the JWS header rather than assuming one.
+- **Key resolution**: Resolve the verification key from the JWS header's `kid` or `jku` pointing at a JWK Set. A pinned trusted key store is a spec **MAY**; adopt it as a local hardening measure and say so.
+- **Conformance level**: Signature verification is a **SHOULD** in the spec, not a MUST. This pack raises it to a requirement for distributed deployments (see the coordinator's DELEGATE-VERIFICATION LOCK) — that is a pack-local tightening, not a spec quote.
+- **Security Schemes**: The Agent Card JSON includes a `securitySchemes` field defining acceptable authentication methods. The spec permits `bearer`, `oauth2`, `apiKey`, and OpenID Connect — do not assume only the first two.
 
-### 2026: Streamable HTTP Transport
+### Streaming Transport
 
-For high-frequency and long-running communications, A2A v1.0 supports streamable HTTP transports:
-- **HTTP Chunked Encoding**: The server uses standard chunked transfer encoding (`Transfer-Encoding: chunked`) to stream responses dynamically.
-- **Record Sequencing**: Streams are structured as `application/json-seq` records (RFC 7464), separated by a record separator (`\x1e`) and a newline (`\n`).
-- **Negotiation**: Clients must send the `Accept: application/json-seq` header to initiate streaming communication.
+For high-frequency and long-running communications:
+- **Spec transport**: A2A streams over **Server-Sent Events** via `message/stream`, with `TaskStatusUpdateEvent` and `TaskArtifactUpdateEvent` as the event payloads. gRPC and REST bindings also exist.
+- **Pack binding**: this pack models each SSE payload as `a2a-task-progress.json` and reaches it through the Antigravity `agent.stream` method. Both are local aliases over `message/stream`.
+- **No json-seq requirement**: `application/json-seq` (RFC 7464) is **not** part of the A2A specification. Do not negotiate it against a spec-conformant peer or claim it as required; use SSE unless a specific peer documents another framing.
 
-### 2026: Task Lifecycle Events
+### Task Lifecycle Events
 
-Task lifecycle tracking relies on a standardized set of events to ensure consistent state synchronization:
-- **Standard Events**: The protocol emits `task_started`, `task_progress`, `task_completed`, `task_failed`, and `task_cancelled` events.
-- **Delivery Mechanisms**: Events are sent via Server-Sent Events (SSE) or as record sequences (`application/json-seq`).
-- **State mapping**: These events map directly to updates in the state tracker and trigger local callbacks in real-time.
+- **Spec events**: `TaskStatusUpdateEvent` and `TaskArtifactUpdateEvent`, carrying states `TASK_STATE_SUBMITTED`, `TASK_STATE_WORKING`, `TASK_STATE_INPUT_REQUIRED`, `TASK_STATE_AUTH_REQUIRED`, `TASK_STATE_COMPLETED`, `TASK_STATE_FAILED`, `TASK_STATE_CANCELED`, `TASK_STATE_REJECTED`.
+- **Pack events**: the `event` enum in `contracts/schemas/a2a-task-progress.json` — `task.created`, `task.status`, `task.message`, `task.artifact`, `task.completed`, `task.failed`, `task.canceled`. This is the authoritative list for pack-internal streaming; the schema, not this prose, is the source of truth.
+- **Mapping**: `task.status` carries the spec's status transitions in its `state` field; `task.artifact` corresponds to `TaskArtifactUpdateEvent`. Translate at the adapter boundary when talking to an external A2A peer.
 
-### 2026: Webhook HMAC Push Notifications
+### Webhook Push Notifications
 
-Webhook push notifications allow asynchronous updates to be pushed securely to the delegator:
-- **Registration**: Tasks configure a webhook URL for status callbacks.
-- **HMAC Signatures**: Every callback payload is signed with an HMAC signature (using SHA-256) included in a custom header (`X-A2A-Signature`).
-- **Signature Verification**: Receivers compute the HMAC of the payload using a shared secret and compare it to the header to prevent tampering.
+Webhook push notifications allow asynchronous updates to be pushed to the delegator:
+- **Registration**: Tasks configure a webhook URL for status callbacks via `PushNotificationConfig`.
+- **Authentication**: The spec authenticates callbacks using the credentials declared in `PushNotificationConfig.authentication`. There is no spec-defined signature header — an HMAC header such as `X-A2A-Signature` is a valid local hardening choice, but must be documented as pack-local rather than cited as protocol.
+- **SSRF validation**: Validate the callback URL before registering it (reject internal/link-local targets); the spec calls this out explicitly as a required safeguard.
 
 ## Scatter-Gather
 

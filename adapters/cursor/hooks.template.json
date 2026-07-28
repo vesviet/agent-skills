@@ -10,7 +10,7 @@
     "preToolUse": [
       {
         "command": "python3 AGENT_SKILLS_ROOT/core/scripts/hooks/check-policy.py",
-        "matcher": "Shell|run_terminal_cmd|write|delete|write_file|delete_file|create_file"
+        "matcher": "Shell|run_terminal_cmd|write|delete|write_file|delete_file|create_file|edit_file|move_file"
       }
     ],
     "beforeMCPExecution": [

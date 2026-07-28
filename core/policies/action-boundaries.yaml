@@ -1,6 +1,23 @@
 # Action Boundaries Policy
 # Defines what each role is allowed, requires approval for, or denied from doing.
 # Enforcement: agent-tool-orchestration checks this before state-changing actions.
+#
+# Verb notes:
+#   delegate_task            Hand work to another agent/role via A2A or sub-agent invocation.
+#                            Allowed only for Agent Coordinator. Roles carrying `agent-delegation`
+#                            as a Supporting skill require approval. Roles without it are denied.
+#                            A delegate must never receive scope broader than the caller holds.
+#   apply_iac                Apply infrastructure-as-code (e.g. terraform apply). Always requires
+#                            approval: one apply can perform deploy, terminate, and drop actions
+#                            that are individually gated.
+#   run_deployment           Deploy to a shared or production environment. Requires approval.
+#   run_deployment_preview   Deploy to an ephemeral preview/branch environment with no production
+#                            traffic and no shared state. Safe to allow for deploy-owning roles.
+#   rotate_agent_credentials Revoke and reissue non-human-identity agent session tokens.
+#                            Irreversible for in-flight sessions, so it requires approval everywhere.
+#   bypass_ai_guardrail      Disable, circumvent, or degrade an AI safety, moderation, or content
+#                            guardrail. Denied for every role. This is NOT the same as client-side
+#                            bot-fingerprint normalization, which is not a policy action.
 roles:
     3d-graphics-engineer:
       allowed:
@@ -13,6 +30,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - install_dependency
         - modify_public_api_contract
@@ -32,6 +50,7 @@ roles:
     agent-coordinator:
       allowed:
         - create_file
+        - delegate_task
         - read_file
         - read_logs
         - run_build
@@ -64,9 +83,8 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
-        - modify_dns_production
-        - purge_cache_zone
         - run_build
       denied:
         - bypass_ai_guardrail
@@ -76,9 +94,12 @@ roles:
         - delete_branch_main
         - drop_database
         - force_push
+        - modify_dns_production
         - modify_environment_config
         - modify_secrets
+        - purge_cache_zone
         - push_to_production
+        - run_deployment
         - run_migration
 
     ecommerce-engineer:
@@ -93,6 +114,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - export_data
         - install_dependency
@@ -124,6 +146,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - install_dependency
         - modify_environment_config
@@ -154,6 +177,7 @@ roles:
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
+        - delegate_task
         - deploy_ai_model
         - modify_prompt_template
         - delete_branch_main
@@ -171,11 +195,12 @@ roles:
         - read_file
         - read_logs
         - run_build
-        - run_deployment
+        - run_deployment_preview
         - run_tests
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_cloudflare_resource
         - modify_dns_production
         - modify_environment_config
@@ -183,6 +208,7 @@ roles:
         - purge_cache_zone
         - push_to_production
         - rollback_deployment
+        - run_deployment
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -200,6 +226,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - run_build
       denied:
@@ -225,6 +252,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - export_data
         - run_build
@@ -252,6 +280,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - export_data
         - run_migration
@@ -273,17 +302,19 @@ roles:
         - create_file
         - read_file
         - read_logs
-        - rotate_agent_credentials
         - run_build
-        - run_deployment
+        - run_deployment_preview
         - run_tests
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - modify_environment_config
         - modify_secrets
         - push_to_production
         - rollback_deployment
+        - rotate_agent_credentials
+        - run_deployment
         - run_migration
         - deploy_ai_model
         - modify_prompt_template
@@ -305,6 +336,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - install_dependency
         - modify_public_api_contract
@@ -332,6 +364,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - install_dependency
         - modify_public_api_contract
@@ -368,6 +401,9 @@ roles:
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
+        - delegate_task
+        - deploy_ai_model
+        - modify_prompt_template
         - delete_branch_main
         - drop_database
         - force_push
@@ -388,6 +424,7 @@ roles:
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
+        - delegate_task
         - deploy_ai_model
         - modify_prompt_template
         - delete_branch_main
@@ -408,6 +445,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - run_build
         - run_deployment
@@ -426,6 +464,7 @@ roles:
 
     qa-engineer:
       allowed:
+        - create_file
         - read_file
         - read_logs
         - run_build
@@ -434,11 +473,11 @@ roles:
         - search_code
         - write_file
       requires_approval:
-        - create_file
         - delete_file
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
+        - delegate_task
         - deploy_ai_model
         - modify_prompt_template
         - delete_branch_main
@@ -458,6 +497,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - export_data
         - install_dependency
@@ -477,6 +517,10 @@ roles:
 
     reviewer:
       allowed:
+        # create_file is needed for the role's own review artifacts
+        # (code-review-finding.json); write_file stays gated so a reviewer
+        # cannot silently edit the code under review.
+        - create_file
         - read_file
         - read_logs
         - run_build
@@ -488,6 +532,7 @@ roles:
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
+        - delegate_task
         - deploy_ai_model
         - modify_prompt_template
         - delete_branch_main
@@ -502,9 +547,9 @@ roles:
 
     security-engineer:
       allowed:
+        - create_file
         - read_file
         - read_logs
-        - rotate_agent_credentials
         - run_build
         - run_linter
         - run_tests
@@ -513,12 +558,14 @@ roles:
       requires_approval:
         - delete_file
         - modify_environment_config
+        - rotate_agent_credentials
         - run_migration
         - deploy_ai_model
         - modify_prompt_template
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
+        - delegate_task
         - delete_branch_main
         - drop_database
         - force_push
@@ -532,6 +579,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - modify_environment_config
         - run_build
@@ -550,6 +598,10 @@ roles:
 
     sre:
       allowed:
+        # create_file / write_file are needed for the role's own deliverables:
+        # runbooks and incident-report.json. Infrastructure and deploy actions
+        # remain gated below.
+        - create_file
         - read_database
         - read_file
         - read_logs
@@ -557,18 +609,20 @@ roles:
         - run_linter
         - run_tests
         - search_code
+        - write_file
       requires_approval:
         - modify_environment_config
         - rollback_deployment
         - run_deployment
         - run_migration
-        - write_file
         - deploy_ai_model
         - modify_prompt_template
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
+        - delegate_task
         - delete_branch_main
+        - delete_file
         - drop_database
         - force_push
         - modify_secrets
@@ -587,6 +641,7 @@ roles:
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
+        - delegate_task
         - deploy_ai_model
         - modify_prompt_template
         - delete_branch_main
@@ -604,6 +659,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - export_data
         - run_build
@@ -631,6 +687,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - install_dependency
         - modify_public_api_contract
@@ -657,6 +714,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - install_dependency
         - modify_environment_config
@@ -680,6 +738,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - run_build
       denied:
@@ -705,6 +764,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - run_build
       denied:
@@ -730,6 +790,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - run_build
       denied:
@@ -757,11 +818,12 @@ roles:
         - run_tests
         - search_code
         - write_file
-        - apply_iac
         - configure_ai_infra
         - configure_network
         - configure_os
       requires_approval:
+        - apply_iac
+        - delegate_task
         - delete_file
         - deploy_ai_model
         - drop_storage_volume
@@ -795,9 +857,10 @@ roles:
         - run_tests
         - search_code
         - write_file
-        - apply_iac
         - configure_network
       requires_approval:
+        - apply_iac
+        - delegate_task
         - delete_file
         - deploy_ai_model
         - drop_storage_volume
@@ -831,6 +894,7 @@ roles:
         - search_code
         - write_file
       requires_approval:
+        - delegate_task
         - delete_file
         - install_dependency
         - modify_public_api_contract
@@ -847,5 +911,10 @@ roles:
         - push_to_production
 
 # Default: any action not listed for a role requires approval.
-# rotate_agent_credentials: revoke and reissue NHI agent session tokens. Requires approval for most roles.
+# rotate_agent_credentials: revoke and reissue NHI agent session tokens.
+#   Requires approval for every role — no role lists it under allowed.
+# apply_iac: requires approval for every role that can author IaC, because one
+#   apply can perform deploy, terminate, and drop actions that are gated individually.
+# run_deployment: requires approval for every role. Deploy-owning roles get
+#   run_deployment_preview under allowed for ephemeral preview environments.
 default_policy: requires_approval

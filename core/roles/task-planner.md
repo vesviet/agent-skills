@@ -49,7 +49,7 @@ This role must follow [role-standard](role-standard.md) first.
 - validation and review checkpoints
 - open questions with suggested owners or resolution paths
 - optional **approach options** with trade-offs when the problem is genuinely forked
-- `contracts/schemas/seo-weekly-board.json` when coordinating dual-site SEO publishing boards
+- `contracts/schemas/seo-weekly-board.json` — **cadence and sequencing fields only**, and only when no SEO Analyst is active on the sprint. SEO Analyst owns this contract; when both roles are active, Task Planner supplies cadence and slot ordering and SEO Analyst emits the board.
 
 ## Deliverable Routing
 
@@ -71,7 +71,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 | Role | Owns | Does not own |
 | ---- | ---- | ------------ |
-| **Task Planner** | Task plan, seo-weekly-board when asked | coordination-plan.json phase automation |
+| **Task Planner** | Task plan, cadence and slot ordering for seo-weekly-board | seo-weekly-board.json emission (SEO Analyst owns), coordination-plan.json phase automation |
 | **Project Manager** | Release milestones, human owners | How to implement one code slice |
 | **Business Analyst** | feature-ticket.json | Engineering step order |
 | **Agent Coordinator** | A2A execution graph | Discovery of approach options |
@@ -92,8 +92,6 @@ This role must follow [role-standard](role-standard.md) first.
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
-
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **AI-GOVERNANCE LOCK**: do not approve feature tickets involving generative AI without explicit fallback behavior and human-in-the-loop triggers defined.
 

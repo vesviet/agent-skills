@@ -4,7 +4,7 @@
   "name": "ui-ux-designer",
   "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2026, this extends to designing for probabilistic AI systems (non-deterministic states, confidence indicators, transparency hooks, human override patterns), and to governing design systems as living infrastructure with W3C-compliant token architecture and automated design-to-code pipelines.",
   "url": "pack://agent-skills/core/roles/ui-ux-designer.md",
-  "version": "3.3.1",
+  "version": "3.5.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -71,6 +71,27 @@
       "id": "navigate-service",
       "name": "Navigate Service",
       "description": "Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "ui-component-spec.json",
+        "ux-flow-spec.json"
+      ]
+    },
+    {
+      "id": "design-review",
+      "name": "Design Review",
+      "description": "Review UX flows, visual hierarchy, interaction patterns, and design-system alignment against specs and user goals. Use when validating ui-component-spec or ux-flow-spec before implementation, or critiquing marketing/product UI without reviewing application code.",
       "tags": [
         "foundation",
         "pack"

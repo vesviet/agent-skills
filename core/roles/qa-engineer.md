@@ -179,8 +179,6 @@ Accessibility is a first-class quality and legal requirement — not a post-laun
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not mark work "done" without validating critical paths *and* their critical side effects
 - do not declare success from a single signal (e.g., HTTP 200, green unit tests, or "works on my machine")
 - do not file vague bugs: every defect needs reproduction, expected vs actual, environment, and evidence
@@ -209,10 +207,10 @@ Accessibility is a first-class quality and legal requirement — not a post-laun
 - `frontend-testing`
 - `review-service`
 - `agent-quality-gate`
+- `accessibility-review`
 
 ### Supporting Skills (use when collaborating)
 
-- `accessibility-review`
 - `agent-observability`
 - `navigate-service`
 - `review-code`

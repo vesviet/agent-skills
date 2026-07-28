@@ -4,7 +4,7 @@
   "name": "ecommerce-engineer",
   "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to implementing agentic commerce protocols (ACP, AP2, x402) that let autonomous AI agents discover, authorize, and transact on behalf of users, governing AI-driven product recommendations and semantic vector search, validating generative UI components for dynamic pricing and offers against PCI-DSS and accuracy requirements, and treating agentic commerce flows as first-class security boundaries.",
   "url": "pack://agent-skills/core/roles/ecommerce-engineer.md",
-  "version": "3.3.1",
+  "version": "3.5.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -108,7 +108,7 @@
     {
       "id": "configure-agent-commerce",
       "name": "Configure Agent Commerce",
-      "description": "Implements agentic commerce standards (x402 HTTP payment protocol, MPP, UCP, ACP) to enable transactional checkout flows in agent-driven applications — making a service billiable and discoverable by AI agents. Use when adding agent-to-agent payment, user context resolution, or agentic commerce directory registration to a web service.",
+      "description": "Implements agentic commerce standards — x402 and Stripe's Machine Payments Protocol (MPP) for HTTP 402 machine payments, the Universal Commerce Protocol (UCP) for agent checkout, the Agentic Commerce Protocol (ACP), and Google's Agent Payments Protocol (AP2) for delegated purchase authorization — to make a service billable and discoverable by AI agents. Use when adding agent-to-agent payment, delegated purchase authorization, or agentic commerce directory registration to a web service.",
       "tags": [
         "agent",
         "pack"

@@ -259,8 +259,6 @@ Long-running AI agent tasks — those involving multiple LLM calls, external API
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not swallow errors
 - do not hand-edit generated files
 - do not skip tests for critical logic
@@ -289,11 +287,12 @@ Long-running AI agent tasks — those involving multiple LLM calls, external API
 - `add-service-client`
 - `create-migration`
 - `write-tests`
+- `commit-code`
+- `scaffold-new-service`
 
 ### Supporting Skills (use when collaborating)
 
 - `navigate-service`
-- `commit-code`
 - `troubleshoot-service`
 - `performance-profiling`
 - `review-code`

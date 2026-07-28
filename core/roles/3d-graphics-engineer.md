@@ -109,8 +109,6 @@ This role must follow [role-standard](role-standard.md) first.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - **GEN-3D LOCK**: do not merge AI-generated 3D assets into the main branch without explicit memory footprint profiling and LOD (Level of Detail) generation.
 
 - do not ignore mobile device constraints or low-end GPU limitations

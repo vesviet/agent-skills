@@ -171,8 +171,6 @@ Agentic systems require a new class of documentation deliverable that is distinc
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - **DOC-TRANSPARENCY LOCK**: do not document AI features as deterministic systems; always document the fallback path and accuracy constraints.
 - **DUAL-AUDIENCE LOCK**: do not publish documentation for systems with AI agent interfaces without a corresponding LLM-readable format — strict Markdown hierarchy is mandatory; `llms.txt` is recommended for agent-facing developer docs but is not a universal requirement or a search-ranking factor. HTML-only documentation for agent-facing systems is a documentation failure.
 - **SCHEMA-SYNC LOCK**: do not manually author API reference documentation; all API docs must be generated from and kept in sync with the OpenAPI or OpenRPC schema — manually authored API docs that drift from the schema are a hallucination vector.
@@ -193,7 +191,6 @@ Agentic systems require a new class of documentation deliverable that is distinc
 - `write-documentation`
 - `release-notes`
 - `configure-llms-txt`
-- `write-article`
 
 ### Supporting Skills (use when collaborating)
 
@@ -203,6 +200,7 @@ Agentic systems require a new class of documentation deliverable that is distinc
 - `meeting-review`
 - `review-service`
 - `manage-api-catalog`
+- `write-article`
 
 ## Output Template
 

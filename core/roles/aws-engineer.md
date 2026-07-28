@@ -194,8 +194,6 @@ AWS cost governance is an engineering responsibility, not a finance team task:
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not make manual infrastructure changes in the AWS console without immediately committing the equivalent IaC; console-only changes are undocumented drift
 - do not deploy IAM roles or policies to production without Security Engineer review and explicit approval
 - do not provision AWS resources without mandatory cost allocation tags ('team', 'service', 'environment', 'cost-center'); missing tags at deploy time create ungoverned cost exposure

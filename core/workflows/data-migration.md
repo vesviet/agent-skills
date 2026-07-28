@@ -103,8 +103,8 @@ Document:
 
 Role: **DevOps Engineer**, **Backend Developer**
 
-Do not create a commit until the user or local release process explicitly allows that commit action.
-Do not push, create a tag, or publish a release until the user or local release process explicitly allows that specific action.
+Do not create a commit until the user explicitly confirms that commit action.
+Do not push, create a tag, or publish a release until the user explicitly confirms that specific action.
 
 Run the migration through the repo's official CI/CD migration path. Do not run raw SQL directly in production unless the repo explicitly requires it.
 

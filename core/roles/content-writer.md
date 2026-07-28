@@ -158,8 +158,6 @@ This role must follow [role-standard](role-standard.md) first.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not treat a single search as enough research when the brief requires evidence — use **3–4 passes** or Researcher
 - do not bury uncertainty; mark what is confirmed versus inferred
 - do not paste large copyrighted text; summarize and attribute
@@ -181,6 +179,7 @@ This role must follow [role-standard](role-standard.md) first.
 ### Primary Skills
 
 - `write-article`
+- `repurpose-content`
 
 ### Supporting Skills (use when collaborating)
 
@@ -189,7 +188,6 @@ This role must follow [role-standard](role-standard.md) first.
 - `analyze-business-requirements`
 - `meeting-review`
 - `agent-delegation`
-- `repurpose-content`
 
 When working under a site overlay (lease-content, vesviet-content, seo-publishing), additional overlay-specific skills are activated. See the Optional Overlays section and each overlay README for the skill names to load.
 

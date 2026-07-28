@@ -12,3 +12,7 @@ core/observability/spans/*.jsonl
 audit
 # Agent session workspaces
 .agents/implementer_*/
+
+# Session scratch / audit request artifacts
+ORIGINAL_REQUEST.md
+test_dummy.txt

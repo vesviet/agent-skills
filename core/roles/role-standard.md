@@ -135,9 +135,27 @@ Every role file must include these sections in order:
 17. `## Role Handoff`
 18. `## Definition Of Done`
 
+A `## Role Boundaries` table belongs directly after `## Decision Boundaries` whenever the role shares responsibilities, contracts, or skills with another role. State who owns what and who does not, naming both sides. Every role that emits a contract another role also touches must be listed there.
+
 Each role must define at least one Primary Skill, may define Supporting Skills, and must reference only skills that exist in `core/skills/`.
 
 The output template should make role output easy to reuse. The review checklist should define readiness checks before handoff. Anti-patterns should name common bad behavior the role must reject. Role handoff should name the upstream and downstream collaboration paths.
+
+## Skill Toolbox Standard
+
+- **Primary** means the role executes the skill directly. A skill must not be Primary for a role whose own Decision Boundaries or Role Boundaries disclaim that responsibility — that combination grants and forbids the same action.
+- **Supporting** means the role may only use the skill while collaborating with, or delegating to, the role that holds it as Primary. Every skill used as Supporting anywhere must therefore be Primary for at least one role.
+- A skill must never appear in both lists for the same role.
+- `validate-skill-ownership.py` enforces all three rules.
+
+## Contract Path Convention
+
+Role files reference output contracts as `contracts/schemas/<name>.json` — a **logical** contract identifier, not a filesystem path. It is deliberately written without the `core/` prefix so that:
+
+- tooling can extract contract references uniformly (`generate-a2a-registry.py` reads exactly this form), and
+- a consuming repository can resolve the same identifier against its own `contracts/` directory when it vendors only the schemas.
+
+To open the file inside this pack, resolve it to `core/contracts/schemas/<name>.json`. Adapter and index documents (`AGENTS.md`, `CLAUDE.md`, `.kiro/steering/`, `core/contracts/README.md`) use the full `core/contracts/schemas/` path because they are describing pack layout rather than declaring a role contract. Keep both conventions as-is; do not "fix" one into the other.
 
 ## Escalation Standard
 

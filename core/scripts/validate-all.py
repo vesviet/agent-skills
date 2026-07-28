@@ -21,6 +21,10 @@ VALIDATORS = (
     "validate-a2a-compliance.py",
     "validate-agent-cards.py",
     "validate-standardization.py",
+    "validate-version-sync.py",
+    "validate-indexes.py",
+    "validate-policy-consistency.py",
+    "validate-skill-ownership.py",
 )
 
 

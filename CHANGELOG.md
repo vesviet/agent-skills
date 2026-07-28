@@ -2,6 +2,56 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [3.5.0] - 2026-07-28
+
+Corrective release from a full-pack audit. All 12 existing validators passed before this
+work, so every item below was invisible to the quality gate — four new validators close
+those gaps.
+
+### Added
+- `validate-version-sync.py`: checks `VERSION` against the A2A registry, all 32 agent cards, adapter templates, and the newest CHANGELOG entry. Catches a version bump where generated artifacts were not regenerated.
+- `validate-indexes.py`: checks that every skill, schema, role, workflow, overlay, and pack is listed in its index, and that declared counts match disk.
+- `validate-policy-consistency.py`: cross-checks `action-boundaries.yaml` against role files — no verb in two tiers, no irreversible action pre-authorized, every role able to create its own outputs, every tool-map action classified.
+- `validate-skill-ownership.py`: every skill has a Primary owner, no Primary/Supporting conflict, no Primary skill contradicted by the role's own boundaries, and every workflow step's named skill is reachable from its tagged role.
+- `delegate_task` action verb in `action-boundaries.yaml`, classified for all 32 roles (allowed for Agent Coordinator, approval-gated for roles holding `agent-delegation` as Supporting, denied otherwise). A2A delegation and sub-agent invocation previously had no policy verb at all.
+- `run_deployment_preview` verb so deploy-owning roles keep ephemeral preview deploys ungated while `run_deployment` is gated.
+- `apply_iac` mappings in `mcp-tool-map.yaml` for `terraform apply`, `pulumi up`, and `cdk deploy`; delegation mappings for `delegate_task`, `invoke_sub_agent`, `spawn_agent`, `a2a_send_task`.
+- `## Role Boundaries` ownership tables for `agent-discovery-engineer` and `mmo-engineer`; all 32 roles now carry one.
+- Skill Toolbox Standard and Contract Path Convention sections in `role-standard.md`.
+- Skill Toolbox Rule for workflow steps in `core/workflows/README.md`.
+
+### Fixed
+- **Accessibility criteria** in `accessibility-review`: `aria-braillevaluedescription` does not exist (correct attributes are `aria-braillelabel` and `aria-brailleroledescription`); 2.4.11 is Focus Not Obscured (Minimum) at AA, not Focus Appearance (which is 2.4.13, AAA); added the binding-regulation note that EN 301 549 and DOJ ADA Title II both map to WCAG 2.1 AA, and that the DOJ deadline was extended to 26 April 2027.
+- **x402 headers** in `configure-agent-commerce`: v2 uses `PAYMENT-REQUIRED` (server), `PAYMENT-SIGNATURE` (client), `PAYMENT-RESPONSE` (receipt). The file previously had the server sending `X-PAYMENT`, which was a client-sent v1 header. Removed the unsourced `WWW-Authenticate: X-Payment-Required` challenge and the unsourced `/.well-known/acp-manifest.json` path (ACP is defined by REST endpoints; UCP publishes `/.well-known/ucp`). Corrected "Merchant Payment Protocol" to Machine Payments Protocol.
+- **A2A spec claims** in `agent-a2a-protocol`: the spec streams `TaskStatusUpdateEvent` / `TaskArtifactUpdateEvent` with `TASK_STATE_*` states, not `task_started`/`task_progress`; card signing is a JWS with the key resolved from the JWS header and no mandated algorithm (Ed25519 and key pinning were pack additions); `application/json-seq` and `X-A2A-Signature` are not in the spec. Pack-local names (`task.*` events, `agent.invoke`/`agent.stream`) are now explicitly labelled as the Antigravity adapter binding, and the `task.*` list is aligned with the `a2a-task-progress.json` enum it previously contradicted.
+- **MCP baseline** in `configure-mcp`: the pre-migration revision is `2025-11-25`, not `2025-03-26` (two revisions stale). Server Cards are an experimental extension (SEP-2127), not core spec, so the path is no longer described as non-negotiable. `navigator.modelContext` documented as a flag-gated draft where polyfills are legitimate. Added the `MCP-Protocol-Version` header to the stateless migration steps.
+- **`content-manager` self-contradiction**: `write-article` was a Primary skill while the role's own boundaries stated it "does not write full articles". Moved to Supporting. Also stopped it emitting `content-handoff.json` (Content Writer) and `coordination-plan.json` (Agent Coordinator), and scoped its KPI ownership to content pillars so it no longer collides with Data Analyst metric definitions.
+- **Inference placement ownership** contested by `technical-architect` (EDGE-INFERENCE LOCK) and `system-engineer` (Role Boundaries denying the architect AI infra). Split: architect owns the decision and ADR rationale; System Engineer owns provisioning, routing implementation, and supplies the latency/capacity/cost evidence.
+- **`qa-engineer` inverted policy tiers**: `write_file` was allowed while `create_file` required approval, gating the role's own `test-report.json` and `validation-result.json` while permitting arbitrary overwrites.
+- **Irreversible actions pre-authorized**: `rotate_agent_credentials` (devops-engineer, security-engineer), `apply_iac` (system-engineer, aws-engineer), and `run_deployment` (cloudflare-engineer, devops-engineer) moved from `allowed` to `requires_approval`, matching the Irreversible Action Standard and the policy file's own footer.
+- **`reviewer` and `sre` could not produce their primary contracts**: added `create_file` for Reviewer (`code-review-finding.json`) and `create_file`/`write_file` for SRE (runbooks, `incident-report.json`) while keeping code and infrastructure mutations gated.
+- **`agent-discovery-engineer` policy profile** carried Cloudflare Engineer's `modify_dns_production`, `purge_cache_zone`, and `run_deployment`; those are now denied, matching the role's stated boundaries.
+- **Commit gate weakened in 10 workflows**: "the user **or local process/release process/policy** explicitly allows" contradicted `core/rules/code.md` ("unless the user explicitly confirms"). All 20 occurrences normalized to the strict form.
+- **`commit-code` had no Primary owner** in any role while 8 workflow steps invoked it. Now Primary for Backend Developer, Frontend Developer, and Mobile Engineer.
+- **12 further skills had no Primary owner**, making Supporting use unresolvable: `accessibility-review` (→ QA Engineer), `agent-memory-compaction`, `agent-model-routing`, `agent-observability`, `agent-prompt-lifecycle` (→ Agent Coordinator), `cloudflare-email-service`, `debug-workers-edge`, `web-perf` (→ Cloudflare Engineer), `design-review` (→ UI/UX Designer), `manage-agent-identity` (→ Agent Discovery Engineer), `repurpose-content` (→ Content Writer), `setup-design-system` (→ Frontend Developer), `scaffold-new-service` (→ Backend Developer).
+- **`build-deploy.md` step 5** named `debug-workers-edge`, which is in neither tagged role's toolbox; now delegates to Cloudflare Engineer.
+- **`write-article` Primary in three roles**: demoted for `technical-writer`, whose own table disclaims SEO articles. Content Writer is the sole owner.
+- **`seo-weekly-board.json` had two producers**: SEO Analyst is now sole emitter; Task Planner contributes cadence and slot ordering.
+- **Agent Coordinator emitted specialist deliverables** it declared it did not own; `validation-result.json` and `implementation-result.json` are now explicitly aggregation roll-ups over artifacts authored by QA and developer roles.
+- **`mmo-engineer` mandated `bypass_ai_guardrail`** while policy denied it. Separated client-side bot-fingerprint normalization (in scope) from evading AI safety, moderation, or ad-review systems (new REVIEW-SYSTEM LOCK: requires written user authorization plus Security Engineer review). Its Review Checklist was a bare list of LOCK names and is now verifiable conditions.
+- **Machine-specific absolute paths** `/home/user/personalized/agent-skills` hardcoded in `.kiro/hooks/policy-check.json` and `.kiro/hooks/trace-span.json`, breaking portability; now resolved from `AGENT_SKILLS_ROOT`. Same fix in the Cursor adapter verification snippet.
+- **Stale pack versions**: the A2A registry, all 32 agent cards, `a2a-config.template.yaml`, `CLAUDE_ADAPTER.md`, `agent-card.json`, and `.cursor/hooks.json` reported 3.3.1 or 3.1.0.
+- **Index drift** in `core/skills/README.md` (declared 92+7=99 against 93+7=100; Agent section declared 21 of 22; `agent-panel-meeting` unlisted) and `core/contracts/README.md` (missing `system-design-spec.json` and `aws-infra-spec.json`).
+- **`BOUNDARY LOCK` bullet duplicated verbatim** within the Guardrails section of 30 of 32 role files.
+- **`technical-lead.md`** placed `## Role Boundaries` before `## Decision Boundaries`, inverting the order used by all 28 peers.
+- `.cursor/hooks.json` was missing the `sessionEnd` hook present in its own template; template matcher aligned with the live config.
+- 43 files missing a trailing newline (`.editorconfig` sets `insert_final_newline = true`); executable bit restored on 22 scripts; removed tracked scratch files `test_dummy.txt` and `ORIGINAL_REQUEST.md`.
+
+### Changed
+- `Enterprise-Managed Authorization` in `technical-architect` no longer asserts "now stable; adopted by Anthropic, Microsoft, Okta"; it directs the reader to verify maturity and vendor support before committing an ADR, since the extension shipped with the 2026-07-28 revision.
+- `validate-all.py` now runs 16 validators.
+- `README.md` quality-gate section documents the new validators and the regeneration step after role edits or a version bump.
+
 ## [3.4.0] - 2026-07-27
 
 ### Added

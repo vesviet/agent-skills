@@ -211,8 +211,6 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not patch live systems without updating source of truth
 - do not hardcode secrets in pipelines or manifests
 - do not treat a green pipeline as full runtime proof

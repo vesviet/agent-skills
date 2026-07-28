@@ -8,6 +8,6 @@
   },
   "then": {
     "type": "runCommand",
-    "command": "AGENT_SKILLS_ROOT=/home/user/personalized/agent-skills AGENT_ACTIVE_ROLE=${AGENT_ACTIVE_ROLE:-agent-coordinator} python3 /home/user/personalized/agent-skills/core/scripts/hooks/log-trace-span.py"
+    "command": "AGENT_SKILLS_ROOT=\"${AGENT_SKILLS_ROOT:-$PWD}\" AGENT_ACTIVE_ROLE=\"${AGENT_ACTIVE_ROLE:-agent-coordinator}\" python3 \"${AGENT_SKILLS_ROOT:-$PWD}/core/scripts/hooks/log-trace-span.py\""
   }
 }

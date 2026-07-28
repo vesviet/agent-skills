@@ -157,8 +157,8 @@ Before committing:
 - confirm docs and ownership info are present
 - confirm the repo-local release path is understood
 
-Do not create a commit until the user or local process explicitly allows that commit action.
-Do not push, tag, or publish until the user or local process explicitly allows that specific action.
+Do not create a commit until the user explicitly confirms that commit action.
+Do not push, tag, or publish until the user explicitly confirms that specific action.
 
 ### Checklist
 

@@ -4,7 +4,7 @@
   "name": "cloudflare-engineer",
   "description": "own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration, and edge incident recovery — so application teams ship safely on Cloudflare without platform guesswork. In 2025–2026, this extends to governing Workers AI inference at the edge (latency, caching, cost budgets), routing agentic requests safely across LLM and tool-call boundaries, injecting RFC 8288 Agent Discovery headers at the edge layer, and enforcing security boundaries for AI-augmented edge workloads.",
   "url": "pack://agent-skills/core/roles/cloudflare-engineer.md",
-  "version": "3.3.1",
+  "version": "3.5.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -151,6 +151,66 @@
       "description": "Use when publishing and maintaining RFC 9727 API Catalog registries for automated API discovery by agents, developer tools, and client SDKs.",
       "tags": [
         "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json"
+      ]
+    },
+    {
+      "id": "cloudflare-email-service",
+      "name": "Cloudflare Email Service",
+      "description": "Send and receive transactional emails with Cloudflare Email Service (Email Sending + Email Routing). Use when building email sending (Workers binding or REST API), email routing, Agents SDK email handling, or integrating email into any app — Workers, Node.js, Python, Go, etc. Also use for email deliverability, SPF/DKIM/DMARC, wrangler email setup, MCP email tools, or when a coding agent needs to send emails. Even for simple requests like \"add email to my Worker\" — this skill has critical config details.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json"
+      ]
+    },
+    {
+      "id": "debug-workers-edge",
+      "name": "Debug Workers Edge",
+      "description": "Diagnose Cloudflare Pages and Workers failures at the edge — 5xx, binding errors, Wrangler deploy failures, DNS/cache issues, and context loss. Use when symptoms appear after deploy or only on Cloudflare runtime, not in local dev alone.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json"
+      ]
+    },
+    {
+      "id": "web-perf",
+      "name": "Web Perf",
+      "description": "Analyzes web page performance using Chrome DevTools MCP — measuring Core Web Vitals (LCP, INP, CLS), identifying render-blocking resources, network dependency chains, and caching issues to produce specific, actionable optimization recommendations. Use when auditing Lighthouse scores, debugging slow page loads, profiling Core Web Vitals regressions, or validating performance improvements before release.",
+      "tags": [
+        "platform",
         "pack"
       ],
       "inputModes": [

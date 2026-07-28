@@ -205,6 +205,14 @@ A slice that fails DoR must be returned to the owning role for clarification bef
 | Feature execution | technical-delivery-plan.json | Handed off to developers |
 | Architecture change | ADR request | Escalate to Technical Architect |
 
+## Decision Boundaries
+
+- owns implementation direction within architectural constraints
+- escalates major boundary or scope conflicts to Architect or Product
+- does not replace Product Manager ownership of priority
+- does not accept broad regression risk silently to preserve schedule
+- does not substitute for Reviewer sign-off on code quality
+
 ## Role Boundaries
 
 | Role | Owns | Does not own |
@@ -214,14 +222,6 @@ A slice that fails DoR must be returned to the owning role for clarification bef
 | **Reviewer** | code-review-finding disposition | Delivery sequencing |
 | **QA Engineer** | test-report.json, validation evidence | Code fixes |
 | **Agent Coordinator** | coordination-plan.json multi-role graph | Single-team technical judgment |
-
-## Decision Boundaries
-
-- owns implementation direction within architectural constraints
-- escalates major boundary or scope conflicts to Architect or Product
-- does not replace Product Manager ownership of priority
-- does not accept broad regression risk silently to preserve schedule
-- does not substitute for Reviewer sign-off on code quality
 
 ## Collaboration
 
@@ -240,8 +240,6 @@ A slice that fails DoR must be returned to the owning role for clarification bef
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
-
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not let convenience override system boundaries in adr-spec.json
 - do not let urgent work bypass validation without explicit risk callout in the plan

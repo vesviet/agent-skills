@@ -4,7 +4,7 @@
   "name": "qa-engineer",
   "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escaped defects across a distributed microservices system. In 2025–2026, this extends to validating AI/LLM systems with non-deterministic output properties, running controlled chaos experiments to prove resilience before production, and enforcing accessibility as a first-class quality gate.",
   "url": "pack://agent-skills/core/roles/qa-engineer.md",
-  "version": "3.3.1",
+  "version": "3.5.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -94,6 +94,27 @@
       "description": "Run and interpret repository quality gates for agent-delivered changes, including validators, lint, tests, build checks, diff sanity checks, and phase-exit evidence. Use when reporting completion, advancing a bug or feature to the next phase, or declaring a pack, role, workflow, or code change ready.",
       "tags": [
         "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "accessibility-review",
+      "name": "Accessibility Review",
+      "description": "Audit UI for keyboard navigation, focus order, screen-reader labels, color contrast, motion preferences, and ARIA correctness against WCAG 2.2 criteria (including Focus Not Obscured 2.4.11, Target Size 2.5.8, Accessible Authentication 3.3.8, Dragging Movements 2.5.7, Redundant Entry 3.3.7). Use automated CI gates via @axe-core/playwright for regression detection alongside manual screen-reader testing. Use when validating user-facing flows before release, after design specs land, or when fixing reported a11y defects.",
+      "tags": [
+        "foundation",
         "pack"
       ],
       "inputModes": [

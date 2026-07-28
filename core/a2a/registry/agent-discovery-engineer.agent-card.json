@@ -4,7 +4,7 @@
   "name": "agent-discovery-engineer",
   "description": "Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance across all 19 checks of the Agent Readiness standards (e.g., isitagentready.com). This covers Protocol Discovery, Commerce Standards, Discoverability, and Bot Access Control. In 2025–2026, this extends to enforcing compliance as the A2A, MCP, Auth.md, x402, and Agent Skills protocol landscape rapidly standardizes — tracking spec drift between experimental drafts and stable scanner implementations, wiring agentic endpoint discovery into Cloudflare edge responses via RFC 8288 Link headers, and ensuring the registry is machine-readable and interoperable with emerging AI agent orchestration frameworks.",
   "url": "pack://agent-skills/core/roles/agent-discovery-engineer.md",
-  "version": "3.3.1",
+  "version": "3.5.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -82,7 +82,7 @@
     {
       "id": "configure-mcp",
       "name": "Configure Mcp",
-      "description": "Sets up the full MCP presence for a web service — server card at `/.well-known/mcp/server-card.json`, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.",
+      "description": "Sets up the full MCP presence for a web service — experimental Server Card discovery, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.",
       "tags": [
         "agent",
         "pack"
@@ -100,7 +100,7 @@
     {
       "id": "configure-agent-commerce",
       "name": "Configure Agent Commerce",
-      "description": "Implements agentic commerce standards (x402 HTTP payment protocol, MPP, UCP, ACP) to enable transactional checkout flows in agent-driven applications — making a service billiable and discoverable by AI agents. Use when adding agent-to-agent payment, user context resolution, or agentic commerce directory registration to a web service.",
+      "description": "Implements agentic commerce standards — x402 and Stripe's Machine Payments Protocol (MPP) for HTTP 402 machine payments, the Universal Commerce Protocol (UCP) for agent checkout, the Agentic Commerce Protocol (ACP), and Google's Agent Payments Protocol (AP2) for delegated purchase authorization — to make a service billable and discoverable by AI agents. Use when adding agent-to-agent payment, delegated purchase authorization, or agentic commerce directory registration to a web service.",
       "tags": [
         "agent",
         "pack"
@@ -155,6 +155,24 @@
       "id": "configure-agent-skills",
       "name": "Configure Agent Skills",
       "description": "Creates and manages the agentskills.io manifest index at `/.well-known/agent-skills/index.json`, exposing structured API capabilities for agent orchestrators and capability-routing infrastructure to auto-discover and invoke. Use when registering, updating, or validating the skill manifest after adding or deprecating API endpoints on a service.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    },
+    {
+      "id": "manage-agent-identity",
+      "name": "Manage Agent Identity",
+      "description": "Manages the full lifecycle of Non-Human Identities (NHI) for AI agent sessions — including provisioning scoped credentials, enforcing just-in-time access, behavioral baseline monitoring, and secure offboarding. Use when onboarding a new agent role to production, rotating agent credentials, auditing active agent sessions, or responding to anomalous agent behavior.",
       "tags": [
         "agent",
         "pack"

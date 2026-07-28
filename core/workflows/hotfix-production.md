@@ -85,8 +85,8 @@ Deliver using the repo's approved emergency release path:
 - rollback deployment
 - emergency config push
 
-Do not create a commit until the user or local release process explicitly allows that commit action.
-Do not push, create a tag, or publish a release until the user or local release process explicitly allows that specific action.
+Do not create a commit until the user explicitly confirms that commit action.
+Do not push, create a tag, or publish a release until the user explicitly confirms that specific action.
 
 #### 6. Monitor Recovery
 

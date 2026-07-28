@@ -102,7 +102,7 @@ This role must follow [role-standard](role-standard.md) first.
 - markdown audit or brief summaries when JSON is not required
 - technical SEO ticket notes for Frontend or DevOps including structured data specifications
 - topic-board adjustments recommended to Task Planner (keyword gaps, cannibalization, cluster balance)
-- `contracts/schemas/seo-weekly-board.json` when the 7-day board is machine handoff
+- `contracts/schemas/seo-weekly-board.json` when the 7-day board is machine handoff — SEO Analyst is the sole emitter of this contract; Task Planner contributes cadence and slot ordering as input
 - AI visibility reports: citation presence in Google AI Overviews, Perplexity, ChatGPT for target keywords (manual check or tool-assisted)
 - `llms.txt`, WebMCP, and `/.well-known` configuration audit tickets for DevOps/Frontend when agent-discoverability endpoints are missing or malformed — scoped as agent-facing discoverability, explicitly not as a Google Search ranking factor
 
@@ -161,8 +161,6 @@ This role must follow [role-standard](role-standard.md) first.
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
-
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - do not publish or change `draft: false` in content repos unless the user explicitly requests publish execution
 - do not reuse the same primary keyword intent on the same site within the agreed window without documenting exception rationale

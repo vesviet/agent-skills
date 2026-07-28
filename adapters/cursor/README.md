@@ -102,14 +102,15 @@ python3 core/scripts/generate-a2a-registry.py
 ## Verify setup
 
 ```bash
+# Run from the pack root so AGENT_SKILLS_ROOT resolves to it:
 # Test check-policy.py directly:
-AGENT_SKILLS_ROOT=/home/user/personalized/agent-skills \
+AGENT_SKILLS_ROOT="$PWD" \
   AGENT_ACTIVE_ROLE=backend-developer \
   CURSOR_TOOL_NAME=write_file \
   python3 core/scripts/hooks/check-policy.py
 
 # Test trace span:
-AGENT_SKILLS_ROOT=/home/user/personalized/agent-skills \
+AGENT_SKILLS_ROOT="$PWD" \
   AGENT_ACTIVE_ROLE=agent-coordinator \
   python3 core/scripts/hooks/log-trace-span.py
 

@@ -270,8 +270,6 @@ For micro-frontend architectures or large frontend applications with independent
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not ignore edge states
 - do not treat a visually correct render as proof that logic is correct
 - do not close a bug after checking only the reported screen; verify adjacent flows and reused logic
@@ -298,14 +296,14 @@ For micro-frontend architectures or large frontend applications with independent
 - `add-page-route`
 - `integrate-api-client`
 - `frontend-testing`
+- `commit-code`
+- `setup-design-system`
 
 ### Supporting Skills (use when collaborating)
 
 - `accessibility-review`
-- `setup-design-system`
 - `performance-profiling`
 - `navigate-service`
-- `commit-code`
 - `write-tests`
 - `troubleshoot-service`
 - `review-code`

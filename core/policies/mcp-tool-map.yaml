@@ -50,6 +50,15 @@ tool_actions:
   wrangler_deploy: run_deployment
   wrangler_publish: run_deployment
   deploy: run_deployment
+  terraform_apply: apply_iac
+  pulumi_up: apply_iac
+  cdk_deploy: apply_iac
+
+  # Agent delegation / sub-agent invocation
+  delegate_task: delegate_task
+  invoke_sub_agent: delegate_task
+  spawn_agent: delegate_task
+  a2a_send_task: delegate_task
 
   # Data export
   export_csv: export_data
@@ -135,7 +144,11 @@ destructive_patterns:
   - pattern: "kubectl apply"
     action: run_deployment
   - pattern: "terraform apply"
-    action: run_deployment
+    action: apply_iac
+  - pattern: "pulumi up"
+    action: apply_iac
+  - pattern: "cdk deploy"
+    action: apply_iac
 
   # Rollback
   - pattern: "rollback"

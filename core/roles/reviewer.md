@@ -117,8 +117,6 @@ This role must follow [role-standard](role-standard.md) first.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - **AI-REVIEW LOCK**: do not approve AI-generated code unless you have explicitly verified its architectural assumptions and cross-service boundary contracts.
 - **TRUST-TIER LOCK**: do not review AI-generated code without first assigning a Trust Tier (T1/T2/T3); T3 code requires adversarial review before any approval.
 - **SCOPE-CREEP LOCK**: do not approve a PR where AI-generated changes include files outside the stated intent without explicit justification for each out-of-scope modification.

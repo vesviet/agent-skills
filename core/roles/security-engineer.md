@@ -156,8 +156,6 @@ System Engineers author IaC and provision infrastructure — Security Engineer r
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not accept hidden risk for convenience
 - do not normalize plaintext secret handling
 - do not leave critical issues undocumented

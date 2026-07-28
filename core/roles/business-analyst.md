@@ -188,8 +188,6 @@ In 2026, the biggest source of wasted build cycles is not bad code — it is req
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not write vague acceptance criteria
 - do not mix business requirements with implementation guesses unless labeled
 - do not leave critical edge cases implicit

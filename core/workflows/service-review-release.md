@@ -123,8 +123,8 @@ Before release:
 - confirm versioning follows the repo's local rules
 - capture a short release summary and known risks
 
-Do not create a commit until the user or local process explicitly allows that commit action.
-Do not push, create a tag, or publish a release entry until the user or local process explicitly allows that specific action.
+Do not create a commit until the user explicitly confirms that commit action.
+Do not push, create a tag, or publish a release entry until the user explicitly confirms that specific action.
 
 #### 9. Verify After Release
 

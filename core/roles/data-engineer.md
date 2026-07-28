@@ -157,8 +157,6 @@ Informal documentation is not a data contract. In 2026, data contracts are machi
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not treat analyst one-offs as permanent pipeline debt without explicit prioritization
 - do not run destructive migrations without backup and rollback validation
 - do not hardcode credentials or silent overwrite production datasets

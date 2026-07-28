@@ -51,15 +51,30 @@ This role must follow [role-standard](role-standard.md) first.
 | --------- | ------------------- | ----- |
 | Full agent readiness audit | compliance-report.json | Reference isitagentready.com scan score before and after |
 | MCP server-card update needed | PR to `public/.well-known/mcp/server-card.json` | Via Frontend or Cloudflare deploy path; do not push secrets |
-| A2A endpoint discovery fix (Link headers) | `contracts/schemas/edge-deployment-spec.json` | Coordinate with Cloudflare Engineer for header injection |
+| A2A endpoint discovery fix (Link headers) | Header/route requirement handed to Cloudflare Engineer | Cloudflare Engineer emits `contracts/schemas/edge-deployment-spec.json` and performs header injection |
 | Auth.md or OAuth metadata change | Updated `auth.md` + well-known JSON files | Reviewed by Security Engineer for scope accuracy |
 | Multi-repo compliance sweep | Escalate to Agent Coordinator | Provide per-repo compliance finding summary |
 
 ## Decision Boundaries
 
 - owns the metadata and discovery routes schemas
+- owns the *content* of response header configurations (which headers, which values, which rel types) as source files in the repository
+- does not own edge configuration, header injection at the edge, DNS records, or cache purge — those belong to Cloudflare Engineer
+- does not emit `contracts/schemas/edge-deployment-spec.json`; supply the header/route requirements and let Cloudflare Engineer emit the spec
 - does not set security policy or create OAuth client secrets
 - does not deploy changes to production without SRE/DevOps approval
+
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Agent Discovery Engineer** | Discovery metadata content (`auth.md`, well-known JSON, server cards, API catalog entries), header *specification*, scanner compliance resolution | Edge config, header injection, DNS, cache purge, `edge-deployment-spec.json`, OAuth policy, deploys |
+| **Cloudflare Engineer** | Edge config and deploy execution, header injection, DNS, cache purge, `edge-deployment-spec.json` | Which discovery metadata is correct, OAuth scope decisions, scanner compliance ownership |
+| **Security Engineer** | OAuth scopes, credential policy, `security-audit.json` | Metadata file authoring, discovery route design |
+| **Frontend Developer** | Serving well-known files from the app build/routes | Discovery metadata content decisions |
+| **Agent Coordinator** | Multi-repo sweep orchestration, `coordination-plan.json` | Per-file metadata correctness |
+
+Shared skills note: `configure-agent-headers` and `manage-api-catalog` appear in both this role and Cloudflare Engineer. Agent Discovery Engineer uses them to decide and author the header/catalog content; Cloudflare Engineer uses them to apply that content at the edge. When both are active, this role produces the requirement and Cloudflare Engineer executes it.
 
 ## Collaboration
 
@@ -74,8 +89,6 @@ This role must follow [role-standard](role-standard.md) first.
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
-
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 
 - **AGENT-OVERLAP LOCK**: do not approve a new agent role if its capabilities overlap more than 30% with an existing role without proposing a deprecation plan.
 
@@ -95,10 +108,10 @@ This role must follow [role-standard](role-standard.md) first.
 - `configure-agent-headers`
 - `manage-api-catalog`
 - `configure-agent-skills`
+- `manage-agent-identity`
 
 ### Supporting Skills (use when collaborating)
 
-- `manage-agent-identity`
 - `configure-llms-txt`
 - `commit-code`
 - `agent-delegation`

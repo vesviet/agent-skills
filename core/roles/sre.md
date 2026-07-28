@@ -134,8 +134,6 @@ AI/ML systems have reliability dimensions that standard availability SLOs do not
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not accept noisy alerts as normal
 - do not optimize reliability without understanding user impact
 - do not close incidents without follow-up actions

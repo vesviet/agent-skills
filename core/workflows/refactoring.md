@@ -102,8 +102,8 @@ Before committing:
 - confirm no accidental behavior changes slipped in
 - update docs when code organization changes matter to teammates
 
-Do not create a commit until the user or local process explicitly allows that commit action.
-Do not push, tag, or publish until the user or local process explicitly allows that specific action.
+Do not create a commit until the user explicitly confirms that commit action.
+Do not push, tag, or publish until the user explicitly confirms that specific action.
 
 ### Checklist
 

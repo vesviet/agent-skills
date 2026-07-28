@@ -40,6 +40,20 @@ Typical combinations:
 
 When executing any workflow, the Agent MUST output a markdown checklist `[ ]` for all steps. The Agent MUST process only ONE step at a time, mark it as `[x]`, and explain the result before moving to the next step. Do not skip steps or execute multiple steps at once without explicit user permission.
 
+## Skill Toolbox Rule For Workflow Steps
+
+A workflow step may name a skill that is only **Supporting** for the role tagged on that step. When that happens, the SKILL TOOLBOX LOCK still applies: the tagged role must delegate to the role that holds the skill as Primary, or obtain explicit user permission, rather than executing it directly.
+
+Before executing a step, resolve the skill it names:
+
+1. If the skill is Primary for the tagged role — execute it.
+2. If it is Supporting — identify the Primary owner in `core/roles/` and delegate, recording the handoff.
+3. If it is in neither list — stop and ask the user.
+
+Steps that commonly need this: `conduct-research`, `review-code`, `troubleshoot-service`, `navigate-service`, `create-migration`, and `database-maintenance` when driven by a planning, security, or operations role rather than by a developer role.
+
+`commit-code` is Primary for **Backend Developer**, **Frontend Developer**, and **Mobile Engineer**. Other roles hold it as Supporting and must route commits through one of those roles — subject, always, to the rule in `core/rules/code.md` that no commit happens without explicit user confirmation.
+
 ## Adaptation Notes
 
 These workflows are intentionally generic.

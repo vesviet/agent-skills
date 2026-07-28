@@ -4,7 +4,7 @@
   "name": "agent-coordinator",
   "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality gates, and driving work from intake to validated handoff without losing context or skipping safety. In 2025–2026, this means treating multi-agent systems as distributed software: enforcing deterministic state transitions, applying runtime guardrails (not prompt-based trust), maintaining end-to-end trace observability, managing token budgets as a design constraint, and applying explicit HITL gates before irreversible actions.",
   "url": "pack://agent-skills/core/roles/agent-coordinator.md",
-  "version": "3.3.1",
+  "version": "3.5.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -183,6 +183,94 @@
       "id": "agent-panel-meeting",
       "name": "Agent Panel Meeting",
       "description": "Orchestrate a 6-round, multi-role cross-examination panel meeting to debate architecture, code, or features and produce a final decision-ready JSON contract with trade-offs and residual risks. Use when rigorous cross-functional alignment is required before deciding, building, or shipping.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-memory-compaction",
+      "name": "Agent Memory Compaction",
+      "description": "Compact long-running agent conversation context into a minimal working state by preserving goals, constraints, current phase, active owner, decisions, changed files, validation, blockers, and next actions while dropping stale detail. Use when a chat grows long, context becomes noisy, or work needs a clean resume checkpoint during bug or feature control work.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-model-routing",
+      "name": "Agent Model Routing",
+      "description": "Select the most cost-effective model for each task or sub-task based on complexity, risk tier, and budget constraints. Use when orchestrating multi-step workflows, delegating tasks, or when token costs need active management.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-observability",
+      "name": "Agent Observability",
+      "description": "Trace agent reasoning chains, tool call sequences, context injections, and token costs to enable debugging, cost attribution, and continuous evaluation improvement. Use when deploying agents to production, diagnosing unexpected outputs, tracking costs across tenants, or building evaluation datasets from real-world failures.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-prompt-lifecycle",
+      "name": "Agent Prompt Lifecycle",
+      "description": "Manage prompt assets through their full lifecycle including versioning, evaluation against golden datasets, drift detection, and controlled promotion across environments. Use when creating, updating, reviewing, or auditing prompt definitions in roles, skills, workflows, or system instructions to ensure measurable quality and safe deployment.",
       "tags": [
         "agent",
         "pack"

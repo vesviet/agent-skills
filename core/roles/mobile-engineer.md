@@ -209,8 +209,6 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - **ON-DEVICE-AI LOCK**: do not run high-compute inference on the main thread; battery and thermal impact must be measured before shipping any AI feature
 - **MOBILE-AI-UI LOCK**: do not merge AI-generated mobile code without validating: correct platform API usage (no hallucinated UIKit/SwiftUI/Compose methods), JSI/FFI bridge safety, platform-specific conditional rendering correctness, and accessibility on both target platforms; apply the tiered validation framework (High/Medium/Low) based on feature risk
 - **MOBILE-LLM LOCK**: do not run LLM inference inline in the React Native JS thread or Flutter Dart isolate; inference must execute in a native C++/Swift/Kotlin service layer; JS/Dart bridge is for control and output delivery only; main-thread LLM inference is a thermal and UX failure
@@ -235,13 +233,13 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - `integrate-api-client`
 - `write-tests`
 - `frontend-testing`
+- `commit-code`
 
 ### Supporting Skills (use when collaborating)
 
 - `accessibility-review`
 - `performance-profiling`
 - `navigate-service`
-- `commit-code`
 - `review-code`
 - `troubleshoot-service`
 - `agent-delegation`

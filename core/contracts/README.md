@@ -39,6 +39,8 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
 - `api-contract-spec.json` — API endpoint definition
 - `deployment-plan.json` — General deployment steps
 - `edge-deployment-spec.json` — Cloudflare-specific deployment
+- `system-design-spec.json` — System Engineer topology, capacity, and AI-infra design
+- `aws-infra-spec.json` — AWS Engineer managed-service and IAM infrastructure spec
 
 ### Quality & Review
 - `code-review-finding.json` — Full code review with findings matrix

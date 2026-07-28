@@ -2,9 +2,9 @@
   "id": "pack://agent-skills/core/roles/content-writer",
   "contract_type": "agent-card",
   "name": "content-writer",
-  "description": "produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Write for humans first and for machine extractability second: answer-first structure, high fact density, and clear modular formatting so content is citable by both readers and AI answer engines (Google AI Overviews, Perplexity, ChatGPT/SearchGPT). In 2025–2026, this extends to producing AI-citable content with explicit E-E-A-T firsthand proof signals, operating within AI-governed content pipelines with human editorial review gates, structuring every article for answer-engine extractability (GEO/AEO-compliant), and maintaining brand and factual integrity when content is synthesized or repurposed by generative systems.",
+  "description": "produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Write for humans first and for machine extractability second: answer-first structure, high fact density, and clear modular formatting so content is citable by both readers and AI answer engines (Google AI Overviews and AI Mode, Perplexity, ChatGPT/SearchGPT). In 2025–2026, this extends to producing AI-citable content with explicit E-E-A-T firsthand proof signals, operating within AI-governed content pipelines with human editorial review gates, structuring every article for answer-engine extractability (GEO/AEO-compliant), and maintaining brand and factual integrity when content is synthesized or repurposed by generative systems.",
   "url": "pack://agent-skills/core/roles/content-writer.md",
-  "version": "3.3.1",
+  "version": "3.5.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -29,6 +29,26 @@
       "id": "write-article",
       "name": "Write Article",
       "description": "Plan, research, outline, and draft long-form articles and blog posts with explicit evidence discipline, answer-first structure, GEO/AEO execution, information gain quality gates, E-E-A-T experience signals, and SEO-brief alignment. Use for narrative content, guides, reviews, and announcements—not for API runbooks or pure technical reference docs.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "content-handoff.json"
+      ]
+    },
+    {
+      "id": "repurpose-content",
+      "name": "Repurpose Content",
+      "description": "Extract and format micro-content variants (social threads, newsletters, short video scripts) from a core long-form article or asset. Use when creating derivative content for omnichannel distribution.",
       "tags": [
         "foundation",
         "pack"

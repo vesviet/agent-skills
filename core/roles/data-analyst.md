@@ -184,8 +184,6 @@ When a decision has significant business impact (budget reallocation, product ch
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-
 - do not modify source files or production tables without explicit approval
 - do not present single-query results as KPIs without definition and denominator context
 - do not compare datasets without normalizing keys, types, encoding, and time zones

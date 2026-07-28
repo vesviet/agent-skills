@@ -116,8 +116,8 @@ Role: **Backend Developer**, **Technical Lead**
 
 Use skill: `commit-code`
 
-Do not create a commit until the user or local release process explicitly allows that commit action.
-Do not push, create a tag, or publish a release until the user or local release process explicitly allows that specific action.
+Do not create a commit until the user explicitly confirms that commit action.
+Do not push, create a tag, or publish a release until the user explicitly confirms that specific action.
 
 Include in the commit or change description:
 

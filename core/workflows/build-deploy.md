@@ -22,8 +22,8 @@ Use this workflow when a change is ready to move from local verification into a 
 
 - prefer the repo's official CI/CD path over ad hoc local release steps
 - do not edit generated release metadata by hand unless the repo explicitly expects that
-- do not create a commit until the user or local process explicitly allows that commit action
-- do not push, create a tag, or publish a release until the user or local process explicitly allows that specific action
+- do not create a commit until the user explicitly confirms that commit action
+- do not push, create a tag, or publish a release until the user explicitly confirms that specific action
 
 ### Workflow Steps
 
@@ -117,7 +117,7 @@ After delivery starts:
 
 Prefer repo-local dashboards, manifests, or service discovery entries over guessing direct URLs.
 
-For Cloudflare targets, use skill: `debug-workers-edge` when edge logs, bindings, or routing fail smoke checks.
+For Cloudflare targets, `debug-workers-edge` is not in this step's toolbox: delegate to **Cloudflare Engineer** when edge logs, bindings, or routing fail smoke checks, and record the handoff.
 
 #### 6. Monitor And Decide
 
