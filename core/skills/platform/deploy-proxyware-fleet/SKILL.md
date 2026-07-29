@@ -5,7 +5,11 @@ description: Containerize and orchestrate massive fleets of passive income nodes
 
 # Deploy Proxyware Fleet
 
-Use this skill to handle the large-scale deployment of bandwidth monetization applications (Proxyware) using containerization, ensuring the fleet remains profitable and undetected by platform anti-abuse systems.
+Use this skill to handle the large-scale deployment of bandwidth monetization applications (Proxyware) using containerization, ensuring the fleet remains profitable and resilient to platform-side node cleanup.
+
+## Legal & Compliance Notice
+
+Bandwidth-sharing apps (Honeygain, EarnApp, Pawns.app) prohibit multi-accounting, VM/container deployment, and IP misrepresentation in their Terms of Service — running a containerized fleet at scale is very likely a ToS violation even when technically functional, and can result in account termination or forfeited earnings with no recourse. This skill documents the technical mechanics only; it does not establish that a given deployment is authorized by the target platform. Confirm the user has read and accepts the specific platform's ToS before implementing, and treat any "spoofing" or "evasion" step as in scope for `REVIEW-SYSTEM LOCK` in the `mmo-engineer` role (explicit written authorization + Security Engineer review) rather than default-approved automation.
 
 ## When to Use
 
@@ -46,7 +50,7 @@ services:
 
 1. **Containerization**: Use Docker to define lightweight headless nodes for apps like Honeygain, EarnApp, or Pawns.app.
 2. **Network Routing**: Configure network routing via WireGuard, VPNs, or Proxy-chains to ensure container traffic exits through legitimate Residential IPs.
-3. **Hardware Spoofing**: Configure the containers to spoof MAC addresses or mask the virtualization layer if the target platform explicitly bans Docker.
+3. **Hardware/OS Fingerprint Normalization**: If the target platform's ToS permits container deployment but flags a config purely for looking virtualized, normalize the hardware/OS fingerprint reported by the container. If the platform's ToS or anti-abuse system explicitly targets and bans this technique, treat it as a `REVIEW-SYSTEM LOCK` case — escalate to the user and Security Engineer before implementing rather than deploying it as default behavior.
 4. **Resource Capping**: Apply hard limits to the orchestration file (`docker-compose.yml` or Kubernetes manifests) to restrict resource consumption.
 
 ## Checklist

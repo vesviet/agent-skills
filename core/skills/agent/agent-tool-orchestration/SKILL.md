@@ -123,6 +123,8 @@ After edits:
 - inspect failures before changing more code
 - rerun the smallest check that proves the fix
 
+## 2026 Tool Orchestration Patterns
+
 ### 2026: Parallel Tool Execution
 
 Orchestration engines must maximize throughput by parallelizing independent tool calls:

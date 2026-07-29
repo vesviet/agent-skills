@@ -63,8 +63,17 @@
     {
       "task_id": "task-cod-store-routing-slice-01",
       "state": "working",
-      "progress": 0.6,
-      "message": "Modified NewLogicAutoAssign.php; writing unit tests",
+      "progress_percent": 60,
+      "message": {
+        "message_id": "msg-002",
+        "role": "worker",
+        "parts": [
+          {
+            "kind": "text",
+            "text": "Modified NewLogicAutoAssign.php; writing unit tests"
+          }
+        ]
+      },
       "event": "task.status",
       "timestamp": "2026-06-12T11:30:00Z"
     }

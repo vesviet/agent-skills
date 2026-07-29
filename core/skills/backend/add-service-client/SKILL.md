@@ -76,6 +76,8 @@ Cover:
 - timeout or unavailable dependency behavior
 - response-mapping edge cases
 
+## 2026 Inter-Service Communication Patterns
+
 ### 2026: Connect Protocol for Inter-service RPC
 
 The Connect Protocol serves as the preferred inter-service RPC framework due to its flexibility and performance characteristics:

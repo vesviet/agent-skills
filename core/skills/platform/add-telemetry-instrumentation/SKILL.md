@@ -64,6 +64,8 @@ Verify that the telemetry can support dashboards, alerts, incident triage, and r
 
 Confirm that logs, metrics labels, and trace attributes do not expose secrets, credentials, tokens, or unnecessary personal data.
 
+## 2026 Observability Patterns
+
 ### 2026: OpenTelemetry GenAI Semantic Conventions
 
 When instrumenting Generative AI and Large Language Model (LLM) operations:

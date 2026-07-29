@@ -6,6 +6,8 @@ description: Workflow for producing a publish-ready article from an SEO brief â€
 
 Use this workflow when an `seo-content-brief.json` is ready and the article must move from brief to published URL. Covers Content Writer drafting, SEO Analyst draft audit, user-controlled deployment, and publish-log recording.
 
+If the brief doesn't exist yet and the work starts from a bare topic, start at [seo-content-lifecycle](seo-content-lifecycle.md) instead â€” it prepends the planning and research steps, then hands off to this workflow's step 3.
+
 ### When To Use
 
 - an SEO content brief exists and drafting can begin

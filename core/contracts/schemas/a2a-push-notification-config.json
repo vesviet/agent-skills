@@ -45,13 +45,10 @@
   ],
   "examples": [
     {
-      "url": "https://hooks.personalized.dev/a2a-notify",
-      "token": "bearer-token-placeholder",
-      "authentication": {
-        "scheme": "Bearer"
-      },
       "task_id": "task-example-001",
-      "callback_url": "https://example.invalid/a2a-notify",
+      "callback_url": "https://hooks.personalized.dev/a2a-notify",
+      "auth_scheme": "Bearer",
+      "secret_ref": "secrets/a2a-notify-bearer-token",
       "events": [
         "task.completed"
       ]

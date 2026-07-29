@@ -60,15 +60,15 @@
   ],
   "examples": [
     {
+      "message_id": "msg-001",
       "role": "agent",
+      "timestamp": "2026-06-12T11:45:00Z",
       "parts": [
         {
-          "type": "text",
+          "kind": "text",
           "text": "slice-01 completed. See implementation-result.json."
         }
-      ],
-      "messageId": "msg-001",
-      "message_id": "msg-001"
+      ]
     }
   ]
 }

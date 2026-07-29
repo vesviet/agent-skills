@@ -24,6 +24,8 @@ Use this skill for **search and content-structure** work — not for writing lon
 
 ### GEO / AEO — AI Search Visibility
 
+This is the canonical GEO/AEO standard for the pack — `write-article` implements these same rules during drafting and must stay in sync with this section.
+
 Optimize for three search discovery layers simultaneously:
 
 | Layer | Goal | Key tactic |

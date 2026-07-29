@@ -98,6 +98,8 @@ Final phase produces:
 - `validation-result.json` when validation is material
 - markdown summary for the user when human-readable closure is required
 
+## 2026 Graph Orchestration Patterns
+
 ### 2026: LangGraph 1.2.x Durable Execution
 
 LangGraph 1.2.x enables stateful, fault-tolerant agent graphs that survive restarts and support human-in-the-loop interaction:

@@ -1,6 +1,6 @@
 # Agent-Skills User Guide (A2A 1.0 + Antigravity)
 
-> Pack version **3.4.0**. This guide covers the core concepts of the multi-agent system. For the full A2A lifecycle and Antigravity adapter setup, see `adapters/antigravity/ANTIGRAVITY.md`.
+> Pack version **3.5.0**. This guide covers the core concepts of the multi-agent system. For the full A2A lifecycle and Antigravity adapter setup, see `adapters/antigravity/ANTIGRAVITY.md`.
 >
 > **Note:** The filename keeps its `_v2` suffix for link stability; it will be renamed to `USER_GUIDE.md` at the next major version.
 

@@ -58,7 +58,11 @@ PINNED = [
     ("adapters/claude/CLAUDE_ADAPTER.md", r"Pack version:\s*\*\*([0-9.]+)\*\*"),
     ("AGENTS.md", r"pack\s+([0-9]+\.[0-9]+\.[0-9]+)\)"),
     ("USER_GUIDE_v2.md", r"pack\s+([0-9]+\.[0-9]+\.[0-9]+)\)"),
+    ("USER_GUIDE_v2.md", r"Pack version \*\*([0-9]+\.[0-9]+\.[0-9]+)\*\*"),
     ("README.md", r"\*\*Version ([0-9]+\.[0-9]+\.[0-9]+)\*\*"),
+    ("CLAUDE.md", r"Pack version:\s*\*\*([0-9.]+)\*\*"),
+    (".cursorrules", r"pack\s+([0-9]+\.[0-9]+\.[0-9]+)\)"),
+    ("core/codex/.a2a-config.json", r"\"pack_version\":\s*\"([0-9.]+)\""),
 ]
 
 
@@ -102,7 +106,7 @@ def check_no_stray_versions(version: str) -> list[str]:
     for path in sorted(ROOT.rglob("*")):
         if not path.is_file() or set(path.parts) & skip_parts:
             continue
-        if path.suffix not in (".md", ".json", ".yaml", ".yml", ".cursorrules"):
+        if path.suffix not in (".md", ".json", ".yaml", ".yml") and path.name != ".cursorrules":
             continue
         if path.name == "CHANGELOG.md":
             continue

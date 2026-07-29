@@ -69,19 +69,25 @@
   ],
   "examples": [
     {
-      "state": "completed",
-      "message": {
-        "role": "agent",
-        "parts": [
-          {
-            "type": "text",
-            "text": "slice-01-command-logic completed. implementation-result.json emitted. 2 files changed. Tests passing."
-          }
-        ]
-      },
-      "timestamp": "2026-06-12T11:30:00Z",
       "task_id": "task-example-001",
-      "updated_at": "2026-06-12T11:30:00Z"
+      "state": "completed",
+      "delegator": "agent-coordinator",
+      "assignee_role": "backend-developer",
+      "interaction_mode": "stream",
+      "updated_at": "2026-06-12T11:30:00Z",
+      "messages": [
+        {
+          "message_id": "msg-003",
+          "role": "agent",
+          "timestamp": "2026-06-12T11:30:00Z",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "slice-01-command-logic completed. implementation-result.json emitted. 2 files changed. Tests passing."
+            }
+          ]
+        }
+      ]
     }
   ]
 }

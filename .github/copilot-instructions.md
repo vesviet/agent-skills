@@ -36,8 +36,10 @@ Organized under `core/skills/` by taxonomy:
 - `core/skills/backend/`
 - `core/skills/frontend/`
 - `core/skills/platform/`
+- `core/skills/commerce/`
 - `core/skills/security-data/`
 - `core/skills/documentation/`
+- `core/skills/education/`
 
 Overlay-specific skills live under `overlays/` and should be loaded only when the target repository needs them.
 

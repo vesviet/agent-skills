@@ -5,7 +5,11 @@ description: Manage and share MMO assets (Business Managers, Via, Pixels/Dataset
 
 # Manage MMO Assets
 
-Use this skill to securely acquire, organize, and share valuable marketing assets without triggering platform security algorithms or risking entire network closures ("chết chùm").
+Use this skill to securely acquire, organize, and share marketing assets using RBAC-based access control and isolation practices intended to limit the blast radius of a single account restriction.
+
+## Legal & Compliance Notice
+
+Ad platforms (Meta, Google) prohibit circumventing their account, ownership, or verification policies — sharing Business Managers/Vias to route around a platform's identity or ownership checks, or maintaining "clean backup" assets specifically to survive a ban that would otherwise apply, can itself violate platform ToS regardless of the isolation hygiene used. This skill documents access-control and compartmentalization mechanics only. It does not authorize policy circumvention; any step that exists specifically to defeat a platform's account-integrity or ownership verification system falls under `REVIEW-SYSTEM LOCK` in the `mmo-engineer` role and requires explicit written user authorization plus Security Engineer review before implementation.
 
 ## When to Use
 

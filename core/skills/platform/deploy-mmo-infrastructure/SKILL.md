@@ -5,7 +5,11 @@ description: Deploy and manage proxy pools (Residential/4G) and Anti-Detect Brow
 
 # Deploy MMO Infrastructure
 
-Use this skill to provision highly anonymous, isolated infrastructure required for Make Money Online (MMO) operations, preventing tracking, fingerprinting, and cascading bans.
+Use this skill to provision isolated proxy and browser-profile infrastructure for Make Money Online (MMO) operations.
+
+## Legal & Compliance Notice
+
+Anti-detect browsers and fingerprint normalization exist in a grey zone: using them to manage multiple legitimate accounts is common practice, but using them specifically to evade a platform's fraud, ownership, or ad-review detection is a ToS violation on most ad and affiliate platforms and can carry account or payment-processor consequences beyond the immediate operation. This skill documents proxy/browser provisioning mechanics only. Anonymity and isolation techniques used to protect legitimate multi-account operations are in scope for default execution; techniques whose specific purpose is to defeat a platform's ad review, moderation, or account-integrity system fall under `REVIEW-SYSTEM LOCK` in the `mmo-engineer` role and require explicit written user authorization plus Security Engineer review before implementation.
 
 ## When to Use
 

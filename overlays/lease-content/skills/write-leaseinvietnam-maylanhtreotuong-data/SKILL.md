@@ -1,6 +1,6 @@
 ---
 name: write-leaseinvietnam-maylanhtreotuong-data
-description: Draft or update Astro Content Collection Markdown/MDX for the Lease in Vietnam and Máy Lạnh Treo Tường sites. Use when editing files under `/home/user/personalized/leaseinvietnam/src/data` or `/home/user/personalized/maylanhtreotuong/src/data`.
+description: Draft or update Astro Content Collection Markdown/MDX for the Lease in Vietnam and Máy Lạnh Treo Tường sites. Use when editing files under `leaseinvietnam/src/data` or `maylanhtreotuong/src/data` (paths relative to the workspace root).
 ---
 
 # Write Leaseinvietnam Maylanhtreotuong Data
@@ -9,10 +9,10 @@ Use this skill when posts, listings, or product pages must be added or revised i
 
 ## Content Roots
 
-| Site | Absolute data path | Collections (`src/content/config.ts`) |
+| Site | Data path (relative to workspace root) | Collections (`src/content/config.ts`) |
 |------|-------------------|----------------------------------------|
-| Lease in Vietnam | `/home/user/personalized/leaseinvietnam/src/data` | `post`, `property` |
-| Máy Lạnh Treo Tường | `/home/user/personalized/maylanhtreotuong/src/data` | `post`, `product` |
+| Lease in Vietnam | `leaseinvietnam/src/data` | `post`, `property` |
+| Máy Lạnh Treo Tường | `maylanhtreotuong/src/data` | `post`, `product` |
 
 Both projects load `**/*.{md,mdx}` from those folders via Astro glob loaders; frontmatter must satisfy the Zod schemas in each repo’s `src/content/config.ts`.
 
@@ -60,7 +60,7 @@ List fields that need SME verification (prices, legal claims, model numbers) for
 
 ## Checklist
 
-- [ ] edits target the correct absolute `src/data` root and collection type
+- [ ] edits target the correct `src/data` root and collection type
 - [ ] frontmatter matches `config.ts` and peers in the same folder
 - [ ] lease posts use dated path layout when siblings do
 - [ ] MDX imports and components match existing posts in that site

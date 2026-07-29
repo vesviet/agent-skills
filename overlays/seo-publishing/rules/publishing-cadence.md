@@ -4,7 +4,7 @@ Rules for the daily operation of the SEO Publishing overlay, focusing on cadence
 
 ## 1. Dual-Site Sprint Cadence
 
-When the sprint is active across both the `Lease in Vietnam` and `Máy Điện Giải` (or `Máy Lạnh`) portfolios, the following volume limits apply:
+When the sprint is active across both the `Lease in Vietnam` and `Máy Lạnh Treo Tường` portfolios, the following volume limits apply:
 - **Maximum Output:** 2 posts per day total.
 - **Distribution:** Exactly 1 post for Site A, and 1 post for Site B.
 - **Cadence Window:** Operate on a rolling **7-day Topic Board** cycle.

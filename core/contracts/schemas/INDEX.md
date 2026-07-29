@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**42 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 40/42
+**42 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 41/42
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 
@@ -34,7 +34,7 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | **Design & Content** | | | |
 | `ux-flow-spec.json` | UX Flow Specification | ✅ | ✅ |
 | `ui-component-spec.json` | UI Component Specification | ✅ | ✅ |
-| `content-handoff.json` | Content Handoff | ✅ | — |
+| `content-handoff.json` | Content Handoff | ✅ | ✅ |
 | `documentation-handoff.json` | Documentation Handoff | ✅ | ✅ |
 | `learning-handoff.json` | Learning Handoff | ✅ | ✅ |
 | `research-report.json` | Research Report Specification | ✅ | ✅ |
@@ -55,7 +55,7 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | `a2a-message.json` | A2A Message | ✅ | — |
 | `a2a-jsonrpc-envelope.json` | A2A JSON-RPC 2.0 Envelope | ✅ | — |
 | `a2a-push-notification-config.json` | A2A Push Notification Config | ✅ | — |
-| `coordination-plan.json` | Coordination Plan | ❌ | — |
+| `coordination-plan.json` | Coordination Plan | ✅ | ✅ |
 | **Agent Infrastructure** | | | |
 | `agent-card.json` | A2A Agent Card | ✅ | — |
 | `agent-trace-span.json` | Agent Trace Span | ✅ | — |
@@ -256,7 +256,7 @@ Size: 4,683 bytes
 Structured handoff from Content Writer to SEO Analyst, Reviewer, or publisher upon completing an article. Includes typed information gain gate (`information_gain.type` enum with 6 categories), GEO/AEO execution evidence (`geo_aeo_fields_applied`: answer-first, fan-out coverage, answer formats, fact density), E-E-A-T signal audit (`eeat_signals`: experience proof type, YMYL flag), and source credibility tracking aligned with research-report.json source hierarchy. Pairs with seo-metadata.json for final publication metadata.
 
 Required fields: `contract_type`, `content_path`, `status`
-Size: ~7,500 bytes
+Size: 12,064 bytes
 ✅ Has example
 
 #### `documentation-handoff.json`
@@ -427,11 +427,13 @@ Size: 1,254 bytes
 
 #### `coordination-plan.json`
 
-**Coordination Plan**  
+**Coordination Plan**
 
+Structured multi-agent execution plan produced by Agent Coordinator. Defines phases, dependencies, gate conditions, circuit breakers, per-phase token budgets, confidence levels, and interruption recovery checkpoints for complex multi-role workflows. Consumed by all execution roles to understand their phase, sequencing, and reporting obligations. Pairs with a2a-task.json for per-phase task dispatch.
 
-Size: 1,330 bytes  
-❌ No example
+Required fields: `contract_type`, `goal`, `phases`, `execution_state`
+Size: 13,665 bytes
+✅ Has example
 
 ### Agent Infrastructure
 

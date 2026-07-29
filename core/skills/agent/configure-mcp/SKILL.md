@@ -61,6 +61,8 @@ Use this skill to set up the full MCP presence for a web service: the server car
 
 7. **Validate**: Scan the domain with `isitagentready.com`. Confirm the MCP server card check passes. Test tool invocation from an MCP client (e.g., Claude Desktop with the MCP extension, or a curl request to the transport URL).
 
+## 2026 MCP Production Patterns
+
 ### 2026: OAuth 2.1 + PKCE for HTTP Transport
 
 1. **Configure OAuth 2.1 Authorization**: Set up the authorization server endpoint and token endpoint on the MCP gateway.
@@ -123,9 +125,11 @@ Use this skill to set up the full MCP presence for a web service: the server car
 
 ### ⚠️ Stateless Architecture Migration (MCP 2026-07-28)
 
-> **Breaking change**: The MCP spec revision `2026-07-28` transitions MCP from stateful sessions to **fully stateless requests**. A 12-month deprecation window applies for older implementations.
+> **Breaking change**: The MCP spec revision `2026-07-28` transitions MCP from stateful sessions to **fully stateless requests**. A 12-month deprecation window applies for older implementations. Source: [official changelog](https://modelcontextprotocol.io/specification/2026-07-28/changelog).
 >
 > Revision order, newest last: `2025-03-26` → `2025-06-18` → `2025-11-25` → `2026-07-28`. The immediate predecessor is **`2025-11-25`**, so that is the version a current-but-unmigrated server most likely reports.
+>
+> Governance: MCP was donated by Anthropic to the **Agentic AI Foundation (AAIF)**, a directed fund under the **Linux Foundation**, announced 2025-12-09. Source: [Anthropic announcement](https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation).
 
 **What is changing:**
 
@@ -139,13 +143,13 @@ Use this skill to set up the full MCP presence for a web service: the server car
 
 **Migration steps:**
 
-1. **Add `_meta` to every request**: include `protocol_version`, `client_id`, and `capabilities` in the `_meta` field of every tool call request body.
+1. **Add `_meta` to every request**: include the protocol version and client capabilities in the `_meta` field of every tool call request body, per the official schema (`io.modelcontextprotocol/protocolVersion`, `io.modelcontextprotocol/clientCapabilities`, `io.modelcontextprotocol/clientInfo`).
    ```json
    {
      "_meta": {
-       "protocol_version": "2026-07-28",
-       "client_id": "my-agent-client",
-       "capabilities": { "tools": true, "resources": false }
+       "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+       "io.modelcontextprotocol/clientInfo": { "name": "my-agent-client" },
+       "io.modelcontextprotocol/clientCapabilities": { "tools": true, "resources": false }
      },
      "method": "tools/call",
      "params": { ... }

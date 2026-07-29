@@ -1,6 +1,6 @@
 ---
 name: write-vesviet-learn-content
-description: Draft or update Hugo Markdown for the Vesviet portfolio site or the Learn notes site. Use when creating or editing content under `/home/user/personalized/vesviet/content` or `/home/user/personalized/learn/content`, including posts, series, radar entries, or learn docs.
+description: Draft or update Hugo Markdown for the Vesviet portfolio site or the Learn notes site. Use when creating or editing content under `vesviet/content` or `learn/content` (paths relative to the workspace root), including posts, series, radar entries, or learn docs.
 ---
 
 # Write Vesviet Learn Content
@@ -9,10 +9,10 @@ Use this skill when new or updated articles must land in one of the two Hugo sit
 
 ## Content Roots
 
-| Site | Absolute content path | Public site (from `hugo.toml`) |
+| Site | Content path (relative to workspace root) | Public site (from `hugo.toml`) |
 |------|------------------------|----------------------------------|
-| Vesviet (portfolio / blog) | `/home/user/personalized/vesviet/content` | `https://tanhdev.com/` |
-| Learn (notes / research) | `/home/user/personalized/learn/content` | `https://learn.tanhdev.com/` |
+| Vesviet (portfolio / blog) | `vesviet/content` | `https://tanhdev.com/` |
+| Learn (notes / research) | `learn/content` | `https://learn.tanhdev.com/` |
 
 Both sites use the **PaperMod** theme, Vietnamese or English copy is acceptable when it matches sibling pages in the same folder.
 

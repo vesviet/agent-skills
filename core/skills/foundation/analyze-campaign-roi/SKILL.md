@@ -7,6 +7,10 @@ description: Analyze S2S conversion data, monitor ad account die-rates, and calc
 
 Use this skill to perform financial and risk analysis of MMO campaigns, combining revenue metrics with operational costs (proxies, AI APIs, account replacements) to determine true profitability.
 
+## Legal & Compliance Notice
+
+This skill analyzes financial data only and does not itself execute any platform-facing technique. "Die-rate" here means the observed rate of account restrictions from any cause; factoring it into ROI is a financial modeling practice, not an endorsement of any technique that causes it. See `deploy-mmo-infrastructure`, `manage-mmo-assets`, and `deploy-proxyware-fleet` for the compliance notices covering the underlying infrastructure and asset-management techniques.
+
 ## When to Use
 
 - evaluating whether a campaign is actually profitable after costs

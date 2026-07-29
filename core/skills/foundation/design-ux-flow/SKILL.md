@@ -66,6 +66,8 @@ Document adjacent flows, permissions, analytics_events, and api_needs.
 
 Publish UX handoff manifest (flow path + component paths) for Frontend and QA.
 
+## 2026 Agentic UX Patterns
+
 ### 2026: Agent UX Flow Patterns
 
 - Design clear confirmation screens when delegating high-impact tasks to background agents.

@@ -8,7 +8,7 @@ The board dictates exactly what will be drafted, audited, and published over the
 
 **Mandatory Guardrails for the Board:**
 - Exactly 1 post per day for `Lease in Vietnam`.
-- Exactly 1 post per day for `Máy Điện Giải` (or `Máy Lạnh Treo Tường`).
+- Exactly 1 post per day for `Máy Lạnh Treo Tường`.
 - Ensure no Search Intent is repeated within a 7-day window on the same site (Anti-Cannibalization check).
 
 ## 2. Template Structure (`plan-YYYY-MM-DD.md`)

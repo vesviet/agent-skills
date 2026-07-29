@@ -34,6 +34,17 @@ Regenerates cards from `core/roles/*.md` and `core/skills/*/SKILL.md` metadata.
 
 In IDE workflows, agents often hand off via **files** (`a2a-task.json`, `a2a-artifact.json`) rather than HTTP. Agent Card `url` fields use the `pack://agent-skills/...` scheme for documentation and registry lookup. Deployed Antigravity services should replace `url` with real HTTPS endpoints.
 
+## Spec Compliance Scope
+
+The agent cards generated here are **pack-internal discovery manifests for IDE/CLI use**, not spec-compliant A2A 1.0 `AgentCard` documents. Specifically:
+
+- The A2A 1.0 spec's `AgentCard` uses `supportedInterfaces` (a list of `{url, protocolBinding, protocolVersion}`) and `securitySchemes` (a map of `SecurityScheme` objects). This pack's cards use a single `url` string plus `authentication: {schemes: [...]}` instead — a simpler shape suited to file-based, single-transport IDE handoffs.
+- Fields such as `stateTransitionHistory`, `contract_type`, `role_file`, `policy_profile`, and `defaultOutputSchemas` are **pack-local extensions** with no equivalent in the A2A 1.0 spec.
+- The `protocol_version` field on each card reflects **this pack's** adherence level to A2A lifecycle concepts (task states, JSON-RPC envelope shape), not a claim that the card itself is byte-for-byte spec-compliant and ready to interoperate with an external A2A peer out of the box.
+- Task lifecycle states (`submitted`, `working`, `input-required`, `completed`, `failed`, `canceled`) and the general request/response shape do follow the A2A 1.0 model; the divergence is in the `AgentCard` discovery document shape, not the task protocol itself.
+
+If you need to interoperate with an external A2A 1.0 peer, transform these pack-local cards into spec-shaped `AgentCard` documents at the adapter boundary rather than publishing them as-is.
+
 ## Schemas
 
 | Schema | Purpose |

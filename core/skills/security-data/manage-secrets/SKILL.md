@@ -75,6 +75,8 @@ Confirm without exposing values:
 - dependent calls succeed
 - no sensitive value appears in logs or docs
 
+## 2026 Secrets Management Patterns
+
 ### 2026: OIDC Workload Identity Federation
 
 When designing or auditing deployment workflows:

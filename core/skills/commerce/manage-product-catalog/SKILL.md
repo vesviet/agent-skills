@@ -59,6 +59,8 @@ Clarify before building:
 - implement idempotent upsert by SKU to safely re-run sync without duplicating products
 - log sync runs with counts of created, updated, and failed records
 
+## 2026 Catalog Architecture Patterns
+
 ### 2026: Semantic Vector Search Layer
 
 Modern catalogs utilize a semantic vector search layer alongside traditional keyword search to improve product discovery:

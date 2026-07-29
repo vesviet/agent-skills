@@ -70,6 +70,8 @@ Use:
 - high-severity risk for likely misuse or privilege widening
 - follow-up risk for hardening gaps that should be tracked
 
+## 2026 Security Standards
+
 ### 2026: OWASP Top 10:2025 Standards
 
 Verify the following 2025 additions during audits:

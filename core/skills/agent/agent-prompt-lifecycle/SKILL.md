@@ -120,6 +120,8 @@ After deployment:
 - track key metrics: format compliance rate, hallucination rate, user correction rate
 - trigger re-evaluation if any metric degrades beyond threshold
 
+## 2026 PromptOps Patterns
+
 ### 2026: DSPy Automatic Prompt Optimization
 
 Prompt engineering shifts from manual template editing to programmatic optimization using DSPy:

@@ -5,7 +5,9 @@ description: Plan, research, outline, and draft long-form articles and blog post
 
 # Write Article
 
-Use this skill with the **Content Writer** role when the deliverable is a publishable article (Markdown, MDX, or Hugo/Astro content files). In 2025-2026, articles must optimize for three discovery surfaces simultaneously: traditional search (SEO), direct-answer engines (AEO), and generative AI citation (GEO).
+Use this skill with the **Content Writer** role when the deliverable is a publishable article (Markdown, MDX, or Hugo/Astro content files). Articles must optimize for three discovery surfaces simultaneously: traditional search (SEO), direct-answer engines (AEO), and generative AI citation (GEO).
+
+The specific thresholds below (answer-first ≤60 words, fact density, E-E-A-T proof types) are the same GEO/AEO/E-E-A-T standard defined in `optimize-seo`'s Core Rules — this skill is where a Content Writer **implements** that standard while drafting, not a second definition of it. If the two ever disagree, `optimize-seo` is the source of truth; update rules there first, then mirror the change here.
 
 ## When to Use
 

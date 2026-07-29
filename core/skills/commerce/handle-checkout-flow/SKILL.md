@@ -57,6 +57,8 @@ Define the full funnel before building:
 - on success: persist the confirmed order, release inventory lock, send confirmation email, and redirect to confirmation page
 - on failure: release inventory lock, surface payment error, allow retry without re-entering non-payment data
 
+## 2026 Agentic Checkout Patterns
+
 ### 2026: Agentic Checkout Architecture
 
 Agentic Checkout enables AI agents to autonomously execute purchase transactions under the Agentic Commerce Protocol (ACP) and User Context Protocol (UCP):

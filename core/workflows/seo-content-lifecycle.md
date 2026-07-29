@@ -4,13 +4,17 @@ description: End-to-end workflow for SEO analysis, deep data research, content d
 
 ## SEO Content Lifecycle Workflow
 
-Use this workflow when a new content initiative is starting from a general topic and needs to go all the way through SEO briefing, deep research, drafting, auditing, and final publication.
+Use this workflow when a new content initiative is starting from a general topic — before an SEO brief even exists — and needs to go all the way through briefing, deep research, drafting, auditing, and final publication in one continuous cycle.
+
+This workflow wraps [content-publishing](content-publishing.md): steps 1–2 here create the brief and research that `content-publishing` assumes as a prerequisite. Once the brief exists, steps 3–6 here are the same drafting → audit → publish sequence as `content-publishing` steps 3–8, just summarized — follow `content-publishing` for the detailed sub-steps, self-check items, and exact `content-handoff.json` field requirements.
 
 ### When To Use
 
 - a new topic needs an SEO brief, deep research, and drafting in one continuous cycle
 - a sprint requires end-to-end execution of a content piece
 - multiple specialist roles need to collaborate from ideation to deployment
+
+If a brief already exists and only drafting/audit/publish remain, use [content-publishing](content-publishing.md) directly instead.
 
 ### Prerequisites
 
@@ -38,59 +42,26 @@ Use skill: `conduct-research`
 - focus on fulfilling the E-E-A-T experience proof requirements specified in the SEO brief
 - document findings and verifiable data points in `research-report.json`
 
-#### 3. Draft The Article
+#### 3. Draft, Audit, And Publish
 
-Role: **Content Writer**
+Role: **Content Writer**, **SEO Analyst**, **Technical Lead**
 
-Use skill: `write-article`
-
-- consume both the `seo-content-brief.json` and `research-report.json`
-- draft the article following the answer-first structure and word count targets
-- embed required internal links and on-page formatting
-
-#### 4. SEO And Quality Audit
-
-Role: **SEO Analyst**, **Reviewer**
-
-Use skill: `optimize-seo`
-
-- audit the written draft against the brief to ensure on-page spec compliance
-- check keyword density, internal links, and answer-first formatting
-- emit `seo-audit-report.json` with findings categorized as Blocking, Important, or Follow-Up
-- emit `seo-metadata.json` with final title, meta description, and slug
-
-#### 5. Revise And Handoff
-
-Role: **Content Writer**
-
-- address any Blocking findings from the SEO audit
-- emit `content-handoff.json` confirming that the brief was followed and the audit was passed
-- explicitly wait for user approval before moving to publish
-
-#### 6. Publish And Record
-
-Role: **Technical Lead**, **Content Writer**
-
-- deploy the content only after explicit user approval
-- append `publish-log.md` with the publish date, article title, keyword, and internal links
-- update `content-handoff.json` to mark the publish log as updated
+Follow [content-publishing](content-publishing.md) steps 3–8 in full: draft against the brief, self-check, SEO audit, revise, and publish with explicit user approval. That workflow owns the detailed checklist and field-level requirements for `content-handoff.json`, `seo-audit-report.json`, and `publish-log.md` — this entry point exists only to prepend the planning and research steps above it.
 
 ### Checklist
 
 - [ ] topic planned and intent clarified
 - [ ] seo-content-brief.json produced with keyword and link targets
 - [ ] research-report.json produced with data points and E-E-A-T evidence
-- [ ] draft written according to brief guidelines
-- [ ] seo-audit-report.json and seo-metadata.json produced
-- [ ] Blocking issues from audit resolved
-- [ ] content-handoff.json emitted
-- [ ] article published with explicit user approval
-- [ ] publish-log.md appended with final URL and keyword
+- [ ] draft written per content-publishing workflow steps 3–5 (brief-aligned, self-checked)
+- [ ] SEO audit and metadata produced per content-publishing workflow step 5
+- [ ] Blocking findings resolved per content-publishing workflow step 6
+- [ ] article published and publish-log.md updated per content-publishing workflow steps 7–8
 
 ### Related Workflows
 
+- [content-publishing](content-publishing.md) — the draft-through-publish sequence this workflow hands off to after step 2
 - [seo-keyword-brief](seo-keyword-brief.md)
-- [content-publishing](content-publishing.md)
 - [content-audit](content-audit.md)
 - [qa-validation](qa-validation.md)
 

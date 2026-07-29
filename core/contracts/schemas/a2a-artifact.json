@@ -122,16 +122,18 @@
   ],
   "examples": [
     {
-      "artifact_id": "artifact-impl-result-slice-01",
       "task_id": "task-cod-store-routing-slice-01",
-      "name": "implementation-result",
+      "state": "completed",
+      "status": "completed",
       "parts": [
         {
-          "type": "text",
+          "kind": "text",
           "text": "{\"contract_type\":\"implementation-result\",\"slice_id\":\"slice-01-command-logic\",...}"
         }
       ],
-      "status": "completed"
+      "evidence": [
+        "Implementation result validates against contracts/schemas/implementation-result.json"
+      ]
     }
   ]
 }

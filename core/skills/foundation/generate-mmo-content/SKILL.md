@@ -7,6 +7,10 @@ description: Use AI APIs to procedurally generate landing pages, creatives, and 
 
 Use this skill to automate the creation of marketing assets at scale, allowing rapid testing of hundreds of angles, landing pages, and creatives without manual intervention.
 
+## Legal & Compliance Notice
+
+Generating large volumes of near-duplicate ad copy/creatives specifically to bypass a platform's duplicate-content or ad-review filters can violate platform advertising policies even when each individual piece is legal content. This skill's automation mechanics are content-neutral; the `COMPLIANCE-LOCK` rule below is a floor, not a ceiling — confirm the target platform's advertising policy permits the intended volume/variation strategy before scaling a spin run.
+
 ## When to Use
 
 - launching new ad creatives or refreshing ad sets at volume
@@ -41,7 +45,7 @@ for angle in angles:
 
 ## Suggested Process
 
-1. **Procedural Generation**: Use LLMs (OpenAI, Gemini, Anthropic) to rewrite or "spin" ad copy, creating hundreds of unique variations to bypass duplicate content filters.
+1. **Procedural Generation**: Use LLMs (OpenAI, Gemini, Anthropic) to rewrite or "spin" ad copy into distinct variations for genuine A/B testing. Confirm variation volume and strategy comply with the target platform's advertising policy — see Legal & Compliance Notice above.
 2. **Landing Page Generation**: Procedurally generate static HTML/CSS landing pages tailored to specific keywords or audience segments.
 3. **Creative Automation**: Integrate with image generation APIs or templating systems to produce varied ad visuals.
 4. **Budget Guardrailing**: Inject circuit breakers in the code to stop execution if API costs exceed a predefined threshold.

@@ -119,30 +119,29 @@
   ],
   "examples": [
     {
-      "id": "task-cod-store-routing-slice-01",
-      "session_id": "session-2026-06-12-cod-order",
-      "status": {
-        "state": "submitted"
-      },
-      "kind": "task",
-      "message": {
-        "role": "user",
-        "parts": [
-          {
-            "type": "text",
-            "text": "Implement COD store routing in NewLogicAutoAssign.php per slice-01 of technical-delivery-plan 2026-06-12-change-store-order-cod"
-          }
-        ]
-      },
-      "task_id": "task-example-001",
+      "task_id": "task-cod-store-routing-slice-01",
+      "state": "submitted",
       "delegator": "agent-coordinator",
       "assignee_role": "backend-developer",
-      "task_description": "Implement the assigned slice.",
+      "task_description": "Implement COD store routing in NewLogicAutoAssign.php per slice-01 of technical-delivery-plan 2026-06-12-change-store-order-cod.",
       "output_schema_ref": "contracts/schemas/implementation-result.json",
       "success_criteria": [
         "Implementation result validates against its contract."
       ],
-      "risk_tier": "engineering"
+      "risk_tier": "engineering",
+      "interaction_mode": "stream",
+      "messages": [
+        {
+          "message_id": "msg-000",
+          "role": "delegator",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Implement COD store routing in NewLogicAutoAssign.php per slice-01 of technical-delivery-plan 2026-06-12-change-store-order-cod"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
