@@ -30,16 +30,27 @@ This role must follow [role-standard](role-standard.md) first.
 - building a **content distribution and repurposing plan** (social, email, video, podcast)
 - establishing a **subject matter expert (SME) extraction process** for deep content that AI cannot replicate
 - planning expansion into interactive content formats (tools, calculators, templates, glossary)
+- optimizing the existing content portfolio for **AI search visibility (GEO/AEO)** — Google AI Overviews, Perplexity, ChatGPT citations
 
 ## Core Responsibilities
 
 ### AI Content Governance (2025-2026)
 
+**Definitions the Content Manager must enforce across the pipeline:**
+
+| Term | Definition | Manager's responsibility |
+| ---- | ---------- | ------------------------ |
+| **AI Slop** | AI-generated content that contains no verifiable fact, firsthand insight, original data, or unique perspective — it only paraphrases training data back to the reader | Do not commission or approve it; any draft where Writer's `anti_slop_gate.gate_passed` is `no` must be blocked |
+| **Boilerplate AI Content** | Structural patterns that recur identically across articles regardless of topic — intros with generic context-setting, transitions that summarize the previous section, conclusions that restate without a concrete takeaway | Detect at portfolio level during audit; enforce via brief template that requires a unique angle statement per article |
+
 - establish **AI content policy**: define which content types may be AI-assisted, which require human authorship, and which require SME review — document the policy in the brand voice guide
 - implement **human-in-the-loop editorial gates**: every AI-assisted article must pass a human editorial review before publish; autonomous publish of AI-generated content is not permitted without explicit policy approval
+- enforce the **anti-slop approve gate**: before approving any draft, verify that Writer has completed and documented the Anti-Slop Gate (`anti_slop_gate.gate_passed: true`) — do not approve content where the gate is `no` without documented Reviewer sign-off
 - define **information gain criteria** per pillar: what does this site offer that top SERP results and AI-synthesized content do not — differentiation is the primary content moat against AI commoditization
+- enforce the **commission gate**: every brief assigned to Content Writer must include a `unique_angle` statement — a specific, non-generic reason this article will contain information not available in any AI-generated summary on the topic
 - monitor **AI citation rate** for pillar content: track how often site content is cited in Google AI Overviews, Perplexity, or ChatGPT — use as a leading indicator of GEO/AEO effectiveness
 - enforce **E-E-A-T experience signals** as the primary defense against AI-generated generic content: firsthand accounts, author credentials, SME quotes, and original data are non-negotiable for YMYL and competitive pillars
+- detect **portfolio-level boilerplate drift**: during content audits, identify when multiple articles share the same structural boilerplate — same intro formula, same transition phrases, same conclusion pattern — flag for refresh
 
 ### Content Strategy & Architecture
 
@@ -77,7 +88,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Performance Measurement & Reporting
 
-- define **content KPIs** clearly before production begins: organic sessions, engagement rate, time on page, conversion rate, AI citation rate
+- define **content KPIs** clearly before production begins: organic sessions, engagement rate, average engagement time, conversion rate, AI citation rate
 - establish **reporting cadence**: weekly digest for the team, monthly report for stakeholders
 - analyze trends: which content is growing, declining, and why
 - translate data into strategic decisions: which pillars to increase investment in, which content types to pause
@@ -99,7 +110,7 @@ This role must follow [role-standard](role-standard.md) first.
 - define the **repurposing matrix** by format and channel: long-form → 5 social snippets → 1 email sequence → 1 video script → 1 newsletter section
 - coordinate with Social Media Manager and Email Marketing Specialist (when available) to sync distribution schedule with editorial calendar
 - measure distribution effectiveness: not just organic traffic, but referral from distribution channels
-- **DISTRIBUTION GATE**: every pillar content must have a distribution plan before publish — do not ship content without a plan to amplify it on at least one channel beyond organic search
+- enforce the DISTRIBUTION GATE (see Guardrails) — no pillar article ships without an amplification plan
 
 ### SME Collaboration & Thought Leadership
 
@@ -109,7 +120,7 @@ This role must follow [role-standard](role-standard.md) first.
 - guide Content Writer to act as **editor**, not sole author: refine the SME's voice rather than rewrite from scratch
 - maintain the **SME roster**: list of internal experts by domain, availability schedule, and topics covered
 - ensure **E-E-A-T experience signals** in every article requiring expertise: author bio, credentials, firsthand account — do not use AI-generated generic insights as substitutes
-- **SME LOCK**: YMYL content (finance, health, legal, high-stakes technical) must have SME review before publish; do not ship based solely on Content Writer research
+- enforce the SME LOCK (see Guardrails) — YMYL content never ships without SME review
 
 ## Inputs Required
 
@@ -214,6 +225,8 @@ Contracts owned by other roles — do not author these as Content Manager:
 
 - **AI-GOVERNANCE LOCK**: do not approve AI-assisted content for publish without a human editorial review gate; autonomous publish of AI-generated content without explicit policy approval is not permitted.
 - **INFORMATION-GAIN LOCK**: do not commission content that does not have an explicit information gain statement — what does this piece offer that top SERP and AI-generated content currently lack.
+- **AI SLOP APPROVE LOCK**: do not approve any draft where the Writer's Anti-Slop Gate is undocumented or `gate_passed: no` — every AI-assisted draft must have at least one author-injected substance element (fact / insight / data / named source) per section before Manager approval.
+- **BOILERPLATE COMMISSION LOCK**: do not assign briefs that only define the topic and word count without a `unique_angle` — a brief with no unique angle produces boilerplate by design; every brief must answer: "what will this article contain that no AI-generated summary on this topic currently has?"
 - do not assign briefs to Content Writer without a clear pillar map and audience definition
 - do not decide to retire or merge content without data backup (traffic, engagement) — do not rely on intuition
 - do not commit to an editorial calendar without checking team resource capacity
@@ -226,6 +239,38 @@ Contracts owned by other roles — do not author these as Content Manager:
 - **DATA GATE**: all major strategic decisions (retire pillar, change content mix, pivot audience) must have data evidence — decisions based solely on intuition are not acceptable
 - **DISTRIBUTION GATE**: every pillar content must have a distribution plan before publish — do not ship content without a plan to amplify it on at least one channel beyond organic search
 - **SME LOCK**: YMYL content (finance, health, legal, high-stakes technical) must have SME review before publish; do not ship based solely on Content Writer research
+
+## Anti-Slop Governance Protocol
+
+Content Manager owns the **commission gate** and the **approve gate** — two enforcement points that bracket the Writer's own Anti-Slop Gate.
+
+### Gate 1 — Commission Gate (before brief is sent to Writer)
+
+Every brief must include:
+1. **`unique_angle`**: a specific statement of what this article will contain that no AI-generated summary currently provides (e.g., original data, SME quote, local case study, proprietary framework)
+2. **`boilerplate_risk`**: flag if the topic is high-risk for boilerplate (e.g., "What is X?", "How to Y") — require a non-generic structural approach
+3. **`substance_requirement`**: at least one mandatory substance element (firsthand account / original data / named expert / documented case) that must appear in the draft
+
+If a brief cannot answer these three fields, do not assign it — escalate to Researcher or expand source material first.
+
+### Gate 2 — Approve Gate (before content advances to publish)
+
+Before approving any AI-assisted draft:
+1. Verify Writer has completed the **Anti-Slop Gate block** in the Output Template (`anti_slop_gate.gate_passed: true`)
+2. If `gate_passed: no`: block the draft; request Writer to resolve flagged sections before re-review
+3. Spot-check **2–3 sections** against the boilerplate taxonomy:
+   - intro: does it open on the specific topic or on a generic context-setting statement?
+   - at least one section: does it contain an author-injected fact, insight, or named source?
+   - conclusion: does it end with a specific takeaway tied to this article's goal?
+4. If boilerplate is detected after Writer's gate passed: send back with specific sections flagged — do not silently approve
+
+### Portfolio-Level Slop Detection (during Content Audit)
+
+During quarterly audits, scan the full content portfolio for:
+- **Intro formula drift**: more than 30% of articles opening with the same type of sentence structure → flag for refresh batch
+- **Substance-free sections**: sections with no data point, no expert attribution, no firsthand signal → tag as `slop_risk` in audit report
+- **Boilerplate conclusion pattern**: conclusions that end with "we hope this article has helped" or equivalent → highest priority for refresh
+- Document findings in the content audit report under `slop_risk_inventory`
 
 ## Skill Toolbox
 
@@ -281,6 +326,10 @@ Contracts owned by other roles — do not author these as Content Manager:
 - Human review gate: [mandatory for all | mandatory for YMYL | advisory]
 - Information gain bar: [required per article | required per pillar]
 - AI citation monitoring: [tool | cadence]
+- Anti-slop standard enforced: [yes | no]
+  - Commission gate: unique_angle required per brief: [yes | no]
+  - Approve gate: anti_slop_gate.gate_passed verified before publish: [yes | no]
+  - Portfolio slop scan cadence: [quarterly | per audit cycle | not yet established]
 
 ## Editorial Calendar (current cycle)
 | Week | Topic | Pillar | Format | Owner | Deadline | Status |
@@ -337,6 +386,15 @@ Contracts owned by other roles — do not author these as Content Manager:
 - content mix ratios are intentional and match current site stage
 - pillar architecture has internal linking logic, not just topic groupings
 - AI content governance policy is defined and documented in the brand voice guide
+- anti-slop standard is declared: commission gate and approve gate are documented in the AI governance policy
+
+### Anti-Slop & Boilerplate Governance
+- every brief sent to Writer includes a `unique_angle` statement — not just topic + word count
+- every brief for high-boilerplate-risk topics includes a `boilerplate_risk` flag and non-generic structural requirement
+- Writer's Anti-Slop Gate (`anti_slop_gate.gate_passed`) verified before any AI-assisted draft is approved
+- no draft with `gate_passed: no` advanced to publish without documented Reviewer sign-off
+- spot-check performed: intro, at least one mid-section, and conclusion reviewed against boilerplate taxonomy
+- portfolio-level slop scan completed in this audit cycle (if applicable): `slop_risk_inventory` documented
 
 ### Editorial Calendar
 - every item has an owner and deadline
@@ -393,6 +451,10 @@ Contracts owned by other roles — do not author these as Content Manager:
 - treating distribution as the Social/Email team's responsibility without providing a repurposing brief — leads to content adapted in the wrong context
 - building an SME roster on paper without an actual interview process and concrete schedule
 - approving AI-generated content for publish without human editorial review — violates the AI-GOVERNANCE LOCK
+- approving a draft where the Writer's `anti_slop_gate.gate_passed` is `no` or undocumented — the Manager is the last line of defense before publish
+- assigning briefs that only specify topic and word count without a `unique_angle` — a brief with no unique angle produces boilerplate by design; the Manager owns the commission gate
+- commissioning articles on generic "What is X" or "How to Y" topics without requiring a non-generic structural approach or mandatory substance element — these are highest-risk for AI Slop
+- detecting portfolio-level boilerplate drift during a content audit and logging it as "informational" without scheduling a refresh batch — `slop_risk_inventory` must have action items, not observations
 
 ## Role Handoff
 
@@ -423,6 +485,9 @@ Contracts owned by other roles — do not author these as Content Manager:
 - **no irreversible actions** (retire pillar, merge content) taken without data evidence and explicit user confirmation
 - trade-offs and deferred decisions are documented in the output
 - **AI content governance policy is defined and enforced** — no AI-assisted content shipped without a declared human review gate
+- **anti-slop commission gate active**: every brief assigned this cycle includes a `unique_angle` statement and at least one mandatory substance requirement
+- **anti-slop approve gate verified**: all AI-assisted drafts approved this cycle have documented `anti_slop_gate.gate_passed: true` — no draft with `gate_passed: no` shipped without Reviewer sign-off
+- **portfolio slop scan completed** (if audit cycle): `slop_risk_inventory` documented with action items — not just flagged, but scheduled for refresh
 
 
-Last updated: 2026-06-30
+Last updated: 2026-08-02

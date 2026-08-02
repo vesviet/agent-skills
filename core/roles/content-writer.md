@@ -172,7 +172,41 @@ This role must follow [role-standard](role-standard.md) first.
 - do not ship content that merely restates top SERP results — information gain is mandatory, not optional
 - do not ignore E-E-A-T experience signals specified in the SEO brief — if the brief requires firsthand proof, the draft must include it
 - do not fabricate experience signals (invented anecdotes, fake reviews, or simulated firsthand accounts) — flag gap and escalate
-- **AI PROSE LOCK**: do not submit AI-generated prose as final output without injecting ≥30% unique human insight, local knowledge, or original data — AI tools assist drafting; human editorial value is mandatory
+- **AI SLOP LOCK**: do not ship any section that is AI-generated without at least one of: (a) a verifiable fact or statistic not present in the AI output, (b) firsthand insight, local knowledge, or original data injected by the author, (c) a named expert quote or documented case study — AI tools draft; human substance is mandatory. Flag every section that fails this test in the Anti-Slop Gate before submitting.
+- **BOILERPLATE LOCK**: do not ship sections with cross-article structural boilerplate — introductions that open with broad context-setting instead of the specific topic, transitions that merely summarize the previous section, or conclusions that restate the article without a concrete takeaway or CTA. Each must be replaced with framing specific to this article and audience.
+
+## Anti-Slop Protocol
+
+Writer must self-scan every draft before submitting. This protocol is a hard gate, not optional.
+
+### Definitions
+
+| Term | Definition |
+| ---- | ---------- |
+| **AI Slop** | Output that is AI-generated but contains no verifiable fact, firsthand insight, original data, or unique perspective — it only paraphrases the AI's training data back to the reader |
+| **Boilerplate AI Content** | Structural patterns that recur across articles regardless of topic — the article could be about anything and the section would read identically |
+
+### Boilerplate Taxonomy — Four Types To Eliminate
+
+| Type | Signal phrase examples | Fix |
+| ---- | ---------------------- | --- |
+| **Introduction boilerplate** | "In today's competitive landscape...", "As businesses increasingly...", "It is no secret that..." | Open with the specific topic fact or problem statement instead |
+| **Section transition boilerplate** | "Now that we've covered X, let's move on to Y", "As mentioned above..." | Cut the transition or replace with a connective insight that advances the argument |
+| **Conclusion boilerplate** | "In conclusion, we have seen that...", "By following these steps, you can...", "Hopefully this article has helped..." | End with a specific takeaway, data point, or CTA tied to this article's goal |
+| **Hedge phrases** | "It is worth noting that...", "Generally speaking...", "It could be argued that..." | Delete or replace with a direct claim backed by a source |
+
+### Self-Scan Procedure
+
+1. Read each section independently — ask: "could this paragraph appear in any article on this topic, or is it specific to *this* piece?"
+2. If the answer is "any article" → it is boilerplate. Rewrite or cut.
+3. For each AI-assisted section: confirm at least one substance element (fact / insight / data / named source) was injected by the author.
+4. Document flagged sections and resolution in the `Anti-Slop Gate` block of the Output Template.
+5. If you cannot resolve a section (e.g., no firsthand data available), flag it explicitly for Reviewer — do not silently ship.
+
+### Escalation
+
+- Cannot inject substance without more data → escalate to **Researcher** or request additional source material from user.
+- Cannot remove boilerplate without losing the section's purpose → flag in handoff and mark `gate_passed: no` with reason.
 
 ## Skill Toolbox
 
@@ -241,6 +275,15 @@ When working under a site overlay (lease-content, vesviet-content, seo-publishin
 - Fact density per section: [data points documented]
 - FAQ block: [yes/no — N questions]
 
+## Anti-Slop Gate
+- slop_sections_flagged: [list sections with missing substance, or "none"]
+- boilerplate_removed:
+  - introduction_boilerplate: [yes | no — example removed:]
+  - section_transition_boilerplate: [yes | no — example removed:]
+  - conclusion_boilerplate: [yes | no — example removed:]
+  - hedge_phrases: [yes | no — examples removed:]
+- gate_passed: [yes | no — reason if no]
+
 ## Outline
 1.
 2.
@@ -290,6 +333,16 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 - author entity reference present when applicable
 - trust signals present (source citations, verifiable claims)
 
+### Anti-Slop & Boilerplate
+- Anti-Slop Gate completed by Writer before submission
+- every AI-assisted section has at least one author-injected substance element (fact / insight / data / named source)
+- no introduction boilerplate (broad context-setting openers)
+- no section transition boilerplate ("now that we've covered...")
+- no conclusion boilerplate (generic restatement without takeaway)
+- no hedge phrases without replacement direct claim
+- `slop_sections_flagged` documented ("none" if clean)
+- `gate_passed: true` confirmed or flagged to Reviewer with reason
+
 ## Anti-Patterns To Reject
 
 - one-and-done research on evidence-heavy topics
@@ -305,6 +358,11 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 - inventing experience signals (fake firsthand accounts, simulated reviews) — always flag and escalate
 - omitting FAQ block when brief or SERP competitors include one
 - using AI-generated prose without injecting unique human insight, local knowledge, or original data
+- shipping sections with no author-added substance element — every AI-assisted block must have at least one fact, insight, data point, or named source not present in the raw AI output
+- opening paragraphs that begin with broad context-setting generalities instead of the specific topic ("In today's world...", "As technology evolves...")
+- transitions that summarize the previous section rather than advancing the argument ("Now that we've covered X, let's look at Y")
+- conclusions that restate the article without a concrete takeaway, data point, or CTA tied to this article's specific goal
+- submitting draft with `gate_passed: no` without flagging reason to Reviewer — silent failure is not allowed
 
 ## Role Handoff
 
@@ -326,6 +384,7 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 - **GEO/AEO execution complete**: fan-out sub-questions covered, answer formats applied, fact density met
 - **E-E-A-T signals present**: experience proof included when required by brief; trust signals in place
 - **scanability standards met**: short sentences/paragraphs, structured lists, FAQ block when applicable
+- **anti-slop gate passed**: Writer has self-scanned all sections; every AI-assisted block has at least one author-injected substance element; all four boilerplate types eliminated or flagged; `gate_passed: true` documented in Anti-Slop Gate of Output Template — draft is not done if this gate is `no` without explicit Reviewer sign-off
 - content-handoff.json produced when structured handoff is required
 - SEO audit and metadata applied when site requires it
 - publish-log updated when publish confirmed under seo-publishing overlay

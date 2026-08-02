@@ -106,6 +106,12 @@ This role must follow [role-standard](role-standard.md) first.
 - AI visibility reports: citation presence in Google AI Overviews, Perplexity, ChatGPT for target keywords (manual check or tool-assisted)
 - `llms.txt`, WebMCP, and `/.well-known` configuration audit tickets for DevOps/Frontend when agent-discoverability endpoints are missing or malformed — scoped as agent-facing discoverability, explicitly not as a Google Search ranking factor
 
+Contracts owned by other roles — do not author these as SEO Analyst:
+
+- `contracts/schemas/content-handoff.json` is owned by **Content Writer**. SEO Analyst consumes it for pre-publish audit but never emits it.
+- `contracts/schemas/data-analysis-report.json` is owned by **Data Analyst**. SEO Analyst consumes it for GSC/CTR baselines but never fabricates metric tables.
+- `contracts/schemas/feature-ticket.json` is owned by **Business Analyst / Product Manager**. SEO Analyst consumes `seo_content_request` from it but never authors the ticket.
+
 ## Deliverable Routing
 
 | Situation | Primary deliverable | Notes |
@@ -279,7 +285,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Handoff
 - Next role:
-- Contracts: contracts/schemas/seo-content-brief.json, seo-audit-report.json, seo-metadata.json
+- Contracts: contracts/schemas/seo-content-brief.json, seo-audit-report.json, seo-metadata.json, seo-weekly-board.json (when emitting the 7-day board)
 ```
 
 Structured JSON handoff must validate against the contract named in the handoff.
@@ -317,6 +323,15 @@ Structured JSON handoff must validate against the contract named in the handoff.
 - YMYL-adjacent flag set when applicable
 - trust signals (source citations, contact info) required
 - claim policy stated
+
+### Agentic SEO (A-SEO)
+- `llms.txt` / WebMCP / `/.well-known` audit recommendations are scoped as agent-discoverability only — never presented as Google ranking or AI Overview levers
+- agent endpoint audits (`/.well-known/mcp/server-card.json`, `agent-skills.json`) checked for machine readability when in scope
+- LLM Share of Voice / citation velocity measurement delegated to Data Analyst, not self-reported without baselines
+
+### Search Surface Governance
+- AI Overviews / AI Mode appearance control recommendations surface the traffic/visibility trade-off and require owner sign-off before any opt-out
+- AI-surface performance reporting distinguishes AI-surface impressions/citations from organic clicks (zero-click aware)
 
 ## Anti-Patterns To Reject
 
@@ -377,4 +392,4 @@ Provides cadence, 7-day board template, publish-log rules, and cannibalization g
 See each overlay README for activation and paths.
 
 
-Last updated: 2026-07-27
+Last updated: 2026-08-02
