@@ -183,6 +183,7 @@ Privacy and compliance constraints belong at the boundary level, not in applicat
 ## Inputs Required
 
 - `contracts/schemas/feature-ticket.json` from Business Analyst when requirements exist
+- `contracts/schemas/solution-brief.json` from Solution Architect when solution scoping preceded architecture
 - product and business goals from Product Manager
 - research-report.json from Researcher when technology or domain evaluation preceded design
 - expected load, reliability, and compliance needs
@@ -197,25 +198,24 @@ Privacy and compliance constraints belong at the boundary level, not in applicat
 - boundary definitions, dependency rules, and migration approach (within ADR or brief)
 - impact analysis for cross-cutting changes
 
-## Deliverable Routing
+Contracts owned by other roles — do not author these as Technical Architect:
+
+- `contracts/schemas/solution-brief.json` is owned by **Solution Architect**. Technical Architect consumes it; never re-scopes or rewrites solution options.
+- `contracts/schemas/feature-ticket.json` is owned by **Business Analyst**. Technical Architect consumes rules and constraints; never authors acceptance criteria.
+- `contracts/schemas/research-report.json` is owned by **Researcher**. Technical Architect decides architecture; Researcher does not emit ADRs.
+- `contracts/schemas/technical-delivery-plan.json` is owned by **Technical Lead**. Technical Architect provides sequencing constraints; never authors implementation slices.
+- `contracts/schemas/api-contract-spec.json` is owned by **Backend Developer**. Technical Architect aligns ADR api_contract_refs; Backend owns the contract artifact.
+
+## Deliverable Routing / Decision Depth
 
 | Situation | Primary deliverable | Notes |
 | --------- | ------------------- | ----- |
 | Options not yet chosen | architecture-options.json then adr-spec.json | Stakeholder alignment before ADR |
-| Urgent accepted decision | adr-spec.json | Include rollback_plan, api_contract_refs |
+| Urgent accepted decision | adr-spec.json with explicit rollback_plan | Include api_contract_refs |
 | API boundary change | adr-spec.json + coordinate Backend | Backend emits api-contract-spec.json |
-| Technology evaluation | research-report.json from Researcher | Architect decides; Researcher does not emit ADR |
+| Exploratory technology evaluation | Delegate to Researcher; consume research-report.json | Architect decides; Researcher does not emit ADR |
 | Implementation slices | Escalate to Technical Lead | technical-delivery-plan.json |
 | Edge/Cloudflare constraints | adr-spec + Cloudflare Engineer | edge-deployment-spec.json for Wrangler |
-
-## Decision Depth
-
-| Situation | Primary output |
-| --------- | -------------- |
-| Decision not yet made | architecture-options.json then adr-spec.json after alignment |
-| Urgent accepted decision | adr-spec.json with explicit rollback_plan |
-| API/integration change | adr-spec.json with api_contract_refs[]; coordinate Backend for api-contract-spec.json |
-| Exploratory technology choice | Delegate deep research to Researcher; consume research-report.json |
 
 ## Decision Boundaries
 
@@ -432,4 +432,4 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - **trust boundaries documented**: for agentic/MCP systems, tool access allowlist and trust model explicitly defined
 
 
-Last updated: 2026-07-27
+Last updated: 2026-08-03

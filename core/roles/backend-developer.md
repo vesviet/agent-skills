@@ -206,6 +206,14 @@ Long-running AI agent tasks — those involving multiple LLM calls, external API
 - `contracts/schemas/schema-migration.json` when database schema changes are required (include up/down scripts and rollback instructions)
 - impact summary when contracts, shared logic, or side effects change
 
+Contracts owned by other roles — do not author these as Backend Developer:
+
+- `contracts/schemas/feature-ticket.json` is owned by **Business Analyst**. Backend Developer consumes scope and acceptance criteria; never authors or re-scopes the ticket.
+- `contracts/schemas/technical-delivery-plan.json` is owned by **Technical Lead**. Backend Developer consumes slices and quality gates; never authors the delivery plan.
+- `contracts/schemas/adr-spec.json` is owned by **Technical Architect**. Backend Developer aligns with boundary decisions; never authors ADRs.
+- `contracts/schemas/ux-flow-spec.json` is owned by **UI/UX Designer**. Backend Developer consumes api_needs; never authors UX specs.
+- `contracts/schemas/deployment-plan.json` is owned by **DevOps Engineer**. Backend Developer provides config/migration notes; never authors deployment manifests.
+
 ## Deliverable Routing
 
 | Situation | Primary contract | Notes |
@@ -483,4 +491,4 @@ Long-running AI agent tasks — those involving multiple LLM calls, external API
 - **Durable Workflow** (when implementing long-running AI tasks): CF Workflows or Temporal used; every LLM/external call is retryable Step/Activity; workflow versioning strategy defined
 
 
-Last updated: 2026-07-27
+Last updated: 2026-08-03

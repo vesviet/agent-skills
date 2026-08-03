@@ -114,6 +114,14 @@ Agentic systems require a new class of documentation deliverable that is distinc
 - evaluation metric documentation for agentic system quality gates
 - multi-agent workflow runbooks for operations and incident response
 
+Contracts owned by other roles — do not author these as Technical Writer:
+
+- `contracts/schemas/adr-spec.json` is owned by **Technical Architect**. Technical Writer consumes it for decision docs; never authors the ADR.
+- `contracts/schemas/feature-ticket.json` is owned by **Business Analyst**. Technical Writer consumes it for audience and terminology; never authors tickets.
+- `contracts/schemas/implementation-result.json` is owned by **developers**. Technical Writer consumes shipped behavior facts; never emits implementation evidence.
+- `contracts/schemas/api-contract-spec.json` is owned by **Backend Developer**. Technical Writer consumes it (schema-generated only); never authors API contracts manually.
+- `contracts/schemas/incident-report.json` is owned by **SRE**. Technical Writer consumes it for runbooks and postmortems.
+
 ## Deliverable Routing
 
 | Material | Primary source contract | Notes |
@@ -256,7 +264,7 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - terminology consistent with feature-ticket and ADR when applicable
 
 ### LLM-Readable Documentation (when AI agent interface in scope)
-- `llms.txt`
+- `llms.txt` published at project root for agent-facing developer docs when in scope — verified as scope map, not presented as a search or AI-citation lever
 - Markdown hierarchy enforced (H1/H2/H3 strict nesting; no skipped levels)
 - API reference generated from schema, not authored manually
 - CI schema-to-doc sync confirmed (Fern/Mintlify/Redocly or equivalent)
@@ -307,4 +315,4 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - **no schema drift**: API reference matches current OpenAPI/OpenRPC schema; CI sync confirmed
 
 
-Last updated: 2026-07-27
+Last updated: 2026-08-03

@@ -173,6 +173,12 @@ The System Engineer implements infrastructure directly — this is not delegated
 - Environment topology specification: per-environment config, shared vs. isolated resources, DR strategy
 - AI infrastructure specification: inference server config, GPU allocation plan, vector database topology
 
+Contracts owned by other roles — do not author these as System Engineer:
+
+- `contracts/schemas/adr-spec.json` is owned by **Technical Architect**. System Engineer consumes NFRs and boundary decisions from it; never authors ADRs.
+- `contracts/schemas/aws-infra-spec.json` is owned by **AWS Engineer**. System Engineer delivers system-design-spec.json as upstream input; AWS Engineer owns AWS managed-service state.
+- `contracts/schemas/deployment-plan.json` is owned by **DevOps Engineer**. System Engineer provides infra requirements; DevOps owns delivery automation.
+
 ## Deliverable Routing
 
 | Situation | Primary deliverable | Notes |
@@ -404,7 +410,7 @@ The System Engineer implements infrastructure directly — this is not delegated
 
 ## Definition Of Done
 
-- `contracts/schemas/system-design-spec.json`
+- `contracts/schemas/system-design-spec.json` emitted and validated when machine handoff is required
 - all NFRs have measurable targets with measurement methods
 - topology covers all in-scope layers with explicit rationale for each major decision
 - capacity model exists for all primary resources with 3-month and 12-month projections
@@ -418,4 +424,4 @@ The System Engineer implements infrastructure directly — this is not delegated
 - **all design decisions trace to measurable NFRs or explicit business requirements**
 
 
-Last updated: 2026-07-27
+Last updated: 2026-08-03

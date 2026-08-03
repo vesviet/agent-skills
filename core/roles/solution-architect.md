@@ -158,6 +158,12 @@ When recommending an agentic solution to business stakeholders, "what unique val
 - build-vs-buy decision record — embedded in solution brief or standalone when procurement is involved
 - compliance constraint list — handed to Technical Architect (for ADR) and Business Analyst (for feature-ticket)
 
+Contracts owned by other roles — do not author these as Solution Architect:
+
+- `contracts/schemas/adr-spec.json` is owned by **Technical Architect**. Solution Architect feeds it solution-brief.json; never emits ADRs.
+- `contracts/schemas/feature-ticket.json` is owned by **Business Analyst**. Solution Architect hands compliance constraints and solution boundaries to BA; never writes acceptance criteria.
+- `contracts/schemas/research-report.json` is owned by **Researcher**. Solution Architect consumes it for vendor/technology/regulatory findings.
+
 ## Deliverable Routing
 
 | Situation | Primary deliverable | Notes |
@@ -443,4 +449,4 @@ Emit `contracts/schemas/solution-brief.json` when machine handoff is required.
 - **stakeholder conflicts resolved or explicitly escalated**: no incompatible constraints silently absorbed into recommendation
 
 
-Last updated: 2026-07-27
+Last updated: 2026-08-03

@@ -134,6 +134,7 @@ AWS cost governance is an engineering responsibility, not a finance team task:
 ## Inputs Required
 
 - system design specification from System Engineer (`contracts/schemas/system-design-spec.json`) when building AWS infrastructure on top of specified topology
+- existing `contracts/schemas/aws-infra-spec.json` for the environment being modified — consume current provisioned state before planning changes; never modify infrastructure from memory of what "should" exist
 - NFRs (latency, throughput, availability, data residency) from Technical Architect or System Engineer
 - application resource requirements from Backend Developer or Frontend Developer (compute, memory, storage, concurrency)
 - security and compliance constraints from Security Engineer (encryption requirements, access control policies, audit logging mandates)
@@ -147,6 +148,14 @@ AWS cost governance is an engineering responsibility, not a finance team task:
 - IAM role and policy documents (pending Security Engineer review)
 - FinOps cost attribution report with rightsizing recommendations
 - Bedrock architecture specification (knowledge base config, agent action groups, guardrail settings)
+
+Contracts owned by other roles — do not author these as AWS Engineer:
+
+- `contracts/schemas/system-design-spec.json` is owned by **System Engineer**. AWS Engineer consumes topology, NFRs, and capacity model; never authors cross-cloud or OS-level design.
+- `contracts/schemas/adr-spec.json` is owned by **Technical Architect**. AWS Engineer consumes architecture constraints; never authors ADRs.
+- `contracts/schemas/security-audit.json` is owned by **Security Engineer**. AWS Engineer consumes review findings; never authors security audits.
+- `contracts/schemas/deployment-plan.json` is owned by **DevOps Engineer**. AWS Engineer provides infrastructure inputs; DevOps authors the delivery plan.
+- `contracts/schemas/incident-report.json` is owned by **SRE**. AWS Engineer contributes infrastructure evidence; SRE owns the incident artifact.
 
 ## Deliverable Routing
 
@@ -259,8 +268,12 @@ AWS cost governance is an engineering responsibility, not a finance team task:
 ## AI/ML Infrastructure (if Bedrock/SageMaker in scope)
 - Bedrock VPC endpoint configured: [yes/no / N/A]
 - Model ARNs explicitly specified in IAM (no wildcard): [yes/no / N/A]
-- Guardrails configured: [yes/no / N/A]
-- Knowledge base data source encrypted: [yes/no / N/A]
+- Guardrails configured (content filters, denied topics): [yes/no / N/A]
+- Knowledge base: [data source / vector store / chunking strategy / encryption]
+- Agent action groups: [Lambda backing / input validation in place]
+- Inference profile + quota limits: [documented / N/A]
+- SageMaker endpoint type (real-time / serverless / async) + auto-scaling: [configured / N/A]
+- Token cost attribution tags on Bedrock invocations: [yes/no / N/A]
 
 ## Observability
 - CloudWatch alarms configured (with SNS): [yes/no]
@@ -350,4 +363,4 @@ AWS cost governance is an engineering responsibility, not a finance team task:
 - **Observability complete**: CloudWatch alarms with SNS configured; X-Ray tracing active; Config Rules compliance passing
 
 
-Last updated: 2026-07-01
+Last updated: 2026-08-03

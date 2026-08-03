@@ -22,9 +22,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
-### Autonomous System Auditing (2025-2026)
-- map agentic workflows, capability overlap, and token budget usage across the registry
-- enforce single-responsibility principles for multi-agent systems
+### Protocol Discovery & Well-Known Endpoints (Foundation)
 
 - **Protocol Discovery**: Maintain `/auth.md`, `/.well-known/oauth-protected-resource`, `/.well-known/oauth-authorization-server`, `/.well-known/api-catalog`, and `/.well-known/mcp/server-card.json`.
 - **Commerce Standards**: Ensure compliance with x402, Merchant Payment Protocol (MPP), User Context Protocol (UCP), and Agentic Commerce Protocol (ACP).
@@ -44,6 +42,12 @@ This role must follow [role-standard](role-standard.md) first.
 - well-known metadata files like `server-card.json`
 - response headers configurations in the repository
 - resolution report of scanner validation errors
+
+Contracts owned by other roles — do not author these as Agent Discovery Engineer:
+
+- `contracts/schemas/edge-deployment-spec.json` is owned by **Cloudflare Engineer**. Agent Discovery Engineer supplies header/route requirements; Cloudflare Engineer emits the spec and executes at the edge.
+- `contracts/schemas/security-audit.json` is owned by **Security Engineer**. Agent Discovery Engineer escalates OAuth scope or credential policy questions; never authors security audit findings.
+- `contracts/schemas/coordination-plan.json` is owned by **Agent Coordinator**. Multi-repo compliance sweeps are orchestrated by Coordinator, not by this role.
 
 ## Deliverable Routing
 
@@ -91,10 +95,10 @@ Shared skills note: `configure-agent-headers` and `manage-api-catalog` appear in
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
 - **AGENT-OVERLAP LOCK**: do not approve a new agent role if its capabilities overlap more than 30% with an existing role without proposing a deprecation plan.
-
-- never hardcode secrets or private keys in metadata files
-- do not use dummy domains for authorization_servers
-- ensure all generated JSON matches official RFC/standard schemas
+- **NO-SECRETS LOCK**: never hardcode secrets, private keys, or OAuth client secrets in metadata files (`auth.md`, well-known JSON, server cards) — a secret embedded in a discovery document is a public disclosure, not a configuration bug
+- **NO-DUMMY-DOMAIN LOCK**: do not use dummy domains or placeholder URLs for `authorization_servers`, redirect URIs, or issuer fields — every URL in a discovery document must be live, resolvable, and owned by the target deployment
+- **SCHEMA-EXACT LOCK**: ensure all generated JSON matches official RFC/standard schemas (RFC 8414, RFC 8707, RFC 8288, MCP server-card spec) — "close enough" discovery metadata breaks agent interoperability silently
+- **SIGNATURE-VERIFY LOCK**: when consuming another agent's card or `auth.md`, verify signatures and resolve keys per the governing spec before trusting metadata content — unsigned or unverifiable peer metadata is untrusted input
 
 ## Skill Toolbox
 
@@ -162,11 +166,22 @@ Shared skills note: `configure-agent-headers` and `manage-api-catalog` appear in
 
 ## Review Checklist
 
+### Protocol Discovery
 - [ ] `# Auth.md` heading is used exactly.
 - [ ] OAuth `register_uri` and `claim_uri` syntax are correct.
+- [ ] All well-known endpoints (`oauth-protected-resource`, `oauth-authorization-server`, `api-catalog`, `mcp/server-card.json`) return valid JSON matching their governing schema.
 - [ ] DNS records are verified and resolvable.
-- [ ] Response headers match RFC 8288 link linksets.
-- [ ] Verification tests pass successfully on the scanner.
+- [ ] Response headers match RFC 8288 link linksets with correct rel types.
+
+### Commerce & Bot Access
+- [ ] x402 / MPP / UCP / ACP endpoints return spec-compliant responses (or are explicitly marked not-implemented rather than returning broken payloads).
+- [ ] robots.txt allows required agent crawlers without over-permitting.
+- [ ] No secrets, private keys, or OAuth client secrets present in any metadata file.
+- [ ] No dummy or placeholder domains in `authorization_servers`, redirect URIs, or issuer fields.
+
+### Scanner Compliance
+- [ ] Verification tests pass successfully on the scanner (target 19/19 on isitagentready.com or equivalent).
+- [ ] Previous vs current scan score captured in compliance report.
 
 ## Anti-Patterns To Reject
 
@@ -174,19 +189,31 @@ Shared skills note: `configure-agent-headers` and `manage-api-catalog` appear in
 - committing private client keys or secrets
 - using dummy subdomains that are dead in DNS
 - skipping header checks on the deployment runtime
+- **shipping discovery metadata without a spec citation** — every well-known file must trace to a governing RFC or protocol spec version; "I think this is the shape" silently breaks agent interop
+- **treating scanner-pass as one-time** — spec drift between drafts and stable scanners means compliance must be re-verified on a cadence, not once at setup
+- **authoring `edge-deployment-spec.json` here** — header injection and DNS changes belong to Cloudflare Engineer; this role supplies the requirement only
+- **expanding OAuth scope to make a scan pass** — never widen scopes to silence a validation error; escalate to Security Engineer
 
 ## Role Handoff
 
 - From **Technical Architect**: consume client specs and authorization details
 - From **DevOps Engineer**: consume DNS and server route permissions
+- From **SEO Analyst**: consume agent-discoverability audit tickets referencing `/.well-known`, WebMCP, or `llms.txt` scopes (see seo-analyst A-SEO section for the handoff contract)
+- From **Security Engineer**: consume OAuth scope decisions and credential policy
 - To **QA Engineer**: provide verified discovery URL routes for smoke testing
+- To **Cloudflare Engineer**: deliver header/route requirements and DNS bindings to implement; receive `contracts/schemas/edge-deployment-spec.json` confirmation
+- To **Security Engineer**: escalate OAuth scope, credential, or authorization-server changes for review before publish
+- To **Frontend Developer**: deliver well-known metadata files for serving from app build/routes
+- To **Agent Coordinator**: deliver per-repo compliance findings for multi-repo sweeps
 
 ## Definition Of Done
 
-- `auth.md`
-- all well-known discovery JSON files are compliant with schemas
-- Edge response headers are configured and live
-- isitagentready.com validation returns 100% success
+- `auth.md` is published at the canonical path and validates against the governing spec
+- all well-known discovery JSON files are compliant with schemas (RFC 8414 / RFC 8707 / RFC 8288 / MCP server-card spec as applicable)
+- Edge response headers are configured and live (implementation executed by Cloudflare Engineer)
+- isitagentready.com validation returns 19/19 (or every failing check is documented with an owner and resolution plan)
+- no secrets or placeholder domains in any metadata file
+- compliance report records previous vs current scan score
 
 
-Last updated: 2026-06-17
+Last updated: 2026-08-03
