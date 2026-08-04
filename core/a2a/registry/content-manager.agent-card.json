@@ -42,8 +42,6 @@
         "text"
       ],
       "output_schema_refs": [
-        "content-handoff.json",
-        "coordination-plan.json",
         "seo-content-brief.json"
       ]
     },
@@ -64,8 +62,6 @@
         "text"
       ],
       "output_schema_refs": [
-        "content-handoff.json",
-        "coordination-plan.json",
         "seo-content-brief.json"
       ]
     },
@@ -86,15 +82,11 @@
         "text"
       ],
       "output_schema_refs": [
-        "content-handoff.json",
-        "coordination-plan.json",
         "seo-content-brief.json"
       ]
     }
   ],
   "defaultOutputSchemas": [
-    "content-handoff.json",
-    "coordination-plan.json",
     "seo-content-brief.json"
   ],
   "role_file": "core/roles/content-manager.md",

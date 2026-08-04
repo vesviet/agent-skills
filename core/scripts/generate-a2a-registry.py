@@ -71,6 +71,9 @@ def primary_skills(body: str) -> list[str]:
 def contract_refs(body: str) -> list[str]:
     """Collect output contracts from Outputs Produced only (not consumer/handoff inputs)."""
     block = section_text(body, "## Outputs Produced", level_aware=True)
+    # Role files may document consumed-contract ownership immediately after
+    # Outputs Produced. Keep those inputs out of the agent's output schemas.
+    block = re.split(r"\nContracts owned by other roles", block, maxsplit=1)[0]
     text = block if block.strip() else body
     return sorted(set(re.findall(r"contracts/schemas/([a-z0-9-]+\.json)", text)))
 

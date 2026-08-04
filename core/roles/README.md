@@ -53,6 +53,10 @@ All roles in this pack are expected to:
 - [researcher](researcher.md)
 - [ui-ux-designer](ui-ux-designer.md)
 
+### Finance, Accounting & Compliance
+
+- [vietnam-accounting-specialist](vietnam-accounting-specialist.md)
+
 ### Architecture And Engineering
 
 - [solution-architect](solution-architect.md)
@@ -120,6 +124,7 @@ All roles in this pack are expected to:
 - Technical Architect
 - Technical Lead
 - System Engineer
+- Vietnam Accounting Specialist
 
 ### Implementation
 
@@ -140,6 +145,7 @@ All roles in this pack are expected to:
 - Reviewer
 - Mobile Engineer
 - Technical Lead
+- Vietnam Accounting Specialist
 
 ### Release
 
@@ -163,6 +169,7 @@ All roles in this pack are expected to:
 - System Engineer
 - Reviewer
 - Product Manager
+- Vietnam Accounting Specialist
 
 ### Data And Reporting
 
@@ -170,6 +177,7 @@ All roles in this pack are expected to:
 - Data Engineer
 - Business Analyst
 - Agent Coordinator
+- Vietnam Accounting Specialist
 
 ### Content And SEO
 
@@ -196,6 +204,7 @@ All roles in this pack are expected to:
 | Project Manager | `/add-new-feature`, `/service-review-release` |
 | Task Planner | `/add-new-feature`, `/refactoring`, `/troubleshooting` |
 | Business Analyst | `/add-new-feature` |
+| Vietnam Accounting Specialist | `/add-new-feature`, `/service-review-release`, `/qa-validation` |
 | Researcher | `/add-new-feature`, `/troubleshooting` |
 | UI/UX Designer | `/add-new-feature` |
 | Solution Architect | `/add-new-feature`, `/setup-new-service` |

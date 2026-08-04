@@ -195,6 +195,12 @@
       "agent_card": "core/a2a/registry/ui-ux-designer.agent-card.json",
       "url": "pack://agent-skills/core/roles/ui-ux-designer.md",
       "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2"
+    },
+    {
+      "role": "vietnam-accounting-specialist",
+      "agent_card": "core/a2a/registry/vietnam-accounting-specialist.agent-card.json",
+      "url": "pack://agent-skills/core/roles/vietnam-accounting-specialist.md",
+      "description": "govern Vietnam accounting-domain interpretation, evidence review, reconciliations, period-close controls, e-invoice data"
     }
   ]
 }

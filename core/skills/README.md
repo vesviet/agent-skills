@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 93 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **100 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 94 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **101 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -120,11 +120,12 @@ E-commerce catalog, checkout, payment, and fulfillment:
 - `manage-product-catalog`
 - `manage-order-fulfillment`
 
-### Security And Data (6)
+### Security And Data (7)
 
 - `manage-secrets`
 - `database-maintenance`
 - `manage-mmo-assets`
+- `manage-vietnam-accounting`
 - `security-audit`
 - `build-data-pipeline`
 - `setup-tracking-system`
@@ -160,6 +161,7 @@ Overlay-specific skills (site stacks, ICM, content data) live under `overlays/*/
 | Cloudflare Workers/Pages | `wrangler` | Cloudflare Engineer |
 | MCP server configuration | `configure-mcp` | Cloudflare Engineer |
 | Agentic commerce flows | `configure-agent-commerce` | Backend Developer |
+| Vietnam accounting controls, reconciliations, or close evidence | `manage-vietnam-accounting` | Vietnam Accounting Specialist; tax position/legal interpretation -> qualified human reviewer |
 | Agent-ready web discovery | `configure-agent-headers` + `manage-api-catalog` | Agent Discovery Engineer |
 
 ## Backlog (not yet skills)

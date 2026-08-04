@@ -1,0 +1,54 @@
+{
+  "id": "pack://agent-skills/core/roles/vietnam-accounting-specialist",
+  "contract_type": "agent-card",
+  "name": "vietnam-accounting-specialist",
+  "description": "govern Vietnam accounting-domain interpretation, evidence review, reconciliations, period-close controls, e-invoice data readiness, and retention classification so software, operations, and reporting workflows preserve a traceable accounting record without confusing accounting review with tax advice, legal advice, audit assurance, or authority to execute filings. In 2025-2026, this includes applying versioned Vietnam accounting regimes (TT 200/2014, TT 133/2016, TT 132/2018 when applicable), preserving statutory-versus-management reporting boundaries, and enforcing human approval gates for invoice, filing, correction, and close actions.",
+  "url": "pack://agent-skills/core/roles/vietnam-accounting-specialist.md",
+  "version": "3.5.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "manage-vietnam-accounting",
+      "name": "Manage Vietnam Accounting",
+      "description": "Prepare and review Vietnam accounting controls, accounting-regime evidence, reconciliations, invoice data, period-close workpapers, and retention records without executing filings or external accounting actions. Use when a Vietnamese entity needs an accounting-domain handoff, control review, or implementation-ready accounting rule clarification.",
+      "tags": [
+        "security",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "accounting-compliance-review.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "accounting-compliance-review.json"
+  ],
+  "role_file": "core/roles/vietnam-accounting-specialist.md",
+  "policy_profile": "vietnam-accounting-specialist"
+}

@@ -24,7 +24,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
             → validation-result.json ← Agent Coordinator (phase gate)
 ```
 
-## All Schemas (42 total)
+## All Schemas (43 total)
 
 ### Solution & Governance
 - `solution-brief.json` — Solution Architect scoping handoff (build-vs-buy, capability gaps, AI feasibility, compliance)
@@ -49,6 +49,9 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
 - `security-audit.json` — Security audit findings
 - `performance-audit.json` — Performance profiling report
 - `incident-report.json` — SRE incident post-mortem
+
+### Finance, Accounting & Compliance
+- `accounting-compliance-review.json` — Vietnam Accounting Specialist accounting-regime, evidence, reconciliation, close, retention, and human-approval handoff; not a tax filing, legal opinion, audit opinion, or authorization for external action
 
 ### Design & Content
 - `ux-flow-spec.json` — Multi-screen UX flow handoff

@@ -31,6 +31,8 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | `security-audit.json` | Security Audit Report | ✅ | ✅ |
 | `performance-audit.json` | Performance Audit Result | ✅ | ✅ |
 | `incident-report.json` | Incident Report | ✅ | ✅ |
+| **Finance, Accounting & Compliance** | | | |
+| `accounting-compliance-review.json` | Vietnam Accounting Compliance Review | ✅ | ✅ |
 | **Design & Content** | | | |
 | `ux-flow-spec.json` | UX Flow Specification | ✅ | ✅ |
 | `ui-component-spec.json` | UI Component Specification | ✅ | ✅ |
@@ -228,6 +230,16 @@ Structured output for SRE incident response and post-mortems.
 
 Required fields: `contract_type`, `severity`, `status`, `impact`, `timeline`  
 Size: 3,524 bytes  
+✅ Has example
+
+### Finance, Accounting & Compliance
+
+#### `accounting-compliance-review.json`
+
+**Vietnam Accounting Compliance Review**
+Structured review from Vietnam Accounting Specialist for a defined legal entity and accounting period. Captures accounting-regime confirmation, source-version evidence, reconciliation status, period-close gates, retention controls, exceptions, and required human approvals. It provides no tax filing decision, legal opinion, audit assurance, or authorization to sign, submit, issue, replace, adjust, void, or delete a live record.
+
+Required fields: `contract_type`, `review_id`, `entity`, `accounting_period`, `scope`, `accounting_regime`, `source_version_register`, `validation_gates`, `status`, `disclaimer`
 ✅ Has example
 
 ### Design & Content
@@ -513,6 +525,7 @@ feature-ticket.json
 | `security-audit.json` | Security Engineer | Technical Lead, Reviewer, DevOps Engineer |
 | `performance-audit.json` | Frontend Developer (via perf-profiling), SRE | Technical Lead, Backend Developer |
 | `incident-report.json` | SRE | Technical Writer, Technical Lead, Project Manager |
+| `accounting-compliance-review.json` | Vietnam Accounting Specialist | Business Analyst, Backend Developer, E-commerce Engineer, Data Analyst, QA Engineer, Security Engineer, Agent Coordinator, qualified human reviewers |
 | `ux-flow-spec.json` | UI/UX Designer | Frontend Developer, Backend Developer, QA Engineer, Technical Lead |
 | `ui-component-spec.json` | UI/UX Designer | Frontend Developer, Mobile Engineer, QA Engineer |
 | `content-handoff.json` | Content Writer | SEO Analyst, Publisher, Editor |

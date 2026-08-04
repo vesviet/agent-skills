@@ -1,0 +1,280 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "accounting-compliance-review",
+  "title": "Vietnam Accounting Compliance Review",
+  "description": "Structured Vietnam accounting review covering regime confirmation, evidence, reconciliations, exceptions, retention, and required human approvals. It is not a tax filing, legal opinion, audit opinion, or authorization to execute external actions.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "accounting-compliance-review"
+    },
+    "review_id": {
+      "type": "string"
+    },
+    "entity": {
+      "type": "object",
+      "properties": {
+        "legal_name": { "type": "string" },
+        "legal_form": { "type": "string" },
+        "entity_reference": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9._:/-]{0,200}$", "description": "Opaque internal reference only. Never include taxpayer identifiers, account numbers, or PII." }
+      },
+      "required": ["legal_name", "legal_form"]
+    },
+    "accounting_period": {
+      "type": "object",
+      "properties": {
+        "from": { "type": "string", "format": "date" },
+        "to": { "type": "string", "format": "date" },
+        "status": { "type": "string", "enum": ["open", "closing", "closed", "adjustment"] }
+      },
+      "required": ["from", "to", "status"]
+    },
+    "scope": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["regime", "posting", "invoice", "reconciliation", "period-close", "financial-statements", "tax-workpaper", "retention"]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "accounting_regime": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "enum": ["TT-200-2014", "TT-133-2016", "TT-132-2018", "other"] },
+        "effective_from": { "type": "string", "format": "date" },
+        "basis_references": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "human_confirmation": { "type": "string", "enum": ["confirmed", "required", "not-applicable"] }
+      },
+      "required": ["name", "effective_from", "basis_references", "human_confirmation"]
+    },
+    "source_version_register": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": { "type": "string" },
+          "url_or_internal_reference": { "type": "string" },
+          "effective_date": { "type": "string", "format": "date" },
+          "verified_at": { "type": "string", "format": "date-time" },
+          "status": { "type": "string", "enum": ["verified", "superseded", "unverified"] }
+        },
+        "required": ["source", "url_or_internal_reference", "effective_date", "verified_at", "status"]
+      },
+      "minItems": 1
+    },
+    "reconciliations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "area": { "type": "string", "enum": ["bank", "accounts-receivable", "accounts-payable", "inventory", "fixed-assets", "payroll", "tax-payable", "invoice-register", "general-ledger"] },
+          "status": { "type": "string", "enum": ["matched", "difference-found", "not-performed", "not-applicable"] },
+          "evidence_references": { "type": "array", "items": { "type": "string" } },
+          "difference_summary": { "type": "string" },
+          "resolution_owner": { "type": "string" },
+          "required_action": { "type": "string" }
+        },
+        "required": ["area", "status", "evidence_references", "resolution_owner", "required_action"]
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "area": { "type": "string" },
+          "severity": { "type": "string", "enum": ["blocking", "material", "follow-up"] },
+          "finding": { "type": "string" },
+          "evidence_references": { "type": "array", "items": { "type": "string" } },
+          "required_owner": { "type": "string" },
+          "recommended_action": { "type": "string" }
+        },
+        "required": ["id", "area", "severity", "finding", "evidence_references", "required_owner", "recommended_action"]
+      }
+    },
+    "validation_gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "enum": ["scope-confirmed", "source-version-locked", "regime-confirmed", "data-complete", "posting-validated", "reconciled", "tax-boundary-reviewed", "invoice-action-approved", "financial-statements-reviewed", "retention-locked", "handoff-ready"] },
+          "status": { "type": "string", "enum": ["passed", "blocked", "needs-evidence", "needs-human-review", "not-applicable"] },
+          "evidence_references": { "type": "array", "items": { "type": "string" } },
+          "note": { "type": "string" }
+        },
+        "required": ["name", "status"]
+      },
+      "minItems": 1
+    },
+    "retention": {
+      "type": "object",
+      "properties": {
+        "classification": { "type": "string" },
+        "retention_basis": { "type": "string" },
+        "legal_hold_checked": { "type": "boolean" },
+        "access_control_requirement": { "type": "string" }
+      },
+      "required": ["classification", "legal_hold_checked"]
+    },
+    "required_human_approvals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action": { "type": "string" },
+          "approver_role": { "type": "string" },
+          "status": { "type": "string", "enum": ["required", "requested", "approved", "rejected"] }
+        },
+        "required": ["action", "approver_role", "status"]
+      }
+    },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "exceptions": { "type": "array", "items": { "type": "string" } },
+    "status": { "type": "string", "enum": ["draft", "needs-evidence", "needs-human-review", "blocked", "reviewed"] },
+    "data_classification": { "type": "string", "const": "restricted-metadata-only", "description": "Artifact may contain only opaque references and non-sensitive metadata. Restricted values must remain in an approved secure system." },
+    "disclaimer": { "type": "string" }
+  },
+  "required": ["contract_type", "review_id", "entity", "accounting_period", "scope", "accounting_regime", "source_version_register", "validation_gates", "data_classification", "status", "disclaimer"],
+  "allOf": [
+    {
+      "if": { "properties": { "scope": { "contains": { "const": "reconciliation" } } }, "required": ["scope"] },
+      "then": { "required": ["reconciliations"] }
+    },
+    {
+      "if": { "properties": { "scope": { "contains": { "const": "retention" } } }, "required": ["scope"] },
+      "then": { "required": ["retention"] }
+    },
+    {
+      "if": { "properties": { "scope": { "contains": { "const": "invoice" } } }, "required": ["scope"] },
+      "then": { "properties": { "required_human_approvals": { "minItems": 1 } }, "required": ["required_human_approvals"] }
+    },
+    {
+      "if": { "properties": { "status": { "const": "reviewed" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "accounting_regime": { "properties": { "human_confirmation": { "const": "confirmed" } }, "required": ["human_confirmation"] },
+          "validation_gates": {
+            "not": {
+              "contains": {
+                "properties": { "status": { "enum": ["blocked", "needs-evidence", "needs-human-review"] } },
+                "required": ["status"]
+              }
+            }
+          }
+        },
+        "required": ["findings"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "reviewed" },
+          "scope": { "contains": { "const": "invoice" } }
+        },
+        "required": ["status", "scope"]
+      },
+      "then": {
+        "properties": {
+          "required_human_approvals": {
+            "contains": {
+              "properties": { "status": { "const": "approved" } },
+              "required": ["status"]
+            }
+          }
+        },
+        "required": ["required_human_approvals"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "reviewed" },
+          "scope": {
+            "contains": {
+              "anyOf": [
+                { "const": "period-close" },
+                { "const": "financial-statements" }
+              ]
+            }
+          }
+        },
+        "required": ["status", "scope"]
+      },
+      "then": {
+        "properties": {
+          "required_human_approvals": {
+            "contains": {
+              "properties": { "status": { "const": "approved" } },
+              "required": ["status"]
+            }
+          }
+        },
+        "required": ["required_human_approvals"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "reviewed" },
+          "scope": { "contains": { "const": "reconciliation" } }
+        },
+        "required": ["status", "scope"]
+      },
+      "then": {
+        "properties": {
+          "reconciliations": {
+            "not": {
+              "contains": {
+                "properties": { "status": { "enum": ["difference-found", "not-performed"] } },
+                "required": ["status"]
+              }
+            }
+          }
+        },
+        "required": ["reconciliations"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "reviewed" },
+          "scope": { "contains": { "const": "retention" } }
+        },
+        "required": ["status", "scope"]
+      },
+      "then": {
+        "properties": {
+          "retention": {
+            "properties": { "legal_hold_checked": { "const": true } },
+            "required": ["legal_hold_checked"]
+          }
+        },
+        "required": ["retention"]
+      }
+    }
+  ],
+  "examples": [
+    {
+      "contract_type": "accounting-compliance-review",
+      "review_id": "2026-08-month-end-close-example",
+      "entity": { "legal_name": "Example Trading Company", "legal_form": "limited-liability-company" },
+      "accounting_period": { "from": "2026-07-01", "to": "2026-07-31", "status": "closing" },
+      "scope": ["regime", "reconciliation", "period-close", "retention"],
+      "accounting_regime": { "name": "TT-133-2016", "effective_from": "2026-01-01", "basis_references": ["Internal accounting-policy reference"], "human_confirmation": "confirmed" },
+      "source_version_register": [{ "source": "Accounting policy register", "url_or_internal_reference": "internal-policy-ref", "effective_date": "2026-01-01", "verified_at": "2026-08-04T13:00:00Z", "status": "verified" }],
+      "reconciliations": [{ "area": "bank", "status": "matched", "evidence_references": ["masked-bank-reconciliation-ref"], "resolution_owner": "accounting-owner", "required_action": "retain-reconciliation-evidence" }],
+      "findings": [],
+      "validation_gates": [{ "name": "scope-confirmed", "status": "passed" }, { "name": "regime-confirmed", "status": "passed" }, { "name": "handoff-ready", "status": "needs-human-review" }],
+      "retention": { "classification": "accounting-record", "legal_hold_checked": true },
+      "required_human_approvals": [{ "action": "approve-period-close", "approver_role": "chief-accountant-or-authorized-accounting-owner", "status": "required" }],
+      "assumptions": [],
+      "exceptions": [],
+      "data_classification": "restricted-metadata-only",
+      "status": "needs-human-review",
+      "disclaimer": "Prepared for accounting review only. This is not tax advice, legal advice, an audit opinion, or authorization to submit, sign, issue, void, replace, or adjust a live filing or invoice."
+    }
+  ]
+}

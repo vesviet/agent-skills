@@ -270,6 +270,35 @@ roles:
         - modify_secrets
         - push_to_production
 
+    vietnam-accounting-specialist:
+      allowed:
+        - create_file
+        - read_file
+        - search_code
+        - write_file
+      requires_approval:
+        - delegate_task
+        - delete_file
+        - export_data
+        - read_database
+        - run_build
+        - run_query
+        - write_database
+      denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - install_dependency
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_deployment
+        - run_migration
+
     data-engineer:
       allowed:
         - create_file
