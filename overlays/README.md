@@ -9,7 +9,7 @@ Use an overlay when:
 - a workflow assumes one repository family or publishing pipeline
 - a pack needs local conventions that do not belong in the global core
 
-## Current Overlays (16)
+## Current Overlays (17)
 
 ### Stack Overlays (tech-specific, project-agnostic)
 
@@ -18,6 +18,7 @@ Use an overlay when:
 | [astro-cloudflare](astro-cloudflare/README.md) | Astro v5 + Cloudflare Pages/Workers | Architecture patterns, component conventions, Wrangler deploy rules, ESLint/Prettier config |
 | [laravel-filament](laravel-filament/README.md) | Laravel 11 + Filament v3 + Livewire 3 | DB integrity rules, Filament patterns, Pest testing standards, `develop-laravel-feature` skill |
 | [go-microservices](go-microservices/README.md) | Go (Golang) | Clean Architecture conventions, gRPC/REST patterns, structured logging, table-driven tests |
+| [r3f-stack](r3f-stack/README.md) | React Three Fiber / Three.js (WebGL) | **Stub** — reserved namespace for the R3F cluster migration planned for v4.0.0 |
 
 ### Project Overlays (project-specific, depends on a stack overlay)
 

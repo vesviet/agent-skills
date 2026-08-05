@@ -51,6 +51,7 @@ Current overlays:
 - `laravel-filament`: Laravel + Filament admin conventions
 - `maydiengiaisaigon`: content/SEO helpers for May Dien Gia Sai Gon
 - `obj-configurator`: OBJ product configurator conventions
+- `r3f-stack`: reserved namespace for the React Three Fiber / Three.js skill cluster migrating out of core at v4.0.0
 - `seo-publishing`: SEO publishing cadence and board conventions
 - `sport-icm`: Sport catalog conventions for the ICM Cloudflare site
 - `ui-design-system`: shared UI/design-system conventions

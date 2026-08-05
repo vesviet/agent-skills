@@ -223,7 +223,7 @@ The validator does not check `references/` content; the structural contract only
 ### Domain Cluster Notes (2026)
 
 - The **MMO cluster** spans multiple taxonomies by design (foundation for content/ROI, platform for infra/automation, security-data for assets/tracking). Their pre-2025.4 drift has been retired; current skills carry Legal & Compliance Notices that map to `REVIEW-SYSTEM LOCK` in the `mmo-engineer` role.
-- The **R3F/3D cluster** under `frontend/` is retained for backward compatibility with existing role toolboxes but is scheduled for migration to an overlay at the next major version (4.0.0). New 3D work should target the overlay boundary.
+- The **R3F/3D cluster** under `frontend/` is retained for backward compatibility with existing role toolboxes but is scheduled for migration to the `r3f-stack` overlay at the next major version (4.0.0). New 3D work should target the overlay boundary. See `overlays/r3f-stack/README.md` for the migration checklist.
 
 ## Validation Gate
 
