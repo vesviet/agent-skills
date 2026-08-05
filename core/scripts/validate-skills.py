@@ -48,6 +48,8 @@ PLACEHOLDER_REFS = {
     "description",
     "true",
     "false",
+    "yes",
+    "no",
     "carry-over",
     "up",
     "down",
@@ -62,6 +64,10 @@ PLACEHOLDER_REFS = {
     "findings",
     "confidence",
     "slug",
+    # Well-known endpoint identifiers used inside core/roles/*.md prose (URIs, not skills)
+    "oauth-protected-resource",
+    "oauth-authorization-server",
+    "api-catalog",
 }
 
 

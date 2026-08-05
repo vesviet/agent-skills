@@ -197,6 +197,34 @@ Optional sections such as `## Output Format`, `## When to Use`, `## Deliverable 
 
 Descriptions should include both what the skill does and when to use it. Keep skills repo-agnostic by default; put stack-specific assumptions in adapters or overlays.
 
+### References Subdirectory Policy
+
+A skill may add a `references/` subdirectory when the SKILL.md body alone would exceed ~150 lines. Use `references/` for:
+
+- long external-spec excerpts (e.g., `agent-a2a-protocol/references/a2a-spec.md`)
+- framework or stack variant guides (e.g., `turnstile-spin/references/{astro,hugo,nextjs-app,nextjs-pages,sveltekit,vanilla-html}.md`)
+- deep rules/checklists that the SKILL.md body summarizes (e.g., `durable-objects/references/{rules,testing,workers}.md`)
+
+When you add a `references/` subdirectory:
+
+- keep SKILL.md focused on the trigger conditions, core rules, suggested process, and checklist
+- link from SKILL.md to each reference doc by relative path the first time the topic appears (e.g., `See references/rules.md for the full checklist`)
+- do not duplicate content between SKILL.md and `references/`
+- references are loaded on demand — do not rely on them being read for the skill to start
+
+The validator does not check `references/` content; the structural contract only applies to the SKILL.md file itself.
+
+### Size Guidance
+
+- Aim for SKILL.md between 80 and 200 lines.
+- Below ~70 lines is acceptable for tight, scope-narrow skills (e.g., compliance-locked MMO skills) provided all baseline sections are present.
+- Above ~200 lines signals a candidate for `references/` extraction; above 500 lines is rejected by the validator.
+
+### Domain Cluster Notes (2026)
+
+- The **MMO cluster** spans multiple taxonomies by design (foundation for content/ROI, platform for infra/automation, security-data for assets/tracking). Their pre-2025.4 drift has been retired; current skills carry Legal & Compliance Notices that map to `REVIEW-SYSTEM LOCK` in the `mmo-engineer` role.
+- The **R3F/3D cluster** under `frontend/` is retained for backward compatibility with existing role toolboxes but is scheduled for migration to an overlay at the next major version (4.0.0). New 3D work should target the overlay boundary.
+
 ## Validation Gate
 
 Run this before treating core skill changes as complete:
