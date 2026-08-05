@@ -113,6 +113,15 @@ Cover:
 - [ ] styling follows local system
 - [ ] performance impact considered (bundle size, lazy loading, CLS)
 - [ ] tests added or updated
+- [ ] `implementation-result.json` emitted for the change slice (see Output Contracts)
+
+## Output Contracts
+
+When this skill runs inside a coordinated slice planned by Technical Lead or gated by Reviewer, emit:
+
+- **`contracts/schemas/implementation-result.json`** — one artifact per change slice. Include `change_summary`, `files_touched[]`, `components_added[]` with props/events summary, `tests_added[]`, `preserved_behavior[]` (call out a11y semantics, layout shifts, or public prop surface kept unchanged), `validation_run` (commands + result). Reference any `ui-component-spec.json` consumed from UI/UX Designer so downstream roles can trace spec-to-code fidelity.
+
+Skip emission for solo exploratory UI work with no planned handoff.
 
 ## Related Skills
 

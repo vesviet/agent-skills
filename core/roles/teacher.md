@@ -108,10 +108,10 @@ This role must follow [role-standard](role-standard.md) first.
 - `design-learning-plan`
 - `create-exercises`
 - `grade-and-review`
-- `agent-semantic-memory`
 
 ### Supporting Skills (use when collaborating)
 
+- `agent-semantic-memory`
 - `agent-delegation`
 - `write-documentation`
 - `conduct-research`

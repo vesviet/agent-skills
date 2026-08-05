@@ -205,11 +205,11 @@ Accessibility is a first-class quality and legal requirement — not a post-laun
 
 - `write-tests`
 - `frontend-testing`
-- `review-service`
 - `agent-quality-gate`
 - `accessibility-review`
 
 ### Supporting Skills (use when collaborating)
+- `review-service`
 
 - `agent-observability`
 - `navigate-service`

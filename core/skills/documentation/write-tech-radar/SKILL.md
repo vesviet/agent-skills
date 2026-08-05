@@ -96,6 +96,15 @@ To capture architecture-aligned decisions and rapid AI developments:
   justification: "Detailed context explaining why this specific lifecycle state is selected."
   ```
 
+## Output Contracts
+
+When the engagement moves beyond a radar entry into a binding technical decision, this skill emits machine-readable artifacts so Technical Architect and Technical Lead can consume them without re-interviewing stakeholders:
+
+- **`contracts/schemas/architecture-options.json`** — emit when the assessment surfaced 2+ viable options that require explicit comparison before commitment. Populate `options[]` with the same context / trade-off pairs summarized in the radar entry; reference the radar entry path in `evidence_radar_link`.
+- **`contracts/schemas/adr-spec.json`** — emit once a single recommendation is accepted and becomes a binding decision. Fill `title`, `context`, `decision`, `consequences`, and `alternatives_considered[]` directly from the radar entry; set `madr_path` to the inline MADR block linked from the radar entry. This is the artifact `technical-architect` records when consuming this skill's output.
+
+Skip emission when the output is a non-binding adoption note or AI-tool tracker entry — those remain radar-only.
+
 ## Checklist
 
 - [ ] decision scope identified

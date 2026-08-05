@@ -106,13 +106,12 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Primary Skills
 
-- `analyze-business-requirements`
-- `write-product-brief`
-
-### Supporting Skills (use when collaborating)
-
 - `meeting-review`
 - `design-ux-flow`
+
+### Supporting Skills (use when collaborating)
+- `write-product-brief`
+- `analyze-business-requirements`
 - `navigate-service`
 
 ## Output Template

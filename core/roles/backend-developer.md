@@ -297,10 +297,10 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - `write-tests`
 - `commit-code`
 - `scaffold-new-service`
+- `navigate-service`
 
 ### Supporting Skills (use when collaborating)
 
-- `navigate-service`
 - `troubleshoot-service`
 - `performance-profiling`
 - `review-code`

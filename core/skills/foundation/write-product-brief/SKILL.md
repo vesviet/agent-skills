@@ -112,6 +112,14 @@ Leave a brief that downstream roles can use directly:
 - Next owner:
 ```
 
+## Output Contracts
+
+When the brief is intended as the intake artifact for Solution Architect or Technical Architect, emit a machine-readable twin so the next role can consume it without re-typing:
+
+- **`contracts/schemas/solution-brief.json`** — emit when the brief describes a problem that needs architecture or solutioning (as opposed to a pure product/scope decision). Map directly from the markdown sections: `objective` ← Objective, `preserved_behavior` ← Objective → Preserved behavior, `in_scope` / `out_of_scope` ← Scope, `affected_users` ← Scope → Affected users, `acceptance_criteria` ← Acceptance → Success criteria, `trade_offs` ← Trade-Offs, `risks` ← Handoff → Risks. Set `produced_by_role: product-manager` (or whichever role authored the brief) so the architect can route follow-ups.
+
+Skip emission for purely editorial marketing briefs (copy / campaign releases) — those stay as markdown only.
+
 ## Checklist
 
 - [ ] user or business outcome defined
@@ -120,6 +128,7 @@ Leave a brief that downstream roles can use directly:
 - [ ] scope boundaries made explicit
 - [ ] acceptance and trade-offs captured
 - [ ] risks and next owner stated
+- [ ] when handed to an architect role, matching `solution-brief.json` emitted alongside the markdown brief
 
 ## Related Skills
 

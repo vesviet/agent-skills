@@ -115,6 +115,15 @@ Cover:
 - [ ] compatibility risk checked
 - [ ] API versioning verified (if repo uses versioned endpoints)
 - [ ] tests added or updated
+- [ ] `implementation-result.json` emitted for the change slice (see Output Contracts)
+
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery (Technical Lead planned, Reviewer/QA will gate), emit:
+
+- **`contracts/schemas/implementation-result.json`** — one artifact per change slice. Required fields: `change_summary` (what was added/changed), `files_touched[]`, `endpoints_added[]` with method+path, `tests_added[]` with file refs, `preserved_behavior[]` (explicitly note any auth shape, error contract, or response envelope kept identical), `validation_run` (commands + pass/fail). Set `produced_by_role` to the emitting developer role so Coordinator and Reviewer can route follow-ups without re-parsing diffs.
+
+Skip emission for solo refactor work where no downstream handoff is expected.
 
 ## Related Skills
 

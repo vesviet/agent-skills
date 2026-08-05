@@ -276,11 +276,11 @@ During quarterly audits, scan the full content portfolio for:
 
 ### Primary Skills
 
-- `write-product-brief`
-- `analyze-business-requirements`
 - `audit-content`
 
 ### Supporting Skills (use when collaborating)
+- `write-product-brief`
+- `analyze-business-requirements`
 
 - `write-article`
 - `conduct-research`

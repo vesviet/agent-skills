@@ -108,7 +108,6 @@ Shared skills note: `configure-agent-headers` and `manage-api-catalog` appear in
 - `configure-oauth-metadata`
 - `debug-workos-integration`
 - `configure-mcp`
-- `configure-agent-commerce`
 - `configure-agent-headers`
 - `manage-api-catalog`
 - `configure-agent-skills`
@@ -116,6 +115,7 @@ Shared skills note: `configure-agent-headers` and `manage-api-catalog` appear in
 
 ### Supporting Skills (use when collaborating)
 
+- `configure-agent-commerce`
 - `configure-llms-txt`
 - `commit-code`
 - `agent-delegation`

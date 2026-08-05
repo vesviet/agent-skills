@@ -102,6 +102,15 @@ Integrate interactive AI tutoring systems directly into the study blocks:
 - [ ] Spaced repetition milestones scheduled at days 1, 3, 7, 14, and 30 to mitigate Ebbinghaus forgetting curve decay.
 - [ ] Feynman technique checkpoints embedded to test simplification and jargon-free explanation.
 - [ ] LLM tutoring modules configured to follow Socratic questioning paths instead of direct answers.
+- [ ] `learning-handoff.json` emitted when handing the plan to another teacher or to a parent/administrator consumer (see Output Contracts)
+
+## Output Contracts
+
+When this skill is the producing role for a `learning-handoff.json` artifact (per `core/contracts/schemas/learning-handoff.json`), emit:
+
+- **`contracts/schemas/learning-handoff.json`** — populate `moet_alignment[]` from the curriculum standards referenced, `plan_phases[]` mirroring the timeline blocks above, `exercise_refs[]` pointing at the artifacts produced by `create-exercises`, and `evaluation_rubric_ref` for `grade-and-review` to consume. This ensures downstream teachers or automated tutors ingest a machine-readable plan rather than re-parsing prose.
+
+Skip emission for one-off ad-hoc tutoring sessions with no persistent handoff.
 
 ## Related Skills
 

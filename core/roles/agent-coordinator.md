@@ -232,10 +232,10 @@ Treat delegation as a Zero-Trust boundary — the orchestration layer, not promp
 - `agent-model-routing`
 - `agent-observability`
 - `agent-prompt-lifecycle`
+- `agent-semantic-memory`
 
 ### Supporting Skills (use when collaborating)
 
-- `agent-semantic-memory`
 - `navigate-service`
 - `troubleshoot-service`
 - `review-code`

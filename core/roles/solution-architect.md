@@ -236,13 +236,13 @@ Contracts owned by other roles — do not author these as Solution Architect:
 
 ### Primary Skills
 
-- `navigate-service`
-- `conduct-research`
-- `analyze-business-requirements`
 - `write-tech-radar`
 - `meeting-review`
 
 ### Supporting Skills (use when collaborating)
+- `conduct-research`
+- `analyze-business-requirements`
+- `navigate-service`
 
 - `review-service`
 - `write-documentation`

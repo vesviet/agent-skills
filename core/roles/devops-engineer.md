@@ -231,10 +231,10 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - `setup-deployment`
 - `debug-runtime-platform`
 - `add-telemetry-instrumentation`
-- `supply-chain-security`
 - `manage-secrets`
 
 ### Supporting Skills (use when collaborating)
+- `supply-chain-security`
 
 - `navigate-service`
 - `commit-code`

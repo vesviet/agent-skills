@@ -234,12 +234,12 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - `write-tests`
 - `frontend-testing`
 - `commit-code`
+- `navigate-service`
 
 ### Supporting Skills (use when collaborating)
 
 - `accessibility-review`
 - `performance-profiling`
-- `navigate-service`
 - `review-code`
 - `troubleshoot-service`
 - `agent-delegation`

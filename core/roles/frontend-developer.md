@@ -298,12 +298,12 @@ For micro-frontend architectures or large frontend applications with independent
 - `frontend-testing`
 - `commit-code`
 - `setup-design-system`
+- `navigate-service`
 
 ### Supporting Skills (use when collaborating)
 
 - `accessibility-review`
 - `performance-profiling`
-- `navigate-service`
 - `write-tests`
 - `troubleshoot-service`
 - `review-code`

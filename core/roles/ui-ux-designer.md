@@ -262,10 +262,10 @@ In 2026, design systems are not component libraries — they are living infrastr
 
 - `design-ux-flow`
 - `meeting-review`
-- `navigate-service`
 - `design-review`
 
 ### Supporting Skills (use when collaborating)
+- `navigate-service`
 
 - `accessibility-review`
 - `analyze-business-requirements`

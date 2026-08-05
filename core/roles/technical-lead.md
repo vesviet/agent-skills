@@ -266,11 +266,11 @@ A slice that fails DoR must be returned to the owning role for clarification bef
 
 - `plan-technical-delivery`
 - `review-code`
-- `review-service`
-- `navigate-service`
 - `meeting-review`
 
 ### Supporting Skills (use when collaborating)
+- `review-service`
+- `navigate-service`
 
 - `scaffold-new-service`
 - `performance-profiling`
