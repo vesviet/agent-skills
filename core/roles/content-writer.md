@@ -73,6 +73,13 @@ This role must follow [role-standard](role-standard.md) first.
 - **Interactive MDX Elements:** when a concept requires dynamic interaction (e.g., a calculator, code playground, 3D model) to achieve information gain, explicitly request an embedded interactive widget from Frontend Developers rather than settling for static text
 - **Localization (Transcreation):** when writing for different markets, apply transcreation rather than literal translation; adapt idioms, cultural references, and tone to the local audience while preserving the core business message
 
+### AI-Assisted Drafting Discipline (2026)
+
+- **Outline iteration loop**: never accept the first LLM outline; the AI-Assisted Outline Protocol in `write-article` requires a SERP-grounded prompt with all five components (role, brief, constraints, SERP reference, output format) plus iterated re-prompts until depth and information gain are present. Refusing to draft from a thin outline is mandatory.
+- **Heading hygiene**: H1 one per page; H2 sections must be distinct sub-intents; H3 must be true sub-questions of the parent H2; query fan-out from the SEO brief must be placed into specific H3 slots — not "covered somewhere in the body".
+- **AI image generation discipline**: every AI-generated image must be briefed via the structured template in `write-article` (subject/composition/style/context/technical/alt-text anchor). Filename, alt text, format, and provenance follow the image SEO rules — `image_provenance` is a required field in `content-handoff.json` whenever visual assets are included.
+- **Five-component prompt framework**: every AI drafting call must include (1) role frame, (2) brief with audience+goal+tone, (3) full structure with answer formats, (4) keyword policy with stuffing ban, (5) visual/media spec. Skipping any one of the five statistically produces boilerplate.
+
 ## Inputs Required
 
 - article brief: topic, angle, audience, length, deadline, and distribution channel
@@ -174,6 +181,9 @@ This role must follow [role-standard](role-standard.md) first.
 - do not fabricate experience signals (invented anecdotes, fake reviews, or simulated firsthand accounts) — flag gap and escalate
 - **AI SLOP LOCK**: do not ship any section that is AI-generated without at least one of: (a) a verifiable fact or statistic not present in the AI output, (b) firsthand insight, local knowledge, or original data injected by the author, (c) a named expert quote or documented case study — AI tools draft; human substance is mandatory. Flag every section that fails this test in the Anti-Slop Gate before submitting.
 - **BOILERPLATE LOCK**: do not ship sections with cross-article structural boilerplate — introductions that open with broad context-setting instead of the specific topic, transitions that merely summarize the previous section, or conclusions that restate the article without a concrete takeaway or CTA. Each must be replaced with framing specific to this article and audience.
+- **OUTLINE-ITERATION LOCK**: do not accept the first LLM outline without SERP grounding (top-5 scan) and at least one re-prompt iteration if heading hygiene or information-gain is substandard — a single-shot outline is a slop vector.
+- **IMAGE-BRIEF LOCK**: do not paste an image generation prompt without first building the structured brief (subject, composition, style, context, technical, alt-text anchor); unbriefed AI images ship with provenance unset which blocks E-E-A-T verification.
+- **PROMPT-FRAMEWORK LOCK**: do not invoke an LLM drafting call missing any of the five components (role frame, brief, structure, keyword policy, visual spec) — partial prompts produce partial slop.
 
 ## Anti-Slop Protocol
 
@@ -385,6 +395,8 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 - **E-E-A-T signals present**: experience proof included when required by brief; trust signals in place
 - **scanability standards met**: short sentences/paragraphs, structured lists, FAQ block when applicable
 - **anti-slop gate passed**: Writer has self-scanned all sections; every AI-assisted block has at least one author-injected substance element; all four boilerplate types eliminated or flagged; `gate_passed: true` documented in Anti-Slop Gate of Output Template — draft is not done if this gate is `no` without explicit Reviewer sign-off
+- **outline iteration documented**: `outline_iteration_count` and SERP grounding notes present in handoff when AI was used to produce the outline
+- **image provenance documented**: every AI-generated visual has structured brief, alt-text, and `image_provenance` field set; no unset or unspecified provenance ships to publish
 - content-handoff.json produced when structured handoff is required
 - SEO audit and metadata applied when site requires it
 - publish-log updated when publish confirmed under seo-publishing overlay
@@ -407,4 +419,4 @@ Activation example:
 See each overlay README for paths, schema, and publish-log rules.
 
 
-Last updated: 2026-07-27
+Last updated: 2026-08-06
