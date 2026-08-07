@@ -27,7 +27,7 @@ When the user assigns you a Role, you MUST:
 
 Available roles: `core/roles/README.md`
 
-## A2A 1.0 & Antigravity (pack 3.5.0)
+## A2A 1.0 & Antigravity (pack 4.0.0)
 
 When operating as an AI agent (like **Antigravity**) under this pack, you MUST:
 
@@ -46,11 +46,15 @@ Core skills are organized under `core/skills/` by taxonomy:
 
 - `core/skills/agent/`
 - `core/skills/foundation/`
+- `core/skills/meetings-analysis/`
+- `core/skills/repo-ops/`
+- `core/skills/content/`
 - `core/skills/backend/`
 - `core/skills/frontend/`
 - `core/skills/platform/`
 - `core/skills/commerce/`
 - `core/skills/security-data/`
+- `core/skills/mmo/`
 - `core/skills/documentation/`
 - `core/skills/education/`
 

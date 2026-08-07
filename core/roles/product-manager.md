@@ -188,9 +188,9 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 ### Primary Skills
 
 - `write-product-brief`
-- `meeting-review`
 
 ### Supporting Skills (use when collaborating)
+- `meeting-review`
 
 - `navigate-service`
 - `write-tech-radar`

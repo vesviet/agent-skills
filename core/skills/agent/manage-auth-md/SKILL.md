@@ -74,7 +74,7 @@ Use this skill when adding or updating the Agentic Registration Discovery file (
 ## Related Skills
 
 - **configure-oauth-metadata**: Set up the `/.well-known/oauth-protected-resource` and `/.well-known/oauth-authorization-server` endpoints that `auth.md` references.
-- **debug-workos-integration**: Troubleshoot WorkOS agent registration and scanner failures.
+- **debug-identity-provider**: Troubleshoot WorkOS agent registration and scanner failures.
 - **configure-agent-headers**: Expose `auth.md` presence via HTTP Link headers for passive discovery.
 
 ### 2026: Auth.md Enhancements

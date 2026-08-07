@@ -25,6 +25,7 @@ VALIDATORS = (
     "validate-indexes.py",
     "validate-policy-consistency.py",
     "validate-skill-ownership.py",
+    "validate-contract-coverage.py",
 )
 
 

@@ -1,9 +1,9 @@
 ---
-name: debug-workos-integration
+name: debug-identity-provider
 description: Diagnoses and resolves failures reported by WorkOS Agentic Registration scanners, `isitagentready.com`, and SSO/Directory Sync validators — including DNS errors, malformed `agent_auth` schemas, incorrect `auth.md` markers, and non-resolving endpoint URLs. Use when a WorkOS or agentic readiness scanner rejects metadata, returns a 530 error, or reports specific rule violations in OAuth or auth.md configuration.
 ---
 
-# Debug WorkOS Integration
+# Debug Identity Provider
 
 Use this skill to diagnose failures when `isitagentready.com` or another WorkOS validation scanner rejects your metadata or implementation. Scanner error messages are precise — each failure maps to a specific field name, nesting rule, or DNS resolution requirement.
 

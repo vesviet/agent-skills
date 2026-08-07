@@ -2,6 +2,101 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [4.0.0] - 2026-08-07
+
+Major refactoring release driven by a full role↔skill ownership audit plus a
+taxonomy restructure. **Breaking**: three skills renamed or moved out of core;
+four taxonomy directories added; several role toolboxes changed ownership.
+
+### Breaking Changes
+
+- **R3F/Three.js cluster migrated out of core** — `debug-3d-scene`,
+  `integrate-r3f-three-legacy`, and `optimize-3d-assets` moved from
+  `core/skills/frontend/` to the live overlay `overlays/r3f-stack/skills/`.
+  Update any path-based tooling (`core/skills/frontend/<name>`) to the new
+  overlay location. `3d-graphics-engineer` role references resolve by skill
+  name and are unaffected.
+- **`debug-workos-integration` renamed to `debug-identity-provider`** —
+  vendor-generic naming per the pack's own rule. All references in
+  `configure-mcp`, `configure-oauth-metadata`, `manage-auth-md`,
+  `agent-discovery-engineer`, and the A2A agent card updated.
+- **Foundation taxonomy split** — `core/skills/foundation/` reduced from 26 to
+  12 skills. New taxonomies: `core/skills/meetings-analysis/`
+  (`meeting-review`, `analyze-business-requirements`, `analyze-data`),
+  `core/skills/repo-ops/` (`navigate-service`, `troubleshoot-service`,
+  `review-code`, `review-service`, `commit-code`), and `core/skills/content/`
+  (`write-article`, `repurpose-content`, `audit-content`, `optimize-seo`).
+- **MMO cluster colocated** — seven skills (`generate-mmo-content`,
+  `analyze-campaign-roi`, `deploy-mmo-infrastructure`, `deploy-proxyware-fleet`,
+  `create-automation-script`, `manage-mmo-assets`, `setup-tracking-system`)
+  moved from `foundation/`, `platform/`, and `security-data/` into
+  `core/skills/mmo/`.
+
+### Role Ownership Fixes (audit-driven)
+
+- `agent-semantic-memory`: Primary moved from `teacher` to `agent-coordinator`
+  (teacher now Supporting).
+- `configure-agent-commerce`: `agent-discovery-engineer` demoted to Supporting;
+  `ecommerce-engineer` is sole Primary.
+- `navigate-service` ownership inversion fixed: developers (`backend`,
+  `frontend`, `mobile` engineers) are now Primary; `business-analyst`,
+  `solution-architect`, `technical-architect`, `technical-lead`,
+  `ui-ux-designer` demoted to Supporting.
+- `analyze-business-requirements`: `business-analyst` is sole Primary; four
+  other roles demoted.
+- `conduct-research`: `researcher` sole Primary; `solution-architect` demoted.
+- `write-product-brief`: `product-manager` sole Primary; `content-manager` and
+  `task-planner` demoted.
+- `supply-chain-security`: `security-engineer` sole Primary; `devops-engineer`
+  demoted.
+- `review-service`: `reviewer` sole Primary; `qa-engineer`,
+  `technical-architect`, `technical-lead` demoted.
+- `meeting-review`: ownership narrowed to `project-manager` and
+  `technical-lead`; six other roles demoted to Supporting.
+- `task-planner` toolbox rebuilt after cascading demotions —
+  `meeting-review`+`design-ux-flow` Primary (demoted in cleanup),
+  task-planner now has `meeting-review` P retained and `design-ux-flow`
+  promoted.
+- Speculative Supporting entries trimmed: `devops-engineer`
+  (`durable-objects`, `manage-api-catalog`), `data-analyst` (`sandbox-sdk`).
+
+### Added
+
+- `validate-contract-coverage.py` — new advisory validator that flags when a
+  role names a contract under Outputs Produced but no toolbox skill declares
+  emitting it. Wired into `validate-all.py`. Currently reports 40 advisory
+  warnings to be backfilled over the next minors; does not block.
+- **`write-article`** — three new sections: AI-Assisted Outline Protocol
+  (5-component context prompt, SERP grounding pass, heading hygiene audit,
+  iterate-until-depth loop, outline sign-off capture), AI Image Generation
+  Brief (structured image prompt template + image SEO rules), and Prompt
+  Framework For AI-Assisted Drafting (canonical five-component table every
+  section-level LLM call must include).
+- **`content-writer` role** — AI-Assisted Drafting Discipline block and three
+  new Guardrail locks (OUTLINE-ITERATION, IMAGE-BRIEF, PROMPT-FRAMEWORK).
+- Output Contracts sections in `write-tech-radar` (adr-spec,
+  architecture-options), `write-product-brief` (solution-brief),
+  `add-api-endpoint` and `add-ui-component` (implementation-result),
+  `wrangler` (edge-deployment-spec), `design-learning-plan`
+  (learning-handoff).
+- Content Manager tagged into `content-publishing` step 6 and
+  `seo-content-lifecycle` step 4, closing the README ↔ workflow drift where
+  the role was recommended for both flows but never assigned in them.
+
+### Fixed
+
+- `validate-skills.py` `PLACEHOLDER_REFS` extended with `yes`, `no`,
+  `oauth-protected-resource`, `oauth-authorization-server`, `api-catalog`,
+  `server-card.json` so role prose literals are not misread as dangling skill
+  references. Removed a dead `server-card.json` entry that the lookup regex
+  could never match.
+- `wrangler/SKILL.md` structural repair — 2026 Wrangler v4 block moved above
+  Checklist; literal `\n` artifacts removed.
+- `core/skills/README.md` — added References Subdirectory Policy, Size
+  Guidance, and Domain Cluster Notes sections; counts updated (91 core + 10
+  overlay = 101 total).
+- `AGENTS.md` taxonomy list now reflects the 13 active taxonomy directories.
+
 ## [3.5.0] - 2026-07-28
 
 Corrective release from a full-pack audit. All 12 existing validators passed before this

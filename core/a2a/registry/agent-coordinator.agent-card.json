@@ -4,7 +4,7 @@
   "name": "agent-coordinator",
   "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality gates, and driving work from intake to validated handoff without losing context or skipping safety. In 2025–2026, this means treating multi-agent systems as distributed software: enforcing deterministic state transitions, applying runtime guardrails (not prompt-based trust), maintaining end-to-end trace observability, managing token budgets as a design constraint, and applying explicit HITL gates before irreversible actions.",
   "url": "pack://agent-skills/core/roles/agent-coordinator.md",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -271,6 +271,28 @@
       "id": "agent-prompt-lifecycle",
       "name": "Agent Prompt Lifecycle",
       "description": "Manage prompt assets through their full lifecycle including versioning, evaluation against golden datasets, drift detection, and controlled promotion across environments. Use when creating, updating, reviewing, or auditing prompt definitions in roles, skills, workflows, or system instructions to ensure measurable quality and safe deployment.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-semantic-memory",
+      "name": "Agent Semantic Memory",
+      "description": "Read from and write to persistent memory stores so agents retain codebase patterns, past fixes, and architectural facts across conversations. Use when starting work in a known repo, after fixing a non-obvious bug, after discovering a codebase convention, or when the same mistake has occurred more than once.",
       "tags": [
         "agent",
         "pack"

@@ -207,10 +207,10 @@ In 2026, the biggest source of wasted build cycles is not bad code — it is req
 ### Primary Skills
 
 - `analyze-business-requirements`
-- `meeting-review`
 - `ai-risk-assessment`
 
 ### Supporting Skills (use when collaborating)
+- `meeting-review`
 - `navigate-service`
 
 - `write-documentation`

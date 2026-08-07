@@ -44,7 +44,7 @@ Use skill: `conduct-research`
 
 #### 3. Draft, Audit, And Publish
 
-Role: **Content Writer**, **SEO Analyst**, **Technical Lead**
+Role: **Content Writer**, **SEO Analyst**, **Content Manager**, **Technical Lead**
 
 Follow [content-publishing](content-publishing.md) steps 3–8 in full: draft against the brief, self-check, SEO audit, revise, and publish with explicit user approval. That workflow owns the detailed checklist and field-level requirements for `content-handoff.json`, `seo-audit-report.json`, and `publish-log.md` — this entry point exists only to prepend the planning and research steps above it.
 

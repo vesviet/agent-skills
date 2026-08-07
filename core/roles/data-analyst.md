@@ -210,7 +210,6 @@ When a decision has significant business impact (budget reallocation, product ch
 - `conduct-research`
 - `write-documentation`
 - `agent-delegation`
-- `sandbox-sdk`
 
 ## Output Template
 

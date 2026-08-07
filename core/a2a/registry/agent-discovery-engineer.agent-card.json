@@ -4,7 +4,7 @@
   "name": "agent-discovery-engineer",
   "description": "Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance across all 19 checks of the Agent Readiness standards (e.g., isitagentready.com). This covers Protocol Discovery, Commerce Standards, Discoverability, and Bot Access Control. In 2025–2026, this extends to enforcing compliance as the A2A, MCP, Auth.md, x402, and Agent Skills protocol landscape rapidly standardizes — tracking spec drift between experimental drafts and stable scanner implementations, wiring agentic endpoint discovery into Cloudflare edge responses via RFC 8288 Link headers, and ensuring the registry is machine-readable and interoperable with emerging AI agent orchestration frameworks.",
   "url": "pack://agent-skills/core/roles/agent-discovery-engineer.md",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -62,8 +62,8 @@
       "output_schema_refs": []
     },
     {
-      "id": "debug-workos-integration",
-      "name": "Debug Workos Integration",
+      "id": "debug-identity-provider",
+      "name": "Debug Identity Provider",
       "description": "Diagnoses and resolves failures reported by WorkOS Agentic Registration scanners, `isitagentready.com`, and SSO/Directory Sync validators — including DNS errors, malformed `agent_auth` schemas, incorrect `auth.md` markers, and non-resolving endpoint URLs. Use when a WorkOS or agentic readiness scanner rejects metadata, returns a 530 error, or reports specific rule violations in OAuth or auth.md configuration.",
       "tags": [
         "agent",
@@ -83,24 +83,6 @@
       "id": "configure-mcp",
       "name": "Configure Mcp",
       "description": "Sets up the full MCP presence for a web service — experimental Server Card discovery, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.",
-      "tags": [
-        "agent",
-        "pack"
-      ],
-      "inputModes": [
-        "text",
-        "json"
-      ],
-      "outputModes": [
-        "json",
-        "text"
-      ],
-      "output_schema_refs": []
-    },
-    {
-      "id": "configure-agent-commerce",
-      "name": "Configure Agent Commerce",
-      "description": "Implements agentic commerce standards — x402 and Stripe's Machine Payments Protocol (MPP) for HTTP 402 machine payments, the Universal Commerce Protocol (UCP) for agent checkout, the Agentic Commerce Protocol (ACP), and Google's Agent Payments Protocol (AP2) for delegated purchase authorization — to make a service billable and discoverable by AI agents. Use when adding agent-to-agent payment, delegated purchase authorization, or agentic commerce directory registration to a web service.",
       "tags": [
         "agent",
         "pack"

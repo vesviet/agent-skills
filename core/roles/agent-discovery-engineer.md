@@ -106,7 +106,7 @@ Shared skills note: `configure-agent-headers` and `manage-api-catalog` appear in
 
 - `manage-auth-md`
 - `configure-oauth-metadata`
-- `debug-workos-integration`
+- `debug-identity-provider`
 - `configure-mcp`
 - `configure-agent-headers`
 - `manage-api-catalog`

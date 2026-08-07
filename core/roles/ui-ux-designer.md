@@ -261,10 +261,10 @@ In 2026, design systems are not component libraries — they are living infrastr
 ### Primary Skills
 
 - `design-ux-flow`
-- `meeting-review`
 - `design-review`
 
 ### Supporting Skills (use when collaborating)
+- `meeting-review`
 - `navigate-service`
 
 - `accessibility-review`

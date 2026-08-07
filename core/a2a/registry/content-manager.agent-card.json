@@ -4,7 +4,7 @@
   "name": "content-manager",
   "description": "direct the overall content strategy of a website — from building content pillar architecture, managing the content lifecycle (production → distribution → measurement → refresh), to leveraging internal subject matter expertise (SME) and optimizing for AI search. Serve as the bridge between business goals and day-to-day content production; ensure every published piece reaches the right audience, serves the right objective, on the right channel, at the right stage of the website's growth. In 2025–2026, this extends to governing AI-generated content pipelines with human-in-the-loop editorial review gates, enforcing AI content labeling and accuracy standards, defining information gain strategy that differentiates site content from AI-synthesized aggregations, and maintaining brand and factual integrity when content is surfaced or repurposed by generative systems.",
   "url": "pack://agent-skills/core/roles/content-manager.md",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -26,51 +26,11 @@
   ],
   "skills": [
     {
-      "id": "write-product-brief",
-      "name": "Write Product Brief",
-      "description": "Write or refine a product brief that makes user value, business outcome, preserved behavior, affected users, acceptance boundaries, and trade-offs explicit. Use when a feature, bug fix, workaround, rollback, or scope decision needs a product-facing decision artifact before implementation or release.",
-      "tags": [
-        "foundation",
-        "pack"
-      ],
-      "inputModes": [
-        "text",
-        "json"
-      ],
-      "outputModes": [
-        "json",
-        "text"
-      ],
-      "output_schema_refs": [
-        "seo-content-brief.json"
-      ]
-    },
-    {
-      "id": "analyze-business-requirements",
-      "name": "Analyze Business Requirements",
-      "description": "Analyze and write business requirements by making actors, business rules, state transitions, exceptions, preserved behavior, and downstream process impact explicit. Use when a feature, policy change, or bug fix needs implementation-ready requirements and testable acceptance criteria.",
-      "tags": [
-        "foundation",
-        "pack"
-      ],
-      "inputModes": [
-        "text",
-        "json"
-      ],
-      "outputModes": [
-        "json",
-        "text"
-      ],
-      "output_schema_refs": [
-        "seo-content-brief.json"
-      ]
-    },
-    {
       "id": "audit-content",
       "name": "Audit Content",
       "description": "Run a structured content refresh cycle on an existing published piece — audit current performance and health, read the full content, research the latest standards and facts, update the content, then re-audit for SEO/GEO/AEO readiness. Use when refreshing stale or declining content, correcting outdated facts, closing information-gain gaps against newer competitors, or bringing a legacy article up to current E-E-A-T and AI-search standards without rewriting from scratch.",
       "tags": [
-        "foundation",
+        "pack",
         "pack"
       ],
       "inputModes": [

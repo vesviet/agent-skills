@@ -99,5 +99,5 @@ Dynamic registration allows new worker agents to register as OAuth clients on-th
 ## Related Skills
 
 - **manage-auth-md**: Manage the `auth.md` discovery file that `agent_auth.skill` points to.
-- **debug-workos-integration**: Diagnose and fix scanner validation failures after configuring metadata.
+- **debug-identity-provider**: Diagnose and fix scanner validation failures after configuring metadata.
 - **configure-agent-headers**: Expose OAuth metadata well-known paths via HTTP Link headers.

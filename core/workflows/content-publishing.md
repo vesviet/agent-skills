@@ -103,13 +103,14 @@ Emit `seo-metadata.json` with final title tag, meta description, slug, schema ty
 
 #### 6. Revise If Needed
 
-Role: **Content Writer**
+Role: **Content Writer**, **Content Manager**
 
 If the audit returned Blocking findings:
 
 - address all Blocking findings before proceeding to publish
 - do not publish with open Blocking issues
 - Important findings may be published with explicit stakeholder acknowledgment
+- Content Manager verifies the Writer's `anti_slop_gate.gate_passed` field before clearing the draft — when `gate_passed: no` the draft is blocked per the AI SLOP APPROVE LOCK
 
 If no Blocking findings, proceed to step 7.
 

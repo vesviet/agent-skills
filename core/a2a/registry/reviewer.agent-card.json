@@ -4,7 +4,7 @@
   "name": "reviewer",
   "description": "raise quality through precise, evidence-based review that catches defects, protects maintainability, and teaches good patterns without creating review theater. In 2025–2026, this extends to governing AI-generated code with tiered trust zones (T1/T2/T3), requiring adversarial review for T3 LLM-authored code, enforcing scope-containment and API-existence checks on AI-generated diffs, and preventing silent quality regression from AI productivity gains that mask incomplete coverage or hallucinated API contracts.",
   "url": "pack://agent-skills/core/roles/reviewer.md",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -30,7 +30,7 @@
       "name": "Review Code",
       "description": "Review concrete code changes for correctness, contract safety, data handling, reliability, security, operations, and test coverage. Use for PR reviews, local change reviews, and pre-merge audits.",
       "tags": [
-        "foundation",
+        "pack",
         "pack"
       ],
       "inputModes": [
@@ -50,7 +50,7 @@
       "name": "Review Service",
       "description": "Review an entire service for release readiness. Use for full-service audits, production-readiness checks, pre-release hardening, and broad reviews that should cover code, contracts, dependencies, rollout safety, and documentation.",
       "tags": [
-        "foundation",
+        "pack",
         "pack"
       ],
       "inputModes": [

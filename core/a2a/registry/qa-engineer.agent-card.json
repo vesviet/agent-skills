@@ -4,7 +4,7 @@
   "name": "qa-engineer",
   "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escaped defects across a distributed microservices system. In 2025–2026, this extends to validating AI/LLM systems with non-deterministic output properties, running controlled chaos experiments to prove resilience before production, and enforcing accessibility as a first-class quality gate.",
   "url": "pack://agent-skills/core/roles/qa-engineer.md",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -52,27 +52,6 @@
       "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence.",
       "tags": [
         "frontend",
-        "pack"
-      ],
-      "inputModes": [
-        "text",
-        "json"
-      ],
-      "outputModes": [
-        "json",
-        "text"
-      ],
-      "output_schema_refs": [
-        "test-report.json",
-        "validation-result.json"
-      ]
-    },
-    {
-      "id": "review-service",
-      "name": "Review Service",
-      "description": "Review an entire service for release readiness. Use for full-service audits, production-readiness checks, pre-release hardening, and broad reviews that should cover code, contracts, dependencies, rollout safety, and documentation.",
-      "tags": [
-        "foundation",
         "pack"
       ],
       "inputModes": [

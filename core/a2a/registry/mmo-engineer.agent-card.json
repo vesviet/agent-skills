@@ -4,7 +4,7 @@
   "name": "mmo-engineer",
   "description": "Design, deploy, and operate end-to-end Make Money Online (MMO) operations. Maximize ROI through advanced stealth automation, privacy-first tracking (S2S), anti-detect infrastructure, AI-driven content generation, secure asset sharing, and large-scale proxyware farming, adapting to the 2025-2026 landscape of fingerprinting and bot detection.",
   "url": "pack://agent-skills/core/roles/mmo-engineer.md",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -30,7 +30,7 @@
       "name": "Deploy Mmo Infrastructure",
       "description": "Deploy and manage proxy pools (Residential/4G) and Anti-Detect Browser orchestration environments (via Docker/Terraform) ensuring zero IP/footprint leaks. Use when deploying a new MMO operation, expanding to new ad accounts, or migrating proxy infrastructure.",
       "tags": [
-        "platform",
+        "pack",
         "pack"
       ],
       "inputModes": [
@@ -50,7 +50,7 @@
       "name": "Setup Tracking System",
       "description": "Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta Conversion API (CAPI), and tracker setups (Voluum/Binom) without relying solely on client-side cookies. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps.",
       "tags": [
-        "security",
+        "pack",
         "pack"
       ],
       "inputModes": [
@@ -70,7 +70,7 @@
       "name": "Create Automation Script",
       "description": "Build Playwright/Puppeteer automation scripts that connect via CDP to Anti-Detect browsers or use C++ patched engines. Implements behavioral mimicry to bypass AI detection. Use when building multi-account automation, login flows, ad account warm-up sequences, or scraping high-trust platforms.",
       "tags": [
-        "platform",
+        "pack",
         "pack"
       ],
       "inputModes": [
@@ -90,7 +90,7 @@
       "name": "Manage Mmo Assets",
       "description": "Manage and share MMO assets (Business Managers, Via, Pixels/Datasets, Anti-Detect profiles) using Role-Based Access Control (RBAC) while enforcing strict isolation to prevent cascading bans. Use when onboarding new ad accounts, sharing BMs with team members, auditing asset health, or recovering from a cascading ban incident.",
       "tags": [
-        "security",
+        "pack",
         "pack"
       ],
       "inputModes": [
@@ -110,7 +110,7 @@
       "name": "Deploy Proxyware Fleet",
       "description": "Containerize and orchestrate massive fleets of passive income nodes (Honeygain, EarnApp, Pawns.app) with proxy routing and resource limits. Use when scaling bandwidth monetization nodes, migrating from datacenter to residential routing, or expanding an existing fleet.",
       "tags": [
-        "platform",
+        "pack",
         "pack"
       ],
       "inputModes": [
@@ -130,7 +130,7 @@
       "name": "Generate Mmo Content",
       "description": "Use AI APIs to procedurally generate landing pages, creatives, and spin content for large-scale campaign deployment at scale. Use when launching new creatives, scaling content volume for A/B testing, or refreshing ad sets. Includes hard caps on API usage.",
       "tags": [
-        "foundation",
+        "pack",
         "pack"
       ],
       "inputModes": [
@@ -150,7 +150,7 @@
       "name": "Analyze Campaign Roi",
       "description": "Analyze S2S conversion data, monitor ad account die-rates, and calculate campaign ROI based on proxy and API costs. Use when evaluating campaign profitability, diagnosing tracking attribution gaps, comparing offer performance, or deciding to pause or scale ad spend.",
       "tags": [
-        "foundation",
+        "pack",
         "pack"
       ],
       "inputModes": [

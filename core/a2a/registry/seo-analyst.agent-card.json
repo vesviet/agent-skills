@@ -4,7 +4,7 @@
   "name": "seo-analyst",
   "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third-party answer engines — with defensible keyword strategy, on-page structure, internal linking, structured data specifications, and metadata. Produce briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation. Optimize for discoverability in Google, AI answer engines (Perplexity, ChatGPT/SearchGPT, Bing AI), and generative search surfaces. In 2025–2026, this extends to Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and Agentic SEO (A-SEO) — structuring content for direct AI citation, fact-density extractability, and topical authority cluster integrity across both human-browsed and AI-mediated discovery surfaces. Per Google's May 2026 official generative-AI optimization guidance, treat GEO/AEO as extensions of SEO fundamentals — AI Overviews and AI Mode draw from the same Search index as classic ranking — not as a separate playbook or a set of AI-only tactics.",
   "url": "pack://agent-skills/core/roles/seo-analyst.md",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -30,7 +30,7 @@
       "name": "Optimize Seo",
       "description": "Research search intent, define keywords, produce SEO content briefs, audit on-page elements, optimize for AI search visibility (GEO/AEO), specify structured data, enforce E-E-A-T quality gates, and deliver metadata and recommendations without owning full article drafting or technical deployment. Use when planning publishable content, reviewing drafts before release, mapping internal links, interpreting Search Console signals, or ensuring AI citation readiness.",
       "tags": [
-        "foundation",
+        "pack",
         "pack"
       ],
       "inputModes": [

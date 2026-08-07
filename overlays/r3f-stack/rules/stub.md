@@ -1,9 +1,10 @@
 ---
-description: "Reserved stub rules for the r3f-stack overlay until the v4.0.0 migration moves the three R3F skills out of core."
+description: "Active rules for the r3f-stack overlay after the v4.0.0 migration moved the three R3F skills out of core."
 ---
 
-# R3F Stack Stub Rules
+# R3F Stack Conventions
 
-- This overlay is a placeholder until v4.0.0.
-- Do not add skills or rules here yet; they will be migrated from `core/skills/frontend/` (debug-3d-scene, integrate-r3f-three-legacy, optimize-3d-assets).
-- Project overlays that need R3F conventions today should continue referencing the core skills under `core/skills/frontend/`.
+- Skills under this overlay assume a React + R3F/Three.js target. Do not load them for vanilla Three.js, Babylon.js, or non-React projects.
+- 3D performance budgets (60fps / 1M triangles / 4MB gzipped) are defaults; tighten per project.
+- When adding a new R3F skill, keep the naming pattern `<verb>-<noun>` and stick to R3F-idiomatic guidance (declarative scene graph, useFrame, drei helpers).
+- Coordinate with `overlays/obj-configurator` for product-configurator specifics.

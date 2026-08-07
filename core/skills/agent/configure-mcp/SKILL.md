@@ -182,4 +182,4 @@ Use this skill to set up the full MCP presence for a web service: the server car
 
 - **configure-agent-skills**: Set up the agent skills manifest — often deployed alongside MCP for capability routing.
 - **configure-agent-headers**: Expose the MCP server card via HTTP Link headers for passive discovery.
-- **debug-workos-integration**: Troubleshoot WorkOS and `isitagentready.com` scanner failures.
+- **debug-identity-provider**: Troubleshoot WorkOS and `isitagentready.com` scanner failures.

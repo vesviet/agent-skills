@@ -4,7 +4,7 @@
   "name": "3d-graphics-engineer",
   "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGL/WebGPU implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility. In 2025–2026, this extends to governing AI-generated 3D assets (gaussian splatting, neural radiance fields, generative textures and meshes) with explicit quality and performance gates before pipeline integration, validating generative content against fidelity and memory budgets, and enforcing safe composition patterns for procedural and AI-authored geometry in real-time scenes.",
   "url": "pack://agent-skills/core/roles/3d-graphics-engineer.md",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -28,9 +28,9 @@
     {
       "id": "debug-3d-scene",
       "name": "Debug 3D Scene",
-      "description": "Debug 3D scene behavior by tracing scene graph structure, transforms, raycasting, decals, materials, camera logic, render loops, and WebGL lifecycle issues. Use when a Three.js, React Three Fiber, WebGL, or WebGPU scene has rendering bugs, interaction bugs, clipping problems, context instability, or suspicious visual math.",
+      "description": "Skill debug-3d-scene.",
       "tags": [
-        "frontend",
+        "pack",
         "pack"
       ],
       "inputModes": [
@@ -49,9 +49,9 @@
     {
       "id": "integrate-r3f-three-legacy",
       "name": "Integrate R3F Three Legacy",
-      "description": "Integrate or migrate between React Three Fiber and legacy imperative Three.js code by controlling scene ownership, render loops, loaders, interaction state, and cleanup boundaries. Use when a 3D web app mixes R3F with older Three.js modules, global bridge state, or imperative scene utilities and needs safe coexistence or staged migration.",
+      "description": "Skill integrate-r3f-three-legacy.",
       "tags": [
-        "frontend",
+        "pack",
         "pack"
       ],
       "inputModes": [
@@ -70,9 +70,9 @@
     {
       "id": "optimize-3d-assets",
       "name": "Optimize 3D Assets",
-      "description": "Optimize 3D assets and rendering inputs by reviewing model formats, geometry density, texture memory, material strategy, compression, and loading behavior. Use when a 3D web experience suffers from heavy OBJ/GLTF assets, texture bloat, long load times, frame drops, or unnecessary GPU and memory pressure.",
+      "description": "Skill optimize-3d-assets.",
       "tags": [
-        "frontend",
+        "pack",
         "pack"
       ],
       "inputModes": [

@@ -244,8 +244,6 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - `agent-delegation`
 - `sandbox-sdk`
 - `configure-mcp`
-- `manage-api-catalog`
-- `durable-objects`
 - `incident-report`
 
 ## Output Template

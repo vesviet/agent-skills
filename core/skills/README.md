@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 94 portable core skills under `core/skills/` + 7 overlay skills under `overlays/*/skills/` = **101 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 91 portable core skills under `core/skills/` + 10 overlay skills under `overlays/*/skills/` = **101 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -27,47 +27,66 @@ Agent operating discipline, orchestration, and agentic web standards:
 
 #### Agent Infrastructure & Agentic Web Standards (8)
 
-Configuration and compliance skills for agentic-ready web presence (MCP, RFC 9727, x402, WorkOS):
+Configuration and compliance skills for agentic-ready web presence (MCP, RFC 9727, x402, identity provider (WorkOS, Auth0, Okta)):
 
 - `configure-agent-commerce`
 - `configure-agent-headers`
 - `configure-agent-skills`
 - `configure-mcp`
 - `configure-oauth-metadata`
-- `debug-workos-integration`
+- `debug-identity-provider`
 - `manage-api-catalog`
 - `manage-auth-md`
 
-### Foundation (26)
+### Foundation (12)
 
 Cross-cutting portable skills:
 
-- `analyze-business-requirements`
-- `analyze-campaign-roi`
-- `analyze-data`
 - `accessibility-review`
-- `audit-content`
 - `ai-risk-assessment`
-- `commit-code`
 - `conduct-research`
 - `create-migration`
 - `design-review`
 - `design-ux-flow`
-- `generate-mmo-content`
 - `incident-report`
-- `meeting-review`
-- `navigate-service`
-- `optimize-seo`
 - `performance-profiling`
 - `plan-technical-delivery`
 - `release-notes`
-- `repurpose-content`
-- `review-code`
-- `review-service`
-- `troubleshoot-service`
-- `write-article`
 - `write-product-brief`
 - `write-tests`
+
+### Meetings And Analysis (3)
+
+- `meeting-review`
+- `analyze-business-requirements`
+- `analyze-data`
+
+### Repo Ops (5)
+
+- `navigate-service`
+- `troubleshoot-service`
+- `review-code`
+- `review-service`
+- `commit-code`
+
+### Content (4)
+
+- `write-article`
+- `repurpose-content`
+- `audit-content`
+- `optimize-seo`
+
+### MMO (7)
+
+MMO/growth-ops skills with compliance notices; each maps to `REVIEW-SYSTEM LOCK` in the `mmo-engineer` role:
+
+- `generate-mmo-content`
+- `analyze-campaign-roi`
+- `deploy-mmo-infrastructure`
+- `deploy-proxyware-fleet`
+- `create-automation-script`
+- `manage-mmo-assets`
+- `setup-tracking-system`
 
 ### Backend (4)
 
@@ -76,22 +95,21 @@ Cross-cutting portable skills:
 - `add-service-client`
 - `scaffold-new-service`
 
-### Frontend (8)
+### Frontend (5)
 
 - `add-ui-component`
 - `add-page-route`
-- `debug-3d-scene`
 - `frontend-testing`
 - `integrate-api-client`
-- `integrate-r3f-three-legacy`
-- `optimize-3d-assets`
 - `setup-design-system`
+
+> R3F/Three.js cluster (`debug-3d-scene`, `integrate-r3f-three-legacy`, `optimize-3d-assets`) migrated to `overlays/r3f-stack/skills/` in v4.0.0 per the stack-overlay naming rules.
 
 > Note: `create-automation-script` is classified under Platform (stealth/CDP automation is infrastructure-level).
 
-### Platform (17)
+### Platform (14)
 
-Delivery, runtime, Cloudflare-specific, cloud, system infrastructure, and MMO automation skills:
+Delivery, runtime, Cloudflare-specific, cloud, and system infrastructure skills:
 
 - `aws-infrastructure`
 - `setup-deployment`
@@ -102,10 +120,7 @@ Delivery, runtime, Cloudflare-specific, cloud, system infrastructure, and MMO au
 - `debug-runtime-platform`
 - `add-telemetry-instrumentation`
 - `cloudflare-email-service`
-- `create-automation-script`
 - `durable-objects`
-- `deploy-mmo-infrastructure`
-- `deploy-proxyware-fleet`
 - `sandbox-sdk`
 - `turnstile-spin`
 - `web-perf`
@@ -120,15 +135,13 @@ E-commerce catalog, checkout, payment, and fulfillment:
 - `manage-product-catalog`
 - `manage-order-fulfillment`
 
-### Security And Data (7)
+### Security And Data (5)
 
 - `manage-secrets`
 - `database-maintenance`
-- `manage-mmo-assets`
 - `manage-vietnam-accounting`
 - `security-audit`
 - `build-data-pipeline`
-- `setup-tracking-system`
 
 ### Documentation (3)
 
@@ -144,7 +157,7 @@ Teaching and curriculum:
 - `create-exercises`
 - `grade-and-review`
 
-Overlay-specific skills (site stacks, ICM, content data) live under `overlays/*/skills/` and are validated together with core.
+Overlay-specific skills (site stacks, ICM, content data, R3F) live under `overlays/*/skills/` and are validated together with core.
 
 ## Skill Boundaries (quick reference)
 
@@ -223,7 +236,7 @@ The validator does not check `references/` content; the structural contract only
 ### Domain Cluster Notes (2026)
 
 - The **MMO cluster** spans multiple taxonomies by design (foundation for content/ROI, platform for infra/automation, security-data for assets/tracking). Their pre-2025.4 drift has been retired; current skills carry Legal & Compliance Notices that map to `REVIEW-SYSTEM LOCK` in the `mmo-engineer` role.
-- The **R3F/3D cluster** under `frontend/` is retained for backward compatibility with existing role toolboxes but is scheduled for migration to the `r3f-stack` overlay at the next major version (4.0.0). New 3D work should target the overlay boundary. See `overlays/r3f-stack/README.md` for the migration checklist.
+- The **R3F/3D cluster** migrated from `core/skills/frontend/` to `overlays/r3f-stack/skills/` in v4.0.0. The `3d-graphics-engineer` role toolbox resolves via overlay. See `overlays/r3f-stack/README.md` for the migration notes.
 
 ## Validation Gate
 

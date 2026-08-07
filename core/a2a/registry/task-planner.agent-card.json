@@ -4,7 +4,7 @@
   "name": "task-planner",
   "description": "produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation checkpoints, and explicit assumptions—so implementers can start without rediscovering the approach. In 2025–2026, this extends to embedding explicit AI fallback mechanisms and Human-In-The-Loop (HITL) review triggers into plans that include generative AI features, defining agent-delegation phase gates with approval checkpoints, and ensuring that AI-bearing task slices have named oversight owners before execution begins.",
   "url": "pack://agent-skills/core/roles/task-planner.md",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -26,29 +26,9 @@
   ],
   "skills": [
     {
-      "id": "analyze-business-requirements",
-      "name": "Analyze Business Requirements",
-      "description": "Analyze and write business requirements by making actors, business rules, state transitions, exceptions, preserved behavior, and downstream process impact explicit. Use when a feature, policy change, or bug fix needs implementation-ready requirements and testable acceptance criteria.",
-      "tags": [
-        "foundation",
-        "pack"
-      ],
-      "inputModes": [
-        "text",
-        "json"
-      ],
-      "outputModes": [
-        "json",
-        "text"
-      ],
-      "output_schema_refs": [
-        "seo-weekly-board.json"
-      ]
-    },
-    {
-      "id": "write-product-brief",
-      "name": "Write Product Brief",
-      "description": "Write or refine a product brief that makes user value, business outcome, preserved behavior, affected users, acceptance boundaries, and trade-offs explicit. Use when a feature, bug fix, workaround, rollback, or scope decision needs a product-facing decision artifact before implementation or release.",
+      "id": "design-ux-flow",
+      "name": "Design Ux Flow",
+      "description": "Design or refine a UX flow by defining user goals, preserved behavior, screen states, interaction rules, edge cases, and adjacent flow impact. Use when a feature, bug fix, or behavior change needs a UX/UI brief that frontend and QA can implement and validate reliably.",
       "tags": [
         "foundation",
         "pack"

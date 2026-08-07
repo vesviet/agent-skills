@@ -2,7 +2,7 @@
 
 Global engineering skill pack for software delivery work.
 
-**Version 3.5.0** is a corrective release from a full-pack audit. It fixes external-standard claims that were wrong or unsourced (WCAG 2.2 criterion numbering and a non-existent ARIA attribute, x402 v2 header names, ACP discovery paths, A2A event and signing details, the MCP baseline revision), resolves role ownership contradictions and policy-boundary conflicts, restores the strict commit gate across all workflows, and adds four validators so each of those drift classes fails the quality gate instead of passing silently.
+**Version 4.0.0** is a corrective release from a full-pack audit. It fixes external-standard claims that were wrong or unsourced (WCAG 2.2 criterion numbering and a non-existent ARIA attribute, x402 v2 header names, ACP discovery paths, A2A event and signing details, the MCP baseline revision), resolves role ownership contradictions and policy-boundary conflicts, restores the strict commit gate across all workflows, and adds four validators so each of those drift classes fails the quality gate instead of passing silently.
 
 Version 3.4.0 refreshed the pack to 2026 standards — the MCP 2026-07-28 stateless spec with AAIF (Linux Foundation) governance, the corrected EU AI Act timeline, the agentic commerce protocol landscape (ACP, UCP, MPP, x402, AP2), first-party on-device LLM frameworks, and the European Accessibility Act — and added the `audit-content` skill plus the `content-audit` workflow.
 
@@ -51,7 +51,7 @@ Current overlays:
 - `laravel-filament`: Laravel + Filament admin conventions
 - `maydiengiaisaigon`: content/SEO helpers for May Dien Gia Sai Gon
 - `obj-configurator`: OBJ product configurator conventions
-- `r3f-stack`: reserved namespace for the React Three Fiber / Three.js skill cluster migrating out of core at v4.0.0
+- `r3f-stack`: React Three Fiber / Three.js (WebGL) skills cluster — `debug-3d-scene`, `integrate-r3f-three-legacy`, `optimize-3d-assets` (migrated v4.0.0)
 - `seo-publishing`: SEO publishing cadence and board conventions
 - `sport-icm`: Sport catalog conventions for the ICM Cloudflare site
 - `ui-design-system`: shared UI/design-system conventions
@@ -83,19 +83,39 @@ Overlay-specific skills are intentionally kept out of the global core inventory.
 
 | Skill | What it covers |
 |-------|----------------|
-| [commit-code](core/skills/foundation/commit-code/SKILL.md) | Pre-commit validation and commit flow |
 | [create-migration](core/skills/foundation/create-migration/SKILL.md) | Add safe schema migrations |
-| [meeting-review](core/skills/foundation/meeting-review/SKILL.md) | Structured multi-angle technical review |
-| [navigate-service](core/skills/foundation/navigate-service/SKILL.md) | Understand an unfamiliar service quickly |
 | [performance-profiling](core/skills/foundation/performance-profiling/SKILL.md) | Profile hot paths and regressions |
-| [review-code](core/skills/foundation/review-code/SKILL.md) | Review code changes with prioritized findings |
-| [review-service](core/skills/foundation/review-service/SKILL.md) | Full service readiness and release review |
-| [troubleshoot-service](core/skills/foundation/troubleshoot-service/SKILL.md) | Diagnose build, startup, and runtime failures |
 | [write-tests](core/skills/foundation/write-tests/SKILL.md) | Add or improve unit and integration tests |
 | [conduct-research](core/skills/foundation/conduct-research/SKILL.md) | Deep or scoped research before decisions |
 | [design-review](core/skills/foundation/design-review/SKILL.md) | UX/spec design critique before build |
 | [accessibility-review](core/skills/foundation/accessibility-review/SKILL.md) | WCAG-oriented a11y audit |
-| [audit-content](core/skills/foundation/audit-content/SKILL.md) | Content refresh cycle: audit, read, research latest standards, update, re-audit |
+
+### Repo Ops
+
+| Skill | What it covers |
+|-------|----------------|
+| [commit-code](core/skills/repo-ops/commit-code/SKILL.md) | Pre-commit validation and commit flow |
+| [navigate-service](core/skills/repo-ops/navigate-service/SKILL.md) | Understand an unfamiliar service quickly |
+| [review-code](core/skills/repo-ops/review-code/SKILL.md) | Review code changes with prioritized findings |
+| [review-service](core/skills/repo-ops/review-service/SKILL.md) | Full service readiness and release review |
+| [troubleshoot-service](core/skills/repo-ops/troubleshoot-service/SKILL.md) | Diagnose build, startup, and runtime failures |
+
+### Meetings And Analysis
+
+| Skill | What it covers |
+|-------|----------------|
+| [meeting-review](core/skills/meetings-analysis/meeting-review/SKILL.md) | Structured multi-angle technical review |
+| [analyze-business-requirements](core/skills/meetings-analysis/analyze-business-requirements/SKILL.md) | Convert requests into feature tickets |
+| [analyze-data](core/skills/meetings-analysis/analyze-data/SKILL.md) | Ad-hoc metrics and stakeholder reports |
+
+### Content
+
+| Skill | What it covers |
+|-------|----------------|
+| [write-article](core/skills/content/write-article/SKILL.md) | Draft long-form articles with GEO/AEO and E-E-A-T gates |
+| [audit-content](core/skills/content/audit-content/SKILL.md) | Content refresh cycle: audit, read, research latest standards, update, re-audit |
+| [optimize-seo](core/skills/content/optimize-seo/SKILL.md) | Intent, keywords, on-page, GEO/AEO specifications |
+| [repurpose-content](core/skills/content/repurpose-content/SKILL.md) | Syndicate and reshape articles across channels |
 
 ### Delivery Domains
 
@@ -103,6 +123,7 @@ Overlay-specific skills are intentionally kept out of the global core inventory.
 |--------|-----------------------|
 | Backend | `add-api-endpoint`, `add-event-handler`, `add-service-client`, `scaffold-new-service` |
 | Frontend | `add-ui-component`, `add-page-route`, `integrate-api-client`, `frontend-testing` |
+| R3F / 3D (overlay) | `debug-3d-scene`, `integrate-r3f-three-legacy`, `optimize-3d-assets` — under `overlays/r3f-stack/` |
 | Platform | `setup-deployment`, `wrangler`, `debug-runtime-platform`, `add-telemetry-instrumentation` |
 | Commerce | `integrate-payment-gateway`, `handle-checkout-flow`, `manage-product-catalog`, `manage-order-fulfillment` |
 | Security and Data | `manage-secrets`, `database-maintenance`, `security-audit`, `build-data-pipeline` |

@@ -4,7 +4,7 @@
   "name": "technical-architect",
   "description": "shape system structure and technical direction so the product can evolve safely, coherently, and at the right cost without hiding migration, compatibility, or operational risk. In 2025–2026, this extends to architecting AI-native systems (LLM pipelines, agentic boundaries, probabilistic design), enforcing evolutionary architecture through automated fitness functions, and embedding privacy and compliance as structural constraints — not post-deployment layers.",
   "url": "pack://agent-skills/core/roles/technical-architect.md",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -26,74 +26,11 @@
   ],
   "skills": [
     {
-      "id": "navigate-service",
-      "name": "Navigate Service",
-      "description": "Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session.",
-      "tags": [
-        "foundation",
-        "pack"
-      ],
-      "inputModes": [
-        "text",
-        "json"
-      ],
-      "outputModes": [
-        "json",
-        "text"
-      ],
-      "output_schema_refs": [
-        "adr-spec.json",
-        "architecture-options.json"
-      ]
-    },
-    {
-      "id": "review-service",
-      "name": "Review Service",
-      "description": "Review an entire service for release readiness. Use for full-service audits, production-readiness checks, pre-release hardening, and broad reviews that should cover code, contracts, dependencies, rollout safety, and documentation.",
-      "tags": [
-        "foundation",
-        "pack"
-      ],
-      "inputModes": [
-        "text",
-        "json"
-      ],
-      "outputModes": [
-        "json",
-        "text"
-      ],
-      "output_schema_refs": [
-        "adr-spec.json",
-        "architecture-options.json"
-      ]
-    },
-    {
       "id": "write-tech-radar",
       "name": "Write Tech Radar",
       "description": "Draft or update a technology radar entry by summarizing context, trade-offs, recommendation, and adoption guidance in a concise decision-oriented format. Use when documenting technology choices, trials, or directional guidance.",
       "tags": [
         "documentation",
-        "pack"
-      ],
-      "inputModes": [
-        "text",
-        "json"
-      ],
-      "outputModes": [
-        "json",
-        "text"
-      ],
-      "output_schema_refs": [
-        "adr-spec.json",
-        "architecture-options.json"
-      ]
-    },
-    {
-      "id": "meeting-review",
-      "name": "Meeting Review",
-      "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.",
-      "tags": [
-        "foundation",
         "pack"
       ],
       "inputModes": [

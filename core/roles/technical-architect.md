@@ -278,9 +278,9 @@ Contracts owned by other roles — do not author these as Technical Architect:
 ### Primary Skills
 
 - `write-tech-radar`
-- `meeting-review`
 
 ### Supporting Skills (use when collaborating)
+- `meeting-review`
 - `review-service`
 - `navigate-service`
 

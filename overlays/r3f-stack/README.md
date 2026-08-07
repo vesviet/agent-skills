@@ -1,34 +1,25 @@
 # R3F Stack Overlay
 
-Reserved namespace for the React Three Fiber / Three.js skill cluster scheduled to migrate out of `core/skills/frontend/` at the next major version (v4.0.0).
+React Three Fiber / Three.js / WebGL skill cluster. Migrated out of `core/skills/frontend/` in v4.0.0 per stack-overlay naming rules.
 
-## Status
+## Skills
 
-**Stub (3.5.0+).** Skills still live in core:
-
-- `core/skills/frontend/debug-3d-scene/`
-- `core/skills/frontend/integrate-r3f-three-legacy/`
-- `core/skills/frontend/optimize-3d-assets/`
-
-Do not start new skills here until the v4.0.0 migration executes.
-
-## Why This Overlay Exists
-
-Core skill naming rules prefer generic names over stack-specific names. The three skills above name a specific stack (R3F, Three.js, WebGL) and are better modeled as a stack overlay per `core/skills/README.md` → "Move stack-specific or org-specific variants into overlays when they are not portable".
-
-## Migration Checklist (for v4.0.0)
-
-When this overlay becomes live, the migration must:
-
-1. Move the three skill folders verbatim into `overlays/r3f-stack/skills/<skill-name>/`.
-2. Update the `3d-graphics-engineer` role toolbox to reference the new paths.
-3. Update `overlays/obj-configurator/skills/develop-obj-feature/SKILL.md` references.
-4. Update `core/skills/README.md` counts (94 core → 91 core, 7 overlay → 10 overlay).
-5. Update `core/a2a/registry/3d-graphics-engineer.agent-card.json`.
-6. Bump `VERSION` to 4.0.0 and regenerate the A2A registry.
-7. Run `python3 core/scripts/validate-all.py` end-to-end.
+- `debug-3d-scene` — debug R3F/Three.js scene graph and rendering issues
+- `integrate-r3f-three-legacy` — integrate legacy Three.js code with R3F idioms
+- `optimize-3d-assets` — compress, decimate, and bundle 3D models for web delivery
 
 ## Consumers
 
-- `overlays/obj-configurator/` — OBJ 3D Configurator (Astro + R3F/Three.js) will declare this as a stack dependency in v4.0.0.
-- Any future R3F/Three.js project overlay should declare `r3f-stack` as a stack dependency.
+- `core/roles/3d-graphics-engineer.md` — sole Primary owner of these skills
+- `overlays/obj-configurator/` — Astro + R3F/Three.js product configurator consumes this overlay as a stack dependency
+- any future R3F/Three.js project overlay should declare `r3f-stack` as a stack dependency
+
+## Migration (v4.0.0)
+
+This overlay became live in v4.0.0:
+
+1. Skills moved verbatim from `core/skills/frontend/<name>/` to `overlays/r3f-stack/skills/<name>/`.
+2. Core frontend taxonomy reduced from 8 to 5 skills.
+3. `3d-graphics-engineer` role toolbox paths now resolve via overlay; role semantics unchanged.
+
+The naming rule that motivated this move: core skills must be stack-generic; these three explicitly name a stack (R3F/Three.js/WebGL).
