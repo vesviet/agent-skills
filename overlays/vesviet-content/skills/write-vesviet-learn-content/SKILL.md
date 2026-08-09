@@ -18,56 +18,40 @@ Both sites use the **PaperMod** theme, Vietnamese or English copy is acceptable 
 
 ## Core Rules
 
-- **never guess frontmatter**: open two or three recent files in the **same subtree** (`posts/`, `series/<name>/`, `radar/`, `docs/`) and copy delimiter style, keys, and ordering
-- **YAML Safety Enforcement**: Both `vesviet` and `learn` require strict inline array syntax for arrays in YAML to prevent parser crash errors:
-  - ✅ **CORRECT**: `categories: ["Backend", "Golang"]`
-  - ❌ **INCORRECT**: 
-    ```yaml
-    categories:
-      - Backend
-      - Golang
-    ```
-- **Vesviet** content most often uses YAML frontmatter (`---` … `---`) with fields such as `title`, `date`, `draft`, `description`, `tags`, `categories`, and for long pieces `ShowToc` / `TocOpen`; **radar** pages may set `mermaid: true` and `categories: [Tech Radar]`
-- **Learn** strictly enforces **YAML** across all new migrations (including `posts/` and `series/`). Ensure parity with the 2026 standardized schemas.
-- use **Asia/Ho_Chi_Minh** style offsets in `date` when exemplars do (e.g. `+07:00`)
-- internal links follow existing patterns: `/posts/.../`, `/series/.../`, `/radar/.../` (trailing slash when sibling links use it)
-- **radar** and long-form **Vesviet** posts are Hugo `content/posts`-style pages under `content/radar/` with their own section; do not invent a new top-level folder without checking `hugo.toml` and nav
-- prefer filenames that match established slugs (`kebab-case.md`); for series parts, mirror numbering and naming used in that series
+- **Schema Completeness**: Every file MUST include `title`, `author`, `date`, `tags`, `categories`, and `cover` in strict inline YAML (e.g., `categories: ["Backend", "Golang"]`).
+- **GEO/AEO Answer-First**: Every article must open with `> **Answer-first:**` and a ≤60-word summary block immediately below the frontmatter.
+- **Hub-and-Spoke Linking (`vesviet`)**: Ensure zero orphans. Every new article must link up to at least one of the 10 Anchor Pillar Hubs (e.g., `go-microservices.md`).
+- **Affiliate Compliance (`learn`)**: All outbound affiliate links must use `rel="sponsored"`. Mandatory disclosures must be near recommendations.
+- **Content Depth & E-E-A-T**: Target ≥ 1,400 words for technical deep-dives and reviews. Do not rely on AI hallucinations; inject real-world experience, benchmarks, or "Production Failure" templates.
 
 ## Suggested Process
 
 ### 1. Pick The Site And Subtree
+Decide `vesviet` (Technical Engineering) vs `learn` (Affiliate Marketing). 
 
-Decide Vesviet vs Learn, then whether the piece is a **post**, **series** chapter, **series index**, **radar** entry (Vesviet only), or **learn doc** (`learn/content/docs/`).
+### 2. Follow Content Brand Guidelines
+- **For `vesviet`**: Use the Content Audit & Refresh Workflow. Apply Hub-and-Spoke linking.
+- **For `learn`**: Use the Affiliate Publishing Workflow. Categorize as Money Page, Supporting, or Trust Page.
 
-### 2. Clone Local Conventions
+### 3. Draft In Place
+- Ensure strict YAML frontmatter.
+- Start the body with the `> **Answer-first:**` block.
+- Inject E-E-A-T elements (diagrams, benchmarks, pros/cons, evaluation criteria).
 
-Read neighboring files: one `_index.md` if the piece belongs in a series, plus the latest similar article. Align frontmatter delimiter, keys, tone, heading style, and link format.
+### 4. Wire Navigation & Topology
+- **`vesviet`**: Link your article to a Pillar Hub. Update `reading-map.md` if creating a new series.
+- **`learn`**: Internal link from Supporting articles to Money pages.
 
-### 3. Apply The Content Writer Research Rules
-
-When the topic needs net-new evidence, follow the active **Content Writer** role: multiple research passes before drafting. When the user supplied sources or repo notes, synthesize from that material only.
-
-### 4. Draft In Place
-
-Write body Markdown consistent with Goldmark (`unsafe` may be enabled—use HTML only when existing posts do). Use `mermaid` code fences only when `mermaid: true` appears on comparable radar or post frontmatter.
-
-### 5. Wire Navigation
-
-For a new **series** or important **post**, update the relevant `_index.md` or hub page (e.g. series index, `posts/_index.md` on Learn) if that is the established pattern—mirror how prior entries were added.
-
-### 6. Sanity Check
-
-Confirm `draft` flag, `title`/`description` or `summary`, slug vs filename, and that at least one internal link resolves the same way as siblings.
+### 5. Sanity Check
+Confirm `draft` flag, schema completeness, zero orphan status, and `rel="sponsored"` for affiliate links.
 
 ## Checklist
 
-- [ ] correct site root (`vesviet/content` vs `learn/content`) chosen
-- [ ] frontmatter uses YAML with strict inline array notation (`categories: ["..."]`)
-- [ ] `date`, tags/categories, and optional `ShowToc` / `TocOpen` / `mermaid` align with exemplars
-- [ ] slug, filename, and permalinks match Hugo config and existing link style
-- [ ] voice and structure match nearby content in that subtree
-- [ ] series or radar navigation updated when the repo already does that for new entries
+- [ ] Frontmatter uses strict inline YAML and contains all 6 mandatory fields (`title`, `author`, `date`, `tags`, `categories`, `cover`).
+- [ ] Article opens with `> **Answer-first:**` summary block (≤60 words).
+- [ ] Content depth targets ≥ 1,400 words (unless explicit programmatic/trust page).
+- [ ] **`vesviet`**: Internal link points to an Anchor Pillar Hub (zero orphans).
+- [ ] **`learn`**: Affiliate links use `rel="sponsored"` and include disclosure.
 
 ## Related Skills
 

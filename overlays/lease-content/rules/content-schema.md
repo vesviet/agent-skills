@@ -2,19 +2,21 @@
 
 This rule enforces the mandatory schema requirements for Astro v5 `content` collections used in `leaseinvietnam` and `maylanhtreotuong`. 
 
-## 1. Post Collection (`src/content/post/`)
+## 1. Post Collection (`src/content/post/` or `src/data/post/`)
 Every blog post or article must include the following YAML frontmatter exactly as defined in the Zod schema (`src/content/config.ts`):
 
 ```yaml
 ---
-title: "Primary H1 Title (60 chars max)"
-description: "SEO Meta Description (150 chars max, must contain primary keyword)"
+title: "Primary H1 Title (strictly <= 60 chars, ZERO trailing ...)"
+description: "SEO Meta Description (120-155 chars, must contain primary keyword)"
 pubDate: 2026-07-27T08:00:00Z
 updatedDate: 2026-07-27T10:00:00Z # Optional but recommended for refreshed content
 heroImage: "/images/posts/your-image.jpg"
-categories: ["Architecture", "Backend"] # Explicit inline array required
-tags: ["Astro", "Cloudflare"] # Explicit inline array required
-canonicalURL: "https://example.com/original-source/" # Use only if syndicated
+categories: ["guides"] # Explicit inline array required
+tags: ["expat", "visa"] # Explicit inline array required
+unique_angle: "Specific, non-generic information gain statement."
+anti_slop_gate: 
+  gate_passed: true
 draft: false
 ---
 ```
@@ -42,5 +44,13 @@ draft: false
 - **NEVER** use manual `<script type="application/ld+json">` tags in Astro Markdown unless explicitly bypassing the built-in SEO component.
 
 ## 4. Markdown Formatting Rules
-- **No HTML Mixed**: Rely strictly on Markdown. Astro MDX handles components if needed, but standard `.md` files should be pure markdown.
-- **Internal Links**: Must point to absolute paths without extensions (e.g., `[Máy lạnh Inverter](/danh-muc/may-lanh-inverter/)`).
+- **No HTML Mixed**: Rely strictly on Markdown for generic formatting. 
+- **AnswerFirst Component (MANDATORY)**: All articles must use the `<AnswerFirst>` MDX component instead of markdown blockquotes (e.g., `> **Quick Answer:**`) for the ≤60-word summary.
+  ```astro
+  import AnswerFirst from '../../components/AnswerFirst.astro';
+
+  <AnswerFirst>
+  Summary answer text here...
+  </AnswerFirst>
+  ```
+- **Internal Links**: Must point to absolute paths without extensions (e.g., `[District 1 Rentals](/post/apartment-for-rent-district-1-hcmc)`).

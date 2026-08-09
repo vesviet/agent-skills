@@ -1,8 +1,10 @@
 name: lease-team
-description: Global engineering core plus Lease content overlay and SEO publishing sprint cadence for leaseinvietnam and maylanhtreotuong.
-version: 1.0.0
+description: Global engineering core plus Lease content overlay, enforcing the 5-Pillar Strategy (Intelligence, Information, Insights, Neighborhoods, Integration), GEO/AEO standards, and SEO publishing sprint cadence for leaseinvietnam and maylanhtreotuong.
+version: 1.1.0
 tags:
   - core
+  - geo-aeo
+  - content-strategy
 author: user
 maintained_by: platform-team
 includes:

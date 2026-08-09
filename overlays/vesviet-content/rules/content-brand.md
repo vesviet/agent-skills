@@ -17,28 +17,38 @@ Content on Vesviet must be organized into these three directories based on purpo
 
 ## Frontmatter Requirements
 
-Every new file must include the following mandatory frontmatter fields:
+Every new file must include the following mandatory frontmatter fields to pass the 100% Schema Completeness audit:
 ```yaml
 ---
 title: "..."
 slug: "..."
+author: "..."
 date: "YYYY-MM-DDTHH:MM:SS+07:00"
 lastmod: "YYYY-MM-DDTHH:MM:SS+07:00"
 draft: false
 description: "..."
 tags: ["...", "..."]
 categories: ["...", "..."]
+cover: 
+  image: "images/posts/cover-image.png"
+  alt: "..."
 ShowToc: true
 TocOpen: true
 ---
 ```
 *Note: Add `mermaid: true` if the post contains Mermaid diagrams.*
 
-## Writing Style & Formatting
+## Content Depth & Formatting (GEO/AEO)
 
-- **Answer-First**: The introduction MUST begin with `**Answer-first:**` followed by a direct, concise answer to the topic's core question in ≤60 words.
+- **Answer-First**: The introduction MUST begin with `> **Answer-first:**` followed by a direct, concise answer to the topic's core question in ≤60 words.
+- **Content Depth**: All technical articles and pillar posts must target a minimum length of **≥ 1,400 words**. Do not publish thin content (<1,000w) as standalone pages.
 - **Tone**: Professional, technical deep-dive. Get straight to the point, no fluff.
 - **Alerts**: Use GitHub Markdown Alerts strategically (`> [!NOTE]`, `> [!WARNING]`, `> [!TIP]`, `> [!IMPORTANT]`, `> [!CAUTION]`) to highlight key information instead of bold text.
+
+## Affiliate Compliance (Learn Site)
+
+- **Link Tagging**: All outbound affiliate links must use `rel="sponsored"`.
+- **Disclosures**: A clear affiliate disclosure must be present on any page containing affiliate links, located near the recommendation.
 
 ## 2026 Information Gain & E-E-A-T Requirements
 

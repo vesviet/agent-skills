@@ -26,48 +26,49 @@ Both projects load `**/*.{md,mdx}` from those folders via Astro glob loaders; fr
 - **dates**: use `publishDate` / `updateDate` / `priceCheckedDate` in ISO-like strings consistent with peers (`+07:00` or `Z` as used locally)
 - **claims and specs**: for products and legal/rental content, ground statements in `dataSources`, official links, or user-provided research; flag uncertain specs instead of inventing them
 
-## 2026 SEO & AI Governance Baselines
+## 2026 GEO/AEO & E-E-A-T Standards (Leaseinvietnam)
 
-- **Content Length & Depth**: Informational guides (`post`) must target a minimum of 1,400+ words unless tightly scoped.
-- **Internal Linking**: You must include at least 3 internal links. Specifically, link from informational posts to high-value commercial pages (`property` or `product`).
-- **No Raw AI Hallucinations**: Do not inject generic filler, repetitive phrasing, or hallucinated facts. Rely strictly on multi-pass research and provided sources.
+- **GEO/AEO Answer-First**: Mandatory ≤60-word direct answer block immediately following H2 headings using the `<AnswerFirst>` component.
+- **Fact Density**: Minimum 3 verifiable data points per 500 words.
+- **E-E-A-T Experience Proof**: 
+  - Neighborhood guides: Original photos or firsthand visit accounts.
+  - Price/Market data: Documented research with citations.
+  - Scam alerts: Anonymized real case studies.
+  - Legal/Visa: Official government source links.
+- **Internal Links**: At least 3 internal links to existing pages + 1 link to a commercial property/product page (Total ≥4).
+- **Anti-Slop Gate**: Zero generic filler, repetitive phrasing, or meta-talk.
 
 ## Suggested Process
 
 ### 1. Select Repo And Collection
-
 Pick leaseinvietnam vs maylanhtreotuong, then `post` vs `property` or `product`.
 
-### 2. Read Schema And Exemplars
+### 2. Apply the Correct Template (For leaseinvietnam posts)
+Select one of the 4 core templates based on user request:
+1. **Market Radar / Price Hub**: Uses `category: market-radar`. Focuses on data tables, district breakdowns, and specific price ranges.
+2. **Comprehensive Guide**: Uses `category: guides`. Step-by-step processes, cost tables, red flags, and FAQs.
+3. **Scam Alert / Trust Guide**: Uses `category: scam` or `trust-safety`. Requires TL;DR, "How It Works", Red Flags, and Recovery Steps.
+4. **Neighborhood Guide**: Uses `category: neighborhood`. Focuses on lifestyle fit, rent prices, pros/cons, and transport.
 
-Open that repo’s `src/content/config.ts` and two or three recent files in the target folder; align frontmatter keys, optional `metadata`, and body structure.
-
-### 3. Apply Content Writer Discipline
-
-Use the active **Content Writer** role: multi-pass research when evidence is required; otherwise synthesize only from supplied data and existing patterns.
+### 3. Read Schema And Exemplars
+Check `src/content/config.ts` and recent files. Ensure `title` ≤ 60 chars, `unique_angle` is set, and `anti_slop_gate: { gate_passed: true }` is present in frontmatter for leaseinvietnam posts.
 
 ### 4. Author The File
-
-Use `.mdx` for posts when JSX/components may appear; `.md` is common for property/product—match siblings. For lease posts in dated trees, create the `YYYY-MM-DD` directory when that is the established convention.
+- Use `.mdx` for posts to allow `<AnswerFirst>` and other components.
+- Do NOT use markdown blockquotes `> **Quick Answer:**` for summaries.
+- Apply the Content Writer discipline: multi-pass research and anti-slop self-scan.
 
 ### 5. Validate Implicit Contracts
-
-Check slug/file naming against how routes list pages, internal links use paths like `/bang-gia-...` or product slugs, and images use stable URLs or assets per local practice.
-
-### 6. Leave Handoff Notes
-
-List fields that need SME verification (prices, legal claims, model numbers) for the user or reviewer.
+Check slugs, internal link paths, and ensure affiliate links use the `/go/partner` cloaking standard.
 
 ## Checklist
 
-- [ ] edits target the correct `src/data` root and collection type
-- [ ] frontmatter matches `config.ts` and peers in the same folder
-- [ ] lease posts use dated path layout when siblings do
-- [ ] MDX imports and components match existing posts in that site
-- [ ] prices, specs, and legal/rental claims are sourced or explicitly flagged
-- [ ] internal links and slugs follow patterns used in nearby content
-- [ ] SEO minimums met (1,400+ words, 3+ internal links to commercial pages)
-- [ ] AI governance rules followed (zero raw hallucinations or generic filler)
+- [ ] Edits target the correct `src/data` root and collection type.
+- [ ] Frontmatter matches `config.ts` (including `unique_angle`, `anti_slop_gate`, and `title` length).
+- [ ] `<AnswerFirst>` component is used instead of blockquotes.
+- [ ] Prices, specs, and legal/rental claims are sourced with E-E-A-T Experience Proof.
+- [ ] Internal links (≥4) and affiliate links (max 2, via `/go/`) follow rules.
+- [ ] SEO minimums met (1,400+ words, fact density targets achieved).
 
 ## Related Skills
 

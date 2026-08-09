@@ -1,8 +1,10 @@
 name: vesviet-team
-description: Global engineering core plus Vesviet content overlay (Includes 2026 AI-Governance & Information Gain gates).
-version: 1.1.0
+description: Global engineering core plus Vesviet content overlay. Enforces 2026 AI-Governance, Hub-and-Spoke Topology, GEO/AEO Answer-First formatting, and Affiliate Marketing Compliance for vesviet and learn sites.
+version: 1.2.0
 tags:
   - core
+  - geo-aeo
+  - hub-and-spoke
 author: user
 maintained_by: platform-team
 includes:

@@ -1,119 +1,50 @@
-# Publish Lease Content
-
-Role: `content-manager`, `content-writer`, `reviewer`, `cloudflare-engineer`
-
-Workflow for adding or updating content in the Lease in Vietnam and Máy Lạnh Treo Tường Astro v5 sites. Use when publishing new posts, property listings, or product pages.
-
-## Checklist
-
-- [ ] **Step 1** — Identify target site and content type
-- [ ] **Step 2** — Read schema and sibling content
-- [ ] **Step 3** — Draft frontmatter
-- [ ] **Step 4** — Write content body
-- [ ] **Step 5** — Information Gain & AI Governance Review
-- [ ] **Step 6** — Run local Astro build check
-- [ ] **Step 7** — Review, commit, and deploy
-
+---
+name: publish-lease-content
+description: End-to-end 6-step content production workflow enforcing the 5-Pillar strategy and 7-day mix guardrails for leaseinvietnam.
+version: 1.1.0
+roles:
+  - content-writer
+  - seo-analyst
+  - content-manager
 ---
 
-## Step 1 — Identify target site and content type
+# Publish Lease Content Workflow
 
-Role: `content-writer`
+This workflow standardizes the weekly sprint cadence for `leaseinvietnam`.
 
-Confirm:
-- **Site**: Lease in Vietnam (`leaseinvietnam`) or Máy Lạnh Treo Tường (`maylanhtreotuong`)?
-- **Content type**: `post`, `property` (lease), or `product` (maylanh)?
-- **File path**: follow dated folder pattern `src/data/post/YYYY-MM-DD/<slug>.mdx` for posts.
+## 7-Day Content Mix Guardrails
+Before beginning a sprint, the `Task Planner` or `Content Manager` must ensure:
+- **Balance**: Mix of guides, neighborhood comparisons, trust-safety, and market data.
+- **Cannibalization**: No repeated primary keyword intent within 7 days.
+- **Link Equity**: At least 1 post/week strengthens links to high-value property listing pages.
+- **Trust Maintenance**: At least 1 post/week in scam/trust category.
 
-| Site | Data root | Collections |
-|------|-----------|-------------|
-| Lease in Vietnam | `src/data/` | `post`, `property` |
-| Máy Lạnh Treo Tường | `src/data/` | `post`, `product` |
+## 6-Step Production Workflow
 
----
+### Step 1: SEO Briefing (`seo-analyst`)
+- Consume target keywords and generate `seo-content-brief.json`.
+- Specify Answer-First requirements, Fact Density, and E-E-A-T proof type.
 
-## Step 2 — Read schema and sibling content
+### Step 2: Research & Outline (`content-writer` / `researcher`)
+- Consult minimum 2-3 verifiable sources (official government sites, batdongsan, GSO).
+- Produce outline matching the selected core template (Radar, Guide, Scam, Neighborhood).
 
-Role: `content-writer`
+### Step 3: Drafting (`content-writer`)
+- Author in `.mdx` using the `<AnswerFirst>` component.
+- Maintain minimum length of 1,400+ words.
+- Execute anti-slop self-scan (remove fluff and hedge words).
 
-1. Open `src/content/config.ts` — read the Zod schema for the target collection.
-2. Open 1–2 sibling files in the same collection to match:
-   - Frontmatter keys, date format, `dataSources` pattern
-   - MDX import lines (only add imports already used by siblings)
-   - Layout type (`GuideLayout`, `MarketRadarLayout`, etc. for lease posts)
+### Step 4: Internal Link Insertion (`content-writer`)
+- Insert minimum 3 contextual internal links to existing cluster pages.
+- Insert 1+ link to a relevant property listing page.
+- (Optional) Insert up to 2 cloaked affiliate links (`/go/partner`) if contextually relevant and NOT a trust-safety article.
 
-**Do not add frontmatter fields not present in the schema** unless `passthrough()` is confirmed.
+### Step 5: Schema & Metadata Verification (`seo-analyst`)
+- Verify frontmatter: `title` (≤60 chars), `description` (120-155 chars), `unique_angle`, `anti_slop_gate`.
+- Verify JSON-LD Schema (e.g., FAQPage if applicable).
+- Emit `seo-audit-report.json`.
 
----
-
-## Step 3 — Draft frontmatter
-
-Role: `content-writer`
-
-Use the schema-required fields first, then optional fields if available:
-
-```mdx
----
-title: ""
-description: ""
-pubDate: "YYYY-MM-DD+07:00"
-updatedDate: "YYYY-MM-DD+07:00"
-# property / product specific fields below
-# price, bedrooms, brand, model, hp, bestFor, notFor, dataSources ...
----
-```
-
-- Use `+07:00` timezone offset consistently (Vietnam local time).
-- Ground specs and prices in `dataSources` array — flag uncertain values instead of inventing them.
-
----
-
-## Step 4 — Write content body
-
-Role: `content-writer`
-
-1. Follow the tone and structure of sibling posts in the same site.
-2. Use MDX components (`PostCallToAction`, etc.) only when already imported by sibling posts — copy the exact import path.
-3. For legal/rental/product claims: cite `dataSources` or mark as approximate.
-4. SEO: confirm `<title>` and `description` match search intent for the target keyword.
-
----
-
-## Step 5 — Information Gain & AI Governance Review
-
-Role: `reviewer` or `content-manager`
-
-**AI-GOVERNANCE LOCK**: All AI-assisted content must pass human-in-the-loop editorial review before publishing.
-1. **Information Gain**: Does this article provide unique value (firsthand accounts, real-world data, expert quotes) that top SERP results and AI-synthesized overviews lack?
-2. **E-E-A-T Verification**: Are author credentials and real-world failure/success stories present?
-3. **Hallucination Check**: Ensure zero raw AI hallucinations or generic boilerplate phrasing remains.
-
----
-
-## Step 6 — Run local Astro build check
-
-Role: `devops-engineer` or `cloudflare-engineer`
-
-```bash
-cd /path/to/site
-npm run build
-```
-
-Fix any Zod schema validation errors before committing. Common errors:
-- Missing required field → add it
-- Wrong type (number vs string) → match schema
-- Invalid date format → use ISO with `+07:00`
-
----
-
-## Step 7 — Review, commit, and deploy
-
-Role: `content-writer`, `cloudflare-engineer`
-
-1. Review rendered output locally (`npm run dev` → preview URL).
-2. Confirm no broken links, missing images, or placeholder text.
-3. Commit: `git add src/data/<path> && git commit -m "feat(content): add <slug>"`.
-4. Push to remote repository to trigger the Cloudflare Pages CI pipeline.
-5. `cloudflare-engineer` monitors the Cloudflare deployment status and edge cache invalidation.
-
-**Stop** if build fails — do not commit broken content.
+### Step 6: Publish & Record (`content-manager`)
+- Verify `anti_slop_gate.gate_passed: true`.
+- Execute local build (`npm run build`). If exit 0, commit and push to Cloudflare.
+- Log entry into weekly publish tracker.
