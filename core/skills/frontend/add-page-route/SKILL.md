@@ -102,6 +102,14 @@ Cover:
 - [ ] SEO/SSR verified for public-facing routes (meta tags, OG, SSG behavior)
 - [ ] tests added or updated
 
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
+
+- **contracts/schemas/implementation-result.json** — Required fields: change_summary, iles_touched[], and alidation_run. Set produced_by_role to the emitting developer role.
+
+Skip emission for solo refactor work where no downstream handoff is expected.
+
 ## Related Skills
 
 - **add-ui-component**: Build reusable UI used by the page

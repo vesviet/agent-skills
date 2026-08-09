@@ -73,6 +73,14 @@ Run smoke_tests from edge-deployment-spec; update residual_risks for SRE/DevOps.
 - [ ] smallest safe fix applied
 - [ ] smoke tests pass after recovery
 
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
+
+- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+
+Skip emission for solo refactor work where no downstream handoff is expected.
+
 ## Related Skills
 
 - **wrangler**: Wrangler CLI for deploying, developing, and managing Workers

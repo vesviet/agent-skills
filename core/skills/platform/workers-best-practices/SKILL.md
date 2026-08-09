@@ -58,6 +58,14 @@ Your knowledge of Cloudflare Workers APIs, types, and configuration may be outda
 - [ ] Request coalescing is implemented to deduplicate identical concurrent requests.
 - [ ] CPU time billing is optimized via TextDecoder and dev inspect profiling.
 
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
+
+- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+
+Skip emission for solo refactor work where no downstream handoff is expected.
+
 ## Related Skills
 - **wrangler**: Deploy, test, and manage bindings via CLI.
 - **durable-objects**: Build stateful coordination systems.

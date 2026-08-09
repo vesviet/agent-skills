@@ -110,6 +110,14 @@ Documentation: [Storybook / none]
 - [ ] Storybook or equivalent initialized with a11y addon and all primitive states documented
 - [ ] AI-generated component review process defined (2025-2026)
 
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
+
+- **contracts/schemas/implementation-result.json** — Required fields: change_summary, iles_touched[], and alidation_run. Set produced_by_role to the emitting developer role.
+
+Skip emission for solo refactor work where no downstream handoff is expected.
+
 ## Related Skills
 
 - **add-ui-component**: Add or evolve a reusable UI component using the design system established by this skill.

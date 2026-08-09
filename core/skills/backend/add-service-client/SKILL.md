@@ -120,6 +120,14 @@ When service clients interact with external or internal Model Context Protocol (
 - [ ] proxyless xDS client load balancing configured for high-throughput paths
 - [ ] MCP tool server client wrapped with timeouts, retries, and circuit breakers
 
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
+
+- **contracts/schemas/implementation-result.json** — Required fields: change_summary, iles_touched[], and alidation_run. Set produced_by_role to the emitting developer role.
+
+Skip emission for solo refactor work where no downstream handoff is expected.
+
 ## Related Skills
 
 - **navigate-service**: Find the local client pattern before integrating

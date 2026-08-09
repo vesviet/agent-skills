@@ -107,6 +107,14 @@ Make sure the new service has:
 - [ ] tests added
 - [ ] delivery handoff prepared
 
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
+
+- **contracts/schemas/implementation-result.json** — Required fields: change_summary, iles_touched[], and alidation_run. Set produced_by_role to the emitting developer role.
+
+Skip emission for solo refactor work where no downstream handoff is expected.
+
 ## Related Skills
 
 - **create-migration**: Add initial schema changes if the service owns data

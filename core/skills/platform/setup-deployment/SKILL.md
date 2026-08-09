@@ -102,6 +102,14 @@ For machine-to-machine handoff, output a structured JSON plan (e.g., `deployment
 - [ ] validation commands run
 - [ ] health and rollback behavior reviewed
 
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
+
+- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+
+Skip emission for solo refactor work where no downstream handoff is expected.
+
 ## Related Skills
 
 - **scaffold-new-service**: Add deployment config for a newly created service

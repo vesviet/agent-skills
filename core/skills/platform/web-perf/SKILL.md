@@ -118,6 +118,14 @@ Tool: Chrome DevTools MCP | Lighthouse | CrUX
 - [ ] Lab vs. field data distinction stated in the report
 - [ ] Before/after comparison run after implementing fixes
 
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
+
+- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+
+Skip emission for solo refactor work where no downstream handoff is expected.
+
 ## Related Skills
 
 - **wrangler**: Check deployment compatibility parameters and cache settings for Workers-hosted assets.

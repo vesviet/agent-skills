@@ -154,6 +154,14 @@ const files = await sandbox.listFiles('/workspace/project');
 - [ ] Explicit resource limits (`timeout_ms`, `memory_mb`, `cpu_ms`) are configured for sandbox executions.
 - [ ] Network isolation is managed securely, routing necessary fetches through the allowed host callback via `env.SANDBOX`.
 
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
+
+- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+
+Skip emission for solo refactor work where no downstream handoff is expected.
+
 ## Related Skills
 - **wrangler**: Deploy containers bindings and monitor edge variables.
 - **debug-workers-edge**: Diagnose runtime execution issues on Cloudflare.

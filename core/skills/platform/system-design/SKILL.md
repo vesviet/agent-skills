@@ -146,6 +146,14 @@ Before finalizing:
 - [ ] system-design-spec.json produced when structured downstream handoff required
 - [ ] open questions, accepted risks, and escalation items documented
 
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
+
+- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+
+Skip emission for solo refactor work where no downstream handoff is expected.
+
 ## Related Skills
 
 - **performance-profiling**: Benchmark and investigate performance bottlenecks after the design is implemented
