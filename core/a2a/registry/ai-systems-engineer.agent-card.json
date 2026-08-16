@@ -1,0 +1,124 @@
+{
+  "id": "pack://agent-skills/core/roles/ai-systems-engineer",
+  "contract_type": "agent-card",
+  "name": "ai-systems-engineer",
+  "description": "architect, deploy, evaluate, and optimize production-grade AI and LLM systems — bridging machine learning models with resilient backend serving infrastructure, intelligent LLM gateways, structured output enforcement, and empirical evaluation frameworks while enforcing GPU FinOps and defense-in-depth against prompt injection and model drift.",
+  "url": "pack://agent-skills/core/roles/ai-systems-engineer.md",
+  "version": "4.0.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "setup-llm-gateway",
+      "name": "Setup Llm Gateway",
+      "description": "Configure a centralized LLM proxy gateway for token routing, budgeting, and failover. Use when deploying multi-model routing, enforcing token rate limits, managing provider credentials, or centralizing AI observability.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "performance-audit.json",
+        "system-design-spec.json",
+        "test-report.json"
+      ]
+    },
+    {
+      "id": "setup-gpu-finops",
+      "name": "Setup Gpu Finops",
+      "description": "Configure GPU telemetry, DCGM metrics, and Kubecost to attribute AI compute costs to specific namespaces or teams. Use when managing GPU infrastructure budgets, tracking AI workload unit economics, or optimizing accelerator capacity.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "performance-audit.json",
+        "system-design-spec.json",
+        "test-report.json"
+      ]
+    },
+    {
+      "id": "implement-structured-outputs",
+      "name": "Implement Structured Outputs",
+      "description": "Implements strict constrained decoding and validation for LLM responses. Use when enforcing JSON Schema guarantees on model generations, eliminating regex parsing, or integrating structured LLM outputs into backend services.",
+      "tags": [
+        "backend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "performance-audit.json",
+        "system-design-spec.json",
+        "test-report.json"
+      ]
+    },
+    {
+      "id": "build-mcp-server",
+      "name": "Build Mcp Server",
+      "description": "Scaffolds and implements a new Model Context Protocol (MCP) server. Use when exposing new backend tools or resources to AI agents.",
+      "tags": [
+        "backend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "performance-audit.json",
+        "system-design-spec.json",
+        "test-report.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "performance-audit.json",
+    "system-design-spec.json",
+    "test-report.json"
+  ],
+  "role_file": "core/roles/ai-systems-engineer.md",
+  "policy_profile": "ai-systems-engineer"
+}

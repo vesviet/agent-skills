@@ -4,6 +4,7 @@ capability_role_map:
   3d-graphics-engineer: 3d-graphics-engineer
   agent-coordinator: agent-coordinator
   agent-discovery-engineer: agent-discovery-engineer
+  ai-systems-engineer: ai-systems-engineer
   aws-engineer: aws-engineer
   backend-developer: backend-developer
   business-analyst: business-analyst

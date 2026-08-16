@@ -299,6 +299,8 @@ For micro-frontend architectures or large frontend applications with independent
 - `commit-code`
 - `setup-design-system`
 - `navigate-service`
+- `implement-webmcp`
+- `setup-visual-regression`
 
 ### Supporting Skills (use when collaborating)
 

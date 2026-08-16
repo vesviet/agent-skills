@@ -76,6 +76,7 @@ All roles in this pack are expected to:
 - [devops-engineer](devops-engineer.md)
 - [cloudflare-engineer](cloudflare-engineer.md)
 - [sre](sre.md)
+- [ai-systems-engineer](ai-systems-engineer.md)
 
 ### Quality, Delivery, And Operations
 
@@ -136,6 +137,7 @@ All roles in this pack are expected to:
 - Technical Lead
 - Security Engineer
 - System Engineer
+- AI Systems Engineer
 
 ### Validation
 
@@ -146,6 +148,7 @@ All roles in this pack are expected to:
 - Mobile Engineer
 - Technical Lead
 - Vietnam Accounting Specialist
+- AI Systems Engineer
 
 ### Release
 
@@ -170,6 +173,7 @@ All roles in this pack are expected to:
 - Reviewer
 - Product Manager
 - Vietnam Accounting Specialist
+- AI Systems Engineer
 
 ### Data And Reporting
 
@@ -200,6 +204,7 @@ All roles in this pack are expected to:
 |------|------------------|
 | Agent Coordinator | `/add-new-feature`, `/troubleshooting`, `/hotfix-production`, `/refactoring`, `/service-review-release`, `/agent-a2a-delegation`, `/data-migration`, `/dependency-upgrade`, `/security-incident-response` |
 | Agent Discovery Engineer | `/build-deploy`, `/setup-new-service`, `/troubleshooting` |
+| AI Systems Engineer | `/setup-new-service`, `/add-new-feature`, `/troubleshooting`, `/service-review-release` |
 | Product Manager | `/add-new-feature` |
 | Project Manager | `/add-new-feature`, `/service-review-release` |
 | Task Planner | `/add-new-feature`, `/refactoring`, `/troubleshooting` |

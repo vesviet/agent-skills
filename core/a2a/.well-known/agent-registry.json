@@ -23,6 +23,12 @@
       "description": "Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance acros"
     },
     {
+      "role": "ai-systems-engineer",
+      "agent_card": "core/a2a/registry/ai-systems-engineer.agent-card.json",
+      "url": "pack://agent-skills/core/roles/ai-systems-engineer.md",
+      "description": "architect, deploy, evaluate, and optimize production-grade AI and LLM systems — bridging machine learning models with re"
+    },
+    {
       "role": "aws-engineer",
       "agent_card": "core/a2a/registry/aws-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/aws-engineer.md",

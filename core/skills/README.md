@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 91 portable core skills under `core/skills/` + 10 overlay skills under `overlays/*/skills/` = **101 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 97 portable core skills under `core/skills/` + 10 overlay skills under `overlays/*/skills/` = **107 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -88,31 +88,37 @@ MMO/growth-ops skills with compliance notices; each maps to `REVIEW-SYSTEM LOCK`
 - `manage-mmo-assets`
 - `setup-tracking-system`
 
-### Backend (4)
+### Backend (6)
 
 - `add-api-endpoint`
 - `add-event-handler`
 - `add-service-client`
+- `build-mcp-server`
+- `implement-structured-outputs`
 - `scaffold-new-service`
 
-### Frontend (5)
+### Frontend (7)
 
 - `add-ui-component`
 - `add-page-route`
 - `frontend-testing`
+- `implement-webmcp`
 - `integrate-api-client`
 - `setup-design-system`
+- `setup-visual-regression`
 
 > R3F/Three.js cluster (`debug-3d-scene`, `integrate-r3f-three-legacy`, `optimize-3d-assets`) migrated to `overlays/r3f-stack/skills/` in v4.0.0 per the stack-overlay naming rules.
 
 > Note: `create-automation-script` is classified under Platform (stealth/CDP automation is infrastructure-level).
 
-### Platform (14)
+### Platform (16)
 
 Delivery, runtime, Cloudflare-specific, cloud, and system infrastructure skills:
 
 - `aws-infrastructure`
 - `setup-deployment`
+- `setup-gpu-finops`
+- `setup-llm-gateway`
 - `supply-chain-security`
 - `system-design`
 - `wrangler`
