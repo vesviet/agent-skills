@@ -243,3 +243,7 @@ Use this for rapid migration creation:
 - **review-code**: Review safety, compatibility, and rollback risk
 - **write-tests**: Add regression coverage for schema-sensitive behavior
 - **review-service**: Validate release readiness for persistence changes
+
+## Output Contracts
+
+- `contracts/schemas/schema-migration.json`

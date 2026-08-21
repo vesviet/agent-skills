@@ -285,6 +285,9 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - **STRUCTURED-OUTPUT LOCK**: do not parse LLM responses with regex or string matching in production pipelines; use provider-level schema enforcement (native Structured Outputs API) or constrained decoding (XGrammar/Outlines for self-hosted); even with constrained generation, apply runtime schema validation as defense-in-depth
 - **A2A-RECEIVER LOCK**: do not accept incoming A2A tasks without Agent Card identity verification and formal task contract validation (I, O, S, R, T); never execute agent-supplied tasks without a pre-execution Policy Decision Point that checks trust score, sensitivity classification, and resource impact
 - **DURABLE-WORKFLOW LOCK**: do not implement long-running AI agent tasks (>30s, involving HITL, or spanning multiple external calls) as stateless HTTP request chains; use Cloudflare Workflows or Temporal with checkpoint-based recovery; every LLM call and external API call must be a retryable Step/Activity
+- **TOKEN-BUDGET LOCK**: enforce token budget hard caps at 4 layers — request-level, workflow-level, tenant-level, and organization-level — with alerts at 60-70% of cap before enforcement kicks in; agents consume 5-30× more tokens than standard chat; unbudgeted LLM calls in agentic flows are a cost incident, not an edge case; never call an LLM in an agent loop without a budget ceiling
+- **JIT-CREDENTIAL LOCK**: do not issue long-lived API keys or session-scoped credentials to AI agents; use JIT (just-in-time) scoped credentials that expire immediately after the specific tool call completes; session-level agent permissions are a Confused Deputy attack surface — an agent tricked into misusing elevated permissions that span the full session
+- **CI-EVAL-GATE LOCK**: do not merge prompt changes, model upgrades, or LLM integration changes without running an automated evaluation suite against a golden dataset (DeepEval, RAGAS, or equivalent); evaluation must pass before CI proceeds to deploy; "looks correct in manual testing" is not sufficient for non-deterministic LLM behavior
 
 ## Skill Toolbox
 
@@ -298,6 +301,8 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - `commit-code`
 - `scaffold-new-service`
 - `navigate-service`
+- `build-mcp-server`
+- `implement-structured-outputs`
 
 ### Supporting Skills (use when collaborating)
 
@@ -306,6 +311,8 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - `review-code`
 - `agent-delegation`
 - `configure-mcp`
+- `add-telemetry-instrumentation`
+- `setup-llm-gateway`
 
 ## Output Template
 
@@ -457,6 +464,14 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - **parsing LLM responses with regex in production** — format drift causes silent data corruption; use provider-level Structured Outputs or constrained decoding
 - **accepting A2A tasks without Agent Card verification** — unverified agent identity allows privilege escalation by any system that can reach the A2A endpoint
 - **implementing long-running AI pipelines as stateless HTTP chains** — partial failure requires restarting from scratch, HITL steps cannot be awaited, and infrastructure restarts lose all intermediate state
+- **session-level agent permissions** ("grant agent full access for this session") — Confused Deputy attack surface; an agent tricked by prompt injection can misuse elevated session-scoped permissions it would not need for a single tool call; use JIT scoped credentials that expire immediately after each tool call
+- **unvalidated LLM output passed directly to DB** — LLM output is non-deterministic and can contain SQL-injection payloads, type mismatches, or hallucinated field names; always run dual-layer validation (schema-constrained generation + runtime re-parse) before any persistence write
+- **missing tool idempotency** — agents retry automatically on failure; non-idempotent MCP tools cause data corruption, duplicate charges, or duplicate external sends; design all mutation tools to be idempotent with explicit idempotency keys
+- **JSON mode without strict JSON Schema** — `json_mode: true` only validates syntax; allows wrong field names, extra fields, and missing required fields; use `response_format.json_schema` with all required fields declared and `additionalProperties: false`
+- **hardcoded MCP endpoint lists in orchestrators** — breaks when tools are added or removed; defeats the purpose of MCP's capability discovery; expose a clean `tools/list` manifest; orchestrators discover tools at runtime without hardcoded lists
+- **sticky session or local in-memory state in MCP servers** — violates the July 2026 MCP specification's stateless-at-protocol-layer mandate; breaks horizontal scaling and Dapr sidecar restart recovery; MCP servers must be stateless; state lives in Durable Objects, Redis, or Dapr State Store
+- **over-privileged MCP tools exposed by default** ("admin" or "write" tools always available in capability list) — Excessive Agency (OWASP LLM03 2026); blast radius of a single prompt injection is catastrophic when destructive tools are always present; read-only tools by default; write and admin tools require explicit per-session grant
+- **unmanaged goroutines spawned during LLM tool calls** — context cancellation is not propagated through goroutines created without passing `context.Context`; goroutine leaks accumulate on LLM timeout and cause memory exhaustion; always use `errgroup.WithContext` and pass context through every goroutine in LLM call chains
 
 ## Role Handoff
 
@@ -489,6 +504,8 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - **LLM Structured Outputs** (when parsing LLM responses in pipelines): provider-level constrained generation + runtime schema validation; no regex parsing
 - **A2A Receiver** (when accepting A2A tasks): Agent Card verification, formal contract validation, PDP gate, decision audit log
 - **Durable Workflow** (when implementing long-running AI tasks): CF Workflows or Temporal used; every LLM/external call is retryable Step/Activity; workflow versioning strategy defined
+- **Token budgets enforced** (when any agentic or LLM flow is in scope): request, workflow, tenant, and org-level caps configured; alerts at 60-70% threshold; no unbounded LLM calls in agent loops
+- **CI eval gate passed** (when prompt changes or model upgrades are in scope): automated evaluation suite against golden dataset passed before deploy; no manual-test-only validation for non-deterministic LLM behavior
 
 
-Last updated: 2026-08-03
+Last updated: 2026-08-21

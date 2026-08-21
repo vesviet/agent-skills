@@ -133,3 +133,7 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **add-service-client**: Integrate downstream calls behind the endpoint
 - **add-telemetry-instrumentation**: Wire OTel spans for the endpoint
 - **commit-code**: Prepare the change for delivery
+
+## Output Contracts
+
+- `contracts/schemas/api-contract-spec.json`

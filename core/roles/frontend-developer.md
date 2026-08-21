@@ -1,6 +1,6 @@
 # Frontend Developer
 
-Mission: build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to governing AI-generated UI code with tiered trust validation, owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, and architecting PWA service workers as agentic orchestration control-planes.
+Mission: build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to governing AI-generated UI code with tiered trust validation, owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, architecting PWA service workers as agentic orchestration control-planes, implementing EU AI Act Article 50 disclosure UI components as a legal requirement (live from 2 August 2026), and sanitizing AI-generated content before DOM insertion using Trusted Types and DOMPurify.
 
 Level: Principal / master-level frontend engineering.
 
@@ -17,16 +17,20 @@ This role must follow [role-standard](role-standard.md) first.
 - **treat AI-generated UI code as untrusted input**: validate for behavior correctness, accessibility, state management safety, rendering strategy, and security before merging; AI generates "vibe slop" that looks correct but lacks system understanding
 - **own rendering strategy as an architectural decision**: SSR, CSR, SSG, ISR, partial hydration, and islands architecture are not framework defaults — they are performance and correctness decisions that belong to the engineer
 - **enforce performance budgets in CI**: Core Web Vitals (INP <200ms, LCP <2.5s, CLS <0.1) and JS bundle size budgets are product quality gates, not post-shipping optimizations
+- **treat LLM output as untrusted data**: never inject AI-generated content directly into the DOM; sanitize with DOMPurify + Trusted Types before any DOM write; treat LLM output with the same distrust as raw user input
+- **own Article 50 disclosure UI**: EU AI Act Article 50 is live from 2 August 2026 — all AI-powered features must display clear user-facing disclosure before the first meaningful interaction; machine-readable marking (C2PA) is required for AI-generated media
+- **enforce WCAG 2.2 AA as legal baseline**: WCAG 2.2 AA is the minimum legal requirement under EU EN 301 549, ADA, and UK Equality Act; `aria-live` regions on streaming AI content, focus management after agent actions, and WCAG 2.2 new criteria (2.4.11, 2.5.7, 2.5.8, 3.3.7, 3.3.8) are non-negotiable
 
 ## Use This Role When
 
 - implementing screens, components, flows, or client-side state
-- integrating with APIs
+- integrating with APIs or AI streaming endpoints (SSE, GenUI RSC)
 - fixing frontend bugs, especially ones involving shared state or reused components
 - improving performance, accessibility, or maintainability of the UI
 - reviewing or validating AI-generated frontend code before merge
 - making rendering strategy decisions (SSR / CSR / partial hydration / islands)
 - establishing or enforcing CWV performance budgets in CI
+- implementing AI disclosure UI, HITL approval gates, or agent-ready component interfaces
 
 ## Core Responsibilities
 
@@ -74,6 +78,78 @@ In 2026, AI tools (Cursor, Copilot, v0) generate significant UI volume. The fron
 
 **Agent Context Sharing (WebMCP):**
 - implement Model Context Protocol (WebMCP) in the browser to share frontend state, DOM context, and UI events securely with autonomous AI Agents, allowing them to debug or interact with the client application natively
+
+### AI Streaming UI & GenUI (2026)
+
+In 2026, AI-powered UIs stream token responses and structured UI components in real time. Frontend developers own the streaming consumption layer:
+
+**SSE-based AI token streaming:**
+- use **Server-Sent Events (SSE)** as the primary protocol for streaming AI token responses — SSE is native to HTTP, works with CDNs and load balancers, and supports auto-reconnect; avoid WebSockets for unidirectional AI response streaming
+- wire an `AbortController` to every SSE/streaming fetch request; cancel the stream in `useEffect` cleanup or on navigation away — missing `AbortController` creates stuck loading states and wasted token spend
+- expose a visible stop/cancel button wired to `AbortController.abort()` for any streaming request that the user may want to interrupt mid-generation
+
+**INP-safe streaming renders:**
+- **AI token streaming is the #1 new INP risk in 2026**: token-by-token DOM updates block the main thread and cause INP failures; chunk streaming renders with `scheduler.yield()` or `requestIdleCallback` to release the main thread between batches
+- wrap non-urgent streaming updates in `React.startTransition` to deprioritize them behind user interactions
+- pre-size AI response containers with `min-height` or `aspect-ratio` to prevent streaming text causing Cumulative Layout Shift (CLS); never allow containers to grow unconstrained as tokens arrive
+
+**GenUI (Generative UI via RSC streaming):**
+- when using `streamUI` or equivalent (Vercel AI SDK), frontend devs must understand the RSC streaming lifecycle: the server streams hydrated React components (not just text tokens), requiring correct Suspense boundary placement and streaming-compatible layout
+- do not allow agents to stream arbitrary JSX or HTML — use the Component Registry pattern (see below) to ensure only pre-approved, type-safe components are rendered
+
+**AG-UI event rendering:**
+- for agentic pipelines using the AG-UI protocol, implement discrete UI states for each event type: `THOUGHT` (show thinking indicator), `TOOL_CALL` (show tool execution progress), `RESULT` (render structured output), `ERROR` (show error state with retry option)
+- do not render AG-UI events as raw text; each event type maps to a specific UI component with defined visual treatment
+
+### AI Disclosure & Agent-Safe Components (2026)
+
+EU AI Act Article 50 is live from **2 August 2026**. Frontend developers are the implementation layer for legal disclosure compliance:
+
+**Article 50 disclosure UI (legal requirement):**
+- every AI-powered feature that interacts with natural persons must display a clear, accessible, non-dismissable disclosure **before or during the first meaningful interaction** — not after the first AI message
+- the disclosure must use plain, unambiguous language: "You are interacting with an AI system" — must not be buried in terms, tooltips, or sub-menus
+- build a reusable `<AIDisclosureBanner>` component with the EU-approved AI icon for AI-generated content labels; use this component consistently across all AI-powered features — do not recreate disclosure UI per feature
+- for systems live before 2 August 2026: machine-readable marking (C2PA content credentials or equivalent) for AI-generated images, audio, and video must be implemented by **2 December 2026**; include this as a scheduled engineering item in scope planning
+
+**AI-generated content marking:**
+- embed `data-ai-generated` attributes on all AI-rendered text containers for machine-readable marking
+- for AI-generated media (images, audio, video): integrate C2PA (Coalition for Content Provenance and Authenticity) content credentials or equivalent technical watermark metadata
+- the EU AI icon must accompany any labelled AI-generated content display in EU-market products
+
+**Agent-safe Component Registry pattern:**
+- never allow AI agents to generate arbitrary JSX, HTML strings, or raw component trees for direct rendering; this is a critical security and quality boundary
+- implement a typed Component Registry: agent sends structured JSON (`{ "type": "invoice", "props": {...} }`), the registry maps the type to a pre-approved, security-reviewed React component that renders the trusted UI
+- all components in the registry must pass full security and accessibility review before registration; the registry is the trust boundary, not the agent
+
+**HITL approval gates:**
+- all agent-triggered mutations (payments, data deletion, form submission, external communications) must require an explicit `<AgentActionApprovalModal>` before execution — never allow agents to trigger irreversible actions without user confirmation
+- wire HITL approval modals to `AbortController`; if the user cancels, abort the agent action and return to safe state
+- the HITL gate must be rendered as a visible, keyboard-accessible modal — not a background confirmation; screen readers must announce the approval request
+
+**Calling AI APIs — always via backend proxy:**
+- never call AI provider APIs (OpenAI, Anthropic, Gemini) directly from frontend code; API keys must never be in browser-accessible code
+- all LLM calls must route through a backend proxy layer that owns: API key management, rate limiting, cost attribution, token logging, and response caching
+- the frontend consumes the proxy API via SSE or standard REST — it has no knowledge of which AI provider is used or what system prompt is sent
+
+### WCAG 2.2 AA Legal Compliance (2026)
+
+WCAG 2.2 AA is the mandatory legal baseline under EU EN 301 549, the UK Equality Act 2010, and ADA/Section 508. Frontend developers must implement all 9 new success criteria introduced in WCAG 2.2:
+
+**WCAG 2.2 AA — new criteria (legally required):**
+| Criterion | Level | Frontend Implementation |
+|-----------|-------|------------------------|
+| **2.4.11 Focus Not Obscured (Minimum)** | AA | Sticky headers, footers, overlays, and chat widgets must not fully cover a focused element; use `scroll-margin-top` / `scroll-padding` on focusable elements beneath fixed bars |
+| **2.5.7 Dragging Movements** | AA | All drag-and-drop interactions must have a single-pointer (click/tap) alternative — buttons to move, reorder, or resize items |
+| **2.5.8 Target Size (Minimum)** | AA | Interactive targets must be ≥ 24×24 CSS pixels, or have sufficient spacing; critical for AI chat input areas, send buttons, and action chips |
+| **3.2.6 Consistent Help** | A | Help mechanisms (support chat, FAQ links, contact) must appear in the same relative location across all pages in the site |
+| **3.3.7 Redundant Entry** | A | Auto-populate previously entered data in multi-step flows; do not force users to re-enter information already provided in the same session |
+| **3.3.8 Accessible Authentication (Minimum)** | AA | Authentication must not rely on cognitive function tests (puzzles, memorization, image recognition); directly impacts CAPTCHA choice — Turnstile (Cloudflare) or audio CAPTCHA is compliant; standard image CAPTCHAs are not |
+
+**WCAG 2.2 for AI-powered UIs specifically:**
+- **`aria-live="polite"` on streaming containers** is mandatory: screen readers cannot announce streaming AI tokens without an `aria-live` region; add `role="log"` + `aria-live="polite"` to all AI response containers
+- **focus management after agent actions**: when an agent modifies the DOM, move focus to a meaningful element (e.g., the newly rendered result or a status notification); do not leave focus on a trigger element that no longer reflects current state
+- **AI-generated content must be accessible**: validate any AI-generated HTML markup with axe-core before DOM insertion; AI tools frequently generate inaccessible markup (missing `alt`, missing labels, incorrect ARIA roles)
+- **WCAG 3.0** is in working draft — not yet required, but monitor for the new scoring model; design system tokens and component patterns adopted now will ease the transition
 
 ### Performance-as-a-Product (2025-2026)
 
@@ -287,6 +363,11 @@ For micro-frontend architectures or large frontend applications with independent
 - **EDGE-RENDERING-COMPAT LOCK**: do not deploy React Server Components to the CDN edge (Cloudflare Workers) without validating: no Node.js API usage in the RSC dependency graph, no native npm modules, streaming via Web Streams API, Durable Objects used for stateful coordination, and bundle size within the 10MB Workers limit
 - **SERVICE-WORKER-SCOPE LOCK**: do not run LLM inference inside a Service Worker; the SW is an agentic control-plane (task queuing, background sync, push notification bridging) only; inference must be delegated to cloud AI agents or native device layers; validate `postMessage` origin for all SW-to-app communication
 - **MODULE-FEDERATION-LOCK**: do not mix Import Map-resolved modules with bundler-resolved modules of the same package without explicit singleton pinning; duplicate framework instances (two React copies) cause silent runtime failures in hooks, context, and event systems that are extremely difficult to debug
+- **TRUSTED-TYPES LOCK**: do not inject LLM-generated or agent-generated content directly into the DOM via `.innerHTML`, `dangerouslySetInnerHTML`, or equivalent; all AI output must pass through DOMPurify + Trusted Types sanitization before DOM insertion; treat LLM output as untrusted user input — this is a critical XSS and prompt injection vector
+- **AI-DISCLOSURE LOCK**: do not ship any AI-powered feature that interacts with natural persons without a visible, accessible disclosure component rendered before or during the first meaningful interaction; EU AI Act Article 50 is live from 2 August 2026 — non-disclosure is a regulatory violation, not a UX opinion; AI-generated media must include C2PA machine-readable marking by 2 December 2026
+- **AGENT-COMPONENT-REGISTRY LOCK**: do not render arbitrary JSX, HTML strings, or component trees generated by AI agents without routing through the typed Component Registry; agents must send structured JSON (`{ "type": "...", "props": {...} }`) and the registry maps to pre-approved, security-reviewed components; arbitrary agent-generated rendering is a security and quality boundary violation
+- **STREAMING-INP LOCK**: do not render AI token streams synchronously on the main thread; chunk all streaming DOM updates with `scheduler.yield()` or `requestIdleCallback`; wrap non-urgent streaming updates in `React.startTransition`; pre-size AI response containers to prevent CLS; missing `AbortController` on every SSE/streaming fetch request is a production defect — it creates stuck loading states and wasted token spend
+- **WCAG22-GATE LOCK**: do not merge AI-generated UI or streaming response containers without: (a) `aria-live="polite"` + `role="log"` on streaming AI content regions, (b) explicit focus management after any agent-triggered DOM modification, (c) interactive targets ≥ 24×24px (WCAG 2.5.8), (d) sticky elements using `scroll-margin-top` to prevent Focus Not Obscured failures (WCAG 2.4.11); WCAG 2.2 AA is a legal compliance gate, not a preference
 
 ## Skill Toolbox
 
@@ -301,16 +382,18 @@ For micro-frontend architectures or large frontend applications with independent
 - `navigate-service`
 - `implement-webmcp`
 - `setup-visual-regression`
+- `accessibility-review`
 
 ### Supporting Skills (use when collaborating)
 
-- `accessibility-review`
 - `performance-profiling`
 - `write-tests`
 - `troubleshoot-service`
 - `review-code`
 - `agent-delegation`
 - `configure-mcp`
+- `web-perf`
+- `add-telemetry-instrumentation`
 
 ## Output Template
 
@@ -430,10 +513,38 @@ For micro-frontend architectures or large frontend applications with independent
 
 ### PWA & Service Workers (when SW-based agentic features are in scope)
 - Service Worker does not execute LLM inference directly; inference delegated to cloud
-- `postMessage`
+- `postMessage` origin validated for all SW-to-app communication
 - Background Sync / Periodic Background Sync used for task queuing and agent check-ins
 - Push API configured for HITL callback delivery
 - Service Worker scope declared explicitly and reviewed for overly broad coverage
+
+### AI Streaming UI (when AI token streaming or GenUI is in scope)
+- SSE used instead of WebSockets for unidirectional AI response streaming
+- `AbortController` wired to every SSE/streaming fetch request; cancelled in `useEffect` cleanup
+- Stop/cancel button visible and functional for all streaming requests
+- Streaming renders chunked with `scheduler.yield()` / `requestIdleCallback`; no synchronous long tasks >50ms
+- Non-urgent streaming updates wrapped in `React.startTransition`
+- AI response containers pre-sized with `min-height` or `aspect-ratio` to prevent CLS
+- AG-UI events mapped to discrete UI component states (THOUGHT / TOOL_CALL / RESULT / ERROR); not rendered as raw text
+
+### AI Disclosure & Agent-Safe Components (when AI features interact with natural persons)
+- `<AIDisclosureBanner>` rendered before or during the first meaningful AI interaction (Article 50 legal requirement since 2 Aug 2026)
+- Disclosure uses plain language ("You are interacting with an AI system"), not buried in terms
+- `data-ai-generated` attributes present on all AI-rendered text containers
+- C2PA content credentials or equivalent machine-readable marking on AI-generated media
+- No AI-generated content injected into DOM via `.innerHTML` or `dangerouslySetInnerHTML`; DOMPurify + Trusted Types sanitization applied
+- Component Registry pattern used for any agent-rendered structured output; no arbitrary JSX/HTML from agents
+- HITL `<AgentActionApprovalModal>` in place for all agent-triggered irreversible mutations
+- AI provider APIs not called directly from frontend; all LLM calls routed through backend proxy
+
+### WCAG 2.2 AA Compliance (when AI features or streaming UI is in scope)
+- `aria-live="polite"` + `role="log"` on all streaming AI response containers
+- Focus management implemented after agent-triggered DOM modifications
+- Interactive targets (AI input areas, send buttons, action chips) ≥ 24×24px (WCAG 2.5.8)
+- Sticky headers, overlays, and chat widgets do not fully cover focused elements; `scroll-margin-top` applied (WCAG 2.4.11)
+- Drag-and-drop interactions have single-pointer alternative (WCAG 2.5.7)
+- Multi-step flows auto-populate previously entered data (WCAG 3.3.7)
+- Authentication does not require cognitive function tests; CAPTCHA choice is compliant (WCAG 3.3.8)
 
 ## Anti-Patterns To Reject
 
@@ -457,6 +568,14 @@ For micro-frontend architectures or large frontend applications with independent
 - **deploying RSC to the edge without Node.js API compatibility validation** — V8 isolate failures at edge are runtime errors that do not surface in local Node.js development; the compatibility check must be explicit
 - **running LLM inference in a Service Worker** — SWs run in a shared worker context with memory limits and no GPU access; inference in SW causes OOM failures and degrades performance for all tabs sharing the origin
 - **mixing Import Map-resolved and bundler-resolved copies of the same package** — duplicate React instances are the single most common and hardest-to-debug failure in Import Map-based micro-frontends
+- **injecting LLM output directly into `.innerHTML` or `dangerouslySetInnerHTML`** — LLM can generate `<script>` or `onerror=` payloads in its responses; this is a critical XSS and prompt injection vector; always sanitize with DOMPurify + Trusted Types before any DOM write
+- **calling AI provider APIs (OpenAI, Anthropic, Gemini) directly from frontend code** — API keys are exposed in browser-accessible code; no rate limiting, cost control, or audit log; all LLM calls must route through a backend proxy layer
+- **shipping AI-powered features without Article 50 disclosure** — EU AI Act Article 50 is in force since 2 August 2026; missing disclosure on any AI feature that interacts with natural persons is a regulatory violation with material penalty risk; a reusable `<AIDisclosureBanner>` component must be used consistently
+- **streaming AI tokens synchronously on the main thread without `scheduler.yield()`** — token-by-token DOM updates are the #1 new INP threat in 2026; synchronous streaming renders block user interactions and cause INP failures that degrade CWV scores
+- **missing `AbortController` on streaming requests** — no cancel path creates stuck loading states; wasted token spend on navigation away; impossible to implement a stop button; AbortController is mandatory on every SSE/streaming fetch
+- **allowing agents to generate arbitrary JSX or HTML component trees** — agent-generated JSX bypasses security review, accessibility validation, and design system adherence; use the typed Component Registry pattern only — agent sends JSON, trusted components render
+- **skipping HITL approval for agent-triggered mutations** — allowing agents to autonomously trigger payments, data deletion, or form submission without explicit user confirmation violates the Minimal Footprint principle and exposes users to irreversible agent errors
+- **missing `aria-live` region on streaming AI content** — screen readers cannot announce AI tokens streaming into the DOM without `aria-live="polite"` + `role="log"`; AI-powered chat interfaces without this are inaccessible and WCAG 2.2 non-compliant
 
 ## Role Handoff
 
@@ -490,6 +609,10 @@ For micro-frontend architectures or large frontend applications with independent
 - **A11Y CI gate passed**: axe-core/Playwright scan passed for all affected routes; no new violations introduced without documented waiver
 - **Edge RSC compatibility validated** (when deploying to CDN edge): Node.js API usage checked, native modules absent, Web Streams API used, bundle within 10MB Workers limit
 - **Service Worker scope and security reviewed** (when PWA-Agent features in scope): no inference in SW; origin validation implemented; Push API HITL flow tested
+- **AI streaming implemented safely** (when streaming in scope): AbortController wired, streaming chunked with scheduler.yield(), CLS prevented with pre-sized containers, stop button visible
+- **Article 50 disclosure implemented** (when AI feature interacts with natural persons): `<AIDisclosureBanner>` rendered before first interaction, machine-readable marking plan in place for AI-generated media by 2 Dec 2026
+- **WCAG 2.2 AA compliance verified** (when AI UI or streaming in scope): aria-live on streaming containers, focus management after agent actions, target sizes ≥ 24×24px, Focus Not Obscured check passed
+- **HITL approval gates in place** (when agent-triggered mutations in scope): `<AgentActionApprovalModal>` with AbortController for all irreversible agent actions
 
 
-Last updated: 2026-06-17
+Last updated: 2026-08-21
