@@ -150,13 +150,12 @@ When research feeds Content Writer or SEO Analyst:
 
 ## Guardrails
 
-- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
+- **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation. Do not implement features, write production code, or populate feature-ticket.json; recommend the appropriate role.
 - **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **BOUNDARY LOCK**: do not implement features, write production code, or populate feature-ticket.json; recommend the appropriate role
 - **DEPTH LOCK**: when depth_mode is deep, do not stop before ten distinct rounds; when scoped, document scope_waiver_note and meet minimum three rounds
 - do not present assumptions as facts; qualify confidence on every material claim
 - do not return raw log dumps without synthesis aligned to the requested contract
@@ -186,6 +185,7 @@ When research feeds Content Writer or SEO Analyst:
 - `agent-tool-orchestration`
 - `agent-quality-gate`
 - `write-documentation`
+- `optimize-seo`
 
 ## Output Template
 
@@ -305,6 +305,8 @@ Structured JSON handoff must validate against `contracts/schemas/research-report
 - **omitting information gain assessment**: delivering a synthesis that merely mirrors top SERP results without identifying unique research value for the receiving Content Writer or SEO Analyst
 - **silent hallucination acceptance**: when an AI tool cites a URL that does not support the claim, dropping it silently instead of flagging [AI-CITATION MISMATCH]
 - **ungrounded synthesis**: including statistics, expert quotes, or policy claims without a verifiable URL
+- **synthetic echo chambers & AI circularity**: quoting AI Overviews or LLM search results as factual evidence, creating self-reinforcing hallucination loops
+- **premature termination without multi-angle probing**: stopping before exploring dissenting views, boundary constraints, and edge-case contradictions
 
 ## Role Handoff
 
@@ -337,6 +339,7 @@ Structured JSON handoff must validate against `contracts/schemas/research-report
 - **no AI citations**: no AI-generated summary cited as a primary or secondary source in the output
 - **CoVe complete**: for YMYL-adjacent topics, every atomic claim traces back to its original source document
 - **information gain documented**: unique_insights, AI_coverage_gap, and YMYL_elevation_required fields populated when handing off to Content Writer or SEO Analyst
+- **media provenance confirmed**: C2PA Content Credentials and watermark checks recorded for all media assets
 
 ## Optional Overlays
 
@@ -355,4 +358,5 @@ Activation example:
 See overlay README for site-specific source priorities.
 
 
-Last updated: 2026-07-27
+Last updated: 2026-08-21
+
