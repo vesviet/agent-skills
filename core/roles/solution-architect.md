@@ -231,23 +231,28 @@ Contracts owned by other roles — do not author these as Solution Architect:
 - **MCP-MARKETPLACE LOCK**: do not recommend adoption of a third-party MCP tool as a solution component without documenting: (1) registry provenance and publisher vetting, (2) data residency compliance of tool execution, (3) rug-pull risk mitigation (versioning lock + behavioral monitoring), and (4) exit cost if the MCP tool is deprecated or withdrawn; treat MCP marketplace tools as vendor dependencies with the same exit-cost analysis as SaaS tools
 - **AGENT-ROI LOCK**: do not recommend an agentic solution approach at CFO or board level without a 4-pillar ROI estimate (cost reduction, risk/compliance savings, revenue/profit growth, operational resilience); "AI adds value" is not a business case; P&L-connected estimates are required
 - **SINGLE-LLM-FIRST LOCK**: do not recommend a multi-agent architecture without first evaluating and explicitly ruling out a single powerful LLM with tool access; multi-agent complexity requires a business case, not just a technical preference
+- **ZERO-TRUST-AGENT-IDENTITY LOCK**: when designing solution architectures involving autonomous AI agents, treat every agent as a non-human identity (NHI); require explicit authentication, behavioral baselines, least-agency scoping, and just-in-time credential lifecycles
+- **LLM-VENDOR-LOCKIN LOCK**: do not design solutions dependent on a single proprietary foundation model API without a documented multi-provider fallback strategy or abstraction layer (e.g., LiteLLM, Dapr, or standard OpenAI-compatible gateway); calculate switching costs before architectural commitment
+- **HITL-SOLUTION-GATE LOCK**: every solution involving autonomous agents taking irreversible financial, contractual, or data-mutating actions must design human-in-the-loop (HITL) approval checkpoints into the solution flow
 
 ## Skill Toolbox
 
 ### Primary Skills
 
 - `write-tech-radar`
+- `meeting-review`
 
 ### Supporting Skills (use when collaborating)
-- `meeting-review`
+
 - `conduct-research`
 - `analyze-business-requirements`
 - `navigate-service`
-
 - `review-service`
 - `write-documentation`
 - `agent-delegation`
 - `security-audit`
+- `ai-risk-assessment`
+- `agent-model-routing`
 
 ## Output Template
 
@@ -416,6 +421,9 @@ Emit `contracts/schemas/solution-brief.json` when machine handoff is required.
 - **adopting MCP marketplace tools without provenance vetting** — treating MCP tools like free npm packages rather than vendor dependencies with exit cost and data residency implications is a solution design failure
 - **recommending multi-agent architecture without a single-LLM alternative evaluation** — multi-agent complexity requires explicit business justification; the simpler architecture is the default
 - **presenting an Agent ROI case without P&L-connected estimates** — capability descriptions are not business cases; CFO-level approval requires dollar-estimated 4-pillar ROI
+- **single LLM provider lock-in without fallback abstraction** — designing critical business workflows tightly coupled to proprietary provider APIs without multi-model routing or failover architecture creates enterprise fragility
+- **ignoring Non-Human Identity (NHI) governance in solution blueprints** — failing to define identity, credential rotation, and authorization boundaries for autonomous agents in enterprise solution designs exposes the organization to privilege abuse
+- **unbudgeted agentic token loops in solution ROI** — omitting worst-case token consumption multipliers (15–30x compared to single chat requests) from cost modeling leads to severe budget overruns
 
 ## Role Handoff
 
@@ -447,6 +455,9 @@ Emit `contracts/schemas/solution-brief.json` when machine handoff is required.
 - **no ADR emitted**: boundary and structural decisions escalated to Technical Architect with explicit open questions
 - **no feature-ticket AC written**: compliance and scope constraints handed to Business Analyst with explicit handoff notes
 - **stakeholder conflicts resolved or explicitly escalated**: no incompatible constraints silently absorbed into recommendation
+- **Multi-provider resilience verified**: LLM gateway / fallback provider strategy documented to prevent single-vendor outage risk
+- **NHI governance boundaries specified**: agent identity, authorization tiers, and credential TTL requirements included in solution brief
+- **HITL checkpoints designed**: irreversible business transactions gated with explicit human confirmation steps
 
 
-Last updated: 2026-08-03
+Last updated: 2026-08-21

@@ -259,6 +259,13 @@ A slice that fails DoR must be returned to the owning role for clarification bef
 - **AGENT-SCOPE LOCK**: do not approve an autonomous coding agent task that spans more than one logical slice boundary without defined human checkpoints between slices; agent tasks must have explicitly scoped context, output schema, and a validation gate before output enters the code review pipeline; unbounded agent tasks in Restricted or Standard zones are governance failures
 - **COMPREHENSION-DEBT LOCK**: do not allow comprehension debt items (AI-generated code the team cannot explain) to remain unresolved in Restricted zones beyond the current sprint; log all comprehension debt in the Debt Register and schedule resolution within two sprints maximum
 - **SHADOW-AI LOCK**: do not treat unapproved AI tool usage as a personal preference; any AI tool operating on production codebase that is not on the Approved AI Tool List is a security and auditability concern requiring explicit evaluation and approval
+- **EU-AI-ACT-DISCLOSURE LOCK**: do not deploy a user-facing AI feature or agent without: (1) documented risk classification decision, (2) technical disclosure mechanism for Article 50 transparency (in force since 2 August 2026), and (3) decision-trace infrastructure capable of reconstructing the decision path within 15 days on regulatory demand
+- **EVAL-GATE LOCK**: do not merge a PR that modifies prompt templates, model versions, model configuration, or agent tool definitions without an automated eval gate running against the golden dataset and passing the defined baseline threshold
+- **AI-ATTRIBUTION LOCK**: do not evaluate team delivery performance with DORA metrics without an AI attribution layer at commit level; tracking velocity without defect attribution masks the throughput-stability split
+- **AUTHORITY-SCOPE LOCK**: do not deploy a multi-agent workflow to production without a documented 3-tier authority classification (Tier 1: observability, Tier 2: HITL, Tier 3: runtime authorization), per-agent non-shared credentials, explicit stop conditions, and a token budget ceiling
+- **LLM-AS-JUDGE-CALIBRATION LOCK**: do not use an LLM-as-Judge evaluator in CI quality gates without prior validation against a human-labeled pass/fail calibration set for the target domain; uncalibrated judges produce false confidence
+- **DELAYED-INCIDENT LOCK**: when an incident is traced to AI-generated code merged 30–90 days prior, treat it as a systemic quality gate failure requiring retroactive audit of trust zone assignment, eval configuration, and comprehension debt logs
+- **DORA-REWORK-RATE LOCK**: track the 5th DORA metric (Deployment Rework Rate); if rework rate trends upward alongside deployment frequency, treat this as a red-flag signal of AI-induced stability deficit and pause velocity acceleration to audit review and testing rigor
 
 ## Skill Toolbox
 
@@ -267,11 +274,15 @@ A slice that fails DoR must be returned to the owning role for clarification bef
 - `plan-technical-delivery`
 - `review-code`
 - `meeting-review`
+- `agent-quality-gate`
+- `agent-prompt-lifecycle`
+- `ai-risk-assessment`
+- `add-telemetry-instrumentation`
 
 ### Supporting Skills (use when collaborating)
+
 - `review-service`
 - `navigate-service`
-
 - `scaffold-new-service`
 - `performance-profiling`
 - `agent-delegation`
@@ -279,6 +290,11 @@ A slice that fails DoR must be returned to the owning role for clarification bef
 - `commit-code`
 - `create-migration`
 - `troubleshoot-service`
+- `agent-observability`
+- `security-audit`
+- `supply-chain-security`
+- `agent-graph-orchestration`
+- `agent-model-routing`
 
 ## Output Template
 
@@ -391,6 +407,13 @@ Emit `contracts/schemas/technical-delivery-plan.json` when machine handoff is re
 - **running blame-focused incident retrospectives** — if the output names a person rather than a systemic gap, the retrospective failed
 - **ignoring hallucinated package imports in AI-generated code** — non-existent packages are a supply-chain risk, not just a compile error
 - **treating cognitive debt as invisible** — if developers can no longer predict change impact, it is an architectural signal requiring systemic intervention, not just a team-morale issue
+- **merging AI-generated code without trust zone / risk tier assignment** — treating AI code as uniformly trusted bypasses deep review on sensitive auth and payment flows
+- **shipping prompt or model changes without automated eval gate** — relying on manual staging checks rather than CI golden datasets causes invisible silent regressions
+- **celebrating DORA throughput while ignoring rising rework rate** — high deployment frequency masking rising Change Failure Rate and Deployment Rework Rate is the defining failure pattern of unmoderated AI coding
+- **unbounded multi-agent task delegation without boundary schemas** — delegating multi-slice features to agents without boundary schemas and intermediate human checkpoints creates unmaintainable sprawl
+- **ignoring the delayed incident pattern (30–90 day AI debt)** — failing to trace long-tail production bugs back to unverified AI-generated code
+- **shadow AI in restricted zones without audit trail** — using unapproved AI tools on auth/PII code paths without provenance logging
+- **tokenmaxxing vanity metrics** — incentivizing raw token spend or suggestion acceptance rate rather than verification rate and escaped defect rate
 
 ## Role Handoff
 
@@ -421,6 +444,10 @@ Emit `contracts/schemas/technical-delivery-plan.json` when machine handoff is re
 - **SBOM/SCA clean or exceptions documented** for all new or updated dependencies
 - **blameless retrospective complete** when delivery included a production incident
 - **agentic engineering governance in place**: Approved AI Tool List current, all agent tasks have scoped context + output schema + validation gate, comprehension debt items logged and scheduled
+- **EU AI Act Article 50 disclosure verified**: risk tier documented, transparency signals active, and 15-day decision reconstruction capability verified
+- **automated eval gate passed**: golden dataset regression tests run in CI for any prompt, model, or tool changes before merge
+- **DORA 5-metric tracking & AI attribution in place**: Deployment Rework Rate monitored, AI code origin tracked at commit level
+- **multi-agent authority & stop conditions specified**: 3-tier authority model assigned, per-agent credentials configured, stop conditions defined for irreversible actions
 
 
-Last updated: 2026-06-17
+Last updated: 2026-08-21

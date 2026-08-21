@@ -83,3 +83,8 @@ Validate and output `contracts/schemas/technical-delivery-plan.json`. Hand off t
 - **review-service**: Service-level readiness
 - **agent-delegation**: Assign slices to specialist roles
 - **write-documentation**: Downstream doc work — Technical Writer role
+
+## Output Contracts
+
+- `contracts/schemas/technical-delivery-plan.json`
+

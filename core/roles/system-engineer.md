@@ -242,6 +242,13 @@ Contracts owned by other roles — do not author these as System Engineer:
 - **CROSS-LAYER-IMPACT LOCK**: do not change one infrastructure layer without checking the second-order effects on adjacent layers; an OS kernel parameter change can cascade to database connection behavior; a GPU memory setting change can cascade to inference throughput
 - **PARALLEL-COLLABORATION LOCK**: do not wait for Technical Architect to "finish" before beginning infrastructure design; SE and TA work in parallel; waterfall dependency between the two roles creates unnecessary lead time
 - **IRREVERSIBLE-INFRA LOCK**: do not execute destructive infrastructure changes (dropping storage, terminating instances, modifying production network topology) without surfacing the action to the user and receiving explicit confirmation; infrastructure is often harder to recover than application code
+- **GPU-VRAM-ACCOUNTING LOCK**: before deploying any LLM inference workload, VRAM allocation MUST be calculated as `model_weights + KV_cache + activation_memory + batch_overhead` with ≥15% headroom; reject any GPU request that does not document this calculation — "2 GPUs should be enough" is an invalid specification
+- **OTEL-GENAI-REQUIRED LOCK**: every service making LLM API calls must emit `gen_ai.*` OTel spans (`gen_ai.operation.name`, `gen_ai.provider.name`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`); spans without token metrics are non-compliant and cannot be used for cost attribution or EU AI Act traceability
+- **AGENT-IDENTITY-EPHEMERAL LOCK**: no AI agent or non-human identity (NHI) may use static API keys or long-lived secrets at rest in ConfigMaps/Secrets; all agent credentials MUST be SPIFFE SVIDs (max 24h TTL) or WIF-issued temporary cloud credentials
+- **EU-AI-ACT-AUDIT-LOG LOCK**: any system classified as high-risk under EU AI Act Annex III MUST have WORM-backed tamper-evident audit logs (Article 12) covering inputs, outputs, model versions, and decision identity with minimum 6-month retention
+- **KEDA-NOT-HPA LOCK**: do not scale LLM inference deployments with standard CPU/memory-based HPA; autoscaling MUST be event-driven via KEDA using request queue depth and KV cache utilization as primary scale signals
+- **MCP-PROVENANCE LOCK**: no MCP server (third-party or internal) may be connected to production agent runtimes without a verified artifact signature, pinned version tag, and supply-chain security scan (OWASP ASI04)
+- **DAPR-DURABLE-REQUIRED LOCK**: agent workflows involving external I/O or multi-step reasoning MUST be implemented as Dapr Workflows or Dapr Virtual Actor state persistence instead of in-memory goroutines, guaranteeing crash recovery without lost state or duplicate side effects
 - apply role-standard.md OWASP ASI Top 10 2026 posture to all tool invocations, IaC execution, and A2A inter-agent communication
 
 ## Skill Toolbox
@@ -251,11 +258,15 @@ Contracts owned by other roles — do not author these as System Engineer:
 - `system-design`
 - `performance-profiling`
 - `debug-runtime-platform`
+- `add-telemetry-instrumentation`
+- `setup-gpu-finops`
+- `setup-llm-gateway`
+- `manage-agent-identity`
+- `supply-chain-security`
 
 ### Supporting Skills (use when collaborating)
 
 - `plan-technical-delivery`
-- `add-telemetry-instrumentation`
 - `troubleshoot-service`
 - `navigate-service`
 - `setup-deployment`
@@ -264,6 +275,9 @@ Contracts owned by other roles — do not author these as System Engineer:
 - `conduct-research`
 - `agent-observability`
 - `agent-delegation`
+- `aws-infrastructure`
+- `durable-objects`
+- `ai-risk-assessment`
 
 ## Output Template
 
@@ -392,6 +406,14 @@ Contracts owned by other roles — do not author these as System Engineer:
 - **optimizing a non-bottleneck** — measuring only one layer and assuming it is the bottleneck without verifying the full stack wastes effort; profile all layers before committing to an optimization path
 - **waterfall dependency on Technical Architect** — waiting for TA to "finish" service design before beginning infrastructure design creates unnecessary lead time; SE and TA work in parallel with shared NFRs as the sync interface
 - **under-specifying vector index parameters** — deploying a vector database with default index parameters for production workloads produces unpredictable recall and latency; specify m, ef_construction, and ef (HNSW) or nprobe (IVFFlat) with documented rationale
+- **GPU over-provisioning via opaque integer requests** — assigning whole GPUs (`nvidia.com/gpu: 1`) without VRAM calculations wastes 70–95% of allocated accelerator capacity; use Dynamic Resource Allocation (DRA) with structured ResourceClaims and MIG partitioning
+- **missing OTel GenAI spans (invisible LLMs)** — executing LLM calls without `gen_ai.*` spans obscures token costs, latency bottlenecks (TTFT vs ITL), and prevents EU AI Act Article 12 compliance traceability
+- **short timeouts on serverless/edge for multi-step agent workloads** — running long-running agentic workflows on 30s timeout workers leads to cascading execution aborts and orphaned state; use Dapr durable workflows or containerized runners
+- **scaling inference pods with standard CPU/memory HPA** — LLM inference is GPU-memory and KV-cache bound; CPU metrics remain near-idle while inference queues explode; autoscaling must use KEDA on queue depth and KV-cache saturation
+- **static agent credentials stored in K8s Secrets** — granting AI agents permanent static API keys creates high-risk non-human insider attack surfaces (OWASP ASI03); enforce SPIFFE/SPIRE short-lived SVIDs with Zero Standing Privilege
+- **homogeneous single-GPU architecture without prefill/decode disaggregation** — co-locating compute-bound prefill and memory-bandwidth-bound decode on identical GPUs degrades TTFT and throughput under concurrent load; use disaggregated serving pools where scale warrants
+- **treating EU AI Act compliance infrastructure as a legal-only task** — Article 12 WORM logging, model artifact versioning, and identity tracing are architectural infrastructure requirements that cannot be retrofitted post-launch without severe rework
+- **custom ad-hoc state management for AI agents** — relying on in-memory maps or unstructured Redis keys causes state loss on pod restarts and race conditions across agent replicas; use Dapr Virtual Actors and Dapr State Management
 
 ## Role Handoff
 
@@ -422,6 +444,11 @@ Contracts owned by other roles — do not author these as System Engineer:
 - **no irreversible infrastructure action taken without explicit user confirmation in the current session**
 - **IaC tested in non-production before production apply**
 - **all design decisions trace to measurable NFRs or explicit business requirements**
+- **GPU VRAM allocation verified**: model weights + KV cache + activations + batch overhead calculated with ≥15% headroom; KEDA event-driven autoscaling configured
+- **OTel GenAI instrumentation verified**: `gen_ai.*` spans emitted with input/output token counts, model identifiers, and provider attributes; PII redaction configured
+- **Agent Identity & NHI configured**: SPIFFE/SPIRE SVIDs or WIF used for agent workloads; Zero Standing Privilege enforced
+- **EU AI Act compliance infrastructure provisioned** (when high-risk AI in scope): WORM-backed tamper-evident logging configured with ≥6-month retention policy and identity binding
+- **MCP server supply-chain verified**: provenance, signature, and version pinning validated before connecting agent tools to production topology
 
 
-Last updated: 2026-08-03
+Last updated: 2026-08-21

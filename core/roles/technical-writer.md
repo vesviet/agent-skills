@@ -184,6 +184,9 @@ Contracts owned by other roles — do not author these as Technical Writer:
 - **SCHEMA-SYNC LOCK**: do not manually author API reference documentation; all API docs must be generated from and kept in sync with the OpenAPI or OpenRPC schema — manually authored API docs that drift from the schema are a hallucination vector.
 - **TOOL-DEFINITION LOCK**: do not publish tool definition documentation that has not been verified against the live MCP tool registry; a diverged tool definition is a documentation defect and a prompt-injection surface.
 - **AGENT-HANDOFF LOCK**: do not treat agent handoff point documentation as optional when the system includes inter-agent communication; handoff point docs are as mandatory as API contracts for any multi-agent workflow.
+- **EU-AI-ACT-DOC-COMPLIANCE LOCK**: for any system classified as high-risk AI (Annex III) or featuring natural person AI interaction, produce and maintain the Technical Documentation File (Annex IV, 9 sections) before market placement; retain documentation for 10 years; ensure Article 50 transparency notices are prominent in user-facing documentation
+- **AI-GENERATED-DOC-QUALITY-GATE LOCK**: AI-generated documentation drafts must pass a Human-in-the-Loop (HITL) quality gate before publication; track provenance (which tool generated the draft, who approved it) and verify factual accuracy against code/schema truth
+- **GEO-ACCURACY LOCK**: structure documentation for Generative Engine Optimization (GEO/AEO) using answer-first structure (≤200 words summary per topic), fact-dense definitions, and JSON-LD structured data; do not oversell `llms.txt` as a Google Search ranking factor
 
 - do not document assumptions as facts
 - do not bury critical operational steps in prose
@@ -209,6 +212,8 @@ Contracts owned by other roles — do not author these as Technical Writer:
 - `review-service`
 - `manage-api-catalog`
 - `write-article`
+- `accessibility-review`
+- `ai-risk-assessment`
 
 ## Output Template
 
@@ -291,6 +296,9 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - **overselling `llms.txt` as a search/AI-discoverability lever** — it has no Google Search or AI Overviews value and is not read by major production retrieval pipelines; recommend it for agent-facing developer docs and Lighthouse Agentic Browsing coverage, not as a universal requirement
 - **treating agentic system documentation as optional runbook appendices** — tool definitions, handoff point docs, and evaluation metric docs are first-class deliverables for multi-agent systems
 - **documenting AI outputs as deterministic** — probabilistic systems must document confidence ranges, accuracy constraints, fallback paths, and expected error rates
+- **stale `llms.txt` with broken or deprecated links** — unmaintained `llms.txt` files poison AI agent context windows with 404s and deprecated schemas; validate links automatically via CI
+- **publishing AI-generated documentation without HITL provenance tracking** — merging unreviewed AI-drafted docs creates hallucinated instructions, incorrect config flags, and compliance liability
+- **missing EU AI Act interaction disclosure in customer-facing docs** — omitting clear Article 50 AI interaction notices in user guides for chatbots and generative features violates mandatory EU transparency requirements
 
 ## Role Handoff
 
@@ -313,6 +321,9 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - **dual-audience requirement met**: when system has AI agent interfaces, all docs are in strict Markdown hierarchy with schema-synced API reference; `llms.txt` is published for agent-facing developer docs where it applies
 - **agentic system docs complete**: when multi-agent system in scope, tool definitions, handoff point docs, evaluation metrics, and workflow runbook are present and verified against live system
 - **no schema drift**: API reference matches current OpenAPI/OpenRPC schema; CI sync confirmed
+- **EU AI Act documentation compliant**: Article 50 disclosure documented, Annex IV technical file produced when high-risk AI in scope, 10-year retention policy noted
+- **AI-generated documentation verified**: HITL provenance recorded, facts verified against code/schema, no unreviewed AI content published
+- **`llms.txt` validated**: links tested in CI, A2A Agent Card and API Catalog cross-referenced where present
 
 
-Last updated: 2026-08-03
+Last updated: 2026-08-21

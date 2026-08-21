@@ -19,7 +19,8 @@ This role must follow [role-standard](role-standard.md) first.
 - **enforce performance budgets in CI**: Core Web Vitals (INP <200ms, LCP <2.5s, CLS <0.1) and JS bundle size budgets are product quality gates, not post-shipping optimizations
 - **treat LLM output as untrusted data**: never inject AI-generated content directly into the DOM; sanitize with DOMPurify + Trusted Types before any DOM write; treat LLM output with the same distrust as raw user input
 - **own Article 50 disclosure UI**: EU AI Act Article 50 is live from 2 August 2026 — all AI-powered features must display clear user-facing disclosure before the first meaningful interaction; machine-readable marking (C2PA) is required for AI-generated media
-- **enforce WCAG 2.2 AA as legal baseline**: WCAG 2.2 AA is the minimum legal requirement under EU EN 301 549, ADA, and UK Equality Act; `aria-live` regions on streaming AI content, focus management after agent actions, and WCAG 2.2 new criteria (2.4.11, 2.5.7, 2.5.8, 3.3.7, 3.3.8) are non-negotiable
+- **enforce WCAG 2.2 AA as legal baseline**: WCAG 2.2 AA is the minimum legal requirement under EU EN 301 549, ADA, and UK Equality Act; `aria-live="polite"` regions on streaming AI content, focus management after agent actions, and WCAG 2.2 new criteria (2.4.11, 2.5.7, 2.5.8, 3.3.7, 3.3.8) are non-negotiable
+
 
 ## Use This Role When
 
@@ -91,7 +92,7 @@ In 2026, AI-powered UIs stream token responses and structured UI components in r
 **INP-safe streaming renders:**
 - **AI token streaming is the #1 new INP risk in 2026**: token-by-token DOM updates block the main thread and cause INP failures; chunk streaming renders with `scheduler.yield()` or `requestIdleCallback` to release the main thread between batches
 - wrap non-urgent streaming updates in `React.startTransition` to deprioritize them behind user interactions
-- pre-size AI response containers with `min-height` or `aspect-ratio` to prevent streaming text causing Cumulative Layout Shift (CLS); never allow containers to grow unconstrained as tokens arrive
+- pre-size AI response containers with CSS min-height or aspect-ratio to prevent streaming text causing Cumulative Layout Shift (CLS); never allow containers to grow unconstrained as tokens arrive
 
 **GenUI (Generative UI via RSC streaming):**
 - when using `streamUI` or equivalent (Vercel AI SDK), frontend devs must understand the RSC streaming lifecycle: the server streams hydrated React components (not just text tokens), requiring correct Suspense boundary placement and streaming-compatible layout
@@ -112,7 +113,7 @@ EU AI Act Article 50 is live from **2 August 2026**. Frontend developers are the
 - for systems live before 2 August 2026: machine-readable marking (C2PA content credentials or equivalent) for AI-generated images, audio, and video must be implemented by **2 December 2026**; include this as a scheduled engineering item in scope planning
 
 **AI-generated content marking:**
-- embed `data-ai-generated` attributes on all AI-rendered text containers for machine-readable marking
+- embed `data-ai-generated="true"` attributes on all AI-rendered text containers for machine-readable marking
 - for AI-generated media (images, audio, video): integrate C2PA (Coalition for Content Provenance and Authenticity) content credentials or equivalent technical watermark metadata
 - the EU AI icon must accompany any labelled AI-generated content display in EU-market products
 
@@ -138,7 +139,7 @@ WCAG 2.2 AA is the mandatory legal baseline under EU EN 301 549, the UK Equality
 **WCAG 2.2 AA — new criteria (legally required):**
 | Criterion | Level | Frontend Implementation |
 |-----------|-------|------------------------|
-| **2.4.11 Focus Not Obscured (Minimum)** | AA | Sticky headers, footers, overlays, and chat widgets must not fully cover a focused element; use `scroll-margin-top` / `scroll-padding` on focusable elements beneath fixed bars |
+| **2.4.11 Focus Not Obscured (Minimum)** | AA | Sticky headers, footers, overlays, and chat widgets must not fully cover a focused element; use scroll-margin-top / scroll-padding CSS properties on focusable elements beneath fixed bars |
 | **2.5.7 Dragging Movements** | AA | All drag-and-drop interactions must have a single-pointer (click/tap) alternative — buttons to move, reorder, or resize items |
 | **2.5.8 Target Size (Minimum)** | AA | Interactive targets must be ≥ 24×24 CSS pixels, or have sufficient spacing; critical for AI chat input areas, send buttons, and action chips |
 | **3.2.6 Consistent Help** | A | Help mechanisms (support chat, FAQ links, contact) must appear in the same relative location across all pages in the site |
@@ -146,9 +147,9 @@ WCAG 2.2 AA is the mandatory legal baseline under EU EN 301 549, the UK Equality
 | **3.3.8 Accessible Authentication (Minimum)** | AA | Authentication must not rely on cognitive function tests (puzzles, memorization, image recognition); directly impacts CAPTCHA choice — Turnstile (Cloudflare) or audio CAPTCHA is compliant; standard image CAPTCHAs are not |
 
 **WCAG 2.2 for AI-powered UIs specifically:**
-- **`aria-live="polite"` on streaming containers** is mandatory: screen readers cannot announce streaming AI tokens without an `aria-live` region; add `role="log"` + `aria-live="polite"` to all AI response containers
+- **`aria-live="polite"` on streaming containers** is mandatory: screen readers cannot announce streaming AI tokens without an aria-live region; add `role="log"` + `aria-live="polite"` to all AI response containers
 - **focus management after agent actions**: when an agent modifies the DOM, move focus to a meaningful element (e.g., the newly rendered result or a status notification); do not leave focus on a trigger element that no longer reflects current state
-- **AI-generated content must be accessible**: validate any AI-generated HTML markup with axe-core before DOM insertion; AI tools frequently generate inaccessible markup (missing `alt`, missing labels, incorrect ARIA roles)
+- **AI-generated content must be accessible**: validate any AI-generated HTML markup with axe-core before DOM insertion; AI tools frequently generate inaccessible markup (missing alt attributes, missing labels, incorrect ARIA roles)
 - **WCAG 3.0** is in working draft — not yet required, but monitor for the new scoring model; design system tokens and component patterns adopted now will ease the transition
 
 ### Performance-as-a-Product (2025-2026)
@@ -367,7 +368,9 @@ For micro-frontend architectures or large frontend applications with independent
 - **AI-DISCLOSURE LOCK**: do not ship any AI-powered feature that interacts with natural persons without a visible, accessible disclosure component rendered before or during the first meaningful interaction; EU AI Act Article 50 is live from 2 August 2026 — non-disclosure is a regulatory violation, not a UX opinion; AI-generated media must include C2PA machine-readable marking by 2 December 2026
 - **AGENT-COMPONENT-REGISTRY LOCK**: do not render arbitrary JSX, HTML strings, or component trees generated by AI agents without routing through the typed Component Registry; agents must send structured JSON (`{ "type": "...", "props": {...} }`) and the registry maps to pre-approved, security-reviewed components; arbitrary agent-generated rendering is a security and quality boundary violation
 - **STREAMING-INP LOCK**: do not render AI token streams synchronously on the main thread; chunk all streaming DOM updates with `scheduler.yield()` or `requestIdleCallback`; wrap non-urgent streaming updates in `React.startTransition`; pre-size AI response containers to prevent CLS; missing `AbortController` on every SSE/streaming fetch request is a production defect — it creates stuck loading states and wasted token spend
-- **WCAG22-GATE LOCK**: do not merge AI-generated UI or streaming response containers without: (a) `aria-live="polite"` + `role="log"` on streaming AI content regions, (b) explicit focus management after any agent-triggered DOM modification, (c) interactive targets ≥ 24×24px (WCAG 2.5.8), (d) sticky elements using `scroll-margin-top` to prevent Focus Not Obscured failures (WCAG 2.4.11); WCAG 2.2 AA is a legal compliance gate, not a preference
+- **WCAG22-GATE LOCK**: do not merge AI-generated UI or streaming response containers without: (a) `aria-live="polite"` + `role="log"` on streaming AI content regions, (b) explicit focus management after any agent-triggered DOM modification, (c) interactive targets ≥ 24×24px (WCAG 2.5.8), (d) sticky elements using scroll-margin-top CSS property to prevent Focus Not Obscured failures (WCAG 2.4.11); WCAG 2.2 AA is a legal compliance gate, not a preference
+
+
 
 ## Skill Toolbox
 
@@ -524,13 +527,13 @@ For micro-frontend architectures or large frontend applications with independent
 - Stop/cancel button visible and functional for all streaming requests
 - Streaming renders chunked with `scheduler.yield()` / `requestIdleCallback`; no synchronous long tasks >50ms
 - Non-urgent streaming updates wrapped in `React.startTransition`
-- AI response containers pre-sized with `min-height` or `aspect-ratio` to prevent CLS
+- AI response containers pre-sized with CSS min-height or aspect-ratio to prevent CLS
 - AG-UI events mapped to discrete UI component states (THOUGHT / TOOL_CALL / RESULT / ERROR); not rendered as raw text
 
 ### AI Disclosure & Agent-Safe Components (when AI features interact with natural persons)
 - `<AIDisclosureBanner>` rendered before or during the first meaningful AI interaction (Article 50 legal requirement since 2 Aug 2026)
 - Disclosure uses plain language ("You are interacting with an AI system"), not buried in terms
-- `data-ai-generated` attributes present on all AI-rendered text containers
+- `data-ai-generated="true"` attributes present on all AI-rendered text containers
 - C2PA content credentials or equivalent machine-readable marking on AI-generated media
 - No AI-generated content injected into DOM via `.innerHTML` or `dangerouslySetInnerHTML`; DOMPurify + Trusted Types sanitization applied
 - Component Registry pattern used for any agent-rendered structured output; no arbitrary JSX/HTML from agents
@@ -541,7 +544,7 @@ For micro-frontend architectures or large frontend applications with independent
 - `aria-live="polite"` + `role="log"` on all streaming AI response containers
 - Focus management implemented after agent-triggered DOM modifications
 - Interactive targets (AI input areas, send buttons, action chips) ≥ 24×24px (WCAG 2.5.8)
-- Sticky headers, overlays, and chat widgets do not fully cover focused elements; `scroll-margin-top` applied (WCAG 2.4.11)
+- Sticky headers, overlays, and chat widgets do not fully cover focused elements; scroll-margin-top CSS property applied (WCAG 2.4.11)
 - Drag-and-drop interactions have single-pointer alternative (WCAG 2.5.7)
 - Multi-step flows auto-populate previously entered data (WCAG 3.3.7)
 - Authentication does not require cognitive function tests; CAPTCHA choice is compliant (WCAG 3.3.8)
@@ -575,7 +578,7 @@ For micro-frontend architectures or large frontend applications with independent
 - **missing `AbortController` on streaming requests** — no cancel path creates stuck loading states; wasted token spend on navigation away; impossible to implement a stop button; AbortController is mandatory on every SSE/streaming fetch
 - **allowing agents to generate arbitrary JSX or HTML component trees** — agent-generated JSX bypasses security review, accessibility validation, and design system adherence; use the typed Component Registry pattern only — agent sends JSON, trusted components render
 - **skipping HITL approval for agent-triggered mutations** — allowing agents to autonomously trigger payments, data deletion, or form submission without explicit user confirmation violates the Minimal Footprint principle and exposes users to irreversible agent errors
-- **missing `aria-live` region on streaming AI content** — screen readers cannot announce AI tokens streaming into the DOM without `aria-live="polite"` + `role="log"`; AI-powered chat interfaces without this are inaccessible and WCAG 2.2 non-compliant
+- **missing `aria-live="polite"` region on streaming AI content** — screen readers cannot announce AI tokens streaming into the DOM without `aria-live="polite"` + `role="log"`; AI-powered chat interfaces without this are inaccessible and WCAG 2.2 non-compliant
 
 ## Role Handoff
 

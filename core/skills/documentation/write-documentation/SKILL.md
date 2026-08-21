@@ -108,3 +108,8 @@ To align with modern AI-assisted engineering and automated API publishing:
 - **troubleshoot-service**: Turn learned recovery steps into runbook updates
 - **write-tech-radar**: Draft higher-level technology assessments
 - **commit-code**: Prepare doc updates for delivery
+
+## Output Contracts
+
+- `contracts/schemas/documentation-handoff.json`
+

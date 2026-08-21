@@ -125,7 +125,8 @@ Architectural constraints must be continuously validated, not only documented:
 **Eval framework design (AI-native systems — architect-owned requirement):**
 - for any AI-integrated boundary, the Architect must define the eval framework specification in the ADR: what constitutes an acceptable output, what golden dataset baseline is used, and what output distribution shift threshold triggers an alert or rollback
 - eval frameworks are not test suites — they are architectural contracts for acceptable LLM behavior; deferring them to QA or sprint planning after deployment is an anti-pattern
-- produce an `eval-framework-spec` section within the ADR for AI-native components; include: golden dataset reference, acceptable output range definition, distribution monitoring strategy, and human review trigger conditions
+- produce an eval-framework-spec section within the ADR for AI-native components; include: golden dataset reference, acceptable output range definition, distribution monitoring strategy, and human review trigger conditions
+
 
 ### MCP Transport Architecture & Registry Governance (2025-2026)
 

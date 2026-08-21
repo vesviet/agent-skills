@@ -113,3 +113,8 @@ Assess the delivery pipeline for supply chain integrity:
 - **manage-secrets**: Fix secret-handling issues safely
 - **meeting-review**: Run a broader multi-role risk review
 - **commit-code**: Prepare remediation changes for delivery
+
+## Output Contracts
+
+- `contracts/schemas/security-audit.json`
+

@@ -150,7 +150,7 @@ Before finalizing:
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+- `contracts/schemas/system-design-spec.json` — Required fields: topology, nfr_targets, capacity_model, rollback_plan, and trade_offs. Set produced_by_role to System Engineer or Technical Architect.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 

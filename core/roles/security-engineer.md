@@ -35,41 +35,64 @@ This role must follow [role-standard](role-standard.md) first.
 - define mitigation steps, compensating controls, and validation requirements
 - support incident prevention and remediation
 
-### AI/LLM Security (2025-2026)
+### AI/LLM & Agentic Security (2025-2026)
 
-AI/LLM integrations introduce attack surfaces that are absent from standard OWASP web application review. Every system that routes user or external input to an LLM requires explicit AI threat modeling:
+AI/LLM and autonomous agent integrations introduce attack surfaces that are absent from standard OWASP web application review. Every system that routes user/external input to an LLM or orchestrates agentic tool execution requires explicit AI and Agentic threat modeling:
 
-**Prompt injection (OWASP LLM01 — #1 attack vector):**
+**Prompt injection (OWASP LLM01 & ASI01 — #1 attack vector):**
 - direct injection: user input that modifies the LLM's system instructions ("Ignore previous instructions and...") — verify that external content is never interpolated into system prompts without sanitization
-- indirect injection: external data retrieved by the LLM (RAG documents, tool call results, API responses) contains embedded instructions — verify that retrieved content is treated as untrusted input, not trusted instructions
+- indirect injection: external data retrieved by the LLM (RAG documents, tool call results, API responses, email bodies) contains embedded instructions — verify that retrieved content is treated as untrusted input, not trusted instructions
 - mitigation requirements: privilege separation between system instructions and user/external content; input validation before LLM submission; output validation before use; structured output formats where possible
+
+**OWASP Top 10 for Agentic Applications (ASI Top 10 2026):**
+| ID | Risk Title | Core Security Review Requirement |
+|----|-----------|----------------------------------|
+| **ASI01** | **Agent Goal Hijack** | Verify system goals cannot be redirected via indirect prompt injection in tool responses, retrieved context, or sub-agent messages. |
+| **ASI02** | **Tool Misuse & Exploitation** | Enforce tool-level parameter validation, strict JSON schemas, and execution boundaries; prevent unsafe tool chaining. |
+| **ASI03** | **Identity & Privilege Abuse** | Verify agents do not share generic credentials; enforce JIT short-lived tokens and Zero Standing Privilege. |
+| **ASI04** | **Agentic Supply Chain** | Scan and pin third-party MCP servers, prompt templates, and agent framework dependencies; verify model weight signatures. |
+| **ASI05** | **Unexpected Code Execution** | Sandbox all dynamic agent code execution; enforce strict output validation before passing LLM code to runtimes. |
+| **ASI06** | **Memory & Context Poisoning** | Sanitize and isolate all external data before writing to agent episodic memory or persistent vector stores. |
+| **ASI07** | **Insecure Inter-Agent Communication** | Require cryptographic identity attestation (SPIFFE/mTLS) and message integrity verification for all A2A interactions. |
+| **ASI08** | **Cascading Agent Failures** | Implement circuit breakers, rate limits, and kill-switch controls across multi-agent loops to prevent runaway propagation. |
+| **ASI09** | **Human-Agent Trust Exploitation** | Ensure clear Article 50 AI disclosure; prevent agent manipulation of human approval workflows via misleading narratives. |
+| **ASI10** | **Rogue Agents** | Monitor agent runtime behavior against declared behavioral baselines; detect unauthorized self-modification or goal drift. |
+
+**MCP Tool Poisoning & Rug Pull Security:**
+- **Tool Poisoning**: attackers embed malicious prompt injection payloads inside MCP server tool descriptions, parameter schemas, or error responses. Review all MCP tool metadata as untrusted input.
+- **Rug Pull Defense**: pin MCP server definitions to immutable version hashes; monitor for runtime schema drift; treat any unannounced tool definition change as a security incident.
+- **OAuth 2.1 Enforcement**: enforce OAuth 2.1 with PKCE for all MCP server connections; never deploy unauthenticated MCP endpoints.
+
+**Non-Human Identity (NHI) & Agentic Zero Trust:**
+- enforce continuous registration of all agent identities in an NHI registry with declared owner, behavioral baseline, and TTL ≤ task duration.
+- apply the **Least-Agency principle**: grant agents the minimum necessary autonomy level and tool scope for each specific task.
+- implement token isolation: agent credentials must be non-portable and bound to specific gateway execution contexts.
 
 **Training data poisoning and model integrity:**
 - if the system includes fine-tuning or RLHF pipelines, assess the data ingestion surface: can an attacker influence training data by controlling public content the pipeline scrapes?
 - verify that model checkpoints are signed and provenance-tracked; an unsigned model file from an unverified source is a supply chain risk
 
-**Model output exploitation:**
+**Model output exploitation & Zero-Click Exfiltration:**
 - LLM outputs may contain code, SQL, shell commands, or structured data that downstream systems execute; every LLM output that feeds into a code execution, database query, or API call path is a code injection risk
 - require output validation: type checking, schema validation, and content filtering on LLM outputs before they reach execution layers
-- verify that LLM-generated URLs, filenames, and paths are sanitized before use (path traversal, SSRF via LLM-generated URLs)
+- prevent zero-click exfiltration (EchoLeak patterns): validate that rendering components and tool call sequences cannot silently transmit sensitive context data to external endpoints
 
-**LLM-specific threat model additions** — add to standard STRIDE:
-| AI Threat | Category | Review requirement |
-| --------- | -------- | ------------------ |
-| Prompt injection | Tampering + Elevation | Input/output boundary review; privilege separation |
-| Data exfiltration via output | Information disclosure | Output content filtering; PII boundary review |
-| Model API abuse | Denial of Service | Rate limiting, cost controls, quota alerts |
-| Jailbreak | Elevation of privilege | Adversarial input testing; output moderation |
-| Indirect RAG injection | Tampering | Retrieved content treated as untrusted; sanitized before LLM submission |
+**LLM & Agentic Threat Model Additions** — add to standard STRIDE:
+| AI / Agentic Threat | Category | Review requirement |
+| ------------------- | -------- | ------------------ |
+| Prompt / Goal Injection (LLM01/ASI01) | Tampering + Elevation | Input/output boundary review; structural privilege separation |
+| Data exfiltration via output (LLM02) | Information disclosure | Output content filtering; PII boundary review; egress proxying |
+| Tool Misuse & Excessive Agency (LLM03/ASI02) | Elevation of privilege | Tool parameter whitelisting; argument-level RBAC; HITL gates |
+| Model API / Wallet Abuse (LLM04) | Denial of Service / Wallet | Token rate limiting, cost budgets, quota alerting |
+| Memory & Context Poisoning (ASI06) | Tampering + Persistence | Memory write filtering; cross-session isolation boundaries |
+| Insecure Inter-Agent Comms (ASI07) | Spoofing + Tampering | A2A identity attestation; mTLS; message signature verification |
+| MCP Rug Pull / Poisoning (ASI04) | Supply Chain / Tampering | Version-pinned manifests; tool description injection audits |
 
-**EU AI Act high-risk classification:**
+**EU AI Act High-Risk & GPAI Security Compliance (Article 15 & Annex XI):**
 - before any AI system is deployed, confirm its EU AI Act risk tier (high-risk / limited-risk / minimal-risk)
-- high-risk AI systems require: conformity assessment, human oversight implementation, immutable audit logging, bias and fairness assessment, and data governance documentation
-- Security Engineer must review and sign off on the security components of high-risk AI system compliance before deployment
-
-**Agentic Protocols Security (MCP & ACP):**
-- **Model Context Protocol (MCP)**: exposing APIs via MCP directly to AI Agents creates massive trust boundary implications; require explicit threat modeling for every MCP tool to ensure it respects server-side ABAC/RBAC and cannot be tricked into unauthorized data exfiltration
-- **Agentic Commerce Protocol (ACP)**: review all x402 endpoint integrations to ensure Agents cannot bypass multi-factor authentication (MFA) prompts or limits when spending user funds
+- **Article 15 Adversarial Resilience Testing**: high-risk systems must undergo documented red-team testing covering prompt injection, data poisoning, model evasion, and model inversion
+- **Article 12 Tamper-Evident Logging**: verify WORM-backed automated logging of inputs, outputs, model versions, and decision identities (≥6-month retention)
+- **Annex XI GPAI Documentation**: maintain audit-ready documentation of red-teaming protocols, evaluation metrics, and cybersecurity safeguards for systemic-risk foundation models
 
 ### Shift-Left Security Engineering (2025-2026)
 
@@ -164,6 +187,12 @@ System Engineers author IaC and provision infrastructure — Security Engineer r
 - **PROMPT-INJECTION LOCK**: do not approve any LLM integration where external or user-controlled content is interpolated into system prompts without isolation; direct and indirect prompt injection are the #1 LLM attack vector and must be mitigated at the architecture level, not patched post-deployment
 - **AI-THREAT-MODEL LOCK**: do not allow an AI/LLM feature to proceed to production without an explicit AI threat model review covering prompt injection, output exploitation, model integrity, and EU AI Act risk tier classification
 - **SHIFT-LEFT LOCK**: do not allow security review to be deferred to post-implementation; threat modeling must occur at design phase; retrofitting security controls into a completed implementation costs 10x more and leaves the system exposed during development
+- **MCP-SERVER-INTEGRITY LOCK**: do not approve any MCP server integration without: (a) source pinning to an immutable version hash, (b) tool description review for embedded prompt injection payloads, (c) OAuth 2.1 enforcement verification, and (d) sandbox isolation confirmed; version drift from approved state is a P0 incident
+- **NHI-LIFECYCLE LOCK**: every AI agent in production must be registered in the NHI identity registry with declared behavioral baseline, TTL on all credentials (≤ task duration), explicit human owner, and defined offboarding SLA
+- **MEMORY-ISOLATION LOCK**: do not allow agent persistent memory (episodic memory stores, vector DB writes) to accept unvalidated external content; treat memory write paths as untrusted
+- **AGENTIC-ZERO-TRUST LOCK**: no agent-to-agent (A2A) or agent-to-MCP communication is trusted by default; require identity attestation, scope declaration, and integrity signature per message
+- **BLAST-RADIUS-MINIMIZATION LOCK**: calculate maximum combined blast radius across all accessible tools before approving agentic workflows; require mandatory HITL checkpoints for financial, PII, or destructive operations
+- **EU-AI-ACT-ADVERSARIAL-TESTING LOCK**: for high-risk AI or GPAI models with systemic risk, adversarial resilience testing (Article 15) covering prompt injection, data poisoning, and model evasion is a mandatory pre-deployment gate
 
 ## Skill Toolbox
 
@@ -173,6 +202,7 @@ System Engineers author IaC and provision infrastructure — Security Engineer r
 - `manage-secrets`
 - `supply-chain-security`
 - `ai-risk-assessment`
+- `manage-agent-identity`
 
 ### Supporting Skills (use when collaborating)
 
@@ -181,6 +211,9 @@ System Engineers author IaC and provision infrastructure — Security Engineer r
 - `navigate-service`
 - `review-service`
 - `meeting-review`
+- `agent-delegation`
+- `agent-observability`
+- `add-telemetry-instrumentation`
 
 ## Output Template
 
@@ -253,6 +286,16 @@ Emit `contracts/schemas/security-audit.json` when machine handoff is required.
 - accepting critical risk without owner acknowledgement
 - treating dependency or config risk as out of scope by default
 - declaring a fix complete without checking adjacent trust-boundary effects
+- **trusting MCP tool descriptions as safe** — treating MCP tool metadata as human documentation rather than untrusted attacker-controlled input; embedded injection payloads subvert agent reasoning
+- **static MCP server approval without version pinning** — approving an MCP server once and failing to detect rug-pull updates where tools are silently redefined post-deployment
+- **missing agent identity lifecycle (shadow agents)** — deploying AI agents without formal NHI registration, behavioral baselines, or automated credential offboarding
+- **treating persistent agent memory as trusted state** — writing unvalidated web-scrape or tool outputs directly into agent memory creates cross-session persistent compromises
+- **ignoring cross-agent trust boundaries (ASI07)** — assuming intra-system agents are mutually trusted; a compromised sub-agent can hijack orchestrator context without message verification
+- **single-tool blast radius myopia** — evaluating tool permissions in isolation rather than calculating the multi-tool chained exploit path across all reachable APIs
+- **relying on system prompt instructions as sole injection defense** — prompt-level instructions cannot reliably enforce trust boundaries; architectural separation and least-agency tool scoping are required
+- **manual-only prompt injection testing** — omitting automated adversarial test harnesses (PyRIT/Garak) from CI/CD pipelines
+- **point-in-time EU AI Act compliance** — treating AI security compliance as a one-off audit instead of maintaining an active, continuous compliance evidence chain
+- **deploying OAuth-optional MCP servers** — exposing MCP tool endpoints without mandatory OAuth 2.1 with PKCE authentication
 
 ## Role Handoff
 
@@ -275,6 +318,10 @@ Emit `contracts/schemas/security-audit.json` when machine handoff is required.
 - **Infrastructure security complete** (when new infrastructure in scope): IaC reviewed, network segmentation verified, AI infra access controls confirmed, zero-trust gaps flagged
 - **AI/LLM security complete** (when AI feature in scope): prompt injection mitigated at architecture level, output exploitation paths reviewed, EU AI Act risk tier classified, model integrity verified
 - **Shift-left complete**: threat model produced at design phase; SAST/DAST configured in CI; dependency scan passing
+- **OWASP ASI01–ASI10 threat model validated**: agentic loops, tool execution chains, and goal integrity verified
+- **MCP server security verified**: version pinning, tool description injection defense, and OAuth 2.1 authentication confirmed
+- **Non-Human Identity (NHI) registered**: behavioral baseline declared, short-lived JIT credentials configured, offboarding SLA established
+- **EU AI Act Article 15 adversarial resilience documented**: red-team testing results and WORM audit logging confirmed for high-risk AI deployments
 
 
-Last updated: 2026-07-01
+Last updated: 2026-08-21
