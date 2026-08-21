@@ -16,6 +16,9 @@ Use this skill when a task needs disciplined tool selection and sequencing acros
 
 ## Core Rules
 
+- enforce the **Principle of Least Agency**: grant only the minimum tool subset and ephemeral capability tokens required for the active phase (e.g. read-only tools during triage/review)
+- enforce **Step-Order Contracts (FSM)**: strictly sequence operations through `intake -> inspect -> plan -> validate -> mutate -> verify`; reject out-of-order mutations
+- separate the **Cognitive Plane** (LLM reasoning and planning) from the **Deterministic Control Plane** (sandboxed execution, policy gating, syscall monitoring)
 - prefer specialized tools over shell commands when available
 - classify the work phase before choosing tools
 - parallelize independent reads and searches
@@ -30,7 +33,7 @@ Use this skill when a task needs disciplined tool selection and sequencing acros
 - enable parallel tool execution as default using `asyncio.gather` or thread pools for non-interdependent operations
 - choose between ReAct (linear action spaces) and LATS (Monte Carlo Tree Search tree exploration) based on task complexity
 - enforce strict tool call budget management, monitoring max budgets and raising a `budget_exhausted` event if exceeded
-- instrument all tool calls using OpenTelemetry (OTel) with child spans and detailed semantic attributes
+- instrument all tool calls using OpenTelemetry (OTel) with child spans and detailed semantic attributes (OWASP ASI01–ASI10 compliance)
 
 ## Policy-As-Code (2026)
 

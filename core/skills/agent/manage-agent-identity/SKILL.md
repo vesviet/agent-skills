@@ -11,12 +11,13 @@ Aligned with: **IMDA Model AI Governance Framework for Agentic AI (May 2026)**, 
 
 ## Core Rules
 
-- **Never use standing, long-lived credentials** for agent sessions. All agent access tokens must be short-lived (TTL ≤ task duration) and dynamically injected at session start.
-- **Task-scope permissions only**: each agent session receives the minimum permission set required for its declared task — do not pre-provision broad access "in case it is needed later."
-- **No identity inheritance**: agents must never assume or inherit the calling user's identity, tokens, or permissions. Every session operates under its own scoped NHI.
-- **Formal registration**: every agent role in production must be registered in the organization's identity registry before receiving any access. Shadow agents (created outside formal process) must be discovered and registered or decommissioned.
-- **Behavioral baseline required**: every production agent role must have a declared behavioral baseline — expected tool call patterns, access patterns, and resource usage. Anomalies trigger review.
-- **Offboarding is mandatory**: when an agent role is deprecated, decommissioned, or paused, all associated credentials, tokens, and access grants must be revoked within the defined SLA.
+- **Zero Standing Privileges**: never use static, long-lived API keys or persistent credentials for agent sessions. All agent tokens must be ephemeral (TTL ≤ 60 minutes or task duration + 20% buffer) and dynamically injected.
+- **Task-scope permissions & attenuation (RFC 8693)**: issue down-scoped, attenuated delegation tokens. Agents must never inherit unconstrained human credentials or broad service-account scopes.
+- **SPIFFE/SPIRE Workload Attestation**: attest agent workloads cryptographically using SPIFFE IDs and JWT/X.509 SVIDs bound to execution provenance (`spiffe://prod.internal/ns/agents/...`).
+- **OAuth agent_auth metadata**: configure and validate the `agent_auth` discovery block in `/.well-known/oauth-protected-resource` and `/auth.md` before granting access.
+- **Formal registration**: every agent role in production must be registered in the organization's identity registry before receiving any access. Shadow agents must be discovered and registered or decommissioned.
+- **Behavioral baseline required**: every production agent role must declare a behavioral baseline (allowed tools, expected resource paths, rate limits). Out-of-baseline calls trigger immediate circuit breaker halts.
+- **Immediate offboarding**: when a task completes, fails, or an agent role is decommissioned, all associated credentials, tokens, and active sessions must be revoked immediately.
 
 ## When to Use
 

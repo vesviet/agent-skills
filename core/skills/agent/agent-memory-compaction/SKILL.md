@@ -17,11 +17,15 @@ Use this skill when accumulated conversation context is larger than the task nee
 ## Core Rules
 
 - preserve the newest user request and any explicit corrections
+- enforce Anchored Schema Compaction: update structured slots (Goal, Phase, Decisions, Files, Validation, Next Action) rather than writing free-form narrative prose to prevent geometric detail decay
 - keep only information needed to continue safely
+- preserve 100% of modified file paths, validated commands with exit codes, open blockers, and the next single safe action
 - preserve the current phase, active owner, and phase-exit conditions
 - separate durable facts from temporary exploration detail
 - retain validation status, blockers, and next actions
 - drop obsolete plans, failed guesses, duplicate command output, and stale intermediate reasoning
+- trigger compaction proactively when context window utilization exceeds 60% of model limit or every 15–20 turns
+- log pre-compaction and post-compaction token counts and compute compression ratio
 
 ## Suggested Process
 
@@ -29,15 +33,17 @@ Use this skill when accumulated conversation context is larger than the task nee
 
 Determine the current goal, latest user instruction, and whether any earlier request has been superseded.
 
-### 2. Classify Context
+### 2. Classify Context by Fidelity Level (L0–L3)
 
 Sort accumulated context into:
 
-- must keep: active goal, work type, current phase, active owner, constraints, files changed, decisions, validation state, blockers
-- useful later: relevant discovered patterns, commands that proved something, unresolved risks
-- safe to drop: duplicate logs, old plans, superseded assumptions, broad exploration notes
+- **L0 (Raw)**: uncompressed raw transcripts for the active turn only
+- **L1 (Extracted Notes)**: bullet points of commands run, stdout summaries, and specific error codes
+- **L2 (Distilled Working State)**: anchored working state schema representing project ground truth
+- **L3 (Entities & Tags)**: compact entity tuples (e.g. `[GORM, postgres_v16, InTx_required]`)
+- **Safe to drop**: duplicate logs, obsolete plans, superseded assumptions, and exploratory debug dumps
 
-### 3. Build A Compact Working State
+### 3. Build An Anchored Compact Working State
 
 Write a short checkpoint with:
 
@@ -66,10 +72,11 @@ Before discarding detail, confirm the compact state can answer:
 
 Continue using the compact state as the source of truth. Re-read only the specific files or command output needed for the next action.
 
-### 2026: Production Patterns and Compaction Heuristics
+## Production Patterns and Compaction Heuristics (2026)
 
 - **mem0 and Zep v2 Production Patterns**: Use mem0 for simple user preference memory. Choose Zep v2 with a temporal knowledge graph when the validity of facts over time is required. Both platforms support automatic extraction and retrieval of long-term state.
 - **Compaction Trigger Heuristics**: Initiate context compaction when context window utilization exceeds 60% of the model limit, which is safer than waiting for 80% when degradation may have already occurred. Alternatively, trigger compaction on a fixed turn count, such as every 20 turns. Always log pre-compaction and post-compaction token counts to monitor efficiency.
+- **Structured Diary Pattern**: Maintain an out-of-band persistent state file (e.g., `NOTES.md` or `STATE.json`) on disk so that conversation context can be aggressively compacted without losing ground truth.
 
 ## Output Format
 
@@ -116,11 +123,12 @@ Next action:
 - [ ] latest user request preserved
 - [ ] work type and current phase preserved
 - [ ] active constraints retained
-- [ ] completed work and changed files summarized
-- [ ] validation state captured
+- [ ] completed work and changed files summarized without omitting modified paths
+- [ ] validation state and command exit codes captured
 - [ ] preserved behavior or bug-success criteria captured
 - [ ] blockers and residual risks retained
 - [ ] stale plans, duplicate logs, and superseded assumptions dropped
+- [ ] pre/post compaction token metrics recorded
 - [ ] next action is clear from the compact state
 
 ## Related Skills
@@ -130,8 +138,3 @@ Next action:
 - **agent-quality-gate**: Preserve validation evidence before dropping detail
 - **agent-tool-orchestration**: Re-read only the next necessary evidence after compaction
 - **write-documentation**: Convert durable context into repository documentation
-
-### 2026: Memory Strategies
-
-- **mem0/Zep v2 production patterns:** mem0 provides an opinionated memory layer with automatic extraction, storage, and retrieval. Zep v2 adds temporal knowledge graph support. Choose mem0 for simple user preference memory, and Zep v2 when temporal fact validity matters (facts change over time).
-- **Compaction trigger heuristics:** Trigger compaction when context window utilization exceeds 60 percent of the model's limit, not at 80 percent or higher (which is too late). Alternatively, trigger on a fixed turn count (e.g., every 20 turns). Log compaction events with pre/post token counts to measure effectiveness.

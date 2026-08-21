@@ -17,37 +17,39 @@ Use this skill when the agent needs to persist or retrieve knowledge that outliv
 ## Core Rules
 
 - write to memory only when the knowledge is reusable across future tasks
-- always include repo context (repo name, language, framework) in memory entries
-- verify retrieved memories are still current before acting on them
-- prefer specific, actionable entries over vague summaries
-- never store secrets, credentials, or sensitive data in memory
-- tag entries by type so retrieval can be filtered
+- always include repo context (repo name, language, framework) and ISO-8601 `last_verified` timestamp in memory entries
+- enforce Zero Secret Ingestion: run regex and entropy secret scanners before persisting any episodic or semantic memory
+- treat retrieved memories as *hypotheses*—verify them against the live codebase before executing destructive actions or migrations
+- mark memory nodes as `deprecated` with pointers to superseding commits when architectural patterns change
+- prefer specific, actionable entries over vague narrative summaries
+- never store credentials, auth tokens, customer PII, or private API keys in memory
+- tag entries by type (stack, architecture, bugfix, gotcha) so retrieval can be filtered via vector and graph indexes
 
-## Memory Tiers
+## Memory Tiers (2026 Cognitive Architecture)
 
-### Working Memory (Ephemeral)
+### Working Memory (Ephemeral / In-Context)
 
-The current conversation context. Managed by `agent-context-management` and `agent-memory-compaction`. Dies when the conversation ends.
+The current conversation context window. Managed by `agent-context-management` and `agent-memory-compaction`. Dies when the conversation ends.
 
-### Episodic Memory (Experiential)
+### Episodic Memory (Experiential Incident Log)
 
-Past actions and their outcomes. Answers questions like:
+Past actions and their concrete outcomes. Answers:
 
 - "How did I fix the Postgres JSON operator error last time?"
 - "What happened when we ran the migration on the maydiengiaisaigon repo?"
 - "Which approach worked better for the 3D texture optimization?"
 
-Storage format: timestamped entries with tags.
+Storage format: timestamped YAML/JSON entries with stack and bug tags.
 
-### Semantic Memory (Structural)
+### Semantic Memory (Temporal Knowledge Graph & Relational Facts)
 
-Long-term facts about codebases, architectures, and team conventions. Answers questions like:
+Durable, decoupled facts about codebases, architectures, and team conventions. Answers:
 
 - "What ORM does the maydiengiaisaigon repo use?"
 - "What is the deployment target for the vesviet site?"
 - "Which columns in the pages table are JSON (translatable)?"
 
-Storage format: key-value facts with repo and domain tags.
+Storage format: hybrid vector embeddings + temporal entity-relation-entity triples (e.g. via Zep v2 / Mem0 / Graphiti).
 
 ## Suggested Process
 
@@ -64,8 +66,9 @@ Before beginning work in a known repo:
 After completing work that produced reusable knowledge:
 
 - identify what was learned (a pattern, a fix, a convention)
+- scan payload for secrets or sensitive data (Zero Secret Ingestion)
 - classify it as episodic (action + outcome) or semantic (fact)
-- write a concise, tagged entry
+- write a concise, tagged entry with `last_verified` timestamp
 
 ### 3. Validate Before Trusting
 
@@ -75,7 +78,7 @@ Retrieved memories may be stale:
 - cross-reference with the actual codebase before acting
 - flag contradictions between memory and current state
 
-### 4. Prune Periodically
+### 4. Prune & Invalidate Periodically
 
 - mark entries as deprecated when the underlying code changes
 - merge duplicate entries covering the same knowledge
@@ -92,6 +95,7 @@ date: 2026-05-09
 tags: [postgres, json, i18n, spatie-translatable]
 summary: "Postgres JSON columns cannot use = operator directly. Fixed slug queries by using arrow syntax: where('slug->' . app()->getLocale(), $value)"
 outcome: success
+last_verified: 2026-05-09
 ```
 
 ### Semantic Entry
@@ -112,11 +116,11 @@ last_verified: 2026-05-09
 
 - [ ] relevant memories retrieved before starting work
 - [ ] retrieved memories verified against current codebase
-- [ ] stale memories flagged or updated
+- [ ] stale memories flagged or marked deprecated
 - [ ] new reusable knowledge identified after task completion
 - [ ] entries classified as episodic or semantic
-- [ ] entries tagged with repo, language, and domain
-- [ ] no secrets or sensitive data stored
+- [ ] entries tagged with repo, language, domain, and timestamp
+- [ ] Zero Secret Ingestion verified (no tokens, passwords, or PII)
 - [ ] entry is specific and actionable (not vague summary)
 
 ## Related Skills

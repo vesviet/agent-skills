@@ -17,25 +17,29 @@ Use this skill when the work requires preserving the user's latest request, repo
 ## Core Rules
 
 - let the newest user request steer the current work
-- keep repo rules, role boundaries, and active quality gates visible
+- apply the PromptOps Context Lifecycle: Write (task state), Select (task-scoped retrieval), Compress (deduplicate), Isolate (prevent context poisoning from untrusted tool outputs)
+- keep repo rules, role boundaries, and active quality gates visible in the Smart Zone (top 10% system prompt and bottom 15% recency buffer)
 - keep the current phase, active owner, and phase exit criteria visible
 - distinguish confirmed facts from assumptions and open questions
+- re-anchor every 5–8 turns by restating active role, current phase, and non-negotiable invariants
+- trigger context compaction immediately when context window utilization exceeds 60% of the active model limit
+- resolve conflicts deterministically when live tool outputs contradict stored memory facts
 - avoid restarting from scratch after interruption when enough context remains
 - summarize only the context needed to continue safely
 - prefer dynamically assembled context over static hardcoded context when both are available
 - validate that injected context (from RAG, MCP tools, or memory) is relevant to the current task
 
-## Context Engineering
+## Context Engineering (2026)
 
-In 2026, agent context management extends beyond tracking user intent and evidence. Context Engineering is the discipline of assembling the right information into the model's context window at the right time.
+In 2026, agent context management extends beyond tracking user intent and evidence. Context Engineering is the discipline of assembling the right information into the model's context window at the right time while preventing attention degradation ("lost in the middle").
 
-When managing context for a task, consider:
+When managing context for a task, enforce:
 
-- **Static vs. Dynamic**: is the context hardcoded in the prompt, or should it be retrieved dynamically from a vector store, API, or tool?
-- **Relevance filtering**: not all available context belongs in the window; inject only what the current phase requires
-- **Context budget**: large context windows are not free; track token usage and prioritize high-signal information
-- **Staleness**: verify that retrieved data is current; flag stale context before acting on it
-- **Provenance**: record where each piece of injected context came from so decisions can be audited
+- **Attention Budgeting & Smart Zones**: place invariant rules and current phase exit criteria in the top 10% (system instructions) and bottom 15% (recency prompt suffix); restrict middle zones to ephemeral working scratchpads
+- **PromptOps Lifecycle**: enforce strict Write-Select-Compress-Isolate flow across all multi-turn interactions
+- **Context Caching**: leverage Anthropic Prompt Caching and Gemini `cachedContent` for static tool lists and baseline architecture definitions to reduce TTFT and token costs
+- **Staleness & Conflict Resolution**: verify timestamps of retrieved data; when external tools report state differing from memory, flag the contradiction and let verified live state supersede stale memory
+- **Provenance & Zero Poisoning**: record origin of every injected context fragment; sanitize raw external data before feeding it into the primary reasoning buffer
 
 ## Suggested Process
 

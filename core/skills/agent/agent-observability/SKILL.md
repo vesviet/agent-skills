@@ -16,18 +16,19 @@ Use this skill when agent behavior needs to be traceable, debuggable, and measur
 
 ## Core Rules
 
-- trace every tool call, reasoning decision, and context injection at session level
-- track token usage (input and output) per step and per session
-- never log secrets, credentials, or PII in traces
-- feed production failures back into evaluation golden datasets
-- use tail-based sampling in high-volume environments to manage cost
-- attribute costs to the appropriate tenant, feature, or workflow
+- trace every tool call, reasoning decision, and context injection using standard OpenTelemetry (OTel) GenAI semantic conventions
+- enforce nested span hierarchy: `invoke_agent` (root) $\rightarrow$ `plan` $\rightarrow$ `chat` / `generate_content` $\rightarrow$ `execute_tool`
+- track token usage with fine granularity: `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, `gen_ai.usage.reasoning.output_tokens`, and `gen_ai.usage.cache_read.input_tokens`
+- never log unredacted secrets, credentials, or PII in span payloads (opt-in sanitized message attributes only)
+- feed production anomalies and validation failures back into evaluation golden datasets (the Virtuous Cycle)
+- use tail-based sampling in high-volume environments (retain 100% of errors/anomalies, sample 1–5% of nominal traces)
+- attribute costs down to tenant, task, model tier, and Cost per Successful Task Resolution (CPTR)
 
 ## Key Concepts
 
 ### Session-Level Tracing
 
-Individual LLM call tracing is insufficient. Agent failures are causal chains — a mistake at step 3 may not manifest until step 7. Capture the full session:
+Individual LLM call tracing is insufficient. Agent failures are causal chains — a mistake at step 3 may not manifest until step 7. Capture the full distributed trace tree:
 
 - system prompt and context injected at each step
 - tool calls with inputs and outputs
@@ -41,30 +42,32 @@ The most mature teams feed production failures back into their evaluation loop:
 
 1. agent produces unexpected output in production
 2. the trace is flagged (manually or by drift detection)
-3. the input/output pair is added to the golden dataset
-4. the prompt or skill is updated
+3. the input/output pair is sanitized and added to the golden dataset
+4. the prompt or skill is updated via PromptOps
 5. the eval suite runs against the expanded dataset
 6. regression is prevented permanently
 
-### OpenTelemetry For GenAI
+### OpenTelemetry For GenAI (2026 Semantic Conventions)
 
-Use OpenTelemetry GenAI semantic conventions (Development status) to ensure portability. See `core/observability/otel-genai.md` for the full mapping. Core attributes:
+Use OpenTelemetry GenAI semantic conventions (`open-telemetry/semantic-conventions-genai`) to ensure portability across observability backends. Core attributes:
 
-- `gen_ai.operation.name`: operation type — use a spec enum value (`chat`, `generate_content`, `execute_tool`, `invoke_agent`, `plan`, ...), never invented names
-- `gen_ai.provider.name`: provider flavor (`anthropic`, `openai`, `gcp.vertex_ai`, ...) — replaces the deprecated `gen_ai.system`
-- `gen_ai.request.model` / `gen_ai.response.model`: requested and responding model
-- `gen_ai.usage.input_tokens` / `gen_ai.usage.output_tokens`: tokens consumed and generated (plus `gen_ai.usage.reasoning.output_tokens` for reasoning models)
-- `gen_ai.response.finish_reasons`: why generation stopped (plural array)
-- `gen_ai.conversation.id`: session/thread correlation (use the standard OTel `trace_id` for span correlation)
+- `gen_ai.operation.name`: operation type enum (`invoke_agent`, `plan`, `chat`, `generate_content`, `execute_tool`, `search_memory`, `upsert_memory`)
+- `gen_ai.provider.name`: provider flavor (`anthropic`, `openai`, `gcp.vertex_ai`, `aws.bedrock`)
+- `gen_ai.request.model` / `gen_ai.response.model`: requested and responding model IDs
+- `gen_ai.usage.input_tokens` / `gen_ai.usage.output_tokens`: gross token volume
+- `gen_ai.usage.reasoning.output_tokens`: thinking tokens (o1, o3, Sonnet 3.7)
+- `gen_ai.usage.cache_read.input_tokens`: cached prompt tokens (discounted pricing)
+- `gen_ai.response.finish_reasons`: array of strings (`["stop"]`, `["tool_calls"]`)
+- `gen_ai.conversation.id`: session correlation ID
 
-### Cost Attribution
+### FinOps Cost Attribution
 
 Track costs at multiple dimensions:
 
 - per-user or per-tenant
-- per-feature or per-workflow
-- per-model tier (lightweight vs premium)
-- per-session
+- per-feature, per-workflow, or per-role
+- per-model tier (lightweight vs mid-tier vs premium)
+- Cost per Successful Task Resolution (CPTR)
 
 ## Suggested Process
 

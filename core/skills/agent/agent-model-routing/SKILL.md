@@ -27,10 +27,13 @@ Skip explicit routing when the task is a **single-phase** handoff to one special
 
 ## Core Rules
 
-- match model capability to task complexity — do not use premium models for routine work
-- default to mid-tier models and escalate only when quality requires it
-- track and report token costs per model tier
-- never compromise safety-critical tasks for cost savings
+- match model capability to task complexity — do not use premium reasoning models for routine formatting or template tasks
+- default to mid-tier models and escalate only when validation or reasoning complexity requires it
+- enforce **Max Cascade Depth**: limit cascading fallback chains to a maximum depth of 2 escalations per step to prevent cost explosions
+- apply **Speculative Routing**: pair lightweight drafting SLMs with frontier verifiers for structured JSON and plan generation to cut latency by 40–60%
+- enforce **KV Cache Affinity**: place invariant system instructions and static MCP tool definitions deterministically at the prefix of the prompt to maximize KV cache reuse (50–90% cost reduction)
+- track and report token costs broken down by input, output, reasoning tokens, and cache-read tokens
+- never compromise safety-critical or security tasks for cost savings
 - respect the risk tier assigned to each task or workflow step
 
 ## Model Tiers
@@ -47,13 +50,13 @@ Best for: feature implementation, code review, CRUD operations, documentation, m
 
 Characteristics: balanced cost and capability ($2-$15/M tokens), reliable structured output.
 
-### Premium (Complex)
+### Premium (Complex & Reasoning)
 
 Best for: architectural decisions, security audits, complex debugging, multi-file refactoring, production incident response.
 
-Characteristics: highest capability ($15-$60/M tokens), strongest reasoning, highest latency.
+Characteristics: highest capability ($15-$60/M tokens), strongest reasoning (o1/o3, Opus), higher latency.
 
-## Routing Strategies
+## Routing Strategies (2026)
 
 ### Rule-Based Routing
 
@@ -65,14 +68,22 @@ Assign model tier based on the task type or risk tier:
 | Agentic | Mid-Tier | Complex reasoning required |
 | Engineering | Premium | Always (safety-critical) |
 
+### Speculative Routing (Draft & Verify)
+
+Deploy lightweight draft models to generate candidate plans or structured diffs, followed by a single verification pass from a frontier reasoning model.
+
+### Prefix-Cache Affinity Routing
+
+Hash static system instructions and tool definitions; route prompts with identical prefixes to the same gateway cluster to maximize prompt cache hits.
+
 ### Cascade Routing
 
-Start with a cheaper model. Escalate only if:
+Start with a cheaper model. Escalate (max depth 2) only if:
 
 - the output fails schema validation
 - the output fails quality checks
 - the task requires reasoning beyond the model's capability
-- confidence scores are below threshold
+- confidence scores are below threshold ($\tau < 0.85$)
 
 ### Cost-Aware Planning
 

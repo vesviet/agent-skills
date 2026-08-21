@@ -16,12 +16,15 @@ Use this skill when another person or future session needs to understand the cur
 
 ## Core Rules
 
-- lead with the current outcome or blocker
+- lead with the current outcome, blocker, or terminal status
+- enforce structured A2A JSON contract validation (`a2a-task.json`, `a2a-artifact.json`) for agent-to-agent handoffs rather than unstructured narrative prose
+- enforce **Context Isolation (Zero Context Pollution)**: isolate subagent working buffers so internal exploration chatter does not pollute parent attention budgets
+- transmit **State Deltas** (what changed, validation hash, open blockers) with pointers to durable checkpoints rather than duplicating full conversation histories
 - include the current phase and whether it may advance
-- include validation evidence, not just confidence
+- include verifiable validation evidence (test counts, build status, lint exits), not just confidence
 - separate completed work from remaining work
-- keep the summary concise enough to act on
-- avoid internal process labels in user-facing artifacts such as commits, changelogs, and release notes
+- keep the summary concise enough to act on immediately
+- strictly sanitize user-facing artifacts: never mention internal agentic metadata, reasoning chains, or AI process labels in git commits, changelogs, or release notes
 
 ## Suggested Process
 

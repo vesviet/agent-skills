@@ -22,12 +22,13 @@ Use this skill for **complete A2A 1.0** behavior beyond single-hop `agent-delega
 - terminal states: `completed`, `failed`, `canceled`
 - stream long work via `a2a-task-progress.json` (SSE) when `interaction_mode` is `stream`
 - wrap HTTP calls in `a2a-jsonrpc-envelope.json` (JSON-RPC 2.0)
-- validate every artifact against the task's `output_schema_ref`
+- validate every artifact against the task's `output_schema_ref` using grammar-constrained decoding
 - never assume the worker has context beyond `input_data` and `messages`
 - verify A2A v1.0 signed Agent Cards, reading acceptable authentication methods from the card's `securitySchemes` field (which may declare `bearer`, `oauth2`, `apiKey`, or OIDC)
-- verify Agent Card JWS signatures by resolving the key from the card's `kid` / `jku` JWK Set; card signing is a spec **SHOULD**, and the signing algorithm is chosen by the issuer, not fixed by the spec
+- verify Agent Card JWS signatures by resolving the key from the card's `kid` / `jku` JWK Set; use RFC 8785 JSON Canonicalization Scheme (JCS) for detached payload verification
 - publish streaming lifecycle events using the `event` enum in `contracts/schemas/a2a-task-progress.json`: `task.created`, `task.status`, `task.message`, `task.artifact`, `task.completed`, `task.failed`, `task.canceled`
-- validate webhook push notification callbacks against the credentials declared in the task's `PushNotificationConfig.authentication`, and validate the callback URL against SSRF before registering it
+- validate webhook push notification callbacks against the credentials declared in the task's `PushNotificationConfig.authentication`, and validate the callback URL against private IP ranges and SSRF before registering it
+- implement three-layer error recovery: (1) schema-error reflection prompt for format errors, (2) exponential backoff with full jitter for transient RPC failures, and (3) circuit breaker escalation to HITL after $N=3$ failures
 
 **Spec vs pack convention.** The A2A specification streams `TaskStatusUpdateEvent` and `TaskArtifactUpdateEvent` over SSE, with task states named `TASK_STATE_*`. The `task.*` event names and the `agent.invoke` / `agent.stream` JSON-RPC methods used throughout this pack are the **Antigravity adapter binding**, not spec wire names — the spec operations are `message/send`, `message/stream`, `tasks/get`, and `tasks/cancel`. When targeting a non-Antigravity A2A peer, use the spec names and treat this pack's names as a local alias layer.
 
@@ -120,6 +121,13 @@ When the client cannot hold SSE open:
 - attach `a2a-push-notification-config.json` to the task
 - worker emits terminal event to `callback_url` on completed / failed / canceled
 
+### 8. Three-Layer Error Recovery
+
+When a task fails or drops:
+- **Layer 1 (Schema Error):** Feed the schema validation error back into the worker model in an immediate correction turn.
+- **Layer 2 (Transient Drop):** Retry HTTP/SSE connection with exponential backoff and randomized jitter.
+- **Layer 3 (Semantic Failure):** After 3 failed attempts, trip circuit breaker and escalate to human review (HITL).
+
 See `./references/a2a-spec.md` for signed Agent Card verification, the full streaming/event spec-to-pack mapping, webhook auth details, the scatter-gather coordinator pattern, and the raw JSON-RPC wire example.
 
 ## Checklist
@@ -133,6 +141,8 @@ See `./references/a2a-spec.md` for signed Agent Card verification, the full stre
 - [ ] cancel path defined for timeouts
 - [ ] artifact validated before phase gate opens
 - [ ] JSON-RPC errors use standard envelope on wire transports
+- [ ] webhook callback URLs validated against SSRF and private IP ranges
+- [ ] three-layer error recovery active (schema reflection, backoff with jitter, circuit breaker)
 
 ## Observability
 

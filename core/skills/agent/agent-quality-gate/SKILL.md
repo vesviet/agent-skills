@@ -30,7 +30,7 @@ Apply a trust-tier gate when any code in the diff was produced or significantly 
 - **T1 (low-risk):** documentation, comments, formatting-only changes, isolated test additions — standard validator pass is sufficient.
 - **T2 (medium-risk):** AI-generated logic in existing modules, new helper functions, config updates — require targeted behavioral tests covering the changed paths in addition to validators.
 - **T3 (high-risk):** AI-generated code touching auth, payments, data retention, public APIs, deployment manifests, or security controls — require adversarial diff review (treat generated output as untrusted input: verify every branch, check for prompt-injection patterns in generated strings, confirm no hallucinated dependency was introduced).
-- **Adversarial diff review:** for T3 changes, scan for: (a) invented package imports not in package.json/go.mod/pyproject.toml, (b) hardcoded secrets or credentials in generated values, (c) overly permissive IAM or CORS rules, (d) logic that bypasses existing validation gates.
+- **Adversarial diff review:** for T3 changes, scan for: (a) invented package imports not in package.json/go.mod/pyproject.toml/Cargo.lock, (b) hardcoded secrets or credentials in generated values, (c) overly permissive IAM or CORS rules, (d) logic that bypasses existing validation gates, and (e) OWASP ASI01–ASI10 vulnerabilities (Goal Hijacking, Confused Deputy).
 - **Do not advance a T3 change without human sign-off** — flag it explicitly in the quality gate report and name the required approver.
 
 ## Suggested Process

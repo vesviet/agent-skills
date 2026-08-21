@@ -28,7 +28,7 @@ To prevent token bloat and infinite reading loops, panel members must NOT read r
 
 ## Interaction Mechanism: The 6-Round Structure
 
-Do not skip or merge rounds. Follow this exact 6-round iterative cross-examination process:
+Do not skip or merge rounds. Follow this exact 6-round iterative cross-examination process based on Collaborative Multi-Agent Debate (ColMAD):
 
 ### Round 1: Initial Thoughts (Isolated)
 - **Action**: Each selected role provides their initial perspective, architecture recommendation, or analysis based purely on the user's requirements.
@@ -47,13 +47,13 @@ Do not skip or merge rounds. Follow this exact 6-round iterative cross-examinati
 - **Rule**: No new foundational ideas; focus only on breaking the refined design.
 
 ### Round 5: Final Consensus Building
-- **Action**: The roles attempt to reach a unified consensus. Each role must state their final position: "Agree", "Agree with reservations", or "Block".
-- **Rule**: Do not force consensus if genuine disagreement remains. Capture the exact dissenting views.
+- **Action**: The roles attempt to reach a unified consensus using ColMAD non-zero-sum alignment. Each role must state their final position: "Agree", "Agree with reservations", or "Block".
+- **Rule**: Do not force consensus if genuine disagreement remains. Capture the exact dissenting views and confidence scores.
 
 ### Round 6: Synthesis & HITL (Human-in-the-Loop)
 - **Action**: The Agent Coordinator synthesizes the entire 5-round debate.
 - **Rule**: 
-  - Summarize the final trade-offs and residual risks.
+  - Summarize the final trade-offs, stability convergence, and residual risks.
   - If there is a tie or a blocking objection, prepare a clear escalation to the user (HITL) to make the final call.
 
 ## Output Contracts
@@ -80,6 +80,7 @@ Generate a clear Markdown summary for the user to review. It must include:
 - ensure at least 1 Builder and 1 Defender role participate in every meeting
 - do not allow roles to read raw source code during debate; use Phase 0 context document only
 - execute all 6 rounds sequentially without skipping or merging rounds
+- apply Collaborative Multi-Agent Debate (ColMAD) non-zero-sum evaluation to avoid adversarial debate hacking
 - require explicit Human-in-the-loop (HITL) sign-off for tie-breaking or unresolved blocking concerns
 - emit both machine-readable `decision-record.json` and a human-readable Markdown summary
 
@@ -107,6 +108,7 @@ Select 3-4 roles categorized into Builder (Dev/Architect), Defender (Security/QA
 - [ ] All 6 rounds completed in sequence
 - [ ] `contracts/schemas/decision-record.json` generated
 - [ ] Human-readable Markdown summary with HITL decision point generated
+- [ ] ColMAD non-zero-sum consensus captured with explicit trade-offs
 
 ## Related Skills
 
@@ -119,4 +121,5 @@ Select 3-4 roles categorized into Builder (Dev/Architect), Defender (Security/QA
 - **Token Lock**: Do not allow the meeting to run into infinite loops. Halt strictly after Round 5 and synthesize in Round 6.
 - **Theater Lock**: Do not invent fake disagreements. If the topic is trivial and all roles agree in Round 2, document the early consensus but ensure edge cases are still checked in Round 4.
 - **Registry Lock**: Only invite roles that exist in the agent registry or repository.
+
 
