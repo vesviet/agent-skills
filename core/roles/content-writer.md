@@ -165,6 +165,15 @@ This role must follow [role-standard](role-standard.md) first.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
+- **AI SLOP LOCK**: do not ship any section that is AI-generated without at least one of: (a) a verifiable fact or statistic not present in the AI output, (b) firsthand insight, local knowledge, or original data injected by the author, (c) a named expert quote or documented case study — AI tools draft; human substance is mandatory. Flag every section that fails this test in the Anti-Slop Gate before submitting.
+- **BOILERPLATE LOCK**: do not ship sections with cross-article structural boilerplate — introductions that open with broad context-setting instead of the specific topic, transitions that merely summarize the previous section, or conclusions that restate the article without a concrete takeaway or CTA. Each must be replaced with framing specific to this article and audience.
+- **INFORMATION-GAIN HARD LOCK**: do not advance a draft to review or publish if it fails the Information Gain gate (`information_gain.gate_passed: true` with documented unique value vs top-3 SERP). Skyscraper paraphrasing and regurgitation of ranking content fail the quality gate.
+- **E-E-A-T AUTHENTICITY LOCK**: do not fabricate experience signals (invented anecdotes, fake reviews, simulated benchmarks, or false practitioner claims). If required experience proof is unavailable, flag the gap and escalate.
+- **PROVENANCE & C2PA LOCK**: every media asset must have a verified structured brief, alt-text anchor, and explicit `image_provenance` classification (`original_photo`, `ai_generated`, `licensed_stock`) adhering to C2PA Content Credentials and EU AI Act Article 50 transparency requirements.
+- **OUTLINE-ITERATION LOCK**: do not accept the first LLM outline without SERP grounding (top-5 scan) and at least one re-prompt iteration if heading hygiene or information-gain is substandard — a single-shot outline is a slop vector.
+- **IMAGE-BRIEF LOCK**: do not paste an image generation prompt without first building the structured brief (subject, composition, style, context, technical, alt-text anchor); unbriefed AI images ship with provenance unset which blocks E-E-A-T verification.
+- **PROMPT-FRAMEWORK LOCK**: do not invoke an LLM drafting call missing any of the five components (role frame, brief, structure, keyword policy, visual spec) — partial prompts produce partial slop.
+
 - do not treat a single search as enough research when the brief requires evidence — use **3–4 passes** or Researcher
 - do not bury uncertainty; mark what is confirmed versus inferred
 - do not paste large copyrighted text; summarize and attribute
@@ -178,12 +187,6 @@ This role must follow [role-standard](role-standard.md) first.
 - do not write walls of prose without bullets, tables, or numbered lists when content has list-worthy information
 - do not ship content that merely restates top SERP results — information gain is mandatory, not optional
 - do not ignore E-E-A-T experience signals specified in the SEO brief — if the brief requires firsthand proof, the draft must include it
-- do not fabricate experience signals (invented anecdotes, fake reviews, or simulated firsthand accounts) — flag gap and escalate
-- **AI SLOP LOCK**: do not ship any section that is AI-generated without at least one of: (a) a verifiable fact or statistic not present in the AI output, (b) firsthand insight, local knowledge, or original data injected by the author, (c) a named expert quote or documented case study — AI tools draft; human substance is mandatory. Flag every section that fails this test in the Anti-Slop Gate before submitting.
-- **BOILERPLATE LOCK**: do not ship sections with cross-article structural boilerplate — introductions that open with broad context-setting instead of the specific topic, transitions that merely summarize the previous section, or conclusions that restate the article without a concrete takeaway or CTA. Each must be replaced with framing specific to this article and audience.
-- **OUTLINE-ITERATION LOCK**: do not accept the first LLM outline without SERP grounding (top-5 scan) and at least one re-prompt iteration if heading hygiene or information-gain is substandard — a single-shot outline is a slop vector.
-- **IMAGE-BRIEF LOCK**: do not paste an image generation prompt without first building the structured brief (subject, composition, style, context, technical, alt-text anchor); unbriefed AI images ship with provenance unset which blocks E-E-A-T verification.
-- **PROMPT-FRAMEWORK LOCK**: do not invoke an LLM drafting call missing any of the five components (role frame, brief, structure, keyword policy, visual spec) — partial prompts produce partial slop.
 
 ## Anti-Slop Protocol
 
@@ -227,6 +230,9 @@ Writer must self-scan every draft before submitting. This protocol is a hard gat
 
 ### Supporting Skills (use when collaborating)
 
+- `audit-content`
+- `optimize-seo`
+- `conduct-research`
 - `write-documentation`
 - `write-product-brief`
 - `analyze-business-requirements`
@@ -373,6 +379,9 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 - transitions that summarize the previous section rather than advancing the argument ("Now that we've covered X, let's look at Y")
 - conclusions that restate the article without a concrete takeaway, data point, or CTA tied to this article's specific goal
 - submitting draft with `gate_passed: no` without flagging reason to Reviewer — silent failure is not allowed
+- **the "vending machine" prompt-and-dump mindset** — dropping a raw prompt into an LLM and publishing unedited output without human-in-the-loop verification
+- **skyscraper paraphrasing** — combining top SERP results into an extended post with zero net-new knowledge
+- **unanchored AI media** — publishing AI-generated images without structured prompt briefs, contextual relevance, or C2PA provenance tracking
 
 ## Role Handoff
 
@@ -396,7 +405,7 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 - **scanability standards met**: short sentences/paragraphs, structured lists, FAQ block when applicable
 - **anti-slop gate passed**: Writer has self-scanned all sections; every AI-assisted block has at least one author-injected substance element; all four boilerplate types eliminated or flagged; `gate_passed: true` documented in Anti-Slop Gate of Output Template — draft is not done if this gate is `no` without explicit Reviewer sign-off
 - **outline iteration documented**: `outline_iteration_count` and SERP grounding notes present in handoff when AI was used to produce the outline
-- **image provenance documented**: every AI-generated visual has structured brief, alt-text, and `image_provenance` field set; no unset or unspecified provenance ships to publish
+- **image provenance documented**: every AI-generated visual has structured brief, alt-text, and `image_provenance` field set (C2PA compliant); no unset or unspecified provenance ships to publish
 - content-handoff.json produced when structured handoff is required
 - SEO audit and metadata applied when site requires it
 - publish-log updated when publish confirmed under seo-publishing overlay
@@ -419,4 +428,5 @@ Activation example:
 See each overlay README for paths, schema, and publish-log rules.
 
 
-Last updated: 2026-08-06
+Last updated: 2026-08-21
+

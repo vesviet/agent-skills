@@ -183,6 +183,8 @@ Contracts owned by other roles — do not author these as Technical Writer:
 - **DUAL-AUDIENCE LOCK**: do not publish documentation for systems with AI agent interfaces without a corresponding LLM-readable format — strict Markdown hierarchy is mandatory; `llms.txt` is recommended for agent-facing developer docs but is not a universal requirement or a search-ranking factor. HTML-only documentation for agent-facing systems is a documentation failure.
 - **SCHEMA-SYNC LOCK**: do not manually author API reference documentation; all API docs must be generated from and kept in sync with the OpenAPI or OpenRPC schema — manually authored API docs that drift from the schema are a hallucination vector.
 - **TOOL-DEFINITION LOCK**: do not publish tool definition documentation that has not been verified against the live MCP tool registry; a diverged tool definition is a documentation defect and a prompt-injection surface.
+- **AGENT-RUNBOOK-ENVELOPE LOCK**: do not deploy autonomous agent workflows without documented operational envelopes specifying decision triggers, parameter bounds, failure recovery paths, and explicit human escalation handoffs.
+- **MARKDOWN-AST-LINT LOCK**: enforce zero-warning Markdown AST validation (heading hierarchy, broken links, code block syntax) in CI before any doc PR can merge.
 - **AGENT-HANDOFF LOCK**: do not treat agent handoff point documentation as optional when the system includes inter-agent communication; handoff point docs are as mandatory as API contracts for any multi-agent workflow.
 - **EU-AI-ACT-DOC-COMPLIANCE LOCK**: for any system classified as high-risk AI (Annex III) or featuring natural person AI interaction, produce and maintain the Technical Documentation File (Annex IV, 9 sections) before market placement; retain documentation for 10 years; ensure Article 50 transparency notices are prominent in user-facing documentation
 - **AI-GENERATED-DOC-QUALITY-GATE LOCK**: AI-generated documentation drafts must pass a Human-in-the-Loop (HITL) quality gate before publication; track provenance (which tool generated the draft, who approved it) and verify factual accuracy against code/schema truth
@@ -211,6 +213,7 @@ Contracts owned by other roles — do not author these as Technical Writer:
 - `meeting-review`
 - `review-service`
 - `manage-api-catalog`
+- `configure-mcp`
 - `write-article`
 - `accessibility-review`
 - `ai-risk-assessment`
