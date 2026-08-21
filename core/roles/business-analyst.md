@@ -109,6 +109,116 @@ In 2026, the biggest source of wasted build cycles is not bad code — it is req
 - if discovery reveals that the underlying user need does not exist, cannot be served within constraints, or is superseded by a simpler solution: escalate a kill-or-pivot recommendation to PM before engineering begins
 - a requirement that is invalidated by discovery before build is a win, not a failure; document what was learned and the redirect
 
+**Discovery techniques — expanded (2026):**
+- **Event Storming**, **JTBD**, **Impact Mapping**: (see above)
+- **Opportunity Solution Tree (OST)**: connect business outcome → opportunity space → solution options → experiment assumptions; ensures every solution maps to a verified opportunity, not a feature request; in 2026, AI tools synthesize interview data into OST branches — BA stewards the tree, interpreting and validating AI-generated branches against real stakeholder signals
+- **AI-moderated interviews**: AI tools handle transcription, synthesis, and theme extraction from user interviews; BA focuses on interpretation, probing, and stakeholder alignment — specify that any AI-synthesized interview findings must be BA-validated before entering the assumption register
+
+### Agentic AI Systems Requirements Specification (2026)
+
+When the feature includes autonomous agents, multi-agent workflows, or MCP-integrated tool access, standard LLM feature formats are insufficient. BA owns the translation of business intent into governable agentic behavior:
+
+**Autonomy level declaration (L1–L5):**
+- every agentic feature ticket must declare the intended autonomy level AND a governance-justified ceiling:
+  - **L1 — Assistive**: autocomplete, reactive suggestions, no persistent state; human reviews all outputs before any action
+  - **L2 — Task-Based**: single-step execution, no chaining; human reviews before commit; bounded, reversible scope
+  - **L3 — Conditional**: multi-step orchestration within specs, async validation, escalates when outside predefined conditions — **current enterprise production ceiling as of mid-2026; justify any deviation explicitly**
+  - **L4 — High Autonomy**: self-directed multi-step planning, delegates to sub-agents; exceptional human oversight only; requires extensive audit infrastructure
+  - **L5 — Full Autonomy**: no human intervention; not viable for production in regulated contexts without regulatory approval
+- justify why the declared level is safe given decision stakes, reversibility, and audit capability; do not grant higher autonomy than the governance infrastructure can support
+
+**Agent role and persona specification:**
+- for multi-agent systems, BA must specify each agent's role and authority boundary in the ticket:
+  - **Coordinator agent**: what decomposition logic does it apply? what are its delegation rules? what decisions does it make itself vs. delegate?
+  - **Specialist agents**: domain scope, tool access allowlist, confidence threshold below which they escalate
+  - **Critic/quality agent** (if used): when is it invoked, what constitutes a failing review, what happens on rejection?
+  - **Handoff contracts**: what data must be passed between agents (fields, schema, confidence score, trace ID)?
+- do not specify only the workflow outcome — the orchestration topology and authority boundaries are testable requirements
+
+**MCP tool permissions catalog:**
+- for every MCP server the agent may access, specify in the ticket:
+  - tool name and server identifier
+  - permission level per tool: read / write / delete / execute — use the minimum necessary
+  - delegated authority constraint: agent permissions must never exceed the sponsoring user's rights at invocation time (attenuated delegation)
+  - per-tool authorization timing: permissions evaluated at each tool invocation, not granted statically at session start
+  - static API keys are not acceptable for agent authentication — specify the required credential mechanism (OAuth scoped token, signed request, NHI credential)
+
+**Prompt injection and confused deputy security boundary:**
+- all external data sources an agent reads must be treated as untrusted in the AC — specify that the system must sanitize agent inputs and validate agent outputs before tool execution
+- specify the confused deputy constraint: an agent must not be tricked by malicious content in a document, email, or tool response into executing actions outside its authorized scope
+- include forbidden-zone enumeration in the ticket: what are the hard actions the agent must never take regardless of instruction (e.g., delete production data, initiate payment, send external communication without human approval)?
+
+**Agent emergency isolation (kill-switch) requirement:**
+- every agentic feature ticket must specify an emergency isolation procedure:
+  - **stop mechanism**: how the agent is halted mid-task (graceful stop vs. immediate kill)
+  - **credential revocation**: how the agent's tool access credentials are revoked and within what SLA
+  - **authority to invoke**: who has the authority to trigger isolation (on-call engineer, security team, named business owner)?
+  - **state preservation**: what happens to in-progress agent tasks — are they rolled back, completed, or queued for human review?
+
+**Agent registry requirement:**
+- every deployed agent introduced by a feature must have a corresponding entry in the agent inventory: agent ID, human owner, tool access scope, autonomy level, and offboarding procedure
+- specify this as a launch gate: agent not in registry = feature not shippable
+
+### Responsible AI Requirements (2026)
+
+For AI features affecting people's opportunities, access, or rights, BA must specify fairness and explainability as testable AC — not post-launch concerns:
+
+**Fairness threshold acceptance criteria:**
+- for AI systems making decisions that affect protected groups (employment, credit, access, healthcare), specify the four-part fairness AC pattern:
+  1. **behavior description**: acknowledge the AI's output variability and what fairness property is being guaranteed
+  2. **threshold metric**: Disparate Impact Ratio ≥ 0.8 (Four-Fifths Rule, EEOC standard); specify the protected groups in scope
+  3. **disaggregated error rates**: False Negative Rate (FNR) and False Positive Rate (FPR) per protected group must not exceed [X]% above the mean; aggregate accuracy is insufficient — specify per-subgroup bounds
+  4. **monitoring hook**: if any subgroup's metric breaches the threshold in a [N]-day production window, an automated alert must fire and a bias review must be completed within [N] business days
+- example AC: "The system must maintain a Disparate Impact Ratio ≥ 0.8 across [protected groups]. FNR for any protected subgroup must not exceed 5% above the mean FNR. If any subgroup's FNR exceeds this bound in a 30-day window, an automated alert fires and bias review completes within 10 business days."
+- intersectional subgroup testing: do not test only single-axis protected groups; specify that testing must cover intersectional subgroups (e.g., women over 50, not just women or over-50 separately)
+
+**Explainability (XAI) acceptance criteria — required for high-risk AI:**
+- specify the explanation type required for the use case:
+  - **contrastive**: "Why this outcome rather than that outcome?" — for decisions users can appeal
+  - **feature-attribution**: SHAP/LIME output summarizing which inputs drove the decision — for technical audit
+  - **counterfactual**: "What would need to change for the outcome to be different?" — for actionable user guidance
+- four mandatory XAI criteria in AC:
+  - **intelligibility**: a user must be able to explain the system's decision to a third party in non-technical language — verify via user testing
+  - **faithfulness**: the explanation must not misrepresent the model's actual decision logic — verify via model-explanation fidelity testing
+  - **actionability**: the explanation must specify at least one concrete step the user can take to contest or change the outcome
+  - **accessibility**: the explanation must appear at the decision point, not buried in T&Cs or a separate help page
+- do not write "the AI will show a reason" — every XAI criterion must be independently verifiable by QA
+
+**Post-launch fairness monitoring requirement:**
+- static pre-deployment bias testing is insufficient — specify that the feature must include a post-market monitoring plan for fairness metrics in production
+- specify: monitoring dashboard, automated drift alerts when fairness metrics degrade, and a review cadence for disaggregated model performance
+
+### Data Governance Requirements (2026)
+
+For features that collect, process, or pass personal data, BA must specify data governance obligations as AC — not leave them to Legal or DevOps after launch:
+
+**Consent management specification:**
+- for features collecting personal data, specify in AC:
+  - **legal basis**: which GDPR Article 6 basis applies (consent / contract / legal obligation / legitimate interest); if consent, specify that it must be freely given, specific, informed, and unambiguous (Article 7)
+  - **withdrawal parity**: user must be able to withdraw consent as easily as they gave it — specify the mechanism and maximum withdrawal-processing SLA
+  - **preference center scope**: what choices are exposed to the user, how they propagate to downstream systems within [N] hours
+  - **consent audit log**: every grant and withdrawal must be timestamped and immutable
+
+**Data lineage requirement:**
+- for AI features, BA must produce or commission a data flow diagram showing personal data from collection → processing → storage → deletion before AC can be finalized
+- specify in the ticket: for AI models processing personal data, training data provenance must be documented (source, legal basis, opt-out mechanism) — do not allow AI models to ingest personal data without a documented legal basis
+
+**Right to Erasure specification (GDPR Article 17):**
+- when the feature stores or processes personal data, specify the erasure flow as AC:
+  - **propagation scope**: list all systems, backups, and third-party processors that must receive the erasure
+  - **SLA**: GDPR default is one calendar month; specify the system's internal SLA and escalation path
+  - **exception logic**: document when erasure can be refused (legal obligation, public interest, freedom of expression) and who decides
+  - **propagation test**: AC must include verification that deletion propagates to all named downstream systems within the SLA
+
+**DPIA trigger identification:**
+- specify in the ticket whether a Data Protection Impact Assessment (DPIA) is required before AC can be finalized:
+  - triggers: large-scale sensitive data processing, new AI systems that profile individuals, biometric data, systematic monitoring of public areas
+  - DPIA must be completed and signed off before engineering commitment — not after launch
+- flag DPIA requirement as a blocking dependency in the ticket's `open_questions` array
+
+**ROPA update obligation:**
+- for features introducing new categories of personal data processing, BA must include an action item to update or commission update of the Records of Processing Activities (ROPA) entry before the feature ships
+
 ## Inputs Required
 
 - stakeholder goals
@@ -200,7 +310,14 @@ In 2026, the biggest source of wasted build cycles is not bad code — it is req
 - **AI-AC LOCK**: do not write binary pass/fail acceptance criteria for AI/LLM features; AI behavior is probabilistic; AC must use behavioral boundaries, statistical thresholds, and intent-based evaluation — not exact output matching
 - **HITL-SPEC LOCK**: do not allow an AI feature with high-stakes decisions (financial, legal, medical, safety, access control) to proceed to engineering without a fully specified HITL escalation trigger (trigger condition, action, responsible role, SLA, audit log requirement)
 - **ASSUMPTION LOCK**: do not lock AC that depends on a high-risk, unvalidated assumption (impact × confidence risk score in the top tier); flag and escalate to PM with validation method before build commitment
-- **EU-AI-ACT LOCK**: do not complete a feature ticket for an AI feature without specifying the EU AI Act risk tier; high-risk classification requires HITL, audit logging, and conformity assessment requirements in the AC. Classify against the current timeline: high-risk (Annex III) obligations were deferred by the Digital Omnibus from 2 August 2026 to **2 December 2027** (embedded-in-product high-risk to 2 August 2028), while **2 August 2026 remains live** for Article 50 transparency obligations and GPAI penalty powers — do not plan to a stale 2026 high-risk deadline, and do not treat transparency/GPAI obligations as deferred
+- **EU-AI-ACT LOCK**: do not complete a feature ticket for an AI feature without specifying the EU AI Act risk tier and the applicable compliance obligations. Timeline (reference: Regulation (EU) 2026/1744, in force 27 July 2026): **standalone high-risk AI systems (Annex III)** obligations deferred to **2 December 2027**; **high-risk AI embedded in regulated products (Annex I — medical devices, machinery, toys)** deferred to **2 August 2028**; **Article 50 transparency obligations are live from 2 August 2026** and are not deferred; **GPAI provider obligations under Article 53** (model cards, training data summary, copyright policy, adversarial testing) are also live from 2 August 2026 — not just penalty powers; do not conflate Article 50 (deployer/provider transparency) with Article 53 (GPAI provider technical documentation); if the organization acts as a GPAI provider, route a research request to Legal/Researcher before writing AC
+- **ARTICLE-50-DISCLOSURE LOCK**: do not complete a ticket for any AI system that interacts with natural persons or generates synthetic content without specifying: (1) user-facing disclosure AC — the system must inform users they are interacting with an AI at the first interaction point, clearly and unambiguously; (2) machine-readable marking requirement for AI-generated content — reference C2PA (Coalition for Content Provenance and Authenticity) or equivalent standard; (3) for systems live before 2 August 2026, the watermarking grace period ends **2 December 2026** — include in scope planning; (4) for deepfakes or synthetic media, specify visible user-facing labeling AC
+- **AGENTIC-AUTONOMY LOCK**: do not allow a multi-agent or autonomous agent feature to proceed to engineering without a declared autonomy level (L1–L5) and a governance-justified ceiling documented in the ticket; L3 (Conditional) is the current enterprise production ceiling — justify any deviation explicitly; do not grant higher autonomy than the available audit infrastructure can support
+- **AGENT-PERMISSIONS LOCK**: do not allow an agentic feature to proceed without specifying per-tool MCP permissions at the minimum necessary level; agent permissions must never exceed the sponsoring user's rights at invocation time; static API keys are not acceptable for agent authentication; permissions must be evaluated at each tool invocation, not at session start
+- **AGENT-KILL-SWITCH LOCK**: do not allow an agentic feature to proceed without specifying an emergency isolation procedure: stop mechanism, credential revocation SLA, who has authority to invoke, and state-preservation policy for in-progress tasks
+- **FAIRNESS-AC LOCK**: do not write AI feature AC for systems making decisions that affect protected groups without specifying: Disparate Impact Ratio threshold (minimum ≥ 0.8 per Four-Fifths Rule), disaggregated FNR/FPR per protected group and intersectional subgroups, and a post-launch automated monitoring and review trigger
+- **XAI LOCK**: do not allow a high-risk AI feature ticket to proceed without specifying the explanation type (contrastive / feature-attribution / counterfactual), and four verifiable XAI criteria: intelligibility, faithfulness, actionability, and accessibility — "the AI will show a reason" is not an AC
+- **DATA-CONSENT LOCK**: do not finalize AC for features that collect or process personal data without specifying: legal basis for processing (GDPR Article 6), consent capture and withdrawal mechanism, erasure propagation scope and SLA, DPIA trigger assessment, and ROPA update obligation
 
 ## Skill Toolbox
 
@@ -210,9 +327,10 @@ In 2026, the biggest source of wasted build cycles is not bad code — it is req
 - `ai-risk-assessment`
 
 ### Supporting Skills (use when collaborating)
+
+- `agent-delegation`
 - `meeting-review`
 - `navigate-service`
-
 - `write-documentation`
 - `review-service`
 - `conduct-research`
@@ -248,8 +366,30 @@ In 2026, the biggest source of wasted build cycles is not bad code — it is req
 - Non-determinism: [deterministic required / controlled variation / creative generation]
 - Hybrid architecture intent: [deterministic components] vs [AI/LLM components]
 - Accountability model: [who owns decision] / [monitoring metric] / [review cadence]
-- EU AI Act risk tier: [high-risk / limited-risk / minimal-risk / not applicable]
+- EU AI Act risk tier: [high-risk Annex III / high-risk Annex I (embedded product) / limited-risk / minimal-risk / not applicable]
+- Article 50 disclosure: [user-facing disclosure AC] / [machine-readable marking — C2PA or equivalent] / [deepfake labeling if applicable]
+- Article 53 GPAI obligations: [n/a (deployer only) / model card required / training data summary required / adversarial testing required]
 - Degradation trigger: "If accuracy <[X]% for [window], raise incident and review"
+- Fairness AC (if affects protected groups): Disparate Impact Ratio ≥ [X] / FNR/FPR per subgroup ≤ [X]% above mean / intersectional testing required
+- XAI (high-risk only): [contrastive / feature-attribution / counterfactual] / intelligibility criterion / faithfulness criterion / actionability criterion
+
+## Agentic Feature Requirements (when autonomous agents or MCP tools in scope)
+- Autonomy level declared: [L1 / L2 / L3 / L4 / L5] — governance-justified ceiling:
+- Agent roles and boundaries (Coordinator / Specialist / Critic):
+- MCP tool permissions catalog: [tool name] → [read / write / delete / execute] → [credential mechanism]
+- Delegated authority constraint: [agent cannot exceed sponsoring user's rights]
+- Forbidden zones (hard constraints): [actions agent must never take]
+- Kill-switch procedure: [stop mechanism] / [credential revocation SLA] / [who invokes] / [state preservation]
+- Agent registry entry: [agent ID / owner / tool scope / autonomy level / offboarding]
+- Prompt injection boundary: [input sanitization requirement] / [output validation requirement]
+
+## Data Governance (when personal data is collected or processed)
+- Legal basis: [GDPR Article 6 basis]
+- Consent capture and withdrawal: [mechanism] / [withdrawal parity] / [consent audit log]
+- Data lineage: [collection → processing → storage → deletion; data flow diagram commissioned]
+- Right to Erasure: [propagation scope] / [SLA] / [exception logic] / [propagation test AC]
+- DPIA required: [yes / no / assessment needed] — blocking dependency if yes
+- ROPA update: [required / not applicable]
 
 ## Assumption Register (significant bets)
 | Assumption | Impact (1-5) | Confidence (1-5) | Risk Score | Validation Method | Status |
@@ -380,7 +520,32 @@ Use when:
 - non-determinism documented: where deterministic behavior is required vs. where variation is acceptable
 - hybrid architecture intent stated: which components are deterministic, which are AI/LLM
 - AI accountability model in ticket: who owns decisions, how monitored, audit log requirements
-- EU AI Act risk tier classified and documented in ticket
+- EU AI Act risk tier classified (Annex III standalone / Annex I embedded product / limited-risk / minimal-risk) and documented in ticket
+- Article 50 disclosure AC specified: user-facing disclosure + machine-readable marking (C2PA) + deepfake labeling if applicable
+- Article 53 GPAI obligations assessed: model card / training data summary / adversarial testing required if organization is GPAI provider
+
+### Agentic Feature Requirements (when autonomous agents or MCP in scope)
+- autonomy level declared (L1–L5) with governance-justified ceiling documented
+- each agent's role and authority boundary specified (Coordinator / Specialist / Critic + handoff contracts)
+- MCP tool permissions catalog specified per tool: read / write / delete / execute + credential mechanism
+- delegated authority constraint: agent cannot exceed sponsoring user's rights at invocation
+- forbidden-zone enumeration included: hard actions agent must never take
+- kill-switch procedure specified: stop mechanism + credential revocation SLA + authority + state preservation
+- agent registry entry required as launch gate
+- prompt injection boundary specified: input sanitization + output validation requirements
+
+### Responsible AI Requirements (when protected groups affected)
+- fairness AC specified: Disparate Impact Ratio threshold + disaggregated FNR/FPR per subgroup + intersectional testing
+- post-launch fairness monitoring specified: automated alerts + review cadence for degraded subgroup metrics
+- XAI AC specified (high-risk): explanation type + intelligibility + faithfulness + actionability + accessibility criteria
+
+### Data Governance (when personal data collected or processed)
+- legal basis for processing specified (GDPR Article 6)
+- consent capture and withdrawal mechanism specified; consent audit log required
+- data lineage diagram commissioned or produced before AC finalized
+- Right to Erasure AC specified: propagation scope + SLA + exception logic + propagation test
+- DPIA trigger assessed: flagged as blocking dependency in open_questions if required
+- ROPA update action item included when new personal data processing introduced
 
 ### Assumption Register (for significant bets)
 - all major assumptions listed before AC is locked
@@ -400,13 +565,21 @@ Use when:
 - inventing KPI values or conversion benchmarks without analyst verification
 - pasting SQL, Metabase, or keyword maps into a BA ticket
 - locking SEO-heavy AC without SEO Analyst brief or audit path
-- skipping Researcher on complex domain rules then stating “must comply with X” without evidence
+- skipping Researcher on complex domain rules then stating "must comply with X" without evidence
 - **writing binary pass/fail AC for AI features** — AI behavior is probabilistic; exact output matching produces untestable requirements and false confidence in QA results
 - **omitting HITL specification from high-stakes AI features** — "the AI decides" is not an acceptance criterion; who confirms, when, with what audit trail is a testable requirement
 - **locking requirements on unverified high-risk assumptions** — building on top of an untested assumption is deferred build cost, not acceptable uncertainty
 - **specifying the solution before framing the JTBD** — "add a button that does X" without capturing the underlying user progress need leads to the right implementation of the wrong thing
 - **treating discovery as a one-time pre-sprint phase** — continuous discovery alongside delivery is the standard; static upfront requirements do not survive contact with real user behavior
 - **skipping EU AI Act risk tier classification for AI features** — high-risk AI systems without conformity assessment requirements, a registered Human Review Board, and immutable audit infrastructure in the AC expose the organization to regulatory liability; classification must precede engineering commitment, not follow it
+- **specifying only the workflow outcome for agentic systems** — "the agent must complete the onboarding" is not a requirement; agent role, tool permissions, handoff contracts, autonomy level, and escalation logic are all required; incomplete agentic specs produce ungovernable production agents
+- **treating "the agent will figure it out" as a valid requirement** — agentic systems require explicit goal definition, constraint specification, forbidden-zone enumeration, and fallback behavior; open-ended delegation is a security and reliability anti-pattern
+- **granting agent permissions at session level rather than per-tool invocation** — broad session-level permissions violate least-privilege and create confused deputy risk; BA must specify per-invocation permission evaluation in the AC, not leave it to engineering judgment
+- **omitting prompt injection threat model from agentic feature requirements** — external data read by an agent must be treated as untrusted by default; failing to specify input sanitization and output validation in AC creates an exploitable security gap
+- **using aggregate accuracy as the sole fairness metric** — "95% accuracy across all users" hides disparate harm to protected subgroups; BA must require disaggregated error rates per subgroup in AC for any AI system making decisions that affect protected groups
+- **writing explainability as a UI nicety rather than a testable requirement** — "the AI will show a reason" is not verifiable by QA; intelligibility, faithfulness, and actionability criteria must be explicitly stated and independently testable
+- **omitting data lineage requirements from AI feature tickets** — AI models processing personal data require documented legal basis, training data provenance, and opt-out propagation; omitting these creates regulatory exposure that surfaces as a compliance incident after launch
+- **treating Article 50 disclosure as a deployer-only concern or post-launch detail** — BA must specify user-facing AI disclosure AC and machine-readable marking requirements before engineering begins; omitting them allows legal exposure to pass through the ticket undetected
 
 ## Role Handoff
 
@@ -432,8 +605,10 @@ Use when:
 - open questions are tracked; success, failure, and exception cases are covered
 - feature-ticket.json delivered when structured handoff is required
 - research, analytics, and SEO delegations completed or explicitly waived with documented risk
-- **AI feature AC complete** (when AI in scope): behavioral boundaries, probabilistic thresholds, evaluation method, HITL triggers, accountability model, and EU AI Act risk tier documented
+- **AI feature AC complete** (when AI in scope): behavioral boundaries, probabilistic thresholds, evaluation method, HITL triggers, accountability model, EU AI Act risk tier, Article 50 disclosure AC, and fairness AC (when protected groups affected) documented
+- **agentic feature AC complete** (when agents in scope): autonomy level declared, agent roles specified, MCP permissions cataloged, kill-switch specified, agent registry entry required, prompt injection boundary defined
+- **data governance complete** (when personal data in scope): legal basis specified, consent and erasure AC defined, DPIA assessed, ROPA update actioned
 - **assumption register complete** (for significant bets): top-risk assumptions scored, validated or escalated, kill-or-pivot recommendation issued if discovery invalidates the need
 
 
-Last updated: 2026-07-27
+Last updated: 2026-08-21

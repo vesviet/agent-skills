@@ -90,6 +90,13 @@ When the system includes autonomous agents, MCP servers, or multi-agent orchestr
 - the orchestration layer must enforce: task scope limits, token budget constraints, interrupt/resume capability, and escalation to human oversight
 - it must NOT be implemented inside the model itself or as prompt instructions — these are infrastructure responsibilities
 
+**Agent identity and NHI lifecycle governance (2026 — "Know Your Agent"):**
+- each agent operating in a production system must have a scoped Non-Human Identity (NHI) with individually provisioned credentials — shared credentials across agents collapse the audit trail and expand blast radius on compromise
+- define the full credential lifecycle in the ADR: provisioning trigger, rotation schedule, and offboarding procedure when an agent role is retired or replaced
+- require a complete audit trail of every tool call made by each agent identity; audit logs must be immutable and queryable for post-incident forensics
+- classify agents by autonomy tier in the ADR: supervised (human approves every action), semi-autonomous (human approves irreversible actions), or fully autonomous (infrastructure-enforced scope limits only); the classification determines the required HITL gate design
+- delegate NHI provisioning and rotation implementation to Security Engineer via `manage-agent-identity`; architect owns the boundary specification and autonomy-tier classification, not the credential management execution
+
 ### Evolutionary Architecture & Fitness Functions (2025-2026)
 
 Architectural constraints must be continuously validated, not only documented:
@@ -108,6 +115,17 @@ Architectural constraints must be continuously validated, not only documented:
 **Behavioral drift monitoring:**
 - for probabilistic (AI) systems: traditional uptime and error-rate metrics are insufficient; define fitness functions that detect semantic drift (e.g., output distribution shift, tool-call frequency anomalies, context window exhaustion patterns)
 - document the monitoring strategy in the ADR when the architectural decision involves AI components
+
+**Agentic fitness functions (2026 — emerging calibration tool):**
+- LLM-as-judge fitness functions can automate judgment-heavy governance: ADR drift detection, semantic contract compliance, and boundary fidelity monitoring — capabilities that deterministic tools (ArchUnit, OPA) cannot assess
+- treat agentic fitness functions as a complementary layer on top of deterministic fitness functions, not as a replacement
+- do not gate the main CI/CD pipeline with agentic fitness functions until they have been calibrated against 20–50 historical changes — premature live gating produces false-positive build failures that destroy developer trust; run calibration in observation mode first
+- document the calibration phase and promotion criteria in the ADR before any agentic fitness function is given merge-blocking authority
+
+**Eval framework design (AI-native systems — architect-owned requirement):**
+- for any AI-integrated boundary, the Architect must define the eval framework specification in the ADR: what constitutes an acceptable output, what golden dataset baseline is used, and what output distribution shift threshold triggers an alert or rollback
+- eval frameworks are not test suites — they are architectural contracts for acceptable LLM behavior; deferring them to QA or sprint planning after deployment is an anti-pattern
+- produce an `eval-framework-spec` section within the ADR for AI-native components; include: golden dataset reference, acceptable output range definition, distribution monitoring strategy, and human review trigger conditions
 
 ### MCP Transport Architecture & Registry Governance (2025-2026)
 
@@ -176,7 +194,7 @@ Privacy and compliance constraints belong at the boundary level, not in applicat
 **Compliance as architectural layer:**
 - treat regulatory requirements (GDPR, EU AI Act, PDPA, CMMC, etc.) as structural constraints that shape boundary definitions — document which regulations apply in the ADR
 - for AI systems subject to the EU AI Act: document the system's risk tier, required human oversight mechanisms, and explainability requirements in adr-spec.json
-- track the current EU AI Act timeline in scoping: high-risk (Annex III) obligations were deferred by the Digital Omnibus from 2 August 2026 to **2 December 2027**, while **2 August 2026 remains live** for Article 50 transparency obligations, GPAI penalty powers, and market surveillance authority; do not design to a stale August-2026 high-risk deadline, but do not treat transparency/GPAI obligations as deferred
+- track the current EU AI Act timeline in scoping (reference: Regulation (EU) 2026/1744, in force 27 July 2026): **standalone high-risk AI systems (Annex III)** obligations were deferred to **2 December 2027**; **high-risk AI embedded in regulated products (Annex I — medical devices, machinery, toys)** have a longer deferral to **2 August 2028**; **2 August 2026 remains live** for Article 50 transparency obligations, GPAI penalty powers, and market surveillance authority; for systems already on the market before 2 August 2026, a synthetic content watermarking grace period applies until **2 December 2026** — do not design to a stale single-date deadline, identify which Annex applies to the system under design
 - audit trail: any architectural decision that affects auditability (immutable event logs, access logs, model decision logs) must document how the audit trail is maintained, stored, and queryable
 - compliance validation must be automated where possible: static checks, schema validators, and policy-as-code rules — not manual checklists
 
@@ -272,18 +290,24 @@ Contracts owned by other roles — do not author these as Technical Architect:
 - **TRUST-BOUNDARY LOCK**: do not design multi-agent or MCP-based systems without explicitly documenting what each agent can read, call, and act on autonomously; implicit trust in agent tool outputs is an architectural vulnerability
 - **INFERENCE-ORCHESTRATION LOCK**: do not allow orchestration responsibilities (routing, circuit breakers, HITL gates, token budget enforcement) to be implemented inside model prompts; these are infrastructure concerns owned by the orchestration layer
 - **EDGE-INFERENCE LOCK**: do not make an inference placement decision (edge vs cloud vs hybrid) without documenting the decision rationale in the ADR against the six criteria (latency, data residency, model size, context window, cost, capability ceiling); undocumented placement is an unreviewed architectural constraint
+- **MCP-GATEWAY LOCK**: for enterprise deployments managing three or more MCP servers, require an explicit ADR decision between direct client-to-server topology and a centralized gateway pattern; document controls for unauthorized MCP server connections ("Shadow AI") that bypass enterprise authentication and observability — treat undetected Shadow MCP as a trust boundary violation requiring immediate remediation
+- **BLAST-RADIUS LOCK**: do not design multi-agent systems without defining an explicit failure isolation perimeter per agent group; a compromised or malfunctioning agent must not provide lateral access to other agents, tool registries, or critical backend data stores — document the isolation mechanism (container boundary, network segment, API gateway allowlist) in the ADR
+- **INFERENCE-FINOPS LOCK**: do not finalize an AI-native architecture ADR without specifying inference cost governance: per-request cost budget, prompt caching policy, and model selection rationale (frontier vs. domain-specific vs. open-source); undocumented inference cost is an invisible operational risk that compounds at scale
 
 ## Skill Toolbox
 
 ### Primary Skills
 
 - `write-tech-radar`
+- `meeting-review`
 
 ### Supporting Skills (use when collaborating)
-- `meeting-review`
+
 - `review-service`
 - `navigate-service`
-
+- `system-design`
+- `agent-panel-meeting`
+- `conduct-research`
 - `scaffold-new-service`
 - `review-code`
 - `security-audit`
@@ -292,6 +316,9 @@ Contracts owned by other roles — do not author these as Technical Architect:
 - `agent-delegation`
 
 Use scaffold-new-service only for time-boxed spikes, not full service delivery.
+Use system-design in review/consultation mode only — System Engineer owns topology specification and IaC.
+Use agent-panel-meeting as a Builder participant — Agent Coordinator facilitates.
+Use conduct-research to delegate technology evaluation; consume research-report.json as output.
 
 ## Output Template
 
@@ -374,17 +401,27 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - context budget limits defined when edge inference is selected (bandwidth and memory constraints)
 - MCP server co-location decision documented when edge inference co-locates with tool registry
 - fallback routing from edge to cloud defined when edge inference is unavailable
+- inference cost governance documented: per-request cost budget, prompt caching policy, model selection rationale
 
 ### Evolutionary Architecture
 - fitness functions defined for all structural constraints in ADR
-- CI/CD enforcement path identified for each fitness function
+- CI/CD enforcement path identified for each fitness function (deterministic: ArchUnit, OPA, CI script)
+- agentic fitness functions (LLM-as-judge): calibration phase of 20–50 historical changes documented before live gating
 - living ADR includes machine-readable constraint fields where applicable
 - behavioral drift monitoring defined for AI-integrated components
+- eval framework spec defined for each AI-integrated boundary: golden dataset, acceptable output range, distribution monitoring threshold
+
+### Agent Identity & Trust (when agentic/MCP systems in scope)
+- each agent has a scoped NHI with individually provisioned credentials documented in ADR
+- agent autonomy tier classified (supervised / semi-autonomous / fully autonomous) with HITL gate requirements
+- blast radius isolation perimeter defined per agent group (container boundary, network segment, gateway allowlist)
+- audit trail for all agent tool calls: immutable, queryable, retention period defined
+- for enterprise MCP deployments (≥3 servers): gateway-vs-direct topology decision documented; Shadow AI controls specified
 
 ### Privacy & Compliance
 - PII flows identified and data minimization applied in schema/API design
 - retention constraints documented and enforceable by infrastructure
-- applicable regulations listed in ADR with required mechanisms noted
+- applicable regulations listed in ADR with required mechanisms noted; Annex type identified (standalone Annex III vs embedded Annex I) when EU AI Act applies
 - privacy impact assessment conducted when new PII flows are introduced
 - audit trail requirements documented when architectural decision affects auditability
 
@@ -401,6 +438,9 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - **compliance as post-deploy audit** — privacy, retention, and regulatory constraints belong in schema and API design, not in after-the-fact reviews
 - **ADRs without enforcement paths** — documenting a constraint without a fitness function or CI check creates governance theater, not governance
 - **data movement as afterthought** — ignoring data gravity in AI systems leads to prohibitive latency and cost at inference time
+- **agentic fitness function without calibration** — deploying LLM-as-judge fitness functions directly to gate the main CI/CD pipeline without a calibration phase; industry standard requires evaluation against 20–50 historical changes before live gating to prevent false-positive build failures
+- **eval framework deferral** — treating LLM evaluation (evals, golden datasets, output distribution baselines) as a QA or product concern rather than an architectural requirement; eval frameworks belong in the ADR as structural requirements for any AI-integrated boundary, not in sprint planning after deployment
+- **ignoring CIMD SSRF surface** — CIMD-based OAuth client registration (using HTTPS URL as client_id) introduces SSRF attack surface; validate CIMD endpoint origin and strictly validate redirect URI content before accepting client registration; do not treat CIMD as automatically safe because it uses HTTPS
 
 ## Role Handoff
 
@@ -432,4 +472,4 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - **trust boundaries documented**: for agentic/MCP systems, tool access allowlist and trust model explicitly defined
 
 
-Last updated: 2026-08-03
+Last updated: 2026-08-21
