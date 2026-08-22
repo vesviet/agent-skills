@@ -18,6 +18,8 @@ Use this skill with **QA Engineer**, **Frontend Developer**, or **UI/UX Designer
 
 - target WCAG 2.2 Level AA as the default baseline unless the repo documents a different bar; WCAG 2.2 AA is a superset of 2.1 AA, so a 2.1 AA obligation is satisfied by meeting 2.2 AA
 - confirm which conformance target actually binds the project before reporting: regulatory regimes lag the latest WCAG release (see the regulatory note below)
+- **CI gate mandate**: all PR builds must run `new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag22a', 'wcag22aa']).analyze()` and fail CI if `violations.length > 0` — automated axe scans catch ~30–50% of defects; pair with manual keyboard-only and screen reader testing
+- use WAI-ARIA Authoring Practices Guide (APG) 2.2 keyboard interaction patterns as the authoritative reference for widget types (combobox, dialog, menu, tabs, tree) — do not invent ad-hoc keyboard patterns
 - audit the Success Criteria added in WCAG 2.2 at Level A/AA:
   - **3.3.8 Accessible Authentication (AA)**: Ensure cognitive function tests (such as memorizing passwords/usernames or solving puzzles) are not required for login processes without alternatives. (3.3.9 is the AAA variant — out of scope for an AA baseline.)
   - **3.3.7 Redundant Entry (A)**: Avoid requiring users to re-enter information previously entered in the same process; instead, auto-populate or provide selectable choices.
@@ -33,7 +35,7 @@ Use this skill with **QA Engineer**, **Frontend Developer**, or **UI/UX Designer
   - Use `suggestion`, `comment`, and `mark` roles for editorial markup and user feedback panels.
   - Use `aria-description` for a detailed text description, and `aria-braillelabel` / `aria-brailleroledescription` for braille readers.
   - Never rely on an annotation role as the only accessible name or state; keep a 1.2-compatible fallback.
-- test keyboard-only paths for every primary task in scope
+- test keyboard-only paths for every primary task in scope; `Tab`, `Shift+Tab`, `Enter`, `Space`, `Escape` must be 100% operable with visible, non-obscured focus indicators (3:1 contrast ratio minimum)
 - verify visible focus indicators and logical tab order
 - ensure images, icons, and controls have accessible names (text or aria-label)
 - check color contrast for text and interactive states; do not rely on color alone

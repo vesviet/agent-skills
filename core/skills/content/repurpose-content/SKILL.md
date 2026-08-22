@@ -17,18 +17,14 @@ Modern content distribution requires a single narrative to be adapted into multi
 
 ## Core Rules
 
-- **Native Format Alignment:** adapt to channel conventions — LinkedIn posts need a hook and spaced lines; Twitter/X threads need numbered segments and tight word counts; video scripts need `[Visual/Hook]` markers and ≤150 words for 60-second formats.
-- **No Fact Invention:** do not introduce claims, statistics, or examples not present in the source article; flag gaps and note they need original sourcing.
-- **Preserve E-E-A-T / Information Gain:** the unique insight, firsthand evidence, and source attribution from the main article must survive in the short-form variant — do not strip credentials, citations, or expert quotes when adapting.
-- **Channel Ownership:** handoff labeled variants clearly; do not choose distribution channels unless explicitly requested.
-- **Source Must Exist:** do not generate repurposed content from a non-existent source — request or write the primary article first using `write-article`.
-
-### 2025-2026: AI-Assisted Repurposing Governance
-
-- **Human editorial gate is mandatory** when AI generates channel variants: treat AI output as a first draft requiring human review before publish — do not ship AI-repurposed content directly.
-- **AI content labeling:** follow the platform's native AI content disclosure requirements (Meta, LinkedIn, and TikTok each have their own mandatory AI label policies as of 2025) — apply the appropriate label or flag for manual application.
-- **GEO/AEO-safe adaptation:** when the source article is indexed for Google AI Overviews or Perplexity citation, preserve fact density and structured statements in newsletter and social variants — stripping factual depth reduces AI citability of the core article.
-- **Do not repurpose AI-generated source material without verifying its accuracy first** — repurposing amplifies errors; validate the source article's claims before distributing variants.
+- **Native Format Alignment**: adapt strictly to channel conventions — LinkedIn (150–300 words, hook + bulleted insights + community question); X/Threads (5–7 posts: Hook → Tension → Insight 1 → Insight 2 → CTA); Newsletter snippet (80–150 words, Tension Hook format + canonical backlink); Short video script (≤150 words/60s with `[Visual]`, `[Hook]`, `[Body]`, `[CTA]` markers) — never cross-post identical text without channel reformatting
+- **No Fact Invention**: do not introduce any claim, statistic, or example not explicitly present in the verified source asset; flag gaps and note they need original sourcing
+- **Preserve E-E-A-T / Information Gain**: the unique insight, firsthand evidence, and source attribution from the parent article must survive in every derivative variant — never strip credentials, citations, or expert quotes to hit word count
+- **Source Must Exist and Be Validated**: do not generate repurposed content from an unverified or AI-generated source article — repurposing amplifies errors across every channel; validate the source's factual accuracy before distributing variants
+- **Human editorial gate is mandatory**: treat all AI-generated channel variants as drafts; a human editor must review, calibrate voice, and approve before queuing or publishing — no direct-to-social automated publish from raw AI output
+- **AI content labeling compliance**: apply the target platform's mandatory AI disclosure tag before publishing (Meta, LinkedIn, and TikTok each enforce their own AI label policies); flag for manual application if the platform's UI labeling flow is required
+- **GEO/AEO-safe adaptation**: preserve fact density and structured statements in newsletter and social variants when the source article is indexed for AI search (Google AI Overviews, Perplexity) — stripping factual depth reduces citability of the core asset
+- **Channel Ownership**: label variants clearly by channel; do not choose distribution channels unless explicitly requested
 
 ## Suggested Process
 

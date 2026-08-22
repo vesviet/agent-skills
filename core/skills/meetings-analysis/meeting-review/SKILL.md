@@ -25,13 +25,13 @@ This skill does not require real subagents. By default, synthesize the needed pe
 - make preserved versus changed behavior explicit when the topic affects a bug fix, feature, or policy
 - identify who or what is impacted before recommending a path
 - avoid broad panel theater when a simple review would do
-
-### 2025-2026: AI-Generated Review Signal Governance
-
-- **Label AI-produced perspectives explicitly:** when synthesizing review perspectives using an LLM, prefix each AI-generated perspective with `[AI-synthesized]` in the artifact so readers know which signals came from automated reasoning versus human domain knowledge.
-- **Human sign-off gate for major decisions:** any architectural decision, breaking change, or release-blocking recommendation produced by this skill requires explicit human review and approval before actioning — do not treat AI-synthesized review consensus as equivalent to cross-functional team alignment.
-- **Distinguish AI-generated risk assessment from validated risk:** when the skill identifies a risk (security, performance, data integrity), note whether the risk was validated against code/docs or inferred by the LLM from context alone — inferred risks must be explicitly marked as requiring human validation.
-- **Avoid synthetic disagreement manufacturing:** AI review panels can generate plausible-sounding conflicting perspectives that do not reflect real organizational trade-offs; prune any perspective that cannot be grounded in a specific code path, requirement, or stakeholder constraint.
+- async-first: start decisions with a written RFC/brief and a 48–72h async comment window before scheduling any call; decisions made in ephemeral chat without an ADR are an anti-pattern
+- apply DACI framing for decision points (Driver, Approver, Contributors, Informed); exactly ONE Approver per decision — consensus paralysis from committee approval is prohibited
+- commit final decisions as Architecture Decision Records (`docs/adr/NNNN-title.md`) with status `Supersedes ADR-XXXX` when revising prior decisions — ADRs are append-only
+- label AI-produced review perspectives explicitly with `[AI-synthesized]` so readers know which signals came from automated reasoning versus human domain knowledge
+- human sign-off gate is mandatory for any architectural decision, breaking change, or release-blocking recommendation — AI-synthesized review consensus is not equivalent to cross-functional team alignment
+- inferred risks must be explicitly marked `[INFERRED — requires human validation]` when not validated against code or docs
+- prune any AI-generated perspective that cannot be grounded in a specific code path, requirement, or stakeholder constraint — avoid synthetic disagreement manufacturing
 
 ## When To Use
 

@@ -17,6 +17,8 @@ Use this skill for **search and content-structure** work — not for writing lon
 - document **internal link targets** with anchor rationale and destination paths
 - enforce on-page limits: title tag ≤ 60 chars, meta description ≤ 160 chars unless repo rules differ
 - check **keyword cannibalization** against recent publishes on the same site (default: 7-day window when a topic board exists)
+- track **Share of Model (SoM)** alongside traditional CTR — measure how often and how accurately the brand/content is cited in Google AI Overviews, Perplexity, and ChatGPT Search using AI visibility tooling (Otterly, RankScale, or manual spot-checks)
+- mandate a **30–60 day rolling freshness review** for core commercial and informational pillar pages — AI search engines heavily weight recently-updated content when retrieving citations
 - do not guarantee rankings or AI citation placement; recommend changes tied to observable gaps
 - escalate **technical SEO** (canonical, schema markup, redirects, Core Web Vitals fixes) with a clear engineering brief
 - use repo overlays under overlays/lease-content and overlays/vesviet-content when site-specific slug or frontmatter rules apply

@@ -20,8 +20,12 @@ Use this skill when frontend code needs to call a backend API or when an existin
 - keep transport details out of presentational components when possible
 - make loading, error, and retry behavior explicit
 - preserve auth and sensitive-data handling rules
-- preserve type safety between API contract and frontend usage (generated types, Zod, or repo-local pattern)
+- enforce type safety between API contract and frontend usage — use Zod schemas, generated types (Orval, openapi-typescript), or repo-local pattern; do not use untyped API responses
 - avoid duplicated request logic when a shared client already exists
+- for TanStack Query v5 codebases: centralize query keys and fetchers in `queryOptions` factories — scattered magic string query keys are an anti-pattern
+- for optimistic mutations: implement the full lifecycle — `onMutate` (cancel in-flight queries + snapshot + update), `onError` (rollback from snapshot), `onSettled` (invalidate) — optimistic updates without rollback handlers are prohibited
+- use functional updater syntax in `setQueryData((old) => ...)` to prevent stale state captures
+- server state must stay in the query cache; do not duplicate server responses in local `useState`
 - if any code in this change was AI-generated, validate it per the risk tier defined in the frontend-developer role before accepting
 
 ## Suggested Process

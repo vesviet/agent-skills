@@ -16,19 +16,13 @@ Use this skill when configuring the foundational styling architecture, design to
 
 ## Core Rules
 
-- **Source of Truth:** establish a single source of truth for design tokens (colors, typography, spacing) and do not allow hardcoded magic values in components.
-- **Consistency:** enforce a unified styling approach (e.g., utility-first like Tailwind, CSS Modules, or CSS-in-JS) and reject mixed paradigms without clear boundaries.
-- **Accessibility Integration:** design system primitives must support accessibility (ARIA attributes, semantic HTML, high contrast tokens) by default.
-- **Maintainability:** provide clear documentation or guidelines on how to consume design tokens and base components.
-- **Token Portability:** prefer token formats that can be exported or consumed by multiple tools (design, code, documentation); avoid coupling tokens to a single framework's runtime.
-
-### 2025-2026: GenUI Governance and W3C Design Token Standard
-
-- **W3C Design Token Community Group (DTCG) format is the emerging standard (2024-2025):** use `{ "$value": ..., "$type": ... }` format for token definitions when setting up a new token system — this enables interoperability with Figma Variables, Style Dictionary, and AI-driven design tools.
-- **GenUI governance:** when AI tools generate UI components (Copilot, v0, Lovable, Cursor), require each generated component to pass the design system's token conformance check before merge — no hardcoded hex values, px overrides, or shadow DOM leakage from AI-generated markup.
-- **AI-generated component review checklist:** verify that AI-generated primitives (a) consume design tokens instead of magic values, (b) forward refs correctly, (c) include required ARIA attributes, and (d) do not introduce duplicate or conflicting class utility patterns.
-- **Token audit gate:** before finalizing a new design system setup, run a token audit to ensure color contrast ratios meet WCAG AA (4.5:1 for normal text, 3:1 for large text) — many AI-generated palettes fail this check.
-- **Storybook AI integration:** if using Storybook 8+, configure the `a11y` and `chromatic` addons as mandatory CI gates — AI-generated components frequently ship with missing interactive states (focus, hover, disabled) that only visual regression testing catches.
+- **Source of Truth:** define all design tokens inside `@theme` in CSS entrypoints (Tailwind v4 CSS-first config) or DTCG `{ "$value": ..., "$type": ... }` JSON format — do not maintain `tailwind.config.js` in Tailwind v4 projects
+- **Consistency:** enforce a unified styling approach and reject mixed paradigms; use OKLCH perceptual color space for palette tokens to ensure uniform contrast and predictable color transitions
+- **Semantic Token Layering:** components must consume semantic aliases (`--color-surface-primary`, `--color-text-body`) rather than raw primitive color names (`--color-blue-500`); use `:root` for CSS variables not needing utility mapping
+- **Accessibility Integration:** design system primitives must support accessibility (ARIA attributes, semantic HTML, high contrast tokens) by default; run WCAG AA contrast check (4.5:1 text, 3:1 UI controls) before finalizing any token palette
+- **Maintainability:** provide clear documentation on how to consume design tokens and base components; Storybook 8+ with `a11y` and `chromatic` addons as mandatory CI gates
+- **Token Portability:** use W3C DTCG format for interoperability with Figma Variables, Style Dictionary, and AI-driven design tools
+- **GenUI Governance:** AI-generated components (v0, Copilot, Lovable) must pass token conformance check before merge — no hardcoded hex values, px overrides, or shadow DOM leakage; verify the component (a) consumes design tokens, (b) forwards refs correctly, (c) includes required ARIA attributes, (d) does not introduce duplicate class patterns
 
 ## Suggested Process
 

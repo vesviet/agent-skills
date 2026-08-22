@@ -9,11 +9,13 @@ Use this skill to create standard-compliant MCP servers that expose system capab
 
 ## Core Rules
 
-- **Schema-First**: Define all tool inputs using Zod or Pydantic schemas as the absolute source of truth.
-- **Versioning**: Apply SemVer 2.0 to the MCP server API. Support concurrent major versions during deprecation windows.
-- **Security**: Implement OAuth 2.0 / 2.1 Resource Server patterns for authorization if the server exposes sensitive mutations or data.
-- **Telemetry**: Add OpenTelemetry spans to track every tool execution, noting inputs, execution time, and outcome.
-- **Stateless Execution**: Adhere to stateless request semantics where client capabilities and request metadata are passed per invocation.
+- **Schema-First**: Define all tool inputs and outputs using Zod or Pydantic schemas as the absolute source of truth; generate JSON Schema 2020-12 from these definitions for protocol compliance
+- **Stateless Server Guarantee** (July 2026 MCP spec): MCP server instances must not store in-memory session state — all context must be passed in the request or persisted externally (Redis, Durable Objects); this enables deployment on serverless edge runtimes (Cloudflare Workers, AWS Lambda)
+- **Transport Selection**: Use **Streamable HTTP** for remote/cloud deployments; use **stdio** exclusively for local IDE/CLI tools — in stdio mode, `stdout` is strictly reserved for JSON-RPC 2.0 frames; all logs must route to `stderr`
+- **Header-Based Routing**: Pass tool method and name in HTTP headers (`Mcp-Method: tools/call`, `Mcp-Name: create_invoice`) to enable API gateway rate limiting and authorization without body parsing
+- **Versioning**: Apply SemVer 2.0 to tool names; treat tool names as immutable public contracts — breaking schema changes require major version increments with dual-version deprecation windows
+- **Security**: Implement OAuth 2.1 with PKCE Bearer token validation for HTTP-transport servers; apply tenant scoping and **least-privilege mutation gating** — destructive tools (write, delete, send) require explicit authorization and confirmation tokens; read-only tools may be open by default
+- **Telemetry**: Emit an OTel span for every `tools/call` execution with `mcp.tool_name`, `mcp.transport_type`, duration, and outcome; never log sensitive payload data or auth credentials in trace attributes
 
 ## Suggested Process
 

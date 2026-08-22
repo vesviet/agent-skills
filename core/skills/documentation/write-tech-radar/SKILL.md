@@ -18,14 +18,15 @@ Use this skill when a team needs a technology radar, adoption note, or concise e
 
 ## Core Rules
 
-- optimize for decision clarity, not essay length
-- state the recommendation and confidence level explicitly
-- capture trade-offs, not just benefits
-- separate observed facts from inferred judgment
-- keep the entry useful to future readers who were not in the original discussion
-- link radar entries to architectural decision records (ADRs) using the MADR format
-- track AI tool adoption actively via dedicated AI Tools rings or a sub-radar
-- ensure all radar entries follow a consistent inline template detailing ring, quadrant, rationale, links, and lifecycle justification
+- optimize for decision clarity, not essay length — every entry must answer "should my team use this, and under what conditions?" without prose padding
+- state the recommendation ring explicitly using the **four standard ThoughtWorks ring names only**: `Adopt`, `Trial`, `Assess`, or `Caution` (not "Hold", "Avoid", or custom names); custom ring names break organizational radar consistency
+- capture trade-offs, not just benefits; every entry requires a risk/trade-off analysis alongside the adoption rationale
+- separate observed production evidence from inferred judgment; explicitly label claims that are POC-only versus verified-in-production
+- **Caution ring sign-off gate**: technologies assigned to `Caution` require explicit Architecture Board or Technical Lead sign-off before any new service or repository adopts them — this is an enforced governance gate, not a soft recommendation
+- **Time-bounded Assess phase**: entries in `Assess` must declare measurable POC success criteria and a deadline; without a defined evaluation window, `Assess` becomes a permanent parking lot
+- link radar entries to ADRs using **MADR format** (Markdown Architectural Decision Records) — radar entries are navigation aids, ADRs are the binding record
+- track AI tool adoption in a dedicated quadrant or sub-radar with rings explicitly applied; re-evaluate AI tool entries at minimum **bi-annually** (AI maturity evolves faster than conventional tooling)
+- keep the entry useful to future readers who were not in the original discussion — avoid jargon and internal acronyms without expansion
 
 ## Suggested Process
 

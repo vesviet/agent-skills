@@ -28,8 +28,12 @@ Use this skill when a release, deployment, or version bump requires communicatio
 - do not mention internal process, agent names, ticket IDs, or team structure unless the audience needs them
 - do not include secrets, credentials, configuration values, or PII
 - distinguish **user-facing changes** from **operator or infrastructure changes**
-- every breaking change must include an upgrade path or migration note
+- every breaking change must include an upgrade path or migration note; breaking changes require a MAJOR SemVer bump — even minor API contract changes
 - keep notes accurate — do not imply a fix is complete if it is partial or has known caveats
+- commit history must follow Conventional Commits 1.0 (`feat:`, `fix:`, `feat!:`, `BREAKING CHANGE:`) to enable automated changelog generation via `semantic-release`, `changesets`, or `changelogen`
+- automated changelogs are drafts only — require human editorial review to remove noisy internal commits before publishing
+- deprecations must include exact sunset date in ISO 8601 format and a link to the migration guide (reference RFC 8594 Sunset header)
+- dual-audience release communication: user-facing product notes (UX outcomes) must be separated from operator changelogs (env vars, migrations, infra actions)
 
 ## Suggested Process
 
@@ -132,13 +136,16 @@ Before publishing, verify:
 ## Checklist
 
 - [ ] changes collected from source of truth (commits, PRs, tickets)
+- [ ] commit history follows Conventional Commits 1.0 (lint with Commitlint)
+- [ ] SemVer bump is accurate: MAJOR for breaking changes, MINOR for features, PATCH for fixes
 - [ ] breaking changes identified and listed first
 - [ ] every breaking change has an upgrade path
-- [ ] deprecations include timeline and alternative
+- [ ] deprecations include ISO 8601 sunset date, alternative, and migration guide link
 - [ ] security fixes omit exploit details
 - [ ] language is audience-appropriate (no internal jargon or process)
 - [ ] partial fixes or known caveats are noted honestly
-- [ ] operator notes separated from user notes where relevant
+- [ ] user-facing notes separated from operator/infrastructure notes
+- [ ] automated changelog draft reviewed by human before publishing
 
 ## Related Skills
 
@@ -147,8 +154,5 @@ Before publishing, verify:
 - **review-service**: Confirm release readiness before communication goes out
 - **write-tech-radar**: Document longer-term technology direction changes
 
-### 2026: Release Automation
 
-- **GitHub Releases automation:** Generate release notes from Conventional Commits via `gh release create --generate-notes` or the GitHub Releases API. Customize the note template in `.github/release.yml` to categorize commits by type (Features, Fixes, Breaking Changes). This avoids hand-writing notes for every release.
-- **Semantic versioning decision rules:** MAJOR bump when a breaking change is introduced (even minor API contract changes). MINOR bump for backward-compatible features. PATCH bump for fixes. Provide a decision table in the checklist to prevent incorrect version bumping.
-- **Deprecation calendar in release notes:** Every release note for a deprecated feature must include the exact sunset date in ISO 8601 format and a link to the migration guide. Consider referencing the RFC 8594 Sunset header specification.
+

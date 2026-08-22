@@ -17,14 +17,15 @@ Use with the **Technical Lead** role after requirements and architecture inputs 
 ## Core Rules
 
 - preserve business and system behavior called out in feature-ticket.json and adr-spec.json
-- slice work so each piece is reviewable and testable independently when possible
+- slice work so each piece is reviewable and testable independently — target ≤400 lines of diff per slice to stay in review-friendly range
+- decompose features into thin vertical slices (UI → API → DB) that deliver independent user value — horizontal layer slicing (DB sprint 1, API sprint 2, UI sprint 3) is an anti-pattern
 - name impact_radius modules, shared logic, and regression-prone areas explicitly
 - define quality_gates matching change risk — not schedule pressure
 - emit `contracts/schemas/technical-delivery-plan.json` for machine handoff
 - do not implement production code — delegate slices to developer roles
-- **Feature flag-first delivery**: every user-visible slice needs flag name, kill-switch, rollout plan (internal → canary → GA), and cleanup target date
+- **Feature flag-first delivery**: every user-visible slice needs flag name, kill-switch, rollout plan (internal → canary → GA), and cleanup target date — permanent flags without retirement schedule are an anti-pattern
 - **Hybrid human+agent slice ownership**: specify compute budget, HITL checkpoints, and agent output gates for agent-implemented slices
-- **AI estimation with explicit uncertainty bounds**: use confidence intervals and three-point estimates (optimistic, expected, pessimistic) rather than point estimates
+- **AI estimation with explicit uncertainty bounds**: use three-point estimates (optimistic P10, expected P50, pessimistic P90) rather than point estimates — measure delivery health with DORA (Deployment Frequency, Lead Time, CFR, MTTR) and SPACE (Satisfaction, Performance, Activity, Communication, Efficiency) balanced signals
 
 ## Suggested Process
 

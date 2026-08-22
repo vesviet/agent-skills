@@ -16,11 +16,14 @@ Use this skill when the task involves building, extending, or debugging the step
 
 ## Core Rules
 
-- treat cart state as eventually consistent — never trust client-side totals for final billing; always recalculate server-side before charge
-- validate inventory availability at checkout time, not only at add-to-cart time
-- apply discounts and promotions server-side only; never trust coupon validation from the client
-- ensure the checkout flow is idempotent: submitting an order twice must not produce two charges
-- protect guest checkout and authenticated checkout paths equally — no security shortcuts for guest sessions
+- **Zero Client-Trust Pricing**: recalculate all line items, discounts, taxes, and shipping server-side immediately before creating the payment intent — discard any client-submitted monetary amounts
+- **PCI DSS v4.0.1 Script Integrity** (req 6.4.3): all JavaScript executing on payment pages must be inventoried, justified, and loaded with **Subresource Integrity (SRI) hashes** and a strict **CSP nonce** (`script-src 'nonce-...'`)
+- **Tamper Detection** (req 11.6.1): an automated mechanism must monitor payment page HTTP headers and client-side scripts at least weekly (or continuously) to detect unauthorized modifications (Magecart/formjacking)
+- validate inventory availability at checkout submission time, not only at add-to-cart time; use **two-phase atomic hold** (soft reserve with TTL → hard commit on payment success / release on failure)
+- apply discounts and promotions server-side only; wrap coupon validation and usage increment in an **atomic transaction with row-level lock** (`SELECT ... FOR UPDATE`) to prevent TOCTOU race conditions under concurrent requests
+- ensure checkout submission is idempotent: use idempotency keys on payment intent creation; submitting an order twice must not produce two charges
+- protect guest checkout with **cryptographically signed HMAC tokens** — not plain session IDs; enforce strict BOLA checks so each cart/order is accessible only to its owning session or user
+- support **EMV 3DS 2.3.1** with 100+ context attributes for frictionless risk-based authentication (\> 85% challenge-free); integrate SCA exemption engine (Low-Value, TRA, Trusted Beneficiary)
 
 ## Suggested Process
 

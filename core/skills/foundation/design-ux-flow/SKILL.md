@@ -18,15 +18,16 @@ Use this skill with the **UI/UX Designer** role when user-facing behavior must b
 
 - design for user understanding, not only visual polish
 - make preserved versus changed behavior explicit (align with feature-ticket.json when provided)
-- define all important states, transitions, and recovery paths
+- define all 5 critical UI states for every screen: Empty, Loading/Skeleton, Populated, Error (with actionable recovery), and Unauthorized/Permission — specs missing any state are incomplete
+- define all important transitions and recovery paths; silent AI failures (ambiguous empty states, hanging spinners) are prohibited
 - emit `contracts/schemas/ux-flow-spec.json` for multi-screen work
 - emit one `contracts/schemas/ui-component-spec.json` per entry in `component_spec_refs`
 - set `flow_id` on every component spec to match the parent flow
 - identify adjacent flows or reused patterns that could be affected
 - do not implement production UI — hand off specs to Frontend Developer
 - apply progressive disclosure to hide secondary options until primary actions are taken
-- design agent UX flows to include delegation confirmations, progress indicators, and recoverable interrupts
-- use Figma variables to prototype dynamic, real-world data states including empty states and error messages
+- design agent UX flows to include delegation confirmations, progress indicators, and recoverable interrupts — users must always have a cancel/undo path for agent-initiated state changes
+- use Figma Variables (linked to W3C DTCG tokens via Token Studio) to prototype dynamic, real-world data states including empty states and error messages; require interactive prototype for any flow with more than 2 screens
 
 
 ## Deliverable Decision

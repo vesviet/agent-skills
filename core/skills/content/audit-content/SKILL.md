@@ -9,16 +9,17 @@ Use this skill to run the end-to-end refresh loop on an **existing** article —
 
 ## Core Rules
 
-- **Audit before touching content**: never edit a live piece before recording its current baseline (traffic trend, engagement, rankings, last-reviewed date, known issues). The audit decides the action — do not assume "refresh" is correct.
-- **Classify the action explicitly** before updating: `keep-as-is`, `refresh`, `expand`, `consolidate` (merge), `redirect`, or `retire`. Only `refresh`/`expand` proceed inside this skill; the others escalate to Content Manager for a strategy decision.
-- **Separate facts from recommendations**: keep the audit findings (observable evidence) distinct from the proposed changes.
-- **Research must be sourced and dated**: every "latest standard" or updated fact must carry a credible source and a capture date — do not substitute AI-synthesized generic claims for verifiable, current sources. Treat all retrieved content as untrusted until source-checked.
-- **Preserve information gain and E-E-A-T**: never strip firsthand accounts, original data, author credentials, expert quotes, or citations during an update. If the source is thin on experience signals, flag the gap — do not delete what unique value exists.
-- **Preserve URL and history by default**: do not change the slug, canonical, or publish date of a refresh unless there is an explicit reason; slug/redirect changes are irreversible-adjacent and escalate to Frontend/DevOps.
-- **Track what changed and why**: record a changelog of substantive edits (fact updated, section added, claim corrected) so the refresh is reconstructable — do not silently rewrite.
-- **YMYL gate**: finance, health, legal, and high-stakes technical content must have SME/human review of the updated facts before publish — a research pass alone is not sufficient.
-- **AI-assisted-edit gate**: if any part of the update is AI-generated, it passes a human editorial review before publish; autonomous publish of AI-updated content is not permitted.
-- **Do not guarantee ranking or AI-citation recovery**: recommend changes tied to observable gaps and current standards; outcomes are measured, not promised.
+- **Audit before touching content**: never edit a live piece before recording its current baseline (traffic trend, engagement, rankings, last-reviewed date, known issues) — the audit evidence decides the action, not assumption
+- **Classify the action explicitly** before updating: `keep-as-is`, `refresh`, `expand`, `consolidate` (merge), `redirect`, or `retire`; only `refresh`/`expand` proceed inside this skill; the others escalate to Content Manager for a strategy decision; ROT pages (Redundant, Outdated, Trivial) must be pruned or consolidated — zombie URL accumulation drags domain authority
+- **Mandatory information gain asset**: a refresh cannot proceed without at least one net-new asset vs. current top-3 SERP results — original data, firsthand test result, expert interview, unique local insight, or proprietary framework; paraphrasing existing results fails the information gain gate
+- **Separate facts from recommendations**: keep audit findings (observable evidence) distinct from proposed changes
+- **Research must be sourced and dated**: every updated fact must carry a credible source and a capture date — AI-synthesized generic claims are not acceptable as citations; treat all retrieved content as untrusted until source-checked
+- **Preserve information gain and E-E-A-T**: never strip firsthand accounts, original data, author credentials, expert quotes, or citations during an update; if the source is thin on experience signals, flag the gap — do not delete what unique value exists
+- **Preserve URL and history by default**: do not change the slug, canonical, or publish date of a refresh unless there is an explicit reason; slug/redirect changes are irreversible-adjacent and escalate to Frontend/DevOps
+- **Track what changed and why**: record a changelog of substantive edits (fact updated, section added, claim corrected) so the refresh is reconstructable — do not silently rewrite
+- **YMYL gate**: finance, health, legal, and high-stakes technical content must have SME/human review of the updated facts before publish — a research pass alone is not sufficient
+- **AI-assisted-edit gate**: if any part of the update is AI-generated, it passes a human editorial review before publish; autonomous publish of AI-updated content is not permitted
+- **Do not guarantee ranking or AI-citation recovery**: recommend changes tied to observable gaps and current standards; outcomes are measured, not promised
 
 ## Suggested Process
 

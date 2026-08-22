@@ -17,13 +17,13 @@ Use this skill when the task involves the operations and engineering required to
 ## Core Rules
 
 - treat order data as `confidential` — customer PII (address, phone) must never appear in logs or public API responses
-- order status transitions must follow a defined state machine; do not allow arbitrary status jumps (e.g., jumping from `pending` directly to `delivered` without `shipped`)
-- refunds must always reference the original payment transaction ID — never issue a refund without a verified charge to reverse
-- shipping label generation is an irreversible, billable action — confirm carrier and address before requesting a label
-- inventory must be decremented only when an order is confirmed paid, not at cart reservation time (unless the business requires strict reservation)
-- Ensure that agent-initiated fulfillment requests validate the agent JWT for a `fulfillment_authorized: true` claim scoped to the specific order ID.
-- Avoid updating status fields directly; model state transitions as an immutable event log including `order_placed`, `payment_captured`, `fulfillment_started`, `shipped`, `delivered`, and `returned`.
-- Prefer webhook callbacks over polling for last-mile Vietnamese carriers (Grab Express, GHN, GHTK) and map their status codes to internal event-sourced events.
+- **Event-Sourced State Machine**: model order status as an **append-only, immutable event log** (`order_placed`, `payment_captured`, `fulfillment_started`, `packed`, `shipped`, `delivered`, `returned`); derive current status by projecting the event stream — direct mutable status field updates are forbidden
+- enforce state transitions via an **orchestration-based Saga** (Temporal / AWS Step Functions / transactional FSM) with explicit compensating branches (`payment_failed`, `allocation_failed`, `cancelled`, `return_requested`, `refunded`)
+- refunds must always reference the original payment transaction ID — never issue a refund without a verified charge; refund amount must not exceed the captured total
+- shipping label generation is irreversible and billable — validate carrier and shipping address before requesting a label; address validation is a mandatory step before tax/shipping calculations
+- **Restock Inspection Gate**: returned inventory must NOT be added back to sellable stock until a physical warehouse inspection event (Grade A confirmed) is logged — automatic restock on RMA creation is forbidden
+- validate agent-initiated fulfillment requests for a `fulfillment_authorized: true` JWT claim cryptographically scoped to the specific order ID before allocating inventory
+- prefer **webhook callbacks** over polling for Vietnamese last-mile carriers (GHN, GHTK, Grab Express, Viettel Post); normalize all carrier status codes to unified internal milestones (`label_created`, `picked_up`, `in_transit`, `out_for_delivery`, `exception`, `delivered`)
 
 ## Suggested Process
 

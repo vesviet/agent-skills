@@ -17,17 +17,16 @@ Use this skill when adding or updating tests for frontend components, pages, rou
 ## Core Rules
 
 - follow the repo's existing frontend test stack before adding a new one
-- test behavior and user-facing outcomes over internal implementation details
+- test behavior and user-facing outcomes over internal implementation details — never assert on internal React component state or private methods
+- use accessibility-first query priority: `getByRole` > `getByLabelText` > `getByText` > `getByTestId` — querying by CSS classes or DOM IDs is prohibited
+- make async and network-driven states deterministic — use `findBy*` queries or `expect(locator).toBeVisible()` auto-waiting; `sleep()` / `waitForTimeout()` are banned
+- mock network APIs using MSW v2 handlers (`http.get`, `HttpResponse.json`) — do not mock `global.fetch` or internal Axios instances directly
+- use Vitest Browser Mode (Playwright provider) for components that depend on real browser rendering, CSS visibility, or DOM events
 - keep the test scope as small as possible while still proving the risk is covered
-- make async and network-driven states deterministic
 - do not commit or push test changes unless explicitly allowed
-
-### 2025-2026: Testing AI-Generated UI and GenUI Components
-
-- **Visual regression baseline is mandatory for AI-generated components:** AI tools (v0, Copilot, Cursor) frequently ship components with missing interactive states (focus ring, disabled opacity, hover, loading spinner) — establish a Chromatic or Percy visual regression baseline before merging AI-generated components so regressions are caught automatically.
-- **Probabilistic visual state testing:** for AI-powered UI features (personalized content, AI-generated copy, dynamic layouts driven by LLM), use visual snapshot tests with configurable tolerance thresholds rather than pixel-perfect matching — exact pixel matching fails when content varies.
-- **Accessibility regression for AI-generated markup:** AI tools frequently generate ARIA attributes that are syntactically correct but semantically wrong (e.g., `role="button"` on a `<div>` with no `tabIndex`) — run `axe-core` or Playwright accessibility checks as part of the CI gate for any AI-generated component.
-- **LLM-rendered content testing:** for components that display LLM output (chat bubbles, AI summaries, autocomplete suggestions), test that the component handles empty, truncated, and malformed LLM responses gracefully — do not assume the LLM always returns well-formed output.
+- establish Chromatic or Percy visual regression baseline before merging AI-generated components — AI tools frequently ship components with missing interactive states
+- run `axe-core` as a CI gate for any AI-generated component — AI-generated ARIA attributes are often syntactically correct but semantically wrong
+- for components displaying LLM output: test empty, truncated, and malformed LLM response handling explicitly — do not assume the model always returns well-formed output
 
 ## Choose The Right Test Scope
 

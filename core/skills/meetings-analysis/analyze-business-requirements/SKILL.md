@@ -23,6 +23,11 @@ Use this skill when business needs, bug behavior, or process expectations must b
 - populate `contracts/schemas/feature-ticket.json` when machine handoff is required
 - embed `analytics_request` or `seo_content_request` in the ticket when delegating — do not duplicate specialist deliverables in prose only
 - do not let ambiguous business intent pass through as an engineering problem
+- apply the Layered Requirements Pipeline before finalizing acceptance criteria: Impact Mapping (Why & Who → actors and KPI targets) → Event Storming (What & Flow → past-tense domain events: `OrderPlaced`, `PaymentFailed`) → User Story Mapping (How & Release Slices → vertical MVP slice)
+- every User Story must trace to an Impact Map actor behavior and an Event Storming domain event — orphan user stories without traceability are an anti-pattern
+- resolve all Event Storming hot-spots (ambiguity, policy questions, system boundary disputes) before finalizing sprint backlog — unresolved hot-spots cause late integration failures
+- slice requirements vertically only: each slice spans UI to database and delivers end-to-end user value — horizontal slicing by architecture layer is prohibited
+- for AI-assisted acceptance criteria generation: validate LLM-generated Gherkin via LLM-as-judge cross-check and require human business analyst sign-off before committing to sprint — agentic AC must be deterministic and observable assertions, not vague prose
 
 ## Suggested Process
 

@@ -18,22 +18,16 @@ Use this skill when adding, updating, or strengthening tests for a code change.
 ## Core Rules
 
 - follow repo-local testing conventions before introducing a new style
-- test behavior and risk, not just line coverage
-- prefer the smallest test scope that proves the requirement
-- isolate dependencies when a unit test should not rely on external systems
-- do not commit test changes unless the user or repo-local process explicitly allows that commit action
-- do not push test changes unless the user or repo-local process explicitly allows that push action
-
-### 2025-2026: Testing AI/LLM-Backed Features
-
-Non-deterministic LLM outputs require different testing strategies than conventional deterministic logic:
-
-- **Structural assertion over content assertion:** test the shape and type of LLM output (response contains `summary` field as string, word count within bounds, JSON is valid) rather than exact string matching — exact content changes between model versions and breaks brittle tests.
-- **Probabilistic/property-based assertions:** for LLM outputs, define acceptance criteria as properties ("response is in Vietnamese", "sentiment is positive", "no PII is present") and test them using classifiers or rule-based checks, not equality.
-- **LLM mock/fixture strategy:** stub LLM API calls in unit and integration tests with fixture responses — do not call live LLM APIs in CI tests (cost, latency, non-determinism); use `vcr`-style recording or static fixture files that are committed to the repo.
-- **Regression baseline for AI features:** before a model update, capture a golden-set of input/output pairs and run them through the updated model — flag any output that degrades on the golden set as a regression before deploying.
-- **HITL path testing:** for features with human-in-the-loop review gates, test that the HITL trigger fires correctly under the specified confidence threshold — do not leave the fallback-to-human path untested.
-- **Hallucination boundary testing:** include adversarial inputs designed to elicit hallucinations (questions with false premises, out-of-distribution prompts) and assert that the system handles them per the defined fallback policy rather than presenting hallucinated content as fact.
+- test behavior and risk, not just line coverage — align test distribution with the Testing Trophy: heavy integration, focused unit, lean E2E
+- prefer the smallest test scope that proves the requirement; unit tests for complex logic, integration tests for boundaries, Pact contract tests for inter-service API compatibility
+- isolate dependencies when a unit test should not rely on external systems; use MSW v2 for network boundary mocking — do not mock `global.fetch` or internal Axios instances directly
+- enforce mutation score ≥75–80% via Stryker for critical business libraries — raw coverage percentage is insufficient without mutation validation
+- run Pact `can-i-deploy` checks in CI before merging service PRs to verify consumer/provider compatibility
+- do not commit or push test changes unless the user or repo-local process explicitly allows that action
+- for AI/LLM features: use structural assertion over content assertion (test JSON shape, field types, word count bounds — not exact string matches) — exact content changes between model versions
+- for AI/LLM features: use property-based assertions ("response is in Vietnamese", "no PII present") checked by classifiers, not equality; stub LLM API calls in CI with `vcr`-style fixtures — never call live LLM APIs in CI
+- capture a golden-set baseline before any model update and flag outputs that degrade on the golden set as regressions
+- test HITL trigger paths and hallucination boundary inputs (adversarial false-premise prompts) explicitly — do not leave fallback-to-human paths untested
 
 ## First Questions To Answer
 

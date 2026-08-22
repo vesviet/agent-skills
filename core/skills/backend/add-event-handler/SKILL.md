@@ -16,20 +16,15 @@ Use this skill when a change involves publishing an event, consuming one, or ext
 
 ## Core Rules
 
-- follow the repo's event naming and payload conventions
-- preserve compatibility for existing consumers when evolving payloads
-- make idempotency explicit for event consumers
-- keep transport concerns separate from business decisions
-- document ordering, retry, and failure behavior when it matters
-- if the repo uses a schema registry (Avro, Protobuf, JSON Schema), register or update the event schema before publishing
+- follow the repo's event naming and payload conventions; register schemas in the event schema registry (Avro, Protobuf, or JSON Schema) **before** publishing a new event type
+- preserve compatibility for existing consumers when evolving payloads — prefer additive schema evolution; use a **CloudEvents 1.0** envelope (`specversion`, `id`, `type`, `source`, `time`) as the standard wire format when no repo-level convention exists
+- make idempotency explicit for every event consumer using the event `id` field (not a content hash) — this protects against agentic retry floods producing duplicate side effects
+- keep transport concerns separate from business decisions; route events through a dead-letter queue (DLQ) for all unhandled errors — observable failures are mandatory
+- enforce **exactly-once delivery** semantics at the consumer layer via idempotency keys stored in a transactional store (Redis, Postgres) with TTL deduplication
+- validate AI-generated event schemas against the repo's event contract before merging — LLMs frequently produce plausible but type-incompatible field names
+- when an agent orchestrates event chains, validate that every chain has a **defined termination condition** and does not create unbounded producer-consumer feedback loops
+- document ordering guarantees, retry policy, and DLQ behavior explicitly in the event contract
 - if any code in this change was AI-generated, validate it per the risk tier defined in the backend-developer role before accepting
-
-### 2025-2026: AI-Generated Event Handlers and Agentic Event Flows
-
-- **AI-generated event schema validation:** when AI tools generate event payload schemas or consumer logic, validate the generated schema against the repo's event contract before merging — LLMs frequently generate plausible but incompatible field names or data types that break existing consumers silently.
-- **Idempotency guards for AI-triggered event floods:** agentic workflows can trigger event bursts when retrying failed tasks autonomously — ensure all consumers are idempotent by event ID (not just by content hash) so that agent retry loops do not produce duplicate side effects.
-- **AI-orchestrated event choreography review:** when an agent orchestrates a sequence of events across services (e.g., agent-coordinator pattern), validate that the event chain has a defined termination condition and does not create unbounded feedback loops between event producers and consumers.
-- **Dead-letter handling for agent-driven events:** require explicit DLQ (dead-letter queue) routing for events emitted by agentic systems — agent failures that silently drop events are harder to diagnose than human-authored failures; make the failure path observable.
 
 ## Suggested Process
 

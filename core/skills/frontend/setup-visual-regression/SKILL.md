@@ -9,11 +9,14 @@ Use this skill to integrate Playwright or Chromatic into the CI pipeline to enfo
 
 ## Core Rules
 
-- **Component Isolation**: Test UI components in isolation (Storybook) alongside full-page visual regression tests.
-- **Dynamic Content Masking**: Mask or stub dynamic content (e.g., dates, random IDs, dynamic ads) before capturing snapshots to prevent flaky tests.
-- **Cross-Browser Coverage**: Configure the matrix to run snapshots across Chromium, WebKit, and Firefox engines at minimum mobile and desktop viewports.
-- **Hard CI Gate**: Visual regression failures must block merges unless explicitly approved by a `ui-ux-designer` or `frontend-developer`.
-- **Deterministic Environment**: Generate and compare baselines in fixed Docker/container environments to avoid host OS font rendering variations.
+- **Containerized Baselines Only**: Baselines must be generated and compared within the official Playwright Docker container (`mcr.microsoft.com/playwright`) matching the CI environment — comparing local macOS/Windows snapshots against Linux CI runners guarantees false failures
+- **Animation Suppression**: All CSS animations, transitions, and cursor blinks must be disabled before snapshotting (`animations: 'disabled'`)
+- **Dynamic Content Masking**: Mask or stub dynamic content (dates, user avatars, random IDs, ads) before capturing snapshots using `mask: [page.locator('...')]`
+- **Explicit Tolerance Thresholds**: Set `maxDiffPixelRatio: 0.01` and `threshold: 0.2` to absorb sub-pixel text rendering while catching real layout regressions — unconfigured default thresholds are too loose
+- **Component Isolation**: Test UI components in isolation (Storybook + Chromatic with TurboSnap) alongside full-page Playwright visual regression tests
+- **Cross-Browser Coverage**: Configure the matrix across Chromium, WebKit, and Firefox at mobile and desktop viewports
+- **Hard CI Gate**: Visual regression failures must block merges unless explicitly approved by a `ui-ux-designer` or `frontend-developer`
+- **Network Mocking**: Mock network responses using MSW to guarantee consistent visual fixtures — live external API snapshots are non-deterministic
 
 ## Suggested Process
 

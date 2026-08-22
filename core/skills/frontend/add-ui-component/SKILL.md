@@ -17,10 +17,14 @@ Use this skill when a frontend change needs a new reusable component or a meanin
 ## Core Rules
 
 - follow the repo's existing design system before inventing a new pattern
-- prefer composition over one-off duplication
+- prefer composition over one-off duplication — use compound component patterns (`Dialog.Root`, `Dialog.Content`) over prop-soup mega-components with dozens of boolean flags
+- base interactive components on headless accessibility primitives (Radix UI, Base UI, Ark UI) for WAI-ARIA roles, keyboard focus management, and escape key handling — do not reinvent focus trap logic
+- own component source under `src/components/ui/` (shadcn/ui v2 model); avoid black-box NPM UI bundles that cannot be customized or tree-shaken
+- apply `cn()` utility (clsx + tailwind-merge) to all component root elements for safe Tailwind class merging without specificity conflicts
 - keep accessibility, semantics, and keyboard behavior explicit
 - keep styling and state responsibilities narrow and understandable
 - consider performance impact: bundle size, lazy loading, and layout shift (CLS)
+- prefer React 19 form actions and `useActionState` for standard form mutations over heavy client-side form wrappers
 - update visual or interaction tests when the component contract changes
 - if any code in this change was AI-generated, validate it per the risk tier defined in the frontend-developer role before accepting
 

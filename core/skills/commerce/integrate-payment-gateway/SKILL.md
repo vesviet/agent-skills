@@ -16,14 +16,16 @@ Use this skill when a task requires connecting an application to a payment provi
 
 ## Core Rules
 
-- never log, store, or return raw card numbers, CVV, or full PAN data — treat all card data as `restricted` per `core/policies/data-classification.yaml`
+- never log, store, or return raw card numbers, CVV, or full PAN data — treat all card data as `restricted` per `core/policies/data-classification.yaml`; prefer **EMVCo Network Tokens** (Visa VTS, Mastercard MDES) with dynamic transaction cryptograms over raw PAN or gateway-specific tokens
 - always use the provider's official SDK or API client; do not hand-roll raw HTTP calls to payment endpoints
-- handle idempotency keys for all charge/capture operations to prevent double-billing
-- validate webhook signatures before processing any inbound event
+- handle idempotency keys (UUID per transaction attempt) for all charge/capture operations to prevent double-billing
+- **Webhook Signature Verification** (PCI DSS v4.0.1): compute HMAC over the **raw, unparsed request payload** before JSON parsing; use **constant-time comparison** (`crypto.timingSafeEqual` / `hmac.compare_digest`) to prevent timing side-channel attacks; reject any event with a timestamp older than 300 seconds to block replay attacks
+- **Queue-First Webhook Ingestion**: return HTTP `200 OK` within **500 ms** after persisting the raw event — offload all state mutations to an async worker queue (Kafka, Cloudflare Queues, RabbitMQ); never perform heavy processing in the webhook handler synchronously
+- enforce a **dual-write idempotency guard**: unique database index on `(provider, event_id, event_type)` combined with a distributed lock (Redis Redlock or Postgres Advisory Lock) during event processing to prevent duplicate state transitions
 - store only tokenized references (e.g., `customer_id`, `payment_method_id`) — never raw payment credentials
-- prefer dynamic payment methods (e.g., the "automatic_payment_methods" options in Stripe) to configure payment methods dynamically from the gateway dashboard instead of static backend arrays
-- support programmatic Machine Payments Protocol (MPP) and HTTP 402 Payment Required challenges for autonomous agent checkout flows
-- handle asynchronous clearing states explicitly for slow-settling Account-to-Account (A2A) and bank transfer transactions via webhook events
+- prefer dynamic payment methods (`automatic_payment_methods: { enabled: true }` in Stripe) over static backend payment method arrays
+- support **HTTP 402 / MPP** programmatic machine payment challenges and off-session `SetupIntents` for autonomous agent checkout flows
+- handle asynchronous clearing states (A2A bank transfers) via webhook state machine with inventory TTL lock during settlement pending
 
 ## Suggested Process
 

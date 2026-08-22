@@ -18,22 +18,17 @@ Use this skill when investigating slow paths, memory growth, concurrency bottlen
 
 ## Core Rules
 
-- baseline before optimizing
-- profile the real hot path, not an assumed one
-- prefer repo-local and language-native tooling first
-- do not profile production without explicit approval and a safety plan
-- validate improvements with repeatable measurements, not intuition
-
-### 2025-2026: AI/ML Workload Profiling
-
-As AI inference, embedding generation, and LLM-backed features become standard service components, include these dimensions when relevant:
-
-- **Model inference latency:** measure and baseline the p50/p95/p99 latency of LLM API calls, embedding model calls, or on-device inference separately from the rest of the service — AI inference is often the dominant latency source and should be profiled independently.
-- **GPU utilization and memory:** for services running models locally (vLLM, Ollama, ONNX Runtime), profile GPU utilization, VRAM usage, and tensor allocation patterns — use NVIDIA `nvitop`, `nvidia-smi`, or PyTorch Profiler; for CPU-only inference use `perf` or `py-spy`.
-- **Batch queue depth and throughput:** for services that batch inference requests, profile queue depth under load and batch fill efficiency — under-batching wastes GPU; over-batching increases tail latency.
-- **Token rate and context window pressure:** for LLM-backed features, measure tokens-per-second and prompt token count — context window exhaustion causes silent truncation that degrades output quality, not a hard error.
-- **Embedding cache hit rate:** for RAG or semantic search systems, measure the embedding cache hit rate — redundant embedding calls are the most common preventable AI cost spike.
-- **AI inference cost accounting:** attribute inference API cost ($ per request) alongside latency — report both for AI-powered paths so optimization decisions can weigh both user experience and cost impact.
+- baseline before optimizing — no optimization may be merged without before/after flame graphs or benchmark evidence
+- profile the real hot path, not an assumed one; use eBPF zero-instrumentation profiling (OpenTelemetry Profiling SIG / Pyroscope) for always-on continuous profiling alongside traces
+- prefer repo-local and language-native tooling first; escalate to eBPF agents when system-wide profiling across runtimes is needed
+- do not profile production without explicit approval and a safety plan — continuous profilers must stay under 1.5% CPU overhead with bounded memory limits
+- validate improvements with repeatable measurements, not intuition — report p50/p95/p99 before and after, not mean alone
+- correlate profiling data with distributed traces via `trace_id` using OTel Profiles OTLP format to avoid vendor lock-in
+- for AI inference paths: measure and baseline model latency p50/p95/p99 separately from service latency — LLM calls are often the dominant latency source
+- for GPU services (vLLM, Ollama, ONNX Runtime): profile GPU utilization, VRAM usage, KV cache hit rate, and time-to-first-token (TTFT) — use `nvitop` or PyTorch Profiler
+- for batch inference services: profile queue depth and batch fill efficiency — under-batching wastes GPU; over-batching increases tail latency
+- for RAG / semantic search: measure embedding cache hit rate — redundant embedding calls are the most common preventable AI cost spike
+- report AI inference cost per request (\$ per call) alongside latency so optimization decisions weigh both UX and cost impact
 
 ## First Questions To Answer
 

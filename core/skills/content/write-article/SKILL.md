@@ -51,6 +51,8 @@ The specific thresholds below (answer-first ≤60 words, fact density, E-E-A-T p
 - use **bullet points** for unranked lists; **numbered lists** for sequential steps; **comparison tables** for feature/price/spec data
 - use **bolded lead-ins** in bullet lists for scannable entries
 - FAQ block at end when brief/SERP requires it: format as `## FAQ` with `### Question?` subheadings for schema compatibility
+- **JSON-LD structured data is mandatory**: every article must include `Article` schema with `datePublished`, `dateModified`, `author` (linked `Person` entity), and `publisher`; add `FAQPage` when a FAQ block is present; validate against Google Rich Results Test with zero warnings before publish
+- **Atomic modular content**: structure each H2 section as a self-contained semantic module with a BLUF answer ≤60 words — RAG extractors retrieve passages atomically, not full articles; wall-of-text blocks over 100 words without subheadings fail RAG chunking
 
 ### E-E-A-T Experience Signals
 - implement the experience proof type specified in the SEO brief: original photo, firsthand account, documented test result, expert interview excerpt, or case study

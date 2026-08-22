@@ -16,13 +16,15 @@ Use this skill when a service must call another internal service, external API, 
 
 ## Core Rules
 
-- reuse the repo's existing client abstraction pattern
-- keep transport details out of business logic when the repo separates them
-- make timeouts, retries, and auth explicit
-- consider circuit breakers for dependency calls that could cascade under load
-- map downstream errors into local domain or boundary errors intentionally
+- reuse the repo's existing client abstraction pattern; define a **narrow interface** — expose only the request/response fields the local service actually needs
+- keep transport details out of business logic; never let gRPC status codes, HTTP 4xx/5xx, or SDK error types leak past the client boundary — normalize to local domain errors
+- make **timeouts explicit per call** (connect timeout ≤ 2 s, read timeout per SLA); never inherit infinite-wait defaults
+- mandate **circuit breakers** for all external dependency calls — an unhealthy dependency must not cascade to callers; use half-open probe periods to detect recovery
+- implement **exponential backoff with full jitter** for transient errors; never retry non-idempotent mutations (POST, DELETE) without explicit idempotency keys
+- authenticate outbound calls per the 2026 zero-trust model: **SPIFFE/SPIRE mTLS** for internal service-to-service, **OIDC workload identity** for cross-cloud, **JWT bearer** for user-delegated context
+- emit an **OTel span** for every outbound call with `peer.service`, `http.method`, `http.status_code`, and error attributes; propagate W3C `traceparent` headers
+- never log request/response bodies containing PII, secrets, or card data in outbound call tracing
 - avoid widening the dependency surface more than necessary
-- add a tracing span for the outbound call if the repo uses distributed tracing (OpenTelemetry)
 - if any code in this change was AI-generated, validate it per the risk tier defined in the backend-developer role before accepting
 
 ## Suggested Process

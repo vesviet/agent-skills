@@ -16,20 +16,14 @@ Use this skill to implement the `llms.txt` standard for any domain that serves d
 
 ## Core Rules
 
-- **Placement**: host at `/llms.txt` at the root of the domain (e.g., `example.com/llms.txt`) — not in a subdirectory.
-- **Format**: Markdown-formatted text following the llmstxt.org specification exactly.
-- **Required elements**: H1 heading (project name) + blockquote summary + content inventory list.
-- **Companion file**: provide `/llms-full.txt` when content volume warrants pre-ingested full text for LLM context window efficiency.
-- **Not a permissions file**: `llms.txt` manages discoverability and context — use `robots.txt` for access control.
-- **Automated maintenance**: treat `llms.txt` as a living document; update when primary docs change, new APIs are published, or agent card endpoints are added.
-- **DUAL-AUDIENCE LOCK**: for any system with AI agent interfaces, `llms.txt` is a mandatory deliverable — not optional. HTML-only documentation without `llms.txt` is a documentation failure.
-
-### 2025-2026: A-SEO & Agentic Discovery Standard
-
-`llms.txt` is the primary mechanism for Agentic SEO (A-SEO) — the discipline of ensuring AI agents can discover, traverse, and correctly represent your content without hallucination. Key points:
-- AI search engines (Perplexity, SearchGPT, Gemini) use `llms.txt` to ground answers in your authoritative content
-- `/.well-known/api-catalog` (RFC 9727) and `/.well-known/agent-card.json` (A2A 1.0) should be linked from `llms.txt` when present
-- `llms.txt` reduces AI hallucination by providing clean, structured source material directly
+- **Placement**: host at `/llms.txt` at the root of the domain — not in a subdirectory; scope sub-paths with `rel="describedby"` HTTP `Link` headers when hosting per-section manifests
+- **Format**: strictly follow the llmstxt.org v2 Markdown structure: `# Project Name` → `> blockquote summary` → `## Sections` → `- [Title](url.md): one-sentence description`; no HTML, no nav chrome, no promotional copy
+- **Token budget**: keep `/llms.txt` under **50 KB (~10K tokens)** to prevent context exhaustion in multi-turn agent sessions; defer full text to `/llms-full.txt`
+- **Required elements**: H1 heading, factual blockquote summary (no marketing language), curated content inventory with `.md` or clean-text endpoint URLs
+- **HTTP header discovery parity** (v2 spec): every served HTML page SHOULD emit `Link: </docs/page.md>; rel="alternate"; type="text/markdown"` and `Link: </llms.txt>; rel="describedby"` response headers so agents discover the manifest without a separate crawl
+- **Not a permissions file**: `llms.txt` manages discoverability — use `robots.txt` for access control; never conflate them
+- **Automated maintenance via CI**: treat `llms.txt` as a living document; a CI pipeline must validate every linked URL resolves to a clean Markdown endpoint and auto-commit updates when docs change
+- **DUAL-AUDIENCE LOCK**: for any system with AI agent interfaces, `llms.txt` is a mandatory deliverable; link `/.well-known/api-catalog` (RFC 9727), `/.well-known/agent-card.json` (A2A 1.0), and MCP server cards when present — HTML-only documentation without `llms.txt` is a documentation failure
 
 ## File Structure Specification (llmstxt.org)
 

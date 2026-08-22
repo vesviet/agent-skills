@@ -9,11 +9,13 @@ Use this skill when integrating LLM responses into application code to guarantee
 
 ## Core Rules
 
-- **No Regex Parsing**: Never use regex to extract JSON or structured data from raw LLM text blocks.
-- **Constrained Decoding**: Use provider-native structured output features (e.g., OpenAI Structured Outputs `response_format`, Gemini `responseSchema`, or vLLM / llama.cpp XGrammar / GBNF grammars).
-- **Dual Validation**: Define the schema once (e.g., in Zod/Pydantic). Use it both to constrain the LLM generation AND to validate the runtime response before passing it to business logic.
-- **Fallback Logic**: Implement retry mechanisms with context injection when the LLM fails to adhere to the schema despite constraints.
-- **Strict Schemas**: Disallow optional fields without defaults, recursive schemas where unsupported, and untyped objects.
+- **No Regex Parsing**: Never use regex to extract JSON from raw LLM output — this is strictly prohibited in production backend pipelines
+- **Constrained Decoding First**: Use provider-native constrained decoding (`response_format: { type: "json_schema", strict: true }` for OpenAI/Gemini; XGrammar, Outlines, or SGLang grammar constraints for self-hosted inference) — this guarantees JSON syntax compliance at the token generation layer
+- **Contract-First Schema DSL**: Define schemas once in Zod or Pydantic v2 with `strict: true` / `additionalProperties: false`; consider BAML for cross-language type-safe prompt functions; export to JSON Schema 2020-12 for provider compatibility
+- **Dual-Layer Runtime Validation**: After constrained decoding, parse through the application-layer validator (`schema.safeParse()` / `TypeAdapter.validate_json()`) to enforce business invariants, enum bounds, and cross-field rules not expressible in JSON Schema
+- **Bounded Repair Loops**: On validation failure, inject the exact schema violation diff into a one-turn repair prompt; limit to **maximum 2 retry attempts** before returning a structured domain error — never loop indefinitely
+- **Format Tax Mitigation**: Include a `thought_process` or `reasoning` field in the schema before final output fields to preserve model reasoning space under grammar constraints; strip this field before returning to callers
+- **Centralized Gateway Routing**: Route all LLM structured output requests through a centralized LLM gateway responsible for token budgeting, provider fallback, rate limiting, and prompt injection filtering
 
 ## Suggested Process
 

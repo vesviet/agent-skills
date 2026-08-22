@@ -18,6 +18,10 @@ Use this skill for **analyst** work: questions, metrics, exploration, and report
 - mask or aggregate **PII** in outputs unless clearance exists
 - spot-check results against source samples before handoff
 - escalate to Data Engineer when the task requires new pipelines, orchestration, or schema migrations
+- use DuckDB for local and preview analytical workloads — do not spin up cloud warehouse clusters for sub-terabyte datasets
+- metrics must be defined once in dbt Semantic Layer / MetricFlow as the canonical source of truth — never hardcode custom aggregations in ad-hoc notebooks or prompt strings
+- AI-generated SQL queries must execute against read-only DuckDB views with strict memory caps (`SET max_memory = '4GB'`) and query timeout limits — unbounded AI SQL on production databases is prohibited
+- store analytical data as columnar Parquet files with explicit partitioning for efficient DuckDB query performance
 
 ## When to Use
 
@@ -66,27 +70,8 @@ Produce:
 - optional Excel/HTML export for stakeholders
 - open questions and data gaps
 
-## 2026 Modern Data Workflows
 
-### 2026: AI/LLM-Assisted Data Exploration
-- Use AI-assisted exploration tools such as Vanna.ai, BigQuery text-to-SQL, or Databricks Genie to generate SQL queries from natural language inputs.
-- Always cross-reference AI-generated queries and schema interpretations against ground truth schemas and data dictionaries to prevent hallucination.
-- Document and verify any generated queries before committing them to analytical repositories.
 
-### 2026: DuckDB in Analytical Workflows
-- Utilize DuckDB for fast, serverless local analysis of Parquet, CSV, or Apache Iceberg data formats.
-- Integrate MotherDuck to run serverless cloud queries, enabling hybrid local-to-cloud workflows and easy sharing of datasets.
-- Ensure query memory limits and thread counts are configured appropriately for large datasets.
-
-### 2026: Vector Database Exploration
-- Query pgvector, Qdrant, or Weaviate to perform nearest-neighbor searches and similarity matching.
-- Apply metadata filtering alongside vector similarity criteria to restrict searches to appropriate sub-segments of data.
-- Profile and document query latency under varying recall levels.
-
-### 2026: dbt Lineage as Data Provenance
-- Use the ref() function lineage graph in dbt to map and trace data dependencies from source seeds to target models.
-- Maintain compliance with metadata registries such as dbt Docs, Atlan, or Alation to establish auditable data lineage.
-- Document column-level lineage and verify constraints for all core metrics.
 
 ## Checklist
 

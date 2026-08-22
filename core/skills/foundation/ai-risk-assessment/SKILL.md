@@ -22,14 +22,10 @@ Use this skill when a product, feature, or system involves AI/ML components that
 - **GenAI-specific**: for LLM/generative AI systems, apply all 12 NIST AI 600-1 risk categories — standard software risk assessments are insufficient.
 - **Living register**: the AI risk register is a delivery artifact maintained throughout the system's lifecycle, not a one-time document.
 - **HITL is mandatory for high-risk**: Human-in-the-Loop is not a UX preference — it is a regulatory requirement for EU AI Act high-risk systems.
-
-### 2025-2026: Agentic AI Risk Extension
-
-For agentic AI systems (autonomous agents, multi-agent workflows), extend the standard assessment with:
-- **Autonomy tier**: declare the level of autonomous decision-making (supervised / semi-autonomous / fully autonomous)
-- **Action reversibility audit**: classify every agent action as reversible or irreversible; irreversible actions require explicit human approval gates
-- **OWASP ASI alignment**: map identified risks to OWASP ASI01–ASI10 threat categories
-- **Cascading failure analysis**: for multi-agent systems, trace how a single agent failure propagates
+- **EU AI Act Article 50 transparency obligations are enforceable from August 2026**: all GPAI and generative content features must implement visible user disclosure (label, watermark, tooltip) for AI-generated content — transparency obligations are no longer "upcoming" compliance, they are current requirements.
+- **Agentic autonomy tier**: for agentic AI systems, declare the level of autonomous decision-making (supervised / semi-autonomous / fully autonomous) and classify every agent action as reversible or irreversible — irreversible actions require explicit human approval gates
+- **OWASP ASI alignment**: map identified agentic risks to OWASP ASI01–ASI10 threat categories
+- **Cascading failure analysis**: for multi-agent systems, trace how a single agent failure propagates through the chain and document the circuit breaker strategy
 
 ## Suggested Process
 

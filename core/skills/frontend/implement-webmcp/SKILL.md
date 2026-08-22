@@ -9,11 +9,14 @@ Use this skill to integrate WebMCP into a frontend application, allowing AI agen
 
 ## Core Rules
 
-- **State Synchronization**: Expose critical application state (Redux/Zustand stores) securely to the WebMCP context.
-- **Action Scoping**: Define explicitly which browser actions (clicks, navigation, form fills) are exposed to the agent.
-- **Security Context**: Ensure the agent operates strictly within the user's authenticated session boundaries without exposing secure, HttpOnly cookies to the JS runtime.
-- **Background Sync**: Utilize Service Workers and the Push API for asynchronous HITL (Human-in-the-Loop) callbacks when the agent requires user confirmation.
-- **Feature Detection**: Guard WebMCP invocations with feature detection (`typeof window !== 'undefined'` and check `navigator.modelContext`) to support SSR and polyfilled environments safely.
+- **Feature Detection**: Guard WebMCP invocations with feature detection (`'modelContext' in document`) to support SSR and polyfilled environments safely — do not assume the API exists
+- **State Synchronization**: Expose critical application state (Redux/Zustand stores) securely to the WebMCP context; strip sensitive fields before exposure
+- **Action Allowlist**: Define an explicit allowlist of which browser actions (clicks, navigation, form fills) are exposed to the agent — default deny; reject tools not on the allowlist
+- **Strict Input Schema Validation**: Every registered WebMCP tool must declare explicit property types, enums, and required fields in its `inputSchema` — empty `{ type: "object" }` schemas with no property descriptions are prohibited
+- **Security Context**: Ensure the agent operates strictly within the user's authenticated session boundaries without exposing secure, HttpOnly cookies to the JS runtime
+- **User Consent Gate**: Any tool performing a non-idempotent or financial action (payments, account modifications, data deletion) must prompt for explicit user confirmation before execution — fail-safe if user dismisses or times out
+- **Background Sync**: Utilize Service Workers and the Push API for asynchronous HITL callbacks when the agent requires user confirmation
+- **Structured Error Payloads**: Tool handlers must return structured JSON error responses with clear codes (`{ error: { code: 'OUT_OF_STOCK', message: '...' } }`) — never expose raw server stack traces
 
 ## Suggested Process
 

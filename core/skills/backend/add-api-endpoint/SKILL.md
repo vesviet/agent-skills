@@ -31,12 +31,14 @@ app.post(
 
 ## Core Rules
 
-- follow the repo's existing contract and routing pattern
-- preserve backward compatibility unless the change is intentionally breaking
-- keep validation close to the boundary
-- keep transport logic thin and business logic in the repo's expected layer
-- wire auth/authz middleware per the repo's security pattern for every new endpoint
-- update tests and user-visible docs when the endpoint contract changes
+- follow the repo's existing contract and routing pattern; publish changes to `contracts/schemas/api-contract-spec.json` as the single source of truth
+- preserve backward compatibility unless the change is intentionally breaking; use **API versioning** (URI prefix `/v2/` or `Accept-Version` header) for breaking changes
+- keep validation close to the boundary using the repo's canonical schema library (Zod, Pydantic, `class-validator`); reject malformed requests with structured RFC 9457 Problem Details responses
+- keep transport logic thin and business logic in the repo's expected layer; no database calls or domain logic directly in route handlers
+- wire auth/authz middleware per the repo's security pattern for **every** new endpoint — default-deny, not default-allow
+- enforce **rate limiting** and **idempotency keys** (`Idempotency-Key` header) on all state-mutating endpoints to prevent replay and duplicate-charge bugs
+- emit an **OTel span** (`gen_ai.operation.name: "execute_tool"` for MCP-backed endpoints, or standard HTTP server span) on every handler; propagate `trace_id` in error responses
+- update tests and user-visible docs (OpenAPI 3.1 spec or gRPC Protobuf) when the endpoint contract changes
 - if any code in this change was AI-generated, validate it per the risk tier defined in the backend-developer role before accepting
 
 ## Suggested Process

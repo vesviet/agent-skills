@@ -19,6 +19,7 @@ Use this skill when a task requires deep discovery before architectural, product
 ### Research Integrity
 - set `execution_metrics.depth_mode` to **deep** (default) or **scoped** before searching; scoped requires `scope_waiver_note` in research-report.json
 - deep mode: minimum ten distinct research rounds; scoped mode: minimum three rounds with documented waiver
+- apply **Chain-of-Verification (CoVe)** on every material claim: (1) Draft the hypothesis, (2) Decompose into atomic sub-claims with verification questions, (3) Verify each sub-claim independently against primary sources (isolated from draft context), (4) Reconstruct the final output using only verified facts
 - triangulate data across multiple independent sources to eliminate hallucinations and bias
 - document missing information explicitly rather than guessing or fabricating
 - evaluate source credibility per claim type (fact, statistic, expert quote, trend, policy) and document confidence levels
@@ -34,7 +35,7 @@ Use this skill when a task requires deep discovery before architectural, product
 | 1 — Primary | Government records, official docs, peer-reviewed journals, primary interviews, original datasets, institutional publications | ✅ Yes — cite directly |
 | 2 — Secondary | Reputable news organizations, academic syntheses, verified expert commentary, recognized industry reports | ✅ Yes — cite with context |
 | 3 — Tertiary | Wikipedia, well-maintained reference sites | ⚠️ Orientation only — do not cite as final source |
-| 4 — AI-generated | Google AI Overviews, Perplexity answers, ChatGPT outputs, Bing AI summaries | ❌ Never cite — use only to formulate queries and identify sub-topics |
+| 4 — AI-generated | Google AI Overviews, Perplexity answers, ChatGPT outputs, Bing AI summaries, Gemini Deep Research, ChatGPT Deep Research, Perplexity Pages | ❌ Never cite — use only to formulate queries and identify sub-topics; always retrieve and verify the primary source they reference |
 
 **Hallucination mitigation protocol:**
 - treat every URL, statistic, or quote from an AI tool as **unverified** until confirmed against the original document

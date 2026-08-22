@@ -16,11 +16,14 @@ Use this skill when the task involves designing the data model or implementing t
 
 ## Core Rules
 
-- every sellable unit must have a unique SKU; never allow duplicate SKUs within the same catalog
-- pricing changes must be versioned or timestamped — do not silently overwrite historical prices
+- every sellable unit must have a unique SKU enforced at the **database constraint level**; never allow duplicate SKUs within the same catalog
+- pricing changes must be versioned or timestamped — store `price`, `compare_at_price`, `effective_from`, and `effective_until`; never silently overwrite historical prices
 - inventory counts are `confidential` data; do not expose raw warehouse stock levels to unauthenticated clients
-- stock level decrements must be atomic operations to prevent overselling under concurrent load
-- product data changes that affect live checkout (price, availability) must go through an approval or review step before publishing
+- **Two-Phase Atomic Inventory Hold**: use atomic conditional SQL (`UPDATE inventory SET available = available - X, reserved = reserved + X WHERE available >= X`) or Redis Lua scripts with a TTL; convert reserved hold to hard commit on payment success; release via background sweeper on TTL expiry or payment failure — never naive read-then-write sequences
+- **Optimistic Concurrency Control (OCC)**: reject stale out-of-order inventory updates using version stamps (`version`, `ETag`, or vector clocks) to prevent overselling under concurrent channel sync
+- **Channel Safety Buffers**: when syncing to external marketplaces (Shopee, Lazada, TikTok Shop, Amazon), deduct dynamic virtual safety stock buffers (e.g., 5% or minimum 3 units) before publishing available quantities — never broadcast 100% of available stock
+- use **CDC event streaming** (Debezium / Kafka) to broadcast real-time stock changes to downstream channels; prefer push events over polling for inventory sync
+- product data changes that affect live checkout (price, availability) must go through an approval or review step before publishing; **AI-generated product content** requires a mandatory human-review gate before status is set to published
 
 ## Suggested Process
 

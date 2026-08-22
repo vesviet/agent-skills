@@ -16,13 +16,13 @@ Use this skill to structure a personalized or generalized study plan, ensuring s
 
 ## Core Rules
 
-- Always map the plan to the standard academic calendar or the specific timeframe of the learner.
-- Organize study blocks based on realistic standard periods (e.g., 45-minute or 60-minute blocks).
-- For grade transition plans, explicitly include time for consolidating foundational habits from the previous level before introducing new abstract or advanced content.
-- Do not overwhelm the learner; respect cognitive load limits appropriate to the student’s age and background.
-- Schedule milestones following spaced repetition principles (days 1, 3, 7, 14, 30) based on the Ebbinghaus forgetting curve.
-- Incorporate Feynman technique checkpoints that require students to explain concepts simply and without jargon.
-- Integrate LLM tutoring elements that utilize the Socratic method to guide students toward answers rather than revealing them.
+- always map the plan to the standard academic calendar or the learner's specific timeframe; organize study blocks into realistic periods (45–60 min) with explicit break intervals
+- for grade-transition plans, include a **consolidation buffer** to strengthen foundational habits from the prior level before introducing abstract or advanced content
+- respect **cognitive load limits**: limit new concept introduction to 3–5 items per session; do not stack multiple high-complexity topics in a single block
+- schedule review milestones at **days 1, 3, 7, 14, and 30** per the Ebbinghaus forgetting curve — each milestone resets the decay clock and multiplies memory stability
+- embed **Feynman Technique checkpoints** at each milestone: require the student to explain the concept without jargon using a real-world analogy; a response that retains technical terms signals a gap and must trigger a return to source material
+- configure **LLM tutoring sessions in Socratic mode**: the AI tutor must ask one guiding question at a time and must never output the final answer, complete code block, or direct solution — scaffolded hints (Level 1: line-focus → Level 2: conceptual rule → Level 3: mini-problem) are the only permitted escalation path
+- define learning milestones in machine-readable form via `learning-handoff.json` when the plan is handed off to another teacher or automated tutoring system
 
 ## Suggested Process
 

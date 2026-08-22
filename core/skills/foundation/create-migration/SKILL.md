@@ -10,10 +10,15 @@ Use this skill when the user needs to add or review a database schema migration,
 ## Core Rules
 
 - follow the repo's existing migration tool, naming, and ordering conventions
-- prefer rollout-safe additive changes before destructive changes
-- keep schema changes, backfills, and cleanup separate when that reduces risk
-- make rollback behavior explicit when the repo supports rollback
-- verify code and schema compatibility across staged deployment
+- prefer rollout-safe additive changes before destructive changes — renaming or dropping a column/table in a single release is strictly prohibited
+- use the Expand-Contract (Parallel Change) pattern for destructive changes: Phase 1 (Expand: add new structure), Phase 2 (Backfill: dual-write / CDC), Phase 3 (Contract: remove old structure after full cutover)
+- every DDL migration must set `SET lock_timeout = '2s';` to prevent queuing locks behind long-running queries from taking down connection pools
+- build indexes with `CREATE INDEX CONCURRENTLY` (PostgreSQL) or online DDL tools (`gh-ost` for MySQL) to avoid `ACCESS EXCLUSIVE` table locks on large tables
+- backfill historical data in small batches (500–2000 rows) with sleep intervals to keep replication lag and I/O load near zero
+- use feature flags for dual-read / shadow-read validation and instant rollback — percentage-based traffic cutover 1% → 10% → 50% → 100%
+- keep schema changes, backfills, and cleanup in separate releases when that reduces risk
+- make rollback behavior explicit when the repo supports rollback — document when reversal is partial or unsafe
+- verify code and schema compatibility across staged deployment; database migrations must be deployable before application code releases
 
 ## When to Use
 
@@ -129,27 +134,8 @@ If the migration is data-sensitive or long-running, also reason through:
 - idempotency expectations
 - impact on replicas, readers, or older code
 
-## 2026 Modern Migration Workflows
 
-### 2026: Zero-Downtime Schema Changes
-- Avoid plain ALTER TABLE operations on tables with more than 10 million rows to prevent long-running table locks.
-- Utilize online DDL tools such as gh-ost for MySQL/MariaDB, or pg_repack/pgroll for PostgreSQL, to perform schema upgrades in a non-blocking manner.
-- Test migrations on a copy of production volume to verify lock durations and replication lag.
 
-### 2026: Expand-Contract Pattern
-- Phase 1: Expand the schema by adding the new column, table, or structure as a nullable or optional field while keeping the old structure intact.
-- Phase 2: Migrate and backfill existing data from the old structure to the new structure in batched, throttled operations.
-- Phase 3: Contract the schema by removing the old column, table, or structure after confirming all application reads and writes have fully transitioned.
-
-### 2026: Vector Index Migrations
-- Use `CREATE INDEX CONCURRENTLY` when building vector indexes (such as HNSW or IVFFlat) to prevent blocking concurrent writes.
-- Run a database `VACUUM` command after mass inserts of vector data to update internal storage maps.
-- Execute a recall@10 benchmark evaluation on the newly built index to verify search retrieval quality before promoting it to production.
-
-### 2026: Cloudflare D1 and SQLite Migration Patterns
-- Use wrangler migrations to manage schema versioning and local test environments.
-- Be aware that SQLite does not support ALTER COLUMN operations, meaning column modifications require rebuilding the table using a temporary structure.
-- Always run local tests on a SQLite replica to ensure schema modifications are valid before deploying.
 
 ## Safety Guidelines
 

@@ -16,13 +16,13 @@ Use this skill to assess a student's completed exercise, assign scores based on 
 
 ## Core Rules
 
-- Always score out of the designated maximum (e.g., 10-point scale, 100-point scale, or letter grades).
-- Adjust encouragement tone to the student’s level and context: younger students or those adjusting to a heavier academic load need more supportive framing; advanced students can handle more direct constructive critique.
-- Categorize performance internally if needed (e.g., Excellent, Good, Average, Needs Improvement).
-- Never just say "Incorrect" without explaining the exact step where the logic failed.
-- Utilize a standardized inline rubric template containing criteria, maximum points, and performance descriptors for levels 1 through 4.
-- Support LLM-assisted grading flows requiring human verification, recording metadata such as `graded_by_ai`, `reviewed_by`, and `ai_model`.
-- Apply growth mindset feedback principles, focusing on effort, strategies, 'not-yet' language, and providing exactly one clear actionable step.
+- always score out of the designated maximum and calibrate encouragement tone to the learner's level — younger or struggling students need supportive framing; advanced learners can absorb direct critique
+- **AI is a grading assistant, not the decision-maker** (EU AI Act High-Risk AI classification, effective August 2026): AI grading outputs are recommendations; a qualified human educator MUST review, adjust, and approve before any grade is communicated to the student or used for progression decisions
+- **Four-tier criterion-referenced rubric**: every assessment must decompose into specific criteria with observable behavioral descriptors across 4 tiers (Beginning 0–49% / Developing 50–69% / Proficient 70–89% / Advanced 90–100%) — never grade on a holistic single-number scale without criterion breakdowns
+- award **partial credit** for correct intermediate steps; never score as all-or-nothing; explain the exact step where logic failed when marking incorrect — never just say "Incorrect"
+- **Growth Mindset feedback protocol**: praise effort and strategy, not innate ability; use "not-yet" framing for gaps ("You haven't mastered X yet, but..."); limit critical feedback to **exactly one major actionable step** per review session to prevent cognitive overload
+- **mandatory audit metadata** on every AI-assisted grading record: `graded_by_ai: true`, `reviewed_by: "<name> (ID)"`, `ai_model: "<model-id>"`, `verification_status: "verified"`, `verification_timestamp` — records without this block are not submission-ready
+- **anti-superficial-fluency guardrail**: do not award high rubric marks for articulate phrasing alone (AI easily produces fluency); prioritize analytical rigor, reasoning evidence, and factual accuracy in scoring
 
 ## Suggested Process
 

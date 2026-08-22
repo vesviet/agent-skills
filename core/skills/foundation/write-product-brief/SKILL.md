@@ -16,22 +16,17 @@ Use this skill when product direction needs to be turned into a decision-ready b
 
 ## Core Rules
 
-- define the user or business outcome before discussing implementation
+- define the user or business outcome (Jobs-to-be-Done / underserved customer job) before discussing implementation — Feature Factory PRDs that specify buttons and database fields without a user problem are an anti-pattern
+- measure success by customer behavior change and business outcome, not by shipped feature count or schedule compliance
 - make preserved versus changed behavior explicit
 - identify affected users, workflows, and support impact
+- define explicit non-goals to prevent scope creep — unclear non-goals are a P1 defect in the brief
 - make trade-offs explicit when scope, quality, timing, or rollback options conflict
 - do not hide uncertainty, accepted degradation, or residual release risk
-
-### 2025-2026: AI Feature Governance Fields
-
-When the feature involves AI-generated content, ML model output, or LLM-backed functionality, the product brief must include:
-
-- **EU AI Act risk classification (mandatory for EU-market features as of August 2026):** classify the feature as Minimal Risk, Limited Risk, High Risk, or Unacceptable Risk under the EU AI Act framework — High Risk features (biometric, employment, education, law enforcement, safety-critical) require a mandatory conformity assessment before deployment.
-- **HITL requirement:** state explicitly whether a human must review, approve, or override AI output before it affects users or data — document the trigger conditions for human-in-the-loop intervention.
-- **AI transparency obligation:** if the feature presents AI-generated content to end users, specify the disclosure mechanism (label, tooltip, watermark) — this is mandatory under EU AI Act Articles 50-52 for GPAI and synthetic content.
-- **Fallback behavior:** define what the feature does when the AI component fails, returns low-confidence output, or is unavailable — "fail-open" (show AI output regardless) is not acceptable for High Risk features.
-- **Data provenance:** identify what training data or retrieval corpus the AI component uses — flag any personal data, copyright-sensitive data, or data with geographic restrictions.
-- **Model version and update cadence:** specify which model version the feature depends on and how model updates are controlled — uncontrolled model updates are a regression risk for product-level behavior.
+- for AI-backed features: include EU AI Act risk classification (Prohibited / High-Risk / Limited / Minimal) before any acceptance criteria — high-risk classification changes the delivery contract and requires conformity assessment
+- for AI-backed features: state HITL requirement explicitly (trigger conditions, human gate scope); define AI transparency disclosure mechanism (label, tooltip, watermark) per EU AI Act Articles 50-52
+- for AI-backed features: define deterministic fallback behavior when the AI component fails or returns low-confidence output — "fail-open" (show AI output regardless) is not acceptable for High-Risk features
+- for AI-backed features: specify model version, data provenance (training corpus, geographic restrictions, PII flags), and model update cadence controls
 
 ## Suggested Process
 

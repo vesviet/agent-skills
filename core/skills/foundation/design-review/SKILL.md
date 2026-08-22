@@ -18,9 +18,11 @@ Use this skill with **UI/UX Designer** or **Reviewer** when the deliverable is d
 
 - review against declared user goals, preserved behavior, and feature-ticket when provided
 - consume `ux-flow-spec.json` and `ui-component-spec.json` when present; do not invent missing states
-- separate blocking UX defects from polish or preference
-- check all critical states: loading, empty, error, permission, success
-- verify design-system tokens and component patterns when an overlay is active
+- separate blocking UX defects from polish or preference; classify findings as blocking | should-fix | suggestion
+- every screen spec must define all 5 critical UI states: Empty, Loading/Skeleton, Populated, Error (with actionable recovery), and Unauthorized/Permission — specs missing any of these states are incomplete
+- verify design-system tokens — all styles must reference tokens; zero hardcoded hex colors, magic spacing numbers, or raw typography values are acceptable (W3C DTCG standard)
+- for AI-generated UI (v0.dev, Galileo, Builder.io, Copilot): run token conformance check (no hardcoded values), axe-core accessibility scan, and style namespace pollution check before development handoff
+- require interactive Figma prototype links for flows with more than 2 screens before Frontend implementation begins
 - do not implement UI; emit findings for Frontend or UI/UX to fix
 - route code-level bugs to `review-code`; route a11y conformance gaps to `accessibility-review`
 

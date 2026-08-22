@@ -18,15 +18,14 @@ Use this skill when a change needs clear technical documentation or when existin
 
 ## Core Rules
 
-- write for the intended audience, not for the author
-- keep docs aligned with the actual source of truth
-- prefer concrete steps and examples over vague explanation
-- do not duplicate large chunks of information that already live elsewhere
+- write for the intended audience, not for the author; open every page with the core definition or solution in the first paragraph — do not bury the answer
+- keep docs aligned with the actual source of truth; do not duplicate content that already lives in an authoritative location — link to it instead
+- prefer concrete steps and exact examples over vague explanation; code samples must have language tags, valid syntax, and complete imports
+- **Diátaxis quadrant isolation**: every documentation file belongs to exactly ONE quadrant — Tutorial (learning-oriented), How-to (problem-oriented), Reference (information-oriented), or Explanation (understanding-oriented); never mix architectural philosophy with step-by-step beginner guides in a single file
+- **Dual-audience authoring**: structure every document for both human engineers and AI agents — consistent Markdown headings, unambiguous terminology, and semantic YAML frontmatter (`title`, `description`, `category: tutorial|howto|reference|explanation`, `last_verified_version`) enable LLM and RAG retrieval without hallucination
+- **Reference docs must be auto-generated**: API reference documentation is generated directly from OpenAPI / AsyncAPI / protobuf specs using Redocly, Scalar, or Mintlify — hand-typed endpoint definitions are rejected as they drift from the source of truth
+- **Docs-as-code CI gate**: documentation PRs must pass `markdownlint`, Vale prose style, broken-link checker, and frontmatter schema validation before merge; Cloudflare Pages or Netlify deploy previews are mandatory for reviewer sign-off
 - avoid internal workflow wording in user-visible docs unless the repo explicitly expects it
-- ensure documentation is structured for both human engineers and AI assistants (e.g., maintaining `/llms.txt` and `/llms-full.txt` files)
-- adopt the Diataxis framework to separate tutorials, how-to guides, reference material, and explanations
-- integrate OpenAPI specs with auto-generation tools like Redocly, Scalar, or Mintlify for interactive references
-- validate documents automatically in a docs-as-code pipeline with automated previews on Cloudflare Pages or Netlify
 
 ## Suggested Process
 

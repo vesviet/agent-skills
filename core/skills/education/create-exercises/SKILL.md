@@ -16,13 +16,13 @@ Use this skill to generate practical tasks, tests, or mock exams strictly follow
 
 ## Core Rules
 
-- Strictly adhere to the requested testing formats (e.g., short quiz, unit test, mid-term, final).
-- Follow a structured cognitive matrix (e.g., Bloom's Taxonomy: Remember → Understand → Apply → Analyze/Evaluate).
-- Calibrate difficulty ratio to the student's grade, goal, and prior knowledge.
-- Avoid notations, formulas, or problem-solving methods not yet taught in the target curriculum.
-- Establish an AI-assisted exercise generation workflow featuring Bloom's Taxonomy filtering and a mandatory human review gate.
-- Calibrate exercise difficulty dynamically using Item Response Theory and moving average metrics to maintain a 70-80% target success rate.
-- Integrate spaced repetition triggers based on SM-2 or SM-15 algorithms into the question scheduler.
+- strictly adhere to the requested testing format (short quiz, unit test, mid-term, final) and the target grade or proficiency level; never use notations, formulas, or methods not yet taught in the target curriculum
+- map every question to a **Bloom's Taxonomy level** (Remember → Understand → Apply → Analyze → Evaluate → Create) and declare the target level explicitly in the exercise matrix before generation
+- **AI-generated questions are drafts only**: all AI-generated exercises must pass a qualified educator's review gate before assignment to students — autonomous publish of AI-generated exercise sets is not permitted
+- calibrate difficulty dynamically using **Item Response Theory (IRT)** metrics targeting a **70–80% student success rate** — enough challenge to stimulate learning, enough success to sustain motivation
+- integrate **spaced repetition triggers** (SM-2 or SM-15 algorithm) in the question scheduler: calculate the next review date from the student's response quality score and easiness factor; never use fixed equal-interval review schedules
+- award **partial credit** for correct intermediate steps in constructed-response questions; never score as all-or-nothing when sub-steps are demonstrably correct
+- keep a question-level changelog (`question_id`, `bloom_level`, `difficulty_param`, `last_reviewed`) so exercise sets are auditable and adjustable without full regeneration
 
 ## Suggested Process
 
