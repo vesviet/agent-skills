@@ -1,11 +1,13 @@
 ---
 name: develop-mdg-feature
-description: Develop features for the Máy Điện Giải Sài Gòn Laravel e-commerce. Use when adding Filament admin resources, Blade pages, Livewire components, or e-commerce logic (cart, checkout, orders) in this specific project.
+description: Develop features for the Máy Điện Giải Sài Gòn Laravel 13 + Filament v4 e-commerce. Use when adding Filament admin resources, Blade pages, Livewire components, or e-commerce logic (cart, checkout, orders) in this specific project.
 ---
 
 # Develop MDG Feature
 
 Use this skill when building or modifying features in the Máy Điện Giải Sài Gòn e-commerce platform. This extends the generic `develop-laravel-feature` skill with project-specific file map, models, and design constraints.
+
+**Stack (2026):** Laravel 13 + Filament **v4** (Schema API) + Livewire 3 + PHP 8.3+ + Pest v5.
 
 **Prerequisites:** Read `overlays/laravel-filament/rules/laravel-conventions.md` first for generic patterns.
 
@@ -78,6 +80,7 @@ D:\myproject\maydiengiaisaigon\
 - [ ] feature placed in the correct architectural layer
 - [ ] thin controller pattern followed
 - [ ] Livewire used only for interactive islands
+- [ ] **Filament v4 `Schema::components()` used** (not deprecated v3 `Form::schema()`)
 - [ ] DB::transaction() wraps multi-table writes
 - [ ] migrations include indexes on slug, category_id, status columns
 - [ ] SoftDeletes on Category and Product
@@ -85,7 +88,7 @@ D:\myproject\maydiengiaisaigon\
 - [ ] Vietnamese slug routes match web.php conventions
 - [ ] FormRequest used for validation
 - [ ] media via Spatie with WebP conversion
-- [ ] Pest tests written for critical logic
+- [ ] Pest v5 tests written for critical logic (cart, checkout, state transitions)
 - [ ] queue used for email, never synchronous
 
 ## Related Skills

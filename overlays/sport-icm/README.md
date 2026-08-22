@@ -4,14 +4,21 @@ Project-specific conventions for the Sport ICM niche catalog — custom sportswe
 
 **Depends on:** `overlays/astro-cloudflare`
 
-- **Repo:** `D:\regna\cloudflare\sport-icm`
 - **Live:** Cloudflare Pages (sport-icm workers.dev subdomain)
+
+## 2026 Stack Status
+
+| Component | Current | Target |
+|-----------|---------|--------|
+| Astro | v5 | **v6/v7** — Content Layer API, direct `env` binding access |
+| TailwindCSS | v3 | **v4** — CSS-first, no `tailwind.config.js` |
+| Node.js | 18/20 | **22+** (required by Astro 6) |
 
 ## Specifics
 
 - Niche catalog site built on Astro + Cloudflare Pages
 - Product and category data in `src/data/` (TypeScript or JSON)
-- Tailwind + sport/athletic theme overrides
+- Tailwind v4 + sport/athletic theme overrides (`@theme {}` CSS blocks)
 - Contact form via Resend API + Turnstile anti-spam
 - Static pages with optional dynamic category routes
 
@@ -32,4 +39,4 @@ Project-specific conventions for the Sport ICM niche catalog — custom sportswe
 | [icm-main](../icm-main/README.md) | ICM Factory Direct | B2B corporate, master brand |
 | [golf-icm](../golf-icm/README.md) | Golf ICM | Golf apparel, resort wear |
 | sport-icm | Sport ICM | Sportswear, athletic uniforms |
-| [obj-configurator](../obj-configurator/README.md) | OBJ 3D | WebGL product configurator |
+| [obj-configurator](../obj-configurator/README.md) | OBJ 3D | WebGL/WebGPU product configurator |

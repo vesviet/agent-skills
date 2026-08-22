@@ -1,20 +1,71 @@
 # Astro Cloudflare Overlay
 
-Generic, reusable conventions for any Astro v5 project deployed to Cloudflare Pages/Workers. This overlay is stack-specific but project-agnostic.
+Generic, reusable conventions for any Astro v5/6/7 project deployed to Cloudflare Pages/Workers. This overlay is stack-specific but project-agnostic.
 
-## Tech Stack Coverage
+## Tech Stack Coverage (2026)
 
-- **Framework:** Astro v5 (SSG/SSR)
-- **Styling:** Tailwind CSS v3
-- **Infrastructure:** Cloudflare Pages, Workers, R2, Wrangler
+- **Framework:** Astro v6/v7 (SSG/SSR) — Astro 6 stable, Astro 7 current
+- **Styling:** TailwindCSS **v4** (CSS-first config — `tailwind.config.js` removed)
+- **Infrastructure:** Cloudflare **Workers** (preferred), Pages (legacy/static-only)
+- **Build:** Vite 8 + Rolldown (Rust-based, 10–30× faster builds)
+- **Node.js:** 22+ required (Node 18/20 dropped in Astro 6)
 - **Email:** Resend API (optional)
 - **Anti-Spam:** Cloudflare Turnstile (optional)
 - **Linting:** ESLint + Prettier + astro-check
 
+## 2026 Decision: Workers vs Pages
+
+**Default to Cloudflare Workers for all new full-stack apps.**
+
+| | Workers | Pages |
+|---|---|---|
+| Static assets | ✅ Native | ✅ |
+| Durable Objects | ✅ | ❌ |
+| Cron Triggers | ✅ | ❌ |
+| Queues | ✅ | ❌ |
+| Advanced observability | ✅ | Limited |
+| Roadmap investment | ✅ Active | Maintenance |
+
+Pages remains valid for static-first or legacy Git-push-only deployments.
+
+## Astro 5 → 6 Breaking Changes (Action Required)
+
+1. **Bindings**: `Astro.locals.runtime.env.MY_BINDING` → **`env.MY_BINDING`** (direct access)
+2. **Content Layer API mandatory** — legacy `/content/` collections removed; migrate to `src/content.config.ts`
+3. **Node.js 22+** required — drop Node 18/20 from CI pipelines
+4. **`Astro.glob()`** → use `import.meta.glob()` instead
+5. **Cloudflare adapter entrypoint** changed to `@astrojs/cloudflare/entrypoints/server`
+
+## TailwindCSS v4 Migration (Breaking)
+
+`tailwind.config.js` is **deleted** in v4 projects:
+
+```bash
+# 1. Automated migration
+npx @tailwindcss/upgrade
+
+# 2. New install
+npm install tailwindcss @tailwindcss/vite
+```
+
+`astro.config.mjs`:
+```js
+import tailwindcss from '@tailwindcss/vite';
+export default defineConfig({ vite: { plugins: [tailwindcss()] } });
+```
+
+`src/styles/global.css`:
+```css
+@import "tailwindcss";
+@theme { --color-brand: #...; }
+```
+
+The `@astrojs/tailwind` integration is deprecated for v4 projects.
+
 ## Included
 
-- `rules/astro-cloudflare-conventions.md` — Architecture, component patterns, deploy, Wrangler config
+- `rules/astro-cloudflare-conventions.md` — Architecture, component patterns, deploy, Wrangler config, TailwindCSS v4
 
 This overlay should be composed with the global core and optionally with project-specific overlays.
 
-**Recommended role:** `cloudflare-engineer` (edge/Wrangler/bindings) with `frontend-developer` (Astro UI). Activate this overlay for both when working on deploy or binding changes.
+**Recommended roles:** `cloudflare-engineer` (edge/Wrangler/bindings) + `frontend-developer` (Astro UI).

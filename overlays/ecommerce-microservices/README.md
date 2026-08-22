@@ -1,18 +1,33 @@
 # Ecommerce Microservices Overlay
 
-**Status: planned** — this overlay is a reserved placeholder. It is not yet populated with rules or skills.
+**Status: planned** — reserved placeholder not yet populated with rules or skills.
 
-Reserved for service-level, deployment-level, or architecture-level conventions that apply to the ecommerce microservices family but do not belong in the portable core.
+Reserved for service-level, deployment-level, or architecture-level conventions for the ecommerce microservices family that do not belong in the portable core.
 
 **Depends on:** `overlays/go-microservices`
 
+## 2026 Planned Tech Stack
+
+When populated, this overlay will target:
+
+| Component | Version | Notes |
+|-----------|---------|-------|
+| Go | 1.25+ | Container-aware GOMAXPROCS, `testing/synctest` |
+| Kratos | **v3** | Breaking import path change from v2 |
+| DI | Manual constructors / `goforj/wire` | `google/wire` archived |
+| DB | `sqlc` + `pgx/v5` | Compile-time type-safe queries |
+| Dapr | **1.15** | Jobs API GA, Workflow stable, binary state |
+| Communication | **ConnectRPC** + gRPC-Go | ConnectRPC for new services |
+| Observability | OTel Go 1.x | Compile-time instrumentation stable Jul 2026 |
+
 ## Intended Scope (when populated)
 
-- inter-service API contract conventions (gRPC + REST gateway)
-- event schema standards (Kafka topic naming, CloudEvents envelope)
-- service-to-service auth patterns (mTLS, JWT claims)
-- shared observability conventions (trace propagation, structured log fields)
-- local development setup (docker-compose, env wiring)
+- Inter-service API contract conventions (ConnectRPC + gRPC + REST gateway)
+- Event schema standards (Kafka topic naming, CloudEvents envelope, Dapr pub/sub)
+- Service-to-service auth patterns (mTLS, JWT claims, Dapr Workflow secrets)
+- Shared observability conventions (trace propagation, structured `log/slog` fields)
+- Local development setup (docker-compose, Dapr sidecar, env wiring)
+- Dapr Jobs API conventions for scheduled tasks
 
 ## Usage
 
@@ -25,4 +40,4 @@ includes:
   - overlays/ecommerce-microservices
 ```
 
-Until this overlay is populated, the `ecommerce-team` pack effectively loads `core` + `overlays/go-microservices` only.
+Until populated, the `ecommerce-team` pack loads `core` + `overlays/go-microservices` only.

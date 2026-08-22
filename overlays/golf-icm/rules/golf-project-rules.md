@@ -2,12 +2,19 @@
 
 Project-specific conventions for the Golf ICM niche catalog site.
 
+## 2026 Astro Migration Notes
+
+- **Astro 6**: `Astro.locals.runtime.env` → direct `env` parameter access.
+- **TailwindCSS v4**: replace `tailwind.config.js` with `@theme {}` CSS blocks.
+- **Content Layer**: if adding content collections, use `src/content.config.ts` with `glob()` loader.
+- Run `npx @tailwindcss/upgrade` for automated Tailwind migration.
+
 ## Site Architecture
 
 - Primary content in `src/pages/index.astro` — single-page catalog with sections.
 - Additional pages for 404, API endpoints, blog articles (MDX).
 - Components in `src/components/` — Astro-only (no React islands needed).
-- Styles in `src/styles/` — Tailwind base + custom theme.
+- Styles in `src/styles/` — TailwindCSS v4 base + custom `@theme` tokens.
 
 ## Product Galleries
 
@@ -23,14 +30,16 @@ Project-specific conventions for the Golf ICM niche catalog site.
 - Tone: Premium, sophisticated, performance-focused.
 - Target: Golf clubs, resorts, corporate events, tournament organizers.
 - Keywords: custom golf apparel, polo shirts manufacturer, resort wear OEM.
+- **2026 GEO/AI**: Add Q&A structured data to product sections for AI search citations.
 
 ## Content (MDX)
 
 - Blog articles use MDX format with reading-time estimation.
-- Typography plugin enabled (`@tailwindcss/typography`) for article body.
+- Typography plugin enabled (`@tailwindcss/typography` — import via CSS in v4).
 - Frontmatter: `title`, `date`, `description`, `image`, `tags`.
 
 ## Deploy
 
 - `npm run deploy` → `astro build && wrangler pages deploy dist`.
 - GitHub Actions on `main` branch.
+- Secrets via `.dev.vars` (local) / Cloudflare Dashboard (prod).

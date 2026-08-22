@@ -4,12 +4,19 @@ Project-specific conventions for the Golf ICM niche website — golf apparel and
 
 **Depends on:** `overlays/astro-cloudflare`
 
-- **Repo:** `D:\regna\cloudflare\golf.icm`
 - **Live:** Cloudflare Pages (`golf-icm.sweet-voice-f606.workers.dev`)
+
+## 2026 Stack Status
+
+| Component | Current | Target |
+|-----------|---------|--------|
+| Astro | v5 | **v6/v7** — Content Layer API, direct `env` binding access |
+| TailwindCSS | v3 | **v4** — CSS-first, no `tailwind.config.js` |
+| Node.js | 18/20 | **22+** (required by Astro 6) |
 
 ## Specifics
 
-- Single-page catalog site (`src/pages/index.astro` — 27KB, all content inline)
+- Single-page catalog site (`src/pages/index.astro` — primary content inline)
 - MDX support for blog/article content (`@astrojs/mdx`)
 - Gallery generation scripts (`generate_galleries.mjs`, `clone_raw.mjs`, `apply_updates.mjs`)
 - Product gallery data in `generated_galleries.json`

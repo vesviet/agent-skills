@@ -15,37 +15,49 @@ Use an overlay when:
 
 | Overlay | Stack | What it adds |
 |---------|-------|--------------|
-| [astro-cloudflare](astro-cloudflare/README.md) | Astro v5 + Cloudflare Pages/Workers | Architecture patterns, component conventions, Wrangler deploy rules, ESLint/Prettier config |
-| [laravel-filament](laravel-filament/README.md) | Laravel 11 + Filament v3 + Livewire 3 | DB integrity rules, Filament patterns, Pest testing standards, `develop-laravel-feature` skill |
-| [go-microservices](go-microservices/README.md) | Go (Golang) | Clean Architecture conventions, gRPC/REST patterns, structured logging, table-driven tests |
-| [r3f-stack](r3f-stack/README.md) | React Three Fiber / Three.js (WebGL) | **Stub** — reserved namespace for the R3F cluster migration planned for v4.0.0 |
+| [astro-cloudflare](astro-cloudflare/README.md) | Astro v6/v7 + Cloudflare Workers/Pages | Architecture patterns, TailwindCSS v4 config, Content Layer API, Wrangler deploy rules, 2026 binding access patterns |
+| [laravel-filament](laravel-filament/README.md) | Laravel **13** + Filament **v4** + Livewire 3 | DB integrity rules, Filament v4 Schema API, PHP 8.4 features, Laravel Reverb, Pest v5, `develop-laravel-feature` skill |
+| [go-microservices](go-microservices/README.md) | Go 1.25+ + Kratos **v3** | Clean Architecture, ConnectRPC, Dapr 1.15, OTel compile-time instrumentation, goforj/wire (google/wire archived) |
+| [r3f-stack](r3f-stack/README.md) | React Three Fiber **v9** / Three.js r171+ / WebGL+**WebGPU** | WebGPU production-ready, TSL shaders, R3F v9 migration, debug-3d-scene, optimize-3d-assets, integrate-r3f-three-legacy |
 
 ### Project Overlays (project-specific, depends on a stack overlay)
 
 | Overlay | Project | Depends On |
 |---------|---------|------------|
-| [maydiengiaisaigon](maydiengiaisaigon/README.md) | Máy Điện Giải Sài Gòn e-commerce (Laravel, ~20 SKUs) | `laravel-filament` |
-| [icm-main](icm-main/README.md) | ICM Factory Direct corporate site (Astro/Cloudflare, B2B sportswear) | `astro-cloudflare` |
-| [golf-icm](golf-icm/README.md) | Golf ICM niche catalog (Astro/Cloudflare, golf apparel) | `astro-cloudflare` |
-| [sport-icm](sport-icm/README.md) | Sport ICM niche catalog (Astro/Cloudflare, sportswear) | `astro-cloudflare` |
-| [obj-configurator](obj-configurator/README.md) | OBJ 3D Configurator (Astro + R3F/Three.js, WebGL) | `astro-cloudflare` |
-| [ecommerce-microservices](ecommerce-microservices/README.md) | Ecommerce microservices platform | `go-microservices` |
-| [donthan-web](donthan-web/README.md) | Donthan.com livestream platform (web-first desktop UX) | standalone (no stack overlay) |
+| [maydiengiaisaigon](maydiengiaisaigon/README.md) | Máy Điện Giải Sài Gòn e-commerce (Laravel 13, ~20 SKUs) | `laravel-filament` |
+| [icm-main](icm-main/README.md) | ICM Factory Direct corporate site (Astro v6+/Cloudflare, B2B sportswear) | `astro-cloudflare` |
+| [golf-icm](golf-icm/README.md) | Golf ICM niche catalog (Astro v6+/Cloudflare, golf apparel) | `astro-cloudflare` |
+| [sport-icm](sport-icm/README.md) | Sport ICM niche catalog (Astro v6+/Cloudflare, sportswear) | `astro-cloudflare` |
+| [obj-configurator](obj-configurator/README.md) | OBJ 3D Configurator (Astro + R3F v9/Three.js r171+, WebGPU) | `astro-cloudflare` |
+| [ecommerce-microservices](ecommerce-microservices/README.md) | Ecommerce microservices platform (planned) | `go-microservices` |
+| [donthan-web](donthan-web/README.md) | Donthan.com livestream platform (web-first desktop UX) | standalone |
 
 ### Content & Domain Overlays (domain-specific, project-agnostic)
 
 | Overlay | Domain | What it adds |
 |---------|--------|--------------|
 | [vesviet-content](vesviet-content/README.md) | Vesviet / Learn Hugo sites | Brand voice, content schema, `write-vesviet-learn-content` skill, series publishing workflow |
-| [lease-content](lease-content/README.md) | Lease in Vietnam / Máy Lạnh Treo Tường (Astro) | Content schema, collections config, `write-leaseinvietnam-maylanhtreotuong-data` skill |
-| [seo-publishing](seo-publishing/README.md) | Dual-site SEO sprint | 7-day topic boards, publish logs, cannibalization rules, cadence runbook |
+| [lease-content](lease-content/README.md) | Lease in Vietnam / Máy Lạnh Treo Tường (Astro) | Content schema, GEO/AEO baselines, `write-leaseinvietnam-maylanhtreotuong-data` skill |
+| [seo-publishing](seo-publishing/README.md) | Dual-site SEO sprint | 7-day topic boards, 2026 GEO/AI visibility tracking, cannibalization rules, cadence runbook |
 | [ui-design-system](ui-design-system/README.md) | UI design systems | Flow/component handoff conventions |
-| [data-analyst-stack](data-analyst-stack/README.md) | DuckDB + Metabase BI | BI metric dashboard templates, stack conventions |
-| [data-engineer-rabity](data-engineer-rabity/README.md) | Data engineering learning project | Learning conventions, phase roadmap |
+| [data-analyst-stack](data-analyst-stack/README.md) | DuckDB + Metabase BI + dbt 1.9 + Iceberg | BI metric templates, Metabase spec template, dbt microbatch, Iceberg REST Catalog patterns |
+| [data-engineer-rabity](data-engineer-rabity/README.md) | Data engineering learning project | Learning conventions, 10-phase roadmap (Iceberg, dbt 1.9, Kafka, Spark) |
+
+## 2026 Critical Migration Notes
+
+| Priority | Action | Overlays Affected |
+|----------|--------|-------------------|
+| 🚨 P0 | **Laravel 13** — L12 bug fix support ended Aug 13, 2026 | laravel-filament, maydiengiaisaigon |
+| 🚨 P0 | **Filament v4** — unified `Schema` API (breaking from v3) | laravel-filament, maydiengiaisaigon |
+| 🚨 P0 | **`google/wire` ARCHIVED** → goforj/wire or manual injection | go-microservices, ecommerce-microservices |
+| 🟡 P1 | **Astro 6** — Content Layer mandatory, `env` bindings, TailwindCSS v4 | astro-cloudflare, icm-main, golf-icm, sport-icm, obj-configurator |
+| 🟡 P1 | **Kratos v3** — import path changed, v2 maintenance-only | go-microservices |
+| 🔵 P2 | **WebGPU + R3F v9** — `state.gl` → `state.renderer` | r3f-stack, obj-configurator |
 
 ## Overlay Authoring Rules
 
 - keep overlays out of `core/` — portable core must work without any overlay loaded
 - an overlay may extend rules, roles, skills, and workflows but must not break core validators
-- project overlays should declare their stack overlay dependency in their README
+- project overlays MUST declare their stack overlay dependency in their README
 - validate overlays together with core: `python3 core/scripts/validate-skills.py`
+- declare SKILL.md YAML frontmatter with `name`, `description` for AI agent discoverability

@@ -4,9 +4,17 @@ Project-specific conventions for the ICM Factory Direct corporate website — th
 
 **Depends on:** `overlays/astro-cloudflare`
 
-- **Repo:** `D:\regna\cloudflare\icm`
 - **Live:** Cloudflare Pages (`icm.sweet-voice-f606.workers.dev`)
 - **Domain:** icmfactorydirect.com
+
+## 2026 Stack Status
+
+| Component | Current | Target |
+|-----------|---------|--------|
+| Astro | v5 | **v6/v7** — Content Layer API mandatory, `env` bindings |
+| TailwindCSS | v3 | **v4** — CSS-first, `@theme {}`, no tailwind.config.js |
+| Node.js | 18/20 | **22+** (required by Astro 6) |
+| Deployment | Pages | Pages (static-first OK; Workers if adding Cron/DO) |
 
 ## Specifics
 
@@ -21,4 +29,4 @@ Project-specific conventions for the ICM Factory Direct corporate website — th
 
 ## Rules
 
-- `rules/icm-project-rules.md` — Brand voice, product catalog conventions, page templates
+- `rules/icm-project-rules.md` — Brand voice, product catalog conventions, page templates, 2026 binding API
