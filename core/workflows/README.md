@@ -96,4 +96,18 @@ python3 core/scripts/validate-workflows.py
 
 The validator checks frontmatter, required sections, sequential steps, role ownership, checklists, related workflow links, skill references, and stale priority labels.
 
-Last updated: 2026-06-12
+Last updated: 2026-08-22
+
+## 2026 Standards Embedded
+
+All workflows now incorporate the following 2026 engineering standards:
+
+- **AI-Assisted Delivery**: AI coding assistants (Cursor Agent, Copilot Agent, Claude Code) require `AGENTS.md` / `.cursorrules` root context files scoped to architecture boundaries before triggering multi-file agentic edits. AI code review tools (CodeRabbit, Qodo Merge) are advisory — human sign-off required on security-critical paths.
+- **Mutation Testing Gate**: AI-generated test suites must achieve mutation score ≥75% (Stryker, mutmut, go-mutesting) before counting toward coverage. Branch coverage ≥85% on core business logic replaces line coverage as the primary QA KPI.
+- **GitOps & Sigstore**: Deployments use Argo CD ApplicationSets or Flux HelmReleases as source of truth. CI artifacts must include Sigstore cosign provenance attestations (SLSA v1.0/v1.1). Kyverno/OPA Gatekeeper enforce no-unsigned-image admission.
+- **OpenFeature**: Feature flag rollout uses the CNCF OpenFeature SDK for vendor-neutral flag evaluation — enables phased migration gating, circuit-breaker auto-revert, and shadow-write patterns.
+- **DORA Metrics**: Deployment Frequency, Lead Time, Change Failure Rate, and MTTR are tracked per release. MTTR clock starts at confirmed production impact.
+- **Contract Testing**: Pact v4 and Specmatic (OpenAPI/AsyncAPI as executable contracts) replace manual integration tests for service boundary changes.
+- **Dependency Governance**: Renovate (preferred over Dependabot for polyglot stacks) automates upgrades. SBOM reachability analysis (Endor Labs, Snyk Reachability) deprioritizes unreachable CVEs. Socket.dev/Phylum guards against supply chain attacks.
+- **Incident Response**: NIST CSF 2.0 Govern (GV.RR) pre-authorized containment, CycloneDX 1.6 SBOM blast radius queries, Zero-Trust SPIFFE/SPIRE + Cilium microsegmentation, and CVSS 4.0 × EPSS × CISA KEV triage triad.
+- **Data Migration**: pgroll / Atlas for zero-downtime Postgres schema changes, dbt Core 1.9+ microbatch for idempotent time-slice backfills, OpenFeature canary flag gating for rollout phases.

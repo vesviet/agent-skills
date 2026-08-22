@@ -63,9 +63,13 @@ Role: **DevOps Engineer**
 
 Revert the deployment source-of-truth to the previous known good state:
 
-- revert GitOps configuration, Helm charts, or infrastructure as code
-- ensure the rollback follows the same delivery path as the original deploy
+- revert GitOps configuration, Helm charts, or infrastructure as code (in Argo CD: trigger a sync to the previous ApplicationSet revision; in Flux: revert the HelmRelease manifest in Git)
+- ensure the rollback follows the same delivery path as the original deploy — never apply runtime patches that bypass the GitOps source of truth
 - do not make manual runtime patches that bypass the source of truth
+
+If the rollout used **Argo Rollouts** canary/blue-green with automated metric analysis: trigger an `argo rollouts abort` to immediately shift 100% of traffic back to the stable revision — this is faster and safer than manual manifest changes.
+
+If the failing feature is behind an **OpenFeature** flag: disable the flag as an immediate mitigation before or alongside the deployment revert — this can stop user impact in seconds.
 
 Do not create a commit until the user explicitly confirms that commit action.
 Do not push, create a tag, or publish a release until the user explicitly confirms that specific action.

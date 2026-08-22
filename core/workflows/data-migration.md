@@ -60,6 +60,12 @@ Use the repo's migration tool (for example: Flyway, Liquibase, Alembic, golang-m
 - for backfills, prefer batched UPDATE statements to avoid table locks
 - add a performance test query plan for large table changes
 
+Consider modern zero-downtime migration tools for Postgres: **pgroll** (creates views for backward-compatible column renames without locking), **Atlas** (schema-as-code with dry-run lint), and **Bytebase** (multi-database governance). Use **gh-ost** for MySQL zero-downtime schema changes.
+
+For large-scale data backfills using dbt: leverage **dbt Core 1.9+ microbatch** incremental strategy (`incremental_strategy='microbatch'`, `event_time='created_at'`, `batch_size='day'`) — it processes data in idempotent time-based partitions, enables parallelized historical backfills without database locks, and automatically retries only failed time slices.
+
+For any AI-generated migration SQL: run automated linting (e.g., **atlas migrate lint**, **squawk** for Postgres) to detect table locks, index creation without CONCURRENTLY, or unsafe default values before human review. Use ephemeral shadow DB dry-runs (Neon branching, AWS RDS snapshots) to validate both forward and rollback migrations before production.
+
 Use skill: `create-migration`
 
 #### 4. Review The Migration
@@ -75,6 +81,8 @@ Check:
 - rollback (down migration) is safe and tested
 - backfill logic is idempotent — safe to run multiple times
 - the migration ordering constraint is documented
+- lock timeouts are set explicitly (`SET lock_timeout = '2s'`) for production safety
+- AI-generated migrations have documented rollback strategies and explicit DBA/Tech Lead sign-off
 
 #### 5. Test Locally And In A Lower Environment
 
@@ -98,6 +106,8 @@ Document:
 - whether the migration must run before or after the new app code is deployed
 - whether any manual intervention step is needed
 - how to monitor the backfill progress if it is long-running
+
+For high-risk schema changes, use **OpenFeature**-based flag gating to control the rollout in phases: (1) shadow-write flag to new schema with discrepancy metrics, (2) comparator-mode flag comparing old/new schema reads in memory, (3) canary read flag routing 1% → 10% → 50% → 100% of reads to new schema, (4) circuit breaker auto-revert if error rate exceeds 0.1% or latency increases >50ms.
 
 #### 7. Execute In Production
 

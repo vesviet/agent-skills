@@ -7,3 +7,21 @@ a2a-discovery:
   notificationTimeout: 10
   # Delay (seconds) before starting discovery on activation
   discoveryDelay: 5
+
+pack:
+  # Agent Skills pack version — keep in sync with AGENTS.md and adapters/antigravity/ANTIGRAVITY.md
+  version: "4.0.0"
+  # Root context file that AI coding assistants must read before multi-file agentic edits
+  agentContextFile: "AGENTS.md"
+
+capabilities:
+  # AI coding assistant integration (Cursor Agent, Copilot Agent, Claude Code)
+  aiCodingAssistant: true
+  # Mutation testing gate for AI-generated test suites (Stryker, mutmut, go-mutesting)
+  mutationTestingGate: true
+  # OpenFeature SDK for vendor-neutral feature flag evaluation
+  openFeature: true
+  # Sigstore cosign provenance attestation on CI artifacts (SLSA v1.0/v1.1)
+  sigstoreProvenance: true
+  # SBOM generation and reachability analysis (CycloneDX 1.6)
+  sbomReachability: true

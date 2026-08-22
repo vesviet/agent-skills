@@ -66,6 +66,8 @@ Prefer a series of safe, reviewable steps:
 
 Avoid mixing structural cleanup with new business logic.
 
+When AI coding assistants (Cursor Agent, GitHub Copilot Agent) are used for large renames or extractions: scope them to a single pass with an explicit instruction constraint file (`AGENTS.md` / `.cursorrules`) listing which files and layers are in scope. Always review the full diff before merging — AI refactors can silently introduce behavioral changes in edge paths.
+
 #### 5. Execute Incrementally
 
 Role: **Backend Developer**, **Frontend Developer**
@@ -75,6 +77,8 @@ After each meaningful step:
 - rerun the most relevant tests
 - rebuild the affected package or service
 - compare behavior against the baseline
+
+If the refactor touches **service API boundaries or event contracts**: run **Pact v4** or **Specmatic** contract tests to confirm no consumer-breaking changes were introduced — structural refactors often break wire format or field naming in ways that unit tests miss.
 
 Use skill: `review-code` when the change alters boundaries or ownership between layers.
 

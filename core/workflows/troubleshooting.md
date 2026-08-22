@@ -37,6 +37,10 @@ Write down:
 - what changed recently
 - whether the issue reproduces consistently
 
+**Distributed-trace-first**: before reading logs, retrieve the distributed trace for the failing request (Jaeger, Tempo, Zipkin, or OTel-native). The trace span tree reveals the exact failing layer and inter-service call timing without reading thousands of log lines. Only fall back to raw logs when no trace is available or the failure occurs before the trace is emitted.
+
+For log analysis: AI-assisted log tools (Elastic AI Assistant, Splunk AI, Grafana Sift) can correlate high-volume telemetry and surface anomaly patterns in seconds. Treat AI-suggested root causes as **advisory** — validate with a concrete reproduction before applying a fix.
+
 #### 2. Determine The Failure Stage
 
 Role: **SRE**, **Backend Developer**
@@ -50,6 +54,8 @@ Classify the issue first:
 - environment or platform
 
 Use skill: `navigate-service` if the code path is not familiar yet.
+
+For Kubernetes targets: use the diagnostic signals triad — `kubectl describe pod`, `kubectl events --namespace`, and `kubectl logs --previous` — before port-forwarding or exec-ing into containers. Check `/health/live` and `/health/ready` probes for pod state.
 
 #### 3. Check The Simplest Explanations
 

@@ -68,6 +68,8 @@ Follow the local architecture instead of inventing a new one.
 
 If the repo uses generated code, regenerate it with the local command after editing source definitions.
 
+When using AI coding assistants (Cursor Agent, GitHub Copilot Agent, Claude Code): ensure the repo has a root context file (`AGENTS.md`, `.cursorrules`, or `.github/copilot-instructions.md`) that encodes architecture boundaries, forbidden patterns, and test requirements before triggering multi-file agentic edits. Run agentic generation in an isolated sandbox or dev container before human handoff.
+
 #### 5. Test The Change
 
 Role: **Backend Developer**, **Frontend Developer**, **QA Engineer**
@@ -84,9 +86,11 @@ Cover at least:
 
 Run the repo's normal verification commands for:
 
-- tests
-- lint or static analysis
+- tests (unit, integration, contract tests via Pact v4 or Specmatic if service boundaries changed)
+- lint or static analysis — zero warnings required
 - build
+
+For AI-generated test suites: run a mutation score check (Stryker for JS/TS, mutmut for Python, go-mutesting for Go) — AI-written tests must kill at minimum 75% of AST mutants to prevent hollow assertions.
 
 #### 6. Review The Change
 
@@ -100,8 +104,10 @@ Self-review checklist:
 - inputs are validated
 - errors have useful context
 - no secrets or repo-local assumptions were introduced
-- tests cover the riskier paths
+- tests cover the riskier paths and achieve mutation score ≥75% on core logic
 - docs or release notes are updated when needed
+
+If AI tools (CodeRabbit, Qodo Merge, GitHub Copilot Code Review) generate PR review comments: treat their findings as advisory — a human Senior Engineer must sign off on security-critical paths (auth, crypto, financial transactions, database migrations) regardless of AI review outcome.
 
 #### 7. Prepare Delivery
 

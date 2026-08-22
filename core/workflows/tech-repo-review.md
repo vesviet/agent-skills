@@ -109,9 +109,12 @@ Check:
 
 - **version currency**: are major dependencies at reasonably current versions?
 - **EOL risk**: are any runtimes, frameworks, or libraries approaching end-of-life?
-- **CVE exposure**: run a dependency audit (for example: `npm audit`, `pip-audit`, `go mod verify`, `snyk test`)
-- **transitive risk**: are there deep transitive dependencies with supply-chain risk?
+- **CVE exposure**: run a dependency audit (for example: `npm audit`, `pip-audit`, `go mod verify`, `snyk test`, `trivy fs`)
+- **reachability analysis**: use **Endor Labs**, **Snyk Reachability**, or **osv-scanner** to determine if CVEs in transitive dependencies are actually reachable via the application's call graph — up to 80% of transitive CVE alerts can be safely deprioritized when the vulnerable code path is provably unreachable
+- **transitive risk**: are there deep transitive dependencies with supply-chain risk? Check with **Socket.dev** or **Phylum** for malicious install scripts, behavioral diffs, and typosquatting signals
 - **lock file integrity**: are lock files committed and consistent with the manifest?
+- **automation**: is **Renovate** (preferred for monorepos/polyglot) or Dependabot configured for ongoing dependency management with appropriate schedule windows and auto-merge rules for passing CI?
+- **SLSA provenance**: do CI-built artifacts include signed Sigstore provenance attestations (cosign / GitHub Artifact Attestations)?
 
 Classify stale or vulnerable dependencies by severity.
 

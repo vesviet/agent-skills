@@ -71,6 +71,16 @@ Prioritize testing effort by risk, not by code size:
 - **Security boundary**: does the change affect auth, authz, or input validation?
 - **Accessibility**: if UI is affected — does it meet WCAG 2.2 compliance? (use `accessibility-review` skill)
 
+Apply **property-based testing** (fast-check for TypeScript, Hypothesis for Python, `pgregory.net/rapid` for Go) for state machines, serialization, financial calculations, and parser logic — generates hundreds of randomized permutations and automatically shrinks failures to minimal reproducers. Do not limit these paths to example-based tests only.
+
+Apply **contract testing** when the change touches service boundaries: use **Pact v4** (for REST/gRPC and async messaging via Kafka/RabbitMQ) or **Specmatic** (OpenAPI/AsyncAPI specs as executable contracts) to confirm no integration drift before staging deployment.
+
+**2026 Risk-Weighted Coverage Thresholds** (replace line coverage as primary KPI):
+- Core business logic (`internal/biz`, domain models): **branch/path coverage ≥85%**
+- API contract coverage: **100%** of defined OpenAPI/Protobuf success and error response codes
+- Critical paths (financial, auth, data deletion): **100% branch coverage + mutation score ≥85%**
+- General baseline floor: 80% line coverage as a sanity check only — branch coverage is the real gate
+
 For AI/LLM behavior changes, add:
 
 - **Property-based assertions**: validate output properties (tone, safety, structure, relevance) — not exact strings
@@ -104,6 +114,9 @@ Run in this order:
 3. **Manual exploratory charter**: for high-risk paths and UX flows, run a structured exploratory session — not ad hoc clicking
 4. **Side effect verification**: confirm non-response side effects (DB writes, event emissions, cache state) are correct
 5. **Regression pass**: run the regression checklist for areas adjacent to the change
+6. **Chaos injection** (for changes to distributed systems or network paths): use **Toxiproxy** to simulate latency spikes, TCP connection drops, and bandwidth throttling on database and downstream service connections within the integration test suite; escalate to **LitmusChaos 3.x** experiments in staging for pod-kill and network packet-loss validation before production promotion
+
+For AI-generated test suites: run a **mutation score gate** — AI-written tests must achieve mutation score ≥75% (Stryker for JS/TS, mutmut for Python, go-mutesting for Go) before they count toward coverage. Reject tests that assert trivial invariants or mock out the entire implementation.
 
 For each test failure:
 

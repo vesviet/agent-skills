@@ -81,9 +81,9 @@ Role: **DevOps Engineer**
 Use the repository's normal release path:
 
 - CI pipeline
-- deployment manifest update
+- deployment manifest update (GitOps via Argo CD or Flux v2 — update manifests in the source-of-truth repo, not runtime patching)
 - package publish
-- release promotion job
+- release promotion job (use Argo Rollouts for canary/blue-green with automated metric analysis when Kubernetes is the target)
 
 Capture the release reference that matters locally, such as:
 
@@ -91,6 +91,10 @@ Capture the release reference that matters locally, such as:
 - build number
 - artifact version
 - deployment revision
+
+For SLSA compliance: verify the CI pipeline produces a signed provenance attestation (via Sigstore cosign / GitHub Artifact Attestations) before promoting to production. Admission control (Kyverno or OPA Gatekeeper) should reject images lacking valid signatures at the cluster boundary.
+
+Track DORA metrics for this deployment: Deployment Frequency, Lead Time for Changes, and Change Failure Rate. Record these against the release reference.
 
 #### 4b. Cloudflare Edge Release (optional)
 

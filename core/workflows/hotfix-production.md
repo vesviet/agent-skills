@@ -39,10 +39,13 @@ Role: **SRE**, **DevOps Engineer**
 
 Choose the least risky mitigation available first:
 
-- rollback to the last known good release
+- **disable via OpenFeature flag first** (takes seconds, no deployment) — if the failing path is behind a feature flag, disable it immediately before assessing rollback vs hotfix
+- rollback to the last known good release (in Argo CD: `argo rollouts abort` for progressive delivery; in GitOps: revert the manifest commit)
 - disable the failing path with config or a feature flag
 - isolate or scale down only the affected workload
 - route traffic away from the failing dependency when the platform allows it
+
+Record the **DORA MTTR clock start** at the moment production impact is confirmed — this is used for post-incident DORA reporting.
 
 Use the repo's approved production control path.
 
@@ -51,6 +54,8 @@ Use the repo's approved production control path.
 Role: **Backend Developer**, **Frontend Developer**
 
 Use skill: `troubleshoot-service`
+
+**Distributed-trace-first**: retrieve the trace for the failing request before reading raw logs. The span tree immediately shows which service and which layer failed, cutting diagnosis time significantly.
 
 Rules:
 

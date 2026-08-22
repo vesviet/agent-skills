@@ -48,6 +48,10 @@ Take the fastest safe mitigation first:
 - block the attack path at the network or WAF layer if possible
 - revoke active sessions if authentication is compromised
 
+Apply **Zero-Trust containment**: revoke the compromised workload's SPIFFE/SPIRE identity (SVID) and apply an automated Cilium NetworkPolicy quarantine to microsegment the affected pod/service — this enforces kernel-level eBPF isolation within milliseconds without waiting for manual iptables changes. If a SOAR platform (Tines, Cortex XSOAR) is available, trigger the automated quarantine playbook.
+
+Under **NIST CSF 2.0 Govern (GV.RR)**, incident commanders have pre-authorized power to isolate infrastructure, revoke tokens, or take services offline without waiting for ad-hoc executive approval — exercise this authority, then notify stakeholders.
+
 Do not wait for root cause analysis before containment.
 
 #### 3. Scope The Impact
@@ -60,6 +64,8 @@ Answer:
 - which users, tenants, or environments are affected?
 - is the data classified as confidential or restricted per `core/policies/data-classification.yaml`?
 - is there evidence of exfiltration?
+
+Use the **CycloneDX 1.6 SBOM** (VEX + CBOM) to perform blast radius analysis: query centralized SBOM repositories (Dependency-Track, Anchore, Snyk) to identify all running production images containing a vulnerable component within minutes. Check CBOM entries for any quantum-vulnerable cryptographic algorithms or broken cipher suites if the incident involves cryptographic compromise.
 
 Use skill: `conduct-research`
 
@@ -132,6 +138,8 @@ Capture blameless:
 - classify all investigation artifacts at `confidential` or `restricted` per `core/policies/data-classification.yaml`
 - requires_approval for any data export or user data access during investigation
 - rotate all secrets in the blast radius — do not try to determine exactly which ones were accessed
+- for vulnerability prioritization, apply the 2026 triage triad: `CVSS 4.0 (Impact) × EPSS (Exploit Probability) × CISA KEV (Active Exploitation)` — EPSS >10% or CISA KEV listing requires 24–48 hour patching regardless of base CVSS score
+- post-incident RCA findings must update the corporate risk register and CI/CD policy gates per NIST CSF 2.0 Govern (GV.OV) continuous feedback loop
 
 ### Checklist
 

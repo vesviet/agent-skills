@@ -42,6 +42,10 @@ Determine:
 
 Use skill: `conduct-research`
 
+Prefer **Renovate** over manual upgrades for recurring dependency management — Renovate handles monorepos, polyglot stacks (Go, Node, Python, Docker, Helm), custom grouping (e.g., bundle all OpenTelemetry bumps into one PR), and auto-merge on passing CI. Dependabot is acceptable for simple single-language repos.
+
+For security-driven upgrades: apply the 2026 triage triad — prioritize by `CVSS 4.0 (Impact) × EPSS (Exploit Probability) × CISA KEV (Active Exploitation)`. Vulnerabilities with EPSS >10% or listed in CISA KEV require patching within 24–48 hours regardless of base CVSS score.
+
 #### 2. Check Transitive Impact
 
 Role: **Backend Developer**, **Technical Lead**
@@ -51,6 +55,7 @@ Before changing the manifest:
 - identify all packages that depend on this dependency transitively
 - check whether other packages in the project also pin this dependency at a conflicting version
 - verify the target version is compatible with the current runtime (Node.js, Python, JVM, etc.)
+- run **reachability analysis** (Endor Labs, Snyk Reachability, osv-scanner, or Trivy) to determine if vulnerable functions in transitive dependencies are actually reachable from the application's call graph — up to 80% of transitive CVE alerts can be safely deprioritized when reachability proves the vulnerable code path is never invoked
 
 Use skill: `navigate-service`
 
@@ -80,6 +85,10 @@ Verify:
 - lock file changes are consistent with the manifest update
 
 For security patches: confirm the CVE is addressed by the target version.
+
+Run **Socket.dev** or **Phylum** to inspect package install scripts, behavioral diffs, and network call patterns in newly published dependency versions before ingestion — detects supply chain typosquatting and malicious install hooks.
+
+For major version upgrades with widespread breaking API changes: consider using **OpenRewrite + AI** or **Moderne** to automatically generate AST-based codemods that refactor deprecated function calls across the codebase rather than manual call-site changes.
 
 #### 5. Run Full Verification
 

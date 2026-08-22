@@ -126,10 +126,14 @@ Role: **DevOps Engineer**
 
 Add the minimum delivery plumbing the repo expects, such as:
 
-- CI checks
-- deployment manifests
+- CI checks with Sigstore provenance attestation (cosign) so every build artifact is cryptographically signed from the start
+- deployment manifests (GitOps source of truth: Argo CD ApplicationSet or Flux HelmRelease)
 - package publishing metadata
 - ownership or alerting metadata
+
+If the org uses a **Platform Engineering** IDP (Backstage, Port, or Cortex): register the new service in the software catalog with owner, tier, lifecycle, and dependency links — this enables self-service environment provisioning, scorecards, and dependency graph visibility.
+
+If the service uses feature flags: wire the **OpenFeature SDK** from the first deploy rather than adding it later — decoupling flag evaluation from deployment from the start avoids brittle big-bang feature activations.
 
 Follow the source of truth already used by the repo.
 
