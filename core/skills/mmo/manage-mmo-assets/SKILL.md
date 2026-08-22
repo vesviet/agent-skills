@@ -37,20 +37,27 @@ silos:
 
 - **ISOLATION-LOCK**: Never share the same residential proxy IP across unrelated ad accounts or profiles.
 - **ASSET-LOCK**: Do not connect clean backup assets (Vias/BMs) to currently restricted or flagged assets until the restriction is fully lifted.
+- **ASN-SILO-ISOLATION**: Each silo MUST use proxy pools from distinct ASNs (not just different IPs from the same residential network provider). Platform graph-association algorithms correlate accounts sharing the same ASN pool — distinct ASNs reduce cascading ban blast radius.
+- **EXPONENTIAL-BACKOFF-RATE-LIMIT**: All automation against ad platform APIs MUST implement adaptive rate limiting with Poisson-distributed delays and immediate throttling upon HTTP 429, 503, or platform-specific checkpoint challenges. Never use fixed-interval polling.
+- **BAN-BLAST-RADIUS-AUDIT**: After any account restriction, audit the full connection graph (shared BMs, pixels, domains, admin accounts) before re-activating any assets in the same silo. Activate clean assets only after confirming zero graph overlap.
 
 ## Suggested Process
 
-1. **Asset Inventorying**: Catalog all Vias, Business Managers (BMs), Ad Accounts, Meta Datasets (Pixels), and Domains into a secure tracking system.
+1. **Asset Inventorying**: Catalog all Vias, Business Managers (BMs), Ad Accounts, Meta Datasets (Pixels), and Domains into a secure tracking system with ASN assignments per silo.
 2. **Team Sharing Setup**: Configure cloud-based Anti-Detect Browser (ADB) profiles to share access via Role-Based Access Control (RBAC) rather than distributing raw passwords or cookies.
-3. **Compartmentalization Mapping**: Architect the connection map to ensure that a ban on one asset (e.g., one BM) does not cascade to others. Ensure no overlap of backup admins or IPs across isolated silos.
+3. **Compartmentalization Mapping**: Architect the connection map to ensure a ban on one asset does not cascade to others. Ensure no overlap of backup admins, IPs, or ASNs across isolated silos.
+4. **Adaptive Rate Limiting**: Implement Poisson-distributed delay profiles for all platform API interactions; detect and respond to checkpoint challenges before proceeding.
 
 ## Checklist
 
-- [ ] All assets are cataloged and access is strictly governed by RBAC.
-- [ ] No raw passwords or cookies are transmitted via insecure channels.
-- [ ] Isolation mapping confirms zero IP or admin overlap between restricted and clean assets.
-- [ ] Backup assets (Vias/BMs) are kept cleanly separated from any restricted assets.
-- [ ] Asset catalog is up to date (no stale/orphaned entries).
+- [ ] All assets cataloged and access governed by RBAC.
+- [ ] No raw passwords or cookies transmitted via insecure channels.
+- [ ] Silos use distinct ASNs for proxy pools — not just different IPs from the same ASN.
+- [ ] Isolation mapping confirms zero IP, ASN, or admin overlap between restricted and clean assets.
+- [ ] Backup assets (Vias/BMs) kept cleanly separated from any restricted assets.
+- [ ] Exponential backoff with Poisson-distributed delays implemented for platform API calls.
+- [ ] Post-restriction ban blast-radius audit completed before reactivating any silo assets.
+- [ ] Asset catalog up to date (no stale/orphaned entries).
 - [ ] Recovery plan documented in case of cascading ban event.
 
 ## Related Skills

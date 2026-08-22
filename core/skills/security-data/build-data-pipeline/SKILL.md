@@ -40,6 +40,10 @@ For one-off queries, comparisons, or stakeholder reports from existing tables, u
 - pipelines must be **idempotent** — running twice must not duplicate data
 - mask or aggregate PII before any output or logging
 - spot-check row counts and values against source before handoff
+- **dbt 1.9 microbatch**: use `incremental_strategy: 'microbatch'` with `event_time` and `begin` configs to enable auto-retry and partition-based updates; test microbatch bounds locally before production
+- **Iceberg lakehouse**: prefer Apache Iceberg for time-travel queries, schema evolution, and partition pruning; use dbt-duckdb with Iceberg catalogs for transactional lakehouse reads/writes
+- **EU AI Act data lineage**: retain all training data lineage metadata (dbt DAG provenance from raw sources to model output) for a minimum of 10 years; audit ingestion pipelines to verify no toxic, protected, or biased attributes propagate into model inputs
+- **DuckDB production**: deploy DuckDB embedded for < 100 GB analytical workloads or via MotherDuck serverless; maintain separate dev/prod environments and configure memory limits for concurrent query scenarios
 
 ## Suggested Process
 

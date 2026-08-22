@@ -21,6 +21,9 @@ Use this skill for an end-to-end service review, not a narrow code diff.
 - check code, contracts, data, dependencies, operations, and documentation together
 - fix clear local issues when that is in scope
 - escalate decisions that require product, architecture, security, or operational ownership
+- **SLO-RELEASE-GATE**: Before marking a service release-ready, verify: SLO dashboards show no active burn-rate alerts, error budget remaining for the month is above the team's minimum threshold, and P99 latency is within the service's SLO. A release that depletes remaining error budget requires explicit SRE sign-off.
+- **SBOM-IN-RELEASE**: Attach the current SBOM (CycloneDX 1.6 or SPDX format) to the release artifact; verify no new Critical/High CVEs were introduced since the last release using Dependency-Track, Grype, or Trivy.
+- **CHAOS-ENGINEERING-PRE-RELEASE**: For critical services, run a limited chaos experiment (LitmusChaos, Toxiproxy) in staging before release; verify graceful degradation under one dependency failure and document the result in the release artifact.
 
 ## Suggested Process
 
@@ -155,8 +158,3 @@ Skip absent concepts. Do not mark them as findings just because this pack mentio
 - **setup-deployment**: Check deployment source-of-truth changes
 - **commit-code**: Prepare reviewed fixes for delivery
 
-### 2026: SLOs and Release Gates
-
-- **SLO/error budget release gates:** Before marking a service release-ready, verify that: (a) SLO dashboards show no active burn rate alerts, (b) error budget remaining for the month is above the team's minimum threshold, and (c) P99 latency is within the service's defined SLO. A release that depletes the remaining error budget should require explicit SRE sign-off.
-- **Chaos engineering pre-release:** For critical services, run a limited chaos experiment (using Chaos Monkey, LitmusChaos, or `toxiproxy`) in staging before release. Verify the service degrades gracefully (not catastrophically) under one dependency failure. Document the experiment result in the release artifact.
-- **SBOM in release readiness:** Attach the current SBOM (CycloneDX/SPDX format) to the release artifact. Verify no new Critical/High CVEs were introduced since the last release using Dependency-Track or the Grype tool.

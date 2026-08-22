@@ -21,10 +21,13 @@ Use this skill when code changes need matching observability so operators can un
 - keep telemetry names, labels, and dimensions stable enough for dashboards and alerts
 - avoid high-cardinality labels unless the repo explicitly supports them
 - never log secrets, credentials, tokens, or unnecessary sensitive data
-- use stable OpenTelemetry GenAI conventions (opt in via `OTEL_SEMCONV_STABILITY_OPT_IN`) for LLM/agent tracking
-- design hierarchical trace spans using `create_agent` operation types and step attributes for agent reasoning
+- use stable OpenTelemetry GenAI conventions (opt in via `OTEL_SEMCONV_STABILITY_OPT_IN=genai`) for LLM/agent tracking; required attributes: `gen_ai.system`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`
+- design hierarchical trace spans using `create_agent` operation types and step attributes (`agent.name`, `agent.step_type`) for agent reasoning
 - configure Cloudflare Workers native observability using the `observability` block in `wrangler.jsonc` and OTLP push
 - capture GPU infrastructure metrics prefixed with `hw.gpu.*` via OTel Collector and DCGM exporter integration
+- **OTEL-PROFILING-4TH-PILLAR**: OTel Profiling is now the fourth observability pillar alongside logs/metrics/traces — use Pyroscope or eBPF-based profilers (Beyla) for continuous CPU/memory profiling and emit via OTLP profiling signal; do not rely solely on K8s `kubectl top` for performance diagnosis
+- **NATIVE-HISTOGRAMS**: Replace classic Prometheus fixed-bucket histograms with Native Histograms (Prometheus 2.40+, OTel exponential histograms) for dynamic bucket resolution; eliminates the "wrong bucket count" problem and reduces cardinality overhead
+- **DORA-METRIC-SPANS**: Emit CI/CD spans with semantic conventions (`cicd.pipeline.run.*`, `deploy.environment`) to enable automated DORA metric computation (Lead Time, MTTR) from trace data without manual aggregation
 
 ## Suggested Process
 
@@ -63,48 +66,6 @@ Verify that the telemetry can support dashboards, alerts, incident triage, and r
 ### 6. Validate Sensitive Data Handling
 
 Confirm that logs, metrics labels, and trace attributes do not expose secrets, credentials, tokens, or unnecessary personal data.
-
-## 2026 Observability Patterns
-
-### 2026: OpenTelemetry GenAI Semantic Conventions
-
-When instrumenting Generative AI and Large Language Model (LLM) operations:
-- Opt into stable OpenTelemetry semantic conventions by setting the environment variable `OTEL_SEMCONV_STABILITY_OPT_IN` to enable standardized trace/metric formats.
-- Trace and standardize LLM requests using the following specific attributes:
-  - `gen_ai.system`: Standardized name of the model provider (e.g., `openai`, `anthropic`, `vertex_ai`).
-  - `gen_ai.request.model`: The specific model name requested (e.g., `gpt-4o`, `claude-3-5-sonnet`).
-  - `gen_ai.usage.input_tokens`: The count of input/prompt tokens.
-  - `session.id`: Correlation ID mapping LLM calls to a specific user session or agent workflow instance.
-
-### 2026: Agent Reasoning Trace Spans
-
-To visualize and debug complex multi-step agent reasoning chains:
-- Initiate agent execution using a root span with operation type `create_agent`.
-- Structure intermediate steps, tool calls, and planning actions as hierarchical child spans nested under the root agent span.
-- Enrich every agent span with the following semantic attributes:
-  - `agent.name`: Name or role of the agent executing the work (e.g., `orchestrator`, `explorer`).
-  - `agent.step_type`: The type of action or step being run (e.g., `reasoning`, `tool_call`, `planning`, `compaction`).
-
-### 2026: Cloudflare Workers OpenTelemetry Configuration
-
-For edge deployments utilizing Cloudflare Workers:
-- Enable native Cloudflare observability by adding the `observability` configuration block to `wrangler.jsonc` (or `wrangler.toml`):
-  ```jsonc
-  {
-    "observability": {
-      "enabled": true,
-      "head_sampling_rate": 1.0
-    }
-  }
-  ```
-- For external trace shipping, configure direct OTLP push over HTTP/HTTPS (using libraries like `@microlabs/otel-cf-workers` or custom exporters) to export telemetry payload directly to downstream collector backends (e.g., Honeycomb, Datadog).
-
-### 2026: GPU Metrics Collection
-
-For model inference and GPU-accelerated computing nodes:
-- Expose GPU hardware utilization and performance data using the NVIDIA DCGM (Data Center GPU Manager) exporter.
-- Set up an OpenTelemetry Collector to scrape DCGM Prometheus metrics endpoints.
-- Standardize GPU metric names with the prefix `hw.gpu.*` (e.g., `hw.gpu.utilization`, `hw.gpu.memory.used`, `hw.gpu.temperature`, `hw.gpu.power`) utilizing the OTel Collector `transform` processor for namespace normalization.
 
 ## Checklist
 

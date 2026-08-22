@@ -45,21 +45,26 @@ services:
 
 - **PROXYWARE-LOCK**: Never deploy EarnApp/Honeygain directly on a Datacenter IP without residential proxy routing; this results in instant bans or zero earnings.
 - **RESOURCE-LOCK**: Always enforce strict CPU (`cpus`) and memory (`mem_limit`) limits in Docker configurations to prevent node bloat from crashing the host machine.
+- **CONTAINER-EPHEMERAL-DISKS**: Container root filesystems MUST be mounted read-only (`readOnlyRootFilesystem: true`) with volatile browser cache placed on `tmpfs` mounts (`/tmp` and `/dev/shm`, minimum 2 GiB for Chromium/browser stability). Sync only required cookie/storage data to persistent encrypted stores.
+- **REMOTE-DNS-LOCK**: All DNS resolution MUST occur on the proxy exit node via SOCKS5 remote DNS or HTTP CONNECT. Never resolve DNS through the host's local resolver — this leaks the datacenter identity behind the residential proxy.
 
 ## Suggested Process
 
-1. **Containerization**: Use Docker to define lightweight headless nodes for apps like Honeygain, EarnApp, or Pawns.app.
-2. **Network Routing**: Configure network routing via WireGuard, VPNs, or Proxy-chains to ensure container traffic exits through legitimate Residential IPs.
+1. **Containerization**: Use Docker to define lightweight headless nodes for apps like Honeygain, EarnApp, or Pawns.app with read-only root filesystems and tmpfs volumes.
+2. **Network Routing**: Configure network routing via WireGuard, VPNs, or Proxy-chains to ensure container traffic exits through legitimate Residential IPs. Verify remote DNS is enforced.
 3. **Hardware/OS Fingerprint Normalization**: If the target platform's ToS permits container deployment but flags a config purely for looking virtualized, normalize the hardware/OS fingerprint reported by the container. If the platform's ToS or anti-abuse system explicitly targets and bans this technique, treat it as a `REVIEW-SYSTEM LOCK` case — escalate to the user and Security Engineer before implementing rather than deploying it as default behavior.
-4. **Resource Capping**: Apply hard limits to the orchestration file (`docker-compose.yml` or Kubernetes manifests) to restrict resource consumption.
+4. **Resource Capping**: Apply hard limits to the orchestration file (`docker-compose.yml` or Kubernetes manifests). Set cgroup CPU and memory quotas to prevent Chromium rendering memory leaks triggering oom-killer.
 
 ## Checklist
 
-- [ ] Containers are routed through Residential IPs (not Datacenter IPs).
-- [ ] CPU and memory limits are explicitly defined for every proxyware service.
-- [ ] Hardware/OS spoofing is applied where required by platform detection.
-- [ ] Orchestration files (`docker-compose.yml`) are validated.
-- [ ] Network routing (WireGuard/VPN/proxy-chains) is tested end-to-end before scaling.
+- [ ] Containers routed through Residential IPs (not Datacenter IPs).
+- [ ] CPU and memory limits explicitly defined for every proxyware service.
+- [ ] Container root filesystem mounted read-only (`readOnlyRootFilesystem: true`).
+- [ ] `tmpfs` mounts configured for `/tmp` and `/dev/shm` (minimum 2 GiB).
+- [ ] Remote DNS enforced via proxy exit node — no host resolver leaks.
+- [ ] Hardware/OS spoofing applied where required by platform detection.
+- [ ] Orchestration files (`docker-compose.yml`) validated.
+- [ ] Network routing (WireGuard/VPN/proxy-chains) tested end-to-end before scaling.
 - [ ] Fleet earnings baseline recorded before and after deployment for ROI validation.
 
 ## Related Skills

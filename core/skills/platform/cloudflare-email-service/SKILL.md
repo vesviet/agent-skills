@@ -114,6 +114,9 @@ Read the reference that matches your situation. You don't need all of them.
 - Verify the sender domain via wrangler CLI or the Cloudflare Dashboard before sending.
 - Never expose API tokens in source code or commit local env files.
 - Read `message.raw` only once in receiving handlers (the stream is single-use).
+- **REST-API-FROM-KEY**: REST API uses `address` (not `email`) in the `from` object and `reply_to` (snake_case) — Worker binding uses `email` (camelCase) and `replyTo`; mixing these causes silent validation failures.
+- **DKIM-SPF-DMARC-BEFORE-PROD**: Do NOT send production emails until SPF, DKIM, and DMARC records are verified in Cloudflare Dashboard; missing DKIM causes high spam rate and blocks delivery to major providers (Gmail, Yahoo, Outlook enforce DMARC p=reject).
+- **BOUNCE-SUPPRESSION-HYGIENE**: Implement bounce webhook processing; hard-bounced addresses must be added to suppression lists within 24 hours — providers track sender reputation and a >2% bounce rate triggers deliverability degradation.
 
 ## Suggested Process
 1. Onboard the sending domain in Cloudflare (via Dashboard or Wrangler CLI).

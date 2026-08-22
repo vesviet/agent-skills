@@ -23,14 +23,11 @@ Your knowledge of web performance metrics, thresholds, and tooling APIs may be o
 - Skip render-blocking resources with 0ms estimated impact from recommendations.
 - Cite specific resource names and sizes (e.g. "compress hero.png (450KB) to WebP") instead of generic advice.
 - **Always distinguish between lab data (Lighthouse, DevTools) and field data (CrUX, RUM)** — Lighthouse scores do not always reflect real-user experience; always note which you are reporting.
-
-### 2025-2026: INP as Primary Responsiveness Metric
-
-- **INP (Interaction to Next Paint) replaced FID as the Core Web Vitals responsiveness metric in March 2024** — do not reference FID as the current standard; it is deprecated.
-- **INP thresholds:** good < 200ms | needs improvement 200–500ms | poor > 500ms.
-- **INP attribution:** use the `performance_analyze_insight` or Chrome DevTools Performance panel to identify the long-task source behind poor INP — common causes are synchronous JavaScript in event handlers, forced layout/reflow on input, and React 17 or earlier event delegation patterns.
-- **AI-generated performance analysis validation:** when using AI tools (e.g., LLM-based performance audit summaries) to summarize trace data, verify all recommendations against the actual network waterfall and trace — AI summaries frequently misattribute the root cause when multiple bottlenecks are present.
-- **INP optimization patterns (2025):** React 18 concurrent rendering, `scheduler.yield()`, `isInputPending()`, input debouncing with `requestAnimationFrame`, and splitting long tasks with `setTimeout(0)` are the primary INP fixes; confirm which pattern applies before recommending.
+- **INP-PRIMARY-METRIC**: INP (Interaction to Next Paint) replaced FID as the Core Web Vitals responsiveness metric in March 2024 — do not reference FID; thresholds: good < 200ms | needs improvement 200-500ms | poor > 500ms.
+- **LOAF-API**: Use the Long Animation Frames (LoAF) API (`PerformanceObserver({ type: "long-animation-frame" })`) to attribute long frames to specific scripts — replaces the deprecated Long Tasks API for INP root cause analysis.
+- **LCP-4-PART-ATTRIBUTION**: Attribute LCP using 4 components: TTFB + Resource Load Delay + Resource Load Duration + Element Render Delay — always identify which component dominates before recommending a fix.
+- **SPECULATION-RULES**: Use the Speculation Rules API (`<script type="speculationrules">`) for prefetch/prerender of likely next pages; reduces navigation LCP by 30-80% for multi-page apps; check browser support before enabling.
+- **AI-PERF-ANALYSIS-ADVISORY**: When AI tools summarize trace data, verify all recommendations against the actual network waterfall and trace — AI summaries frequently misattribute root cause when multiple bottlenecks are present.
 
 ## Retrieval Sources
 

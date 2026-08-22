@@ -14,6 +14,9 @@ Use this skill to implement cost transparency for self-hosted AI models and GPU 
 - **Idle Optimization**: Implement KEDA (Kubernetes Event-driven Autoscaling) or Karpenter to scale GPU nodes to zero when inference queues are empty.
 - **Alerting**: Configure Slack/PagerDuty alerts for teams exceeding their daily GPU compute budget.
 - **Metric Standardization**: Normalize GPU metric names with `hw.gpu.*` prefixes via OpenTelemetry Collector processors.
+- **MIG-MULTI-TENANT-ISOLATION**: For H100/A100/B200, configure NVIDIA MIG (Multi-Instance GPU) partitions to provide hardware-level isolation between teams sharing the same physical GPU — enforces memory and compute boundaries and prevents one tenant's OOM from affecting another's inference workload.
+- **KEDA-INFERENCE-AUTOSCALING**: Deploy KEDA ScaledObjects driven by vLLM or Triton inference queue depth metrics to scale model replicas to zero when queues are empty for >15 minutes — configure `cooldownPeriod: 900s` to prevent flapping.
+- **VLLM-APC-COST**: Enable vLLM v0.6+ Automatic Prefix Caching (APC) to reuse KV cache for repeated system prompts; structure prompts with static content first and dynamic user content last for maximum cache hit rate — reduces GPU compute cost by 20-60% for high-traffic repeated-context workloads.
 
 ## Suggested Process
 

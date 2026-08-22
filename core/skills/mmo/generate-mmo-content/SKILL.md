@@ -40,24 +40,30 @@ for angle in angles:
 
 ## Core Rules
 
-- **BUDGET-LOCK**: Always implement hard limits (e.g., max token count, max API calls per script run) to prevent infinite loops from draining API budgets.
-- **COMPLIANCE-LOCK**: Even in MMO contexts, ensure generated content does not violate extreme legal boundaries (e.g., phishing).
+- **BUDGET-LOCK**: Always implement hard limits (e.g., max token count, max API calls per script run) to prevent infinite loops from draining API budgets. Budget caps MUST be enforced in code, not documentation only.
+- **COMPLIANCE-LOCK**: Even in MMO contexts, ensure generated content does not violate extreme legal boundaries (e.g., phishing, prohibited financial products, GDPR data misuse).
+- **MULTI-MODEL-FALLBACK**: Configure fallback routing across LLM providers (primary: OpenAI GPT-4o, secondary: Anthropic Claude, fallback: Google Gemini) to ensure generation uptime when any single provider hits rate limits or outages.
+- **EU-AI-ACT-DISCLOSURE**: Per EU AI Act Article 50, AI-generated ad content distributed in the EU MUST include a disclosure that it was produced by AI where the content is not obviously AI-generated. Do not generate or deploy ad creatives targeting EU audiences without an appropriate disclosure mechanism.
+- **SEMANTIC-DISTINCTIVENESS**: Content variations MUST be semantically distinct (different structure, angle, or value proposition) — not just character-level synonym substitution. Platforms detect shallow spinning with embedding-based similarity checks.
 
 ## Suggested Process
 
-1. **Procedural Generation**: Use LLMs (OpenAI, Gemini, Anthropic) to rewrite or "spin" ad copy into distinct variations for genuine A/B testing. Confirm variation volume and strategy comply with the target platform's advertising policy — see Legal & Compliance Notice above.
-2. **Landing Page Generation**: Procedurally generate static HTML/CSS landing pages tailored to specific keywords or audience segments.
-3. **Creative Automation**: Integrate with image generation APIs or templating systems to produce varied ad visuals.
-4. **Budget Guardrailing**: Inject circuit breakers in the code to stop execution if API costs exceed a predefined threshold.
+1. **Procedural Generation**: Use LLMs (OpenAI, Gemini, Anthropic) with configured multi-model fallback to rewrite or "spin" ad copy into distinct variations for genuine A/B testing. Confirm variation volume and strategy comply with the target platform's advertising policy.
+2. **EU AI Act Compliance Check**: Verify whether target audiences are in the EU and apply disclosure metadata or visible disclosure to generated creative content accordingly.
+3. **Landing Page Generation**: Procedurally generate static HTML/CSS landing pages tailored to specific keywords or audience segments.
+4. **Creative Automation**: Integrate with image generation APIs or templating systems to produce varied ad visuals.
+5. **Budget Guardrailing**: Inject circuit breakers in the code to stop execution if API costs exceed a predefined threshold.
 
 ## Checklist
 
 - [ ] Content generation script handles rate limits and API errors gracefully.
 - [ ] Hard caps on API usage (Budget-Lock) are implemented in the code.
-- [ ] Output variations are sufficiently distinct to avoid basic duplicate content filters.
-- [ ] Generated artifacts are properly formatted and ready for deployment.
+- [ ] Multi-model fallback configured (OpenAI → Anthropic → Gemini) for generation uptime.
+- [ ] EU AI Act Article 50 disclosure applied for EU-targeted ad creatives.
+- [ ] Output variations are semantically distinct, not shallow synonym substitutions.
+- [ ] Generated artifacts properly formatted and ready for deployment.
 - [ ] API cost for this run is within the declared budget cap.
-- [ ] Generated content does not violate compliance rules (no phishing or prohibited content categories).
+- [ ] Generated content does not violate compliance rules (no phishing or prohibited content).
 
 ## Related Skills
 

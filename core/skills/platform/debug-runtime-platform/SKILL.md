@@ -32,6 +32,10 @@ helm diff upgrade checkout ./charts/checkout   # detect git vs live drift
 - keep source-of-truth drift visible
 - separate platform failure from application failure
 - get explicit approval before risky production actions
+- **KUBECTL-TOOLKIT**: Use `kubectl describe pod` for events, `kubectl logs --previous` for crash-loop containers, `kubectl exec -it` for interactive diagnosis, and `kubectl top pods --containers` for per-container CPU/memory.
+- **HELM-DIFF-FIRST**: Use `helm diff upgrade` (helm-diff plugin) to preview changes before applying — never apply without seeing the diff; use `helm get values` vs git values file to detect config drift.
+- **AI-LOG-ANALYSIS-ADVISORY**: Pipe logs to LLM-powered analysis tools (Datadog Bits AI, Grafana Sift) to surface anomaly patterns — treat AI-generated diagnosis as a starting hypothesis requiring human validation before any remediation.
+- **CF-WORKERS-DEBUG**: For Cloudflare Workers, use `wrangler tail --format json | jq` for structured log filtering; use `wrangler deployments list` to identify the exact deployed revision in production.
 
 ## Suggested Process
 
@@ -109,9 +113,4 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **review-service**: Check full release readiness after recovery
 - **meeting-review**: Escalate cross-role runtime risk
 - **commit-code**: Prepare source-of-truth fixes for delivery
-\n### 2026: Runtime Platform Debugging Additions
 
-- **Kubernetes debugging toolkit:** Use `kubectl describe pod` for events, `kubectl logs --previous` for crash-loop containers, `kubectl exec -it` for interactive diagnosis, and `kubectl top pods --containers` for per-container CPU/memory without external tools.
-- **Helm drift detection:** Use `helm diff upgrade` (with the helm-diff plugin) to preview changes before applying. Use `helm status` to verify the deployed revision, `helm history` to see rollback targets, and compare `helm get values` against the values file in git to detect config drift.
-- **AI-assisted log analysis:** Pipe logs to LLM-powered analysis tools (such as Datadog Bits AI, Elastic AI Assistant, or Grafana Sift) to surface anomaly patterns. Treat AI-generated diagnosis as a starting hypothesis requiring human validation before any remediation.
-- **CF-specific patterns:** For Cloudflare Workers, use `wrangler tail --format json` piped to `jq` tool for structured log filtering. Use `wrangler deployments list` to identify the exact deployment revision in production.\n

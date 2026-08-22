@@ -27,6 +27,9 @@ Canonical instructions live at [`developers.cloudflare.com/turnstile/spin`](http
 - Do NOT call siteverify from the browser. Always: browser -> user's Worker -> siteverify.
 - Always choose the least-invasive widget mode (`non-interactive` or `invisible`) that maintains security requirements, falling back to `managed` for critical checkpoints.
 - Ensure that tokens are never reused; they are single-use and expire within 300 seconds. Re-trigger the Turnstile widget on any failed form submission.
+- **WIDGET-MODE-SELECTION**: `managed` for login/checkout/password-reset (shows interactive challenge if suspicious); `non-interactive` for medium-risk (browser telemetry only, may fail in privacy-hardened browsers); `invisible` for low-risk only (highest false-positive risk).
+- **TOKEN-REUSE-PREVENTION**: On backend validation failure, frontend MUST call `turnstile.reset(widgetId)` — do NOT show a generic error; user must complete a fresh challenge.
+- **CSP-TURNSTILE-DOMAINS**: Add Cloudflare Turnstile script domains to the site's Content Security Policy (`script-src` and `frame-src`) before deployment — missing CSP entries silently block the widget.
 
 ## Retrieval Sources
 
@@ -43,7 +46,7 @@ Canonical instructions live at [`developers.cloudflare.com/turnstile/spin`](http
 6. Guide the integration by choosing the right widget mode and setting up token expiration handling.
 7. Implement frontend listeners to reset and re-render the Turnstile widget upon backend validation failure or token expiry.
 
-### 2026: Widget Modes, Token Handling, and Verification
+### Widget Modes, Token Handling, and Verification
 
 #### Widget Modes Selection
 - **`managed`**: The default and most robust challenge mode. Cloudflare analyzes user telemetry and behavior dynamically. If suspicious signals are present, it prompts the user with an interactive challenge. Ideal for checkout funnels, user login pages, and password resets.
@@ -195,13 +198,3 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 ## Related Skills
 - **wrangler**: Manage deployment environments and bindings.
 - **debug-workers-edge**: Troubleshoot execution at the edge.
-\n### 2026: Turnstile Modes and Reuse
-
-- **Turnstile mode documentation:** There are three widget modes. The `managed` mode (automatic challenge, shows spinner if needed) is the default. The `non-interactive` mode (invisible, uses browser signals only) may fail in privacy-hardened browsers. The `invisible` mode (fully invisible) has the highest risk of false positives. Choose `managed` for checkout/login flows, and `non-interactive` only for low-value actions where friction must be zero.
-- **Enterprise Turnstile token reuse:** Turnstile tokens are single-use and expire in 300 seconds. If your siteverify call fails due to token reuse, the client must re-execute the widget. Design the UX to re-trigger the widget on a failed submission rather than showing a generic error.
-- **Content Security Policy (CSP) Updates:** Ensure CSP directives allow the loading of the Turnstile script and the execution of necessary background checks. Turnstile requires access to specific domains; keeping CSP updated is critical.
-- **React and Framework Wrappers:** Use official or community-supported React components (such as `@marsidev/react-turnstile`) to ensure smooth lifecycle management of the widget. Unmounting and remounting widgets requires proper cleanup to avoid memory leaks.
-- **Logging and Monitoring:** Track Turnstile solve rates and fallback occurrences in your application analytics. Unexpected spikes in challenges may indicate a configuration issue or a targeted attack.
-- **Graceful Fallbacks:** If the Turnstile API is unreachable, your backend should be configured to gracefully fallback depending on the risk tolerance. Do not completely lock out users during an API outage if it can be avoided.
-- **Testing Challenges:** Use Cloudflare's provided test sitekeys (e.g., `1x00000000000000000000AA`) to simulate passing, failing, and interactive challenges in your automated testing suite to verify the UI behaves appropriately in all scenarios.
-- **Accessibility Integration:** The Turnstile widget is designed to be accessible, but ensure the surrounding container does not trap focus improperly. Verify that screen readers announce the widget state correctly.\n

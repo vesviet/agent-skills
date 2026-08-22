@@ -49,6 +49,11 @@ resource "aws_cloudwatch_metric_alarm" "cpu" {
 - **Least Privilege IAM**: All IAM roles and policies must follow the principle of least privilege. Do not use wildcard `*` permissions unless strictly necessary and documented.
 - **FinOps Enforcement**: Apply mandatory cost allocation tags to all resources (`team-id`, `service-name`, `budget-tier`). Implement rightsizing recommendations from Compute Optimizer.
 - **Cross-Layer Awareness**: Coordinate with System Engineer for OS and network requirements, and DevOps Engineer for deployment pipelines.
+- **EKS-AUTO-MODE**: Use EKS Auto Mode (GA 2026, Karpenter-based) for new clusters — eliminates manual node group management; Karpenter auto-provisions right-sized Graviton4 nodes on demand based on pending pod requirements.
+- **GRAVITON4-FIRST**: Default all new compute to AWS Graviton4 (C8g, M8g, R8g) for 20-30% lower cost and 10-15% better performance vs x86 equivalents; build multi-arch images (`linux/amd64,linux/arm64`) as standard practice.
+- **IAM-IDENTITY-CENTER**: All human and CI/CD access MUST use IAM Identity Center (SSO) with short-lived credentials. Prohibit creation of IAM Users with AKIA* long-lived access keys via SCP (`iam:CreateAccessKey` deny at root OU).
+- **BEDROCK-GUARDRAILS-V2**: All production Bedrock endpoints MUST have Guardrails v2 with contextual grounding enabled — configure grounding threshold ≥ 0.7 to block hallucinated responses not grounded in the provided context.
+- **S3-EXPRESS-AIWORKLOADS**: Use S3 Express One Zone for AI/ML training data, embedding caches, and high-throughput inference checkpoints requiring < 10ms latency at scale; standard S3 for compliance/backup/audit storage.
 
 ## Suggested Process
 

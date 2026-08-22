@@ -21,6 +21,9 @@ Use with the **Cloudflare Engineer** role for platform-layer failures. Escalate 
 - separate binding misconfiguration from application exceptions
 - prefer rollback or route disable for production incidents when blast radius is unclear
 - get approval for production DNS, cache purge, or binding deletes per policy
+- **WRANGLER-V4-REMOTE**: In Wrangler v4, `wrangler dev` defaults to local mode — use `--remote` flag explicitly to bind against real production D1/R2/KV resources; update any CI runbooks that assumed `--remote` as the default.
+- **WORKERS-OBSERVABILITY-DASHBOARD**: Use the Workers Observability dashboard for custom P99 CPU charts, JSON/CSV log export, and shareable trace URLs — requires `"observability": { "enabled": true }` in `wrangler.jsonc` to persist logs.
+- **OBSERVABILITY-BLOCK-REQUIRED**: `wrangler tail` does NOT persist logs without the `observability` block enabled in `wrangler.jsonc`. Add this block to all production Workers before any debugging session.
 
 ## Suggested Process
 
@@ -86,8 +89,3 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **wrangler**: Wrangler CLI for deploying, developing, and managing Workers
 - **debug-runtime-platform**: Broader platform issues shared with DevOps/SRE
 - **troubleshoot-service**: Application-level API or Astro handler bugs
-\n### 2026: Remote Bindings and Observability Updates
-
-- **Remote Bindings (GA 2025/2026):** `wrangler dev` now supports running code locally while binding to REAL production D1/R2/KV without seeding local databases. This eliminates the "works locally, broken in prod" binding drift. Use the `--remote` flag explicitly in Wrangler v4 (which defaults to local-only mode).
-- **Workers Observability dashboard:** A new centralized dashboard provides custom P99 CPU charts, JSON/CSV log export, shareable trace URLs, and per-Durable-Object instance metric filtering. Use this dashboard instead of `wrangler tail` for structured investigation.
-- **Enabling log collection:** An `"observability": { "enabled": true }` configuration block is required in `wrangler.jsonc` to activate automatic log collection. Note that `wrangler tail` alone does not persist logs without this configuration.\n

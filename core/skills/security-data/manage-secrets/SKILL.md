@@ -75,31 +75,9 @@ Confirm without exposing values:
 - dependent calls succeed
 - no sensitive value appears in logs or docs
 
-## 2026 Secrets Management Patterns
-
-### 2026: OIDC Workload Identity Federation
-
-When designing or auditing deployment workflows:
-
-- **Configure OIDC Trust:** Establish trust relationships between the CI/CD platform (e.g., GitHub Actions) and the cloud provider or secrets manager (AWS, GCP, Vault/OpenBao). Avoid storing static IAM credentials.
-- **Enforce Claims Constraints:** Restrict token exchange by specifying claims filters (e.g., matching the exact GitHub organization, repository, branch, or environment) to prevent unauthorized repositories from obtaining credentials.
-- **Implement Temporary Token Exchange:** Use dynamic credential retrieval in pipeline steps, requesting short-lived session tokens that automatically expire after the job finishes.
-
-### 2026: AI-Generated Code Secrets Scanning
-
-To combat the 2× increase in secrets leakage rates when developers use AI coding assistants:
-
-- **Enforce Pre-Commit Scanning:** Wire automated scanners (Gitleaks, TruffleHog) into local pre-commit hooks to detect credentials before commits are made.
-- **Run Scan in CI/CD:** Establish a mandatory blocking CI check on all Pull Requests to analyze the commit history for high-entropy strings and known signature patterns.
-- **Execute Active Verification:** Use scanner features (like TruffleHog's verification engines) to check if any flagged credentials are active in the target APIs before initiating rotation protocols.
-
-### 2026: OpenBao vs HashiCorp Vault Governance
-
-When choosing or transitioning secret management infrastructure:
-
-- **Analyze Licensing:** Understand the licensing implications of the solution (OpenBao's fully open-source MPL v2 vs. HashiCorp Vault's BSL v1.1) relative to organization usage and redistributions.
-- **Assess Feature Parity:** Verify API compatibility (OpenBao remains compatible with Vault up to 1.14.x) and catalog any proprietary features that could cause vendor lock-in.
-- **Establish Migration Strategy:** Plan the transition path (APIs, mounts, auth backends, and policies) to ensure zero downtime if migrating between Vault and OpenBao.
+- **SOPS-AGE-GITOPS**: Any secret committed to Git MUST be encrypted with SOPS using `age` (X25519 key pairs) or Cloud KMS (AWS/GCP/Azure). PGP/GPG is deprecated in modern GitOps. Plaintext or Base64-encoded secrets in Git are a critical violation requiring immediate revocation.
+- **ESO-KUBERNETES**: Deploy External Secrets Operator (ESO v0.10+) in Kubernetes; use namespace-scoped `SecretStore` resources (not cluster-wide `ClusterSecretStore` with wildcard access) to sync secrets dynamically from AWS Secrets Manager, OpenBao, or GCP Secret Manager into native `Secret` objects.
+- **MANDATORY-PUSH-PROTECTION**: Enable GitHub Advanced Security Push Protection or GitLab Secret Detection on all repositories to block pushes containing high-entropy strings. Bypassing protection requires security lead approval and immediate token rotation.
 
 ## Checklist
 

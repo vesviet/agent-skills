@@ -41,21 +41,29 @@ resource "docker_container" "adb_profile" {
 
 - **ANONYMITY-LOCK**: Validate that the origin IP is fully masked before allowing any traffic to flow through the provisioned infrastructure.
 - **ISOLATION-LOCK**: Prevent proxy IP reuse across isolated profiles. Never map the same IP to unrelated business operations.
+- **1:1-PROFILE-IP-AFFINITY**: Maintain a strict 1:1 binding between Account ID, Browser Profile ID, and Proxy Session ID. Never connect an established profile to a different proxy subnet/ASN during an active session — ASN switches during a session trigger platform graph-association alerts.
+- **ZERO-HOST-DNS-LEAK**: All DNS resolution MUST occur remotely on the proxy exit node (SOCKS5 with remote DNS or HTTP CONNECT). Reject any setup where host DNS queries are resolved by local datacenter nameservers.
+- **K8S-EGRESS-LOCKDOWN**: For Kubernetes-based fleets, enforce Cilium or Calico Egress Gateway policies that force all pod outbound traffic through dedicated static proxy gateways or sidecar SOCKS5/HTTP tunnel containers. Never allow direct pod internet egress.
+- **ACCOUNT-WARMUP-LIFECYCLE**: New accounts MUST complete a 7-day multi-stage warm-up lifecycle before production automation — Phase 1 (Days 1–2: browse top-100 domains, accept cookies), Phase 2 (Days 3–4: passive social auth, email verification), Phase 3 (Days 5–7: low-velocity interactions), Phase 4 (Day 8+: production automation).
 
 ## Suggested Process
 
-1. **Proxy Pooling**: Configure Residential, 4G, or ISP proxy networks. Verify connectivity and subnet uniqueness.
-2. **Environment Orchestration**: Set up Docker/Terraform to orchestrate Anti-Detect Browser (ADB) profiles or headless C++ patched environments (e.g., Camoufox).
-3. **Isolation Binding**: Ensure strict mapping of 1 Profile to 1 Proxy IP in the configuration files.
-4. **Leak Testing**: Run a simulated connection to check for DNS leaks or WebRTC exposure before handing off the infrastructure.
+1. **Proxy Pooling**: Configure Residential, 4G, or ISP proxy networks. Verify connectivity and subnet uniqueness. Configure 4G/5G modem rotation with AT command cycle scripts and health check probes.
+2. **Environment Orchestration**: Set up Docker/Terraform or Kubernetes to orchestrate Anti-Detect Browser (ADB) profiles or headless C++ patched environments (e.g., Camoufox). Enforce sidecar proxy tunnels and remote DNS.
+3. **Isolation Binding**: Ensure strict mapping of 1 Profile to 1 Proxy IP (same ASN) in the configuration files. Encrypt and persist profile state to S3/MinIO; mount volatile browser cache on `tmpfs`.
+4. **DNS & WebRTC Leak Testing**: Run automated DNS and WebRTC leak tests before handing off infrastructure. Verify all DNS resolution occurs at the proxy exit node.
+5. **Warm-Up State Machine**: Implement automated 7-day account warm-up state machine before handing accounts to production automation.
 
 ## Checklist
 
-- [ ] Proxy provider endpoints are configured securely (no exposed credentials).
-- [ ] Isolation mapping (1:1 IP to Profile) is explicitly defined in configurations.
-- [ ] Docker/Terraform orchestration files are syntactically valid and tested.
-- [ ] Leak test has been performed (DNS and WebRTC leaks checked).
-- [ ] Subnet uniqueness is verified — no shared subnets across isolated profiles.
+- [ ] Proxy provider endpoints configured securely (no exposed credentials).
+- [ ] 1:1 IP-to-Profile binding with same ASN enforced; no subnet sharing across isolated profiles.
+- [ ] Docker/Terraform/Kubernetes orchestration files valid and tested.
+- [ ] Kubernetes Egress Gateway (Cilium/Calico) enforcing outbound proxy tunnel routing.
+- [ ] Remote DNS leak test passed — no host DNS resolver exposure.
+- [ ] WebRTC leak test passed.
+- [ ] Browser profile state persisted encrypted to S3/MinIO; volatile cache on `tmpfs`.
+- [ ] 7-day account warm-up state machine implemented before production automation.
 - [ ] Handoff documentation provided for the automation team.
 
 ## Related Skills

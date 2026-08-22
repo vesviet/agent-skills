@@ -23,6 +23,9 @@ Your knowledge of Wrangler CLI flags, config fields, and subcommands may be outd
 - Do NOT commit `.dev.vars` or `.env` files. Ensure they are in `.gitignore`.
 - Use environments (`env.staging`, `env.production`) to split staging and production deployments.
 - Never pass secret values directly as CLI arguments; use interactive inputs (`wrangler secret put`), file streams (`wrangler secret put API_KEY < key.txt`), or env vars in secure build runs.
+- **LOCAL-MODE-DEFAULT**: In Wrangler v4, `wrangler dev` defaults to local mode — use `--remote` flag to bind against real production D1/R2/KV resources. Update any CI runbooks that assumed `--remote` as default.
+- **VERSION-THEN-DEPLOY**: Upload a new code Version independently (`wrangler versions upload`), then promote separately (`wrangler deployments create`) for rolling updates, instant rollbacks, and canary traffic splits.
+- **FRAMEWORK-AUTODETECT**: `wrangler deploy` in v4 auto-detects Next.js, Astro, Nuxt, and SvelteKit projects and installs the appropriate adapter automatically.
 
 ## Retrieval Sources
 
@@ -40,13 +43,6 @@ Fetch the **latest** information before writing or reviewing Wrangler commands a
 3. Generate up-to-date local types using `wrangler types`.
 4. Run the local development server using `wrangler dev` to test bindings and local storage.
 5. Deploy to target environments using `wrangler deploy` (or `wrangler deploy --env staging`).
-
-### 2026: Wrangler v4 Patterns
-
-- **Wrangler v4 default-local mode change:** ALL `wrangler dev` commands now default to local mode in v4. The `--remote` flag is now required to bind against real production resources. Update any existing CI runbooks that assumed `--remote` as default to add the explicit flag.
-- **Framework auto-detection:** `wrangler deploy` in v4 auto-detects Next.js, Astro, Nuxt, and SvelteKit projects. It installs the appropriate adapter and generates a `wrangler.jsonc` file automatically — relevant for non-Cloudflare-native project migrations.
-- **Version-then-Deploy model:** Upload a new code Version independently of traffic (`wrangler versions upload`), then promote it separately (`wrangler deployments create`). This enables rolling updates, instant rollbacks, and canary traffic splits without a full redeploy.
-- **Workers Builds native CI:** Cloudflare's GitHub/GitLab native integration auto-builds and deploys on push. Pin the wrangler version in external CI via the `CLOUDFLARE_API_TOKEN` secret. Set `PAGES_WRANGLER_MAJOR_VERSION=4` for Pages projects.
 
 ## Checklist
 - [ ] Compatibility date matches a recent stable API version.

@@ -158,14 +158,10 @@ const files = await sandbox.listFiles('/workspace/project');
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and validation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
 ## Related Skills
 - **wrangler**: Deploy containers bindings and monitor edge variables.
 - **debug-workers-edge**: Diagnose runtime execution issues on Cloudflare.
-\n### 2026: Sandbox Configuration
-
-- **Timeout and resource limit configuration:** Always set explicit `timeout_ms` (max 30,000ms for Sandbox SDK), `memory_mb`, and `cpu_ms` limits in the sandbox invocation. Never run sandboxes without limits — runaway user code can exhaust the Worker CPU budget and trigger automatic eviction.
-- **Network isolation policy:** Cloudflare Sandbox executes code in a fully isolated V8 context with no network access by default. If the sandboxed code needs network access (e.g., fetch calls), it must call back to your Worker via the `env.SANDBOX` binding's allowed callback pattern — not via direct fetch.\n

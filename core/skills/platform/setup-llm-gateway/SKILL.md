@@ -10,10 +10,13 @@ Use this skill to implement an AI infrastructure gateway (e.g., LiteLLM, Portkey
 ## Core Rules
 
 - **Centralized Choke Point**: All LLM traffic MUST route through the gateway. Direct calls to provider APIs using raw keys are prohibited.
-- **Failover Routing**: Configure multi-provider fallback logic (e.g., primary: Claude 3.5 Sonnet -> secondary: GPT-4o -> fallback: Llama 3) to guarantee inference uptime.
+- **Failover Routing**: Configure multi-provider fallback logic (e.g., primary: Claude 3.5 Sonnet → secondary: GPT-4o → fallback: Llama 3) to guarantee inference uptime.
 - **Cost Attribution**: Enforce mandatory metadata tags (e.g., `team_id`, `project_id`) on all requests to track token budgets accurately.
 - **Rate Limiting**: Apply token and request rate limits per user/tenant to prevent abusive spikes or accidental infinite loops from autonomous agents.
 - **Credential Vaulting**: Secure provider master API keys in a dedicated secrets manager; never expose upstream keys to client applications.
+- **LLM-SLO-TARGETS**: Define measurable SLOs for each virtual model tier: TTFT (Time-to-First-Token) p95 < 800ms for interactive, < 3s for batch; TBT (Time-Between-Tokens) p95 < 25ms; alert on SLO breaches per model, not globally.
+- **PROMPTOPS-TOKEN-BUDGET**: Track token usage per `(team_id, model, prompt_template_version)` tuple — prompt template version changes must be reflected in metadata tagging so cost attribution remains accurate after prompt engineering changes.
+- **AGENTIC-CIRCUIT-BREAKER**: Configure a hard circuit breaker (max total tokens per agent invocation session) to prevent autonomous agent loops from exhausting daily budgets — set per-session token cap ≤ 10% of daily budget.
 
 ## Suggested Process
 

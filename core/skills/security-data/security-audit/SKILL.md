@@ -21,6 +21,10 @@ Use this skill when reviewing a change, service, or deployment for security post
 - treat code, config, and runtime exposure together
 - call out unclear assumptions as risk, not as proof of safety
 - avoid exposing real secrets or exploit details unnecessarily in user-visible artifacts
+- **CVSS 4.0**: Score vulnerabilities using CVSS 4.0 with CVSS-BTE nomenclature distinguishing Vulnerable System (VC/VI/VA) from Subsequent Systems (SC/SI/SA); MSS (Supplemental) metrics include Automatable and Recovery. Translate to P0/P1/P2/P3 severity tiers.
+- **OWASP Top 10:2025 A10**: A10:2025 is "Mishandling of Exceptional Conditions" — audit error-handling paths and exception blocks; ensure fail-closed behavior (deny by default on uncaught exceptions, release DB connections, no stack trace leakage).
+- **OWASP ASI01–10**: For agentic AI systems apply all 10 ASI controls: ASI01 Prompt Injection, ASI02 Agent Impersonation, ASI03 Excessive Agency, ASI04 Supply Chain, ASI05 Insecure Output Handling, ASI06 Data Leakage, ASI07 Cascading Delegation, ASI08 Missing HITL, ASI09 Insecure Retrieval, ASI10 Observability Gaps.
+- **ZTA-MTLS**: Zero Trust Architecture deployments MUST enforce mTLS between all internal services using SPIFFE/SPIRE for workload identity issuance; block any service-to-service communication without a valid SVID.
 
 ## Suggested Process
 
@@ -70,30 +74,6 @@ Use:
 - high-severity risk for likely misuse or privilege widening
 - follow-up risk for hardening gaps that should be tracked
 
-## 2026 Security Standards
-
-### 2026: OWASP Top 10:2025 Standards
-
-Verify the following 2025 additions during audits:
-- **A03: Supply Chain Security**: Enforce Software Bill of Materials (SBOM) generation/validation, verify package signatures, and review third-party code and dependency updates.
-- **A10: Exceptional Conditions**: Audit error-handling paths and exception blocks. Ensure systems fail-closed when encountering uncaught exceptions, properly release resources (e.g. database connections), and do not leak stack traces or internal diagnostic data.
-- **#2 Misconfiguration (Security Misconfiguration)**: Audit configuration settings, default credentials, cloud IAM/resource policies, HTTP security headers, and debug endpoint states to ensure environments are hardened.
-
-### 2026: OWASP Agentic Security Initiative (ASI) Top 10
-
-Analyze vulnerabilities unique to agentic and AI systems:
-- **Indirect Prompt Injection**: Treat external data (RAG documents, emails, search results) consumed by AI agents as untrusted input; do not allow external data to override system prompts.
-- **Insecure Output Handling**: Validate, sanitize, and scope all agentic outputs (e.g. database queries, command lines, API calls) before downstream systems execute them.
-- **Excessive Agency & Trust Boundaries**: Enforce the principle of least privilege on tool access and capabilities granted to AI agents.
-- **Cascading Delegation & HITL**: Ensure multi-agent invocation paths are bounded and that irreversible actions (such as transactions or data deletions) require Human-in-the-Loop (HITL) approval.
-
-### 2026: SLSA Level 3 Supply Chain Verification
-
-Assess the delivery pipeline for supply chain integrity:
-- **Isolated Build Environments**: Confirm that build steps execute on isolated, ephemeral build platforms to prevent cross-build contamination.
-- **Non-Falsifiable Provenance**: Verify that the build platform produces cryptographically signed, authenticated provenance metadata (SBOM, source commits) that cannot be altered.
-- **Hermetic Builds**: Ensure builds resolve dependencies from secure, immutable registries and that internet access is blocked or tightly restricted during execution.
-
 ## Checklist
 
 - [ ] trust boundary identified
@@ -101,10 +81,11 @@ Assess the delivery pipeline for supply chain integrity:
 - [ ] auth and validation checked
 - [ ] secret handling checked
 - [ ] runtime exposure checked
-- [ ] findings reported with clear severity
-- [ ] OWASP Top 10:2025 gaps reviewed (A03, A10, #2 Misconfiguration)
-- [ ] OWASP ASI Top 10 checks applied for AI systems
-- [ ] SLSA Level 3 supply chain verification assessed
+- [ ] findings reported with clear severity using CVSS 4.0 BTE nomenclature
+- [ ] OWASP Top 10:2025 gaps reviewed (A03 Supply Chain, A10 Exceptional Conditions, Misconfiguration)
+- [ ] OWASP ASI01–10 checks applied for agentic AI systems
+- [ ] ZTA mTLS / SPIFFE/SPIRE verification for zero-trust deployments
+- [ ] SLSA Level 3 supply chain integrity checked for production builds
 
 ## Related Skills
 
@@ -117,4 +98,3 @@ Assess the delivery pipeline for supply chain integrity:
 ## Output Contracts
 
 - `contracts/schemas/security-audit.json`
-

@@ -26,6 +26,8 @@ If the user asks for a full service audit or release readiness pass, hand off to
 - apply zero-trust validation for AI-generated code (1.7× higher defect rate), executing full boundary-level checks
 - require independent human verification on critical paths when AI reviews AI-generated code
 - conduct full dependency-graph blast radius reviews rather than diff-only reviews for AI changes
+- **AI-REVIEW-TOOLS**: CodeRabbit, Qodo Merge, and similar AI-powered PR review tools provide useful first-pass annotations — use them as advisory signals, not as substitutes for human review; AI-generated review comments MUST be verified against the actual code before acting on them
+- **PRE-COMMIT-HOOKS**: Use Lefthook (or Husky for Node.js projects) to enforce local pre-commit quality gates (lint, format, secret scan, type check) — failing gates must block the commit, not warn-only
 
 ## Inputs To Gather
 
@@ -94,12 +96,6 @@ Review in this order.
 - prefer table-driven tests where they fit
 - ensure error paths and boundary cases are tested
 - call out fragile naming, duplication, or unclear ownership
-
-### 8. 2026: AI-Generated Code Verification
-
-- **AI Trust Tier Defect Rate (1.7×)**: AI-generated code is statistically prone to subtle boundary errors and edge-case omissions. Review all logic boundaries, type conversions, and exceptional conditions under a zero-trust model, regardless of how clean the code appears.
-- **Independent Reviewer (Human-in-the-Loop)**: When AI models are used to both write and review code, they share systemic blind spots. Ensure a human reviewer independently inspects and tests all critical business logic, security-sensitive paths, and transactional states.
-- **Dependency-Graph Blast Radius**: AI-generated edits often have cascading effects on code dependencies. Inspect the entire dependency graph (not just the git diff) to identify affected callers, contract ripple effects, and schema invariants across the codebase.
 
 ## Output Format
 

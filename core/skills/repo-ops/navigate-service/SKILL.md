@@ -21,6 +21,9 @@ Use this skill when the user asks to understand, explore, or orient within a spe
 - map only the context needed for the user's current task
 - distinguish confirmed facts from assumptions or unknowns
 - do not assume a fixed framework, folder layout, or service inventory
+- **AI-ASSISTED-NAVIGATION**: Use Copilot Workspace, Cursor, or Greptile to answer "where does X happen?" questions across large codebases for initial orientation — always verify AI-suggested file locations against actual source before acting.
+- **OPENAPI-ASYNCAPI-AS-SERVICE-MAP**: Treat OpenAPI 3.1 spec as the canonical map of HTTP entrypoints and AsyncAPI 3.0 spec as the map of event flows. If neither exists, generating these specs from code is the first navigation artifact.
+- **SERVICE-MESH-TOPOLOGY**: When the service uses Istio, Linkerd, or Cilium, use the built-in topology/graph view (Kiali, Hubble UI) to visualize actual runtime dependencies before reading code.
 
 ## When To Use
 
@@ -160,8 +163,3 @@ Use this when the request is narrow and you need fast orientation:
 - **write-tests**: Add coverage once the target flow is understood
 - **meeting-review**: Run a structured cross-role review
 
-### 2026: Agent-Assisted Navigation
-
-- **AI-assisted code navigation:** Use Copilot Workspace, Cursor, or Greptile to answer "where does X happen?" questions across large codebases. This is useful for initial orientation but always verify AI-suggested file locations against actual source before acting.
-- **OpenAPI/AsyncAPI as service map:** Treat OpenAPI 3.1 spec as the canonical map of HTTP entrypoints. Treat AsyncAPI 3.0 spec as the map of event flows. If neither exists, navigating the service should begin with generating these specs from code as a discovery artifact.
-- **Service mesh topology view:** If the service uses Istio, Linkerd, or Cilium, use the built-in topology/graph view (Kiali, Hubble UI) to visualize actual runtime dependencies before reading code.

@@ -37,22 +37,34 @@ print(f"True ROI: {true_roi:.2%}")
 ## Core Rules
 
 - **DATA-CLASSIFICATION**: Campaign revenue and tracking data must be treated as highly sensitive. Do not expose API keys or raw profit margins in untrusted logs or unencrypted channels.
+- **EMQ-BENCHMARK**: Target Meta CAPI Event Match Quality (EMQ) ≥ 8.0/10 for lower-funnel events (`Purchase`, `Lead`, `Subscribe`). EMQ below 7.0 indicates insufficient PII signal — capture server-side `fbp`, `fbc`, `em`, `ph`, and `external_id`.
+- **EVENT-DEDUPLICATION**: Every conversion event MUST share the same UUID v4 `event_id` between the client-side pixel event and the corresponding CAPI/S2S postback. Never generate separate IDs — this causes artificial 2x inflated conversion counts.
+- **FIRST-PARTY-CLICK-ID-CAPTURE**: Capture `fbclid`, `gclid`, `ttclid`, and affiliate click IDs at the edge/gateway on landing, writing them to first-party HTTP-only cookies (`_fbc`, `_gcl_aw`) with 90-day persistence.
+- **CTIT-FRAUD-FILTER**: Reject conversions occurring < 2.5 seconds post-click as programmatic injection (SIVT). Flag tail-heavy Click-To-Conversion-Time distributions (>7 days on performance offers) as click spamming or organic hijacking for IVT review.
+- **IDEMPOTENT-POSTBACK-QUEUE**: S2S postbacks to affiliate trackers MUST use durable, idempotent queues (Kafka/SQS) with unique constraint keys on `(transaction_id, event_type)` to prevent double-payout from retry storms.
+- **IOS18-PRIVACY-AWARENESS**: Account for iOS 18+ AdAttributionKit (AAK) crowd anonymity tiers (0–3) which govern coarse/fine conversion values and delayed postback intervals; do not assume fixed 7-day click / 1-day view windows.
 
 ## Suggested Process
 
 1. **Data Ingestion**: Pull conversion and revenue data from trackers (Voluum, Binom) or directly from affiliate networks via API.
-2. **Cost Calculation**: Aggregate daily ad spend, proxy bandwidth costs, API consumption costs (e.g., OpenAI tokens), and the amortized cost of replacing banned accounts ("die-rate").
-3. **True ROI Calculation**: Subtract all operational costs from the raw revenue to determine the True ROI.
-4. **Optimization Strategy**: Identify underperforming campaigns, bad proxy subnets, or creatives with high ban rates, and generate actionable recommendations to pause or scale.
+2. **EMQ Audit**: Check Events Manager EMQ scores per event type; diagnose gaps if below 8.0 (missing `fbp`, `fbc`, or unhashed PII).
+3. **Cost Calculation**: Aggregate daily ad spend, proxy bandwidth costs, API consumption costs (e.g., OpenAI tokens), and the amortized cost of replacing banned accounts ("die-rate").
+4. **CTIT Analysis**: Check Click-To-Conversion-Time distribution; flag sub-2.5s conversions as fraud and anomalous long-tail distributions as spamming.
+5. **True ROI Calculation**: Subtract all operational costs including IVT-flagged waste from raw revenue to determine True ROI.
+6. **Optimization Strategy**: Identify underperforming campaigns, bad proxy subnets, or creatives with high ban rates, and generate actionable recommendations to pause or scale.
 
 ## Checklist
 
 - [ ] Revenue data is successfully ingested from S2S trackers.
-- [ ] Operational costs (proxies, API, die-rate) are factored into the ROI calculation.
-- [ ] Sensitive financial data is handled securely and not exposed in untrusted logs.
-- [ ] Actionable recommendations (pause/scale) are generated for each campaign.
-- [ ] Underperforming proxy subnets or creatives are identified.
-- [ ] Analysis output is structured and ready for handoff to task-planner or mmo-engineer.
+- [ ] Meta CAPI EMQ score verified ≥ 8.0/10 for key conversion events.
+- [ ] Event deduplication confirmed: pixel and CAPI share identical `event_id`.
+- [ ] First-party click ID cookies (`_fbc`, `_gcl_aw`) are set on landing page.
+- [ ] CTIT distribution analyzed; sub-2.5s conversions flagged and excluded.
+- [ ] Operational costs (proxies, API, die-rate) factored into True ROI.
+- [ ] Sensitive financial data handled securely; not exposed in untrusted logs.
+- [ ] Actionable recommendations (pause/scale) generated per campaign.
+- [ ] iOS 18+ attribution window limitations documented in forecast model.
+- [ ] Analysis output structured and ready for handoff to task-planner or mmo-engineer.
 
 ## Related Skills
 

@@ -23,13 +23,10 @@ Use this skill when hardening the software supply chain against tampering, undis
 - **Living SBOM**: feed SBOMs into continuous monitoring (Dependency-Track or SCA) — a static snapshot is insufficient.
 - **MCP registry governance**: treat every MCP server dependency as a supply-chain artifact; include in SBOM with publisher provenance check, behavioral analysis, and version pinning.
 - **AI-generated code provenance**: apply the same SLSA provenance checks to AI-generated code as to human-authored code; do not assume AI output is clean.
-
-### 2025-2026: Agentic Supply Chain Extension (OWASP ASI04)
-
-Per OWASP ASI Top 10 2026 (ASI04 — Agentic Supply Chain):
-- every skill, tool, or plugin pulled from an external registry must be version-pinned and schema-validated before invocation
-- every MCP server dependency must appear in the system's SBOM with publisher identity verification
-- treat unverified skills and tools as untrusted until schema-validated against the pack's known schema
+- **OWASP-ASI04-AGENTIC-SUPPLY-CHAIN**: Per OWASP ASI04 — every skill, tool, or plugin pulled from an external registry must be version-pinned and schema-validated before invocation; every MCP server dependency must appear in the SBOM with publisher identity verification; treat unverified skills and tools as untrusted until schema-validated.
+- **SLSA-V1.1-MULTI-TRACK**: Use SLSA v1.1 with multi-track provenance (Build, Source, Package tracks); GitHub Actions require SHA pinning to 40-char commit SHAs (not tag refs) for SLSA L3 build integrity.
+- **CYCLONEDX-1.6-AI-ML-BOM**: For AI/ML artifacts (model weights, training data), generate CycloneDX 1.6 AI/ML BOMs including model weights SHA-256 hashes, training data provenance, and quantization metadata — regulatory compliance requires this for EU AI Act Article 13.
+- **GUAC-BLAST-RADIUS**: Use GUAC (Graph for Understanding Artifact Composition) for blast-radius queries after a CVE disclosure — enables queries like "which of our artifacts depend on log4j?" across the full dependency graph.
 
 ## SLSA Levels Reference
 

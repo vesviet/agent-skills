@@ -24,16 +24,11 @@ Use this skill when designing system topology for a new service or infrastructur
 - analyze cross-layer impact for every proposed change; a change at one layer creates second-order effects at adjacent layers
 - capacity planning is proactive — produce a capacity model before production, not after the first resource incident
 - for AI inference: GPU memory allocation must account for model weights + KV cache + activation memory + batch overhead; never underestimate VRAM headroom
-
-### 2025-2026: AI-Native System Design
-
-AI inference infrastructure is a first-class system engineering concern with unique design requirements:
-
-- **GPU VRAM sizing**: calculate total VRAM = model weights in target precision + KV cache (2 × num_layers × head_dim × seq_len × batch_size × precision_bytes) + activation memory (~2–5% overhead) + safety headroom (≥15%); running below 10% headroom causes OOM-kill under burst traffic
-- **Inference server selection**: vLLM for high-throughput LLM serving with continuous batching; TensorRT-LLM for NVIDIA-optimized lowest-latency serving; Triton for multi-model ensemble pipelines; Ollama for local/development deployments
-- **Vector database index tuning**: never deploy production vector databases with default index parameters; specify HNSW m (graph connectivity), ef_construction (build quality), and query-time ef (recall-latency trade-off) explicitly with recall vs. latency justification
-- **Embedding pipeline**: always design a caching layer for embeddings; repeated embedding of the same content is the most common preventable AI cost spike
-- **Edge vs. cloud inference routing**: define routing rules based on query complexity, latency budget, and model capability requirements before assuming cloud-only inference
+- **GPU-VRAM-FORMULA**: Total VRAM = model weights in target precision + KV cache (2×num_layers×head_dim×seq_len×batch×precision_bytes) + activation memory (~2-5% overhead) + safety headroom (≥15%); running below 10% headroom causes OOM-kill under burst traffic.
+- **INFERENCE-SERVER-SELECTION**: vLLM for high-throughput LLM serving with continuous batching; TensorRT-LLM for NVIDIA-optimized lowest-latency serving; Triton for multi-model ensemble pipelines; Ollama for local/development deployments; vLLM v0.6+ Automatic Prefix Caching (APC) — place static system prompts first and dynamic vars last for maximum cache hit rate.
+- **LLM-SLOS**: Set measurable LLM SLOs: TTFT p95 < 800ms, TBT (time-between-tokens) p95 < 25ms, throughput > 40 tokens/s per user; define these before sizing GPU infrastructure.
+- **VECTOR-DB-TUNING**: Never deploy production vector databases with default index parameters; specify HNSW m (graph connectivity), ef_construction (build quality), and query-time ef (recall-latency trade-off) explicitly.
+- **EMBEDDING-CACHE**: Always design a caching layer for embeddings; repeated embedding of the same content is the most common preventable AI cost spike.
 
 ## Suggested Process
 

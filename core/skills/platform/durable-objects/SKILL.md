@@ -198,6 +198,9 @@ describe("MyDO", () => {
 - [ ] Schema setup uses blockConcurrencyWhile in constructor.
 - [ ] Object logic leverages RPC methods where possible.
 - [ ] Unit and integration tests are written and passing.
+- [ ] For complex DOs, evaluate `@cloudflare/actors` library (Cloudflare-recommended over raw DO API — provides SQL schema migration helpers and alarm lifecycle management).
+- [ ] Outbound connections checked: DOs stay alive for active outbound connections up to 15 minutes (critical for LLM token streaming use cases).
+- [ ] SQLite storage monitored: 10 GB per-DO limit (billing started Jan 7 2026); run `VACUUM` after bulk deletes to reclaim space.
 
 ## Output Contracts
 
@@ -210,8 +213,3 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 ## Related Skills
 - **wrangler**: Manage deployment environments and bindings.
 - **debug-workers-edge**: Troubleshoot execution at the edge.
-\n### 2026: Durable Objects Enhancements
-
-- **Actor Model Abstraction:** The `@cloudflare/actors` library (mid-2025) provides an official high-level actor-model abstraction over Durable Objects. It offers SQL schema migration helpers, alarm lifecycle management, and storage abstractions. This is now the Cloudflare-recommended approach for complex DOs — prefer this over the raw DO API.
-- **Outbound connection keep-alive (June 2026):** Durable Objects now stay alive for the duration of active outbound connections (up to 15 minutes). This prevents mid-stream eviction during LLM token streaming — a critical pattern for AI agent hosting inside DOs.
-- **SQLite storage:** There is a 10 GB limit per DO instance. Storage billing started January 7 2026. Plan capacity accordingly, and use `VACUUM` to reclaim space after bulk deletes to avoid hitting the storage limit unexpectedly.\n

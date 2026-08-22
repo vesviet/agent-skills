@@ -25,6 +25,9 @@ This skill covers commit preparation and commit creation. It does not imply perm
 - remove local-only artifacts before committing
 - follow the repo's source of truth for generated code, version metadata, and deployment configuration
 - keep commits scoped to the intended change
+- **commit signing**: enable GPG or SSH key signing (`git config commit.gpgsign true`) for identity verification; check repo `CONTRIBUTING.md` for whether DCO (`Signed-off-by:`) is required for IP provenance
+- **git-blame-ignore-revs**: when an AI agent performs bulk reformatting or AI-assisted refactoring, add the resulting commit hash to `.git-blame-ignore-revs` so `git blame` continues to point to the human authors of business logic
+- **semantic-release awareness**: Conventional Commits feed automated release tools (Semantic Release, Release Please) that bump SemVer and generate changelogs; warn that fully automated releases can produce low-quality changelogs — consider Changesets for human-curated bundling in monorepos
 
 ## Suggested Process
 
@@ -163,8 +166,3 @@ If deployment or release configuration changed:
 - **setup-deployment**: Validate deployment source-of-truth changes
 - **manage-secrets**: Keep sensitive values out of committed artifacts
 
-### 2026: AI Commits and Security
-
-- **Commit signing enforcement:** GPG or SSH key signing provides identity verification and prevents commit impersonation. `git config commit.gpgsign true` enables signing globally. DCO (`Signed-off-by: Name <email>`) provides IP provenance for open-source projects and some regulated orgs. Check the repo CONTRIBUTING.md for which is required.
-- **`git-blame-ignore-revs` for AI/bulk commits:** When an AI agent performs bulk reformatting or AI-assisted refactoring, add the resulting commit hash to the `.git-blame-ignore-revs` file so `git blame` continues to point to the human authors of business logic. This avoids polluting blame history.
-- **Semantic Release awareness:** Conventional Commits feed automated release tools (Semantic Release, Release Please) that bump SemVer and generate changelogs automatically. Warn that fully automated releases can produce low-quality changelogs — consider using Changesets for human-curated bundling in monorepos.

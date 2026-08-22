@@ -23,6 +23,9 @@ Use this skill when a service fails to build, starts incorrectly, behaves unexpe
 - prefer the smallest confirming check over broad guesswork
 - compare with the last known good state whenever possible
 - verify recovery after the fix, not just the absence of one error message
+- **DISTRIBUTED-TRACE-FIRST**: When a service behaves unexpectedly, start with the distributed trace (Jaeger, Tempo, Datadog APM) before reading logs — the trace shows the exact causal chain across services and identifies the first failure point.
+- **AI-LOG-ANALYSIS-ADVISORY**: Use AI-powered log summarization (Datadog Bits AI, Elastic AI Assistant) to surface signal from high-volume log noise. Always verify any AI-identified root cause against raw evidence before acting.
+- **K8S-DIAGNOSTIC-SIGNALS**: `kubectl describe pod` events show OOMKilled, CrashLoopBackOff, and ImagePullBackOff with reasons. CPU throttling (visible in `kubectl top`) is a frequent cause of latency spikes that do not appear in application logs.
 
 ## Diagnostic Decision Tree
 
@@ -220,8 +223,3 @@ Use this for rapid troubleshooting:
 - **performance-profiling**: Investigate latency, memory, or load-related failures
 - **meeting-review**: Escalate for structured technical review
 
-### 2026: Modern Troubleshooting Practices
-
-- **Distributed tracing as primary debugging tool:** When a service behaves unexpectedly, start with the distributed trace (Jaeger, Tempo, Datadog APM) before reading logs. The trace shows the exact causal chain across services and identifies the first failure point. Use the trace waterfall view to isolate whether the failure is in the service under investigation or a dependency.
-- **AI log analysis patterns:** Use AI-powered log summarization (Datadog Bits AI, Elastic AI Assistant) to surface the signal from high-volume log noise. Provide the AI with the failing trace ID as context. Verify any AI-identified root cause against raw evidence before acting.
-- **K8s-specific troubleshooting:** The `kubectl describe pod` events section shows OOMKilled, CrashLoopBackOff, and ImagePullBackOff with reasons. Resource limits (CPU throttling visible in `kubectl top`) are a frequent cause of latency spikes that do not appear in application logs at all.

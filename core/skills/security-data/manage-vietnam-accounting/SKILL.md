@@ -16,6 +16,8 @@ Use this skill when a Vietnamese accounting workflow needs a traceable domain re
 - prepare accounting evidence and tax workpapers, but do not determine a final tax position, sign or submit filings, issue invoices, operate signing credentials, or provide a legal or audit opinion
 - fail closed: if the accounting regime, evidence, source version, or approval is missing, output `needs-evidence`, `needs-human-review`, or `blocked` rather than `reviewed`
 - preserve an immutable correction trail: do not overwrite, delete, or silently reclassify locked entries, invoices, or close evidence
+- **AI-ACCOUNTING-GUARDRAIL**: When AI-assisted tools generate accounting entries, reconciliations, or tax workpapers, treat all AI output as a draft requiring human accountant review and approval. Never mark AI-drafted entries as `reviewed` or submit them directly to accounting systems without HITL approval.
+- **E-INVOICE-PHASE-3**: Verify entity compliance with Vietnam e-invoice Phase 3 mandate (Decree 123/2020 + Circular 78/2021 amendments); all B2B invoices above threshold MUST be transmitted via authenticated XML through a licensed e-invoice service provider with tax authority real-time validation.
 
 ## Suggested Process
 
