@@ -11,14 +11,44 @@ Pack version: **4.0.0** | A2A: **1.0** | OWASP ASI: **2026**
 ```bash
 # 1. CLAUDE.md is already at repo root — Claude Code loads it automatically.
 
-# 2. Generate A2A registry (after role edits):
+# 2. Generate baseline CLAUDE.md for a new project (Claude Code CLI):
+claude /init        # Scans codebase and drafts a CLAUDE.md with detected patterns
+
+# 3. Generate A2A registry (after role edits):
 python3 core/scripts/generate-a2a-registry.py
 
-# 3. Verify pack integrity:
+# 4. Verify pack integrity:
 python3 core/scripts/validate-all.py
 ```
 
 No additional files need to be copied. Claude Code reads `CLAUDE.md` at session start.
+
+---
+
+## CLAUDE.md Sizing and Structure (2026 Guidance)
+
+| Metric | Recommended | Hard limit |
+|--------|-------------|-----------|
+| Lines | ≤ 100 | ~200 (significant token cost above this) |
+| Characters | ≤ 8,000 | — |
+| Sections | 5–7 core | — |
+
+**Required sections** (Anthropic 2026 guidance):
+1. **Project Overview** — 1–2 sentences: what it does and why
+2. **Tech Stack** — with pinned versions (e.g. `Go 1.25 + Kratos v3 + Dapr 1.15`)
+3. **Architecture Map** — directory tree with purpose annotations
+4. **Coding Rules** — specific prohibitions with positive alternatives
+5. **Commands** — build, test, lint, wire, migrate commands
+6. **MCP Servers** — which servers exist and when to use them (not their connection config)
+
+**Conditional rules** — for complex monorepos, move domain-specific rules to `.claude/rules/*.md`:
+```bash
+.claude/rules/go-backend.md        # Auto-attached to *.go files
+.claude/rules/migrations.md        # Auto-attached to migrations/**
+.claude/rules/security.md          # Agent-requested (no glob, description-only)
+```
+
+> **Note:** `claude_desktop_config.json` (or host config) controls MCP server connections and model settings. `CLAUDE.md` controls agent behavior and context. They operate on different layers — neither overrides the other.
 
 ---
 

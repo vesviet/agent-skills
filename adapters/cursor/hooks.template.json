@@ -1,10 +1,16 @@
 {
   "version": 1,
-  "description": "Agent-skills pack policy hooks — copy to .cursor/hooks.json and adjust paths. Uses core/policies/mcp-tool-map.yaml for tool-to-action resolution.",
+  "description": "Agent-skills pack policy hooks — copy to .cursor/hooks.json and adjust AGENT_SKILLS_ROOT. Uses core/policies/mcp-tool-map.yaml for tool-to-action resolution. Hooks enforce policy; .mdc rules only suggest.",
   "hooks": {
     "sessionStart": [
       {
         "command": "echo 'Load core/rules/code.md and active role from agent-skills pack'"
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": "python3 AGENT_SKILLS_ROOT/core/scripts/hooks/check-policy.py",
+        "matcher": "*.env,*.dev.vars,.env.*,*.pem,*.key"
       }
     ],
     "preToolUse": [
@@ -13,13 +19,37 @@
         "matcher": "Shell|run_terminal_cmd|write|delete|write_file|delete_file|create_file|edit_file|move_file"
       }
     ],
+    "beforeShellExecution": [
+      {
+        "command": "python3 AGENT_SKILLS_ROOT/core/scripts/hooks/check-policy.py",
+        "matcher": "*"
+      }
+    ],
     "beforeMCPExecution": [
       {
         "command": "python3 AGENT_SKILLS_ROOT/core/scripts/hooks/check-policy.py",
         "matcher": "*"
       }
     ],
+    "afterFileEdit": [
+      {
+        "command": "python3 AGENT_SKILLS_ROOT/core/scripts/hooks/log-trace-span.py",
+        "matcher": "*.go,*.ts,*.tsx,*.py,*.php,*.json,*.yaml"
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "python3 AGENT_SKILLS_ROOT/core/scripts/hooks/check-policy.py",
+        "matcher": "*"
+      }
+    ],
     "postToolUse": [
+      {
+        "command": "python3 AGENT_SKILLS_ROOT/core/scripts/hooks/log-trace-span.py",
+        "matcher": "*"
+      }
+    ],
+    "stop": [
       {
         "command": "python3 AGENT_SKILLS_ROOT/core/scripts/hooks/log-trace-span.py",
         "matcher": "*"
@@ -35,6 +65,7 @@
   "environment": {
     "AGENT_SKILLS_ROOT": "/path/to/agent-skills",
     "AGENT_ACTIVE_ROLE": "agent-coordinator",
-    "AGENT_TRACE_ID": ""
+    "AGENT_TRACE_ID": "",
+    "OTEL_SEMCONV_STABILITY_OPT_IN": "genai"
   }
 }

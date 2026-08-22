@@ -35,11 +35,11 @@ Use only spec-defined `gen_ai.*` attributes for vendor-neutral compatibility. **
 | Attribute | Type | Description |
 |---|---|---|
 | `gen_ai.operation.name` | string | Required. `chat`, `generate_content`, `text_completion`, or `embeddings` |
-| `gen_ai.provider.name` | string | Required. Provider flavor: `anthropic`, `openai`, `gcp.gemini`, `gcp.vertex_ai`, `aws.bedrock`, etc. **Replaces the deprecated `gen_ai.system`** |
+| `gen_ai.system` | string | Required. Provider identifier: `openai`, `anthropic`, `vertex_ai`, `aws_bedrock`, `gcp.gemini`, etc. (Development status — widely adopted by Datadog, Honeycomb, New Relic) |
 | `gen_ai.request.model` | string | Requested model identifier |
 | `gen_ai.response.model` | string | Model that produced the response |
-| `gen_ai.usage.input_tokens` | int | Input tokens consumed (includes cached tokens) |
-| `gen_ai.usage.output_tokens` | int | Output tokens generated |
+| `gen_ai.usage.input_tokens` | int | Input tokens consumed (includes cached tokens; renamed from `prompt_tokens` in v1.27.0) |
+| `gen_ai.usage.output_tokens` | int | Output tokens generated (renamed from `completion_tokens` in v1.27.0) |
 | `gen_ai.usage.reasoning.output_tokens` | int | Reasoning/thinking tokens (reasoning models); included in `output_tokens` |
 | `gen_ai.usage.cache_read.input_tokens` | int | Input tokens served from a provider-managed cache |
 | `gen_ai.response.finish_reasons` | string[] | Array of stop reasons (**plural** — e.g. `["stop"]`, `["stop","length"]`) |
@@ -114,6 +114,67 @@ The `contracts/schemas/agent-trace-span.json` schema covers:
    - Full prompt/completion content in production (classified `internal` or higher) unless the opt-in above is deliberately enabled for a non-production environment
 5. **Span retention**: spans are session-scoped (`retention_in_context: session_only` for `internal` data)
 6. **Do not commit span files**: local JSONL trace logs under `core/observability/` must be `.gitignore`d
+7. **Enable GenAI conventions** via environment variable in all agent services:
+   ```bash
+   OTEL_SEMCONV_STABILITY_OPT_IN=genai
+   ```
+
+---
+
+## Cost Attribution (2026 Pattern)
+
+No stable `gen_ai.usage.cost` attribute exists in the OTel spec. Use custom attributes with a clear namespace and compute at span creation from a model pricing registry:
+
+```python
+# Recommended custom attributes for cost tracking (no stable OTel standard yet)
+span.set_attributes({
+    "gen_ai.usage.cost_usd": 0.0032,       # Total cost — compute from pricing registry
+    "gen_ai.usage.cost.prompt": 0.0008,    # Input/prompt portion
+    "gen_ai.usage.cost.completion": 0.0024, # Completion portion
+    # Contextual attribution (standard OTel attributes)
+    "user_id": "u-abc123",
+    "team": "platform",
+    "feature": "agent-delegation",
+    "gen_ai.conversation.id": "conv-xyz",
+})
+```
+
+For Go (Kratos services), implement a `CostEnrichmentSpanProcessor`:
+```go
+// After receiving LLM response, enrich span with cost data
+span.SetAttributes(
+    attribute.Float64("gen_ai.usage.cost_usd", computeCost(model, inputTokens, outputTokens)),
+    attribute.String("team", teamFromCtx(ctx)),
+    attribute.String("feature", featureFromCtx(ctx)),
+)
+```
+
+---
+
+## Tail-Based Sampling Strategy (2026 Best Practice)
+
+Production GenAI systems use **hybrid tail-based sampling** to control observability costs:
+
+1. **Head-based pre-filter**: cap baseline volume (e.g. 20% of all spans at ingress)
+2. **Tail-based rules**: 100% retention for errors, latency outliers, and high-value user traces
+3. **Selective success sampling**: 5–10% for routine successful GenAI calls
+
+OTel Collector configuration:
+```yaml
+processors:
+  tail_sampling:
+    decision_wait: 10s
+    policies:
+      - name: errors-always
+        type: status_code
+        status_code: { status_codes: [ERROR] }
+      - name: high-latency
+        type: latency
+        latency: { threshold_ms: 5000 }
+      - name: genai-sample-success
+        type: probabilistic
+        probabilistic: { sampling_percentage: 10 }
+```
 
 ---
 

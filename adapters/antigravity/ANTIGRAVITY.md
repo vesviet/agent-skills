@@ -1,6 +1,6 @@
 # Antigravity Adapter — Agent Skills Pack
 
-Use this adapter when running **Google Antigravity** (or Antigravity-compatible IDEs) with the agent-skills engineering pack.
+Use this adapter when running **Google Antigravity IDE v2.5.5+** (or Antigravity-compatible IDEs) with the agent-skills engineering pack.
 
 ## Quick Start
 
@@ -20,6 +20,22 @@ python3 core/scripts/generate-a2a-registry.py
 ```
 
 4. Assign roles via Antigravity agent picker or prompt: `Act as @backend-developer`.
+
+## Antigravity 2026 Features (v2.5.5)
+
+| Feature | Description |
+|---------|-------------|
+| `inheritCustomizations` | Set in agent frontmatter to reuse skills, rules, and subagents from another agent |
+| Plugin system | Package skills + rules + subagents + MCP definitions into a deployable unit via `plugin.json` + `rules.json` |
+| Global rules | `~/.gemini/GEMINI.md` — applied across all workspaces (personal defaults) |
+| Workspace rules | `.antigravity/rules.md` — committed to project (team standards) |
+| Character limit | 12,000 characters per rules file |
+
+**Rules file hierarchy** (lower overrides higher):
+```
+~/.gemini/GEMINI.md          ← Global: personal preferences across all workspaces
+.antigravity/rules.md        ← Workspace: committed team standards (from this template)
+```
 
 ## Mandatory Behavior (Antigravity + Pack)
 

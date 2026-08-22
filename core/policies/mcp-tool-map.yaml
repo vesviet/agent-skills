@@ -70,6 +70,33 @@ tool_actions:
   pip_install: install_dependency
   yarn_add: install_dependency
   cargo_add: install_dependency
+  bun_install: install_dependency
+  pnpm_install: install_dependency
+  pnpm_add: install_dependency
+  composer_install: install_dependency
+  composer_require: install_dependency
+  composer_update: install_dependency
+
+  # Laravel / PHP
+  php_artisan_serve: run_dev_server
+  php_artisan_test: run_tests
+  php_artisan_lint: run_linter
+  php_artisan_migrate: run_migration
+  php_artisan_tinker: run_query
+  php_artisan_make: create_file
+
+  # Bun / PNPM
+  bunx: run_build
+  pnpm_run_build: run_build
+  pnpm_run_test: run_tests
+  pnpm_run_lint: run_linter
+  pnpm_run_dev: run_dev_server
+
+  # Astro
+  astro_dev: run_dev_server
+  astro_build: run_build
+  astro_preview: run_dev_server
+  astro_check: run_linter
 
 destructive_patterns:
   # Git operations
@@ -167,3 +194,39 @@ destructive_patterns:
     action: modify_secrets
   - pattern: "wrangler secret delete"
     action: modify_secrets
+
+  # PHP / Laravel (2026)
+  - pattern: "php artisan migrate"
+    action: run_migration
+  - pattern: "php artisan migrate:fresh"
+    action: drop_database
+  - pattern: "php artisan migrate:reset"
+    action: drop_database
+  - pattern: "php artisan migrate:rollback"
+    action: run_migration
+  - pattern: "php artisan db:seed"
+    action: write_database
+  - pattern: "composer install"
+    action: install_dependency
+  - pattern: "composer require"
+    action: install_dependency
+  - pattern: "composer update"
+    action: install_dependency
+
+  # Bun (2026)
+  - pattern: "bun install"
+    action: install_dependency
+  - pattern: "bun add"
+    action: install_dependency
+  - pattern: "bunx"
+    action: run_build
+
+  # PNPM (2026)
+  - pattern: "pnpm install"
+    action: install_dependency
+  - pattern: "pnpm add"
+    action: install_dependency
+
+  # Astro deploy (2026)
+  - pattern: "astro deploy"
+    action: run_deployment

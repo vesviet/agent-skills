@@ -104,7 +104,10 @@ Architectural constraints must be continuously validated, not only documented:
 **Fitness functions** — automated objective assessments of architectural characteristics:
 - for each ADR that defines a structural constraint (e.g., "service A must not call service B directly," "all PII must be encrypted at rest"), define a corresponding fitness function that a CI/CD pipeline can evaluate
 - fitness functions are not unit tests — they test architectural properties: dependency direction, security posture, performance envelopes, compliance requirements
-- use tools such as ArchUnit, custom pipeline scripts, or policy-as-code frameworks (e.g., Open Policy Agent) to enforce boundary rules automatically
+- use policy-as-code frameworks to enforce boundary rules automatically — select based on verification need:
+  - **Cedar (AWS)** — preferred for AI agentic trust boundaries; allows mathematical verification that no policy combination permits unauthorized access; ideal for delegation chains and NHI credential scope enforcement
+  - **OPA/Rego** — preferred for general-purpose boundary enforcement (dependency direction, `allowed_callers`, compliance guards); mature, widely supported in CI/CD pipelines
+  - **ArchUnit / custom CI scripts** — preferred for structural code-level constraints (layer isolation, package dependency direction)
 - an ADR without an automated fitness function path is advisory documentation, not enforced governance
 
 **Living ADRs** — treat adr-spec.json as executable context, not just rationale:
@@ -116,7 +119,7 @@ Architectural constraints must be continuously validated, not only documented:
 - for probabilistic (AI) systems: traditional uptime and error-rate metrics are insufficient; define fitness functions that detect semantic drift (e.g., output distribution shift, tool-call frequency anomalies, context window exhaustion patterns)
 - document the monitoring strategy in the ADR when the architectural decision involves AI components
 
-**Agentic fitness functions (2026 — emerging calibration tool):**
+**Agentic fitness functions (2026):**
 - LLM-as-judge fitness functions can automate judgment-heavy governance: ADR drift detection, semantic contract compliance, and boundary fidelity monitoring — capabilities that deterministic tools (ArchUnit, OPA) cannot assess
 - treat agentic fitness functions as a complementary layer on top of deterministic fitness functions, not as a replacement
 - do not gate the main CI/CD pipeline with agentic fitness functions until they have been calibrated against 20–50 historical changes — premature live gating produces false-positive build failures that destroy developer trust; run calibration in observation mode first
@@ -299,15 +302,16 @@ Contracts owned by other roles — do not author these as Technical Architect:
 
 ### Primary Skills
 
-- `write-tech-radar`
+- `system-design`
+- `agent-panel-meeting`
 - `meeting-review`
+- `write-tech-radar`
 
 ### Supporting Skills (use when collaborating)
 
+- `ai-risk-assessment`
 - `review-service`
 - `navigate-service`
-- `system-design`
-- `agent-panel-meeting`
 - `conduct-research`
 - `scaffold-new-service`
 - `review-code`
@@ -315,11 +319,14 @@ Contracts owned by other roles — do not author these as Technical Architect:
 - `supply-chain-security`
 - `setup-deployment`
 - `agent-delegation`
+- `write-documentation`
 
+Use system-design as the primary design and options-comparison tool; System Engineer owns topology specification and IaC provisioning.
+Use agent-panel-meeting as Builder and moderator participant — Agent Coordinator facilitates the session lifecycle.
+Use write-tech-radar for trial/adopt/hold decisions only — never as a substitute for adr-spec.json binding decisions (see guardrails).
 Use scaffold-new-service only for time-boxed spikes, not full service delivery.
-Use system-design in review/consultation mode only — System Engineer owns topology specification and IaC.
-Use agent-panel-meeting as a Builder participant — Agent Coordinator facilitates.
 Use conduct-research to delegate technology evaluation; consume research-report.json as output.
+Use ai-risk-assessment when documenting EU AI Act risk tier, HITL requirements, or producing PIA artifacts.
 
 ## Output Template
 
@@ -347,6 +354,7 @@ Use conduct-research to delegate technology evaluation; consume research-report.
 - MCP trust model: [tool outputs classified as untrusted / not applicable]
 - Probabilistic failure modes: [behavioral anomaly response documented / not applicable]
 - Data gravity impact: [compute-near-data confirmed / data movement risk flagged]
+- Observability contract: [invoke_agent + "chat" + execute_tool spans mandated / gen_ai.system + gen_ai.conversation.id + cost attribution defined / OTEL_SEMCONV_STABILITY_OPT_IN=genai required / not applicable]
 
 ## Privacy & Compliance
 - Regulations in scope: [GDPR / EU AI Act / PDPA / none]
@@ -388,6 +396,7 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - agentic boundary explicitly defined: read scope, tool allowlist, autonomous action limits, hard constraints
 - MCP tool outputs classified as untrusted external content in design
 - data gravity assessed: compute-near-data confirmed or data movement risk flagged
+- **observability contract defined**: OTel span types (`invoke_agent`, "chat", `execute_tool`) mandated in ADR; key attributes (`gen_ai.system`, `gen_ai.conversation.id`, cost attribution) and `OTEL_SEMCONV_STABILITY_OPT_IN=genai` requirement specified
 
 ### MCP Transport & Registry Architecture (when MCP in scope)
 - MCP transport type selected and documented (stateful stdio/SSE vs stateless HTTP) with scaling and HA implications
@@ -465,6 +474,7 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - adr-spec.json (and options brief if needed) delivered for machine handoff
 - Technical Lead and implementers can execute without guessing core structure
 - **AI-native concerns addressed**: LLM pattern selected, orchestration/inference separated, agentic boundary defined, probabilistic failure modes documented — when AI components are in scope
+- **observability contract defined**: OTel span types (`invoke_agent`, "chat", `execute_tool`), key attributes (`gen_ai.system`, `gen_ai.conversation.id`, cost attribution strategy), and `OTEL_SEMCONV_STABILITY_OPT_IN=genai` requirement specified in ADR when AI components are in scope
 - **fitness functions defined**: every structural constraint in the ADR has an automated enforcement path in CI/CD
 - **MCP transport & registry governance**: transport type selected with HA/scaling rationale, registry allowlist defined, all MCP dependencies in SBOM — when MCP servers are in scope
 - **edge inference placement documented**: placement decision (edge/cloud/hybrid) with six-criteria rationale, quantization strategy, context budget, and fallback routing — when edge deployment is in scope

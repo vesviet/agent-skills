@@ -4,10 +4,36 @@
 
 | File | Purpose |
 |------|---------|
-| [`hooks.template.json`](hooks.template.json) | Cursor-format hook template — copy to `.cursor/hooks.json` |
-| Pack rules | `.cursorrules` + `.cursor/rules/agent-skills.md` always-on rule mirror |
+| [`hooks.template.json`](hooks.template.json) | Cursor-format hook template — copy to `.cursor/hooks.json` and adjust paths |
+| Pack rules | `.cursor/rules/agent-skills.md` (always-on `.mdc` rule mirror) |
+
+> **`.cursorrules` is deprecated** as of Cursor late 2025. Migrate to `.cursor/rules/*.mdc` with YAML frontmatter. The static `.cursorrules` file is no longer read by current Cursor versions.
 
 The pack also ships **Kiro-native hooks** at `.kiro/hooks/` (see Kiro section below).
+
+---
+
+## `.mdc` Rules Format (2026)
+
+Rules live in `.cursor/rules/*.mdc` with YAML frontmatter:
+
+```markdown
+---
+description: "Brief description of when to apply this rule"
+globs: ["internal/**/*.go", "api/**/*.proto"]
+alwaysApply: false
+---
+# Rule content here
+```
+
+**Activation modes:**
+
+| Mode | Frontmatter | Behavior |
+|------|-------------|----------|
+| Always Apply | `alwaysApply: true` | Injected into every chat session |
+| Auto Attached | `alwaysApply: false` + `globs:` | Injected when working on matching files |
+| Agent Requested | `description:` only (no `globs`) | AI decides to use based on description |
+| Manual | None | User invokes with `@rule-name` |
 
 ---
 
@@ -28,9 +54,17 @@ cp adapters/cursor/hooks.template.json .cursor/hooks.json
 | Hook event | Action | Effect |
 |------------|--------|--------|
 | `sessionStart` | `echo` reminder | Prompt to load `core/rules/code.md` |
-| `preToolUse` | `check-policy.py` | Blocks `requires_approval` (exit 2) and `denied` (exit 1) actions |
+| `beforeReadFile` | `check-policy.py` | Blocks reads on sensitive file patterns (`.env`, `*.pem`, `*.key`) |
+| `preToolUse` | `check-policy.py` | Blocks `requires_approval` (exit 2) and `denied` (exit 1) write/delete actions |
+| `beforeShellExecution` | `check-policy.py` | Policy check for all shell commands — use instead of `preToolUse` for newer Cursor |
 | `beforeMCPExecution` | `check-policy.py` | Same check for MCP tool calls |
+| `afterFileEdit` | `log-trace-span.py` | Appends JSONL span for file modifications |
+| `beforeSubmitPrompt` | `check-policy.py` | Final policy advisory before prompt submission |
 | `postToolUse` | `log-trace-span.py` | Appends JSONL span to `core/observability/spans/` |
+| `stop` | `log-trace-span.py` | Flush trace on agent stop |
+| `sessionEnd` | `log-trace-span.py` | Final trace flush on session close |
+
+> **Enforcement note:** Hooks **block** agent actions via non-zero exit codes. `.mdc` rules only suggest — hooks enforce. Keep `check-policy.py` exit-code semantics: 0=allowed, 1=denied, 2=requires_approval.
 
 ### Environment variables used
 
@@ -39,6 +73,7 @@ cp adapters/cursor/hooks.template.json .cursor/hooks.json
 | `AGENT_SKILLS_ROOT` | auto-detected | Absolute path to this pack |
 | `AGENT_ACTIVE_ROLE` | `agent-coordinator` | Current role slug for policy check |
 | `AGENT_TRACE_ID` | `""` (auto UUID) | Trace correlation ID for span grouping |
+| `OTEL_SEMCONV_STABILITY_OPT_IN` | `genai` | Enable OTel GenAI semantic conventions |
 
 ---
 

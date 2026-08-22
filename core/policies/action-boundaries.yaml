@@ -18,6 +18,36 @@
 #   bypass_ai_guardrail      Disable, circumvent, or degrade an AI safety, moderation, or content
 #                            guardrail. Denied for every role. This is NOT the same as client-side
 #                            bot-fingerprint normalization, which is not a policy action.
+
+# Compliance metadata (EU AI Act Article 9 + NIST AI RMF 1.0 + ATF 2026)
+compliance:
+  schema_version: "2"
+  eu_ai_act_article_9:
+    risk_tier: minimal_risk         # minimal_risk | limited_risk | high_risk
+    enforcement_date: "2026-08-02"  # EU AI Act enforcement active
+    review_cycle: quarterly
+    human_oversight_required:
+      - push_to_production
+      - run_migration
+      - modify_secrets
+      - deploy_ai_model
+      - apply_iac
+      - rotate_agent_credentials
+  nist_ai_rmf:
+    govern: "roles structure documents who owns each action category"
+    map: "requires_approval list = identified risk surface; denied list = unacceptable risks"
+    measure: "audit events for every policy decision via ocsf-99001 format"
+    manage: "real-time policy check via check-policy.py; HITL for approval-gated actions"
+  audit_trail:
+    log_format: ocsf-99001
+    retention_days: 90
+    policy_check_script: core/scripts/hooks/check-policy.py
+  access_control:
+    default_posture: deny           # Zero-trust: explicit allow required
+    credential_type: short-lived-oidc
+    signing_key_ref: "env:AGENT_SIGNING_KEY"
+
+
 roles:
     3d-graphics-engineer:
       allowed:
