@@ -61,7 +61,16 @@ await page.mouse.move(200, 300, { steps: 12 }); // Bezier-like path
 - [ ] Script passes Cloudflare Turnstile managed challenge before production.
 - [ ] Error handling and retry logic included for network failures.
 
+## Output Contracts
+
+When developing, updating, or validating an automation script or browser stealth profile, emit:
+
+- **`contracts/schemas/implementation-result.json`** — Emitted when completing the implementation and validation of an automation script, stealth profile, or CDP integration slice, detailing changes made, files touched, anti-detect checks passed, and test verification results. Set `produced_by_role: mmo-engineer`.
+
+Skip emission for local scratch testing of browser selectors.
+
 ## Related Skills
 
 - **deploy-mmo-infrastructure**: Provision the Anti-Detect Browsers the script will connect to.
 - **turnstile-spin**: Handle Cloudflare Turnstile challenges encountered during automation.
+

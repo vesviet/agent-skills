@@ -139,6 +139,14 @@ Per-phase outputs reference domain schemas (for example `feature-ticket.json`, `
 - [ ] blockers and residual risks visible in coordination plan
 - [ ] graph closure includes validation evidence summary
 
+## Output Contracts
+
+When modeling, managing, or executing a multi-phase agent delivery graph, emit:
+
+- **`contracts/schemas/coordination-plan.json`** — Emitted when planning, managing, or updating a multi-phase directed execution graph across specialist roles, tracking phase nodes, dependencies, gate criteria, token budgets, and parallel branch merges. Set `produced_by_role: agent-coordinator`.
+
+Skip emission for single-agent direct executions with no delegation graph.
+
 ## Related Skills
 
 - **agent-delegation**: Compose and validate A2A tasks and artifacts per phase

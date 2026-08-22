@@ -44,14 +44,10 @@
         "json",
         "text"
       ],
-      "output_schema_refs": [
-        "seo-weekly-board.json"
-      ]
+      "output_schema_refs": []
     }
   ],
-  "defaultOutputSchemas": [
-    "seo-weekly-board.json"
-  ],
+  "defaultOutputSchemas": [],
   "role_file": "core/roles/task-planner.md",
   "policy_profile": "task-planner"
 }

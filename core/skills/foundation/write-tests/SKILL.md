@@ -188,6 +188,14 @@ Use this when adding tests quickly:
 - add happy path and failure path coverage
 - run targeted tests
 
+## Output Contracts
+
+When executing or updating automated tests for behavior verification, emit:
+
+- **`contracts/schemas/test-report.json`** — Emitted when executing automated test suites or regression tests, documenting test suite configurations, pass/fail execution results, coverage metrics, and identified test failures. Set `produced_by_role` to the executing role.
+
+Skip emission for rapid local test iterations during interactive development.
+
 ## Related Skills
 
 - **commit-code**: Prepare test changes for delivery

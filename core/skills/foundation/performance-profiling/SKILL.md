@@ -203,6 +203,14 @@ When reporting performance work, include:
 - [ ] before/after comparison recorded
 - [ ] correctness and secondary effects checked
 
+## Output Contracts
+
+When benchmarking, profiling hot paths, or diagnosing system performance bottlenecks, emit:
+
+- **`contracts/schemas/performance-audit.json`** — Emitted to provide empirical latency, throughput, and resource profiling evidence before and after optimization. Set `produced_by_role` to the profiling engineer role.
+
+Skip emission for casual development-mode micro-benchmarks with no gate dependency.
+
 ## Related Skills
 
 - **troubleshoot-service**: Debug runtime and dependency issues
@@ -210,3 +218,4 @@ When reporting performance work, include:
 - **write-tests**: Add regression or benchmark coverage
 - **navigate-service**: Map the hot path before optimizing
 - **meeting-review**: Review performance trade-offs across roles
+

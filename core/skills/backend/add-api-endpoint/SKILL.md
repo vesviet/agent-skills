@@ -123,6 +123,7 @@ Cover:
 
 When this skill is invoked as part of a coordinated multi-role delivery (Technical Lead planned, Reviewer/QA will gate), emit:
 
+- **`contracts/schemas/api-contract-spec.json`** — Emitted when adding or updating HTTP/RPC service endpoints, defining request/response shapes, schema models, query parameters, auth requirements, and error payloads.
 - **`contracts/schemas/implementation-result.json`** — one artifact per change slice. Required fields: `change_summary` (what was added/changed), `files_touched[]`, `endpoints_added[]` with method+path, `tests_added[]` with file refs, `preserved_behavior[]` (explicitly note any auth shape, error contract, or response envelope kept identical), `validation_run` (commands + pass/fail). Set `produced_by_role` to the emitting developer role so Coordinator and Reviewer can route follow-ups without re-parsing diffs.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
@@ -135,7 +136,3 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **add-service-client**: Integrate downstream calls behind the endpoint
 - **add-telemetry-instrumentation**: Wire OTel spans for the endpoint
 - **commit-code**: Prepare the change for delivery
-
-## Output Contracts
-
-- `contracts/schemas/api-contract-spec.json`

@@ -126,6 +126,16 @@ Risk acceptance owner if needed:
 - [ ] final status reported with residual risk
 - [ ] phase exit decision stated explicitly
 
+## Output Contracts
+
+When evaluating phase-exit criteria, validator outputs, or test execution results, emit:
+
+- **`contracts/schemas/validation-result.json`** — Emitted when completing a quality gate evaluation across linters, static analysis, type checks, build commands, and repository validators, documenting gate status and phase-exit readiness.
+- **`contracts/schemas/test-report.json`** — Emitted when aggregating test suite execution results, coverage metrics, passed/failed test counts, and regression evidence for phase verification.
+- **`contracts/schemas/implementation-result.json`** — Emitted when gating, consolidating, or validating multi-slice implementation outcomes against technical delivery plan criteria.
+
+Skip emission for local scratch test runs during active development iterations.
+
 ## Related Skills
 
 - **agent-tool-orchestration**: Run checks in the right order
@@ -134,3 +144,4 @@ Risk acceptance owner if needed:
 - **agent-handoff**: Communicate validation results clearly
 - **write-tests**: Add coverage when risk is not protected
 - **commit-code**: Validate changes before approved commit creation
+

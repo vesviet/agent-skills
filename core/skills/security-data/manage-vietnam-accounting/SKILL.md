@@ -73,6 +73,14 @@ Use: `contracts/schemas/accounting-compliance-review.json`
 - [ ] restricted values are absent from outputs, logs, prompts, and agent memory
 - [ ] accounting-compliance-review.json records source versions, gates, exceptions, residual risk, and required approvals
 
+## Output Contracts
+
+When completing an accounting regime review, reconciliation check, or period-close workpaper verification, emit:
+
+- **`contracts/schemas/accounting-compliance-review.json`** — Emitted when conducting a Vietnam statutory accounting compliance review, audit trail check, reconciliation verification, or tax workpaper evaluation. Set `produced_by_role: vietnam-accounting-specialist`.
+
+Skip emission for informal financial queries that do not form part of statutory or management close records.
+
 ## Related Skills
 
 - **analyze-business-requirements**: Turn reviewed accounting rules and exceptions into feature acceptance criteria.
@@ -80,3 +88,4 @@ Use: `contracts/schemas/accounting-compliance-review.json`
 - **conduct-research**: Verify regulatory or accounting-standard questions against primary official sources.
 - **security-audit**: Review financial-data access, signing-key exposure, retention controls, and audit-log integrity.
 - **write-documentation**: Publish approved accounting process guidance and operational runbooks.
+

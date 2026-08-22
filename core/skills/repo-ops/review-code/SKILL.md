@@ -139,6 +139,14 @@ If there are no findings, say so explicitly and mention residual risk such as un
 - [ ] independent human reviewer requirement satisfied on critical paths
 - [ ] full dependency-graph impact checked for AI changes (blast radius mapped)
 
+## Output Contracts
+
+When completing a structured code review or pull request audit, emit:
+
+- **`contracts/schemas/code-review-finding.json`** — Emitted to provide machine-readable review findings across code quality domains, documenting severity levels, blast radius assessments, file locations, and merge recommendations.
+
+Skip emission for informal exploratory walkthroughs where no formal review gate is active.
+
 ## Repo-Specific Adapters
 
 Adapt these references to the active repository:

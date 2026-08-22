@@ -104,6 +104,15 @@ Markdown brief (see `core/roles/ui-ux-designer.md` template) **plus** JSON contr
 - [ ] Figma variables used to prototype dynamic data states (empty states, errors, long values)
 - [ ] progressive disclosure applied to separate primary actions from advanced configuration options
 
+## Output Contracts
+
+When delivering screen interaction flows or component design specifications for engineering handoff, emit:
+
+- **`contracts/schemas/ux-flow-spec.json`** — Emitted to document multi-screen user journeys, state transitions, navigation flows, and edge cases for Frontend, Backend, and QA roles.
+- **`contracts/schemas/ui-component-spec.json`** — Emitted to specify individual reusable UI components, states, props, event signatures, accessibility requirements, and design token bindings.
+
+Skip emission for low-fidelity conceptual sketches prior to UX alignment.
+
 ## Related Skills
 
 - **analyze-business-requirements**: Interpret BA rules before designing states

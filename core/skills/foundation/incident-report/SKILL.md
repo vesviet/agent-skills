@@ -166,6 +166,14 @@ Emit `contracts/schemas/incident-report.json` when machine handoff to Agent Coor
 - [ ] AI-assisted RCA findings validated and confirmed by a human operator
 - [ ] replayable agent audit trail (model version, prompts, tool calls, policy logs) attached as postmortem evidence
 
+## Output Contracts
+
+When responding to, documenting, or completing the post-mortem of an operational incident, emit:
+
+- **`contracts/schemas/incident-report.json`** — Emitted to provide a structured timeline, root-cause analysis (5 Whys), blast radius assessment, and prioritized remediation actions. Set `produced_by_role: sre`.
+
+Skip emission for minor transient alerts resolved immediately without service degradation.
+
 ## Related Skills
 
 - **troubleshoot-service**: Diagnose and contain the active failure
@@ -173,3 +181,4 @@ Emit `contracts/schemas/incident-report.json` when machine handoff to Agent Coor
 - **add-telemetry-instrumentation**: Address detection gaps identified in action items
 - **meeting-review**: Run the postmortem session with the involved team
 - **write-documentation**: Update runbooks with lessons learned
+

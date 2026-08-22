@@ -148,9 +148,21 @@ See `./references/a2a-spec.md` for signed Agent Card verification, the full stre
 
 Emit `agent-trace-span.json` records (or JSONL via Cursor hooks) for material operations. Include `trace_id` on artifacts for correlation.
 
+## Output Contracts
+
+When managing task lifecycles under the A2A 1.0 protocol, emit the following structured lifecycle artifacts:
+
+- **`contracts/schemas/a2a-task.json`** — Emitted when composing and delegating a scoped task to a worker agent, specifying task parameters, constraints, risk tier, and output schema reference.
+- **`contracts/schemas/a2a-artifact.json`** — Emitted upon task completion to return structured output parts, validation evidence, and deliverable data to the supervisor agent.
+- **`contracts/schemas/a2a-task-progress.json`** — Emitted as streaming lifecycle progress events (SSE) during long-running task execution to communicate interim progress and heartbeat state.
+- **`contracts/schemas/a2a-task-status.json`** — Emitted when querying, tracking, or updating task lifecycle state, cancellation requests, or terminal status.
+
+Skip emission when executing local internal commands with no cross-agent coordination.
+
 ## Related Skills
 
 - **agent-delegation**: Single-hop delegate with minimal ceremony
 - **agent-graph-orchestration**: Phase graphs and parallel merge
 - **agent-tool-orchestration**: Policy checks before tools
 - **agent-observability**: trace_id and token_usage on artifacts
+

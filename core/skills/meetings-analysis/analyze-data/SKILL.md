@@ -83,6 +83,14 @@ Produce:
 - [ ] results spot-checked against source
 - [ ] pipeline or migration needs escalated to Data Engineer when applicable
 
+## Output Contracts
+
+When completing structured dataset exploration or metric analysis, emit:
+
+- **`contracts/schemas/data-analysis-report.json`** — Emitted when completing a structured data analysis or exploratory investigation, documenting business context, metric definitions, dataset lineage, findings, anomalies, and recommendations.
+
+Skip emission for transient scratchpad queries or one-off debugging data checks.
+
 ## Related Skills
 
 - **build-data-pipeline**: Reusable ingest/compare/report scripts or Parquet/DuckDB setup when analysis needs engineered inputs
@@ -90,3 +98,4 @@ Produce:
 - **database-maintenance**: Read-only operational queries when appropriate
 - **write-documentation**: Data dictionaries and metric catalogs
 - **conduct-research**: External benchmarks or domain context when data alone is insufficient
+

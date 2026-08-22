@@ -221,9 +221,18 @@ Produce a structured contract that downstream roles can use directly:
 - [ ] YMYL_elevation_required flag set when applicable
 - [ ] recommended_next_roles populated with rationale
 
+## Output Contracts
+
+When concluding deep or scoped research investigations, emit:
+
+- **`contracts/schemas/research-report.json`** — Emitted upon concluding a structured research investigation, synthesizing grounded evidence, source hierarchy, Chain-of-Verification (CoVe) results, information gain assessment, and recommended next roles.
+
+Skip emission for quick single-lookup factual searches that require no cross-role handoff.
+
 ## Related Skills
 
 - **analyze-business-requirements**: Read BA framing only — do not populate feature-ticket.json as Researcher
 - **agent-context-management**: Prevent token bloat during long research sessions
 - **agent-tool-orchestration**: Manage search APIs, web scrapers, and local retrieval tools
 - **agent-quality-gate**: Verify research findings before synthesizing; validate grounding completeness
+

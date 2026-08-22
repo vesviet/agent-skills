@@ -306,6 +306,14 @@ A prompt missing **any** of the five components statistically produces boilerpla
 - [ ] content-handoff.json complete with GEO/AEO and information gain fields
 - [ ] SEO audit requested before publish when required
 
+## Output Contracts
+
+When completing article drafting and preparing a publishable content handoff for editorial review, emit:
+
+- **`contracts/schemas/content-handoff.json`** — Emitted upon completing an article or editorial piece, documenting word counts, target keywords, E-E-A-T signals, answer-first/GEO/AEO compliance, and information gain additions. Set `produced_by_role: content-writer`.
+
+Skip emission for quick copy snippets or internal note drafting with no publishing workflow.
+
 ## Related Skills
 
 - **write-documentation**: Structure and clarity patterns; technical README/runbooks belong with Technical Writer

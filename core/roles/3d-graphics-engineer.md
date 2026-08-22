@@ -151,6 +151,7 @@ Contracts owned by other roles — do not author these as 3D Graphics Engineer:
 - `frontend-testing`
 - `write-tests`
 - `review-code`
+- `performance-profiling`
 - `agent-delegation`
 
 ## Output Template

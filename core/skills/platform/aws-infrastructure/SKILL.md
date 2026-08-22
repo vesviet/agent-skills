@@ -82,11 +82,12 @@ Test the IaC in a staging environment. Produce the `aws-infra-spec.json` handoff
 
 ## Output Contracts
 
-When this skill is invoked as part of a coordinated multi-role delivery, emit:
+When provisioning or updating AWS cloud infrastructure as part of a multi-role delivery, emit:
 
-- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+- **`contracts/schemas/aws-infra-spec.json`** — Emitted upon IaC specification and staging verification to document provisioned cloud resources, endpoints, IAM roles, and FinOps cost allocation tags. Set `produced_by_role: aws-engineer`.
+- **`contracts/schemas/deployment-plan.json`** — Emitted when infrastructure modifications require an ordered rollout plan, documenting infrastructure changes, configuration updates, and validation runs.
 
-Skip emission for solo refactor work where no downstream handoff is expected.
+Skip emission for local sandbox experimentation where no cloud resources are provisioned.
 
 ## Related Skills
 

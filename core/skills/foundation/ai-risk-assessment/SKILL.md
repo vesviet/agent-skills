@@ -172,9 +172,18 @@ Produce `contracts/schemas/ai-risk-register.json` (or YAML equivalent) when form
 - `owasp_asi_alignment` mapping
 - `residual_risks` with acceptance sign-offs
 
+## Output Contracts
+
+When completing an AI governance, safety, or compliance risk evaluation, emit:
+
+- **`contracts/schemas/ai-risk-register.json`** — Emitted when completing an AI risk governance assessment, documenting EU AI Act tier classification, NIST AI 600-1 risk profile, OWASP ASI mitigations, and residual risk acceptance. Set `produced_by_role: ai-systems-engineer` (or assessing role).
+
+Skip emission for non-AI software delivery slices.
+
 ## Related Skills
 
 - **analyze-business-requirements**: BA is the first to apply EU AI Act tier classification in `feature-ticket.json`
 - **security-audit**: full security review that incorporates AI risk register findings
 - **conduct-research**: domain research on AI risk context, regulations, and comparable systems
 - **agent-tool-orchestration**: agentic action inventory required by this assessment
+

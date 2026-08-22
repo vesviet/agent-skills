@@ -246,6 +246,7 @@ Contracts owned by other roles — do not author these as Solution Architect:
 
 - `conduct-research`
 - `analyze-business-requirements`
+- `write-product-brief`
 - `navigate-service`
 - `review-service`
 - `write-documentation`

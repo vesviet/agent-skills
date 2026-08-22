@@ -28,11 +28,33 @@
   ],
   "skills": [
     {
-      "id": "write-tech-radar",
-      "name": "Write Tech Radar",
-      "description": "Draft or update a technology radar entry by summarizing context, trade-offs, recommendation, and adoption guidance in a concise decision-oriented format. Use when documenting technology choices, trials, or directional guidance.",
+      "id": "system-design",
+      "name": "System Design",
+      "description": "Design, specify, and document complex system architectures covering compute, network, storage, middleware, and AI inference layers. Translate NFRs into measurable infrastructure targets and produce capacity models. Use when designing or reviewing system topology, sizing infrastructure, planning capacity, or specifying AI infrastructure (GPU, inference servers, vector databases).",
       "tags": [
-        "documentation",
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    },
+    {
+      "id": "agent-panel-meeting",
+      "name": "Agent Panel Meeting",
+      "description": "Orchestrate a 6-round, multi-role cross-examination panel meeting to debate architecture, code, or features and produce a final decision-ready JSON contract with trade-offs and residual risks. Use when rigorous cross-functional alignment is required before deciding, building, or shipping.",
+      "tags": [
+        "agent",
         "pack"
       ],
       "inputModes": [
@@ -55,6 +77,28 @@
       "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.",
       "tags": [
         "analysis",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    },
+    {
+      "id": "write-tech-radar",
+      "name": "Write Tech Radar",
+      "description": "Draft or update a technology radar entry by summarizing context, trade-offs, recommendation, and adoption guidance in a concise decision-oriented format. Use when documenting technology choices, trials, or directional guidance.",
+      "tags": [
+        "documentation",
         "pack"
       ],
       "inputModes": [

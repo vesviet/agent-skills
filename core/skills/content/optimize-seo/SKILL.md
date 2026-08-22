@@ -166,6 +166,17 @@ AI extractability audit elements:
 - [ ] trust signals required (source citations, contact info, policy page)
 - [ ] claim policy stated
 
+## Output Contracts
+
+When completing search intent analysis, keyword planning, on-page audits, or multi-site editorial scheduling, emit:
+
+- **`contracts/schemas/seo-audit-report.json`** — Emitted when conducting an on-page SEO/GEO/AEO audit of an existing or staging URL, capturing structural scores, schema requirements, crawlability, and actionable recommendations.
+- **`contracts/schemas/seo-content-brief.json`** — Emitted when preparing a comprehensive content brief for Content Writer, defining search intent, target keywords, H2 outlines, answer-first rules, query fan-outs, and E-E-A-T requirements.
+- **`contracts/schemas/seo-metadata.json`** — Emitted when delivering publish-ready title tags, meta descriptions, canonical URLs, Open Graph tags, and structured schema specifications.
+- **`contracts/schemas/seo-weekly-board.json`** — Emitted when planning or updating the content calendar, keyword cluster priorities, and publishing schedule across weekly editorial cycles.
+
+Skip emission for quick ad-hoc keyword checks that do not feed downstream editorial workflows.
+
 ## Related Skills
 
 - **conduct-research**: deeper domain or competitor context when SERP scan is insufficient
@@ -173,3 +184,4 @@ AI extractability audit elements:
 - **analyze-data**: formal GSC/CTR tables and AI citation tracking when SEO Analyst needs verified baselines
 - **write-documentation**: metric catalogs or SEO playbooks for a site
 - **agent-delegation**: delegate drafting to Content Writer or technical work to Frontend
+

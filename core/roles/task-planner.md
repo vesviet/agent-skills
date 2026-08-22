@@ -49,7 +49,10 @@ This role must follow [role-standard](role-standard.md) first.
 - validation and review checkpoints
 - open questions with suggested owners or resolution paths
 - optional **approach options** with trade-offs when the problem is genuinely forked
-- `contracts/schemas/seo-weekly-board.json` — **cadence and sequencing fields only**, and only when no SEO Analyst is active on the sprint. SEO Analyst owns this contract; when both roles are active, Task Planner supplies cadence and slot ordering and SEO Analyst emits the board.
+
+Contracts owned by other roles — do not author these as Task Planner:
+
+- `contracts/schemas/seo-weekly-board.json` is owned by **SEO Analyst**. Task Planner supplies cadence and slot ordering; when both roles are active, SEO Analyst emits the board.
 
 ## Deliverable Routing
 
