@@ -1,11 +1,63 @@
+schema_version: "2"
+
 name: icm-team
-description: Global engineering core plus Astro/Cloudflare conventions plus ICM Factory Direct main site overlay.
-version: 1.0.0
+description: Global engineering core plus Astro v6/v7 + Cloudflare Workers conventions plus ICM Factory Direct main site overlay. Covers TailwindCSS v4 migration, Content Layer API, Cloudflare bindings.
+version: 4.0.0
+
 tags:
   - core
+  - astro
+  - cloudflare
+  - frontend
 author: user
 maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
 includes:
   - core
   - overlays/astro-cloudflare
   - overlays/icm-main
+
+capabilities:
+  - frontend
+  - code-generation
+  - deployment
+  - seo
+  - content-management
+  - edge-computing
+
+data_classification: internal
+
+activation:
+  strategy: marker_first
+  markers:
+    - astro.config.mjs
+    - astro.config.ts
+    - wrangler.jsonc
+    - wrangler.toml
+  glob_patterns:
+    - "src/pages/**/*.astro"
+    - "src/data/**/*.ts"
+    - "wrangler.jsonc"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - push_to_production
+      - modify_secrets
+      - deploy_service
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

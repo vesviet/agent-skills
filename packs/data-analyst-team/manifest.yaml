@@ -1,10 +1,65 @@
+schema_version: "2"
+
 name: data-analyst-team
-description: Global engineering core plus DuckDB, Metabase, and BI analytics stack overlay for data analysts.
-version: 1.0.0
+description: Global engineering core plus DuckDB, Metabase, dbt Core 1.9, and Apache Iceberg analytics stack overlay for data analysts. Covers microbatch incremental strategy, Iceberg REST Catalog, BI dashboard specs.
+version: 4.0.0
+
 tags:
   - core
+  - data
+  - analytics
+  - bi
+  - duckdb
 author: user
 maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
 includes:
   - core
   - overlays/data-analyst-stack
+
+capabilities:
+  - data-analysis
+  - sql
+  - bi-dashboards
+  - reporting
+  - data-visualization
+  - etl-elt
+
+data_classification: confidential
+
+activation:
+  strategy: marker_first
+  markers:
+    - warehouse.duckdb
+    - dbt_project.yml
+    - profiles.yml
+    - metabase.yaml
+  glob_patterns:
+    - "analytics/**/*.sql"
+    - "queries/**/*.sql"
+    - "specs/metabase/**/*.md"
+    - "data/analytics/**"
+  exclude_patterns:
+    - "data/analytics/raw/**"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - modify_production_data
+      - export_pii_data
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

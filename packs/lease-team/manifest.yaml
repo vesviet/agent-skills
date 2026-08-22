@@ -1,13 +1,64 @@
+schema_version: "2"
+
 name: lease-team
-description: Global engineering core plus Lease content overlay, enforcing the 5-Pillar Strategy (Intelligence, Information, Insights, Neighborhoods, Integration), GEO/AEO standards, and SEO publishing sprint cadence for leaseinvietnam and maylanhtreotuong.
-version: 1.1.0
+description: Global engineering core plus Lease content overlay and SEO publishing sprint cadence. Enforces the 5-Pillar Strategy (Intelligence, Information, Insights, Neighborhoods, Integration), 2026 GEO/AEO standards, and AI Overviews citation optimization for leaseinvietnam and maylanhtreotuong.
+version: 4.0.0
+
 tags:
   - core
+  - content
+  - seo
   - geo-aeo
   - content-strategy
 author: user
 maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
 includes:
   - core
   - overlays/lease-content
   - overlays/seo-publishing
+
+capabilities:
+  - content-strategy
+  - content-generation
+  - seo
+  - geo-aeo
+  - publishing-workflow
+  - ai-search-optimization
+
+data_classification: internal
+
+activation:
+  strategy: marker_first
+  markers:
+    - leaseinvietnam/
+    - maylanhtreotuong/
+    - src/data/apartments/
+    - src/data/ac-units/
+  glob_patterns:
+    - "leaseinvietnam/src/data/**/*.md"
+    - "leaseinvietnam/src/data/**/*.mdx"
+    - "maylanhtreotuong/src/data/**/*.md"
+    - "maylanhtreotuong/src/data/**/*.mdx"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - publish_to_production
+      - modify_secrets
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

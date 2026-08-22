@@ -1,9 +1,55 @@
+schema_version: "2"
+
 name: global-engineering
-description: Portable global engineering pack without repo-specific overlays.
-version: 1.0.0
+description: Portable global engineering pack without repo-specific overlays. Loads for any project that does not match a more specific pack.
+version: 4.0.0
+
 tags:
   - core
+  - engineering
 author: user
 maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
 includes:
   - core
+
+capabilities:
+  - code-generation
+  - code-review
+  - api-development
+  - backend
+  - frontend
+  - testing
+  - deployment
+  - security-review
+  - documentation
+  - architecture-review
+
+data_classification: internal
+
+activation:
+  strategy: always
+  always: true
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - run_migration
+      - push_to_production
+      - modify_secrets
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

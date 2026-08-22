@@ -1,10 +1,61 @@
+schema_version: "2"
+
 name: donthan-team
-description: Global engineering core plus Donthan.com web-first livestream UX overlay.
-version: 1.0.0
+description: Global engineering core plus Donthan.com web-first livestream UX overlay. Covers desktop-first sidebar layout, dark mode, AI Tarot feature, Vietnamese UX conventions, PWA standards.
+version: 4.0.0
+
 tags:
   - core
+  - frontend
+  - ux
+  - livestream
+  - vietnamese
 author: user
 maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
 includes:
   - core
   - overlays/donthan-web
+
+capabilities:
+  - frontend
+  - ux-design
+  - code-generation
+  - real-time-features
+  - pwa
+
+data_classification: internal
+
+activation:
+  strategy: marker_first
+  markers:
+    - donthan.config.js
+    - donthan.config.ts
+    - DONTHAN.md
+  glob_patterns:
+    - "src/**/*.tsx"
+    - "src/**/*.jsx"
+    - "src/features/tarot/**"
+    - "src/features/stream/**"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - push_to_production
+      - modify_secrets
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

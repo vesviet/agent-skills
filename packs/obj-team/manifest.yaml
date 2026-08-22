@@ -1,11 +1,68 @@
+schema_version: "2"
+
 name: obj-team
-description: Global engineering core plus Astro/Cloudflare conventions plus OBJ 3D Configurator overlay.
-version: 1.0.0
+description: Global engineering core plus Astro v6/v7 + Cloudflare conventions plus OBJ 3D Configurator overlay. Covers React Three Fiber v9, Three.js r171+ WebGPU, Prisma, Redux Toolkit, Zustand.
+version: 4.0.0
+
 tags:
   - core
+  - astro
+  - cloudflare
+  - frontend
+  - 3d
+  - webgpu
 author: user
 maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
 includes:
   - core
   - overlays/astro-cloudflare
   - overlays/obj-configurator
+
+capabilities:
+  - frontend
+  - 3d-rendering
+  - code-generation
+  - deployment
+  - edge-computing
+  - webgl
+  - webgpu
+
+data_classification: internal
+
+activation:
+  strategy: marker_first
+  markers:
+    - astro.config.mjs
+    - astro.config.ts
+    - wrangler.jsonc
+    - prisma/schema.prisma
+  glob_patterns:
+    - "src/design-hub/**/*.jsx"
+    - "src/design-hub/**/*.tsx"
+    - "**/*.glb"
+    - "prisma/**/*.prisma"
+  exclude_patterns:
+    - "node_modules/**"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - push_to_production
+      - modify_secrets
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

@@ -1,11 +1,65 @@
+schema_version: "2"
+
 name: ecommerce-team
-description: Global engineering core plus Go Microservices conventions and Ecommerce Microservices overlay.
-version: 1.0.0
+description: Global engineering core plus Go 1.25/Kratos v3 microservices conventions and Ecommerce Microservices overlay. Includes Dapr 1.15, ConnectRPC, OTel compile-time instrumentation.
+version: 4.0.0
+
 tags:
   - core
+  - go
+  - microservices
+  - ecommerce
 author: user
 maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
 includes:
   - core
   - overlays/go-microservices
   - overlays/ecommerce-microservices
+
+capabilities:
+  - code-generation
+  - api-development
+  - backend
+  - testing
+  - deployment
+  - event-driven-architecture
+  - service-mesh
+
+data_classification: confidential
+
+activation:
+  strategy: marker_first
+  markers:
+    - go.mod
+    - .kratos.yaml
+  glob_patterns:
+    - "**/*.go"
+    - "**/wire_gen.go"
+    - "**/proto/**/*.proto"
+  exclude_patterns:
+    - "vendor/**"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - run_migration
+      - push_to_production
+      - modify_secrets
+      - deploy_service
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly
