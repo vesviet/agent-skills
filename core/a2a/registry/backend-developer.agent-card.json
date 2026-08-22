@@ -9,7 +9,8 @@
   "capabilities": {
     "streaming": true,
     "pushNotifications": false,
-    "stateTransitionHistory": true
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
   },
   "authentication": {
     "schemes": [
@@ -18,7 +19,8 @@
   },
   "defaultInputModes": [
     "text",
-    "json"
+    "json",
+    "data"
   ],
   "defaultOutputModes": [
     "text",
@@ -35,7 +37,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -57,7 +60,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -79,7 +83,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -101,7 +106,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -123,7 +129,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -140,12 +147,13 @@
       "name": "Commit Code",
       "description": "Validate and package a finished change into a clean commit by following repo-local validation, generation, release-note, and approval rules. Use when the user explicitly asks to prepare or create a commit.",
       "tags": [
-        "pack",
+        "devops",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -167,7 +175,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -184,12 +193,59 @@
       "name": "Navigate Service",
       "description": "Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session.",
       "tags": [
-        "pack",
+        "devops",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "api-contract-spec.json",
+        "implementation-result.json",
+        "schema-migration.json"
+      ]
+    },
+    {
+      "id": "build-mcp-server",
+      "name": "Build Mcp Server",
+      "description": "Scaffolds and implements a new Model Context Protocol (MCP) server. Use when exposing new backend tools or resources to AI agents.",
+      "tags": [
+        "backend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "api-contract-spec.json",
+        "implementation-result.json",
+        "schema-migration.json"
+      ]
+    },
+    {
+      "id": "implement-structured-outputs",
+      "name": "Implement Structured Outputs",
+      "description": "Implements strict constrained decoding and validation for LLM responses. Use when enforcing JSON Schema guarantees on model generations, eliminating regex parsing, or integrating structured LLM outputs into backend services.",
+      "tags": [
+        "backend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",

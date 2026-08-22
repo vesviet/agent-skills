@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "agents": [
+    {
+      "type": "a2a",
+      "url": "/.well-known/agent.json"
+    },
+    {
+      "type": "registry",
+      "url": "/.well-known/agent-registry.json"
+    }
+  ],
+  "mcp": [],
+  "openapi": []
+}

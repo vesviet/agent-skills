@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""Generate A2A Agent Cards and registry from role definitions."""
+"""Generate A2A Agent Cards and registry from role definitions.
+
+2026 upgrades:
+- Emits /.well-known/agent.json (canonical A2A 1.0 endpoint, replaces agent-card.json)
+- Emits /.well-known/ai-catalog.json (Google AI Catalog 2026 meta-index)
+- Adds 'data' to inputModes per A2A 1.0 spec update
+- protocol_version stays "1.0" (donated to Linux Foundation, no version bump)
+- Capability map includes security card signing awareness flag
+"""
 
 from __future__ import annotations
 
@@ -14,6 +22,10 @@ from common import CORE_ROOT, ROOT, SKILLS_ROOT, collect_skill_names, parse_fron
 ROLE_ROOT = CORE_ROOT / "roles"
 REGISTRY_ROOT = CORE_ROOT / "a2a" / "registry"
 WELL_KNOWN = CORE_ROOT / "a2a" / ".well-known" / "agent-registry.json"
+# A2A 1.0 2026 canonical single-agent endpoint (/.well-known/agent.json)
+WELL_KNOWN_AGENT = CORE_ROOT / "a2a" / ".well-known" / "agent.json"
+# Google AI Catalog 2026: meta-index pointing to agent.json, mcp.json, OpenAPI
+AI_CATALOG = CORE_ROOT / "a2a" / ".well-known" / "ai-catalog.json"
 PACK_VERSION_PATH = ROOT / "VERSION"
 SCHEMAS_ROOT = CORE_ROOT / "contracts" / "schemas"
 
@@ -26,6 +38,11 @@ CANONICAL_TAGS = {
     "security-data": "security",
     "documentation": "documentation",
     "education": "education",
+    "meetings-analysis": "analysis",
+    "repo-ops": "devops",
+    "content": "content",
+    "commerce": "commerce",
+    "mmo": "operations",
 }
 
 
@@ -96,7 +113,8 @@ def build_agent_card(path: Path, known_skills: set[str]) -> dict:
                 "name": skill_id.replace("-", " ").title(),
                 "description": skill_description(skill_id),
                 "tags": [cat, "pack"],
-                "inputModes": ["text", "json"],
+                # A2A 1.0 2026: 'data' added alongside text/json
+                "inputModes": ["text", "json", "data"],
                 "outputModes": ["json", "text"],
                 "output_schema_refs": schemas[:3] if schemas else [],
             }
@@ -109,7 +127,7 @@ def build_agent_card(path: Path, known_skills: set[str]) -> dict:
                 "name": slug.replace("-", " ").title(),
                 "description": mission or f"{slug} delivery role.",
                 "tags": ["role"],
-                "inputModes": ["text", "json"],
+                "inputModes": ["text", "json", "data"],
                 "outputModes": ["json"],
                 "output_schema_refs": schemas,
             }
@@ -122,14 +140,17 @@ def build_agent_card(path: Path, known_skills: set[str]) -> dict:
         "description": mission,
         "url": f"pack://agent-skills/core/roles/{slug}.md",
         "version": pack_version(),
+        # A2A 1.0 — protocol donated to Linux Foundation; version stays "1.0"
         "protocol_version": "1.0",
         "capabilities": {
             "streaming": True,
             "pushNotifications": False,
             "stateTransitionHistory": True,
+            # A2A 1.0 2026: security card signing support declaration
+            "securityCardSigning": False,
         },
         "authentication": {"schemes": ["pack-local"]},
-        "defaultInputModes": ["text", "json"],
+        "defaultInputModes": ["text", "json", "data"],
         "defaultOutputModes": ["text", "json"],
         "skills": card_skills,
         "defaultOutputSchemas": schemas,
@@ -158,6 +179,7 @@ def main() -> int:
             }
         )
 
+    # agent-registry.json — internal multi-agent directory (project convention)
     registry = {
         "contract_type": "agent-registry",
         "pack_version": pack_version(),
@@ -167,6 +189,49 @@ def main() -> int:
     }
     WELL_KNOWN.write_text(
         json.dumps(registry, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+
+    # /.well-known/agent.json — A2A 1.0 2026 canonical single-agent card endpoint
+    # Represents the pack itself as an orchestrating agent
+    canonical_card = {
+        "name": "agent-skills-pack",
+        "description": "Agent Skills Pack — multi-role engineering skill pack for AI-assisted delivery",
+        "url": "pack://agent-skills",
+        "version": pack_version(),
+        "protocol_version": "1.0",
+        "capabilities": {
+            "streaming": True,
+            "pushNotifications": False,
+            "stateTransitionHistory": True,
+            "securityCardSigning": False,
+        },
+        "defaultInputModes": ["text", "json", "data"],
+        "defaultOutputModes": ["text", "json"],
+        "skills": [
+            {
+                "id": entry["role"],
+                "name": entry["role"].replace("-", " ").title(),
+                "description": entry["description"],
+            }
+            for entry in entries[:20]  # top 20 roles for discovery
+        ],
+    }
+    WELL_KNOWN_AGENT.write_text(
+        json.dumps(canonical_card, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+
+    # /.well-known/ai-catalog.json — Google AI Catalog 2026 meta-index
+    ai_catalog = {
+        "version": "1.0",
+        "agents": [
+            {"type": "a2a", "url": "/.well-known/agent.json"},
+            {"type": "registry", "url": "/.well-known/agent-registry.json"},
+        ],
+        "mcp": [],
+        "openapi": [],
+    }
+    AI_CATALOG.write_text(
+        json.dumps(ai_catalog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
 
     cap_lines = [
@@ -182,6 +247,8 @@ def main() -> int:
     cap_path.write_text("\n".join(cap_lines) + "\n", encoding="utf-8")
 
     print(f"Generated {len(entries)} agent cards under {REGISTRY_ROOT.relative_to(ROOT)}")
+    print(f"Canonical A2A endpoint: {WELL_KNOWN_AGENT.relative_to(ROOT)}")
+    print(f"AI Catalog meta-index: {AI_CATALOG.relative_to(ROOT)}")
     print(f"Capability map: {cap_path.relative_to(ROOT)}")
     print(f"Registry: {WELL_KNOWN.relative_to(ROOT)}")
     return 0

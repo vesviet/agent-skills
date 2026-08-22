@@ -9,7 +9,8 @@
   "capabilities": {
     "streaming": true,
     "pushNotifications": false,
-    "stateTransitionHistory": true
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
   },
   "authentication": {
     "schemes": [
@@ -18,7 +19,8 @@
   },
   "defaultInputModes": [
     "text",
-    "json"
+    "json",
+    "data"
   ],
   "defaultOutputModes": [
     "text",
@@ -35,7 +37,30 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    },
+    {
+      "id": "meeting-review",
+      "name": "Meeting Review",
+      "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.",
+      "tags": [
+        "analysis",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",

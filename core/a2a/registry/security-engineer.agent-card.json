@@ -9,7 +9,8 @@
   "capabilities": {
     "streaming": true,
     "pushNotifications": false,
-    "stateTransitionHistory": true
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
   },
   "authentication": {
     "schemes": [
@@ -18,7 +19,8 @@
   },
   "defaultInputModes": [
     "text",
-    "json"
+    "json",
+    "data"
   ],
   "defaultOutputModes": [
     "text",
@@ -35,7 +37,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -55,7 +58,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -75,7 +79,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -95,7 +100,29 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "security-audit.json"
+      ]
+    },
+    {
+      "id": "manage-agent-identity",
+      "name": "Manage Agent Identity",
+      "description": "Manages the full lifecycle of Non-Human Identities (NHI) for AI agent sessions — including provisioning scoped credentials, enforcing just-in-time access, behavioral baseline monitoring, and secure offboarding. Use when onboarding a new agent role to production, rotating agent credentials, auditing active agent sessions, or responding to anomalous agent behavior.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",

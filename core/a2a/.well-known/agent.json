@@ -1,0 +1,124 @@
+{
+  "name": "agent-skills-pack",
+  "description": "Agent Skills Pack — multi-role engineering skill pack for AI-assisted delivery",
+  "url": "pack://agent-skills",
+  "version": "4.0.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "3d-graphics-engineer",
+      "name": "3D Graphics Engineer",
+      "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGL/WebGPU impleme"
+    },
+    {
+      "id": "agent-coordinator",
+      "name": "Agent Coordinator",
+      "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality g"
+    },
+    {
+      "id": "agent-discovery-engineer",
+      "name": "Agent Discovery Engineer",
+      "description": "Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance acros"
+    },
+    {
+      "id": "ai-systems-engineer",
+      "name": "Ai Systems Engineer",
+      "description": "architect, deploy, evaluate, and optimize production-grade AI and LLM systems — bridging machine learning models with re"
+    },
+    {
+      "id": "aws-engineer",
+      "name": "Aws Engineer",
+      "description": "build, operate, and optimize AWS-native managed services with a focus on Infrastructure as Code, IAM least-privilege des"
+    },
+    {
+      "id": "backend-developer",
+      "name": "Backend Developer",
+      "description": "build correct, maintainable, testable backend behavior across APIs, business logic, data access, and integrations while "
+    },
+    {
+      "id": "business-analyst",
+      "name": "Business Analyst",
+      "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules,"
+    },
+    {
+      "id": "cloudflare-engineer",
+      "name": "Cloudflare Engineer",
+      "description": "own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration"
+    },
+    {
+      "id": "content-manager",
+      "name": "Content Manager",
+      "description": "direct the overall content strategy of a website — from building content pillar architecture, managing the content lifec"
+    },
+    {
+      "id": "content-writer",
+      "name": "Content Writer",
+      "description": "produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not "
+    },
+    {
+      "id": "data-analyst",
+      "name": "Data Analyst",
+      "description": "answer business questions with reproducible, well-documented analysis from tabular and warehouse data — defining metrics"
+    },
+    {
+      "id": "data-engineer",
+      "name": "Data Engineer",
+      "description": "design, build, and maintain reliable data pipelines and storage layers so analysts and applications can trust timely, we"
+    },
+    {
+      "id": "devops-engineer",
+      "name": "Devops Engineer",
+      "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollo"
+    },
+    {
+      "id": "ecommerce-engineer",
+      "name": "Ecommerce Engineer",
+      "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and "
+    },
+    {
+      "id": "frontend-developer",
+      "name": "Frontend Developer",
+      "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business "
+    },
+    {
+      "id": "mmo-engineer",
+      "name": "Mmo Engineer",
+      "description": "Design, deploy, and operate end-to-end Make Money Online (MMO) operations. Maximize ROI through advanced stealth automat"
+    },
+    {
+      "id": "mobile-engineer",
+      "name": "Mobile Engineer",
+      "description": "deliver correct, performant, and accessible mobile experiences on iOS and Android by owning native app logic, platform i"
+    },
+    {
+      "id": "product-manager",
+      "name": "Product Manager",
+      "description": "maximize user and business value through clear prioritization, scope control, and outcome-driven delivery without hiding"
+    },
+    {
+      "id": "project-manager",
+      "name": "Project Manager",
+      "description": "turn agreed product scope into an executable plan with clear milestones, dependencies, owners, and risk control. In 2025"
+    },
+    {
+      "id": "qa-engineer",
+      "name": "Qa Engineer",
+      "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escap"
+    }
+  ]
+}

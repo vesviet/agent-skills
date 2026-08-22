@@ -9,7 +9,8 @@
   "capabilities": {
     "streaming": true,
     "pushNotifications": false,
-    "stateTransitionHistory": true
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
   },
   "authentication": {
     "schemes": [
@@ -18,7 +19,8 @@
   },
   "defaultInputModes": [
     "text",
-    "json"
+    "json",
+    "data"
   ],
   "defaultOutputModes": [
     "text",
@@ -30,12 +32,13 @@
       "name": "Review Code",
       "description": "Review concrete code changes for correctness, contract safety, data handling, reliability, security, operations, and test coverage. Use for PR reviews, local change reviews, and pre-merge audits.",
       "tags": [
-        "pack",
+        "devops",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -50,12 +53,13 @@
       "name": "Review Service",
       "description": "Review an entire service for release readiness. Use for full-service audits, production-readiness checks, pre-release hardening, and broad reviews that should cover code, contracts, dependencies, rollout safety, and documentation.",
       "tags": [
-        "pack",
+        "devops",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",

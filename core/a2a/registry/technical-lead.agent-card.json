@@ -9,7 +9,8 @@
   "capabilities": {
     "streaming": true,
     "pushNotifications": false,
-    "stateTransitionHistory": true
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
   },
   "authentication": {
     "schemes": [
@@ -18,7 +19,8 @@
   },
   "defaultInputModes": [
     "text",
-    "json"
+    "json",
+    "data"
   ],
   "defaultOutputModes": [
     "text",
@@ -35,7 +37,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -50,12 +53,13 @@
       "name": "Review Code",
       "description": "Review concrete code changes for correctness, contract safety, data handling, reliability, security, operations, and test coverage. Use for PR reviews, local change reviews, and pre-merge audits.",
       "tags": [
-        "pack",
+        "devops",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -70,12 +74,97 @@
       "name": "Meeting Review",
       "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.",
       "tags": [
-        "pack",
+        "analysis",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "agent-quality-gate",
+      "name": "Agent Quality Gate",
+      "description": "Run and interpret repository quality gates for agent-delivered changes, including validators, lint, tests, build checks, diff sanity checks, and phase-exit evidence. Use when reporting completion, advancing a bug or feature to the next phase, or declaring a pack, role, workflow, or code change ready.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "agent-prompt-lifecycle",
+      "name": "Agent Prompt Lifecycle",
+      "description": "Manage prompt assets through their full lifecycle including versioning, evaluation against golden datasets, drift detection, and controlled promotion across environments. Use when creating, updating, reviewing, or auditing prompt definitions in roles, skills, workflows, or system instructions to ensure measurable quality and safe deployment.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "ai-risk-assessment",
+      "name": "Ai Risk Assessment",
+      "description": "Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure/Manage) and NIST AI 600-1 GenAI Profile (12 risk categories), classify EU AI Act risk tiers, and produce an AI risk register covering hallucination thresholds, model degradation signals, bias exposure, and compliance drift. Use when onboarding a new AI feature, scoping an AI system for delivery, or conducting a periodic AI governance audit.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "add-telemetry-instrumentation",
+      "name": "Add Telemetry Instrumentation",
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.input_tokens, gen_ai.request.model), multi-agent workflow correlation, RAG step spans, and tool invocation traces.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",

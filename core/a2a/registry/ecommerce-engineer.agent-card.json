@@ -2,14 +2,15 @@
   "id": "pack://agent-skills/core/roles/ecommerce-engineer",
   "contract_type": "agent-card",
   "name": "ecommerce-engineer",
-  "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to implementing agentic commerce protocols (ACP, AP2, x402) that let autonomous AI agents discover, authorize, and transact on behalf of users, governing AI-driven product recommendations and semantic vector search, validating generative UI components for dynamic pricing and offers against PCI-DSS and accuracy requirements, and treating agentic commerce flows as first-class security boundaries.",
+  "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to architecting dual-audience commerce systems serving both human shoppers and autonomous AI agents: implementing agentic commerce protocols (Universal Commerce Protocol UCP, Agent Payments Protocol AP2, Machine Payments Protocol MPP, x402, ACP) with cryptographic purchase mandates, enforcing strict PCI-DSS v4.0.1 controls (Req 6.4.3 script integrity and Req 11.6.1 tamper detection), building TTL-bounded distributed inventory reservation state machines, and enforcing zero-trust database-level payment idempotency.",
   "url": "pack://agent-skills/core/roles/ecommerce-engineer.md",
   "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
     "pushNotifications": false,
-    "stateTransitionHistory": true
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
   },
   "authentication": {
     "schemes": [
@@ -18,7 +19,8 @@
   },
   "defaultInputModes": [
     "text",
-    "json"
+    "json",
+    "data"
   ],
   "defaultOutputModes": [
     "text",
@@ -30,12 +32,13 @@
       "name": "Integrate Payment Gateway",
       "description": "Integrate or extend a payment gateway (Stripe, VNPay, PayPal, Momo, etc.) into an e-commerce application. Use when adding, replacing, or auditing a payment provider's checkout, refund, or webhook flow.",
       "tags": [
-        "pack",
+        "commerce",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -50,12 +53,13 @@
       "name": "Handle Checkout Flow",
       "description": "Design and implement the end-to-end checkout flow including cart management, tax and shipping calculation, discount/coupon application, and order confirmation. Use when building or fixing any step in the purchase funnel from cart to payment confirmation.",
       "tags": [
-        "pack",
+        "commerce",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -70,12 +74,13 @@
       "name": "Manage Product Catalog",
       "description": "Build or maintain a product catalog including product creation, variant management (size, color, SKU), pricing, and inventory synchronization across channels. Use when adding, updating, or structuring product data in an e-commerce system.",
       "tags": [
-        "pack",
+        "commerce",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -90,12 +95,13 @@
       "name": "Manage Order Fulfillment",
       "description": "Implement and manage the post-purchase order lifecycle including order status management, packing, shipping label generation, carrier tracking, and refund or return processing. Use when building or maintaining fulfillment workflows after a successful payment.",
       "tags": [
-        "pack",
+        "commerce",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -115,7 +121,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",

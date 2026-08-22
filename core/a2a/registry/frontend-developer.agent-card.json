@@ -2,14 +2,15 @@
   "id": "pack://agent-skills/core/roles/frontend-developer",
   "contract_type": "agent-card",
   "name": "frontend-developer",
-  "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to governing AI-generated UI code with tiered trust validation, owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, and architecting PWA service workers as agentic orchestration control-planes.",
+  "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to governing AI-generated UI code with tiered trust validation, owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, architecting PWA service workers as agentic orchestration control-planes, implementing EU AI Act Article 50 disclosure UI components as a legal requirement (live from 2 August 2026), and sanitizing AI-generated content before DOM insertion using Trusted Types and DOMPurify.",
   "url": "pack://agent-skills/core/roles/frontend-developer.md",
   "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
     "pushNotifications": false,
-    "stateTransitionHistory": true
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
   },
   "authentication": {
     "schemes": [
@@ -18,7 +19,8 @@
   },
   "defaultInputModes": [
     "text",
-    "json"
+    "json",
+    "data"
   ],
   "defaultOutputModes": [
     "text",
@@ -35,7 +37,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -56,7 +59,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -77,7 +81,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -98,7 +103,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -114,12 +120,13 @@
       "name": "Commit Code",
       "description": "Validate and package a finished change into a clean commit by following repo-local validation, generation, release-note, and approval rules. Use when the user explicitly asks to prepare or create a commit.",
       "tags": [
-        "pack",
+        "devops",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -140,7 +147,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -156,12 +164,13 @@
       "name": "Navigate Service",
       "description": "Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session.",
       "tags": [
-        "pack",
+        "devops",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -182,7 +191,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",
@@ -203,7 +213,30 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "accessibility-review",
+      "name": "Accessibility Review",
+      "description": "Audit UI for keyboard navigation, focus order, screen-reader labels, color contrast, motion preferences, and ARIA correctness against WCAG 2.2 criteria (including Focus Not Obscured 2.4.11, Target Size 2.5.8, Accessible Authentication 3.3.8, Dragging Movements 2.5.7, Redundant Entry 3.3.7). Use automated CI gates via @axe-core/playwright for regression detection alongside manual screen-reader testing. Use when validating user-facing flows before release, after design specs land, or when fixing reported a11y defects.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",

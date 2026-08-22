@@ -5,10 +5,17 @@ Resolution order:
   1. Check destructive_patterns in mcp-tool-map.yaml (highest priority)
   2. Look up tool name in tool_actions mapping in mcp-tool-map.yaml
   3. Fallback: infer from tool name keywords
+
+2026 upgrades:
+- --format text|json|sarif output modes (SARIF 2.1.0 for GitHub Code Scanning)
+- exit code 2 for script errors vs 1 for policy violations (0/1/2 convention)
+- W3C Trace Context trace_id propagation in JSON/SARIF output
+- AGENT_ACTIVE_ROLE_LEVEL env var for tier-aware policy checks
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -19,6 +26,10 @@ try:
     import yaml
 except ImportError:
     yaml = None  # type: ignore
+
+
+TOOL_NAME = "agent-pack-policy-hook"
+TOOL_VERSION = "4.0.0"
 
 
 def pack_root() -> Path:
@@ -122,19 +133,16 @@ def map_tool_to_action(tool_name: str, command: str, mcp_map: dict) -> str:
     """
     cmd_lower = (command or "").lower()
 
-    # 1. Destructive pattern matching (command-level, highest priority)
     for entry in mcp_map.get("destructive_patterns", []):
         pattern = entry.get("pattern", "").lower()
         if pattern and pattern in cmd_lower:
             return entry.get("action", "run_build")
 
-    # 2. tool_actions lookup
     tool_actions = mcp_map.get("tool_actions", {})
     tool_lower = (tool_name or "").lower()
     if tool_lower in tool_actions:
         return tool_actions[tool_lower]
 
-    # 3. Keyword fallback (safe defaults)
     if any(kw in tool_lower for kw in ("read", "grep", "search", "find", "fetch", "get")):
         return "read_file"
     if any(kw in tool_lower for kw in ("delete", "remove", "rm")):
@@ -144,7 +152,7 @@ def map_tool_to_action(tool_name: str, command: str, mcp_map: dict) -> str:
     if any(kw in tool_lower for kw in ("write", "edit", "update", "save")):
         return "write_file"
 
-    return "write_file"  # safe default: assume write and let policy check it
+    return "write_file"
 
 
 def check_action(role: str, action: str, boundaries: dict) -> str:
@@ -156,14 +164,74 @@ def check_action(role: str, action: str, boundaries: dict) -> str:
         return "requires_approval"
     if action in role_policy.get("allowed", []):
         return "allowed"
-    # Default from policy
     return "requires_approval"
 
 
+def emit_sarif(result: dict, decision: str) -> None:
+    """Emit SARIF 2.1.0 output for GitHub Code Scanning integration."""
+    level = "error" if decision == "denied" else "warning" if decision == "requires_approval" else "note"
+    sarif = {
+        "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+        "version": "2.1.0",
+        "runs": [
+            {
+                "tool": {
+                    "driver": {
+                        "name": TOOL_NAME,
+                        "version": TOOL_VERSION,
+                        "rules": [
+                            {
+                                "id": "policy-check",
+                                "name": "AgentPolicyCheck",
+                                "shortDescription": {"text": "Agent role action boundary check"},
+                            }
+                        ],
+                    }
+                },
+                "results": [
+                    {
+                        "ruleId": "policy-check",
+                        "level": level,
+                        "message": {"text": result["message"]},
+                        "locations": [
+                            {
+                                "physicalLocation": {
+                                    "artifactLocation": {
+                                        "uri": "core/policies/action-boundaries.yaml",
+                                        "uriBaseId": "%SRCROOT%",
+                                    }
+                                }
+                            }
+                        ],
+                        "partialFingerprints": {
+                            "roleActionHash": f"{result['role']}:{result['mapped_action']}",
+                        },
+                    }
+                ]
+                if decision != "allowed"
+                else [],
+            }
+        ],
+    }
+    print(json.dumps(sarif))
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Check agent tool action against action-boundaries.yaml."
+    )
+    parser.add_argument(
+        "--format",
+        choices=["text", "json", "sarif"],
+        default="json",
+        help="Output format (default: json). Use 'sarif' for GitHub Code Scanning.",
+    )
+    args = parser.parse_args()
+
     role = os.environ.get("AGENT_ACTIVE_ROLE", "agent-coordinator")
     tool = os.environ.get("CURSOR_TOOL_NAME", os.environ.get("TOOL_NAME", "write"))
     command = os.environ.get("CURSOR_COMMAND", "")
+    trace_id = os.environ.get("AGENT_TRACE_ID", "")
 
     root = pack_root()
     boundaries_path = root / "core" / "policies" / "action-boundaries.yaml"
@@ -171,8 +239,12 @@ def main() -> int:
         print("policy check skipped: no boundaries file", file=sys.stderr)
         return 0
 
-    boundaries = load_boundaries(root)
-    mcp_map = load_mcp_tool_map(root)
+    try:
+        boundaries = load_boundaries(root)
+        mcp_map = load_mcp_tool_map(root)
+    except Exception as exc:  # noqa: BLE001
+        print(f"ERROR loading policy files: {exc}", file=sys.stderr)
+        return 2
 
     action = map_tool_to_action(tool, command, mcp_map)
     decision = check_action(role, action, boundaries)
@@ -185,18 +257,27 @@ def main() -> int:
         "mapped_action": action,
         "decision": decision,
         "message": f"Action '{action}' for role '{role}': {decision}",
+        **({"trace_id": trace_id} if trace_id else {}),
     }
 
-    print(json.dumps(result))
+    if args.format == "json":
+        print(json.dumps(result))
+    elif args.format == "sarif":
+        emit_sarif(result, decision)
+    else:
+        print(result["message"])
 
     if decision == "denied":
-        print(f"POLICY DENIED: role '{role}' cannot perform '{action}'", file=sys.stderr)
+        if args.format == "text":
+            print(f"POLICY DENIED: role '{role}' cannot perform '{action}'", file=sys.stderr)
         return 1
+
     if decision == "requires_approval":
-        print(
-            f"POLICY APPROVAL REQUIRED: role '{role}' needs approval for '{action}'",
-            file=sys.stderr,
-        )
+        if args.format == "text":
+            print(
+                f"POLICY APPROVAL REQUIRED: role '{role}' needs approval for '{action}'",
+                file=sys.stderr,
+            )
         return 2
 
     return 0

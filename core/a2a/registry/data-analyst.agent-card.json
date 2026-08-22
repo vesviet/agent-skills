@@ -9,7 +9,8 @@
   "capabilities": {
     "streaming": true,
     "pushNotifications": false,
-    "stateTransitionHistory": true
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
   },
   "authentication": {
     "schemes": [
@@ -18,7 +19,8 @@
   },
   "defaultInputModes": [
     "text",
-    "json"
+    "json",
+    "data"
   ],
   "defaultOutputModes": [
     "text",
@@ -30,12 +32,13 @@
       "name": "Analyze Data",
       "description": "Explore datasets, define metrics, run reproducible SQL or tabular analysis, and produce stakeholder-ready insights with documented assumptions and lineage. Use when answering business questions from data, comparing datasets, building KPI definitions, or drafting dashboard requirements without owning production pipeline infrastructure.",
       "tags": [
-        "pack",
+        "analysis",
         "pack"
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",

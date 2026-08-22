@@ -2,14 +2,15 @@
   "id": "pack://agent-skills/core/roles/product-manager",
   "contract_type": "agent-card",
   "name": "product-manager",
-  "description": "maximize user and business value through clear prioritization, scope control, and outcome-driven delivery without hiding impact, trade-offs, or regression risk inside vague scope decisions. In 2025–2026, this extends to governing AI product features (ethical constraints, explainability, HITL requirements), driving hypothesis-driven discovery before committing to build, and measuring outcomes with a North Star + journey metrics framework — not output volume.",
+  "description": "maximize user and business value through clear prioritization, scope control, and outcome-driven delivery without hiding impact, trade-offs, or regression risk inside vague scope decisions. In 2025–2026, this extends to orchestrating autonomous agents and human judgment — defining goal and constraint envelopes rather than rigid deterministic PRDs, specifying probabilistic acceptance criteria, curating Golden Evaluation Datasets as a first-class product surface, modeling Total Cost of Ownership (TCO) per verified outcome, and governing ethical compliance under EU AI Act Article 50 transparency mandates.",
   "url": "pack://agent-skills/core/roles/product-manager.md",
   "version": "4.0.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
     "pushNotifications": false,
-    "stateTransitionHistory": true
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
   },
   "authentication": {
     "schemes": [
@@ -18,7 +19,8 @@
   },
   "defaultInputModes": [
     "text",
-    "json"
+    "json",
+    "data"
   ],
   "defaultOutputModes": [
     "text",
@@ -35,7 +37,8 @@
       ],
       "inputModes": [
         "text",
-        "json"
+        "json",
+        "data"
       ],
       "outputModes": [
         "json",

@@ -1,8 +1,15 @@
-"""Shared utilities for core pack validators."""
+"""Shared utilities for core pack validators.
+
+2026 additions:
+- ValidationResult dataclass for structured validator output
+- Python 3.12 type alias syntax (type X = ...)
+- collect_workflow_names() helper shared by multiple validators
+"""
 
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass, field
 from pathlib import Path
 
 
@@ -116,3 +123,41 @@ def collect_skill_files() -> list[Path]:
 def bullet_count(text: str) -> int:
     """Count bullet list items in text."""
     return len(re.findall(r"(?m)^- .+", text))
+
+
+def collect_workflow_names() -> set[str]:
+    """Collect all workflow names (stems) from core/workflows/*.md."""
+    return {
+        p.stem
+        for p in (CORE_ROOT / "workflows").glob("*.md")
+        if p.name != "README.md"
+    }
+
+
+# ---------------------------------------------------------------------------
+# 2026: Structured validation result (used by validate-all.py and callers)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class ValidationResult:
+    """Structured result from a single validator run.
+
+    exit_code semantics:
+        0 = passed
+        1 = failed (rule violations — actionable)
+        2 = error  (script crash or missing file)
+    """
+
+    name: str
+    passed: bool
+    exit_code: int
+    output: str = ""
+    duration_ms: float = 0.0
+    errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+
+
+# 2026: Python 3.12 type alias syntax
+type ErrorList = list[str]
+type SkillName = str
+type RoleName = str
