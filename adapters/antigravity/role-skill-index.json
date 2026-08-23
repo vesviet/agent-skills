@@ -1,0 +1,2217 @@
+{
+  "version": "4.0.0",
+  "protocol": "A2A 1.0 + Antigravity",
+  "root": "D:/myproject/agent-skills",
+  "stats": {
+    "roles": 34,
+    "skills": 107,
+    "workflows": 18,
+    "schemas": 43
+  },
+  "role_aliases": {
+    "writer": "content-writer",
+    "copywriter": "content-writer",
+    "author": "content-writer",
+    "article-writer": "content-writer",
+    "blog-writer": "content-writer",
+    "tech-writer": "technical-writer",
+    "doc-writer": "technical-writer",
+    "docs": "technical-writer",
+    "documentation-writer": "technical-writer",
+    "backend": "backend-developer",
+    "be": "backend-developer",
+    "backend-dev": "backend-developer",
+    "frontend": "frontend-developer",
+    "fe": "frontend-developer",
+    "frontend-dev": "frontend-developer",
+    "ui-developer": "frontend-developer",
+    "mobile": "mobile-engineer",
+    "flutter": "mobile-engineer",
+    "react-native": "mobile-engineer",
+    "ecommerce": "ecommerce-engineer",
+    "ecom": "ecommerce-engineer",
+    "3d": "3d-graphics-engineer",
+    "r3f": "3d-graphics-engineer",
+    "threejs": "3d-graphics-engineer",
+    "devops": "devops-engineer",
+    "infra": "devops-engineer",
+    "infrastructure": "devops-engineer",
+    "sre": "sre",
+    "reliability": "sre",
+    "sysadmin": "system-engineer",
+    "system": "system-engineer",
+    "systems-engineer": "system-engineer",
+    "cloudflare": "cloudflare-engineer",
+    "cf": "cloudflare-engineer",
+    "workers": "cloudflare-engineer",
+    "aws": "aws-engineer",
+    "cloud": "aws-engineer",
+    "ai": "ai-systems-engineer",
+    "ml": "ai-systems-engineer",
+    "llm": "ai-systems-engineer",
+    "coordinator": "agent-coordinator",
+    "swarm-coordinator": "agent-coordinator",
+    "discovery": "agent-discovery-engineer",
+    "agent-discovery": "agent-discovery-engineer",
+    "designer": "ui-ux-designer",
+    "ui": "ui-ux-designer",
+    "ux": "ui-ux-designer",
+    "ui-ux": "ui-ux-designer",
+    "uiux": "ui-ux-designer",
+    "pm": "product-manager",
+    "prod-mgr": "product-manager",
+    "product-owner": "product-manager",
+    "po": "product-manager",
+    "pjm": "project-manager",
+    "proj-mgr": "project-manager",
+    "scrum-master": "project-manager",
+    "planner": "task-planner",
+    "task-scheduler": "task-planner",
+    "architect": "solution-architect",
+    "solution-arch": "solution-architect",
+    "solutions-architect": "solution-architect",
+    "tech-architect": "technical-architect",
+    "enterprise-architect": "technical-architect",
+    "lead": "technical-lead",
+    "tech-lead": "technical-lead",
+    "engineering-lead": "technical-lead",
+    "qa": "qa-engineer",
+    "tester": "qa-engineer",
+    "test-engineer": "qa-engineer",
+    "security": "security-engineer",
+    "sec": "security-engineer",
+    "appsec": "security-engineer",
+    "secops": "security-engineer",
+    "reviewer": "reviewer",
+    "code-reviewer": "reviewer",
+    "pr-reviewer": "reviewer",
+    "da": "data-analyst",
+    "data-analytics": "data-analyst",
+    "de": "data-engineer",
+    "data-eng": "data-engineer",
+    "ba": "business-analyst",
+    "business": "business-analyst",
+    "seo": "seo-analyst",
+    "seo-specialist": "seo-analyst",
+    "seo-expert": "seo-analyst",
+    "research": "researcher",
+    "deep-research": "researcher",
+    "accounting": "vietnam-accounting-specialist",
+    "accountant": "vietnam-accounting-specialist",
+    "ke-toan": "vietnam-accounting-specialist",
+    "vietnam-accounting": "vietnam-accounting-specialist",
+    "mmo": "mmo-engineer",
+    "affiliate": "mmo-engineer",
+    "growth": "mmo-engineer",
+    "teacher": "teacher",
+    "instructor": "teacher",
+    "educator": "teacher",
+    "mentor": "teacher"
+  },
+  "skill_aliases": {
+    "research_and_writing": [
+      "conduct-research",
+      "write-article"
+    ],
+    "research-and-writing": [
+      "conduct-research",
+      "write-article"
+    ],
+    "research_writing": [
+      "conduct-research",
+      "write-article"
+    ],
+    "research": [
+      "conduct-research"
+    ],
+    "conduct_research": [
+      "conduct-research"
+    ],
+    "deep_research": [
+      "conduct-research"
+    ],
+    "writing": [
+      "write-article"
+    ],
+    "write_article": [
+      "write-article"
+    ],
+    "write_article_vietnamese": [
+      "write-article"
+    ],
+    "docs": [
+      "write-documentation"
+    ],
+    "documentation": [
+      "write-documentation"
+    ],
+    "write_doc": [
+      "write-documentation"
+    ],
+    "write_docs": [
+      "write-documentation"
+    ],
+    "write_documentation": [
+      "write-documentation"
+    ],
+    "tech_radar": [
+      "write-tech-radar"
+    ],
+    "write_tech_radar": [
+      "write-tech-radar"
+    ],
+    "seo": [
+      "optimize-seo"
+    ],
+    "optimize_seo": [
+      "optimize-seo"
+    ],
+    "seo_optimization": [
+      "optimize-seo"
+    ],
+    "audit_content": [
+      "audit-content"
+    ],
+    "content_audit": [
+      "audit-content"
+    ],
+    "repurpose_content": [
+      "repurpose-content"
+    ],
+    "api": [
+      "add-api-endpoint"
+    ],
+    "add_api_endpoint": [
+      "add-api-endpoint"
+    ],
+    "create_api": [
+      "add-api-endpoint"
+    ],
+    "new_endpoint": [
+      "add-api-endpoint"
+    ],
+    "event_handler": [
+      "add-event-handler"
+    ],
+    "add_event_handler": [
+      "add-event-handler"
+    ],
+    "service_client": [
+      "add-service-client"
+    ],
+    "add_service_client": [
+      "add-service-client"
+    ],
+    "structured_outputs": [
+      "implement-structured-outputs"
+    ],
+    "implement_structured_outputs": [
+      "implement-structured-outputs"
+    ],
+    "mcp_server": [
+      "build-mcp-server"
+    ],
+    "build_mcp_server": [
+      "build-mcp-server"
+    ],
+    "scaffold_service": [
+      "scaffold-new-service"
+    ],
+    "scaffold_new_service": [
+      "scaffold-new-service"
+    ],
+    "migration": [
+      "create-migration"
+    ],
+    "create_migration": [
+      "create-migration"
+    ],
+    "database": [
+      "database-maintenance"
+    ],
+    "db_maintenance": [
+      "database-maintenance"
+    ],
+    "data_pipeline": [
+      "build-data-pipeline"
+    ],
+    "build_data_pipeline": [
+      "build-data-pipeline"
+    ],
+    "ui_component": [
+      "add-ui-component"
+    ],
+    "add_ui_component": [
+      "add-ui-component"
+    ],
+    "page_route": [
+      "add-page-route"
+    ],
+    "add_page_route": [
+      "add-page-route"
+    ],
+    "design_system": [
+      "setup-design-system"
+    ],
+    "setup_design_system": [
+      "setup-design-system"
+    ],
+    "visual_regression": [
+      "setup-visual-regression"
+    ],
+    "setup_visual_regression": [
+      "setup-visual-regression"
+    ],
+    "frontend_testing": [
+      "frontend-testing"
+    ],
+    "tests": [
+      "write-tests"
+    ],
+    "write_tests": [
+      "write-tests"
+    ],
+    "unit_tests": [
+      "write-tests"
+    ],
+    "e2e_tests": [
+      "write-tests"
+    ],
+    "test_report": [
+      "write-tests"
+    ],
+    "security": [
+      "security-audit"
+    ],
+    "security_audit": [
+      "security-audit"
+    ],
+    "secrets": [
+      "manage-secrets"
+    ],
+    "manage_secrets": [
+      "manage-secrets"
+    ],
+    "supply_chain": [
+      "supply-chain-security"
+    ],
+    "deploy": [
+      "setup-deployment"
+    ],
+    "deployment": [
+      "setup-deployment"
+    ],
+    "setup_deployment": [
+      "setup-deployment"
+    ],
+    "wrangler": [
+      "wrangler"
+    ],
+    "workers_best_practices": [
+      "workers-best-practices"
+    ],
+    "aws_infra": [
+      "aws-infrastructure"
+    ],
+    "aws_infrastructure": [
+      "aws-infrastructure"
+    ],
+    "perf": [
+      "performance-profiling"
+    ],
+    "performance": [
+      "performance-profiling"
+    ],
+    "performance_profiling": [
+      "performance-profiling"
+    ],
+    "telemetry": [
+      "add-telemetry-instrumentation"
+    ],
+    "instrumentation": [
+      "add-telemetry-instrumentation"
+    ],
+    "a2a": [
+      "agent-a2a-protocol"
+    ],
+    "a2a_protocol": [
+      "agent-a2a-protocol"
+    ],
+    "delegation": [
+      "agent-delegation"
+    ],
+    "agent_delegation": [
+      "agent-delegation"
+    ],
+    "orchestration": [
+      "agent-graph-orchestration"
+    ],
+    "graph_orchestration": [
+      "agent-graph-orchestration"
+    ],
+    "handoff": [
+      "agent-handoff"
+    ],
+    "model_routing": [
+      "agent-model-routing"
+    ],
+    "quality_gate": [
+      "agent-quality-gate"
+    ],
+    "semantic_memory": [
+      "agent-semantic-memory"
+    ],
+    "tool_orchestration": [
+      "agent-tool-orchestration"
+    ],
+    "accounting": [
+      "manage-vietnam-accounting"
+    ],
+    "vietnam_accounting": [
+      "manage-vietnam-accounting"
+    ],
+    "product_brief": [
+      "write-product-brief"
+    ],
+    "write_product_brief": [
+      "write-product-brief"
+    ],
+    "business_requirements": [
+      "analyze-business-requirements"
+    ],
+    "analyze_business_requirements": [
+      "analyze-business-requirements"
+    ],
+    "analyze_data": [
+      "analyze-data"
+    ]
+  },
+  "roles": {
+    "3d-graphics-engineer": {
+      "name": "3d-graphics-engineer",
+      "title": "3D Graphics Engineer",
+      "description": "- 3D Graphics Plan",
+      "file": "core/roles/3d-graphics-engineer.md",
+      "skills": [
+        "debug-3d-scene",
+        "integrate-r3f-three-legacy",
+        "optimize-3d-assets",
+        "navigate-service",
+        "troubleshoot-service",
+        "commit-code",
+        "frontend-testing",
+        "write-tests",
+        "review-code",
+        "performance-profiling",
+        "agent-delegation"
+      ],
+      "irreversible_actions": []
+    },
+    "agent-coordinator": {
+      "name": "agent-coordinator",
+      "title": "Agent Coordinator",
+      "description": "- Agent Coordination",
+      "file": "core/roles/agent-coordinator.md",
+      "skills": [
+        "agent-a2a-protocol",
+        "agent-delegation",
+        "agent-graph-orchestration",
+        "agent-tool-orchestration",
+        "agent-context-management",
+        "agent-quality-gate",
+        "agent-handoff",
+        "agent-panel-meeting",
+        "agent-memory-compaction",
+        "agent-model-routing",
+        "agent-observability",
+        "agent-prompt-lifecycle",
+        "agent-semantic-memory",
+        "navigate-service",
+        "troubleshoot-service",
+        "review-code",
+        "review-service",
+        "write-documentation",
+        "incident-report"
+      ],
+      "irreversible_actions": []
+    },
+    "agent-discovery-engineer": {
+      "name": "agent-discovery-engineer",
+      "title": "Agent Discovery Engineer",
+      "description": "## Context",
+      "file": "core/roles/agent-discovery-engineer.md",
+      "skills": [
+        "manage-auth-md",
+        "configure-oauth-metadata",
+        "debug-identity-provider",
+        "configure-mcp",
+        "configure-agent-headers",
+        "manage-api-catalog",
+        "configure-agent-skills",
+        "manage-agent-identity",
+        "configure-agent-commerce",
+        "configure-llms-txt",
+        "commit-code",
+        "agent-delegation"
+      ],
+      "irreversible_actions": []
+    },
+    "ai-systems-engineer": {
+      "name": "ai-systems-engineer",
+      "title": "AI Systems Engineer",
+      "description": "OpenAI -> local Ollama/vLLM) to ensure 99.99% availability",
+      "file": "core/roles/ai-systems-engineer.md",
+      "skills": [
+        "setup-llm-gateway",
+        "setup-gpu-finops",
+        "implement-structured-outputs",
+        "build-mcp-server",
+        "system-design",
+        "performance-profiling",
+        "add-telemetry-instrumentation",
+        "debug-runtime-platform",
+        "security-audit",
+        "ai-risk-assessment",
+        "conduct-research",
+        "agent-observability",
+        "agent-delegation",
+        "configure-mcp",
+        "write-tests"
+      ],
+      "irreversible_actions": []
+    },
+    "aws-engineer": {
+      "name": "aws-engineer",
+      "title": "AWS Engineer",
+      "description": ".bedrock-runtime`, `com.amazonaws.<region>.bedrock`); direct public internet access to Bedrock is a data exfiltration risk for enterprise workloads",
+      "file": "core/roles/aws-engineer.md",
+      "skills": [
+        "aws-infrastructure",
+        "setup-deployment",
+        "add-telemetry-instrumentation",
+        "system-design",
+        "security-audit",
+        "manage-secrets",
+        "debug-runtime-platform",
+        "navigate-service",
+        "conduct-research",
+        "agent-delegation",
+        "database-maintenance",
+        "incident-report"
+      ],
+      "irreversible_actions": []
+    },
+    "backend-developer": {
+      "name": "backend-developer",
+      "title": "Backend Developer",
+      "description": "P95 latency), and traces from new deployments (canary window)",
+      "file": "core/roles/backend-developer.md",
+      "skills": [
+        "add-api-endpoint",
+        "add-event-handler",
+        "add-service-client",
+        "create-migration",
+        "write-tests",
+        "commit-code",
+        "scaffold-new-service",
+        "navigate-service",
+        "build-mcp-server",
+        "implement-structured-outputs",
+        "troubleshoot-service",
+        "performance-profiling",
+        "review-code",
+        "agent-delegation",
+        "configure-mcp",
+        "add-telemetry-instrumentation",
+        "setup-llm-gateway"
+      ],
+      "irreversible_actions": []
+    },
+    "business-analyst": {
+      "name": "business-analyst",
+      "title": "Business Analyst",
+      "description": "- Business Analysis Brief",
+      "file": "core/roles/business-analyst.md",
+      "skills": [
+        "analyze-business-requirements",
+        "ai-risk-assessment",
+        "agent-delegation",
+        "meeting-review",
+        "navigate-service",
+        "write-documentation",
+        "review-service",
+        "conduct-research"
+      ],
+      "irreversible_actions": []
+    },
+    "cloudflare-engineer": {
+      "name": "cloudflare-engineer",
+      "title": "Cloudflare Engineer",
+      "description": "— Edge Deployment",
+      "file": "core/roles/cloudflare-engineer.md",
+      "skills": [
+        "wrangler",
+        "durable-objects",
+        "turnstile-spin",
+        "workers-best-practices",
+        "sandbox-sdk",
+        "configure-agent-headers",
+        "manage-api-catalog",
+        "cloudflare-email-service",
+        "debug-workers-edge",
+        "web-perf",
+        "setup-deployment",
+        "debug-runtime-platform",
+        "supply-chain-security",
+        "manage-secrets",
+        "navigate-service",
+        "commit-code",
+        "troubleshoot-service",
+        "agent-delegation"
+      ],
+      "irreversible_actions": []
+    },
+    "content-manager": {
+      "name": "content-manager",
+      "title": "Content Manager",
+      "description": "25% MoM decay in search impressions or LLM citations must immediately enter the `audit-content` pipeline.",
+      "file": "core/roles/content-manager.md",
+      "skills": [
+        "audit-content",
+        "repurpose-content",
+        "optimize-seo",
+        "write-article",
+        "conduct-research",
+        "analyze-data",
+        "write-product-brief",
+        "analyze-business-requirements",
+        "write-documentation",
+        "agent-delegation",
+        "meeting-review",
+        "configure-llms-txt"
+      ],
+      "irreversible_actions": []
+    },
+    "content-writer": {
+      "name": "content-writer",
+      "title": "Content Writer",
+      "description": "**Overlay-scoped skill**: `write-tech-radar` is only relevant under `overlays/vesviet-content` (Vesviet radar subtree). Activate it only when that overlay is active — do not load it for lease-content or seo-publishing workflows.",
+      "file": "core/roles/content-writer.md",
+      "skills": [
+        "write-article",
+        "repurpose-content",
+        "audit-content",
+        "optimize-seo",
+        "conduct-research",
+        "write-documentation",
+        "write-product-brief",
+        "analyze-business-requirements",
+        "meeting-review",
+        "agent-delegation"
+      ],
+      "irreversible_actions": []
+    },
+    "data-analyst": {
+      "name": "data-analyst",
+      "title": "Data Analyst",
+      "description": "— Data Analysis Report",
+      "file": "core/roles/data-analyst.md",
+      "skills": [
+        "analyze-data",
+        "analyze-business-requirements",
+        "build-data-pipeline",
+        "database-maintenance",
+        "conduct-research",
+        "write-documentation",
+        "agent-delegation"
+      ],
+      "irreversible_actions": []
+    },
+    "data-engineer": {
+      "name": "data-engineer",
+      "title": "Data Engineer",
+      "description": "— Data Engineering Plan",
+      "file": "core/roles/data-engineer.md",
+      "skills": [
+        "build-data-pipeline",
+        "database-maintenance",
+        "create-migration",
+        "analyze-data",
+        "review-code",
+        "write-documentation",
+        "security-audit",
+        "add-telemetry-instrumentation",
+        "agent-delegation",
+        "configure-mcp"
+      ],
+      "irreversible_actions": []
+    },
+    "devops-engineer": {
+      "name": "devops-engineer",
+      "title": "DevOps Engineer",
+      "description": "- Delivery Plan",
+      "file": "core/roles/devops-engineer.md",
+      "skills": [
+        "setup-deployment",
+        "debug-runtime-platform",
+        "add-telemetry-instrumentation",
+        "manage-secrets",
+        "supply-chain-security",
+        "navigate-service",
+        "commit-code",
+        "troubleshoot-service",
+        "database-maintenance",
+        "security-audit",
+        "agent-delegation",
+        "sandbox-sdk",
+        "configure-mcp",
+        "incident-report"
+      ],
+      "irreversible_actions": []
+    },
+    "ecommerce-engineer": {
+      "name": "ecommerce-engineer",
+      "title": "Ecommerce Engineer",
+      "description": "— E-commerce Engineering Plan",
+      "file": "core/roles/ecommerce-engineer.md",
+      "skills": [
+        "integrate-payment-gateway",
+        "handle-checkout-flow",
+        "manage-product-catalog",
+        "manage-order-fulfillment",
+        "configure-agent-commerce",
+        "add-api-endpoint",
+        "add-event-handler",
+        "security-audit",
+        "manage-secrets",
+        "write-tests",
+        "database-maintenance",
+        "review-code",
+        "agent-delegation",
+        "setup-tracking-system",
+        "configure-agent-headers",
+        "performance-profiling"
+      ],
+      "irreversible_actions": []
+    },
+    "frontend-developer": {
+      "name": "frontend-developer",
+      "title": "Frontend Developer",
+      "description": "` component with the EU-approved AI icon for AI-generated content labels; use this component consistently across all AI-powered features — do not recreate disclosure UI per feature",
+      "file": "core/roles/frontend-developer.md",
+      "skills": [
+        "add-ui-component",
+        "add-page-route",
+        "integrate-api-client",
+        "frontend-testing",
+        "commit-code",
+        "setup-design-system",
+        "navigate-service",
+        "implement-webmcp",
+        "setup-visual-regression",
+        "accessibility-review",
+        "performance-profiling",
+        "write-tests",
+        "troubleshoot-service",
+        "review-code",
+        "agent-delegation",
+        "configure-mcp",
+        "web-perf",
+        "add-telemetry-instrumentation"
+      ],
+      "irreversible_actions": []
+    },
+    "mmo-engineer": {
+      "name": "mmo-engineer",
+      "title": "MMO Engineer",
+      "description": "— MMO Engineering Plan",
+      "file": "core/roles/mmo-engineer.md",
+      "skills": [
+        "deploy-mmo-infrastructure",
+        "setup-tracking-system",
+        "create-automation-script",
+        "manage-mmo-assets",
+        "deploy-proxyware-fleet",
+        "generate-mmo-content",
+        "analyze-campaign-roi",
+        "write-tests",
+        "review-code",
+        "analyze-data"
+      ],
+      "irreversible_actions": []
+    },
+    "mobile-engineer": {
+      "name": "mobile-engineer",
+      "title": "Mobile Engineer",
+      "description": "20%); never interrupt user sessions for FL computation",
+      "file": "core/roles/mobile-engineer.md",
+      "skills": [
+        "add-ui-component",
+        "integrate-api-client",
+        "write-tests",
+        "frontend-testing",
+        "commit-code",
+        "navigate-service",
+        "accessibility-review",
+        "performance-profiling",
+        "review-code",
+        "troubleshoot-service",
+        "agent-delegation",
+        "manage-secrets"
+      ],
+      "irreversible_actions": []
+    },
+    "product-manager": {
+      "name": "product-manager",
+      "title": "Product Manager",
+      "description": "*\"Given [insight or evidence], changing [X] will result in [expected measurable outcome] for [user segment].\"*",
+      "file": "core/roles/product-manager.md",
+      "skills": [
+        "write-product-brief",
+        "meeting-review",
+        "analyze-business-requirements",
+        "conduct-research",
+        "ai-risk-assessment",
+        "agent-delegation",
+        "agent-prompt-lifecycle",
+        "add-telemetry-instrumentation",
+        "configure-agent-commerce",
+        "configure-agent-skills",
+        "navigate-service",
+        "write-tech-radar",
+        "review-service"
+      ],
+      "irreversible_actions": []
+    },
+    "project-manager": {
+      "name": "project-manager",
+      "title": "Project Manager",
+      "description": "7%) and duplication bloat, enforcing Specification-Driven Development (SDD) contracts",
+      "file": "core/roles/project-manager.md",
+      "skills": [
+        "meeting-review",
+        "agent-delegation",
+        "agent-graph-orchestration",
+        "ai-risk-assessment",
+        "analyze-data",
+        "plan-technical-delivery",
+        "setup-gpu-finops",
+        "agent-observability",
+        "incident-report",
+        "navigate-service",
+        "review-service"
+      ],
+      "irreversible_actions": []
+    },
+    "qa-engineer": {
+      "name": "qa-engineer",
+      "title": "QA Engineer",
+      "description": "integration -> contract -> end-to-end -> exploratory charters (right level for risk)",
+      "file": "core/roles/qa-engineer.md",
+      "skills": [
+        "write-tests",
+        "frontend-testing",
+        "agent-quality-gate",
+        "accessibility-review",
+        "review-service",
+        "agent-observability",
+        "navigate-service",
+        "review-code",
+        "troubleshoot-service",
+        "performance-profiling"
+      ],
+      "irreversible_actions": []
+    },
+    "researcher": {
+      "name": "researcher",
+      "title": "Researcher",
+      "description": "— Research Brief",
+      "file": "core/roles/researcher.md",
+      "skills": [
+        "conduct-research",
+        "analyze-business-requirements",
+        "agent-delegation",
+        "agent-context-management",
+        "agent-semantic-memory",
+        "agent-memory-compaction",
+        "agent-tool-orchestration",
+        "agent-quality-gate",
+        "write-documentation",
+        "optimize-seo"
+      ],
+      "irreversible_actions": []
+    },
+    "reviewer": {
+      "name": "reviewer",
+      "title": "Reviewer",
+      "description": "65% acceptance rate, codebase-aware model, full context window | Focused review; verify architectural assumptions and cross-service boundaries |",
+      "file": "core/roles/reviewer.md",
+      "skills": [
+        "review-code",
+        "review-service",
+        "design-review",
+        "accessibility-review",
+        "navigate-service",
+        "security-audit",
+        "performance-profiling",
+        "meeting-review"
+      ],
+      "irreversible_actions": []
+    },
+    "security-engineer": {
+      "name": "security-engineer",
+      "title": "Security Engineer",
+      "description": "- Security Review",
+      "file": "core/roles/security-engineer.md",
+      "skills": [
+        "security-audit",
+        "manage-secrets",
+        "supply-chain-security",
+        "ai-risk-assessment",
+        "manage-agent-identity",
+        "conduct-research",
+        "review-code",
+        "navigate-service",
+        "review-service",
+        "meeting-review",
+        "agent-delegation",
+        "agent-observability",
+        "add-telemetry-instrumentation"
+      ],
+      "irreversible_actions": []
+    },
+    "seo-analyst": {
+      "name": "seo-analyst",
+      "title": "SEO Analyst",
+      "description": "— SEO Brief / Audit",
+      "file": "core/roles/seo-analyst.md",
+      "skills": [
+        "optimize-seo",
+        "conduct-research",
+        "analyze-business-requirements",
+        "analyze-data",
+        "write-documentation",
+        "configure-llms-txt",
+        "agent-delegation",
+        "configure-agent-headers",
+        "manage-api-catalog"
+      ],
+      "irreversible_actions": []
+    },
+    "solution-architect": {
+      "name": "solution-architect",
+      "title": "Solution Architect",
+      "description": "— Solution Brief",
+      "file": "core/roles/solution-architect.md",
+      "skills": [
+        "write-tech-radar",
+        "meeting-review",
+        "conduct-research",
+        "analyze-business-requirements",
+        "write-product-brief",
+        "navigate-service",
+        "review-service",
+        "write-documentation",
+        "agent-delegation",
+        "security-audit",
+        "ai-risk-assessment",
+        "agent-model-routing"
+      ],
+      "irreversible_actions": []
+    },
+    "sre": {
+      "name": "sre",
+      "title": "Site Reliability Engineer",
+      "description": "3s for 5 minutes |",
+      "file": "core/roles/sre.md",
+      "skills": [
+        "debug-runtime-platform",
+        "troubleshoot-service",
+        "add-telemetry-instrumentation",
+        "performance-profiling",
+        "incident-report",
+        "agent-observability",
+        "agent-semantic-memory",
+        "navigate-service",
+        "database-maintenance",
+        "manage-secrets",
+        "setup-deployment"
+      ],
+      "irreversible_actions": []
+    },
+    "system-engineer": {
+      "name": "system-engineer",
+      "title": "System Engineer",
+      "description": "— System Design Brief",
+      "file": "core/roles/system-engineer.md",
+      "skills": [
+        "system-design",
+        "performance-profiling",
+        "debug-runtime-platform",
+        "add-telemetry-instrumentation",
+        "setup-gpu-finops",
+        "setup-llm-gateway",
+        "manage-agent-identity",
+        "supply-chain-security",
+        "plan-technical-delivery",
+        "troubleshoot-service",
+        "navigate-service",
+        "setup-deployment",
+        "security-audit",
+        "database-maintenance",
+        "conduct-research",
+        "agent-observability",
+        "agent-delegation",
+        "aws-infrastructure",
+        "durable-objects",
+        "ai-risk-assessment"
+      ],
+      "irreversible_actions": []
+    },
+    "task-planner": {
+      "name": "task-planner",
+      "title": "Task Planner",
+      "description": "— Execution Plan",
+      "file": "core/roles/task-planner.md",
+      "skills": [
+        "design-ux-flow",
+        "meeting-review",
+        "write-product-brief",
+        "analyze-business-requirements",
+        "navigate-service"
+      ],
+      "irreversible_actions": []
+    },
+    "teacher": {
+      "name": "teacher",
+      "title": "Teacher",
+      "description": "— Learning Session & Evaluation",
+      "file": "core/roles/teacher.md",
+      "skills": [
+        "design-learning-plan",
+        "create-exercises",
+        "grade-and-review",
+        "agent-semantic-memory",
+        "conduct-research",
+        "write-documentation",
+        "write-article",
+        "meeting-review",
+        "agent-delegation"
+      ],
+      "irreversible_actions": []
+    },
+    "technical-architect": {
+      "name": "technical-architect",
+      "title": "Technical Architect",
+      "description": "- Architecture Brief",
+      "file": "core/roles/technical-architect.md",
+      "skills": [
+        "system-design",
+        "agent-panel-meeting",
+        "meeting-review",
+        "write-tech-radar",
+        "ai-risk-assessment",
+        "review-service",
+        "navigate-service",
+        "conduct-research",
+        "scaffold-new-service",
+        "review-code",
+        "security-audit",
+        "supply-chain-security",
+        "setup-deployment",
+        "agent-delegation",
+        "write-documentation"
+      ],
+      "irreversible_actions": []
+    },
+    "technical-lead": {
+      "name": "technical-lead",
+      "title": "Technical Lead",
+      "description": "- Technical Lead Plan",
+      "file": "core/roles/technical-lead.md",
+      "skills": [
+        "plan-technical-delivery",
+        "review-code",
+        "meeting-review",
+        "agent-quality-gate",
+        "agent-prompt-lifecycle",
+        "ai-risk-assessment",
+        "add-telemetry-instrumentation",
+        "review-service",
+        "navigate-service",
+        "scaffold-new-service",
+        "performance-profiling",
+        "agent-delegation",
+        "write-tests",
+        "commit-code",
+        "create-migration",
+        "troubleshoot-service",
+        "agent-observability",
+        "security-audit",
+        "supply-chain-security",
+        "agent-graph-orchestration",
+        "agent-model-routing"
+      ],
+      "irreversible_actions": []
+    },
+    "technical-writer": {
+      "name": "technical-writer",
+      "title": "Technical Writer",
+      "description": "- Documentation Plan",
+      "file": "core/roles/technical-writer.md",
+      "skills": [
+        "write-documentation",
+        "release-notes",
+        "configure-llms-txt",
+        "write-tech-radar",
+        "agent-delegation",
+        "navigate-service",
+        "meeting-review",
+        "review-service",
+        "manage-api-catalog",
+        "configure-mcp",
+        "write-article",
+        "accessibility-review",
+        "ai-risk-assessment"
+      ],
+      "irreversible_actions": []
+    },
+    "ui-ux-designer": {
+      "name": "ui-ux-designer",
+      "title": "UI/UX Designer",
+      "description": "- UX/UI Brief",
+      "file": "core/roles/ui-ux-designer.md",
+      "skills": [
+        "design-ux-flow",
+        "design-review",
+        "meeting-review",
+        "navigate-service",
+        "accessibility-review",
+        "analyze-business-requirements",
+        "write-product-brief",
+        "write-documentation",
+        "agent-delegation"
+      ],
+      "irreversible_actions": []
+    },
+    "vietnam-accounting-specialist": {
+      "name": "vietnam-accounting-specialist",
+      "title": "Vietnam Accounting Specialist",
+      "description": "- Vietnam Accounting Review",
+      "file": "core/roles/vietnam-accounting-specialist.md",
+      "skills": [
+        "manage-vietnam-accounting",
+        "analyze-business-requirements",
+        "analyze-data",
+        "conduct-research",
+        "security-audit",
+        "write-documentation",
+        "agent-delegation"
+      ],
+      "irreversible_actions": []
+    }
+  },
+  "skills": {
+    "agent-a2a-protocol": {
+      "name": "agent-a2a-protocol",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-a2a-protocol/SKILL.md",
+      "description": "Implement the full A2A 1.0 task lifecycle including Agent Card discovery, JSON-RPC invoke/stream, task get/list/cancel, SSE progress events, and Antigravity-compatible handoffs. Use when integrating multi-agent systems, exposing agent services, or operating as Antigravity with structured agent-to-agent communication."
+    },
+    "agent-context-management": {
+      "name": "agent-context-management",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-context-management/SKILL.md",
+      "description": "Manage working context across long or multi-step agent tasks by tracking user intent, current phase, active owner, repo rules, explored evidence, assumptions, and remaining work. Use when a task spans many files, resumes after interruption, or needs reliable bug or feature control across phases."
+    },
+    "agent-delegation": {
+      "name": "agent-delegation",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-delegation/SKILL.md",
+      "description": "Delegate scoped sub-tasks from a supervisor agent to specialist worker agents using structured A2A task contracts, validate returned artifacts against output schemas, and handle delegation failures. Use when a task exceeds one agent's role boundary, requires parallel specialist work, or benefits from isolated context to reduce hallucination risk."
+    },
+    "agent-graph-orchestration": {
+      "name": "agent-graph-orchestration",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-graph-orchestration/SKILL.md",
+      "description": "Model multi-phase delivery as a directed graph with parallel branches, phase gates, and A2A delegations per node. Use when coordinating bugs or features across multiple specialist roles, parallel validation tracks, or merge points that require evidence before advancing."
+    },
+    "agent-handoff": {
+      "name": "agent-handoff",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-handoff/SKILL.md",
+      "description": "Produce concise agent handoffs, status updates, and completion summaries that preserve phase state, decisions, changed files, validation evidence, blockers, and next actions. Use when pausing, resuming, handing work to another session, or reporting completed engineering work across bug or feature control flows."
+    },
+    "agent-memory-compaction": {
+      "name": "agent-memory-compaction",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-memory-compaction/SKILL.md",
+      "description": "Compact long-running agent conversation context into a minimal working state by preserving goals, constraints, current phase, active owner, decisions, changed files, validation, blockers, and next actions while dropping stale detail. Use when a chat grows long, context becomes noisy, or work needs a clean resume checkpoint during bug or feature control work."
+    },
+    "agent-model-routing": {
+      "name": "agent-model-routing",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-model-routing/SKILL.md",
+      "description": "Select the most cost-effective model for each task or sub-task based on complexity, risk tier, and budget constraints. Use when orchestrating multi-step workflows, delegating tasks, or when token costs need active management."
+    },
+    "agent-observability": {
+      "name": "agent-observability",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-observability/SKILL.md",
+      "description": "Trace agent reasoning chains, tool call sequences, context injections, and token costs to enable debugging, cost attribution, and continuous evaluation improvement. Use when deploying agents to production, diagnosing unexpected outputs, tracking costs across tenants, or building evaluation datasets from real-world failures."
+    },
+    "agent-panel-meeting": {
+      "name": "agent-panel-meeting",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-panel-meeting/SKILL.md",
+      "description": "Orchestrate a 6-round, multi-role cross-examination panel meeting to debate architecture, code, or features and produce a final decision-ready JSON contract with trade-offs and residual risks. Use when rigorous cross-functional alignment is required before deciding, building, or shipping."
+    },
+    "agent-prompt-lifecycle": {
+      "name": "agent-prompt-lifecycle",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-prompt-lifecycle/SKILL.md",
+      "description": "Manage prompt assets through their full lifecycle including versioning, evaluation against golden datasets, drift detection, and controlled promotion across environments. Use when creating, updating, reviewing, or auditing prompt definitions in roles, skills, workflows, or system instructions to ensure measurable quality and safe deployment."
+    },
+    "agent-quality-gate": {
+      "name": "agent-quality-gate",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-quality-gate/SKILL.md",
+      "description": "Run and interpret repository quality gates for agent-delivered changes, including validators, lint, tests, build checks, diff sanity checks, and phase-exit evidence. Use when reporting completion, advancing a bug or feature to the next phase, or declaring a pack, role, workflow, or code change ready."
+    },
+    "agent-semantic-memory": {
+      "name": "agent-semantic-memory",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-semantic-memory/SKILL.md",
+      "description": "Read from and write to persistent memory stores so agents retain codebase patterns, past fixes, and architectural facts across conversations. Use when starting work in a known repo, after fixing a non-obvious bug, after discovering a codebase convention, or when the same mistake has occurred more than once."
+    },
+    "agent-tool-orchestration": {
+      "name": "agent-tool-orchestration",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/agent-tool-orchestration/SKILL.md",
+      "description": "Plan and sequence agent tool use by choosing the smallest reliable tool, controlling work phase by phase, parallelizing independent reads, avoiding unsafe shell operations, and validating results. Use when a task requires multiple searches, file edits, commands, or external checks across a bug, feature, review, or debugging flow."
+    },
+    "configure-agent-commerce": {
+      "name": "configure-agent-commerce",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/configure-agent-commerce/SKILL.md",
+      "description": "Implements agentic commerce standards — x402 and Stripe's Machine Payments Protocol (MPP) for HTTP 402 machine payments, the Universal Commerce Protocol (UCP) for agent checkout, the Agentic Commerce Protocol (ACP), and Google's Agent Payments Protocol (AP2) for delegated purchase authorization — to make a service billable and discoverable by AI agents. Use when adding agent-to-agent payment, delegated purchase authorization, or agentic commerce directory registration to a web service."
+    },
+    "configure-agent-headers": {
+      "name": "configure-agent-headers",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/configure-agent-headers/SKILL.md",
+      "description": "Exposes well-known agentic endpoints via RFC 8288 HTTP Link headers and optional DNS-AID SVCB records, making a web service natively discoverable by AI agents without requiring dedicated well-known endpoint scans. Use when declaring agent-readiness (MCP server, API catalog, OAuth metadata, agent skills) on a Cloudflare Pages or Workers site without changing application routing."
+    },
+    "configure-agent-skills": {
+      "name": "configure-agent-skills",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/configure-agent-skills/SKILL.md",
+      "description": "Creates and manages the agentskills.io manifest index at `/.well-known/agent-skills/index.json`, exposing structured API capabilities for agent orchestrators and capability-routing infrastructure to auto-discover and invoke. Use when registering, updating, or validating the skill manifest after adding or deprecating API endpoints on a service."
+    },
+    "configure-mcp": {
+      "name": "configure-mcp",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/configure-mcp/SKILL.md",
+      "description": "Sets up the full MCP presence for a web service — experimental Server Card discovery, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures."
+    },
+    "configure-oauth-metadata": {
+      "name": "configure-oauth-metadata",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/configure-oauth-metadata/SKILL.md",
+      "description": "Configures well-known OAuth 2.0 and OpenID Connect discovery endpoints (`oauth-protected-resource`, `oauth-authorization-server`, `openid-configuration`) including the `agent_auth` block required for agentic registration flows. Use when setting up or correcting OAuth metadata for AI agent authentication, WorkOS agentic registration, or any service that exposes agent-accessible authorization endpoints."
+    },
+    "debug-identity-provider": {
+      "name": "debug-identity-provider",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/debug-identity-provider/SKILL.md",
+      "description": "Diagnoses and resolves failures reported by WorkOS Agentic Registration scanners, `isitagentready.com`, and SSO/Directory Sync validators — including DNS errors, malformed `agent_auth` schemas, incorrect `auth.md` markers, and non-resolving endpoint URLs. Use when a WorkOS or agentic readiness scanner rejects metadata, returns a 530 error, or reports specific rule violations in OAuth or auth.md configuration."
+    },
+    "manage-agent-identity": {
+      "name": "manage-agent-identity",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/manage-agent-identity/SKILL.md",
+      "description": "Manages the full lifecycle of Non-Human Identities (NHI) for AI agent sessions — including provisioning scoped credentials, enforcing just-in-time access, behavioral baseline monitoring, and secure offboarding. Use when onboarding a new agent role to production, rotating agent credentials, auditing active agent sessions, or responding to anomalous agent behavior."
+    },
+    "manage-api-catalog": {
+      "name": "manage-api-catalog",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/manage-api-catalog/SKILL.md",
+      "description": "Use when publishing and maintaining RFC 9727 API Catalog registries for automated API discovery by agents, developer tools, and client SDKs."
+    },
+    "manage-auth-md": {
+      "name": "manage-auth-md",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/manage-auth-md/SKILL.md",
+      "description": "Use when creating, updating, or auditing the /auth.md file at the repository or domain root to ensure agentic registration discovery compliance with WorkOS and isitagentready.com standards."
+    },
+    "add-api-endpoint": {
+      "name": "add-api-endpoint",
+      "category": "backend",
+      "type": "core",
+      "file": "core/skills/backend/add-api-endpoint/SKILL.md",
+      "description": "Add or modify a service endpoint by updating the local API contract, boundary validation, handler flow, and downstream wiring. Use when creating or evolving HTTP, RPC, or similar service entrypoints."
+    },
+    "add-event-handler": {
+      "name": "add-event-handler",
+      "category": "backend",
+      "type": "core",
+      "file": "core/skills/backend/add-event-handler/SKILL.md",
+      "description": "Add or modify event publishers, consumers, or subscriber flows by following the repo's event contract, delivery semantics, idempotency rules, and rollout constraints. Use for event-driven service work."
+    },
+    "add-service-client": {
+      "name": "add-service-client",
+      "category": "backend",
+      "type": "core",
+      "file": "core/skills/backend/add-service-client/SKILL.md",
+      "description": "Add or modify a service-to-service client or downstream integration by following the repo's transport, timeout, retry, auth, and error-mapping patterns. Use when one service needs to call another system."
+    },
+    "build-mcp-server": {
+      "name": "build-mcp-server",
+      "category": "backend",
+      "type": "core",
+      "file": "core/skills/backend/build-mcp-server/SKILL.md",
+      "description": "Scaffolds and implements a new Model Context Protocol (MCP) server. Use when exposing new backend tools or resources to AI agents."
+    },
+    "implement-structured-outputs": {
+      "name": "implement-structured-outputs",
+      "category": "backend",
+      "type": "core",
+      "file": "core/skills/backend/implement-structured-outputs/SKILL.md",
+      "description": "Implements strict constrained decoding and validation for LLM responses. Use when enforcing JSON Schema guarantees on model generations, eliminating regex parsing, or integrating structured LLM outputs into backend services."
+    },
+    "scaffold-new-service": {
+      "name": "scaffold-new-service",
+      "category": "backend",
+      "type": "core",
+      "file": "core/skills/backend/scaffold-new-service/SKILL.md",
+      "description": "Bootstrap a new service or bounded component from repo-local templates and conventions. Use when creating a new service, worker, or deployable unit without assuming a fixed framework or folder layout."
+    },
+    "handle-checkout-flow": {
+      "name": "handle-checkout-flow",
+      "category": "commerce",
+      "type": "core",
+      "file": "core/skills/commerce/handle-checkout-flow/SKILL.md",
+      "description": "Design and implement the end-to-end checkout flow including cart management, tax and shipping calculation, discount/coupon application, and order confirmation. Use when building or fixing any step in the purchase funnel from cart to payment confirmation."
+    },
+    "integrate-payment-gateway": {
+      "name": "integrate-payment-gateway",
+      "category": "commerce",
+      "type": "core",
+      "file": "core/skills/commerce/integrate-payment-gateway/SKILL.md",
+      "description": "Integrate or extend a payment gateway (Stripe, VNPay, PayPal, Momo, etc.) into an e-commerce application. Use when adding, replacing, or auditing a payment provider's checkout, refund, or webhook flow."
+    },
+    "manage-order-fulfillment": {
+      "name": "manage-order-fulfillment",
+      "category": "commerce",
+      "type": "core",
+      "file": "core/skills/commerce/manage-order-fulfillment/SKILL.md",
+      "description": "Implement and manage the post-purchase order lifecycle including order status management, packing, shipping label generation, carrier tracking, and refund or return processing. Use when building or maintaining fulfillment workflows after a successful payment."
+    },
+    "manage-product-catalog": {
+      "name": "manage-product-catalog",
+      "category": "commerce",
+      "type": "core",
+      "file": "core/skills/commerce/manage-product-catalog/SKILL.md",
+      "description": "Build or maintain a product catalog including product creation, variant management (size, color, SKU), pricing, and inventory synchronization across channels. Use when adding, updating, or structuring product data in an e-commerce system."
+    },
+    "audit-content": {
+      "name": "audit-content",
+      "category": "content",
+      "type": "core",
+      "file": "core/skills/content/audit-content/SKILL.md",
+      "description": "Run a structured content refresh cycle on an existing published piece — audit current performance and health, read the full content, research the latest standards and facts, update the content, then re-audit for SEO/GEO/AEO readiness. Use when refreshing stale or declining content, correcting outdated facts, closing information-gain gaps against newer competitors, or bringing a legacy article up to current E-E-A-T and AI-search standards without rewriting from scratch."
+    },
+    "optimize-seo": {
+      "name": "optimize-seo",
+      "category": "content",
+      "type": "core",
+      "file": "core/skills/content/optimize-seo/SKILL.md",
+      "description": "Research search intent, define keywords, produce SEO content briefs, audit on-page elements, optimize for AI search visibility (GEO/AEO), specify structured data, enforce E-E-A-T quality gates, and deliver metadata and recommendations without owning full article drafting or technical deployment. Use when planning publishable content, reviewing drafts before release, mapping internal links, interpreting Search Console signals, or ensuring AI citation readiness."
+    },
+    "repurpose-content": {
+      "name": "repurpose-content",
+      "category": "content",
+      "type": "core",
+      "file": "core/skills/content/repurpose-content/SKILL.md",
+      "description": "Extract and format micro-content variants (social threads, newsletters, short video scripts) from a core long-form article or asset. Use when creating derivative content for omnichannel distribution."
+    },
+    "write-article": {
+      "name": "write-article",
+      "category": "content",
+      "type": "core",
+      "file": "core/skills/content/write-article/SKILL.md",
+      "description": "Plan, research, outline, and draft long-form articles and blog posts with explicit evidence discipline, answer-first structure, GEO/AEO execution, information gain quality gates, E-E-A-T experience signals, and SEO-brief alignment. Use for narrative content, guides, reviews, and announcements—not for API runbooks or pure technical reference docs."
+    },
+    "configure-llms-txt": {
+      "name": "configure-llms-txt",
+      "category": "documentation",
+      "type": "core",
+      "file": "core/skills/documentation/configure-llms-txt/SKILL.md",
+      "description": "Create and maintain the llms.txt and llms-full.txt files for a domain or project, making documentation and content discoverable by AI agents, LLMs, and automated tools per the llmstxt.org specification. Use when a site or API has AI agent interfaces, when optimizing for Generative Engine Optimization (GEO) and Agentic SEO (A-SEO), or when implementing the dual-audience documentation standard required by technical-writer role."
+    },
+    "write-documentation": {
+      "name": "write-documentation",
+      "category": "documentation",
+      "type": "core",
+      "file": "core/skills/documentation/write-documentation/SKILL.md",
+      "description": "Draft or update technical documentation by following the repo's existing doc structure, audience needs, and source-of-truth boundaries. Use for README updates, service docs, runbooks, integration notes, or change explanations."
+    },
+    "write-tech-radar": {
+      "name": "write-tech-radar",
+      "category": "documentation",
+      "type": "core",
+      "file": "core/skills/documentation/write-tech-radar/SKILL.md",
+      "description": "Draft or update a technology radar entry by summarizing context, trade-offs, recommendation, and adoption guidance in a concise decision-oriented format. Use when documenting technology choices, trials, or directional guidance."
+    },
+    "create-exercises": {
+      "name": "create-exercises",
+      "category": "education",
+      "type": "core",
+      "file": "core/skills/education/create-exercises/SKILL.md",
+      "description": "Design educational assignments, practice tests, and quizzes following designated curriculum matrices and cognitive models. Use when generating exercises, mock exams, or exam preparation materials for specific learning objectives."
+    },
+    "design-learning-plan": {
+      "name": "design-learning-plan",
+      "category": "education",
+      "type": "core",
+      "file": "core/skills/education/design-learning-plan/SKILL.md",
+      "description": "Create a structured, curriculum-aligned learning plan or syllabus. Use when planning a study schedule, syllabus, exam preparation roadmap, or grade transition plan for any educational level."
+    },
+    "grade-and-review": {
+      "name": "grade-and-review",
+      "category": "education",
+      "type": "core",
+      "file": "core/skills/education/grade-and-review/SKILL.md",
+      "description": "Evaluate learner work and provide constructive feedback on the designated grading scale. Use when grading assignments, reviewing student submissions, or providing improvement guidance at any educational level."
+    },
+    "accessibility-review": {
+      "name": "accessibility-review",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/accessibility-review/SKILL.md",
+      "description": "Audit UI for keyboard navigation, focus order, screen-reader labels, color contrast, motion preferences, and ARIA correctness against WCAG 2.2 criteria (including Focus Not Obscured 2.4.11, Target Size 2.5.8, Accessible Authentication 3.3.8, Dragging Movements 2.5.7, Redundant Entry 3.3.7). Use automated CI gates via @axe-core/playwright for regression detection alongside manual screen-reader testing. Use when validating user-facing flows before release, after design specs land, or when fixing reported a11y defects."
+    },
+    "ai-risk-assessment": {
+      "name": "ai-risk-assessment",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/ai-risk-assessment/SKILL.md",
+      "description": "Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure/Manage) and NIST AI 600-1 GenAI Profile (12 risk categories), classify EU AI Act risk tiers, and produce an AI risk register covering hallucination thresholds, model degradation signals, bias exposure, and compliance drift. Use when onboarding a new AI feature, scoping an AI system for delivery, or conducting a periodic AI governance audit."
+    },
+    "conduct-research": {
+      "name": "conduct-research",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/conduct-research/SKILL.md",
+      "description": "Execute iterative, deeply-verified research to discover, validate, and synthesize complex information. Use for deep (10+ round) or scoped (3+ round with waiver) investigation before architecture, product, or content decisions. Applies AI-era source discipline (primary source hierarchy, Chain-of-Verification, hallucination mitigation, grounding protocol) and delivers information gain assessment for SEO/content handoffs. Primary skill for the Researcher role."
+    },
+    "create-migration": {
+      "name": "create-migration",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/create-migration/SKILL.md",
+      "description": "Create safe schema or data migrations by following the repo's local migration tool, naming rules, rollout constraints, and rollback expectations. Use when adding, changing, backfilling, cleaning, or repairing persisted data structures."
+    },
+    "design-review": {
+      "name": "design-review",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/design-review/SKILL.md",
+      "description": "Review UX flows, visual hierarchy, interaction patterns, and design-system alignment against specs and user goals. Use when validating ui-component-spec or ux-flow-spec before implementation, or critiquing marketing/product UI without reviewing application code."
+    },
+    "design-ux-flow": {
+      "name": "design-ux-flow",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/design-ux-flow/SKILL.md",
+      "description": "Design or refine a UX flow by defining user goals, preserved behavior, screen states, interaction rules, edge cases, and adjacent flow impact. Use when a feature, bug fix, or behavior change needs a UX/UI brief that frontend and QA can implement and validate reliably."
+    },
+    "incident-report": {
+      "name": "incident-report",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/incident-report/SKILL.md",
+      "description": "Capture, structure, and communicate an incident from triage through resolution and prevention. Use when a production failure, degradation, or security event requires a formal timeline, impact assessment, root cause analysis, and follow-up action items."
+    },
+    "performance-profiling": {
+      "name": "performance-profiling",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/performance-profiling/SKILL.md",
+      "description": "Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, and validating improvements with repo-local tools. Use when performance, capacity, or resource usage needs evidence-based diagnosis."
+    },
+    "plan-technical-delivery": {
+      "name": "plan-technical-delivery",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/plan-technical-delivery/SKILL.md",
+      "description": "Turn architecture decisions and requirements into a delivery-ready technical plan with slices, quality gates, impact radius, and rollout notes. Use when Technical Lead breaks down implementation work for developers, QA, and release."
+    },
+    "release-notes": {
+      "name": "release-notes",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/release-notes/SKILL.md",
+      "description": "Draft, structure, and review release notes for a software change so that users, operators, and downstream consumers understand what changed, what broke compatibility, and what action they must take. Use when shipping a feature, fix, or breaking change that requires external communication."
+    },
+    "write-product-brief": {
+      "name": "write-product-brief",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/write-product-brief/SKILL.md",
+      "description": "Write or refine a product brief that makes user value, business outcome, preserved behavior, affected users, acceptance boundaries, and trade-offs explicit. Use when a feature, bug fix, workaround, rollback, or scope decision needs a product-facing decision artifact before implementation or release."
+    },
+    "write-tests": {
+      "name": "write-tests",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/write-tests/SKILL.md",
+      "description": "Add or update tests by following repo-local test conventions, choosing the right test scope, isolating dependencies, and validating risky paths before delivery. Use when behavior needs regression coverage or release confidence."
+    },
+    "add-page-route": {
+      "name": "add-page-route",
+      "category": "frontend",
+      "type": "core",
+      "file": "core/skills/frontend/add-page-route/SKILL.md",
+      "description": "Add or modify a page, screen, or route by following the repo's navigation, data-loading, layout, and auth patterns. Use when frontend work requires new route-level behavior or page wiring."
+    },
+    "add-ui-component": {
+      "name": "add-ui-component",
+      "category": "frontend",
+      "type": "core",
+      "file": "core/skills/frontend/add-ui-component/SKILL.md",
+      "description": "Add or evolve a reusable UI component by following the repo's design system, composition patterns, accessibility rules, and state boundaries. Use when building frontend components or shared presentation elements."
+    },
+    "frontend-testing": {
+      "name": "frontend-testing",
+      "category": "frontend",
+      "type": "core",
+      "file": "core/skills/frontend/frontend-testing/SKILL.md",
+      "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence."
+    },
+    "implement-webmcp": {
+      "name": "implement-webmcp",
+      "category": "frontend",
+      "type": "core",
+      "file": "core/skills/frontend/implement-webmcp/SKILL.md",
+      "description": "Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when enabling in-browser AI agent interactions, DOM context sharing, or client-side action execution."
+    },
+    "integrate-api-client": {
+      "name": "integrate-api-client",
+      "category": "frontend",
+      "type": "core",
+      "file": "core/skills/frontend/integrate-api-client/SKILL.md",
+      "description": "Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handling, and state-management patterns. Use when a UI needs to read or mutate backend data."
+    },
+    "setup-design-system": {
+      "name": "setup-design-system",
+      "category": "frontend",
+      "type": "core",
+      "file": "core/skills/frontend/setup-design-system/SKILL.md",
+      "description": "Configure a scalable design system, styling framework, and component architecture for a frontend project. Use when initializing a new project, migrating to a unified CSS strategy, or setting up a component library (e.g., Tailwind, Storybook, Radix)."
+    },
+    "setup-visual-regression": {
+      "name": "setup-visual-regression",
+      "category": "frontend",
+      "type": "core",
+      "file": "core/skills/frontend/setup-visual-regression/SKILL.md",
+      "description": "Configure automated visual diffing for UI components and pages. Use when establishing pixel-level regression testing, cross-browser snapshot baselines, or CI visual gates."
+    },
+    "analyze-business-requirements": {
+      "name": "analyze-business-requirements",
+      "category": "meetings-analysis",
+      "type": "core",
+      "file": "core/skills/meetings-analysis/analyze-business-requirements/SKILL.md",
+      "description": "Analyze and write business requirements by making actors, business rules, state transitions, exceptions, preserved behavior, and downstream process impact explicit. Use when a feature, policy change, or bug fix needs implementation-ready requirements and testable acceptance criteria."
+    },
+    "analyze-data": {
+      "name": "analyze-data",
+      "category": "meetings-analysis",
+      "type": "core",
+      "file": "core/skills/meetings-analysis/analyze-data/SKILL.md",
+      "description": "Explore datasets, define metrics, run reproducible SQL or tabular analysis, and produce stakeholder-ready insights with documented assumptions and lineage. Use when answering business questions from data, comparing datasets, building KPI definitions, or drafting dashboard requirements without owning production pipeline infrastructure."
+    },
+    "meeting-review": {
+      "name": "meeting-review",
+      "category": "meetings-analysis",
+      "type": "core",
+      "file": "core/skills/meetings-analysis/meeting-review/SKILL.md",
+      "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course."
+    },
+    "analyze-campaign-roi": {
+      "name": "analyze-campaign-roi",
+      "category": "mmo",
+      "type": "core",
+      "file": "core/skills/mmo/analyze-campaign-roi/SKILL.md",
+      "description": "Analyze S2S conversion data, monitor ad account die-rates, and calculate campaign ROI based on proxy and API costs. Use when evaluating campaign profitability, diagnosing tracking attribution gaps, comparing offer performance, or deciding to pause or scale ad spend."
+    },
+    "create-automation-script": {
+      "name": "create-automation-script",
+      "category": "mmo",
+      "type": "core",
+      "file": "core/skills/mmo/create-automation-script/SKILL.md",
+      "description": "Build Playwright/Puppeteer automation scripts that connect via CDP to Anti-Detect browsers or use C++ patched engines. Implements behavioral mimicry to bypass AI detection. Use when building multi-account automation, login flows, ad account warm-up sequences, or scraping high-trust platforms."
+    },
+    "deploy-mmo-infrastructure": {
+      "name": "deploy-mmo-infrastructure",
+      "category": "mmo",
+      "type": "core",
+      "file": "core/skills/mmo/deploy-mmo-infrastructure/SKILL.md",
+      "description": "Deploy and manage proxy pools (Residential/4G) and Anti-Detect Browser orchestration environments (via Docker/Terraform) ensuring zero IP/footprint leaks. Use when deploying a new MMO operation, expanding to new ad accounts, or migrating proxy infrastructure."
+    },
+    "deploy-proxyware-fleet": {
+      "name": "deploy-proxyware-fleet",
+      "category": "mmo",
+      "type": "core",
+      "file": "core/skills/mmo/deploy-proxyware-fleet/SKILL.md",
+      "description": "Containerize and orchestrate massive fleets of passive income nodes (Honeygain, EarnApp, Pawns.app) with proxy routing and resource limits. Use when scaling bandwidth monetization nodes, migrating from datacenter to residential routing, or expanding an existing fleet."
+    },
+    "generate-mmo-content": {
+      "name": "generate-mmo-content",
+      "category": "mmo",
+      "type": "core",
+      "file": "core/skills/mmo/generate-mmo-content/SKILL.md",
+      "description": "Use AI APIs to procedurally generate landing pages, creatives, and spin content for large-scale campaign deployment at scale. Use when launching new creatives, scaling content volume for A/B testing, or refreshing ad sets. Includes hard caps on API usage."
+    },
+    "manage-mmo-assets": {
+      "name": "manage-mmo-assets",
+      "category": "mmo",
+      "type": "core",
+      "file": "core/skills/mmo/manage-mmo-assets/SKILL.md",
+      "description": "Manage and share MMO assets (Business Managers, Via, Pixels/Datasets, Anti-Detect profiles) using Role-Based Access Control (RBAC) while enforcing strict isolation to prevent cascading bans. Use when onboarding new ad accounts, sharing BMs with team members, auditing asset health, or recovering from a cascading ban incident."
+    },
+    "setup-tracking-system": {
+      "name": "setup-tracking-system",
+      "category": "mmo",
+      "type": "core",
+      "file": "core/skills/mmo/setup-tracking-system/SKILL.md",
+      "description": "Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta Conversion API (CAPI), and tracker setups (Voluum/Binom) without relying solely on client-side cookies. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps."
+    },
+    "add-telemetry-instrumentation": {
+      "name": "add-telemetry-instrumentation",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/add-telemetry-instrumentation/SKILL.md",
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.input_tokens, gen_ai.request.model), multi-agent workflow correlation, RAG step spans, and tool invocation traces."
+    },
+    "aws-infrastructure": {
+      "name": "aws-infrastructure",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/aws-infrastructure/SKILL.md",
+      "description": "Provision, configure, and optimize AWS managed services following IaC-first discipline. Use when provisioning VPC, EC2, EKS, RDS, Lambda, S3, Bedrock, or SageMaker infrastructure; authoring IAM roles and policies; enforcing FinOps tagging and rightsizing; or configuring CloudWatch, X-Ray, and AWS Config observability."
+    },
+    "cloudflare-email-service": {
+      "name": "cloudflare-email-service",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/cloudflare-email-service/SKILL.md",
+      "description": "Send and receive transactional emails with Cloudflare Email Service (Email Sending + Email Routing). Use when building email sending (Workers binding or REST API), email routing, Agents SDK email handling, or integrating email into any app — Workers, Node.js, Python, Go, etc. Also use for email deliverability, SPF/DKIM/DMARC, wrangler email setup, MCP email tools, or when a coding agent needs to send emails. Even for simple requests like \"add email to my Worker\" — this skill has critical config details."
+    },
+    "debug-runtime-platform": {
+      "name": "debug-runtime-platform",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/debug-runtime-platform/SKILL.md",
+      "description": "Investigate deployment, environment, runtime, and rollout issues that are not purely application-code bugs. Use when the service behaves differently across environments or when deployment health is unclear."
+    },
+    "debug-workers-edge": {
+      "name": "debug-workers-edge",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/debug-workers-edge/SKILL.md",
+      "description": "Diagnose Cloudflare Pages and Workers failures at the edge — 5xx, binding errors, Wrangler deploy failures, DNS/cache issues, and context loss. Use when symptoms appear after deploy or only on Cloudflare runtime, not in local dev alone."
+    },
+    "durable-objects": {
+      "name": "durable-objects",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/durable-objects/SKILL.md",
+      "description": "Create and review Cloudflare Durable Objects. Use when building stateful coordination (chat rooms, multiplayer games, booking systems), implementing RPC methods, SQLite storage, alarms, WebSockets, or reviewing DO code for best practices. Covers Workers integration, wrangler config, and testing with Vitest. Biases towards retrieval from Cloudflare docs over pre-trained knowledge."
+    },
+    "sandbox-sdk": {
+      "name": "sandbox-sdk",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/sandbox-sdk/SKILL.md",
+      "description": "Builds secure, isolated code execution environments on Cloudflare Workers using the Cloudflare Sandbox SDK — enabling AI code interpreters, interactive dev environments, and sandboxed application runtimes. Use when implementing LLM-generated code execution, user-submitted script running, or any scenario requiring isolated compute with file system access on the Cloudflare edge."
+    },
+    "setup-deployment": {
+      "name": "setup-deployment",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/setup-deployment/SKILL.md",
+      "description": "Add or update deployment source-of-truth configuration for a service or component. Use when a change needs rollout manifests, release config, runtime settings, or environment wiring."
+    },
+    "setup-gpu-finops": {
+      "name": "setup-gpu-finops",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/setup-gpu-finops/SKILL.md",
+      "description": "Configure GPU telemetry, DCGM metrics, and Kubecost to attribute AI compute costs to specific namespaces or teams. Use when managing GPU infrastructure budgets, tracking AI workload unit economics, or optimizing accelerator capacity."
+    },
+    "setup-llm-gateway": {
+      "name": "setup-llm-gateway",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/setup-llm-gateway/SKILL.md",
+      "description": "Configure a centralized LLM proxy gateway for token routing, budgeting, and failover. Use when deploying multi-model routing, enforcing token rate limits, managing provider credentials, or centralizing AI observability."
+    },
+    "supply-chain-security": {
+      "name": "supply-chain-security",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/supply-chain-security/SKILL.md",
+      "description": "Implement software supply chain security by generating SBOMs (CycloneDX/SPDX), enforcing SLSA build provenance levels, integrating artifact signing (Sigstore), and maintaining VEX context for vulnerability management. Use when hardening CI/CD pipelines, generating per-build inventory, achieving SLSA Level 2 or 3 compliance, or auditing third-party dependencies including MCP server registries."
+    },
+    "system-design": {
+      "name": "system-design",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/system-design/SKILL.md",
+      "description": "Design, specify, and document complex system architectures covering compute, network, storage, middleware, and AI inference layers. Translate NFRs into measurable infrastructure targets and produce capacity models. Use when designing or reviewing system topology, sizing infrastructure, planning capacity, or specifying AI infrastructure (GPU, inference servers, vector databases)."
+    },
+    "turnstile-spin": {
+      "name": "turnstile-spin",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/turnstile-spin/SKILL.md",
+      "description": "Implements end-to-end Cloudflare Turnstile CAPTCHA protection — widget creation, managed siteverify Worker deployment, and frontend integration — turning a \"set up Turnstile\" request into a validated, working integration. Use when adding bot protection to forms or gated flows in vanilla HTML, Next.js, Astro, SvelteKit, or Hugo projects."
+    },
+    "web-perf": {
+      "name": "web-perf",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/web-perf/SKILL.md",
+      "description": "Analyzes web page performance using Chrome DevTools MCP — measuring Core Web Vitals (LCP, INP, CLS), identifying render-blocking resources, network dependency chains, and caching issues to produce specific, actionable optimization recommendations. Use when auditing Lighthouse scores, debugging slow page loads, profiling Core Web Vitals regressions, or validating performance improvements before release."
+    },
+    "workers-best-practices": {
+      "name": "workers-best-practices",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/workers-best-practices/SKILL.md",
+      "description": "Reviews and authors Cloudflare Workers code against production best practices — covering async patterns, global state isolation, secret handling, compatibility flags, and TypeScript bindings. Use when writing new Workers, reviewing existing code for production readiness, or correcting violations of Cloudflare's canonical Workers patterns."
+    },
+    "wrangler": {
+      "name": "wrangler",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/wrangler/SKILL.md",
+      "description": "Deploys, develops, and manages Cloudflare Workers and their bindings — KV, R2, D1, Vectorize, Hyperdrive, Workers AI, Containers, Queues, Workflows, Pipelines, and Secrets — via the Wrangler CLI. Use when setting up a new Worker project, deploying to staging or production, managing secrets, generating TypeScript types, or configuring environment-specific settings."
+    },
+    "commit-code": {
+      "name": "commit-code",
+      "category": "repo-ops",
+      "type": "core",
+      "file": "core/skills/repo-ops/commit-code/SKILL.md",
+      "description": "Validate and package a finished change into a clean commit by following repo-local validation, generation, release-note, and approval rules. Use when the user explicitly asks to prepare or create a commit."
+    },
+    "navigate-service": {
+      "name": "navigate-service",
+      "category": "repo-ops",
+      "type": "core",
+      "file": "core/skills/repo-ops/navigate-service/SKILL.md",
+      "description": "Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session."
+    },
+    "review-code": {
+      "name": "review-code",
+      "category": "repo-ops",
+      "type": "core",
+      "file": "core/skills/repo-ops/review-code/SKILL.md",
+      "description": "Review concrete code changes for correctness, contract safety, data handling, reliability, security, operations, and test coverage. Use for PR reviews, local change reviews, and pre-merge audits."
+    },
+    "review-service": {
+      "name": "review-service",
+      "category": "repo-ops",
+      "type": "core",
+      "file": "core/skills/repo-ops/review-service/SKILL.md",
+      "description": "Review an entire service for release readiness. Use for full-service audits, production-readiness checks, pre-release hardening, and broad reviews that should cover code, contracts, dependencies, rollout safety, and documentation."
+    },
+    "troubleshoot-service": {
+      "name": "troubleshoot-service",
+      "category": "repo-ops",
+      "type": "core",
+      "file": "core/skills/repo-ops/troubleshoot-service/SKILL.md",
+      "description": "Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the failing layer, validating assumptions, and confirming recovery. Use when a service fails, behaves unexpectedly, or differs across environments."
+    },
+    "build-data-pipeline": {
+      "name": "build-data-pipeline",
+      "category": "security-data",
+      "type": "core",
+      "file": "core/skills/security-data/build-data-pipeline/SKILL.md",
+      "description": "Design and implement data ingestion, transformation, and delivery pipelines including ETL/ELT, Parquet/DuckDB warehousing, dbt modeling, Airflow orchestration, Kafka streaming, and data quality gates. Use when the work requires a repeatable, owned pipeline — not a one-off analytical query."
+    },
+    "database-maintenance": {
+      "name": "database-maintenance",
+      "category": "security-data",
+      "type": "core",
+      "file": "core/skills/security-data/database-maintenance/SKILL.md",
+      "description": "Plan or perform operational database maintenance by following the repo's safety, backup, rollback, and verification patterns. Use for cleanup, backfill, index work, repair tasks, restore preparation, or other operational data changes."
+    },
+    "manage-secrets": {
+      "name": "manage-secrets",
+      "category": "security-data",
+      "type": "core",
+      "file": "core/skills/security-data/manage-secrets/SKILL.md",
+      "description": "Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-control, and rollout patterns. Use when code or deployment work touches credentials, tokens, keys, or sensitive configuration."
+    },
+    "manage-vietnam-accounting": {
+      "name": "manage-vietnam-accounting",
+      "category": "security-data",
+      "type": "core",
+      "file": "core/skills/security-data/manage-vietnam-accounting/SKILL.md",
+      "description": "Prepare and review Vietnam accounting controls, accounting-regime evidence, reconciliations, invoice data, period-close workpapers, and retention records without executing filings or external accounting actions. Use when a Vietnamese entity needs an accounting-domain handoff, control review, or implementation-ready accounting rule clarification."
+    },
+    "security-audit": {
+      "name": "security-audit",
+      "category": "security-data",
+      "type": "core",
+      "file": "core/skills/security-data/security-audit/SKILL.md",
+      "description": "Review code, configuration, and service behavior for security risks by checking trust boundaries, secret handling, auth, validation, and operational exposure. For AI/ML systems, apply OWASP ASI Top 10 2026 (ASI01–ASI10), NIST AI RMF Measure function, and ISO/IEC 42001:2023 controls assessment. Use for focused security review of changes or full-service risk assessment."
+    },
+    "develop-golf-feature": {
+      "name": "develop-golf-feature",
+      "category": "overlay/golf-icm",
+      "type": "overlay",
+      "file": "overlays/golf-icm/skills/develop-golf-feature/SKILL.md",
+      "description": "Develop features for the Golf ICM niche catalog — an Astro v5 golf apparel site on Cloudflare Pages. Use when adding pages, gallery content, MDX articles, or components for the golf apparel niche."
+    },
+    "develop-icm-feature": {
+      "name": "develop-icm-feature",
+      "category": "overlay/icm-main",
+      "type": "overlay",
+      "file": "overlays/icm-main/skills/develop-icm-feature/SKILL.md",
+      "description": "Develop features for the ICM Factory Direct main site — an Astro v5 B2B manufacturing catalog on Cloudflare Pages. Use when adding pages, product data, components, contact forms, or R2 integrations in this project."
+    },
+    "develop-laravel-feature": {
+      "name": "develop-laravel-feature",
+      "category": "overlay/laravel-filament",
+      "type": "overlay",
+      "file": "overlays/laravel-filament/skills/develop-laravel-feature/SKILL.md",
+      "description": "Develop features in a Laravel 13 + Filament v4 + Livewire 3 monolith. Use when adding admin resources, Blade pages, Livewire components, Actions, Services, or database migrations in this stack."
+    },
+    "write-leaseinvietnam-maylanhtreotuong-data": {
+      "name": "write-leaseinvietnam-maylanhtreotuong-data",
+      "category": "overlay/lease-content",
+      "type": "overlay",
+      "file": "overlays/lease-content/skills/write-leaseinvietnam-maylanhtreotuong-data/SKILL.md",
+      "description": "Draft or update Astro Content Collection Markdown/MDX for the Lease in Vietnam and Máy Lạnh Treo Tường sites. Use when editing files under `leaseinvietnam/src/data` or `maylanhtreotuong/src/data` (paths relative to the workspace root)."
+    },
+    "develop-mdg-feature": {
+      "name": "develop-mdg-feature",
+      "category": "overlay/maydiengiaisaigon",
+      "type": "overlay",
+      "file": "overlays/maydiengiaisaigon/skills/develop-mdg-feature/SKILL.md",
+      "description": "Develop features for the Máy Điện Giải Sài Gòn Laravel 13 + Filament v4 e-commerce. Use when adding Filament admin resources, Blade pages, Livewire components, or e-commerce logic (cart, checkout, orders) in this specific project."
+    },
+    "develop-obj-feature": {
+      "name": "develop-obj-feature",
+      "category": "overlay/obj-configurator",
+      "type": "overlay",
+      "file": "overlays/obj-configurator/skills/develop-obj-feature/SKILL.md",
+      "description": "Develop features for the OBJ 3D Product Configurator — an Astro + React Three Fiber app with Three.js engine, Redux/Zustand state, and Prisma backend. Use when modifying 3D scenes, decals, UI panels, or design persistence."
+    },
+    "debug-3d-scene": {
+      "name": "debug-3d-scene",
+      "category": "overlay/r3f-stack",
+      "type": "overlay",
+      "file": "overlays/r3f-stack/skills/debug-3d-scene/SKILL.md",
+      "description": "Debug 3D scene behavior by tracing scene graph structure, transforms, raycasting, decals, materials, camera logic, render loops, and WebGL lifecycle issues. Use when a Three.js, React Three Fiber, WebGL, or WebGPU scene has rendering bugs, interaction bugs, clipping problems, context instability, or suspicious visual math."
+    },
+    "integrate-r3f-three-legacy": {
+      "name": "integrate-r3f-three-legacy",
+      "category": "overlay/r3f-stack",
+      "type": "overlay",
+      "file": "overlays/r3f-stack/skills/integrate-r3f-three-legacy/SKILL.md",
+      "description": "Integrate or migrate between React Three Fiber and legacy imperative Three.js code by controlling scene ownership, render loops, loaders, interaction state, and cleanup boundaries. Use when a 3D web app mixes R3F with older Three.js modules, global bridge state, or imperative scene utilities and needs safe coexistence or staged migration."
+    },
+    "optimize-3d-assets": {
+      "name": "optimize-3d-assets",
+      "category": "overlay/r3f-stack",
+      "type": "overlay",
+      "file": "overlays/r3f-stack/skills/optimize-3d-assets/SKILL.md",
+      "description": "Optimize 3D assets and rendering inputs by reviewing model formats, geometry density, texture memory, material strategy, compression, and loading behavior. Use when a 3D web experience suffers from heavy OBJ/GLTF assets, texture bloat, long load times, frame drops, or unnecessary GPU and memory pressure."
+    },
+    "write-vesviet-learn-content": {
+      "name": "write-vesviet-learn-content",
+      "category": "overlay/vesviet-content",
+      "type": "overlay",
+      "file": "overlays/vesviet-content/skills/write-vesviet-learn-content/SKILL.md",
+      "description": "Draft or update Hugo Markdown for the Vesviet portfolio site or the Learn notes site. Use when creating or editing content under `vesviet/content` or `learn/content` (paths relative to the workspace root), including posts, series, radar entries, or learn docs."
+    }
+  },
+  "workflows": {
+    "add-new-feature": {
+      "name": "add-new-feature",
+      "title": "add-new-feature",
+      "file": "core/workflows/add-new-feature.md"
+    },
+    "agent-a2a-delegation": {
+      "name": "agent-a2a-delegation",
+      "title": "agent-a2a-delegation",
+      "file": "core/workflows/agent-a2a-delegation.md"
+    },
+    "build-deploy": {
+      "name": "build-deploy",
+      "title": "build-deploy",
+      "file": "core/workflows/build-deploy.md"
+    },
+    "content-audit": {
+      "name": "content-audit",
+      "title": "content-audit",
+      "file": "core/workflows/content-audit.md"
+    },
+    "content-publishing": {
+      "name": "content-publishing",
+      "title": "content-publishing",
+      "file": "core/workflows/content-publishing.md"
+    },
+    "data-migration": {
+      "name": "data-migration",
+      "title": "data-migration",
+      "file": "core/workflows/data-migration.md"
+    },
+    "dependency-upgrade": {
+      "name": "dependency-upgrade",
+      "title": "dependency-upgrade",
+      "file": "core/workflows/dependency-upgrade.md"
+    },
+    "hotfix-production": {
+      "name": "hotfix-production",
+      "title": "hotfix-production",
+      "file": "core/workflows/hotfix-production.md"
+    },
+    "qa-validation": {
+      "name": "qa-validation",
+      "title": "qa-validation",
+      "file": "core/workflows/qa-validation.md"
+    },
+    "refactoring": {
+      "name": "refactoring",
+      "title": "refactoring",
+      "file": "core/workflows/refactoring.md"
+    },
+    "revert-deployment": {
+      "name": "revert-deployment",
+      "title": "revert-deployment",
+      "file": "core/workflows/revert-deployment.md"
+    },
+    "security-incident-response": {
+      "name": "security-incident-response",
+      "title": "security-incident-response",
+      "file": "core/workflows/security-incident-response.md"
+    },
+    "seo-content-lifecycle": {
+      "name": "seo-content-lifecycle",
+      "title": "seo-content-lifecycle",
+      "file": "core/workflows/seo-content-lifecycle.md"
+    },
+    "seo-keyword-brief": {
+      "name": "seo-keyword-brief",
+      "title": "seo-keyword-brief",
+      "file": "core/workflows/seo-keyword-brief.md"
+    },
+    "service-review-release": {
+      "name": "service-review-release",
+      "title": "service-review-release",
+      "file": "core/workflows/service-review-release.md"
+    },
+    "setup-new-service": {
+      "name": "setup-new-service",
+      "title": "setup-new-service",
+      "file": "core/workflows/setup-new-service.md"
+    },
+    "tech-repo-review": {
+      "name": "tech-repo-review",
+      "title": "tech-repo-review",
+      "file": "core/workflows/tech-repo-review.md"
+    },
+    "troubleshooting": {
+      "name": "troubleshooting",
+      "title": "troubleshooting",
+      "file": "core/workflows/troubleshooting.md"
+    }
+  },
+  "schemas": {
+    "a2a-artifact.json": {
+      "name": "a2a-artifact.json",
+      "stem": "a2a-artifact",
+      "title": "A2A Task Artifact",
+      "file": "core/contracts/schemas/a2a-artifact.json"
+    },
+    "a2a-jsonrpc-envelope.json": {
+      "name": "a2a-jsonrpc-envelope.json",
+      "stem": "a2a-jsonrpc-envelope",
+      "title": "A2A JSON-RPC 2.0 Envelope",
+      "file": "core/contracts/schemas/a2a-jsonrpc-envelope.json"
+    },
+    "a2a-message.json": {
+      "name": "a2a-message.json",
+      "stem": "a2a-message",
+      "title": "A2A Message",
+      "file": "core/contracts/schemas/a2a-message.json"
+    },
+    "a2a-push-notification-config.json": {
+      "name": "a2a-push-notification-config.json",
+      "stem": "a2a-push-notification-config",
+      "title": "A2A Push Notification Config",
+      "file": "core/contracts/schemas/a2a-push-notification-config.json"
+    },
+    "a2a-task-cancel.json": {
+      "name": "a2a-task-cancel.json",
+      "stem": "a2a-task-cancel",
+      "title": "A2A Task Cancel Request",
+      "file": "core/contracts/schemas/a2a-task-cancel.json"
+    },
+    "a2a-task-progress.json": {
+      "name": "a2a-task-progress.json",
+      "stem": "a2a-task-progress",
+      "title": "A2A Task Progress Event",
+      "file": "core/contracts/schemas/a2a-task-progress.json"
+    },
+    "a2a-task-status.json": {
+      "name": "a2a-task-status.json",
+      "stem": "a2a-task-status",
+      "title": "A2A Task Status",
+      "file": "core/contracts/schemas/a2a-task-status.json"
+    },
+    "a2a-task.json": {
+      "name": "a2a-task.json",
+      "stem": "a2a-task",
+      "title": "A2A Task Delegation",
+      "file": "core/contracts/schemas/a2a-task.json"
+    },
+    "accounting-compliance-review.json": {
+      "name": "accounting-compliance-review.json",
+      "stem": "accounting-compliance-review",
+      "title": "Vietnam Accounting Compliance Review",
+      "file": "core/contracts/schemas/accounting-compliance-review.json"
+    },
+    "adr-spec.json": {
+      "name": "adr-spec.json",
+      "stem": "adr-spec",
+      "title": "Architecture Decision Record",
+      "file": "core/contracts/schemas/adr-spec.json"
+    },
+    "agent-card.json": {
+      "name": "agent-card.json",
+      "stem": "agent-card",
+      "title": "A2A Agent Card",
+      "file": "core/contracts/schemas/agent-card.json"
+    },
+    "agent-trace-span.json": {
+      "name": "agent-trace-span.json",
+      "stem": "agent-trace-span",
+      "title": "Agent Trace Span",
+      "file": "core/contracts/schemas/agent-trace-span.json"
+    },
+    "ai-risk-register.json": {
+      "name": "ai-risk-register.json",
+      "stem": "ai-risk-register",
+      "title": "AI Risk Register",
+      "file": "core/contracts/schemas/ai-risk-register.json"
+    },
+    "api-contract-spec.json": {
+      "name": "api-contract-spec.json",
+      "stem": "api-contract-spec",
+      "title": "API Contract Specification",
+      "file": "core/contracts/schemas/api-contract-spec.json"
+    },
+    "architecture-options.json": {
+      "name": "architecture-options.json",
+      "stem": "architecture-options",
+      "title": "Architecture Options Brief",
+      "file": "core/contracts/schemas/architecture-options.json"
+    },
+    "aws-infra-spec.json": {
+      "name": "aws-infra-spec.json",
+      "stem": "aws-infra-spec",
+      "title": "AWS Infrastructure Specification",
+      "file": "core/contracts/schemas/aws-infra-spec.json"
+    },
+    "code-review-finding.json": {
+      "name": "code-review-finding.json",
+      "stem": "code-review-finding",
+      "title": "Code Review Finding",
+      "file": "core/contracts/schemas/code-review-finding.json"
+    },
+    "content-handoff.json": {
+      "name": "content-handoff.json",
+      "stem": "content-handoff",
+      "title": "Content Handoff",
+      "file": "core/contracts/schemas/content-handoff.json"
+    },
+    "coordination-plan.json": {
+      "name": "coordination-plan.json",
+      "stem": "coordination-plan",
+      "title": "Coordination Plan",
+      "file": "core/contracts/schemas/coordination-plan.json"
+    },
+    "data-analysis-report.json": {
+      "name": "data-analysis-report.json",
+      "stem": "data-analysis-report",
+      "title": "Data Analysis Report",
+      "file": "core/contracts/schemas/data-analysis-report.json"
+    },
+    "deployment-plan.json": {
+      "name": "deployment-plan.json",
+      "stem": "deployment-plan",
+      "title": "Deployment Plan",
+      "file": "core/contracts/schemas/deployment-plan.json"
+    },
+    "documentation-handoff.json": {
+      "name": "documentation-handoff.json",
+      "stem": "documentation-handoff",
+      "title": "Documentation Handoff",
+      "file": "core/contracts/schemas/documentation-handoff.json"
+    },
+    "edge-deployment-spec.json": {
+      "name": "edge-deployment-spec.json",
+      "stem": "edge-deployment-spec",
+      "title": "Edge Deployment Specification",
+      "file": "core/contracts/schemas/edge-deployment-spec.json"
+    },
+    "feature-ticket.json": {
+      "name": "feature-ticket.json",
+      "stem": "feature-ticket",
+      "title": "Feature Ticket Specification",
+      "file": "core/contracts/schemas/feature-ticket.json"
+    },
+    "implementation-result.json": {
+      "name": "implementation-result.json",
+      "stem": "implementation-result",
+      "title": "Implementation Result",
+      "file": "core/contracts/schemas/implementation-result.json"
+    },
+    "incident-report.json": {
+      "name": "incident-report.json",
+      "stem": "incident-report",
+      "title": "Incident Report",
+      "file": "core/contracts/schemas/incident-report.json"
+    },
+    "learning-handoff.json": {
+      "name": "learning-handoff.json",
+      "stem": "learning-handoff",
+      "title": "Learning Handoff",
+      "file": "core/contracts/schemas/learning-handoff.json"
+    },
+    "performance-audit.json": {
+      "name": "performance-audit.json",
+      "stem": "performance-audit",
+      "title": "Performance Audit Result",
+      "file": "core/contracts/schemas/performance-audit.json"
+    },
+    "research-report.json": {
+      "name": "research-report.json",
+      "stem": "research-report",
+      "title": "Research Report Specification",
+      "file": "core/contracts/schemas/research-report.json"
+    },
+    "schema-migration.json": {
+      "name": "schema-migration.json",
+      "stem": "schema-migration",
+      "title": "Schema Migration Plan",
+      "file": "core/contracts/schemas/schema-migration.json"
+    },
+    "security-audit.json": {
+      "name": "security-audit.json",
+      "stem": "security-audit",
+      "title": "Security Audit Report",
+      "file": "core/contracts/schemas/security-audit.json"
+    },
+    "seo-audit-report.json": {
+      "name": "seo-audit-report.json",
+      "stem": "seo-audit-report",
+      "title": "SEO Audit Report",
+      "file": "core/contracts/schemas/seo-audit-report.json"
+    },
+    "seo-content-brief.json": {
+      "name": "seo-content-brief.json",
+      "stem": "seo-content-brief",
+      "title": "SEO Content Brief",
+      "file": "core/contracts/schemas/seo-content-brief.json"
+    },
+    "seo-metadata.json": {
+      "name": "seo-metadata.json",
+      "stem": "seo-metadata",
+      "title": "SEO Metadata",
+      "file": "core/contracts/schemas/seo-metadata.json"
+    },
+    "seo-weekly-board.json": {
+      "name": "seo-weekly-board.json",
+      "stem": "seo-weekly-board",
+      "title": "SEO Weekly Board",
+      "file": "core/contracts/schemas/seo-weekly-board.json"
+    },
+    "series-article.json": {
+      "name": "series-article.json",
+      "stem": "series-article",
+      "title": "Series Article",
+      "file": "core/contracts/schemas/series-article.json"
+    },
+    "solution-brief.json": {
+      "name": "solution-brief.json",
+      "stem": "solution-brief",
+      "title": "Solution Brief",
+      "file": "core/contracts/schemas/solution-brief.json"
+    },
+    "system-design-spec.json": {
+      "name": "system-design-spec.json",
+      "stem": "system-design-spec",
+      "title": "System Design Specification",
+      "file": "core/contracts/schemas/system-design-spec.json"
+    },
+    "technical-delivery-plan.json": {
+      "name": "technical-delivery-plan.json",
+      "stem": "technical-delivery-plan",
+      "title": "Technical Delivery Plan",
+      "file": "core/contracts/schemas/technical-delivery-plan.json"
+    },
+    "test-report.json": {
+      "name": "test-report.json",
+      "stem": "test-report",
+      "title": "QA Test Report",
+      "file": "core/contracts/schemas/test-report.json"
+    },
+    "ui-component-spec.json": {
+      "name": "ui-component-spec.json",
+      "stem": "ui-component-spec",
+      "title": "UI Component Specification",
+      "file": "core/contracts/schemas/ui-component-spec.json"
+    },
+    "ux-flow-spec.json": {
+      "name": "ux-flow-spec.json",
+      "stem": "ux-flow-spec",
+      "title": "UX Flow Specification",
+      "file": "core/contracts/schemas/ux-flow-spec.json"
+    },
+    "validation-result.json": {
+      "name": "validation-result.json",
+      "stem": "validation-result",
+      "title": "Validation Result",
+      "file": "core/contracts/schemas/validation-result.json"
+    }
+  }
+}
