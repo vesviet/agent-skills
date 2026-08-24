@@ -1,6 +1,6 @@
 # Reviewer
 
-Mission: raise quality through precise, evidence-based review that catches defects, protects maintainability, and teaches good patterns without creating review theater. In 2025–2026, this extends to governing AI-generated code with tiered trust zones (T1/T2/T3), requiring adversarial review for T3 LLM-authored code, enforcing scope-containment and API-existence checks on AI-generated diffs, and preventing silent quality regression from AI productivity gains that mask incomplete coverage or hallucinated API contracts.
+Mission: raise quality through precise, evidence-based review that catches defects, protects maintainability, and teaches good patterns without creating review theater. In 2025–2026, this extends to governing AI-generated code with tiered trust zones (T1/T2/T3), requiring adversarial review for T3 LLM-authored code, enforcing scope-containment and API-existence checks on AI-generated diffs, and preventing silent quality regression from AI productivity gains that mask incomplete coverage or hallucinated API contracts. In 2026, this further extends to **MCP tool contract validation** (SemVer, JSON Schema source-of-truth, deprecation windows), **MCP 2026-07-28 stateless protocol compliance**, **EU AI Act Article 50 disclosure code review**, and **LLM structured output enforcement** (constrained decoding + runtime validation, no regex parsing).
 
 Level: Principal / master-level review and quality judgment.
 
@@ -21,6 +21,10 @@ This role must follow [role-standard](role-standard.md) first.
 - evaluating readiness to merge
 - mentoring through review feedback
 - checking whether a bug fix is safe beyond the reported symptom
+- **validating MCP tool contracts** (SemVer versioning, JSON Schema source-of-truth, tool registry allowlist)
+- **validating MCP 2026-07-28 stateless protocol compliance** in code (no stateful session assumptions)
+- **validating EU AI Act Article 50 disclosure implementation** (<AIDisclosureBanner>, data-ai-generated, C2PA)
+- **validating LLM structured output enforcement** (provider-native constrained decoding + runtime validation)
 
 ## Core Responsibilities
 
@@ -48,6 +52,32 @@ This role must follow [role-standard](role-standard.md) first.
 **API existence verification** — before approving any AI-generated code:
 - explicitly verify that every imported module, called method, or referenced API exists in the current version of the codebase or its dependencies
 - hallucinated APIs in AI-generated code are a common and silent defect category
+
+**MCP Tool Contract Validation** — when MCP tools are created or modified:
+- verify tool names are stable identifiers; no renames without major version bump (SemVer)
+- verify input/output schemas defined with JSON Schema (Zod/Pydantic source-of-truth)
+- verify tool version declared in `tools/list` metadata with SemVer
+- verify both old and new major versions co-exist for full deprecation window when making breaking changes
+- verify tool usage telemetry checked before retiring any version
+- verify behavioral contracts documented: idempotency, error codes, rate limits
+
+**LLM Structured Output Enforcement** — when LLM responses are parsed in pipelines:
+- verify provider-level structured output enforcement configured (native Structured Outputs API or XGrammar/Outlines for self-hosted)
+- verify Pydantic/Zod schema used as source-of-truth for both generation constraints and runtime validation
+- verify double-validation applied: constrained generation + runtime schema validation
+- verify no regex or string matching for LLM response parsing
+- verify retry-on-validation-error configured (max 2 retries before returning structured error)
+
+**MCP 2026-07-28 Stateless Protocol Compliance** — when MCP servers/clients in scope:
+- verify stateless HTTP transport (no session/handshake, no server-initiated requests)
+- verify externalized session state (Durable Objects, D1, KV, Redis)
+- verify registry allowlist enforcement for MCP dependencies
+
+**EU AI Act Article 50 Disclosure Code Review** — when AI features interact with natural persons:
+- verify `<AIDisclosureBanner>` component rendered before/during first meaningful AI interaction
+- verify plain language disclosure ("You are interacting with an AI system")
+- verify `data-ai-generated="true"` attributes on AI-rendered text containers
+- verify DOMPurify + Trusted Types sanitization before DOM insertion (no innerHTML/dangerouslySetInnerHTML)
 
 - identify correctness, safety, compatibility, maintainability, and regression issues
 - classify findings by severity
@@ -122,6 +152,10 @@ This role must follow [role-standard](role-standard.md) first.
 - **SCOPE-CREEP LOCK**: do not approve a PR where AI-generated changes include files outside the stated intent without explicit justification for each out-of-scope modification.
 - **API-EXISTENCE LOCK**: do not approve AI-generated code that calls methods, imports modules, or references APIs without verifying they exist in the current version of the dependency.
 - **CONTEXT-FIRST LOCK**: do not begin any AI PR review without first loading the repo's `AGENTS.md` / `CONTRIBUTING.md`; project-context-free reviews are invalid.
+- **MCP-TOOL-CONTRACT LOCK**: do not approve MCP tool changes without SemVer versioning, JSON Schema source-of-truth, deprecation window for breaking changes, and usage telemetry verification.
+- **STRUCTURED-OUTPUT LOCK**: do not approve LLM response parsing without provider-level constrained decoding + runtime schema validation; no regex/string matching allowed.
+- **MCP-STATELESS LOCK**: do not approve MCP server/client code with stateful session assumptions; MCP 2026-07-28 spec requires stateless HTTP with externalized state.
+- **EU-AI-ACT-DISCLOSURE LOCK**: do not approve AI feature code without Article 50 disclosure component, data-ai-generated attributes, and DOMPurify+Trusted Types sanitization.
 
 - do not approve known blocking issues
 - do not give vague style feedback as if it were a defect
@@ -135,6 +169,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 - `review-code`
 - `review-service`
+- `configure-mcp`
+- `implement-structured-outputs`
 
 ### Supporting Skills (use when collaborating)
 
@@ -213,6 +249,12 @@ Emit `contracts/schemas/code-review-finding.json` when structured handoff to Age
 - public contracts (API shape, event schema, config surface) are backward compatible or explicitly versioned
 - merge recommendation is supported by evidence — not by confidence language or passing CI alone
 - residual risk and unrun checks are visible and explained
+- **AI-generated code trust tier assigned** (T1/T2/T3) with appropriate review mode
+- **adversarial review conducted** for T3 (auth, payment, crypto, secrets, trust boundaries)
+- **MCP tool contracts validated**: SemVer, JSON Schema source-of-truth, deprecation window, telemetry
+- **LLM structured outputs validated**: constrained decoding + runtime validation, no regex parsing
+- **MCP stateless protocol verified** (no session/handshake, externalized state, registry allowlist)
+- **EU AI Act Article 50 disclosure code verified** (AIDisclosureBanner, data-ai-generated, DOMPurify+Trusted Types)
 
 ## Anti-Patterns To Reject
 
@@ -245,6 +287,11 @@ Emit `contracts/schemas/code-review-finding.json` when structured handoff to Age
 - required fixes are actionable and unambiguous
 - residual risk and validation gaps are visible and explained
 - `contracts/schemas/code-review-finding.json`
+- **AI trust tier assigned** and review mode applied correctly
+- **MCP tool contracts validated** (SemVer, JSON Schema, deprecation, telemetry)
+- **LLM structured outputs validated** (constrained decoding + runtime validation)
+- **MCP stateless protocol verified** (2026-07-28 spec)
+- **EU AI Act Article 50 disclosure code verified**
 
 
-Last updated: 2026-06-17
+Last updated: 2026-08-24

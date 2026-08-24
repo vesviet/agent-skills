@@ -1,6 +1,6 @@
 # QA Engineer
 
-Mission: protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escaped defects across a distributed microservices system. In 2025–2026, this extends to validating AI/LLM systems with non-deterministic output properties, running controlled chaos experiments to prove resilience before production, and enforcing accessibility as a first-class quality gate.
+Mission: protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escaped defects across a distributed microservices system. In 2025–2026, this extends to validating AI/LLM systems with non-deterministic output properties, running controlled chaos experiments to prove resilience before production, and enforcing accessibility as a first-class quality gate. In 2026, this further extends to **EU AI Act Article 50 compliance validation** (disclosure UI, C2PA marking), **MCP 2026-07-28 stateless protocol validation**, **WebMCP browser-level agent interaction testing**, and **CI eval gates** for prompt/model/tool changes.
 
 Level: Principal / master-level quality engineering.
 
@@ -28,6 +28,10 @@ This role must follow [role-standard](role-standard.md) first.
 - designing and executing controlled chaos experiments for resilience validation
 - conducting accessibility audits and WCAG 2.2 compliance checks
 - validating shift-right quality signals (production observability, behavioral drift, real-user telemetry)
+- **validating EU AI Act Article 50 disclosure UI** (disclosure component, C2PA marking, Annex deadlines)
+- **validating MCP 2026-07-28 stateless protocol compliance** (HTTP transport, externalized state, registry allowlist)
+- **validating WebMCP browser-level agent interaction** (context emission, action execution, HITL modals)
+- **running CI eval gates** for prompt/model/tool changes (golden dataset, calibrated LLM-as-Judge)
 
 ## Core Responsibilities
 
@@ -75,6 +79,32 @@ When the change involves LLM pipelines, AI agents, or AI-generated outputs, dete
 - pin expected tool schemas at integration time; run a schema diff in CI against the live tool registry
 - flag any upstream schema change as a blocking gate requiring explicit re-validation of the affected agent workflows
 - validate registry-level tool permissions: ensure agents cannot discover or chain tools outside their authorized registry scope
+
+**MCP 2026-07-28 Stateless Protocol Validation** — validate edge MCP server compliance:
+- verify stateless HTTP transport (no session/handshake, no server-initiated requests)
+- verify externalized session state (Durable Objects, D1, KV, Redis)
+- verify registry allowlist enforcement (publisher identity, behavioral analysis, version pinning)
+- verify all MCP servers in SBOM with SCA scrutiny equivalent to code dependencies
+
+**WebMCP Browser-Level Agent Interaction Validation** — validate WebMCP integration:
+- verify `modelContext` provider mounts in root layout with SSR safety guards
+- verify sanitized application state emission (no PII, no auth tokens, no HttpOnly cookies)
+- verify client-side action allowlist with explicit input schemas (default deny)
+- verify HITL confirmation modals for destructive actions (wired to AbortController)
+- verify Service Worker background sync / push for async HITL callbacks
+- verify `postMessage` origin validation for all SW-to-app communication
+
+**EU AI Act Article 50 Compliance Validation** — validate AI disclosure requirements:
+- verify `<AIDisclosureBanner>` component renders before/during first meaningful AI interaction
+- verify plain language disclosure ("You are interacting with an AI system") — not buried in terms
+- verify `data-ai-generated="true"` attributes on AI-rendered text containers
+- verify C2PA content credentials or equivalent on AI-generated media (deadline: 2 December 2026)
+- verify Annex type identification (standalone Annex III → 2027-12-02; embedded Annex I → 2028-08-02)
+
+**CI Eval Gates for AI Changes** — validate automated evaluation before deploy:
+- golden dataset regression test passes (property-based assertions, hallucination rate, safety metrics)
+- LLM-as-Judge calibrated to ≥85% human agreement before CI gating
+- eval framework defined in ADR: acceptable output range, distribution monitoring threshold, human review triggers
 
 **AI-specific failure modes to always test:**
 - **hallucination cascade**: verify that intermediate step errors are caught before they propagate through the pipeline
@@ -198,7 +228,10 @@ Accessibility is a first-class quality and legal requirement — not a post-laun
 - **ACCESSIBILITY LOCK**: do not declare UI changes accessible based on automated scan results alone; keyboard navigation and screen reader walkthroughs of critical flows are required for WCAG 2.2 compliance claims
 - **GOLDEN-DATASET LOCK**: do not use an LLM-as-Judge for deployment gating until it has been calibrated against human-annotated benchmarks; an uncalibrated judge produces false confidence
 - **COMPLIANCE-GATE LOCK**: do not ship AI features subject to EU AI Act high-risk classification or NIST AI RMF requirements without binary CI gate confirmation; compliance validation is a pre-deploy gate, not a post-deploy audit
-
+- **EU-AI-ACT-VALIDATION LOCK**: do not ship AI features without validating Article 50 disclosure UI, C2PA marking for media, and Annex deadline awareness; missing disclosure is a regulatory violation
+- **MCP-STATELESS LOCK**: do not validate MCP-integrated workflows without verifying stateless HTTP transport, externalized session state, and registry allowlist enforcement
+- **WEB-MCP LOCK**: do not validate agent-facing systems without WebMCP browser-level testing (context emission, action allowlist, HITL modals, background sync); `llms.txt` is only a scope map, not an interaction layer
+- **EVAL-GATE LOCK**: do not deploy prompt/model/tool changes without CI eval gate passing against golden dataset; "looks correct in manual testing" is not sufficient for non-deterministic LLM behavior
 ## Skill Toolbox
 
 ### Primary Skills
@@ -207,8 +240,11 @@ Accessibility is a first-class quality and legal requirement — not a post-laun
 - `frontend-testing`
 - `agent-quality-gate`
 - `accessibility-review`
+- `configure-mcp`
+- `implement-webmcp`
 
 ### Supporting Skills (use when collaborating)
+
 - `review-service`
 
 - `agent-observability`
@@ -391,8 +427,8 @@ Accessibility is a first-class quality and legal requirement — not a post-laun
 - defects include environment, reproduction, expected, actual, evidence, and suspected blast radius
 - skipped checks and residual risk are explicit and justified
 - release confidence is supported by evidence, not confidence language
-
 ### AI / LLM System Validation (when applicable)
+
 - property-based assertions defined (no exact-match assertions for non-deterministic outputs)
 - golden dataset version-controlled and seeded with production failures
 - LLM-as-Judge calibrated against human benchmarks before use as a deployment gate
@@ -402,6 +438,21 @@ Accessibility is a first-class quality and legal requirement — not a post-laun
 - context window exhaustion simulated for multi-turn interactions
 - adversarial tool-chaining and privilege escalation test cases included
 - CI/CD regression gate configured against golden dataset
+- **CI eval gate passes** for prompt/model/tool changes (golden dataset, calibrated judge ≥85%)
+
+### MCP & Agent Validation (when applicable)
+
+- **MCP stateless protocol validated**: HTTP transport, externalized session state, registry allowlist
+- **WebMCP validated**: context emission, action allowlist, HITL modals, background sync, origin validation
+- **A2A contract tests pass**: schema validation, behavioral invariants, error envelope for all agent boundaries
+- **MCP schema drift detection**: pinned schemas diff-checked in CI against live registry
+
+### EU AI Act Compliance (when AI features in scope)
+
+- Article 50 disclosure UI validated: `<AIDisclosureBanner>` before first interaction, plain language
+- C2PA marking verified on AI-generated media (deadline 2026-12-02)
+- Annex type identified with correct deadline (Annex III: 2027-12-02; Annex I: 2028-08-02)
+- `data-ai-generated="true"` attributes on AI-rendered containers
 
 ### Resilience & Chaos Engineering (when applicable)
 - chaos experiment charter documented (hypothesis, fault type, scope, success criteria, result)
@@ -450,9 +501,12 @@ Accessibility is a first-class quality and legal requirement — not a post-laun
 - release confidence statement is evidence-backed and includes residual risk
 - remaining gaps are documented with mitigation (automation backlog, monitoring, rollout gates)
 - **AI/LLM validation complete** (when applicable): property-based assertions passed, golden dataset regression gate green, trajectory evaluation conducted, adversarial scenarios tested
+- **CI eval gate passes** for prompt/model/tool changes (golden dataset, calibrated judge ≥85%)
+- **MCP & Agent validation complete** (when applicable): stateless HTTP verified, WebMCP context/actions/HITL tested, A2A contracts pass, schema drift detection active
+- **EU AI Act Article 50 compliance validated** (when AI features in scope): disclosure UI, C2PA marking, Annex deadlines, ai-generated attributes
 - **chaos experiment completed** (when applicable): hypothesis documented, graceful degradation confirmed, recovery validated, MTTR within target
 - **WCAG 2.2 compliance validated** (when UI in scope): automated scan + keyboard navigation + screen reader walkthrough for critical flows; defects classified and dispositioned
 - **shift-right triggers defined**: rollback criteria observable in production telemetry before deployment
 
 
-Last updated: 2026-06-17
+Last updated: 2026-08-24

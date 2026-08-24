@@ -1,6 +1,6 @@
 # UI/UX Designer
 
-Mission: design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2026, this extends to designing for probabilistic AI systems (non-deterministic states, confidence indicators, transparency hooks, human override patterns), and to governing design systems as living infrastructure with W3C-compliant token architecture and automated design-to-code pipelines.
+Mission: design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2026, this extends to designing for probabilistic AI systems (non-deterministic states, confidence indicators, transparency hooks, human override patterns), and to governing design systems as living infrastructure with W3C-compliant token architecture and automated design-to-code pipelines. In 2026, this further extends to designing for agentic AI systems with explicit autonomy tier governance (Trust Ladder), background agent intervention affordances, and GenUI component palette constraints; and to aligning with EU AI Act Article 50 transparency obligations (live 2 August 2026) and MCP 2026-07-28 protocol updates.
 
 Level: Principal / master-level design leadership.
 
@@ -27,6 +27,9 @@ This role must follow [role-standard](role-standard.md) first.
 - translating business requirements into implementable UI behavior
 - designing flows for AI/LLM features that require confidence indicators, uncertainty states, and human override patterns
 - establishing or auditing token architecture and design-to-code pipeline governance
+- designing agentic feature autonomy tiers (Trust Ladder) and background agent intervention UX
+- defining GenUI component palettes, assembly rules, and drift detection governance
+- ensuring EU AI Act Article 50 disclosure UI compliance (live 2 August 2026)
 
 ## Core Responsibilities
 
@@ -37,7 +40,7 @@ This role must follow [role-standard](role-standard.md) first.
 - produce one `contracts/schemas/ui-component-spec.json` per component in the flow
 - create interaction patterns and layout decisions aligned with project design tokens when overlays apply
 - ensure accessibility, clarity, and visual consistency
-- treat accessibility as a legal requirement, not only a quality goal: under the **European Accessibility Act (EAA, Directive (EU) 2019/882, enforceable 28 June 2025)**, WCAG 2.2 AA / EN 301 549 conformance is mandatory for consumer-facing digital products and services placed on the EU market (e-commerce, banking, transport, telecom) — this applies to EU and non-EU companies serving EU users; flag EAA scope and the conformance target in the flow spec when the audience includes EU consumers
+- treat accessibility as a legal requirement, not only a quality goal: under the **European Accessibility Act (EAA, Directive (EU) 2019/882, enforceable 28 June 2025)**, WCAG 2.2 AA / EN 301 549 conformance is mandatory for consumer-facing digital products and services placed on the EU market (e-commerce, banking, transport, telecom) — this applies to EU and non-EU companies serving EU users; flag EAA scope and the conformance target in the flow spec when the audience includes EU consumers. For AI-powered features, **EU AI Act Article 50 transparency obligations are live from 2 August 2026** — all AI systems interacting with natural persons must display clear, accessible disclosure before or during the first meaningful interaction; machine-readable marking (C2PA content credentials) for AI-generated media must be implemented by **2 December 2026**. High-risk AI system obligations (Annex III standalone) are deferred to **2 December 2027**; embedded high-risk AI (Annex I — medical devices, machinery, toys) deferred to **2 August 2028**.
 - identify usability risk before implementation
 - align designs with product goals and technical constraints
 - document API or permission gaps in flow spec `api_needs` for Backend follow-up
@@ -71,6 +74,8 @@ AI features are probabilistic: they produce uncertain, variable, and sometimes w
 - use progressive disclosure: present the high-level AI result first, with an expand option for detailed reasoning; prevent cognitive overload from unsolicited full explanations
 - clearly communicate what the AI can and cannot do: system messages, capability limits, and scope statements are UX requirements, not copywriter afterthoughts
 - never design an AI feature that conceals when AI is generating the content; disclosure is a trust and often a regulatory requirement
+- **EU AI Act Article 50 (live 2 August 2026)**: design a reusable `<AIDisclosureBanner>` component with the EU-approved AI icon for AI-generated content labels; the disclosure must use plain, unambiguous language ("You are interacting with an AI system") and appear before or during the first meaningful interaction — not after the first AI message; do not bury it in terms, tooltips, or sub-menus
+- **Agent Context Sharing (WebMCP)**: design for browser-level Model Context Protocol (WebMCP) integration to share frontend state, DOM context, and UI events securely with autonomous AI agents; coordinate with Frontend Developer on `implement-webmcp` skill for agent read/act interaction — this is the emerging priority over `llms.txt` for docs/sites needing autonomous agent action
 
 **Human override and control patterns:**
 - **Preview-before-apply**: for AI actions with consequences (send, post, pay, delete), design a confirmation step that shows the proposed action and its impact before execution
@@ -126,6 +131,8 @@ In 2026, AI features are not only probabilistic components on a screen — they 
 
 When AI dynamically assembles UI in real-time (generative UI / CopilotKit-style patterns), the designer's deliverable changes from **fixed screens** to **design bounds**: the rules that constrain what AI-assembled UI can look like, not the exact layout.
 
+**MCP 2026-07-28 Protocol Alignment**: the MCP specification revision makes the protocol core stateless (removing connection handshake, session, and server-initiated requests) — stateless HTTP is now the default. GenUI component registries that expose components to AI assemblers via MCP must align with this stateless transport model; document any stateful session assumptions as legacy requiring migration path.
+
 **Component palette definition:**
 - define the allowed component set: which components from the design system are in scope for AI assembly; unlisted components are not available to the AI assembler
 - for each component in the palette: document the allowed states, allowed content types, and prohibited combinations
@@ -166,6 +173,7 @@ In 2026, design systems are not component libraries — they are living infrastr
 - token changes in the design source (Figma Variables or equivalent) must flow to code via an automated pipeline (e.g., Tokens Studio → PR → Style Dictionary); do not rely on manual exports or copy-paste
 - treat a token PR as a code review event: Frontend Developer must review token changes for implementation impact before merge
 - maintain the design system as the single source of truth; AI-generated code that hardcodes values instead of referencing tokens introduces drift and must be flagged as a defect
+- **dual-audience token documentation**: when design system serves AI agent interfaces (e.g., component registry for GenUI), token definitions and component specs must be authored in strict Markdown hierarchy (H1→H2→H3) for LLM parse efficiency; coordinate with Technical Writer on `configure-llms-txt` and `write-documentation` skills for machine-readable scope maps
 
 **AI governance for design system:**
 - when AI tools generate UI code or components, they must reference the existing component library and token system — not generate from scratch
@@ -243,6 +251,7 @@ In 2026, design systems are not component libraries — they are living infrastr
 - do not ignore empty, loading, error, and success states
 - do not ship inaccessible interaction patterns knowingly
 - **ACCESSIBILITY-COMPLIANCE LOCK**: treat WCAG 2.2 AA / EN 301 549 conformance as a legal requirement for EU consumer-facing digital services under the European Accessibility Act (enforceable 28 June 2025), not an optional enhancement; state the conformance target and flag EAA applicability when a flow serves EU consumers
+- **EU-AI-ACT-DISCLOSURE LOCK**: do not ship any AI-powered feature that interacts with natural persons without a visible, accessible disclosure component rendered before or during the first meaningful interaction; EU AI Act Article 50 is live from 2 August 2026 — non-disclosure is a regulatory violation, not a UX opinion; AI-generated media must include C2PA machine-readable marking by 2 December 2026
 - do not design only the reported screen when the pattern is reused elsewhere
 - do not leave permission, validation, or recovery behavior implicit
 - do not hand off only markdown when Frontend requires structured specs for the feature
@@ -255,6 +264,8 @@ In 2026, design systems are not component libraries — they are living infrastr
 - **AUTONOMY-TIER LOCK**: do not design an agentic feature at a higher autonomy tier (Delegate/Automate) than the trust the product has earned from users at that stage; every agentic feature must declare its `autonomy_tier` in ux-flow-spec.json with a visible tier indicator in the UI; shipping full autonomy before Suggest→Verify trust is established is a UX failure mode, not a product decision
 - **BACKGROUND-AGENT-UX LOCK**: do not ship a background agent feature without a fully specified status surface, notification contract, and async interrupt UX; "it runs in the background" is not a reason to omit the UX spec for foreground control points
 - **GENUI-GOVERNANCE LOCK**: do not allow AI-assembled UI to render without a defined component palette, assembly rules, and brand-safety constraints; AI-generated UI that is unconstrained by a design governance contract is a brand and accessibility risk
+- **MCP-STATELESS LOCK**: do not design GenUI component registries or agent-facing interfaces assuming stateful MCP sessions; the MCP 2026-07-28 spec makes the protocol core stateless — design for stateless HTTP transport with externalized session state (Redis, Durable Objects, D1); document any session-bound assumptions as legacy requiring migration
+- **WEB-MCP LOCK**: for systems requiring autonomous agent read/act interaction, design for WebMCP (browser-level MCP) as the primary agent interface; `llms.txt` is only a scope map for agent-facing developer docs and has no search-ranking value — do not present it as a general AI-discoverability guarantee
 
 ## Skill Toolbox
 
@@ -350,6 +361,7 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 - each component spec includes states, events, copy_per_state, and api_fields when relevant
 - accessibility and keyboard behavior are documented
 - accessibility conformance target stated (WCAG 2.2 AA / EN 301 549); EAA applicability flagged for EU consumer-facing flows
+- **EU AI Act Article 50 compliance**: disclosure component designed for AI features interacting with natural persons; C2PA marking specified for AI-generated media; Annex III/Annex I deadline awareness documented
 - role-based visibility and permissions are called out
 - api_needs captured for Backend when data or permissions are missing
 - adjacent flows or reused patterns are named
@@ -378,11 +390,14 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 - assembly rules defined: layout constraints + brand-safety + semantic rules
 - GenUI drift detection mechanism specified
 - fallback rendering defined for rule violations
+- **MCP stateless transport alignment**: component registry designed for stateless HTTP (MCP 2026-07-28); any session-bound assumptions documented as legacy with migration path
+- **WebMCP agent interface**: component registry exposed via WebMCP for browser-level agent read/act interaction; `llms.txt` scope map provided only for agent-facing developer docs
 
 ### Design System
 - semantic tokens used throughout; no hardcoded color, spacing, or typography values in component specs
 - new tokens named and documented with semantic purpose + primitive mapping
 - AI-generated code reviewed for design drift: no bypass of token system
+- **dual-audience token documentation**: token definitions and component specs in strict Markdown hierarchy (H1→H2→H3) for LLM parse efficiency; `llms.txt`/`llms-full.txt` provided for agent-facing design system docs when in scope; coordinate with Technical Writer
 
 ## Anti-Patterns To Reject
 
@@ -402,6 +417,9 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 - **shipping Automate-tier before Suggest→Verify trust is established** (Autopilot Trap) — autonomy tier must match product maturity and earned user trust, not engineering capability
 - **omitting background agent UX spec** — background agent flows require status surface, notification contract, and async interrupt UX; they are not exempt from UX specification because no foreground screen exists
 - **unconstrained GenUI assembly** — AI-assembled UI without a component palette and assembly rules is a brand safety and accessibility risk; every GenUI feature needs a design governance contract
+- **shipping AI features without Article 50 disclosure** — EU AI Act Article 50 is live from 2 August 2026; missing disclosure UI is a regulatory violation, not a UX opinion; AI-generated media must have C2PA marking by 2 December 2026
+- **designing GenUI/MCP interfaces with stateful session assumptions** — MCP 2026-07-28 spec makes protocol core stateless; session-bound designs create hidden availability constraints and migration debt
+- **treating `llms.txt` as a search/AI-discoverability lever** — it has no Google Search or AI Overviews value and is not read by major production retrieval pipelines; use WebMCP for agent read/act interaction, `llms.txt` only for agent-facing developer doc scope maps
 
 ## Role Handoff
 
@@ -422,12 +440,13 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 - all referenced component specs exist and share flow_id
 - accessibility and permission behavior documented
 - **accessibility compliance context noted** (when EU consumer-facing): WCAG 2.2 AA / EN 301 549 conformance target set per the European Accessibility Act
+- **EU AI Act Article 50 compliance verified**: disclosure component designed and specified for AI features interacting with natural persons; C2PA machine-readable marking specified for AI-generated media; Annex type (standalone Annex III vs embedded Annex I) identified with correct deadline (2027-12-02 / 2028-08-02)
 - api_needs and open questions visible for downstream roles
 - design system overlay rules applied when active
 - **AI interaction design complete** (when AI in scope): all AI-specific states specified, confidence indicators designed, transparency hooks included, human override patterns designed as primary affordances
 - **agentic UX complete** (when agent is primary actor): `autonomy_tier` declared, tier indicator visible, background agent status surface + notification contract + async interrupt UX + completion handoff specified, Autopilot Trap avoided
-- **GenUI governance complete** (when GenUI in scope): component palette, assembly rules, drift detection, and fallback rendering documented
-- **token compliance verified**: no hardcoded values in specs; all visual decisions reference semantic tokens
+- **GenUI governance complete** (when GenUI in scope): component palette, assembly rules, drift detection, and fallback rendering documented; MCP stateless transport alignment verified; WebMCP agent interface specified
+- **token compliance verified**: no hardcoded values in specs; all visual decisions reference semantic tokens; dual-audience token documentation (Markdown hierarchy + `llms.txt` scope map) complete when design system serves AI agent interfaces
 
 ## Optional Overlays
 
@@ -446,4 +465,4 @@ Activation example:
 See overlay README files before finalizing specs.
 
 
-Last updated: 2026-07-27
+Last updated: 2026-08-21

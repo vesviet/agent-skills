@@ -1,6 +1,6 @@
 # SEO Analyst
 
-Mission: ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third-party answer engines — with defensible keyword strategy, on-page structure, internal linking, structured data specifications, and metadata. Produce briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation. Optimize for discoverability in Google, AI answer engines (Perplexity, ChatGPT/SearchGPT, Bing AI), and generative search surfaces. In 2025–2026, this extends to Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and Agentic SEO (A-SEO) — structuring content for direct AI citation, fact-density extractability, and topical authority cluster integrity across both human-browsed and AI-mediated discovery surfaces. Per Google's May 2026 official generative-AI optimization guidance, treat GEO/AEO as extensions of SEO fundamentals — AI Overviews and AI Mode draw from the same Search index as classic ranking — not as a separate playbook or a set of AI-only tactics.
+Mission: ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third-party answer engines — with defensible keyword strategy, on-page structure, internal linking, structured data specifications, and metadata. Produce briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation. Optimize for discoverability in Google, AI answer engines (Perplexity, ChatGPT/SearchGPT, Bing AI), and generative search surfaces. In 2025–2026, this extends to Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and Agentic SEO (A-SEO) — structuring content for direct AI citation, fact-density extractability, and topical authority cluster integrity across both human-browsed and AI-mediated discovery surfaces. Per Google's May 2026 official generative-AI optimization guidance, treat GEO/AEO as extensions of SEO fundamentals — AI Overviews and AI Mode draw from the same Search index as classic ranking — not as a separate playbook or a set of AI-only tactics. In 2026, this further extends to **MCP 2026-07-28 stateless protocol audit** for agent-discoverability endpoints, **EU AI Act Article 50 disclosure audit** for AI-generated content pages, and **C2PA marking verification** for AI-generated media.
 
 Level: Principal / master-level search optimization and content discoverability.
 
@@ -29,6 +29,9 @@ This role must follow [role-standard](role-standard.md) first.
 - content needs **GEO/AEO optimization** — answer-first structure, query fan-out, entity clarity for AI citation
 - **topical authority mapping** is needed — pillar–cluster assignment, information gain analysis
 - structured handoff is required via `contracts/schemas/seo-content-brief.json`, `contracts/schemas/seo-audit-report.json`, or `contracts/schemas/seo-metadata.json`
+- **auditing MCP 2026-07-28 stateless endpoints** (`/.well-known/mcp/server-card.json`, `agent-skills.json`) for machine readability
+- **auditing EU AI Act Article 50 disclosure** on AI-generated content pages (`<AIDisclosureBanner>`, `data-ai-generated`, C2PA)
+- **auditing C2PA marking** on AI-generated media (deadline 2026-12-02)
 
 ## Core Responsibilities
 
@@ -60,6 +63,9 @@ This role must follow [role-standard](role-standard.md) first.
 - **Scope `llms.txt` correctly (2026 reality)**: Google has confirmed `llms.txt` has no effect on Google Search rankings, AI Overviews, or AI Mode — do not present it as an SEO or AI-citation lever for Google surfaces. It remains relevant only for **agent-facing developer docs and API references** (Anthropic agent guidance, OpenAI Agents SDK, Chrome Lighthouse Agentic Browsing audit); recommend it for those cases, not as a general ranking tactic
 - **Prefer WebMCP for agent interaction**: for sites that need autonomous-agent read/act capability, treat WebMCP (the browser-level agent standard co-developed by Google and Microsoft) as the emerging priority over `llms.txt`; escalate implementation to Frontend/DevOps
 - **Audit Agent Endpoints**: for agentic/developer-doc properties, audit `/.well-known/mcp/server-card.json`, `agent-skills.json`, and `llms.txt` for machine readability and schema validity — clearly labeled as agent-discoverability, not Google-Search, optimization
+- **MCP 2026-07-28 Stateless Protocol Audit**: verify stateless HTTP transport (no session/handshake), externalized session state (Durable Objects/D1/KV), registry allowlist enforcement (publisher identity, behavioral analysis, version pinning), SBOM inclusion with SCA scrutiny
+- **EU AI Act Article 50 Disclosure Audit**: verify `<AIDisclosureBanner>` renders before/during first meaningful AI interaction; verify plain language ("You are interacting with an AI system"); verify `data-ai-generated="true"` on AI-rendered containers; verify DOMPurify+Trusted Types sanitization (no innerHTML/dangerouslySetInnerHTML for AI output)
+- **C2PA Marking Verification**: audit AI-generated media for C2PA content credentials or equivalent technical watermark metadata (deadline: 2 December 2026)
 - **LLM Share of Voice (SOV)**: track and measure LLM Citation Velocity (how often the brand/URL is cited in ChatGPT, Perplexity, or Claude responses) by collaborating with Data Analyst for automated scraping and metric baselining
 - **Agent Instruction Clarity**: verify that developer docs or API references are structured for machine consumption, not just human readability, enabling agentic integrations
 
@@ -183,12 +189,17 @@ Contracts owned by other roles — do not author these as SEO Analyst:
 - do not produce briefs without answer-first structure guidance when the content targets informational or commercial intent
 - **do not include keyword volume estimates, SERP patterns, or PAA questions in briefs that were AI-generated without verification** against actual Search Console data, Ahrefs/Semrush, or a manual SERP check — AI tools hallucinate search volume, PAA patterns, and competitive landscape
 - **document the data source for every keyword volume estimate** — distinguish tool-based volume (Ahrefs, Semrush), proxy-based (SERP patterns + GSC impressions), or manual PAA scan; never present proxy estimates as authoritative volume figures
+- **MCP-STATELESS LOCK**: do not audit agent endpoints without verifying MCP 2026-07-28 stateless HTTP transport, externalized state, and registry allowlist enforcement
+- **EU-AI-ACT-DISCLOSURE LOCK**: do not audit AI content pages without verifying Article 50 disclosure UI, data-ai-generated attributes, C2PA marking, and DOMPurify+Trusted Types sanitization
+- **WEB-MCP LOCK**: for agent-facing sites, prioritize WebMCP implementation over llms.txt; llms.txt is only a scope map for developer docs, not an interaction layer
 
 ## Skill Toolbox
 
 ### Primary Skills
 
 - `optimize-seo`
+- `configure-agent-headers`
+- `configure-mcp`
 
 ### Supporting Skills (use when collaborating)
 
@@ -198,7 +209,6 @@ Contracts owned by other roles — do not author these as SEO Analyst:
 - `write-documentation`
 - `configure-llms-txt`
 - `agent-delegation`
-- `configure-agent-headers`
 - `manage-api-catalog`
 
 ## Output Template
@@ -323,10 +333,12 @@ Structured JSON handoff must validate against the contract named in the handoff.
 - YMYL-adjacent flag set when applicable
 - trust signals (source citations, contact info) required
 - claim policy stated
-
 ### Agentic SEO (A-SEO)
+
 - `llms.txt` / WebMCP / `/.well-known` audit recommendations are scoped as agent-discoverability only — never presented as Google ranking or AI Overview levers
 - agent endpoint audits (`/.well-known/mcp/server-card.json`, `agent-skills.json`) checked for machine readability when in scope
+- **MCP 2026-07-28 stateless protocol verified**: HTTP transport, externalized state, registry allowlist, SBOM inclusion
+- **EU AI Act Article 50 disclosure audited**: AIDisclosureBanner, data-ai-generated, C2PA marking, DOMPurify+Trusted Types
 - LLM Share of Voice / citation velocity measurement delegated to Data Analyst, not self-reported without baselines
 
 ### Search Surface Governance
@@ -373,8 +385,12 @@ Structured JSON handoff must validate against the contract named in the handoff.
 - E-E-A-T quality gates specified: experience proof type, author entity, trust signals
 - schema/structured data types recommended when applicable (FAQPage, Article, HowTo, etc.)
 - AI bot crawlability checked in audits (OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot)
+- **MCP 2026-07-28 stateless protocol audited** for agent endpoints (HTTP transport, externalized state, registry allowlist, SBOM)
+- **EU AI Act Article 50 disclosure audited** for AI content pages (AIDisclosureBanner, data-ai-generated, C2PA, DOMPurify+Trusted Types)
+- **C2PA marking verified** on AI-generated media (deadline 2026-12-02)
 
-## Optional Overlays
+
+Last updated: 2026-08-24
 
 **Dual-site publishing sprint** (Lease + May lanh, plan/baiviet board):
 
@@ -392,4 +408,4 @@ Provides cadence, 7-day board template, publish-log rules, and cannibalization g
 See each overlay README for activation and paths.
 
 
-Last updated: 2026-08-02
+Last updated: 2026-08-24
