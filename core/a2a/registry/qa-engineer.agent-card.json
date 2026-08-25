@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/qa-engineer",
   "contract_type": "agent-card",
   "name": "qa-engineer",
-  "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escaped defects across a distributed microservices system. In 2025–2026, this extends to validating AI/LLM systems with non-deterministic output properties, running controlled chaos experiments to prove resilience before production, and enforcing accessibility as a first-class quality gate.",
+  "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escaped defects across a distributed microservices system. In 2025–2026, this extends to validating AI/LLM systems with non-deterministic output properties, running controlled chaos experiments to prove resilience before production, and enforcing accessibility as a first-class quality gate. In 2026, this further extends to **EU AI Act Article 50 compliance validation** (disclosure UI, C2PA marking), **MCP 2026-07-28 stateless protocol validation**, **WebMCP browser-level agent interaction testing**, and **CI eval gates** for prompt/model/tool changes.",
   "url": "pack://agent-skills/core/roles/qa-engineer.md",
   "version": "4.0.0",
   "protocol_version": "1.0",
@@ -99,6 +99,50 @@
       "description": "Audit UI for keyboard navigation, focus order, screen-reader labels, color contrast, motion preferences, and ARIA correctness against WCAG 2.2 criteria (including Focus Not Obscured 2.4.11, Target Size 2.5.8, Accessible Authentication 3.3.8, Dragging Movements 2.5.7, Redundant Entry 3.3.7). Use automated CI gates via @axe-core/playwright for regression detection alongside manual screen-reader testing. Use when validating user-facing flows before release, after design specs land, or when fixing reported a11y defects.",
       "tags": [
         "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "configure-mcp",
+      "name": "Configure Mcp",
+      "description": "Sets up the full MCP presence for a web service — experimental Server Card discovery, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "implement-webmcp",
+      "name": "Implement Webmcp",
+      "description": "Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when enabling in-browser AI agent interactions, DOM context sharing, or client-side action execution.",
+      "tags": [
+        "frontend",
         "pack"
       ],
       "inputModes": [

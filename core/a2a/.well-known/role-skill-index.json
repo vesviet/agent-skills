@@ -1,7 +1,7 @@
 {
   "version": "4.0.0",
   "protocol": "A2A 1.0 + Antigravity",
-  "root": "D:/myproject/agent-skills",
+  "root": ".",
   "stats": {
     "roles": 34,
     "skills": 107,
@@ -410,7 +410,7 @@
     "agent-coordinator": {
       "name": "agent-coordinator",
       "title": "Agent Coordinator",
-      "description": "- Agent Coordination",
+      "description": "`), `data-ai-generated` attributes on AI content, C2PA marking for AI media (deadline 2026-12-02), Annex type identified with correct deadline. Treat missing disclosure as an irreversible action requiring explicit human sign-off.",
       "file": "core/roles/agent-coordinator.md",
       "skills": [
         "agent-a2a-protocol",
@@ -560,6 +560,9 @@
         "cloudflare-email-service",
         "debug-workers-edge",
         "web-perf",
+        "configure-mcp",
+        "setup-llm-gateway",
+        "implement-structured-outputs",
         "setup-deployment",
         "debug-runtime-platform",
         "supply-chain-security",
@@ -656,6 +659,8 @@
         "debug-runtime-platform",
         "add-telemetry-instrumentation",
         "manage-secrets",
+        "configure-mcp",
+        "setup-llm-gateway",
         "supply-chain-security",
         "navigate-service",
         "commit-code",
@@ -664,7 +669,6 @@
         "security-audit",
         "agent-delegation",
         "sandbox-sdk",
-        "configure-mcp",
         "incident-report"
       ],
       "irreversible_actions": []
@@ -813,6 +817,8 @@
         "frontend-testing",
         "agent-quality-gate",
         "accessibility-review",
+        "configure-mcp",
+        "implement-webmcp",
         "review-service",
         "agent-observability",
         "navigate-service",
@@ -844,11 +850,13 @@
     "reviewer": {
       "name": "reviewer",
       "title": "Reviewer",
-      "description": "65% acceptance rate, codebase-aware model, full context window | Focused review; verify architectural assumptions and cross-service boundaries |",
+      "description": ", data-ai-generated, C2PA)",
       "file": "core/roles/reviewer.md",
       "skills": [
         "review-code",
         "review-service",
+        "configure-mcp",
+        "implement-structured-outputs",
         "design-review",
         "accessibility-review",
         "navigate-service",
@@ -883,17 +891,18 @@
     "seo-analyst": {
       "name": "seo-analyst",
       "title": "SEO Analyst",
-      "description": "— SEO Brief / Audit",
+      "description": "`, `data-ai-generated`, C2PA)",
       "file": "core/roles/seo-analyst.md",
       "skills": [
         "optimize-seo",
+        "configure-agent-headers",
+        "configure-mcp",
         "conduct-research",
         "analyze-business-requirements",
         "analyze-data",
         "write-documentation",
         "configure-llms-txt",
         "agent-delegation",
-        "configure-agent-headers",
         "manage-api-catalog"
       ],
       "irreversible_actions": []
@@ -971,14 +980,17 @@
     "task-planner": {
       "name": "task-planner",
       "title": "Task Planner",
-      "description": "— Execution Plan",
+      "description": "` before first interaction, plain language, C2PA marking by 2026-12-02, Annex type identification (Annex III: 2027-12-02; Annex I: 2028-08-02)",
       "file": "core/roles/task-planner.md",
       "skills": [
         "design-ux-flow",
+        "plan-technical-delivery",
         "meeting-review",
         "write-product-brief",
         "analyze-business-requirements",
-        "navigate-service"
+        "navigate-service",
+        "configure-mcp",
+        "agent-quality-gate"
       ],
       "irreversible_actions": []
     },
@@ -1079,7 +1091,7 @@
     "ui-ux-designer": {
       "name": "ui-ux-designer",
       "title": "UI/UX Designer",
-      "description": "- UX/UI Brief",
+      "description": "` component with the EU-approved AI icon for AI-generated content labels; the disclosure must use plain, unambiguous language (\"You are interacting with an AI system\") and appear before or during the first meaningful interaction — not after the first AI message; do not bury it in terms, tooltips, or sub-menus",
       "file": "core/roles/ui-ux-designer.md",
       "skills": [
         "design-ux-flow",

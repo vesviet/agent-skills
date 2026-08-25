@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/task-planner",
   "contract_type": "agent-card",
   "name": "task-planner",
-  "description": "produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation checkpoints, and explicit assumptions—so implementers can start without rediscovering the approach. In 2025–2026, this extends to embedding explicit AI fallback mechanisms and Human-In-The-Loop (HITL) review triggers into plans that include generative AI features, defining agent-delegation phase gates with approval checkpoints, and ensuring that AI-bearing task slices have named oversight owners before execution begins.",
+  "description": "produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation checkpoints, and explicit assumptions—so implementers can start without rediscovering the approach. In 2025–2026, this extends to embedding explicit AI fallback mechanisms and Human-In-The-Loop (HITL) review triggers into plans that include generative AI features, defining agent-delegation phase gates with approval checkpoints, and ensuring that AI-bearing task slices have named oversight owners before execution begins. In 2026, this further extends to **Trust Ladder autonomy tier planning** (Suggest→Verify→Delegate→Automate), **background agent UX planning** (status surface, notification contract, async interrupt), **GenUI component palette governance**, **MCP 2026-07-28 stateless protocol alignment**, **EU AI Act Article 50 disclosure planning**, and **CI eval gate integration** for prompt/model/tool changes.",
   "url": "pack://agent-skills/core/roles/task-planner.md",
   "version": "4.0.0",
   "protocol_version": "1.0",
@@ -31,6 +31,25 @@
       "id": "design-ux-flow",
       "name": "Design Ux Flow",
       "description": "Design or refine a UX flow by defining user goals, preserved behavior, screen states, interaction rules, edge cases, and adjacent flow impact. Use when a feature, bug fix, or behavior change needs a UX/UI brief that frontend and QA can implement and validate reliably.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": []
+    },
+    {
+      "id": "plan-technical-delivery",
+      "name": "Plan Technical Delivery",
+      "description": "Turn architecture decisions and requirements into a delivery-ready technical plan with slices, quality gates, impact radius, and rollout notes. Use when Technical Lead breaks down implementation work for developers, QA, and release.",
       "tags": [
         "foundation",
         "pack"

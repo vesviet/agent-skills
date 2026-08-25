@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/cloudflare-engineer",
   "contract_type": "agent-card",
   "name": "cloudflare-engineer",
-  "description": "own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration, and edge incident recovery — so application teams ship safely on Cloudflare without platform guesswork. In 2025–2026, this extends to governing Workers AI inference at the edge (latency, caching, cost budgets), routing agentic requests safely across LLM and tool-call boundaries, injecting RFC 8288 Agent Discovery headers at the edge layer, and enforcing security boundaries for AI-augmented edge workloads.",
+  "description": "own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration, and edge incident recovery — so application teams ship safely on Cloudflare without platform guesswork. In 2025–2026, this extends to governing Workers AI inference at the edge (latency, caching, cost budgets), routing agentic requests safely across LLM and tool-call boundaries, injecting RFC 8288 Agent Discovery headers at the edge layer, and enforcing security boundaries for AI-augmented edge workloads. In 2026, this further extends to **MCP 2026-07-28 stateless protocol compliance** (no session/handshake, HTTP default), **LLM Gateway integration** for token budgeting and provider failover at the edge, **Durable Workflows** (Cloudflare Workflows) deployment with in-flight execution compatibility, and **AI evaluation gates** in CI/CD before edge deploy.",
   "url": "pack://agent-skills/core/roles/cloudflare-engineer.md",
   "version": "4.0.0",
   "protocol_version": "1.0",
@@ -222,6 +222,69 @@
       "description": "Analyzes web page performance using Chrome DevTools MCP — measuring Core Web Vitals (LCP, INP, CLS), identifying render-blocking resources, network dependency chains, and caching issues to produce specific, actionable optimization recommendations. Use when auditing Lighthouse scores, debugging slow page loads, profiling Core Web Vitals regressions, or validating performance improvements before release.",
       "tags": [
         "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json"
+      ]
+    },
+    {
+      "id": "configure-mcp",
+      "name": "Configure Mcp",
+      "description": "Sets up the full MCP presence for a web service — experimental Server Card discovery, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json"
+      ]
+    },
+    {
+      "id": "setup-llm-gateway",
+      "name": "Setup Llm Gateway",
+      "description": "Configure a centralized LLM proxy gateway for token routing, budgeting, and failover. Use when deploying multi-model routing, enforcing token rate limits, managing provider credentials, or centralizing AI observability.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json"
+      ]
+    },
+    {
+      "id": "implement-structured-outputs",
+      "name": "Implement Structured Outputs",
+      "description": "Implements strict constrained decoding and validation for LLM responses. Use when enforcing JSON Schema guarantees on model generations, eliminating regex parsing, or integrating structured LLM outputs into backend services.",
+      "tags": [
+        "backend",
         "pack"
       ],
       "inputModes": [

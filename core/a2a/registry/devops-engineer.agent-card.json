@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/devops-engineer",
   "contract_type": "agent-card",
   "name": "devops-engineer",
-  "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollout safety, configuration integrity, and recovery paths. In 2025–2026, this extends to operating as an internal platform product team (Platform Engineering / IDP), governing AI/ML model deployment pipelines with the same rigor as application deployments, enforcing GitOps-first infrastructure with automated drift detection, applying supply chain security (SLSA, SBOM) to all delivery artifacts, managing AI inference cost via FinOps enforcement, and establishing governance frameworks for AI-assisted incident response.",
+  "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollout safety, configuration integrity, and recovery paths. In 2025–2026, this extends to operating as an internal platform product team (Platform Engineering / IDP), governing AI/ML model deployment pipelines with the same rigor as application deployments, enforcing GitOps-first infrastructure with automated drift detection, applying supply chain security (SLSA, SBOM) to all delivery artifacts, managing AI inference cost via FinOps enforcement, and establishing governance frameworks for AI-assisted incident response. In 2026, this further extends to **MCP 2026-07-28 stateless hosting** (horizontal scaling, OAuth Resource Server + RFC 8707, Enterprise-Managed Authorization), **Durable Workflow deployment** (Temporal/Cloudflare Workflows with in-flight compatibility), **AI remediation agent governance** (graded autonomy, audit-grade logging, kill switch), **Value-Per-Token FinOps** (business output per inference dollar), and **Golden Path templates** for self-service provisioning.",
   "url": "pack://agent-skills/core/roles/devops-engineer.md",
   "version": "4.0.0",
   "protocol_version": "1.0",
@@ -96,6 +96,69 @@
       "description": "Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-control, and rollout patterns. Use when code or deployment work touches credentials, tokens, keys, or sensitive configuration.",
       "tags": [
         "security",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "deployment-plan.json"
+      ]
+    },
+    {
+      "id": "configure-mcp",
+      "name": "Configure Mcp",
+      "description": "Sets up the full MCP presence for a web service — experimental Server Card discovery, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "deployment-plan.json"
+      ]
+    },
+    {
+      "id": "setup-llm-gateway",
+      "name": "Setup Llm Gateway",
+      "description": "Configure a centralized LLM proxy gateway for token routing, budgeting, and failover. Use when deploying multi-model routing, enforcing token rate limits, managing provider credentials, or centralizing AI observability.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "deployment-plan.json"
+      ]
+    },
+    {
+      "id": "supply-chain-security",
+      "name": "Supply Chain Security",
+      "description": "Implement software supply chain security by generating SBOMs (CycloneDX/SPDX), enforcing SLSA build provenance levels, integrating artifact signing (Sigstore), and maintaining VEX context for vulnerability management. Use when hardening CI/CD pipelines, generating per-build inventory, achieving SLSA Level 2 or 3 compliance, or auditing third-party dependencies including MCP server registries.",
+      "tags": [
+        "platform",
         "pack"
       ],
       "inputModes": [

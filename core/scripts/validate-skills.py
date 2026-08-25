@@ -71,6 +71,7 @@ PLACEHOLDER_REFS = {
     "oauth-protected-resource",
     "oauth-authorization-server",
     "api-catalog",
+    "data-ai-generated",
 }
 
 

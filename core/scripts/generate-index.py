@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Generate complete INDEX.md and role-skill-index.json for agent-skills.
 
 Indexes all 34 roles, 107 skills, 18 workflows, and 43 schemas with alias mapping
@@ -347,7 +347,7 @@ def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas:
     md = []
     md.append("# Agent-Skills Master Index & Router")
     md.append("")
-    md.append("> **Location:** `D:\\myproject\\agent-skills` | **Version:** `4.0.0` (A2A 1.0 + Antigravity)")
+    md.append("> **Location:** `core/` & `overlays/` | **Version:** `4.0.0` (A2A 1.0 + Antigravity)")
     md.append("> **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **18 Workflows** | **43 Data Contracts**")
     md.append("")
     md.append("---")
@@ -390,7 +390,7 @@ def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas:
         skills_str = ", ".join(f"`{s}`" for s in r["skills"][:3])
         if len(r["skills"]) > 3:
             skills_str += f" *(+{len(r['skills']) - 3} more)*"
-        md.append(f"| **`@{role_name}`** | {r['title']} | {aliases_str} | {skills_str} | [`{r['file']}`](file:///{r['file']}) |")
+        md.append(f"| **`@{role_name}`** | {r['title']} | {aliases_str} | {skills_str} | [`{r['file']}`](./{r['file']}) |")
 
     md.append("")
     md.append("---")
@@ -410,7 +410,7 @@ def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas:
         md.append("|:---|:---|:---|")
         for s in sorted(cat_skills, key=lambda x: x["name"]):
             desc = s["description"][:100] + ("..." if len(s["description"]) > 100 else "")
-            md.append(f"| **`@{s['name']}`** | {desc} | [`{s['file']}`](file:///{s['file']}) |")
+            md.append(f"| **`@{s['name']}`** | {desc} | [`{s['file']}`](./{s['file']}) |")
         md.append("")
 
     md.append("---")
@@ -431,7 +431,7 @@ def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas:
     md.append("| Workflow | Title | File |")
     md.append("|:---|:---|:---|")
     for wf_name, w in workflows.items():
-        md.append(f"| **`/{wf_name}`** | {w['title']} | [`{w['file']}`](file:///{w['file']}) |")
+        md.append(f"| **`/{wf_name}`** | {w['title']} | [`{w['file']}`](./{w['file']}) |")
 
     md.append("")
     md.append("---")
@@ -441,7 +441,7 @@ def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas:
     md.append("| Schema File | Schema Title | Path |")
     md.append("|:---|:---|:---|")
     for sc_name, sc in schemas.items():
-        md.append(f"| `{sc['name']}` | {sc['title']} | [`{sc['file']}`](file:///{sc['file']}) |")
+        md.append(f"| `{sc['name']}` | {sc['title']} | [`{sc['file']}`](./{sc['file']}) |")
 
     return "\n".join(md)
 
@@ -450,7 +450,7 @@ def generate_json_index(roles: dict, skills: dict, workflows: dict, schemas: dic
     return {
         "version": "4.0.0",
         "protocol": "A2A 1.0 + Antigravity",
-        "root": "D:/myproject/agent-skills",
+        "root": ".",
         "stats": {
             "roles": len(roles),
             "skills": len(skills),

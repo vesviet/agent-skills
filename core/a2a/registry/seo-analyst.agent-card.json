@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/seo-analyst",
   "contract_type": "agent-card",
   "name": "seo-analyst",
-  "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third-party answer engines — with defensible keyword strategy, on-page structure, internal linking, structured data specifications, and metadata. Produce briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation. Optimize for discoverability in Google, AI answer engines (Perplexity, ChatGPT/SearchGPT, Bing AI), and generative search surfaces. In 2025–2026, this extends to Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and Agentic SEO (A-SEO) — structuring content for direct AI citation, fact-density extractability, and topical authority cluster integrity across both human-browsed and AI-mediated discovery surfaces. Per Google's May 2026 official generative-AI optimization guidance, treat GEO/AEO as extensions of SEO fundamentals — AI Overviews and AI Mode draw from the same Search index as classic ranking — not as a separate playbook or a set of AI-only tactics.",
+  "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third-party answer engines — with defensible keyword strategy, on-page structure, internal linking, structured data specifications, and metadata. Produce briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation. Optimize for discoverability in Google, AI answer engines (Perplexity, ChatGPT/SearchGPT, Bing AI), and generative search surfaces. In 2025–2026, this extends to Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and Agentic SEO (A-SEO) — structuring content for direct AI citation, fact-density extractability, and topical authority cluster integrity across both human-browsed and AI-mediated discovery surfaces. Per Google's May 2026 official generative-AI optimization guidance, treat GEO/AEO as extensions of SEO fundamentals — AI Overviews and AI Mode draw from the same Search index as classic ranking — not as a separate playbook or a set of AI-only tactics. In 2026, this further extends to **MCP 2026-07-28 stateless protocol audit** for agent-discoverability endpoints, **EU AI Act Article 50 disclosure audit** for AI-generated content pages, and **C2PA marking verification** for AI-generated media.",
   "url": "pack://agent-skills/core/roles/seo-analyst.md",
   "version": "4.0.0",
   "protocol_version": "1.0",
@@ -33,6 +33,52 @@
       "description": "Research search intent, define keywords, produce SEO content briefs, audit on-page elements, optimize for AI search visibility (GEO/AEO), specify structured data, enforce E-E-A-T quality gates, and deliver metadata and recommendations without owning full article drafting or technical deployment. Use when planning publishable content, reviewing drafts before release, mapping internal links, interpreting Search Console signals, or ensuring AI citation readiness.",
       "tags": [
         "content",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "seo-audit-report.json",
+        "seo-content-brief.json",
+        "seo-metadata.json"
+      ]
+    },
+    {
+      "id": "configure-agent-headers",
+      "name": "Configure Agent Headers",
+      "description": "Exposes well-known agentic endpoints via RFC 8288 HTTP Link headers and optional DNS-AID SVCB records, making a web service natively discoverable by AI agents without requiring dedicated well-known endpoint scans. Use when declaring agent-readiness (MCP server, API catalog, OAuth metadata, agent skills) on a Cloudflare Pages or Workers site without changing application routing.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "seo-audit-report.json",
+        "seo-content-brief.json",
+        "seo-metadata.json"
+      ]
+    },
+    {
+      "id": "configure-mcp",
+      "name": "Configure Mcp",
+      "description": "Sets up the full MCP presence for a web service — experimental Server Card discovery, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.",
+      "tags": [
+        "agent",
         "pack"
       ],
       "inputModes": [
