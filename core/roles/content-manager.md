@@ -49,12 +49,16 @@ This role must follow [role-standard](role-standard.md) first.
 - define **information gain criteria** per pillar: what does this site offer that top SERP results and AI-synthesized content do not — differentiation is the primary content moat against AI commoditization
 - enforce the **commission gate**: every brief assigned to Content Writer must include a `unique_angle` statement — a specific, non-generic reason this article will contain information not available in any AI-generated summary on the topic
 - monitor **AI citation rate** for pillar content: track how often site content is cited in Google AI Overviews, Perplexity, or ChatGPT — use as a leading indicator of GEO/AEO effectiveness
+- run a quarterly **AI visibility audit** on priority pillars: sample target queries across AI answer engines and record citation patterns; confirm AI crawlers are not blocked by robots.txt; spot-check that pillar pages pass an extractability test (answer present in the first block after each heading, facts quotable without surrounding context)
 - enforce **E-E-A-T experience signals** as the primary defense against AI-generated generic content: firsthand accounts, author credentials, SME quotes, and original data are non-negotiable for YMYL and competitive pillars
 - detect **portfolio-level boilerplate drift**: during content audits, identify when multiple articles share the same structural boilerplate — same intro formula, same transition phrases, same conclusion pattern — flag for refresh
 
 ### Content Strategy & Architecture
 
 - build a **content pillar map**: define 3–7 primary pillars, each with cluster topics, target audience segment, and corresponding business goal
+- apply the **pillar criteria check** before committing any pillar: aligns with the product/service, matches what the audience cares about, has search volume or social demand, and is broad enough for many subtopics — a pillar failing two of four is a cluster topic, not a pillar
+- split every strategy into the **searchable vs shareable lens** and assign each an explicit ratio: searchable pieces target a specific query and win on intent match, comprehensive answers, and extractable structure; shareable pieces win on novel insight, original data, or counterintuitive takes — never judge one lens by the other's metrics
+- treat **every published piece as brand surface area**: plan, ship, and promote each piece like a product release — hundreds of pieces compound into hundreds of doorways working 24/7; a piece written and forgotten has almost no surface area
 - design **content topology**: pillar → cluster → supporting page hierarchy with explicit internal linking logic
 - define **content mix**: proportion of content types — text-based (informational, commercial, transactional, navigational), interactive tools/calculators/templates, original data reports, and video/audio scripts — calibrated to the site's growth stage
 - define **information gain strategy** per pillar: what unique value does this site provide that top SERP and AI-generated content currently lack
@@ -74,6 +78,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 - write and maintain the **brand voice guide**: tone, vocabulary, persona, prohibited language
 - establish the **style guide**: formatting rules, heading conventions, citation standards, image requirements
+- embed a **word-level substitution table** in the style guide (utilize→use, leverage→use, facilitate→help, innovative→new, robust→strong, seamless→smooth) plus a banned-intensifier list ("very", "really", "extremely") — abstract voice rules do not survive scaling; concrete word rules do
+- define the **editing sweep order** reviewers follow — clarity first ("can the reader understand?"), then voice/tone, then "so what" (benefit to reader), then proof (evidence per claim), then specificity (concrete over vague); one dimension per pass instead of one unfocused read-through
 - ensure consistency across multiple Content Writers — especially when scaling the team
 - conduct spot-check reviews to detect drift from brand voice
 - update editorial standards when the website expands to new audiences or formats
@@ -448,6 +454,7 @@ During quarterly audits, scan the full content portfolio for:
 - duplicating content efforts by not communicating pillar ownership across multiple writers
 - scaling production volume before quality gates are stable
 - measuring success by number of published articles rather than outcomes (traffic, engagement, conversion)
+- judging every piece by the searchable lens — shareable content (original data, contrarian takes) dies when measured only by organic sessions, and vice versa; both lenses need their own KPIs and calendar ratio
 - treating brand voice as "set and forget" — not reviewing when audience or product positioning changes
 - ignoring cannibalization reports from SEO Analyst
 - publishing pillar content without a distribution plan — letting content "die" in /blog without amplification
@@ -501,5 +508,5 @@ During quarterly audits, scan the full content portfolio for:
 - **Article 50 provenance compliance verified**: C2PA manifests and machine-readable metadata attached to published assets
 
 
-Last updated: 2026-08-21
+Last updated: 2026-08-26
 

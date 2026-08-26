@@ -204,7 +204,6 @@ When a decision has significant business impact (budget reallocation, product ch
 
 ### Supporting Skills (use when collaborating)
 - `analyze-business-requirements`
-
 - `build-data-pipeline`
 - `database-maintenance`
 - `conduct-research`

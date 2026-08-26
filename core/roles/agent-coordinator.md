@@ -209,9 +209,9 @@ Treat delegation as a Zero-Trust boundary — the orchestration layer, not promp
 - do not let review or QA start without a declared scope of changed behavior and regression concern
 - do not close a bug because a patch exists; close it only when the original issue, impacted paths, and remaining risk are explicit
 - do not run destructive commands, migrations against shared environments, or deployment actions without explicit approval
-- **IRREVERSIBLE ACTION LOCK**: never execute or delegate irreversible actions (production deploy, data deletion, secret rotation, external communications) without explicit written human sign-off in the current session — prompt-based self-regulation is insufficient
+- **SIGN-OFF LOCK**: never execute or delegate irreversible actions (production deploy, data deletion, secret rotation, external communications) without explicit written human sign-off in the current session — prompt-based self-regulation is insufficient
 - **LOOP LOCK**: halt and re-plan when any tool or role is invoked 3+ times without demonstrable progress toward the phase exit criteria
-- **TRACE LOCK**: do not advance a phase without a `trace_id`-correlated artifact from the delegated role; orphaned artifacts are rejected
+- **PHASE-TRACE LOCK**: do not advance a phase without a `trace_id`-correlated artifact from the delegated role; orphaned artifacts are rejected
 - **BUDGET LOCK**: do not start a delegated phase without a `token_budget_estimated` set in `coordination-plan.json`; halt and document re-plan if actual consumption exceeds 2× the estimate
 - **PROMPT-TRUST REJECTION**: do not rely on prompt instructions alone to enforce safety — all guardrails must be applied at the orchestration control layer
 - **AGENT-REGISTRY LOCK**: do not delegate a phase to an agent whose `agent-card.json` is not present in `core/a2a/.well-known/agent-registry.json` or whose declared capabilities do not include the required gate artifact schema — unverified delegates are a silent failure risk. In distributed deployments, also verify the card's JWS signature (verification key resolved from the JWS header key id or JWK Set URL, optionally against a pinned trusted key store) before trusting it — a present but unsigned or signature-mismatched card is treated as an unregistered delegate. **Escape hatch for single-agent / IDE environments**: when no distributed registry exists (i.e., all roles execute as modes of the same agent instance), the registry requirement is satisfied by confirming the target role file exists in `core/roles/` and the role's Primary Skills cover the required output schema; document this as `registry_mode: single-agent` in coordination-plan.json and proceed — do not treat a missing HTTP registry or the absence of signed cards as a blocker in local/IDE deployments.
@@ -347,6 +347,7 @@ Structured JSON must validate against `contracts/schemas/coordination-plan.json`
 - risky actions have explicit user confirmation documented in session
 - irreversible actions have explicit written human sign-off in session
 - no prompt-based self-regulation relied upon for irreversible actions
+
 ### Inter-Agent Trust & Identity
 
 - delegate Agent Card verified (present in registry; signature verified in distributed mode, or `registry_mode: single-agent` documented)

@@ -1,6 +1,6 @@
 # Agent Skills — Global Engineering Pack (Claude Code)
 
-Pack version: **4.0.0** | Protocol: **A2A 1.0** | Adapter: `adapters/claude/`
+Pack version: **4.0.1** | Protocol: **A2A 1.0** | Adapter: `adapters/claude/`
 
 This repository contains a reusable, language-agnostic engineering skill pack for software delivery.
 
@@ -13,12 +13,15 @@ Before ANY action, read and follow `core/rules/code.md`. Key constraints:
 - **META-RULE**: Before finalizing any response or executing a command, verify the action against `core/rules/code.md`. If any step violates a rule, halt and ask the user for permission. (In Claude Code: this includes bash commands and tool calls.)
 - Do NOT create a commit unless the user explicitly confirms that specific commit action.
 - Do NOT push commits, create tags, or publish releases unless the user explicitly confirms.
+- NEVER commit `.dev.vars`, `.env`, or other local environment files; verify `git status` and keep them in `.gitignore`.
+- Repo-local rules override these defaults when they are explicitly present.
 - Ensure all code changes pass local linters, tests, and build checks before committing.
 - Do NOT expose secrets, credentials, or sensitive values in any user-visible artifact.
 - Do NOT mention agents, AI workflow, or internal process metadata in commits, changelogs, or release notes.
 - Prefer repo-local standards, templates, and workflows when they exist.
 - Do not invent repository conventions, paths, or branching models not present in the active codebase.
-- Keep code comments implementation-focused, under 3 lines, and avoid restating the code.
+- Prefer no comment over comments that merely restate the code.
+- Keep code comments implementation-focused and within 3 lines, unless a longer comment is required for doc comments, file headers, or tooling directives.
 
 Full rules: `core/rules/code.md`
 

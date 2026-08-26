@@ -119,7 +119,7 @@ Finish with:
 - open questions
 - next actions
 
-## Output Artifact Guidance
+## Deliverable Decision
 
 This skill should produce something that another role can use directly, not just a conversational debate recap.
 

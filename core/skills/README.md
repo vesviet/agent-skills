@@ -109,7 +109,7 @@ MMO/growth-ops skills with compliance notices; each maps to `REVIEW-SYSTEM LOCK`
 
 > R3F/Three.js cluster (`debug-3d-scene`, `integrate-r3f-three-legacy`, `optimize-3d-assets`) migrated to `overlays/r3f-stack/skills/` in v4.0.0 per the stack-overlay naming rules.
 
-> Note: `create-automation-script` is classified under Platform (stealth/CDP automation is infrastructure-level).
+> Note: `create-automation-script` is classified under MMO (`core/skills/mmo/`) — its stealth/CDP automation scripts serve growth-ops workflows, even though the underlying techniques are platform-level. See Domain Cluster Notes below.
 
 ### Platform (16)
 
@@ -202,7 +202,7 @@ Overlay-specific skills (site stacks, ICM, content data, R3F) live under `overla
 
 ## Skill Authoring Standard
 
-Every `SKILL.md` should use this baseline structure unless a skill has a clear reason to be shorter:
+Every SKILL.md is an [Agent Skills](https://agentskills.io/specification) manifest (the open standard indexed by skills.sh): YAML frontmatter with required `name` and `description`, then a markdown body. The pack layers these baseline sections on top:
 
 1. YAML frontmatter with `name` and `description`.
 2. H1 title matching the skill name in title case.
@@ -212,9 +212,11 @@ Every `SKILL.md` should use this baseline structure unless a skill has a clear r
 6. `## Checklist` for completion checks.
 7. `## Related Skills` with one-line descriptions.
 
-Optional sections such as `## Output Format`, `## When to Use`, `## Deliverable Decision`, or domain-specific guidance are fine when they improve execution.
+Optional spec fields (`license`, `compatibility`, `metadata`, `allowed-tools`) may be added when they carry real information; do not add per-skill versions — the pack `VERSION` governs all core skills.
 
-Descriptions should include both what the skill does and when to use it. Keep skills repo-agnostic by default; put stack-specific assumptions in adapters or overlays.
+Optional body sections such as `## Output Format`, `## When to Use`, `## Deliverable Decision`, or domain-specific guidance are fine when they improve execution; contract-emission guidance must use the canonical `## Output Contracts` heading.
+
+Descriptions should include both what the skill does and when to use it, with specific trigger keywords — agents match requests against this field at startup. Keep skills repo-agnostic by default; put stack-specific assumptions in adapters or overlays.
 
 ### References Subdirectory Policy
 
@@ -255,6 +257,7 @@ python3 core/scripts/validate-skills.py
 The validator checks:
 
 - every skill has valid `name` and `description` frontmatter
+- Agent Skills spec compliance: hyphen placement in names, no XML tags, no reserved words
 - descriptions include both capability and trigger language
 - skill names match directory names
 - every skill has the baseline sections

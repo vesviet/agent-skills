@@ -2,7 +2,9 @@
 
 Global engineering skill pack for software delivery work.
 
-**Version 4.0.0** is a corrective release from a full-pack audit. It fixes external-standard claims that were wrong or unsourced (WCAG 2.2 criterion numbering and a non-existent ARIA attribute, x402 v2 header names, ACP discovery paths, A2A event and signing details, the MCP baseline revision), resolves role ownership contradictions and policy-boundary conflicts, restores the strict commit gate across all workflows, and adds four validators so each of those drift classes fails the quality gate instead of passing silently.
+**Version 4.0.1** is a consistency-hardening release from a full skill/role/rule refactor audit. It standardizes the role file contract (`Deliverable Routing` is now a mandatory, validator-enforced section with a normalized routing table; single-footer rule enforced), closes adapter parity gaps (environment-file protection, repo-local override, and comment hygiene are now mirrored into every adapter and machine-checked), normalizes contract-emission section naming across skills, extracts `write-article` deep templates into `references/`, makes `INDEX.md` counts version-pins dynamic in `generate-index.py` with a staleness gate in `validate-indexes.py`.
+
+Version 4.0.0 was a corrective release from a full-pack audit. It fixes external-standard claims that were wrong or unsourced (WCAG 2.2 criterion numbering and a non-existent ARIA attribute, x402 v2 header names, ACP discovery paths, A2A event and signing details, the MCP baseline revision), resolves role ownership contradictions and policy-boundary conflicts, restores the strict commit gate across all workflows, and adds four validators so each of those drift classes fails the quality gate instead of passing silently.
 
 Version 3.4.0 refreshed the pack to 2026 standards — the MCP 2026-07-28 stateless spec with AAIF (Linux Foundation) governance, the corrected EU AI Act timeline, the agentic commerce protocol landscape (ACP, UCP, MPP, x402, AP2), first-party on-device LLM frameworks, and the European Accessibility Act — and added the `audit-content` skill plus the `content-audit` workflow.
 

@@ -112,9 +112,14 @@ To satisfy the 2026 security requirements:
 - **Data Minimization**: Pass only the specific data subsets required for the sub-task; avoid leaking entire session history or broad PII to specialized workers.
 - **Attestation Hooks**: Require workers to sign a hardware-backed attestation (if available) confirming their environment state before trusting sensitive payloads.
 
-## Output Schema
+## Output Contracts
 
-Use: `contracts/schemas/a2a-task.json` (outgoing) and `contracts/schemas/a2a-artifact.json` (incoming)
+When composing an A2A delegation task and when receiving worker results:
+
+- **`contracts/schemas/a2a-task.json`** — outgoing delegation task with self-contained description, success criteria, risk tier, and output schema reference.
+- **`contracts/schemas/a2a-artifact.json`** — incoming worker result, validated against the declared schema before the phase is marked complete.
+
+Skip emission for advisory conversations that do not cross a role boundary.
 
 ## Checklist
 

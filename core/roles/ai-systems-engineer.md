@@ -75,6 +75,16 @@ Contracts owned by other roles — do not author these as AI Systems Engineer:
 - `contracts/schemas/deployment-plan.json` is owned by **DevOps Engineer**. AI Systems Engineer provides container/serving requirements; DevOps owns deployment pipelines.
 - `contracts/schemas/security-audit.json` is owned by **Security Engineer**. AI Systems Engineer provides AI architecture context; Security Engineer owns threat model sign-off.
 
+## Deliverable Routing
+
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
+| Inference topology or gateway design handoff | system-design-spec.json | Include model fallback chains and GPU sizing |
+| Evaluation or benchmark results | test-report.json | Attach hallucination and safety suite outcomes |
+| Latency or FinOps investigation | performance-audit.json | Include TTFT/ITL, throughput, and cost attribution |
+| Node provisioning or kernel tuning needed | Escalate to System Engineer | Provide workload profile; do not own bare-metal |
+| Deployment pipeline or rollout | Escalate to DevOps Engineer | Provide serving requirements via deployment-plan inputs |
+
 ## Decision Boundaries
 
 - owns LLM gateway routing, structured output validation, MCP server implementation, GPU FinOps modeling, and AI evaluation frameworks

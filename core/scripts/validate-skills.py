@@ -21,12 +21,22 @@ from common import (
 
 
 SKILL_NAME_RE = re.compile(r"^[a-z0-9-]{1,64}$")
+XML_TAG_RE = re.compile(r"<[a-zA-Z][^>]*>")
+# Reserved per the Anthropic platform rules layered on the open Agent Skills
+# spec (agentskills.io) that skills.sh indexes against.
+RESERVED_NAME_WORDS = ("anthropic", "claude")
 REQUIRED_SECTIONS = (
     "## Core Rules",
     "## Suggested Process",
     "## Checklist",
     "## Related Skills",
 )
+# Contract-emission guidance must use the canonical "## Output Contracts" heading
+# so tooling can locate it with one pattern.
+FORBIDDEN_SECTION_VARIANTS = {
+    "## Output Schema": "use '## Output Contracts' for contract-emission guidance",
+    "## Output Artifact Guidance": "use '## Deliverable Decision' or '## Output Contracts'",
+}
 KNOWN_WORKFLOWS = {
     "add-new-feature",
     "agent-a2a-delegation",
@@ -96,6 +106,18 @@ def validate_skill(path: Path, known_skills: set[str]) -> list[str]:
         errors.append("name must be lowercase letters, numbers, and hyphens, max 64 chars")
     elif path.parent.name != name:
         errors.append(f"name does not match directory name: {path.parent.name}")
+    else:
+        # Agent Skills spec (agentskills.io): hyphen placement and XML safety
+        if name.startswith("-") or name.endswith("-"):
+            errors.append("name must not start or end with a hyphen")
+        if "--" in name:
+            errors.append("name must not contain consecutive hyphens")
+        if XML_TAG_RE.search(name):
+            errors.append("name must not contain XML tags")
+        lowered = name.lower()
+        for word in RESERVED_NAME_WORDS:
+            if word in lowered:
+                errors.append(f"name must not contain reserved word: {word}")
 
     if not description:
         errors.append("missing frontmatter field: description")
@@ -106,6 +128,18 @@ def validate_skill(path: Path, known_skills: set[str]) -> list[str]:
             errors.append('description must include a trigger phrase such as "Use when" or "Use for"')
         if description.startswith(("I ", "You ")):
             errors.append("description must be written in third person")
+        if XML_TAG_RE.search(description):
+            errors.append("description must not contain XML tags")
+        desc_lower = description.lower()
+        for word in RESERVED_NAME_WORDS:
+            if word in desc_lower:
+                errors.append(f"description must not contain reserved word: {word}")
+    spec_metadata = metadata.get("metadata") if isinstance(metadata, dict) else None
+    if spec_metadata is not None and not (
+        isinstance(spec_metadata, dict)
+        and all(isinstance(k, str) and isinstance(v, str) for k, v in spec_metadata.items())
+    ):
+        errors.append("metadata must be a map of string keys to string values")
 
     body_without_fences = strip_fenced_blocks(body)
     h1_lines = [line for line in body_without_fences.splitlines() if line.startswith("# ")]
@@ -122,6 +156,10 @@ def validate_skill(path: Path, known_skills: set[str]) -> list[str]:
     for section in REQUIRED_SECTIONS:
         if section not in body:
             errors.append(f"missing required section: {section}")
+
+    for variant, hint in FORBIDDEN_SECTION_VARIANTS.items():
+        if variant in body_without_fences:
+            errors.append(f"non-canonical section heading '{variant}': {hint}")
 
     checklist = section_text(body, "## Checklist")
     checklist_items = re.findall(r"(?m)^- \[ \] .+", checklist)

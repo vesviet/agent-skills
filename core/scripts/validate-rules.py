@@ -32,6 +32,7 @@ SOURCE_REQUIRED = (
     "Prefer repo-local standards, templates, and workflows when they exist",
     "Do not invent repository conventions, paths, branching models, or release rules",
     "Keep code comments implementation-focused and useful",
+    "NEVER commit `.dev.vars`, `.env`, or any other local environment files",
     "core/policies/action-boundaries.yaml",
 )
 
@@ -53,6 +54,18 @@ ADAPTER_GROUPS = {
         "expose secrets",
         "mention agents, AI workflow",
         "Prefer repo-local standards",
+    ),
+    "env_file_protection": (
+        ".dev.vars",
+        ".env",
+        ".gitignore",
+    ),
+    "local_override": (
+        "Repo-local rules override these defaults",
+    ),
+    "comment_hygiene": (
+        "Prefer no comment over comments that merely restate the code",
+        "within 3 lines",
     ),
     "role_enforcement": (
         "role-standard",

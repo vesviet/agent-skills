@@ -65,6 +65,17 @@ In 2026, Technical Writers must produce documentation for **two audiences simult
 - write context-window-friendly summaries for key concepts: ≤ 400 tokens, self-contained, answering "what does X do and when do I use it?"
 - annotate retrieval-store documents with explicit metadata tags that retrieval systems can use for semantic search ranking
 
+### Agent-Facing Writing Discipline (2026)
+
+Adapted from the *writing-for-agents* skill by mattpocock/skills (top-installed on skills.sh) — applies to any document an agent consumes: docs reached by pointer, agent-facing summaries, tool definitions, and this pack's own SKILL.md/AGENTS.md artifacts:
+
+- **Context pointers**: a line that names out-of-context material must front-load its trigger words and list the distinct branches that should fire it — one trigger per branch; synonyms renaming one branch are written twice. The pointer's wording, not its target, decides how reliably agents reach the material
+- **Information hierarchy**: ordered steps stay in-file at the top; flat reference may sit in-file below them; deep or branch-specific material is disclosed behind a pointer. Branching test: inline what every execution path needs; disclose what only some branches reach
+- **Completion criteria per procedure**: every step ends on a condition the reader can check ("every modified model accounted for" beats "produce a change list") — vague bounds invite premature done
+- **Leading words**: reuse established domain terms consistently as anchors instead of re-explaining the concept at each occurrence
+- **Prompt the positive**: state the target behavior ("write one-line comments"); a prohibition drags the banned behavior into context and half-reads as permission — reserve prohibitions for hard guardrails, paired with the positive target
+- **Prune like a cache auditor**: each meaning lives in one source of truth; never cache environment lookups (`package.json` scripts, CLI flags, directory listings) in prose — point at them so they cannot go stale; hunt no-op sentences that would not change behavior if deleted
+
 ### Agentic System Documentation Spec (2025-2026)
 
 Agentic systems require a new class of documentation deliverable that is distinct from runbooks, API docs, and release notes. Technical Writer owns this new type:
@@ -124,8 +135,8 @@ Contracts owned by other roles — do not author these as Technical Writer:
 
 ## Deliverable Routing
 
-| Material | Primary source contract | Notes |
-| -------- | ------------------------ | ----- |
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
 | Architecture decision doc | adr-spec.json | |
 | API reference | api-contract-spec.json (schema-generated, not manual) | Sync via Fern/Mintlify/Redocly in CI |
 | Release notes / what changed | implementation-result.json + feature-ticket.json | |
@@ -278,6 +289,9 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - CI schema-to-doc sync confirmed (Fern/Mintlify/Redocly or equivalent)
 - Context-window-friendly summaries present for key concepts (≤ 400 tokens, self-contained)
 - Retrieval-store documents annotated with semantic search metadata
+- Agent-facing pointers front-load trigger words and carry one branch per trigger
+- Procedures end on checkable completion criteria, not vague bounds
+- Docs point at environment lookups (scripts, flags, paths) instead of restating them
 
 ### Agentic System Documentation (when multi-agent system in scope)
 - Tool definitions present for all MCP tools: name, namespace, input schema, output schema, behavioral invariants, authorization scope
@@ -302,6 +316,8 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - **stale `llms.txt` with broken or deprecated links** — unmaintained `llms.txt` files poison AI agent context windows with 404s and deprecated schemas; validate links automatically via CI
 - **publishing AI-generated documentation without HITL provenance tracking** — merging unreviewed AI-drafted docs creates hallucinated instructions, incorrect config flags, and compliance liability
 - **missing EU AI Act interaction disclosure in customer-facing docs** — omitting clear Article 50 AI interaction notices in user guides for chatbots and generative features violates mandatory EU transparency requirements
+- **docs that cache environment lookups** — restating npm scripts, CLI flags, or file trees in prose creates a stale copy of something the environment answers perfectly; point, don't copy
+- **prohibition-only instructions** — steering readers by what not to do without stating the target behavior; state the positive and reserve bans for hard guardrails
 
 ## Role Handoff
 
@@ -329,4 +345,4 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - **`llms.txt` validated**: links tested in CI, A2A Agent Card and API Catalog cross-referenced where present
 
 
-Last updated: 2026-08-21
+Last updated: 2026-08-26

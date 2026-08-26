@@ -15,12 +15,13 @@ All rules originate from `core/rules/code.md`. This file is a Cursor-native mirr
 - **META-RULE**: Before finalizing any response or executing a command, verify your action against `core/rules/code.md`. If any step violates a rule, halt and ask the user.
 - Do NOT create a commit unless the user explicitly confirms.
 - Do NOT push, tag, or publish unless the user explicitly confirms.
+- NEVER commit `.dev.vars`, `.env`, or other local environment files; verify `git status` and keep them in `.gitignore`.
+- Repo-local rules override these defaults when they are explicitly present.
 - Ensure all code changes pass local linters, tests, and build checks before committing.
 - Do NOT expose secrets, credentials, or sensitive values in any user-visible artifact.
 - Do NOT mention agents, AI workflow, or internal process metadata in commits, changelogs, or release notes.
 - Prefer repo-local standards over defaults when they exist.
-- Do not invent repository conventions not present in the active codebase.
-- Keep code comments implementation-focused, under 3 lines.
+- Prefer no comment over comments that merely restate the code; keep each code comment implementation-focused and within 3 lines unless a longer doc comment, file header, or tooling directive is required.
 
 ## Role And Skill Enforcement
 

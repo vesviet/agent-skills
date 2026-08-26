@@ -121,12 +121,6 @@ Dynamic routing and parallel operations require robust fan-out and merge control
 - **Reducer Functions**: Define reducer functions on state keys (e.g., combining lists of messages or merging dictionary attributes) to ensure parallel updates to the graph state do not overwrite each other.
 - **Join Gates**: Block downstream nodes until all parallel branch tasks complete and their results are consolidated via state reducers.
 
-## Output Schema
-
-Use: `contracts/schemas/coordination-plan.json` (graph state)
-
-Per-phase outputs reference domain schemas (for example `feature-ticket.json`, `test-report.json`, `code-review-finding.json`).
-
 ## Checklist
 
 - [ ] work_type and risk_tier assigned
@@ -144,6 +138,7 @@ Per-phase outputs reference domain schemas (for example `feature-ticket.json`, `
 When modeling, managing, or executing a multi-phase agent delivery graph, emit:
 
 - **`contracts/schemas/coordination-plan.json`** — Emitted when planning, managing, or updating a multi-phase directed execution graph across specialist roles, tracking phase nodes, dependencies, gate criteria, token budgets, and parallel branch merges. Set `produced_by_role: agent-coordinator`.
+- Per-phase outputs reference domain schemas (for example `feature-ticket.json`, `test-report.json`, `code-review-finding.json`) rather than duplicating them here.
 
 Skip emission for single-agent direct executions with no delegation graph.
 

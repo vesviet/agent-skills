@@ -16,9 +16,10 @@ Use this skill for **search and content-structure** work — not for writing lon
 - separate **evidence** (SERP snippets, GSC exports, crawlable page facts) from **recommendations**
 - document **internal link targets** with anchor rationale and destination paths
 - enforce on-page limits: title tag ≤ 60 chars, meta description ≤ 160 chars unless repo rules differ
-- check **keyword cannibalization** against recent publishes on the same site (default: 7-day window when a topic board exists)
+- check **keyword cannibalization** against recent publishes on the same site (default: 7-day window when a topic board exists); when overlap is confirmed, name the resolution tactic explicitly — consolidate into one authoritative page, differentiate search intent, canonical to the primary URL, 301-redirect the weaker page, and clean up competing anchors
+- prevent cannibalization recurrence with **keyword-to-page mapping**: exactly one primary keyword per page plus a pre-publish overlap check against the site inventory
 - track **Share of Model (SoM)** alongside traditional CTR — measure how often and how accurately the brand/content is cited in Google AI Overviews, Perplexity, and ChatGPT Search using AI visibility tooling (Otterly, RankScale, or manual spot-checks)
-- mandate a **30–60 day rolling freshness review** for core commercial and informational pillar pages — AI search engines heavily weight recently-updated content when retrieving citations
+- mandate a **30–60 day rolling freshness review** for core commercial and informational pillar pages — AI search engines heavily weight recently-updated content when retrieving citations; queue pages by decay signal first: rankings dropped >3 positions, statistics older than 2 years, or declining high-traffic URLs. On refresh, update modified/publish dates in schema, replace outdated stats and examples, and re-check internal links pointing at changed sections
 - do not guarantee rankings or AI citation placement; recommend changes tied to observable gaps
 - escalate **technical SEO** (canonical, schema markup, redirects, Core Web Vitals fixes) with a clear engineering brief
 - use repo overlays under overlays/lease-content and overlays/vesviet-content when site-specific slug or frontmatter rules apply
@@ -43,6 +44,8 @@ Rules for GEO/AEO:
 - specify **answer format** per section: definition, comparison table, numbered steps, or bullet list — matching the format AI engines prefer for the query type
 - require **fact density**: minimum 3 verifiable data points per 500 words (statistics, expert quotes, specific numbers)
 - verify **AI bot crawlability**: robots.txt must allow OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot — flag blocks in audits
+- measure citations **per engine, not in aggregate**: Perplexity emits numbered `[1][2]` sources while ChatGPT uses inline mentions and footnotes — sample each engine separately, tag AI-referred traffic with dedicated UTM parameters, and track "according to \<brand\>" phrasing as the citation proxy
+- treat **entity consistency** as a GEO lever: identical brand facts (name, positioning, credentials) across the site, author profiles, and third-party listings consolidate entity recognition
 - do not claim AI citation placement as guaranteed — present GEO/AEO as structural best practices
 
 ### Topical Authority & Entity SEO
@@ -54,6 +57,17 @@ Rules for GEO/AEO:
 - define key **entities** (people, brands, concepts, locations) that must appear for topical coverage
 - recommend **schema types** for each article: Article, FAQPage, HowTo, Product, BreadcrumbList, Person (author), Organization
 - use stable `@id` patterns for entity references (e.g. `https://site.com/#organization`)
+
+### Internal Linking Discipline
+
+Adapted from the SEO-AEO engine skills in the agentic-awesome-skills catalog:
+
+- label every recommended link with its **type**: cluster → pillar (consolidates authority upward), pillar → cluster (distributes authority downward), cluster → cluster (builds semantic depth), or contextual boost (concentrates equity on one focus page)
+- require **at least one cluster → pillar link per cluster article**
+- detect **orphan pages** (zero incoming internal links) first and queue fixes before recommending new links
+- write the **context sentence** for each suggested anchor — anchor text must sit naturally in surrounding prose, never forced
+- enforce **anchor-text hygiene**: never reuse the same exact-match anchor for the same target across pages — switch to partial-match or branded anchors on later links; generic anchors ("click here", "read more", "learn more") are banned
+- cap outgoing internal links at roughly 100 per page
 
 ### E-E-A-T Quality Gates
 
@@ -117,13 +131,15 @@ Required GEO/AEO fields in brief:
 - schema types: Article, FAQPage, HowTo, etc.
 - experience proof type required
 
-**Audit path:** score title, meta, headings, links, schema needs, **AI extractability** → `seo-audit-report.json` + updated `seo-metadata.json` when ready to publish
+**Audit path:** score the page on four axes out of 100 — overall, SEO, AEO, readability — using pass bands: 85–100 strong (publish-ready), 70–84 acceptable, 50–69 needs work, below 50 do-not-publish. Rank issues as Blocking / Important / Follow-Up with exact fix instructions, and report the projected score once fixes are applied so prioritization is data-driven → `seo-audit-report.json` + updated `seo-metadata.json` when ready to publish
 
 AI extractability audit elements:
+- TL;DR / direct-answer block present near the top (2–3 sentences answerable without context)
 - answer-first structure present (yes/no)
 - heading hierarchy clean (H1→H2→H3)
 - fact density sufficient (verifiable data points per section)
 - schema markup present and valid
+- FAQ block carries at least 4 entries when present — fewer signals shallow coverage to extraction systems
 - AI bot crawlability (robots.txt check)
 - content uniqueness / information gain vs SERP competitors
 
@@ -151,6 +167,15 @@ AI extractability audit elements:
 - [ ] answer format specified per section
 - [ ] fact density requirement documented
 - [ ] AI bot crawlability verified (OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot)
+- [ ] citation sampling done per engine (numbered vs inline styles noted), not in aggregate
+- [ ] audit scored on four axes with projected post-fix score reported
+
+### Internal Linking
+- [ ] every link recommendation labeled by type (cluster→pillar / pillar→cluster / cluster→cluster / contextual boost)
+- [ ] orphan pages detected and queued before new links proposed
+- [ ] no duplicated exact-match anchors to the same target; no generic anchor text
+- [ ] context sentence written for each anchor suggestion
+- [ ] cluster articles each carry at least one cluster → pillar link
 
 ### Topical Authority & Entity
 - [ ] pillar page URL assigned; cluster position documented

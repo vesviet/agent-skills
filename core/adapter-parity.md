@@ -6,7 +6,7 @@ Adapters may differ in syntax and style, but they must not weaken the operating 
 
 ## Required Parity Groups
 
-Every adapter must preserve these six groups:
+Every adapter must preserve these nine groups:
 
 ### 1. Rule Source Of Truth
 
@@ -59,6 +59,24 @@ The adapter must reference the machine-readable policy layer that governs state-
 - `core/policies/data-classification.yaml`
 
 It must make clear that action boundaries and data classification are checked before state-changing actions. Adapters that also cover MCP tool mapping should reference `core/policies/mcp-tool-map.yaml`, but the two files above are the required minimum.
+
+### 7. Environment File Protection
+
+The adapter must preserve all of the following:
+
+- explicit prohibition on committing `.dev.vars` and `.env` (or other local environment files)
+- instruction to verify `git status` and keep them in `.gitignore`
+
+### 8. Repo-Local Override
+
+The adapter must state that repo-local rules override these pack defaults when they are explicitly present.
+
+### 9. Comment Hygiene
+
+The adapter must preserve both:
+
+- prefer no comment over comments that merely restate the code
+- keep each code comment within 3 lines unless a longer doc comment, file header, or tooling directive is required
 
 ## Enforcement
 

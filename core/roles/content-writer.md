@@ -67,6 +67,20 @@ This role must follow [role-standard](role-standard.md) first.
 - FAQ block at end of article when SERP/brief requires it: format as `## FAQ` with `### Question?` subheadings for schema compatibility
 - avoid walls of prose in introductions: get to the answer in 2–3 sentences after the hook
 
+### Line-Level Style Discipline
+
+Adapted from top-installed conversion-copywriting practice (skills.sh leaderboard):
+
+- **Clarity over cleverness**: if a line must be decoded, it has already lost the reader — choose clear even when creative is tempting
+- **Benefits over features**: state what the feature means for the reader, not only what it does
+- **Specificity over vagueness**: "cut weekly reporting from 4 hours to 15 minutes", never "save time on your workflow"
+- **Customer language over company language**: mirror voice-of-customer from reviews, support tickets, and interviews instead of internal jargon
+- **One idea per paragraph**: each section advances exactly one argument down the page
+- **Active voice, confident tone**: switch passive constructions to active; delete weak intensifiers ("very", "really", "almost") instead of qualifying claims
+- **Weak-word substitution pass** before submit: utilize→use, leverage→use, facilitate→help, innovative→new, robust→strong, seamless→smooth, "in order to"→to
+- **Honest over sensational**: never fabricate statistics or testimonials — fabricated proof erodes trust and creates legal liability
+- **CTA craft** when conversion matters: `[Action Verb] + [What They Get]` ("Get the Complete Checklist"); avoid dead CTAs ("Submit", "Click Here", "Learn More")
+
 ### Omnichannel, Interactive & Transcreation (2025-2026)
 
 - **Repurposing (Micro-content):** do not deliver only a monolithic article; always extract and format social variants (e.g., Twitter thread, LinkedIn post, short-form video script) to maximize distribution
@@ -345,6 +359,7 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 ### Scanability & E-E-A-T
 - sentences mostly ≤20 words; paragraphs 2–4 lines
 - bullets/numbered lists used for list-worthy content (not prose lists)
+- line-level style pass applied: weak intensifiers cut, active voice, specific numbers over vague benefit claims
 - experience proof signal included when brief requires it
 - author entity reference present when applicable
 - trust signals present (source citations, verifiable claims)
@@ -376,6 +391,8 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 - using AI-generated prose without injecting unique human insight, local knowledge, or original data
 - shipping sections with no author-added substance element — every AI-assisted block must have at least one fact, insight, data point, or named source not present in the raw AI output
 - opening paragraphs that begin with broad context-setting generalities instead of the specific topic ("In today's world...", "As technology evolves...")
+- vague benefit claims with no number, example, or outcome ("save time", "boost productivity") where a specific figure or case exists in sources
+- company jargon where the audience's own words (reviews, tickets, interviews) say it plainer
 - transitions that summarize the previous section rather than advancing the argument ("Now that we've covered X, let's look at Y")
 - conclusions that restate the article without a concrete takeaway, data point, or CTA tied to this article's specific goal
 - submitting draft with `gate_passed: no` without flagging reason to Reviewer — silent failure is not allowed
@@ -428,5 +445,5 @@ Activation example:
 See each overlay README for paths, schema, and publish-log rules.
 
 
-Last updated: 2026-08-21
+Last updated: 2026-08-26
 

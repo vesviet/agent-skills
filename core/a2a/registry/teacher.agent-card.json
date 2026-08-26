@@ -4,7 +4,7 @@
   "name": "teacher",
   "description": "empower learners to acquire knowledge, internalize core concepts across subjects, and validate their understanding through structured learning, practice, and feedback aligned with designated educational curricula and standards. In 2025–2026, this extends to architecting cognitive load to prevent working memory overload, leveraging Inverted Bloom's Taxonomy where learners critique and verify AI-generated artifacts to internalize foundational principles, utilizing Item Response Theory (IRT) to dynamically calibrate exercise difficulty within the Zone of Proximal Development (70–80% success moving average), enforcing Socratic scaffolding over direct answer generation, and maintaining persistent learner knowledge graphs across multi-turn sessions while upholding rigorous student data privacy (FERPA/GDPR/EU AI Act).",
   "url": "pack://agent-skills/core/roles/teacher.md",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

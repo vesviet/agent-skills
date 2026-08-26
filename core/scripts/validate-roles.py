@@ -27,6 +27,7 @@ REQUIRED_SECTIONS = (
     "## Core Responsibilities",
     "## Inputs Required",
     "## Outputs Produced",
+    "## Deliverable Routing",
     "## Decision Boundaries",
     "## Collaboration",
     "## Guardrails",
@@ -119,6 +120,23 @@ def validate_role(path: Path, known_skills: set[str]) -> list[str]:
     output_template = section_text(body, "## Output Template", level_aware=True)
     if "## Output Template" in body and "```markdown" not in output_template:
         errors.append("Output Template should include a markdown fenced template")
+
+    deliverable_routing = section_text(body, "## Deliverable Routing", level_aware=True)
+    if "## Deliverable Routing" in body and "| Situation |" not in deliverable_routing:
+        errors.append("Deliverable Routing should include a '| Situation |' routing table")
+
+    footer_lines = [
+        line for line in strip_fenced_blocks(body).splitlines()
+        if re.match(r"(?m)^\s*Last updated:", line)
+    ]
+    if len(footer_lines) != 1:
+        errors.append(f"footer 'Last updated:' must appear exactly once, found {len(footer_lines)}")
+    else:
+        if not re.match(r"^Last updated: \d{4}-\d{2}-\d{2}$", footer_lines[0].strip()):
+            errors.append("footer must use the exact form 'Last updated: YYYY-MM-DD'")
+        non_empty = [line for line in body.splitlines() if line.strip()]
+        if not non_empty or non_empty[-1].strip() != footer_lines[0].strip():
+            errors.append("footer 'Last updated:' must be the final non-empty line of the role file")
 
     primary = re.findall(r"(?m)^- `([a-z0-9-]+)`", section_text(body, "### Primary Skills", level_aware=True))
     supporting = re.findall(r"(?m)^- `([a-z0-9-]+)`", section_text(body, "### Supporting Skills (use when collaborating)", level_aware=True))

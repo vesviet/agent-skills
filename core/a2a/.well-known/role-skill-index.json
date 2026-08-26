@@ -1,5 +1,5 @@
 {
-  "version": "4.0.0",
+  "version": "4.0.1",
   "protocol": "A2A 1.0 + Antigravity",
   "root": ".",
   "stats": {
@@ -1752,7 +1752,7 @@
       "category": "repo-ops",
       "type": "core",
       "file": "core/skills/repo-ops/review-code/SKILL.md",
-      "description": "Review concrete code changes for correctness, contract safety, data handling, reliability, security, operations, and test coverage. Use for PR reviews, local change reviews, and pre-merge audits."
+      "description": "Review a diff since a fixed point along two separate axes — Standards (does the code follow this repo's documented standards plus a fixed smell baseline?) and Spec (does it faithfully implement the originating issue or spec?). Runs both axes as parallel sub-agents and reports them side by side without reranking. Use for PR reviews, \"review since X\", local change reviews, and pre-merge audits."
     },
     "review-service": {
       "name": "review-service",

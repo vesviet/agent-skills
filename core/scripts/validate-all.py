@@ -43,7 +43,7 @@ VALIDATORS = (
 )
 
 TOOL_NAME = "agent-pack-validator"
-TOOL_VERSION = "4.0.0"
+TOOL_VERSION = "4.0.1"
 
 
 @dataclass

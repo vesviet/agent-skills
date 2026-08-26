@@ -25,6 +25,9 @@
 - Do not mention agents, AI workflow, review labels, severity labels, task trackers, or other internal process metadata in commit messages, changelog text, release notes, or other user-visible change notes.
 - Do not expose secrets, credentials, tokens, private keys, or sensitive internal values in commits, comments, changelogs, release notes, or other user-visible artifacts.
 
+# Environment Files
+- NEVER commit .dev.vars, .env, or other local environment files; verify git status and keep them in .gitignore.
+
 # Code Comments
 - Prefer no comment over comments that merely restate the code.
 - Keep code comments implementation-focused and useful.
@@ -42,7 +45,7 @@
 #
 # Available roles: core/roles/README.md
 #
-# === A2A 1.0, GRAPH, ANTIGRAVITY (pack 4.0.0) ===
+# === A2A 1.0, GRAPH, ANTIGRAVITY (pack 4.0.1) ===
 # - Antigravity: read adapters/antigravity/ANTIGRAVITY.md; use core/a2a/.well-known/agent-registry.json for discovery.
 # - Full A2A lifecycle: agent-a2a-protocol (task, progress, status, artifact, cancel); JSON-RPC via a2a-jsonrpc-envelope.json.
 # - Coordinator: agent-a2a-protocol + agent-graph-orchestration + coordination-plan.json per phase.

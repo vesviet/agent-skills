@@ -118,28 +118,34 @@ Every role file must include these sections in order:
 
 1. H1 role title
 2. `Mission:`
-3. `Level:`
+3. `Level:` — principal or master-practitioner level for every role
 4. link to `role-standard.md`
 5. `## Principal Expectations`
 6. `## Use This Role When`
 7. `## Core Responsibilities`
 8. `## Inputs Required`
 9. `## Outputs Produced`
-10. `## Decision Boundaries`
-11. `## Collaboration`
-12. `## Guardrails`
-13. `## Skill Toolbox`
-14. `## Output Template`
-15. `## Review Checklist`
-16. `## Anti-Patterns To Reject`
-17. `## Role Handoff`
-18. `## Definition Of Done`
+10. `## Deliverable Routing` — table mapping situations to the primary deliverable
+11. `## Decision Boundaries`
+12. `## Collaboration`
+13. `## Guardrails`
+14. `## Skill Toolbox`
+15. `## Output Template`
+16. `## Review Checklist`
+17. `## Anti-Patterns To Reject`
+18. `## Role Handoff`
+19. `## Definition Of Done`
 
-A `## Role Boundaries` table belongs directly after `## Decision Boundaries` whenever the role shares responsibilities, contracts, or skills with another role. State who owns what and who does not, naming both sides. Every role that emits a contract another role also touches must be listed there.
+A `## Role Boundaries` table belongs directly after `## Decision Boundaries`. Every role shares responsibilities, contracts, or skills with at least one other role, so this table is mandatory: state who owns what and who does not, naming both sides. Every role that emits a contract another role also touches must be listed there.
 
 Each role must define at least one Primary Skill, may define Supporting Skills, and must reference only skills that exist in `core/skills/`.
 
 The output template should make role output easy to reuse. The review checklist should define readiness checks before handoff. Anti-patterns should name common bad behavior the role must reject. Role handoff should name the upstream and downstream collaboration paths.
+
+Two optional trailing elements are allowed after the mandatory sections:
+
+- `## Optional Overlays` — list the overlays that extend this role, with activation examples. Place it before the footer; never append overlay content after the footer.
+- Footer `Last updated: YYYY-MM-DD` — exactly one occurrence, as the final non-empty line of the file.
 
 ## Skill Toolbox Standard
 

@@ -2,7 +2,7 @@
 
 Mission: Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance across all 19 checks of the Agent Readiness standards (e.g., isitagentready.com). This covers Protocol Discovery, Commerce Standards, Discoverability, and Bot Access Control. In 2025–2026, this extends to enforcing compliance as the A2A, MCP, Auth.md, x402, and Agent Skills protocol landscape rapidly standardizes — tracking spec drift between experimental drafts and stable scanner implementations, wiring agentic endpoint discovery into Cloudflare edge responses via RFC 8288 Link headers, and ensuring the registry is machine-readable and interoperable with emerging AI agent orchestration frameworks.
 
-Level: Senior / specialized domain expertise in Agentic Protocols (MCP, Auth.md, x402, Agent Skills, etc.).
+Level: Principal / specialized domain expertise in Agentic Protocols (MCP, Auth.md, x402, Agent Skills, etc.).
 
 This role must follow [role-standard](role-standard.md) first.
 

@@ -8,6 +8,7 @@ index entry and the declared counts are not updated.
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -18,6 +19,7 @@ CONTRACTS_INDEX = CORE_ROOT / "contracts" / "README.md"
 OVERLAYS_INDEX = ROOT / "overlays" / "README.md"
 PACKS_INDEX = ROOT / "packs" / "README.md"
 ROOT_README = ROOT / "README.md"
+GENERATOR = CORE_ROOT / "scripts" / "generate-index.py"
 
 
 def core_skills_by_category() -> dict[str, list[str]]:
@@ -156,12 +158,27 @@ def check_role_and_workflow_indexes() -> list[str]:
     return errors
 
 
+def check_generated_index() -> list[str]:
+    """INDEX.md and role-skill-index.json are generated; verify they are not stale."""
+    result = subprocess.run(
+        [sys.executable, str(GENERATOR), "--check"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        output = (result.stdout + result.stderr).strip()
+        return [f"generated index artifacts out of date: {output}"]
+    return []
+
+
 def main() -> int:
     errors: list[str] = []
     errors += check_skills_index()
     errors += check_contracts_index()
     errors += check_overlays_and_packs()
     errors += check_role_and_workflow_indexes()
+    errors += check_generated_index()
 
     if errors:
         print("Index validation failed:")

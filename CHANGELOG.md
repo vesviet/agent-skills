@@ -2,6 +2,101 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [4.0.1] - 2026-08-26
+
+Consistency-hardening release from a full skill/role/rule refactor audit.
+No breaking changes; all drift classes found by the audit now fail the
+quality gate instead of passing silently.
+
+### Roles
+
+- `Deliverable Routing` promoted from de-facto convention to a mandatory,
+  order-checked section in `role-standard.md` and `validate-roles.py`; every
+  routing table now uses the canonical `| Situation | Primary deliverable |
+  Notes |` header.
+- Footer hygiene enforced: exactly one `Last updated: YYYY-MM-DD` line, as
+  the final non-empty line of every role file. Fixed `seo-analyst.md`,
+  which carried two footers and overlay content after the footer; that
+  content moved into a proper `## Optional Overlays` section.
+- `ai-systems-engineer` gained its missing Deliverable Routing table;
+  `technical-architect` heading normalized; `technical-writer` and
+  `ui-ux-designer` routing tables re-headered.
+- Duplicate lock names resolved: `cloudflare-engineer` second BOUNDARY LOCK
+  renamed to SCOPE LOCK; `agent-coordinator` duplicate IRREVERSIBLE ACTION /
+  TRACE locks renamed to SIGN-OFF LOCK / PHASE-TRACE LOCK.
+- `agent-discovery-engineer` Level raised from Senior to Principal,
+  matching the roles README level claim.
+- Formatting repairs: missing blank lines before headings in
+  `task-planner` and `agent-coordinator`; split Supporting Skills list in
+  `data-analyst`.
+- Writing roles upgraded from the top-installed writing skills on
+  skills.sh: `content-writer` gained line-level conversion-copywriting
+  discipline (clarity over cleverness, specificity, voice-of-customer,
+  weak-word substitution pass, CTA craft — from `copywriting`);
+  `technical-writer` gained agent-facing writing discipline (context
+  pointers, information hierarchy, checkable completion criteria, leading
+  words, prompt-the-positive, cache-auditor pruning — from
+  `writing-for-agents`); `content-manager` gained the searchable vs
+  shareable lens with explicit calendar ratios, pillar criteria check,
+  word-level substitution tables and sweep-order editing standards in the
+  style guide, and a quarterly AI visibility audit (from `content-strategy`,
+  `copy-editing`, `ai-seo`).
+
+### Skills
+
+- Contract-emission guidance standardized on `## Output Contracts`;
+  variant headings (`## Output Schema`, `## Output Artifact Guidance`)
+  are rejected by `validate-skills.py`. Renamed in `agent-delegation`,
+  `meeting-review`, `manage-vietnam-accounting`; merged the duplicate
+  output section in `agent-graph-orchestration`.
+- `write-article` reduced from 325 to ~200 lines by extracting the AI
+  outline/image/drafting templates into
+  `references/ai-drafting-playbook.md` per the References Subdirectory
+  Policy.
+- Overlay skill `develop-golf-feature` rewritten to the SKILL baseline:
+  added When to Use, real step bodies under Suggested Process (previously
+  empty step headings).
+- `commit-code` OpenAI interface prompt no longer narrows the skill to
+  microservice changes.
+- `review-code` upgraded to a two-axis review (Standards / Spec) adapted
+  from the `code-review` skill in `mattpocock/skills`: fixed-point diff
+  pinning with fail-fast validation, spec-source resolution order, Fowler
+  smell baseline as a repo-overridable judgement-call layer, parallel
+  sub-agent execution with self-contained prompts, and aggregation that
+  never cross-reranks axes. Full baseline and sub-agent briefs live in
+  `review-code/references/two-axis-review.md`; existing domain checks,
+  severity levels, and the `code-review-finding.json` contract retained.
+- `optimize-seo` upgraded with five practices merged from the
+  agentic-awesome-skills catalog (sickn33): internal-linking discipline
+  (typed links cluster→pillar/pillar→cluster/cluster→cluster/contextual
+  boost, orphan-page-first ordering, anchor-text hygiene with exact-match
+  reuse ban and ~100 outgoing-link cap), explicit cannibalization
+  resolution tactics plus keyword-to-page mapping prevention, four-axis
+  scored audits (overall/SEO/AEO/readability out of 100 with pass bands,
+  Blocking/Important/Follow-Up fixes, projected post-fix score),
+  TL;DR-block extractability signal and 4-entry FAQ minimum, per-engine
+  citation measurement (numbered vs inline styles, UTM tagging,
+  entity-consistency lever), and a decay-signal-prioritized freshness
+  queue (>3-position drops, stats older than 2 years).
+- Skills inventory note corrected: `create-automation-script` is
+  classified under MMO, not Platform.
+
+### Rules And Adapters
+
+- Three rules previously unmirrored across adapters are now mirrored in
+  all seven adapters and machine-checked as new parity groups in
+  `validate-rules.py`: environment-file protection (`.dev.vars`/`.env`),
+  repo-local override, and full comment hygiene. Adapter parity standard
+  updated from six to nine groups.
+
+### Tooling
+
+- `generate-index.py` computes all INDEX.md heading counts and the
+  version pin from disk instead of hard-coding them; new `--check` flag
+  verifies generated artifacts without writing.
+- `validate-indexes.py` now runs the generator in check mode, so stale
+  `INDEX.md` / `role-skill-index.json` fail the gate.
+
 ## [4.0.0] - 2026-08-07
 
 Major refactoring release driven by a full role↔skill ownership audit plus a

@@ -389,8 +389,7 @@ Structured JSON handoff must validate against the contract named in the handoff.
 - **EU AI Act Article 50 disclosure audited** for AI content pages (AIDisclosureBanner, data-ai-generated, C2PA, DOMPurify+Trusted Types)
 - **C2PA marking verified** on AI-generated media (deadline 2026-12-02)
 
-
-Last updated: 2026-08-24
+## Optional Overlays
 
 **Dual-site publishing sprint** (Lease + May lanh, plan/baiviet board):
 
@@ -406,6 +405,5 @@ Provides cadence, 7-day board template, publish-log rules, and cannibalization g
 - overlays/vesviet-content (Vesviet + Learn Hugo trees)
 
 See each overlay README for activation and paths.
-
 
 Last updated: 2026-08-24

@@ -133,7 +133,7 @@ This role must follow [role-standard](role-standard.md) first.
 - **TOKEN-BUDGET LOCK**: do not deploy Workers AI without per-request, per-workflow, and per-team token budget enforcement via LLM Gateway; alert at 60–70% of cap.
 - **MCP-REGISTRY LOCK**: do not integrate third-party MCP servers without registry provenance check (publisher identity, behavioral analysis, version pinning); every production MCP dependency in SBOM with SCA scrutiny.
 
-- **BOUNDARY LOCK**: do not own Laravel/VPS/non-Cloudflare infra unless explicitly scoped — recommend System Engineer or DevOps for origin infrastructure concerns
+- **SCOPE LOCK**: do not own Laravel/VPS/non-Cloudflare infra unless explicitly scoped — recommend System Engineer or DevOps for origin infrastructure concerns
 - do not commit API keys, Turnstile secrets, or `.dev.vars` contents
 - do not treat a green CI job as proof of correct bindings or DNS
 - do not change production custom domains or SSL mode without approval

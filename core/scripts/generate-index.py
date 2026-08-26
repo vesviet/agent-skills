@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
 """Generate complete INDEX.md and role-skill-index.json for agent-skills.
 
-Indexes all 34 roles, 107 skills, 18 workflows, and 43 schemas with alias mapping
-for seamless @role @skill invocation in Antigravity.
+Indexes every role, skill, workflow, and schema found on disk (counts are
+computed, never hard-coded) with alias mapping for seamless @role @skill
+invocation in Antigravity.
+
+Run with --check to verify that the generated artifacts are up to date
+without writing; exits 1 when any artifact is stale.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -18,6 +24,11 @@ SKILLS_DIR = CORE_ROOT / "skills"
 WORKFLOWS_DIR = CORE_ROOT / "workflows"
 SCHEMAS_DIR = CORE_ROOT / "contracts" / "schemas"
 REGISTRY_DIR = CORE_ROOT / "a2a" / ".well-known"
+VERSION_PATH = ROOT / "VERSION"
+
+
+def pack_version() -> str:
+    return VERSION_PATH.read_text(encoding="utf-8").strip()
 
 # Comprehensive Role Aliases
 ROLE_ALIASES = {
@@ -344,11 +355,14 @@ def parse_schemas() -> dict:
 
 
 def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas: dict) -> str:
+    version = pack_version()
+    core_count = sum(1 for s in skills.values() if s.get("type") == "core")
+    overlay_count = sum(1 for s in skills.values() if s.get("type") == "overlay")
     md = []
     md.append("# Agent-Skills Master Index & Router")
     md.append("")
-    md.append("> **Location:** `core/` & `overlays/` | **Version:** `4.0.0` (A2A 1.0 + Antigravity)")
-    md.append("> **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **18 Workflows** | **43 Data Contracts**")
+    md.append(f"> **Location:** `core/` & `overlays/` | **Version:** `{version}` (A2A 1.0 + Antigravity)")
+    md.append(f"> **Total Catalog:** **{len(roles)} Roles** | **{len(skills)} Skills** ({core_count} Core + {overlay_count} Overlays) | **{len(workflows)} Workflows** | **{len(schemas)} Data Contracts**")
     md.append("")
     md.append("---")
     md.append("")
@@ -375,7 +389,7 @@ def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas:
     md.append("")
     md.append("---")
     md.append("")
-    md.append("## 🎭 Role Directory (34 Roles)")
+    md.append(f"## 🎭 Role Directory ({len(roles)} Roles)")
     md.append("")
     md.append("| Role Slug | Title | Common Aliases | Primary Skills | Role File |")
     md.append("|:---|:---|:---|:---|:---|")
@@ -395,7 +409,7 @@ def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas:
     md.append("")
     md.append("---")
     md.append("")
-    md.append("## 🛠️ Skill Directory (107 Skills)")
+    md.append(f"## 🛠️ Skill Directory ({len(skills)} Skills)")
     md.append("")
     
     by_cat = {}
@@ -426,7 +440,7 @@ def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas:
     md.append("")
     md.append("---")
     md.append("")
-    md.append("## 🔄 Workflows (18 Workflows)")
+    md.append(f"## 🔄 Workflows ({len(workflows)} Workflows)")
     md.append("")
     md.append("| Workflow | Title | File |")
     md.append("|:---|:---|:---|")
@@ -436,7 +450,7 @@ def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas:
     md.append("")
     md.append("---")
     md.append("")
-    md.append("## 📑 Data Contracts & Schemas (43 Schemas)")
+    md.append(f"## 📑 Data Contracts & Schemas ({len(schemas)} Schemas)")
     md.append("")
     md.append("| Schema File | Schema Title | Path |")
     md.append("|:---|:---|:---|")
@@ -448,7 +462,7 @@ def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas:
 
 def generate_json_index(roles: dict, skills: dict, workflows: dict, schemas: dict) -> dict:
     return {
-        "version": "4.0.0",
+        "version": pack_version(),
         "protocol": "A2A 1.0 + Antigravity",
         "root": ".",
         "stats": {
@@ -466,7 +480,23 @@ def generate_json_index(roles: dict, skills: dict, workflows: dict, schemas: dic
     }
 
 
+def build_artifacts(roles: dict, skills: dict, workflows: dict, schemas: dict) -> dict[str, tuple[Path, str]]:
+    md = (ROOT / "INDEX.md", generate_markdown_index(roles, skills, workflows, schemas))
+    json_payload = json.dumps(generate_json_index(roles, skills, workflows, schemas), indent=2, ensure_ascii=False) + "\n"
+    registry_json = (REGISTRY_DIR / "role-skill-index.json", json_payload)
+    adapter_json = (ROOT / "adapters" / "antigravity" / "role-skill-index.json", json_payload)
+    return {"INDEX.md": md, "role-skill-index.json": registry_json, "adapters/antigravity/role-skill-index.json": adapter_json}
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Generate INDEX.md and role-skill-index.json.")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="verify generated artifacts are up to date without writing; exit 1 when stale",
+    )
+    args = parser.parse_args()
+
     print("Parsing agent-skills pack...")
     roles = parse_roles()
     skills = parse_skills()
@@ -475,24 +505,28 @@ def main() -> int:
 
     print(f"Loaded {len(roles)} roles, {len(skills)} skills, {len(workflows)} workflows, {len(schemas)} schemas.")
 
-    index_md_path = ROOT / "INDEX.md"
-    index_md_content = generate_markdown_index(roles, skills, workflows, schemas)
-    index_md_path.write_text(index_md_content, encoding="utf-8")
-    print(f"Generated {index_md_path}")
+    artifacts = build_artifacts(roles, skills, workflows, schemas)
 
-    REGISTRY_DIR.mkdir(parents=True, exist_ok=True)
-    json_path = REGISTRY_DIR / "role-skill-index.json"
-    json_data = generate_json_index(roles, skills, workflows, schemas)
-    json_path.write_text(json.dumps(json_data, indent=2, ensure_ascii=False), encoding="utf-8")
-    print(f"Generated {json_path}")
+    if args.check:
+        stale = []
+        for label, (path, expected) in artifacts.items():
+            actual = path.read_text(encoding="utf-8") if path.is_file() else ""
+            if actual != expected:
+                stale.append(label)
+        if stale:
+            print("Stale generated artifacts: " + ", ".join(stale))
+            print("Run: python3 core/scripts/generate-index.py")
+            return 1
+        print("Generated artifacts are up to date.")
+        return 0
 
-    adapter_json_path = ROOT / "adapters" / "antigravity" / "role-skill-index.json"
-    adapter_json_path.parent.mkdir(parents=True, exist_ok=True)
-    adapter_json_path.write_text(json.dumps(json_data, indent=2, ensure_ascii=False), encoding="utf-8")
-    print(f"Generated {adapter_json_path}")
+    for label, (path, content) in artifacts.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+        print(f"Generated {path}")
 
     return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

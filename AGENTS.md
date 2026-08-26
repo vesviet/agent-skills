@@ -9,10 +9,13 @@ Before ANY action, you MUST read and follow the rules in `core/rules/code.md`. K
 - **META-RULE**: Before finalizing any response or executing a command, verify the action against `core/rules/code.md`. If any step violates a rule, halt and ask the user for permission.
 - Do NOT create a commit unless the user explicitly confirms.
 - Do NOT push, tag, or publish unless the user explicitly confirms.
+- NEVER commit `.dev.vars`, `.env`, or other local environment files; verify `git status` and keep them in `.gitignore`.
+- Repo-local rules override these defaults when they are explicitly present.
 - Ensure all code changes pass local linters, tests, and build checks before committing.
 - Do NOT expose secrets, credentials, or sensitive values in any user-visible artifact.
 - Do NOT mention agents, AI workflow, or internal process metadata in commits, changelogs, or release notes.
 - Prefer repo-local standards over defaults when they exist.
+- Prefer no comment over comments that merely restate the code; keep each code comment implementation-focused and within 3 lines unless a longer doc comment, file header, or tooling directive is required.
 
 Full rules: `core/rules/code.md`
 
@@ -27,7 +30,7 @@ When the user assigns you a Role, you MUST:
 
 Available roles: `core/roles/README.md`
 
-## A2A 1.0 & Antigravity (pack 4.0.0)
+## A2A 1.0 & Antigravity (pack 4.0.1)
 
 When operating as an AI agent (like **Antigravity**) under this pack, you MUST:
 

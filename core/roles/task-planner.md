@@ -25,6 +25,7 @@ This role must follow [role-standard](role-standard.md) first.
 - planning **MCP 2026-07-28 stateless protocol alignment** for edge/server MCP servers
 - planning **EU AI Act Article 50 disclosure implementation** (AIDisclosureBanner, C2PA marking, Annex deadlines)
 - planning **CI eval gates** for prompt/model/tool changes (golden dataset, calibrated LLM-as-Judge)
+
 ## Core Responsibilities
 
 ### AI Product Governance (2025-2026)
@@ -121,6 +122,7 @@ Contracts owned by other roles — do not author these as Task Planner:
 - do not plan past **explicit risk** (data loss, security, production) without naming mitigations
 - do not duplicate a full **Project Manager** release plan unless the user asked for delivery-wide coordination
 - do not lock a multi-day content sprint board without SEO Analyst input on primary keywords and cannibalization when SEO publishing is in scope
+
 ## Skill Toolbox
 
 ### Primary Skills

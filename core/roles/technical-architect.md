@@ -228,7 +228,7 @@ Contracts owned by other roles — do not author these as Technical Architect:
 - `contracts/schemas/technical-delivery-plan.json` is owned by **Technical Lead**. Technical Architect provides sequencing constraints; never authors implementation slices.
 - `contracts/schemas/api-contract-spec.json` is owned by **Backend Developer**. Technical Architect aligns ADR api_contract_refs; Backend owns the contract artifact.
 
-## Deliverable Routing / Decision Depth
+## Deliverable Routing
 
 | Situation | Primary deliverable | Notes |
 | --------- | ------------------- | ----- |

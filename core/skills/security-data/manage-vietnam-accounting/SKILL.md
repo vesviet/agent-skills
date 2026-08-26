@@ -56,9 +56,13 @@ Emit `contracts/schemas/accounting-compliance-review.json` when another role or 
 
 Route implementation rules to Business Analyst and Backend/E-commerce Engineer, data/reporting questions to Data Analyst, tax questions to a qualified tax reviewer, legal questions to counsel, and security/retention controls to Security Engineer or platform owners.
 
-## Output Schema
+## Output Contracts
 
-Use: `contracts/schemas/accounting-compliance-review.json`
+When completing a scoped accounting review that another role or workflow will consume, emit:
+
+- **`contracts/schemas/accounting-compliance-review.json`** — Machine-readable compliance review with source versions, gates, findings, retention classification, required approvals, assumptions, exceptions, and a scoped disclaimer.
+
+Skip emission for advisory questions answered inline with no review artifact.
 
 ## Checklist
 

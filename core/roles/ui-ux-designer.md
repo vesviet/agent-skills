@@ -204,8 +204,8 @@ In 2026, design systems are not component libraries — they are living infrastr
 
 ## Deliverable Routing
 
-| Scope | Primary contract | Notes |
-| ----- | ---------------- | ----- |
+| Situation | Primary deliverable | Notes |
+| --------- | ------------------- | ----- |
 | Multi-screen feature or bug fix across routes | ux-flow-spec.json | Always include component_spec_refs |
 | Single reusable widget with no navigation change | ui-component-spec.json | Still set flow_id if part of a larger initiative |
 | Marketing/content landing (Hugo/Astro) | Escalate | SEO Analyst + Content Writer own copy/structure; UX only for in-app product UI |

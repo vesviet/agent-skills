@@ -1,6 +1,6 @@
 # Agent-Skills Master Index & Router
 
-> **Location:** `core/` & `overlays/` | **Version:** `4.0.0` (A2A 1.0 + Antigravity)
+> **Location:** `core/` & `overlays/` | **Version:** `4.0.1` (A2A 1.0 + Antigravity)
 > **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **18 Workflows** | **43 Data Contracts**
 
 ---
@@ -269,7 +269,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 |:---|:---|:---|
 | **`@commit-code`** | Validate and package a finished change into a clean commit by following repo-local validation, gener... | [`core/skills/repo-ops/commit-code/SKILL.md`](./core/skills/repo-ops/commit-code/SKILL.md) |
 | **`@navigate-service`** | Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, ... | [`core/skills/repo-ops/navigate-service/SKILL.md`](./core/skills/repo-ops/navigate-service/SKILL.md) |
-| **`@review-code`** | Review concrete code changes for correctness, contract safety, data handling, reliability, security,... | [`core/skills/repo-ops/review-code/SKILL.md`](./core/skills/repo-ops/review-code/SKILL.md) |
+| **`@review-code`** | Review a diff since a fixed point along two separate axes — Standards (does the code follow this rep... | [`core/skills/repo-ops/review-code/SKILL.md`](./core/skills/repo-ops/review-code/SKILL.md) |
 | **`@review-service`** | Review an entire service for release readiness. Use for full-service audits, production-readiness ch... | [`core/skills/repo-ops/review-service/SKILL.md`](./core/skills/repo-ops/review-service/SKILL.md) |
 | **`@troubleshoot-service`** | Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the failing ... | [`core/skills/repo-ops/troubleshoot-service/SKILL.md`](./core/skills/repo-ops/troubleshoot-service/SKILL.md) |
 
