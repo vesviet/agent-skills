@@ -189,3 +189,17 @@ If the feature leaves known follow-up work:
 - **write-tests**: Cover behavior and regression risk
 - **review-code**: Review the implemented change
 - **commit-code**: Prepare approved changes for delivery
+
+### Failure Modes
+
+- **Slice without a feature ticket**: a slice is dispatched without a `feature-ticket.json` or with an incomplete one. **Mitigation:** reject the slice; every slice must have user outcome, AC, impact radius, and owner before any coding starts.
+- **Horizontal slicing**: a plan decomposes by layer (DB, API, UI) instead of user-visible slices. **Mitigation:** enforce vertical slicing; reject plans where no slice delivers end-to-end user value.
+- **Permanent feature flag**: a flag is shipped without a `cleanup_target_date`. **Mitigation:** every flag must carry an ISO 8601 cleanup date; reject the release if any flag is permanent.
+- **Definition of Done bypassed under release pressure**: a slice is rushed to prod without the rollout trigger or rollback path. **Mitigation:** the rollout gate refuses a slice whose `delivery-plan.json` lacks `rollback_trigger` or `observability_requirement`; surface the missing evidence to the user and stop.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/feature-ticket.json`** — for the user outcome, AC, impact radius, owner, and flag; set `produced_by_role: business-analyst` or product-manager.
+- **`contracts/schemas/implementation-result.json`** — for each shipped slice; capture `change_summary`, `files_touched[]`, and `validation_run` output.

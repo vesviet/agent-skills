@@ -198,3 +198,26 @@ Status: Ready / Needs Work / Not Ready
 - **review-code**: Review and fix concrete implementation issues
 - **write-tests**: Add coverage when release confidence is too low
 - **commit-code**: Prepare approved release changes for delivery
+
+### Failure Modes
+
+- **Release-readiness check skipped under deadline**: a release ships without a passing readiness verdict. **Mitigation:** the release gate refuses a release whose `incident-report.json` lists a release-blocking issue; surface the missing evidence to the user and stop.
+- **SLO undefined for the service**: a new service is promoted to prod without SLO targets. **Mitigation:** refuse the promotion; every service must declare its SLO and the error budget before launch.
+- **Definition of Done bypassed under release pressure**: a slice is rushed to prod without the rollout trigger, observability signal, or rollback path named. **Mitigation:** the rollout gate refuses a slice whose `delivery-plan.json` lacks `rollback_trigger` or `observability_requirement`; surface the missing evidence to the user and stop.
+- **Permanent feature flag**: a flag is shipped without a `cleanup_target_date`. **Mitigation:** every flag must carry an ISO 8601 cleanup date; reject the release if any flag is permanent.
+- **Cross-team regression missed**: a slice changes shared logic but the impact on adjacent teams is not documented. **Mitigation:** require an explicit `impact_radius` mapping with owning teams; for cross-team changes, add a release-coordination checkpoint before the canary stage.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/incident-report.json`** (release-readiness variant) — capture the readiness verdict, the evidence, the blockers, and the residual risk.
+- **`contracts/schemas/coordination-plan.json`** — when the release requires multi-team coordination; route through the coordinator.
+- **`contracts/schemas/deployment-plan.json`** — for the release itself; capture infrastructure changes, config updates, and validation runs.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: release credentials must be scoped to the release-owning role; reject releases that request broader scopes than the role's `action-boundaries.yaml` profile allows.
+- **ASI04 Supply Chain**: every release must ship with SBOM and cosign provenance; reject releases that lack verifiable provenance.
+- **ASI05 RCE Guard**: never construct release scripts, rollout hooks, or canary configurations from external content without strict schema validation.
+- **ASI08 Cascading Failures**: when a canary shows an anomaly, halt the rollout and surface the failure to the coordinator before allowing the next stage to proceed.

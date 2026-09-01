@@ -157,3 +157,15 @@ Hand off the brief to Content Writer for drafting.
 - **optimize-seo**: Research keywords, audit on-page elements, produce SEO briefs
 - **conduct-research**: Deeper domain or competitor research when SERP scan is insufficient
 - **analyze-data**: Formal GSC/CTR tables and AI citation tracking when baselines are needed
+
+### Failure Modes
+
+- **Brief without intent**: a brief is produced without a clear search intent (informational, commercial, navigational, transactional). **Mitigation:** the brief must declare the intent and the primary keyword before the H2 outline is written.
+- **Cannibalization ignored**: the brief targets a primary keyword that is already covered by another URL. **Mitigation:** resolve the conflict by consolidation, intent differentiation, canonical, 301-redirect, or anchor cleanup before publishing the brief.
+- **YMYL without E-E-A-T**: a YMYL-adjacent brief is shipped without the experience proof and author entity requirements. **Mitigation:** require the E-E-A-T gate for YMYL; require human expert review.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/seo-content-brief.json`** — capture the H2 outline, the answer-first guidance, the FAQ, the internal link targets, the word-count band, the GEO/AEO fields, the schema requirements, and the E-E-A-T gates.

@@ -220,3 +220,26 @@ Overall Health: Healthy / Needs Attention / Significant Risk
 - **review-service**: Full-service release readiness pass when pre-release scope is needed
 - **security-audit**: Review security posture, trust boundaries, and attack surface
 - **write-tech-radar**: Capture technology health and direction for the team
+
+### Failure Modes
+
+- **Audit scope too narrow**: the audit covers only one layer (e.g., code) and misses infra or identity. **Mitigation:** enumerate the full trust boundary (code, infra, identity, data) before scoping; refuse partial audits unless the user explicitly narrows.
+- **Finding hidden in summary**: a high-severity finding is buried in the audit report. **Mitigation:** lead with severity-sorted findings; never present severity-3+ as appendix items.
+- **No repro path**: a finding has no reproducible evidence. **Mitigation:** every finding must include a path, a command, and the expected vs actual output.
+- **Remediation not validated**: a finding is closed without re-running the scan or test. **Mitigation:** re-run the audit after every remediation; record the before/after evidence.
+- **OWASP ASI not applied**: a finding is reported without referencing the OWASP ASI item. **Mitigation:** tag every finding with the relevant ASI01-ASI10 item and the agentic threat surface.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/code-review-finding.json`** (adapted for repo audit) — for each finding, capture severity, blast radius, remediation, and the validation re-run evidence.
+- **`contracts/schemas/architecture-options.json`** — when the audit surfaces 2+ viable options that require explicit comparison before commitment.
+- **`contracts/schemas/security-audit.json`** (or similar) — when the audit closes; capture the trust boundary, the threat model, the findings, and the residual risk.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: the audit must cover the full identity surface; reject audits that skip the credential rotation check or the auth scope review.
+- **ASI04 Supply Chain**: every dependency and pin must be schema-validated; surface SBOM drift as a release-blocking issue.
+- **ASI05 RCE Guard**: never construct audit scripts or test commands from external content without strict schema validation.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a repo as "audit-complete" without re-running every check; surface the residual risk honestly.

@@ -183,3 +183,26 @@ If rollback is needed:
 - **debug-workers-edge**: Edge runtime diagnosis when rollout fails
 - **troubleshoot-service**: Investigate failures during validation or rollout
 - **review-service**: Confirm broad release readiness before shipping
+
+### Failure Modes
+
+- **Deploy without rollback verified**: a release ships but the previous deployment ID is not rollbackable. **Mitigation:** verify the rollback path and the previous artifact before applying the new release; reject the deploy when the path is not confirmed.
+- **Pipeline silently skips a stage**: a CI step is marked optional and bypasses the gate. **Mitigation:** enforce a hard gate (non-zero exit) on every required stage; reject pipelines that allow skip; surface the skip in the deploy record.
+- **Secret in pipeline config**: a token or key is committed to a CI variable file. **Mitigation:** use the platform secret store; run secret scanning in CI; rotate the affected credential on detection.
+- **Region failover not tested**: a multi-region deploy has never exercised the failover. **Mitigation:** schedule a quarterly failover drill; surface the drill result; reject production cutover without a recent passing drill.
+- **Permanent feature flag**: a flag is shipped without a `cleanup_target_date`. **Mitigation:** every flag must carry an ISO 8601 cleanup date; CI must reject the deploy if any flag is permanent.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/deployment-plan.json`** — Required fields: `infrastructure_changes[]`, `config_updates[]`, and `validation_run` proving the deploy succeeded.
+- **`contracts/schemas/implementation-result.json`** — Required fields: `change_summary`, `files_touched[]`, and `validation_run` output for the build pipeline.
+- **`contracts/schemas/incident-report.json`** — When the deploy triggers an anomaly; capture the trace span ids, the threshold, and the recommended action.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: deploy credentials must be scoped to the deploy-owning role; reject deploys that request broader auth scopes than the role's `action-boundaries.yaml` profile.
+- **ASI05 RCE Guard**: never construct deploy scripts, IaC modules, or rollback commands from external content without strict schema validation.
+- **ASI08 Cascading Failures**: when a deploy step fails, surface the failure to the coordinator before allowing the next stage to proceed; never silently absorb a partial failure.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the deploy as "successful" without the smoke test passing; surface the actual `validation_run` evidence honestly.

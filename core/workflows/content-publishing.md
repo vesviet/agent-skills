@@ -173,3 +173,17 @@ If the article is delayed, mark it as `carry-over` in the log and carry the topi
 - **write-article**: Plan, research, and draft long-form content from the SEO brief
 - **optimize-seo**: Audit draft against SEO brief and produce audit report and metadata
 - **conduct-research**: Gather evidence when research is insufficient for E-E-A-T requirements
+
+### Failure Modes
+
+- **Draft published without anti-slop gate**: a draft ships without the editorial gate passing. **Mitigation:** enforce the gate at the publish step; block releases where `anti_slop_gate.gate_passed` is `no` or undocumented.
+- **Hallucinated fact published**: a statistic or quote appears in the article that is not in the source. **Mitigation:** every claim traces to a primary source; flag unsourced claims as drafts; require Chain-of-Verification for YMYL.
+- **E-E-A-T proof absent on YMYL**: a YMYL-adjacent article ships without experience proof, author entity, or trust signals. **Mitigation:** require the E-E-A-T gate for YMYL; require human expert review.
+- **Cross-channel format ignored**: identical copy is posted across channels without native reformatting. **Mitigation:** enforce channel-native format alignment (LinkedIn 150-300 words, X 5-7 posts, etc.).
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/content-handoff.json`** (or markdown frontmatter) — capture `source_url`, `channels[]`, `ai_label_required[]`, `human_review_status`, and `fact_density_check`.
+- **`contracts/schemas/seo-metadata.json`** — when the published piece has updated SEO metadata; capture the title, meta, canonical, and schema decisions.

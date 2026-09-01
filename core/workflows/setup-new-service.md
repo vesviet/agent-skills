@@ -190,3 +190,17 @@ Do not push, tag, or publish until the user explicitly confirms that specific ac
 - **write-tests**: Add coverage for the first working flow
 - **review-service**: Check readiness before broader rollout
 - **commit-code**: Prepare approved service setup changes for delivery
+
+### Failure Modes
+
+- **Scaffold without policy review**: a new service is scaffolded without checking `action-boundaries.yaml` for the service's owner role. **Mitigation:** the service profile is added to `action-boundaries.yaml` and the SLO is declared before any deploy.
+- **Scaffolding without observability**: a new service is created without OTel, health probes, or audit-trail wiring. **Mitigation:** enforce the OTel + health + audit contract in the scaffolding template; reject a service that ships without instrumentation.
+- **Migration runs out of order**: a new service's first migration runs before the schema it depends on. **Mitigation:** enforce the migration order via a sequencing tool; reject out-of-order migrations.
+- **Secret in scaffold**: a token or key is committed to the new service's source. **Mitigation:** use the platform secret store; run secret scanning in CI; rotate the affected credential on detection.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/implementation-result.json`** — capture the change summary, the files touched, and the validation run that proves the scaffold builds and tests.
+- **`contracts/schemas/edge-deployment-spec.json`** (or local equivalent) — when the service is deployed; capture the bindings, the deploy command, and the rollback strategy.

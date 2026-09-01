@@ -126,3 +126,17 @@ Role: **Content Manager**
 - **conduct-research**: Verify claims and research the latest standards and competitor coverage
 - **write-article**: Draft the content update and information-gain additions
 - **optimize-seo**: Post-update SEO/GEO/AEO audit and metadata
+
+### Failure Modes
+
+- **Audit before baseline**: a content piece is updated before the baseline metrics are recorded. **Mitigation:** record rank, traffic, and conversion rate pre-update; the audit evidence decides the action, not assumption.
+- **AI-assisted edit published unedited**: an AI-suggested edit ships without human review. **Mitigation:** enforce the human editorial sign-off before publish; track `reviewed_by` and `reviewed_at`.
+- **YMYL refresh without SME**: a finance/health/legal update ships without expert review. **Mitigation:** require human SME sign-off for YMYL-adjacent pages; reject unverified claims.
+- **Stale content kept alive**: a redundant or outdated page is refreshed instead of consolidated. **Mitigation:** classify the action explicitly; route redirect/retire to Content Manager.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/seo-audit-report.json`** — capture the four-axis scores (overall, SEO, AEO, readability), the prioritized findings (Blocking, Important, Follow-Up), and the projected post-fix score.
+- **`contracts/schemas/seo-metadata.json`** — when the audit closes; capture the updated title, meta, canonical, and schema decisions.

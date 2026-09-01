@@ -131,3 +131,17 @@ Do not push, tag, or publish until the user explicitly confirms that specific ac
 - **review-code**: Review boundary and ownership changes
 - **performance-profiling**: Check performance-sensitive refactors
 - **commit-code**: Prepare approved refactor changes for delivery
+
+### Failure Modes
+
+- **Behavior changed during refactor**: a refactor introduces a user-visible behavior change. **Mitigation:** the refactor must be behavior-preserving; the diff is verified against the existing test suite and acceptance criteria before the change is shipped.
+- **Refactor expands scope**: a refactor pulls in unrelated changes (style fixes, dependency bumps). **Mitigation:** split into separate PRs; the refactor PR is rejected if it touches unrelated code.
+- **Test coverage missing for the refactored path**: the refactor deletes or moves code without preserving the test coverage. **Mitigation:** the refactor PR must include a passing test for the new structure; reject the PR if a path is uncovered.
+- **Performance regression undetected**: a refactor slows the hot path. **Mitigation:** run the benchmark before and after the refactor; reject the change if the regression exceeds the agreed budget.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/implementation-result.json`** — capture the behavior-preservation evidence, the test coverage delta, the benchmark before/after, and the files touched.
+- **`contracts/schemas/code-review-finding.json`** (adapted for refactor) — when the refactor surfaces a structural concern; capture the smell, the proposed resolution, and the trade-off.

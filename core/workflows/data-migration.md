@@ -168,3 +168,26 @@ If the migration must be reversed:
 - **review-code**: Review migration for safety and backward compatibility
 - **database-maintenance**: Handle database-level operations and maintenance
 - **troubleshoot-service**: Diagnose migration-related failures
+
+### Failure Modes
+
+- **Single-release destructive change**: a column is renamed or dropped in a single release. **Mitigation:** enforce the Expand-Contract pattern; reject migrations that combine remove-old and add-new without a dual-write phase.
+- **Lock pool starvation**: a long-running DDL blocks the connection pool. **Mitigation:** set `SET lock_timeout = '2s';` on every DDL migration; surface timeout as a CI failure.
+- **ACCESS EXCLUSIVE on a large table**: a `CREATE INDEX` locks the table for writes. **Mitigation:** use `CREATE INDEX CONCURRENTLY` (PostgreSQL) or gh-ost (MySQL) for large tables.
+- **Unbatched backfill**: a backfill rewrites millions of rows in a single statement. **Mitigation:** batch in 500-2000 row chunks with sleep intervals; monitor replication lag and I/O load.
+- **Rollback over-promised**: the rollback path is declared "safe" but the destructive change is not reversible. **Mitigation:** document the rollback as "partial" or "unsafe" when the data has already changed; never claim a destructive data change is fully reversible.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/schema-migration.json`** — capture the forward and rollback behavior, the rollout phases (Expand-Contract when applicable), the batch size for any backfill, and the data classification of any new column.
+- **`contracts/schemas/deployment-plan.json`** — When the migration is part of a coordinated multi-role rollout.
+- **`contracts/schemas/incident-report.json`** — When the migration causes an anomaly (lock timeout, replication lag, row-count drift); capture the trace id and the recovery action.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: the migration's privileged database role must be scoped to the minimum required grants; reject migrations that run under a superuser role when a scoped role would suffice.
+- **ASI05 RCE Guard**: never construct migration SQL from external or user-supplied content; treat the migration file as the source of truth and lint it against expected patterns.
+- **ASI07 Inter-Agent Communication**: the migration is consumed by release and infra agents; emit a structured `schema-migration.json` so each consumer can validate the rollout plan.
+- **ASI09 Human-Agent Trust Exploitation**: do not declare a destructive migration "safe" without naming the residual risk; surface partial-rollback or unsafe-rollback honestly.

@@ -216,3 +216,26 @@ Use skill: `meeting-review` when you need structured multi-role analysis.
 - **navigate-service**: Map unfamiliar code paths before debugging
 - **review-code**: Review risky fixes before delivery
 - **meeting-review**: Escalate cross-role investigation decisions
+
+### Failure Modes
+
+- **Symptom before change**: a fix is applied before the symptom is captured. **Mitigation:** capture the exact symptom, the first meaningful error, and the recent changes before any change.
+- **Multiple layers changed**: build, config, and code are all modified in one incident response. **Mitigation:** isolate one failure layer at a time; avoid unrelated cleanup during incident handling.
+- **Fix not verified**: the fix is applied but recovery is not confirmed. **Mitigation:** verify recovery end-to-end; rerun the failing scenario; check for nearby regressions.
+- **AI log summary trusted blindly**: an AI log summarization tool returns a root cause that is acted on without verification. **Mitigation:** verify every AI-identified root cause against raw evidence (logs, traces, metrics) before acting.
+- **Distributed trace ignored**: the distributed trace shows the failing hop, but the engineer reads only logs. **Mitigation:** distributed-trace-first; let the trace identify the first failure point; require `trace_id` in the incident report.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/incident-report.json`** — Required fields: symptom, suspected layer, checks performed, root cause, fix applied, verification result, and follow-up items.
+- **`contracts/schemas/implementation-result.json`** — For the fix code change; capture change summary, files touched, and the validation run.
+- **`contracts/schemas/coordination-plan.json`** — When the troubleshooting cascades to multiple services or requires multi-role review; route through the coordinator.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a debug session may drift into changing application code outside the incident's scope. **Mitigation:** scope every debug change to the failing layer; open a separate task for unrelated fixes.
+- **ASI03 Identity & Privilege Abuse**: production debugging credentials must be scoped to the SRE / on-call role; reject ad-hoc privilege escalation in the debug session.
+- **ASI07 Inter-Agent Communication**: the incident report is consumed by SRE and DevOps roles; emit a structured `incident-report.json` so each role can validate the recovery.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the fix as "resolved" without end-to-end verification; surface the residual risk and the unverified checks honestly.

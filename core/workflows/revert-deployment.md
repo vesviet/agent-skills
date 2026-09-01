@@ -122,3 +122,26 @@ Capture the incident and rollback for the post-mortem:
 - **database-maintenance**: Handle data or migration rollback safely
 - **setup-deployment**: Revert deployment source-of-truth configuration
 - **commit-code**: Prepare approved rollback changes for delivery
+
+### Failure Modes
+
+- **Revert without a previous deployment**: a revert is requested but the previous artifact is missing. **Mitigation:** verify the previous deployment is rollbackable before issuing the revert; reject the revert when no prior artifact is available.
+- **Revert cascades to dependent services**: a downstream service depends on the schema or contract of the new release. **Mitigation:** before reverting, identify downstream consumers in the dependency graph; route a coordinated revert through `contracts/schemas/coordination-plan.json` when more than one service is affected.
+- **Database migration not reversible**: a forward migration ran but the data has already changed. **Mitigation:** document the partial-rollback path in the revert plan; require human sign-off when the revert is unsafe.
+- **Cache stale after revert**: a CDN or browser cache still serves the new release. **Mitigation:** require a full purge of the affected route pattern; verify the cache miss with curl after revert.
+- **Revert skipped because of feature flag**: a flag is intended to gate a release, but a separate code path bypasses it. **Mitigation:** verify the flag is checked in every code path that touches the gated feature; never trust the flag alone.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/deployment-plan.json`** — For the revert; capture the target revision, the rollback steps, the cache purge, and the validation run.
+- **`contracts/schemas/incident-report.json`** — When the revert is triggered by an incident; capture the symptom, the failed artifact, the revert rationale, and the follow-up postmortem reference.
+- **`contracts/schemas/coordination-plan.json`** — When the revert cascades to dependent services; route the coordinated revert through the coordinator.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: revert credentials must be scoped to the role that owns the deploy; reject reverts requested by a role that does not hold `run_deployment` in `action-boundaries.yaml`.
+- **ASI05 RCE Guard**: never construct revert commands or cache-purge scripts from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the revert is consumed by SRE, release, and downstream roles; emit structured contracts so each role can validate the cascade.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the revert as "successful" without end-to-end verification on the previous revision; surface the actual `validation_run` evidence.

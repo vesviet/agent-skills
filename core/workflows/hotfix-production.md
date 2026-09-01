@@ -147,3 +147,26 @@ Schedule deeper cleanup separately from the hotfix itself.
 - **review-code**: Review risky hotfix changes before shipping
 - **commit-code**: Prepare approved hotfix changes for delivery
 - **meeting-review**: Escalate cross-role incident decisions
+
+### Failure Modes
+
+- **Hotfix without rollback verified**: an urgent fix ships but the previous deployment is not rollbackable. **Mitigation:** verify the rollback path before the hotfix; reject the deploy when the path is not confirmed.
+- **Hotfix bypasses review**: an urgent fix is merged without reviewer sign-off. **Mitigation:** pre-authorize a small responder set; require at least one reviewer outside the responder set to sign off; surface the bypass in the postmortem.
+- **Permanent feature flag**: a hotfix flag ships without a `cleanup_target_date`. **Mitigation:** every flag must carry an ISO 8601 cleanup date; CI must reject the hotfix if any flag is permanent.
+- **Customer-impact metric not captured**: a hotfix closes the incident without recording the customer impact. **Mitigation:** capture DORA Change Failure Rate, MTTR, and customer impact in the incident report before the incident is closed.
+- **Postmortem skipped**: the hotfix is shipped but the root cause is never recorded. **Mitigation:** require a postmortem in `contracts/schemas/incident-report.json` within 72 hours of the hotfix.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/incident-report.json`** — Required fields: symptom, suspected layer, checks performed, root cause, fix applied, verification result, and follow-up items.
+- **`contracts/schemas/deployment-plan.json`** — For the hotfix deploy; capture infrastructure changes, config updates, and validation runs.
+- **`contracts/schemas/implementation-result.json`** — For the hotfix code change; capture change summary, files touched, and the validation run.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: hotfix credentials must be scoped to the responder set; reject deploys that request broader scopes than the role's `action-boundaries.yaml` profile allows.
+- **ASI05 RCE Guard**: never construct hotfix scripts or rollback commands from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the hotfix is consumed by incident response and release roles; emit structured `incident-report.json` and `deployment-plan.json` so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the hotfix as "resolved" without end-to-end verification and customer impact evidence; surface the residual risk honestly.

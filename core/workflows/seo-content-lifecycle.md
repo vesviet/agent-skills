@@ -70,3 +70,15 @@ Follow [content-publishing](content-publishing.md) steps 3–8 in full: draft ag
 - **optimize-seo**: Audit drafts and produce SEO briefs
 - **conduct-research**: Gather evidence for E-E-A-T requirements
 - **write-article**: Plan, research, and draft long-form content
+
+### Failure Modes
+
+- **Plan without pillar**: a topic is added to the board without a pillar page anchor. **Mitigation:** every topic must declare its pillar URL and cluster position before planning begins; reject plans that cannot anchor.
+- **Stale E-E-A-T proof**: a piece is shipped without verifying the experience proof and author entity. **Mitigation:** enforce the E-E-A-T gate for YMYL; require human expert review before publish.
+- **Cannibalization introduced**: a refresh creates overlap with a newer URL. **Mitigation:** check cannibalization as part of the post-update SEO audit; escalate to SEO Analyst when overlap is found.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/seo-metadata.json`** — capture the title, meta, canonical, schema decisions, and the AEO/GEO audit verdict for each published piece.

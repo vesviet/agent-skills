@@ -168,3 +168,26 @@ After the change is deployed:
 - **review-code**: Review the manifest, lock file, and call site changes
 - **write-tests**: Add coverage for newly-upgraded code paths
 - **commit-code**: Prepare approved upgrade changes for delivery
+
+### Failure Modes
+
+- **Unsigned dependency**: a build pulls an unsigned or unverified dependency. **Mitigation:** enforce SLSA build provenance; verify signatures in CI; reject unsigned packages.
+- **SBOM drift**: the SBOM is out of sync with the actual build artifacts. **Mitigation:** regenerate the SBOM in CI; fail the build on drift; surface the missing components.
+- **Vulnerable transitive dependency**: a transitive dependency has a known CVE. **Mitigation:** pin to patched versions; run `npm audit` / `pip-audit` in CI; route through Renovate for polyglot stacks.
+- **AI-suggested version with public registry drift**: an LLM suggests a version that no longer exists on the registry. **Mitigation:** validate the version against the live registry before pinning; reject unresolvable versions.
+- **Reachability false negative**: a CVE in an unused library is treated as a release blocker. **Mitigation:** run SBOM reachability analysis (Endor Labs, Snyk Reachability) before filing the upgrade as a release-blocking issue.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/implementation-result.json`** — Required fields: `change_summary`, `files_touched[]`, and `validation_run` output proving the upgrade builds and tests pass.
+- **`contracts/schemas/release-notes.json`** (or frontmatter block) — when the upgrade ships; capture the version diff, the breaking changes, the deprecations, and the security fixes.
+- **`contracts/schemas/incident-report.json`** — When a CVE requires a hot upgrade; capture the CVE id, the affected version, the fix version, and the upgrade plan.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: every dependency and pin must be schema-validated against the expected manifest; treat unknown versions as untrusted. SBOM and cosign provenance are required for any release-grade artifact.
+- **ASI05 RCE Guard**: never construct install commands, lockfile edits, or version pin scripts from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the upgrade result is consumed by release and security roles; emit a structured `implementation-result.json` so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a dependency upgrade as "safe" without the SBOM diff and the CVE coverage; surface the residual risk honestly.

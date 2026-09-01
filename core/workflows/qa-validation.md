@@ -207,3 +207,17 @@ The verdict must be explicit — "no obvious issues" is not a release confidence
 - **review-code**: Review test code quality and coverage logic
 - **accessibility-review**: Validate WCAG 2.2 compliance when UI is affected
 - **agent-quality-gate**: Validate artifacts in agentic pipelines
+
+### Failure Modes
+
+- **Coverage theater**: a high line-coverage score is achieved without exercising the risky path. **Mitigation:** enforce the Testing Trophy and a mutation score ≥75-80% via Stryker for critical libraries.
+- **Live LLM API in CI**: a test calls a live LLM provider, making the CI run non-deterministic. **Mitigation:** stub LLM calls with vcr-style fixtures in CI; never call live providers in CI.
+- **Brittle E2E for unit logic**: a unit-level decision is covered only by an E2E test. **Mitigation:** drop the E2E and add a focused unit test; reserve E2E for cross-service flows.
+- **Skipped tests reported as full coverage**: a test run skips a category and reports the line coverage as full. **Mitigation:** surface skipped tests in the `test-report.json`; reject reports where skipped > 0% without a documented rationale.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/test-report.json`** (or equivalent) — capture the run id, the test categories, the pass/fail counts, the skipped tests with rationale, and the release confidence verdict.
+- **`contracts/schemas/code-review-finding.json`** (adapted for QA) — when the run surfaces a test gap; capture the category, severity, and the fix path.

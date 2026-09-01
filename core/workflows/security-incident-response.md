@@ -166,3 +166,26 @@ Capture blameless:
 - **write-tests**: Add regression coverage for the vulnerable path
 - **commit-code**: Prepare approved fix for delivery
 - **meeting-review**: Escalate cross-role incident decisions
+
+### Failure Modes
+
+- **Containment delayed by approval chain**: a confirmed breach is not contained because the responder set is unclear. **Mitigation:** pre-authorize the responder set per NIST CSF 2.0 Govern (GV.RR); surface the uncontained exposure window in the incident report.
+- **Blast radius not computed**: containment does not account for the affected services and credentials. **Mitigation:** run a CycloneDX 1.6 SBOM blast-radius query before any containment action; route through `core/a2a/.well-known/agent-registry.json` for the service inventory.
+- **Credential rotation incomplete**: rotation covers the surface credential but misses downstream sessions, caches, or replicas. **Mitigation:** enumerate every consumer of the credential before rotating; verify the rotation is complete with a smoke test.
+- **CVE prioritization on raw score alone**: CVSS 4.0 score is treated as the only signal. **Mitigation:** use the CVSS 4.0 x EPSS x CISA KEV triage triad; deprioritize vulnerabilities that are not yet weaponized or are unreachable in the live dependency graph.
+- **Disclosure copy leaks to public channels**: a draft advisory is sent to a public channel before internal review. **Mitigation:** require the disclosure to pass a human reviewer and route to a private channel first; surface the leak in the postmortem.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/incident-report.json`** — Required fields: symptom, scope, blast radius, containment actions, CVE / advisory id, rotation evidence, and follow-up postmortem reference.
+- **`contracts/schemas/coordination-plan.json`** — When containment cascades to multiple services; route through the coordinator.
+- **`contracts/schemas/release-notes.json`** (or frontmatter block) — when the disclosure is published; capture the CVE id, the fix version, and the user-facing advisory.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: incident response credentials must be scoped to the pre-authorized responder set; reject actions that request broader scopes than the role's `action-boundaries.yaml` profile allows.
+- **ASI04 Supply Chain**: every containment action must be schema-validated against the expected manifest; treat unknown tooling as untrusted.
+- **ASI07 Inter-Agent Communication**: the incident is consumed by security, SRE, and release roles; emit structured `incident-report.json` so each role can validate the containment.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the incident as "contained" without end-to-end verification and a documented blast-radius check; surface the residual exposure honestly.
