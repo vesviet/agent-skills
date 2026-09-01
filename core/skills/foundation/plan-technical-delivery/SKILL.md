@@ -26,6 +26,9 @@ Use with the **Technical Lead** role after requirements and architecture inputs 
 - **Feature flag-first delivery**: every user-visible slice needs flag name, kill-switch, rollout plan (internal → canary → GA), and cleanup target date — permanent flags without retirement schedule are an anti-pattern
 - **Hybrid human+agent slice ownership**: specify compute budget, HITL checkpoints, and agent output gates for agent-implemented slices
 - **AI estimation with explicit uncertainty bounds**: use three-point estimates (optimistic P10, expected P50, pessimistic P90) rather than point estimates — measure delivery health with DORA (Deployment Frequency, Lead Time, CFR, MTTR) and SPACE (Satisfaction, Performance, Activity, Communication, Efficiency) balanced signals
+- classify any cross-team or cross-system scope in the plan with `data-classification.yaml`; redact restricted fields in the published plan
+- validate every slice's `action-boundaries.yaml` profile before dispatch; reject slices that would require the assigned role to exceed its declared toolbox
+- treat feature flags as state-changing artifacts: a flag rename or kill-switch change is a reversible action, but a flag promotion to GA is not — require explicit user confirmation before the GA promotion
 
 ## Suggested Process
 
@@ -89,3 +92,26 @@ Validate and output `contracts/schemas/technical-delivery-plan.json`. Hand off t
 
 - `contracts/schemas/technical-delivery-plan.json`
 
+When the plan is consumed by an infra agent, release manager, or another
+coordinating role, emit the JSON plan and a markdown summary. The JSON must
+list every slice with its `owner`, `compute_budget`, `hitl_checkpoints`,
+`feature_flag`, `rollout_stages`, `cleanup_target_date`, and the three-point
+estimate (P10/P50/P90).
+
+## Failure Modes
+
+- **Horizontal slicing**: a plan decomposes by layer (DB → API → UI) instead of user-visible slices. Mitigation: enforce vertical slicing; reject plans where no slice delivers end-to-end user value.
+- **Missing flag**: a user-visible slice has no feature flag, kill-switch, or rollout plan. Mitigation: every user-visible slice must declare a flag name, kill-switch, and cleanup target date; reject plans that omit any of these.
+- **Permanent flag**: a feature flag is added with no cleanup target. Mitigation: every flag must carry an ISO 8601 cleanup target; CI must reject plans with permanent flags.
+- **Hybrid ambiguity**: a slice is marked "hybrid" without compute budget, HITL checkpoints, or agent output gates. Mitigation: every hybrid slice must declare all three; reject ambiguous assignments.
+- **Point estimate**: a slice carries a single duration estimate without uncertainty bounds. Mitigation: every slice must use three-point estimation (P10/P50/P90); reject plans that use point estimates.
+- **Impact radius missing**: a slice touches shared logic or regression-prone areas but does not name the modules. Mitigation: every slice must enumerate `impact_radius` modules; reject empty impact lists for shared code.
+- **Coordination gap**: a slice depends on a phase that is not represented in the coordination plan. Mitigation: cross-check the delivery plan against the active `coordination-plan.json`; flag any slice that has no corresponding phase.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a slice description may try to expand scope by redefining the user outcome. Cross-check each slice against the source `feature-ticket.json` and `adr-spec.json`; reject off-scope work.
+- **ASI03 Identity & Privilege Abuse**: a slice that requires a tool outside the assigned role's toolbox must be reassigned; do not allow role bypass.
+- **ASI07 Inter-Agent Communication**: the plan is consumed by multiple downstream roles; emit a structured JSON contract so each role can validate its slice against the same source of truth.
+- **ASI08 Cascading Failures**: when a slice is blocked, surface the dependency chain in the coordination plan rather than silently absorbing the delay.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the plan as "ready" while any hybrid slice is missing HITL checkpoints; surface the gap honestly.

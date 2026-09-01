@@ -49,90 +49,16 @@ Before writing the migration, confirm:
 
 ## Suggested Process
 
-### Step 1: Inspect Existing Migrations
+The full 7-step workflow lives in
+[`references/suggested-process.md`](references/suggested-process.md). Key
+constraints the main file keeps in scope:
 
-Find:
-
-- migration location
-- naming pattern
-- sequencing or timestamp convention
-- whether the repo separates schema changes from data backfills
-
-Match the local pattern instead of inventing a new one.
-
-### Step 2: Understand Current State
-
-Review the latest relevant migrations and the current persistence model.
-
-Check:
-
-- current schema shape
-- existing indexes and constraints
-- data volume and table size if available
-- current application assumptions in code
-
-### Step 3: Design For Safe Rollout
-
-Prefer migrations that are safe across staged rollout:
-
-- additive changes before destructive ones
-- nullable or defaulted fields before strict enforcement
-- backfills before making new constraints mandatory
-- separate risky index builds or long-running steps when needed
-
-Avoid combining multiple high-risk changes in one migration unless the repo explicitly expects it.
-
-### Step 4: Create The Migration
-
-Use the repo's official mechanism, such as:
-
-- migration generator command
-- hand-written migration file
-- framework migration scaffold
-
-Follow local naming rules and keep the description precise.
-
-### Step 5: Write Forward And Rollback Logic
-
-The migration should make both directions explicit whenever the repo supports rollback.
-
-Forward logic should:
-
-- make the intended shape change
-- preserve data safety
-- avoid unnecessary locking or long blocking operations
-
-Rollback logic should:
-
-- reverse the change cleanly when practical
-- document when reversal is partial or unsafe
-- avoid pretending a destructive data change is fully reversible when it is not
-
-### Step 6: Update The Code That Depends On The Schema
-
-After the migration, update the repo-local persistence code as needed:
-
-- models or entity mappings
-- repositories or query layers
-- validation or serialization logic
-- feature flags or compatibility shims
-
-Do not assume paths like `internal/data/model` or any specific layer names. Follow the local structure.
-
-### Step 7: Verify Locally
-
-Run the repo's normal validation flow:
-
-- apply the migration forward
-- run the relevant tests
-- build the affected service
-- rollback if the repo expects rollback testing
-
-If the migration is data-sensitive or long-running, also reason through:
-
-- ordering during deploy
-- idempotency expectations
-- impact on replicas, readers, or older code
+- Follow the repo's existing migration tool, naming, and ordering conventions.
+- Always set `SET lock_timeout = '2s';` on DDL migrations.
+- Always use `CREATE INDEX CONCURRENTLY` (PostgreSQL) or `gh-ost` (MySQL) for large tables.
+- Backfill in batches of 500-2000 rows with sleep intervals; monitor replication lag.
+- Use feature flags for dual-read / shadow-read validation and instant rollback.
+- Keep schema changes, backfills, and cleanup in separate releases when that reduces risk.
 
 
 
@@ -145,50 +71,9 @@ If the migration is data-sensitive or long-running, also reason through:
 - avoid full-table rewrites in peak-risk paths when safer alternatives exist
 - document assumptions for large datasets or long-running operations
 
-## Common Migration Patterns
-
-### Additive Schema Change
-
-Best for:
-
-- new table or collection
-- new nullable field
-- new field with safe default
-- new index
-
-### Expand And Contract
-
-Best for:
-
-- renaming fields
-- changing types
-- splitting one field into several
-- removing old columns safely
-
-Typical flow:
-
-1. add new structure
-2. dual-write or backfill
-3. migrate reads
-4. remove old structure later
-
-### Data Backfill
-
-Best for:
-
-- normalizing old values
-- populating new required fields
-- repairing inconsistent records
-
-Keep the backfill restartable and observable when possible.
-
-## Common Gotchas
-
-1. A migration that works on an empty database may still fail on real data.
-2. Destructive changes often need a multi-step rollout, not a single migration.
-3. Large index builds or constraint changes may need special handling in the local tool.
-4. Code and schema must remain compatible during rollout, not just after rollout.
-5. Rollback may be operationally different from logical reversal when data has already changed.
+For the full pattern library (additive schema change, expand-and-contract,
+data backfill) and the common gotchas, see
+[`references/patterns-and-gotchas.md`](references/patterns-and-gotchas.md).
 
 ## What To Capture In Your Output
 
@@ -210,6 +95,11 @@ When reporting migration work, include:
 - [ ] dependent code updated
 - [ ] migration verified with repo-local commands
 - [ ] release ordering or backfill notes captured
+- [ ] for destructive changes, Expand-Contract pattern documented with phases
+- [ ] for PostgreSQL, `SET lock_timeout = '2s';` set on every DDL migration
+- [ ] for large tables, index built with `CREATE INDEX CONCURRENTLY` (PG) or `gh-ost` (MySQL)
+- [ ] backfill is batched (500-2000 rows) and restartable; replication lag and I/O load monitored
+- [ ] data-classification.yaml applied to any column that stores PII or restricted data
 
 ## Quick Reference
 
@@ -233,3 +123,27 @@ Use this for rapid migration creation:
 ## Output Contracts
 
 - `contracts/schemas/schema-migration.json`
+
+When the migration is consumed by a release manager, an infra agent, or a
+downstream reviewer, emit the JSON contract alongside the migration file.
+The JSON must name the migration's forward and rollback behavior, the
+rollout phases (Expand-Contract when applicable), the batch size for any
+backfill, and the data classification of any new column.
+
+## Failure Modes
+
+- **Single-release destructive change**: a column is renamed or dropped in a single release. Mitigation: enforce the Expand-Contract pattern; reject migrations that combine remove-old and add-new without a dual-write phase.
+- **Lock pool starvation**: a long-running DDL blocks the connection pool. Mitigation: set `SET lock_timeout = '2s';` on every DDL migration; surface timeout as a CI failure.
+- **ACCESS EXCLUSIVE on a large table**: a `CREATE INDEX` locks the table for writes. Mitigation: use `CREATE INDEX CONCURRENTLY` (PostgreSQL) or `gh-ost` (MySQL) for large tables.
+- **Unbatched backfill**: a backfill rewrites millions of rows in a single statement. Mitigation: batch in 500-2000 row chunks with sleep intervals; monitor replication lag and I/O load.
+- **Rollback over-promised**: the rollback path is declared "safe" but the destructive change is not reversible. Mitigation: document the rollback as "partial" or "unsafe" when the data has already changed; never claim a destructive data change is fully reversible.
+- **PII column added without classification**: a new column stores customer PII but is not classified. Mitigation: classify every new column with `data-classification.yaml`; surface restricted columns in the migration report.
+- **Permanent flag without cleanup**: a feature flag is introduced to gate the migration but has no cleanup target. Mitigation: every flag must carry an ISO 8601 cleanup target.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: the migration's privileged database role must be scoped to the minimum required grants; reject migrations that run under a superuser role when a scoped role would suffice.
+- **ASI05 RCE Guard**: never construct migration SQL from external or user-supplied content; treat the migration file as the source of truth and lint it against expected patterns.
+- **ASI06 Memory & Context Poisoning**: when the migration is informed by retrieved memory (e.g., a prior migration's notes), validate every note against the live schema before relying on it.
+- **ASI07 Inter-Agent Communication**: the migration is consumed by release and infra agents; emit a structured `schema-migration.json` so each consumer can validate the rollout plan.
+- **ASI09 Human-Agent Trust Exploitation**: do not declare a destructive migration "safe" without naming the residual risk; surface partial-rollback or unsafe-rollback honestly.

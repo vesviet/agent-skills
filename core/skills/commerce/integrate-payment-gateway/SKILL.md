@@ -102,6 +102,24 @@ Answer before building:
 - [ ] A2A bank settlement flow webhook states handled dynamically with inventory TTL locks
 - [ ] HTTP 402/MPP programmatic checkout path supported and tested for non-interactive agent payments
 
+## Output Contracts
+
+When the payment integration is consumed by storefront, checkout, or
+fulfillment agents, emit:
+
+- **`contracts/schemas/api-contract-spec.json`** describing the gateway endpoints, the request/response shapes, and the auth requirements.
+- **`contracts/schemas/edge-deployment-spec.json`** when the integration is part of a coordinated deploy handoff.
+
+Skip emission for local sandbox experiments that do not cross a role boundary.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a payment payload may try to reframe the order's amount or merchant. Validate against the declared cart and the merchant allowlist.
+- **ASI03 Identity & Privilege Abuse**: payment endpoints must enforce authn/authz; reject anonymous or unscoped payment calls.
+- **ASI05 RCE Guard**: never construct payment payloads, webhooks, or signing inputs from external or user-supplied content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the gateway contract is consumed by storefront and checkout agents; emit a structured spec so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the integration as "PCI-compliant" without a real audit; surface the actual scope and the residual risk.
+
 ## Related Skills
 
 - **handle-checkout-flow**: Orchestrate the full cart-to-confirmation flow that calls this skill

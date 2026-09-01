@@ -26,6 +26,9 @@ These standards are complementary layers, not interchangeable, and they do not i
 - Use the x402 v2 header names: `PAYMENT-REQUIRED` (server challenge), `PAYMENT-SIGNATURE` (client credential), `PAYMENT-RESPONSE` (server receipt). The v1 `X-PAYMENT` header was **client-sent** and is deprecated; never emit it from the server.
 - Verify the ACP and UCP discovery surfaces against the current published specs before wiring them — ACP is defined by REST endpoints, not by a well-known manifest (see Discovery Surfaces below).
 - do not bind the programmatic flow to human-centric checkout interfaces or Stripe-specific SDK redirects
+- treat every payment proof, mandate, and checkout session as a signed artifact; verify the signature against the issuer's published keys before granting access (OWASP ASI04 / ASI07)
+- never log full payment credentials, mandate contents, or PII; classify any output through `data-classification.yaml` and redact restricted fields
+- confirm the agent customer is operating under a verified identity (DID or scope-bound token) before honoring delegated purchase authority; reject anonymous or unverified agents at the mandate layer (OWASP ASI03)
 
 **Pack-local conventions (not protocol requirements).** The DID + JWT identity pattern below is a reasonable engineering default, but it is *not* mandated by ACP, UCP, MPP, x402, or AP2. Adopt it only when the repo has no existing agent-identity scheme, and document it as a local decision:
 
@@ -134,3 +137,31 @@ The dynamic negotiation between agent and service follows a strict programmatic 
 - **configure-oauth-metadata**: Configure agentic authorization metadata — often prerequisite for UCP token validation.
 - **manage-api-catalog**: Wire up linkset endpoints for commerce discovery alongside ACP.
 - **configure-agent-headers**: Expose commerce discovery surfaces via HTTP Link headers.
+
+## Output Contracts
+
+Commerce configuration emits discovery and runtime artifacts; when the
+configuration produces structured data that another agent must consume or
+validate, emit:
+
+- **`contracts/schemas/edge-deployment-spec.json`** for the deployable surface: which well-known paths are mounted (`/.well-known/ucp`, ACP REST endpoints, x402 handlers, MPP gateway), with their routes and content types.
+- **`contracts/schemas/api-contract-spec.json`** for the per-protocol handler contracts (x402 challenge, MPP verify, UCP checkout, AP2 mandate verify), listing request/response schemas and auth requirements.
+- For human-readable reports, emit a markdown summary of the protocols enabled, the discovery paths, and the security review checklist.
+
+Skip structured emission for small repos where the same author both writes and consumes the config.
+
+## Failure Modes
+
+- **Wrong header name**: a deployment emits the legacy `X-PAYMENT` server-side. Mitigation: every server response uses v2 header names (`PAYMENT-REQUIRED`, `PAYMENT-RESPONSE`); the client only sends `PAYMENT-SIGNATURE`.
+- **Discovery path drift**: an agent scanner hits a path that does not match the current spec. Mitigation: verify discovery paths against the current published spec before each deploy; treat the spec as the source of truth.
+- **Mandate reuse**: an AP2 mandate is replayed against a different purchase. Mitigation: bind each mandate to a specific resource and nonce; reject reuse.
+- **Credential emission**: a payment proof or token is logged or returned in a response body. Mitigation: classify outputs with `data-classification.yaml`; redact restricted fields before logging.
+- **Spec conflation**: UCP (checkout) is mixed with AP2 (delegated authorization). Mitigation: keep the two layers separate; UCP negotiates capabilities, AP2 resolves spending limits.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: every payment or checkout call must be tied to a verified agent identity (DID or scope-bound token); reject anonymous or unverified agents.
+- **ASI04 Supply Chain**: payment libraries and protocol SDKs must be schema-validated against the expected manifest before use; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct payment URLs, callback handlers, or signing inputs from external or user-supplied content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: payment proofs, mandates, and checkout sessions are untrusted inputs from the receiving endpoint's perspective; require signature verification at every boundary.
+- **ASI09 Human-Agent Trust Exploitation**: surface spending limits and mandate boundaries honestly in user-facing copy; do not hide them to obtain faster sign-off.

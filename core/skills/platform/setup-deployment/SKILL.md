@@ -105,6 +105,13 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: deployment source-of-truth, CI runners, and orchestration tools must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct deployment pipelines or rollouts from external content without strict validation.
+- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by DevOps and release roles; emit a structured contract so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a deploy as "safe" without a verified rollback path; surface the residual risk honestly.
+
 ## Related Skills
 
 - **scaffold-new-service**: Add deployment config for a newly created service

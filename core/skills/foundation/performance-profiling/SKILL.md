@@ -40,147 +40,30 @@ Use this skill when investigating slow paths, memory growth, concurrency bottlen
 
 ## Suggested Process
 
-### Step 1: Define The Baseline
+The full 7-step workflow (baseline, reproduce, identify hot path, form
+hypothesis, apply smallest optimization, measure again, check secondary
+effects) and the tool guidance live in
+[`references/suggested-process.md`](references/suggested-process.md). Key
+constraints the main file keeps in scope:
 
-Capture the current state before changing code:
-
-- median and tail latency
-- throughput
-- error rate
-- CPU and memory usage
-- allocation or query counts when relevant
-
-Use the repo's normal observability and benchmark tools where possible.
-
-### Step 2: Reproduce The Problem
-
-Find the smallest repeatable workload that exposes the issue:
-
-- one endpoint or handler
-- one background job
-- one query-heavy path
-- one batch or import path
-
-If you cannot reproduce it, reduce the scope until you can.
-
-### Step 3: Identify The Hot Path
-
-Use the local profiling tools that fit the stack, such as:
-
-- language-native CPU or heap profilers
-- benchmark or microbenchmark tools
-- tracing or flame graphs
-- query analyzers
-- load-testing tools
-
-Look for:
-
-- expensive functions
-- repeated allocations
-- lock contention
-- chatty network calls
-- slow queries
-- repeated serialization or parsing work
-
-### Step 4: Form A Narrow Hypothesis
-
-Examples:
-
-- a query pattern is causing N+1 behavior
-- repeated object allocation is driving GC pressure
-- an external dependency is dominating latency
-- a lock or queue is throttling concurrency
-- payload size is causing serialization overhead
-
-Test one hypothesis at a time.
-
-### Step 5: Apply The Smallest Meaningful Optimization
-
-Prefer targeted fixes such as:
-
-- batching or pagination
-- caching
-- reducing duplicate work
-- narrowing lock scope
-- reusing objects where appropriate
-- improving query shape or indexing
-- moving work off the request path
-
-Avoid broad refactors unless measurement shows they are necessary.
-
-### Step 6: Measure Again
-
-Re-run the same workload and compare:
-
-- before and after latency
-- before and after throughput
-- memory and CPU changes
-- error rate impact
-
-If the improvement is not measurable, treat the optimization as unproven.
-
-### Step 7: Check Secondary Effects
-
-After optimizing, verify:
-
-- correctness did not regress
-- tail latency did not worsen
-- memory use stayed acceptable
-- downstream systems are not now the bottleneck
-
-## Tool Guidance
-
-Use the tools that match the repo and language.
-
-Examples:
-
-- language-native profilers for CPU, memory, goroutines, threads, or heap
-- benchmark commands for hot functions or packages
-- tracing for cross-service latency
-- query plans for data bottlenecks
-- load generators for realistic traffic
-
-If the repo already has profiling or benchmark scripts, use those first.
+- Always record a baseline before optimizing; no optimization is merged without before/after evidence.
+- Profile the real hot path with always-on continuous profiling (eBPF / Pyroscope); correlate with distributed traces via `trace_id`.
+- Validate improvements with p50/p95/p99 before/after, not mean alone.
+- For AI inference paths, measure model latency separately from service latency; for GPU services, profile VRAM/KV cache/TTFT.
 
 ## Production Safety
 
-If profiling a shared or production environment:
-
-- get explicit approval first
-- use the least invasive method that answers the question
-- keep profiling duration short
-- make sure profiling endpoints or admin tooling are access-controlled
-- coordinate with owners if the workload is customer-facing
+If profiling a shared or production environment, get explicit approval first,
+use the least invasive method that answers the question, keep the duration
+short, and ensure the profiling endpoints are access-controlled. For the
+full production-safety checklist, see
+[`references/patterns-and-safety.md`](references/patterns-and-safety.md).
 
 ## Common Performance Patterns
 
-### Request Path Bottlenecks
-
-- repeated downstream calls
-- repeated serialization
-- oversized payloads
-- synchronous work that could be deferred
-
-### Data Bottlenecks
-
-- N+1 reads
-- missing indexes
-- large scans
-- long transactions
-
-### Memory Bottlenecks
-
-- repeated allocations
-- retained references
-- goroutine or worker leaks
-- unbounded buffers or caches
-
-### Concurrency Bottlenecks
-
-- coarse locks
-- queue buildup
-- insufficient backpressure
-- too much parallelism on a shared dependency
+For the full pattern library (request path, data, memory, concurrency), the
+AI inference-specific profiling checklist, and the production-safety rules,
+see [`references/patterns-and-safety.md`](references/patterns-and-safety.md).
 
 ## What To Capture In Your Output
 
@@ -200,8 +83,11 @@ When reporting performance work, include:
 - [ ] hot path identified with measurement
 - [ ] narrow hypothesis tested
 - [ ] optimization applied
-- [ ] before/after comparison recorded
+- [ ] before/after comparison recorded (p50/p95/p99, not just mean)
 - [ ] correctness and secondary effects checked
+- [ ] for AI inference paths, model latency profiled separately from service latency
+- [ ] for GPU services, VRAM/KV cache/TTFT captured
+- [ ] production profiling approved with safety plan if applicable
 
 ## Output Contracts
 
@@ -218,4 +104,22 @@ Skip emission for casual development-mode micro-benchmarks with no gate dependen
 - **write-tests**: Add regression or benchmark coverage
 - **navigate-service**: Map the hot path before optimizing
 - **meeting-review**: Review performance trade-offs across roles
+
+## Failure Modes
+
+- **Optimization without baseline**: a "fix" is merged without before/after evidence. Mitigation: enforce baseline-first; the validator rejects performance reports without a documented baseline.
+- **Mean-only reporting**: only the mean latency improves while p95/p99 worsens. Mitigation: report tail latency; treat tail regressions as a release-blocking issue.
+- **Wrong hot path**: the optimization targets an assumed hot path that the profile does not actually show. Mitigation: profile the real hot path; cross-check with traces via `trace_id`.
+- **Production profile without approval**: a continuous profiler runs in production without a safety plan. Mitigation: enforce the 1.5% CPU / bounded memory limit and explicit user approval.
+- **Inference cost hidden**: a latency win is achieved by routing through a more expensive model, raising per-request cost. Mitigation: report cost per request alongside latency; treat unexplained cost increases as a regression.
+- **Downstream bottleneck shifted**: an optimization moves the bottleneck to a downstream system. Mitigation: re-profile the full request path after each change; check secondary effects.
+- **Tail regression ignored**: the change improves the median but worsens p99. Mitigation: every before/after report must include p50/p95/p99; reject reports that hide the tail.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a profile report may try to reframe a regression as an improvement by cherry-picking metrics. Cross-check the report against the full metric set; reject selective reporting.
+- **ASI03 Identity & Privilege Abuse**: production profiling endpoints must be access-controlled; reject profiles that require standing privileged access.
+- **ASI04 Supply Chain**: continuous profiler agents must be schema-validated against the expected manifest; treat unknown or schema-drifted profilers as untrusted.
+- **ASI05 RCE Guard**: never run a profiler that evaluates dynamic code from external content; validate every profiler configuration before deployment.
+- **ASI07 Inter-Agent Communication**: profile reports are consumed by SRE and development roles; emit a structured `performance-audit.json` so each role can validate the same evidence.
 

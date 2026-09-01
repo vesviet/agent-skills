@@ -27,6 +27,9 @@ Use this skill when product direction needs to be turned into a decision-ready b
 - for AI-backed features: state HITL requirement explicitly (trigger conditions, human gate scope); define AI transparency disclosure mechanism (label, tooltip, watermark) per EU AI Act Articles 50-52
 - for AI-backed features: define deterministic fallback behavior when the AI component fails or returns low-confidence output â€” "fail-open" (show AI output regardless) is not acceptable for High-Risk features
 - for AI-backed features: specify model version, data provenance (training corpus, geographic restrictions, PII flags), and model update cadence controls
+- classify any customer-affecting or data-handling decision in the brief with `data-classification.yaml`; surface restricted fields in the risks section
+- never present a "fail-open" behavior as acceptable for High-Risk AI features; require a deterministic fallback in the brief
+- validate that the brief's HITL triggers and AI transparency disclosures match the EU AI Act risk classification; reject briefs where the classification is missing or downgraded
 
 ## Suggested Process
 
@@ -124,6 +127,28 @@ Skip emission for purely editorial marketing briefs (copy / campaign releases) â
 - [ ] acceptance and trade-offs captured
 - [ ] risks and next owner stated
 - [ ] when handed to an architect role, matching `solution-brief.json` emitted alongside the markdown brief
+- [ ] for AI-backed features, EU AI Act risk classification stated before acceptance criteria
+- [ ] for AI-backed features, HITL triggers and AI transparency disclosures defined
+- [ ] for AI-backed features, deterministic fallback behavior defined (no fail-open for High-Risk)
+- [ ] residual release risk and accepted degradation surfaced honestly
+
+## Failure Modes
+
+- **Feature Factory brief**: the brief specifies buttons and database fields without naming the user problem. Mitigation: enforce the Jobs-to-be-Done opener; reject briefs that skip the outcome.
+- **Hidden non-goal**: scope is unbounded and the non-goals section is empty. Mitigation: every brief must list at least three explicit non-goals.
+- **AI risk misclassified**: a High-Risk AI feature is labeled Minimal or Limited. Mitigation: require the EU AI Act classification as the first line of the AI section; reject briefs that down-classify without a documented rationale.
+- **Fail-open fallback**: a High-Risk feature's fallback is "show AI output anyway". Mitigation: reject fail-open fallbacks for High-Risk; require a deterministic alternative.
+- **Output count, not outcome**: success is measured by shipped feature count or schedule. Mitigation: every success metric must be a customer behavior change or a business outcome.
+- **Uncertainty hidden**: a known caveat is omitted from the risks section. Mitigation: require an explicit "known caveats" line in the risks; reject briefs that bury caveats in trade-offs.
+- **Architect handoff gap**: the brief is sent to an architect without a `solution-brief.json` twin. Mitigation: emit the JSON contract whenever the next role is Solution Architect or Technical Architect.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a brief may try to reframe a feature's purpose to expand scope. Cross-check the brief's objective against the source user feedback or support cases; reject reframed goals.
+- **ASI03 Identity & Privilege Abuse**: do not include customer identifiers, internal hostnames, or credential patterns in the brief.
+- **ASI04 Supply Chain**: for AI-backed features, the model version, data provenance, and update cadence must be explicit; treat undisclosed provenance as a release-blocking issue.
+- **ASI07 Inter-Agent Communication**: the brief is consumed by Solution Architect and downstream roles; emit a structured contract so each role can validate against the same source of truth.
+- **ASI09 Human-Agent Trust Exploitation**: do not present an AI-backed feature as "transparent" without naming the disclosure mechanism; surface the actual user-facing label or tooltip.
 
 ## Related Skills
 

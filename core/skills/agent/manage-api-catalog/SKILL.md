@@ -14,6 +14,10 @@ Use this skill to create and maintain the `/.well-known/api-catalog` Linkset fil
 - The catalog MUST be placed at `/.well-known/api-catalog` (no `.json` extension per RFC 9727 spec).
 - Serve with `Content-Type: application/linkset+json` or `application/linkset` as required by the request `Accept` header.
 - Keep catalog entries stable — do not remove or rename existing `anchor` values once published; deprecate using the `status` field if the spec supports it.
+- Treat the catalog as a public, signed contract: do not include internal-only API groups or unreleased endpoints without an explicit deprecation flag
+- Validate every entry against the current RFC 9727 spec before deploy; reject schema-drifted Linksets (OWASP ASI04)
+- Every `service-meta` and `service-doc` URL must be on the operator's own domain; reject third-party URLs at code review
+- Set `ETag` and `Last-Modified` headers on the served catalog so external scanners and clients can detect silent changes (OWASP ASI01)
 
 ## When to Use
 
@@ -75,6 +79,36 @@ Use this skill to create and maintain the `/.well-known/api-catalog` Linkset fil
 - **configure-agent-headers**: Expose the API catalog via HTTP Link headers for passive agent discovery.
 - **configure-agent-skills**: Set up the Agent Skills index manifest for capability-level (not endpoint-level) discovery.
 - **configure-mcp**: Set up the MCP server card — often deployed alongside the API catalog for dual-mode discovery.
+- **configure-oauth-metadata**: Wire up the authorization server metadata that protects catalog entries.
+- **manage-auth-md**: Reference the catalog from the agentic registration document.
+
+## Output Contracts
+
+When the catalog is consumed by an infra agent, registry publisher, or CI
+pipeline, emit:
+
+- **`contracts/schemas/api-contract-spec.json`** describing the catalog shape, the entry list, and the deprecation status of each anchor. The consuming agent can then validate before publishing.
+- **`contracts/schemas/edge-deployment-spec.json`** listing the well-known path, the served content type (`application/linkset+json`), and the CORS headers.
+- For human-readable reports, a markdown table of the catalog entries and any version or deprecation changes.
+
+Skip emission for routine single-entry additions that do not cross a role boundary.
+
+## Failure Modes
+
+- **Wrong content type**: the catalog is served with `application/json` instead of `application/linkset+json`. Mitigation: enforce the content type at the edge; verify with `curl -I`.
+- **Anchor rename**: an existing `anchor` is renamed, breaking external clients. Mitigation: anchors are immutable once published; deprecate via `status: deprecated` and keep the anchor stable.
+- **Stale OpenAPI spec**: the `service-meta` URL points to a spec that no longer matches the runtime API. Mitigation: validate the spec on every deploy; surface drift in CI.
+- **CORS blocking scanner**: a cross-origin scanner cannot fetch the catalog. Mitigation: set `Access-Control-Allow-Origin` per the deployment's CORS policy; verify with a preflight.
+- **Third-party URL**: a `service-meta` or `service-doc` URL points to a non-operator domain. Mitigation: enforce an allowlist at code review; reject third-party URLs.
+- **Cache stale**: an intermediary serves an older version of the catalog. Mitigation: set `ETag` and `Last-Modified`; clients should revalidate before each session.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a malicious or compromised catalog entry could redirect agents to attacker-controlled endpoints. Validate every `href` against the operator's own domain allowlist.
+- **ASI03 Identity & Privilege Abuse**: every entry that points to an authenticated endpoint must declare its auth requirement; do not infer auth from the URL.
+- **ASI04 Supply Chain**: the catalog must be schema-validated against RFC 9727 before every deploy; reject schema-drifted Linksets.
+- **ASI07 Inter-Agent Communication**: the catalog is consumed by external agents and scanners; treat it as a public contract and review all changes before publish.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a catalog as "RFC 9727 compliant" without a successful schema validation run; surface the validator output in the deploy record.
 
 ### 2026: RFC 9727 and Catalog Versioning
 

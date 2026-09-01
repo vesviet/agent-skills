@@ -18,6 +18,10 @@ Use this skill to set up the full MCP presence for a web service: the server car
 - **OAuth 2.1 & PKCE**: HTTP-transport MCP servers MUST enforce OAuth 2.1 with PKCE for secure authentication. Shared static tokens or embedded credentials are prohibited.
 - **Streamable HTTP Transport**: Utilize stateless HTTP-transport semantics for all tool invocations, relying on standardized stream headers (e.g., `Accept: text/event-stream`) instead of SSE-only setups.
 - **Multi-Tenant Scoping**: Enforce strict tenant isolation by routing all tool requests through a validation layer that decodes tenant-scoped JWTs and applies gateway-level rate limiting.
+- Validate the server card against the current MCP spec revision before deploy; reject schema-drifted cards (OWASP ASI04)
+- Treat every tool request as untrusted: re-validate the JWT, the tenant scope, and the tool manifest at every invocation; never trust cached identity (OWASP ASI03 / ASI07)
+- After the 2026-07-28 migration, every request must carry `_meta.protocol_version` and the `MCP-Protocol-Version` header; reject requests that omit them
+- Do not log full tool arguments or results; classify outputs with `data-classification.yaml` and redact restricted fields
 
 ## When to Use
 
@@ -123,63 +127,48 @@ Use this skill to set up the full MCP presence for a web service: the server car
 - [ ] Gateway-level rate limiting is enforced on a per-tenant/per-user basis.
 
 
-### ⚠️ Stateless Architecture Migration (MCP 2026-07-28)
-
-> **Breaking change**: The MCP spec revision `2026-07-28` transitions MCP from stateful sessions to **fully stateless requests**. A 12-month deprecation window applies for older implementations. Source: [official changelog](https://modelcontextprotocol.io/specification/2026-07-28/changelog).
->
-> Revision order, newest last: `2025-03-26` → `2025-06-18` → `2025-11-25` → `2026-07-28`. The immediate predecessor is **`2025-11-25`**, so that is the version a current-but-unmigrated server most likely reports.
->
-> Governance: MCP was donated by Anthropic to the **Agentic AI Foundation (AAIF)**, a directed fund under the **Linux Foundation**, announced 2025-12-09. Source: [Anthropic announcement](https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation).
-
-**What is changing:**
-
-| | Pre-migration (`2025-11-25` and earlier) | New (`2026-07-28`) |
-|---|---|---|
-| Session ID | Required handshake | **Removed** |
-| Capabilities negotiation | One-time at session start | **Per-request in `_meta`** |
-| Protocol version over HTTP | Negotiated at session start | **Per-request: `_meta` plus the `MCP-Protocol-Version` header** |
-| Server discovery | Implicit from card | **`server/discover` RPC method** |
-| Governance | Anthropic | **AAIF (Linux Foundation)** |
-
-**Migration steps:**
-
-1. **Add `_meta` to every request**: include the protocol version and client capabilities in the `_meta` field of every tool call request body, per the official schema (`io.modelcontextprotocol/protocolVersion`, `io.modelcontextprotocol/clientCapabilities`, `io.modelcontextprotocol/clientInfo`).
-   ```json
-   {
-     "_meta": {
-       "io.modelcontextprotocol/protocolVersion": "2026-07-28",
-       "io.modelcontextprotocol/clientInfo": { "name": "my-agent-client" },
-       "io.modelcontextprotocol/clientCapabilities": { "tools": true, "resources": false }
-     },
-     "method": "tools/call",
-     "params": { ... }
-   }
-   ```
-
-2. **Remove session establishment logic**: delete handshake endpoints, session ID tracking, and session state from server implementations. Every request must be self-contained.
-
-3. **Implement `server/discover`**: add a `server/discover` RPC endpoint that returns supported protocol versions and capabilities. This replaces static capability negotiation.
-   ```json
-   { "method": "server/discover", "params": {} }
-   // Response:
-   { "supported_versions": ["2026-07-28", "2025-11-25"], "capabilities": { "tools": true } }
-   ```
-
-4. **Update `mcp_version` in server card**: set `"mcp_version": "2026-07-28"` in the server card after migration.
-
-5. **Backward compatibility**: during the 12-month deprecation window, support the stateless `2026-07-28` alongside the stateful predecessors (`2025-11-25`, and older if clients require them) by inspecting `_meta.protocol_version` and the `MCP-Protocol-Version` header on incoming requests.
-
-**Checklist (for 2026-07-28 readiness):**
-- [ ] All tool request handlers read client identity and capabilities from `_meta`, not session state.
-- [ ] `server/discover` RPC endpoint implemented and tested.
-- [ ] Session ID generation and handshake code removed or gated behind legacy version check.
-- [ ] `mcp_version` in server card updated to `"2026-07-28"`.
-- [ ] `isitagentready.com` scan passes with new stateless server card.
-
----
-
 ## Related Skills
 
 - **configure-agent-skills**: Set up the agent skills manifest — often deployed alongside MCP for capability routing.
 - **configure-agent-headers**: Expose the MCP server card via HTTP Link headers for passive discovery.
 - **debug-identity-provider**: Troubleshoot WorkOS and `isitagentready.com` scanner failures.
+- **configure-oauth-metadata**: Wire up the OAuth 2.1 + PKCE endpoints that the MCP server card references.
+- **manage-agent-identity**: Issue scoped, short-lived NHI credentials for MCP gateway access.
+
+## Stateless Architecture Migration (MCP 2026-07-28)
+
+The full migration reference (breaking change summary, what-is-changing
+table, migration steps, readiness checklist, governance note) lives in
+[`references/2026-07-28-migration.md`](references/2026-07-28-migration.md).
+Load that file when migrating an existing MCP server or reviewing a
+deployment against the `2026-07-28` revision.
+
+## Output Contracts
+
+When the MCP server card, WebMCP provider, or gateway config is consumed by
+another agent (CI pipeline, infra agent, or registry publisher), emit:
+
+- **`contracts/schemas/edge-deployment-spec.json`** describing the served paths (`/.well-known/mcp/server-card.json`, `/.well-known/mcp-server-card`, transport endpoint, OAuth metadata), the content types, and the migration status (pre-`2025-11-25` vs `2026-07-28`).
+- **`contracts/schemas/api-contract-spec.json`** for the transport endpoint, listing the JSON-RPC methods, their request/response schemas, and the auth requirements.
+- For human-readable deploy reports, a markdown summary of the server card, the WebMCP mount, and the OAuth/PKCE configuration.
+
+Skip emission for trivial local edits that do not cross a role boundary.
+
+## Failure Modes
+
+- **Stale `mcp_version`**: the server card lists an old MCP revision after the 2026-07-28 migration. Mitigation: bump `mcp_version` in the same change that adopts the stateless request shape; CI must reject cards that lack `_meta` or `MCP-Protocol-Version`.
+- **Server Card path confusion**: the served path does not match the extension. Mitigation: serve both `/.well-known/mcp-server-card` (extension) and `/.well-known/mcp/server-card.json` (compatibility); never serve only one.
+- **WebMCP component missing on some routes**: the provider is mounted on a sub-layout and skips others. Mitigation: mount in the global root layout; verify on every route via e2e test.
+- **Tenant leak**: a tool request is served against the wrong tenant context. Mitigation: decode the JWT at the gateway and inject tenant context into every downstream call; never derive tenant from URL path alone.
+- **OAuth 2.1 misconfigured**: PKCE is not enforced, or the server accepts static tokens. Mitigation: validate the server card against the current spec; reject any server card that lists `grant_types: ["client_credentials"]` without PKCE.
+- **Streamable HTTP misconfigured**: the server uses SSE-only without the `Accept: text/event-stream` header. Mitigation: enforce the streamable HTTP transport headers; require stateless semantics.
+- **Tool result logged with PII**: a tool returns customer data and the gateway logs the full payload. Mitigation: classify tool outputs with `data-classification.yaml`; redact before logging.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: every tool request must be tied to a verified tenant-scoped JWT; reject requests with missing, expired, or unscoped tokens.
+- **ASI04 Supply Chain**: the server card and tool manifests must be schema-validated against the current MCP spec; reject schema-drifted cards.
+- **ASI05 RCE Guard**: never construct tool inputs from dynamic template strings derived from external content; validate every input against the declared `inputSchema` before dispatch.
+- **ASI07 Inter-Agent Communication**: every cross-agent tool call is untrusted from the receiving endpoint's perspective; require schema validation and tenant scoping at the boundary.
+- **ASI08 Cascading Failures**: when a tool returns `partial` or `failed`, surface the failure explicitly to the gateway before allowing downstream calls to proceed.
+- **ASI10 Rogue Agents**: detect instruction drift across turns; if an agent starts calling tools outside its declared baseline, halt and require re-authentication.

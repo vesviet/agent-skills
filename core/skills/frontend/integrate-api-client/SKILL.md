@@ -128,6 +128,13 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: API clients must follow least-privilege auth scopes; reject requests with unscoped tokens.
+- **ASI05 RCE Guard**: never construct API payloads, headers, or auth tokens from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the client contract is consumed by frontend and backend roles; emit a structured spec so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the client as "secure" without the actual auth and error-handling gates; surface the residual risk.
+
 ## Related Skills
 
 - **add-page-route**: Place the data integration into route flow

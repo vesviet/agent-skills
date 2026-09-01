@@ -28,6 +28,39 @@ This skill covers commit preparation and commit creation. It does not imply perm
 - **commit signing**: enable GPG or SSH key signing (`git config commit.gpgsign true`) for identity verification; check repo `CONTRIBUTING.md` for whether DCO (`Signed-off-by:`) is required for IP provenance
 - **git-blame-ignore-revs**: when an AI agent performs bulk reformatting or AI-assisted refactoring, add the resulting commit hash to `.git-blame-ignore-revs` so `git blame` continues to point to the human authors of business logic
 - **semantic-release awareness**: Conventional Commits feed automated release tools (Semantic Release, Release Please) that bump SemVer and generate changelogs; warn that fully automated releases can produce low-quality changelogs — consider Changesets for human-curated bundling in monorepos
+- treat every commit as a potential entry point for an attacker; never include internal hostnames, customer identifiers, or credential patterns in the diff or commit message (OWASP ASI03)
+- run secret scanning on every staged change; reject any commit that contains a high-entropy match (OWASP ASI04)
+- keep commit messages free of internal workflow labels, severity labels, or AI/agent wording; the commit is a user-visible artifact
+
+## Output Contracts
+
+When the commit is part of a coordinated multi-role delivery, emit:
+
+- **`contracts/schemas/code-review-finding.json`** (adapted for the commit) capturing the diff scope, the validation runs, and any skipped checks. The receiving agent can then validate the commit against the review checklist.
+- For human-readable reports, a markdown summary of the diff scope, validation results, and the user-approval timestamp.
+
+Skip emission for single-commit local changes that do not cross a role boundary.
+
+## Failure Modes
+
+- **Commit without approval**: a commit is created without explicit user approval. Mitigation: per the meta-rule, never commit without explicit in-session approval; the commit is an irreversible action.
+- **Push assumed from commit**: a push, tag, or release is performed because the commit was approved. Mitigation: treat push/tag/release as separate gated actions; commit approval never covers them.
+- **Broken build committed**: a known-failing verification is included in the commit. Mitigation: run validation before commit; capture the reason for any intentional skip.
+- **Generated file hand-edited**: a generated file is hand-edited outside the generator workflow. Mitigation: never hand-edit generated files unless the repo explicitly expects it; rerun the generator instead.
+- **Local-only artifact committed**: a `.dev.vars`, `.env`, or other local artifact lands in the commit. Mitigation: verify `.gitignore`; run secret scanning in CI.
+- **Diff exceeds intended scope**: the commit includes unrelated local edits. Mitigation: review the diff before staging; split into multiple commits when scope is mixed.
+- **AI/agent wording in commit message**: the commit message mentions agent names, AI workflow, or review labels. Mitigation: strip internal workflow wording; the commit is a user-visible artifact.
+- **GPG/SSH signing missing**: a commit is created without signing, breaking identity verification. Mitigation: enable `git config commit.gpgsign true`; respect DCO `Signed-off-by:` when the repo requires it.
+- **Bulk reformat hides authorship**: a large AI-assisted reformat overwrites blame for human-authored lines. Mitigation: add the reformat commit hash to `.git-blame-ignore-revs`.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: an AI-assisted commit message may reframe the change's purpose. Cross-check the commit message against the actual diff; reject reframed messages.
+- **ASI03 Identity & Privilege Abuse**: never include internal hostnames, customer identifiers, or credential patterns in the diff or commit message.
+- **ASI04 Supply Chain**: secret scanning must run on every staged change; reject any commit with a high-entropy match.
+- **ASI05 RCE Guard**: never construct commit content, hooks, or generators from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the commit is consumed by review and release agents; emit a structured contract so each consumer can validate the change.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a commit as "safe" without validation runs; surface the skipped checks and the residual risk honestly.
 
 ## Suggested Process
 
@@ -124,21 +157,9 @@ Do not assume commit approval also covers any of these actions.
 
 ## Multi-Repo Or Shared Module Changes
 
-When a change spans more than one repo or module:
-
-1. identify the dependency order
-2. validate and land the upstream change first when required
-3. update downstream consumers to the correct version or revision
-4. revalidate after the dependency update
-5. keep each commit scoped to one repo or module boundary
-
-## Deployment Or Release Config Changes
-
-If deployment or release configuration changed:
-
-- commit the source-of-truth config, not just a live runtime patch
-- avoid release metadata edits that CI or the platform is supposed to own
-- capture any rollout dependency or manual follow-up clearly
+Multi-repo or shared-module changes and deployment or release config
+changes are documented in
+[`references/multi-repo-and-deployment.md`](references/multi-repo-and-deployment.md).
 
 ## Checklist
 

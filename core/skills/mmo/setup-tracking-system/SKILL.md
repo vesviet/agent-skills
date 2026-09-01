@@ -66,6 +66,32 @@ await fetch(`https://graph.facebook.com/v19.0/${PIXEL_ID}/events?access_token=${
 - [ ] Postback firing rate above 80% (flag if below for attribution investigation).
 - [ ] iOS 18+ AdAttributionKit migration plan documented for app campaigns.
 
+## Output Contracts
+
+When the tracking system is consumed by a campaign operator, a data
+analyst, or a cross-role handoff, emit:
+
+- **`contracts/schemas/deployment-plan.json`** capturing the S2S endpoints, the postback handlers, the event dedup keys, the consent capture, and the rollback path.
+- For human-readable reports, a markdown summary of the tracking topology, the data classification, and the compliance boundaries.
+
+Skip emission for local tracking experiments that do not cross a role boundary.
+
+## Failure Modes
+
+- **Event dedup missing**: a pixel event and a CAPI/S2S postback use different `event_id` values, inflating conversion counts. Mitigation: enforce the same UUID v4 `event_id` across pixel and S2S; reject mismatched IDs.
+- **First-party cookie not set**: `_fbc` and `_gcl_aw` are missing on landing, breaking attribution. Mitigation: capture `fbclid`, `gclid`, `ttclid` at the edge; persist 90-day first-party cookies.
+- **CTIT fraud filter bypass**: sub-2.5s conversions are included in the conversion count. Mitigation: filter CTIT < 2.5s as SIVT; surface the excluded count.
+- **Consent capture skipped**: a user event is tracked without a recorded consent. Mitigation: capture consent before any tracking event; reject unconsented events.
+- **Compliance boundary crossed**: a tracking pattern violates the documented Legal & Compliance Notice. Mitigation: keep the compliance boundary visible; reject any pattern outside the boundary.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: customer identifiers and PII used for matching must be hashed before transmission; never store unhashed PII in tracking systems.
+- **ASI04 Supply Chain**: tracking SDKs and S2S postback libraries must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct S2S postback payloads, pixel events, or consent prompts from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by data and marketing roles; emit a structured contract so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the tracking system as "compliant" without naming the Legal & Compliance boundary; surface the residual risk honestly.
+
 ## Related Skills
 
 - **analyze-campaign-roi**: Analyze the data collected by this tracking system for ROI optimization.

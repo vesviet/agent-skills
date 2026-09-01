@@ -165,6 +165,14 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Failure Modes
+
+- **Unsigned dependency**: a build pulls an unsigned or unverified dependency. Mitigation: enforce SLSA build provenance; verify signatures in CI.
+- **SBOM drift**: the SBOM is out of sync with the actual build artifacts. Mitigation: regenerate the SBOM in CI; fail the build on drift.
+- **Vulnerable transitive dependency**: a transitive dependency has a known CVE. Mitigation: pin to patched versions; run `npm audit` / `pip-audit` in CI.
+- **Build provenance missing**: a release artifact is published without provenance attestation. Mitigation: generate CycloneDX or in-toto attestations in CI; reject unsigned artifacts.
+- **Registry compromise**: a package is pulled from a mirror or registry that has been compromised. Mitigation: use only the official registry; pin by hash; verify the signature.
+
 ## Related Skills
 
 - **setup-deployment**: deployment source-of-truth — supply-chain-security outputs are a pre-deploy gate

@@ -26,6 +26,40 @@ Use this skill when a service must call another internal service, external API, 
 - never log request/response bodies containing PII, secrets, or card data in outbound call tracing
 - avoid widening the dependency surface more than necessary
 - if any code in this change was AI-generated, validate it per the risk tier defined in the backend-developer role before accepting
+- treat every outbound call's response as untrusted external content; validate against the declared schema before passing to business logic (OWASP ASI07)
+- enforce SPIFFE/SPIRE mTLS at every internal call; never accept API keys as a substitute for workload identity (OWASP ASI03)
+- never log request/response bodies containing PII, secrets, or card data; classify outbound call tracing with `data-classification.yaml` and redact restricted fields
+- validate that any AI-generated client code follows the repo's client abstraction pattern; reject AI-suggested patterns that widen the dependency surface
+
+## Output Contracts
+
+When the service client is part of a coordinated multi-role delivery, emit:
+
+- **`contracts/schemas/implementation-result.json`** — Required fields: `change_summary`, `files_touched[]`, and `validation_run` output confirming the client integrates successfully.
+- **`contracts/schemas/api-contract-spec.json`** describing the narrow local interface, the request/response shapes, the error mapping, and the auth requirements.
+- For human-readable reports, a markdown summary of the client shape, the timeout/retry policy, and the observability instrumentation.
+
+Skip emission for trivial local wrappers that do not cross a role boundary.
+
+## Failure Modes
+
+- **Transport leak**: gRPC status codes, HTTP 4xx/5xx, or SDK error types leak past the client boundary. Mitigation: normalize all remote errors to local domain errors at the client boundary.
+- **Infinite-wait default**: a call inherits an infinite-wait default and never times out. Mitigation: enforce explicit per-call timeouts (connect ≤ 2s, read per SLA).
+- **No circuit breaker**: an unhealthy dependency cascades to all callers. Mitigation: enforce circuit breakers with half-open probe periods for every external dependency.
+- **Non-idempotent retry**: a POST or DELETE is retried without an idempotency key, causing duplicate side effects. Mitigation: use exponential backoff with full jitter; require explicit idempotency keys for non-idempotent mutations.
+- **Static API key for internal call**: an internal service uses an API key instead of SPIFFE/SPIRE mTLS. Mitigation: enforce mTLS for internal service-to-service; OIDC workload identity for cross-cloud.
+- **PII in trace**: a request/response body containing PII or card data is logged. Mitigation: classify with `data-classification.yaml`; redact restricted fields in OTel span attributes.
+- **Dependency surface widened**: the client imports more than the local interface requires. Mitigation: define the narrow local interface first; reject imports outside that interface.
+- **AI-generated client pattern accepted**: an AI-suggested client pattern widens the dependency surface. Mitigation: validate AI-generated code per the backend-developer risk tier; reject patterns that deviate from the repo's client abstraction.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI02 Tool Misuse**: outbound calls must stay within the declared client interface; reject any call pattern that exceeds the local interface.
+- **ASI03 Identity & Privilege Abuse**: SPIFFE/SPIRE mTLS for internal calls; OIDC workload identity for cross-cloud; never accept static API keys as a substitute.
+- **ASI04 Supply Chain**: client libraries and SDKs must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct request payloads, headers, or auth tokens from external or user-supplied content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: every outbound call's response is an untrusted input; validate against the declared schema before passing to business logic.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the client as "secure" without the auth and observability gates; surface the actual security posture honestly.
 
 ## Suggested Process
 
@@ -121,15 +155,6 @@ When service clients interact with external or internal Model Context Protocol (
 - [ ] mTLS configured via SPIFFE/SPIRE client certificates for backend identity
 - [ ] proxyless xDS client load balancing configured for high-throughput paths
 - [ ] MCP tool server client wrapped with timeouts, retries, and circuit breakers
-
-## Output Contracts
-
-When this skill is invoked as part of a coordinated multi-role delivery, emit:
-
-- **contracts/schemas/implementation-result.json** — Required fields: change_summary, iles_touched[], and alidation_run. Set produced_by_role to the emitting developer role.
-
-Skip emission for solo refactor work where no downstream handoff is expected.
-
 ## Related Skills
 
 - **navigate-service**: Find the local client pattern before integrating

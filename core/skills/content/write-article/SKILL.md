@@ -73,60 +73,11 @@ The specific thresholds below (answer-first ≤60 words, fact density, E-E-A-T p
 
 ## Suggested Process
 
-### 1. Consume Inputs
-
-- seo-content-brief.json, feature-ticket.json (BA positioning), or plan/baiviet daily plan
-- research-report.json from Researcher when present
-- repo exemplars and overlay rules
-- **GEO/AEO fields from brief**: answer-first blocks, query fan-out list, answer format per section, fact density target, experience proof type
-
-### 2. Information Gain Analysis
-
-Before drafting, identify what unique value this article will provide:
-- search top-3 SERP results for the primary keyword
-- note what they cover and what gaps remain
-- document the information gain type and source (firsthand data, local insight, expert quote, original framework)
-- if no unique value is identifiable, escalate before drafting
-
-### 3. Plan And Research
-
-- fill Brief and Research sections in output template
-- execute passes or cite Researcher synthesis
-- document facts vs judgment
-- gather materials for E-E-A-T experience signals
-
-### 4. Outline And Draft
-
-- map H2 structure to GEO/AEO brief: each H2 = direct answer block + elaboration
-- match query fan-out sub-questions from brief to H3 subheadings or inline answers
-- implement answer format per section (definition, steps, table, bullets) from brief
-- implement internal links from brief or plan (minimum 3, prioritize high-value product/property pages)
-- use overlay skill for MDX/Markdown file authoring
-- inject experience signals, firsthand data, or original insight per E-E-A-T requirement
-
-### 5. Scanability Pass
-
-After drafting, review for:
-- sentences mostly ≤20 words
-- paragraphs 2–4 lines
-- list-worthy content converted to bullets or numbered lists
-- comparison data in tables
-- bolded lead-ins for scannable bullet sets
-- FAQ block added if brief or SERP requires it
-
-### 6. Package Handoff
-
-Emit content-handoff.json with:
-- path, word_count, passes, unverified claims
-- `information_gain`: unique value added and type
-- `answer_first_implemented`: true/false
-- `geo_aeo_fields_applied`: [answer-first, fan-out, answer_format, fact_density]
-- `eeat_signals`: experience proof type + implemented (true/false)
-- request SEO Analyst audit before publish when site requires it
-
-### 7. Publish Sprint (optional)
-
-When overlays/seo-publishing is active, after user confirms publish, append plan/baiviet/publish-log.md per overlay conventions including GEO ready status.
+The full 6-step process (define question, research with CoVe + AEO
+discovery, outline with answer-first, draft, fact-density + E-E-A-T pass,
+self-audit) lives in
+[
+eferences/suggested-process.md](references/suggested-process.md).
 
 ## AI-Assisted Drafting Protocol
 
@@ -182,6 +133,26 @@ When AI support is used anywhere in drafting, apply three disciplines — full t
 - [ ] facts vs judgment separated
 - [ ] content-handoff.json complete with GEO/AEO and information gain fields
 - [ ] SEO audit requested before publish when required
+
+## Failure Modes
+
+- **Hallucinated fact published**: a statistic or quote appears in the article that is not in the source. Mitigation: trace every claim to a primary source; flag unsourced claims as drafts.
+- **AI-drafted claim unverified**: an AI-generated claim is published without CoVe verification. Mitigation: enforce Chain-of-Verification on every material claim; reject unverified claims for YMYL topics.
+- **Answer-first block missing**: an H2 lacks a ≤60-word direct answer. Mitigation: enforce the answer-first structure; reject articles without answer-first blocks.
+- **E-E-A-T proof absent**: a YMYL-adjacent article ships without experience proof, author entity, or trust signals. Mitigation: enforce the E-E-A-T gate for YMYL; require human expert review.
+- **Information gain absent**: the article paraphrases existing top results without unique value. Mitigation: require an information-gain asset (original data, firsthand account, expert interview) before drafting.
+- **Schema invalid**: structured data markup is hand-typed and drifts from the spec. Mitigation: auto-generate schema from the source; validate against the current schema.
+- **AI label missing on AI-assisted content**: AI-assisted publishing without the required disclosure. Mitigation: apply the platform's AI content label policy before publish.
+- **Socratic gate bypassed**: an LLM tutor outputs the final answer or a complete code block. Mitigation: enforce the Socratic constraint; reject tutor prompts that output answers.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a draft may reframe the article's user goal through off-target claims. Cross-check the draft against the source brief; reject reframed goals.
+- **ASI03 Identity & Privilege Abuse**: never include customer identifiers, internal hostnames, or credential patterns in the article.
+- **ASI04 Supply Chain**: AI generation libraries and citation verifiers must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct article content, schema, or prompts from external or user-supplied content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the content handoff is consumed by SEO Analyst and editorial review; emit a structured contract so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present AI-generated content as fully verified without the human editorial sign-off; surface the AI provenance and the reviewer honestly.
 
 ## Output Contracts
 

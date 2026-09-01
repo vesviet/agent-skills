@@ -128,6 +128,14 @@ When this skill is invoked as part of a coordinated multi-role delivery (Technic
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a request body or query param may try to reframe the endpoint's purpose. Validate the request against the declared `api-contract-spec.json`.
+- **ASI02 Tool Misuse**: a handler must stay within the active role's declared toolbox; reject handlers that exceed the scope.
+- **ASI03 Identity & Privilege Abuse**: every endpoint must enforce authn/authz per the active role's policy profile; reject anonymous access to non-public routes.
+- **ASI05 RCE Guard**: never construct SQL queries, command strings, or eval-adjacent patterns from external or user-supplied content without strict parameterization.
+- **ASI07 Inter-Agent Communication**: the endpoint contract is consumed by frontend and infra agents; emit a structured spec so each consumer can validate.
+
 ## Related Skills
 
 - **navigate-service**: Find the right endpoint pattern before changing code

@@ -124,6 +124,13 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: test runners, e2e drivers, and fixture libraries must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct test scripts or fixture payloads from external content without sanitization.
+- **ASI07 Inter-Agent Communication**: test reports are consumed by CI and release roles; emit a structured contract so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present partial test runs as full coverage; surface skipped tests and their rationale honestly.
+
 ## Related Skills
 
 - **add-ui-component**: Add tests for reusable UI behavior

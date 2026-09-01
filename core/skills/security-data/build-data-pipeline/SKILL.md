@@ -144,6 +144,24 @@ At each layer boundary:
 - [ ] PII masked or aggregated before any report or log output
 - [ ] results spot-checked against source before stakeholder delivery
 
+## Output Contracts
+
+When the data pipeline is consumed by analytics, ML, or downstream
+services, emit:
+
+- **`contracts/schemas/data-analysis-report.json`** or a pipeline-spec variant describing the source, the transformation steps, the schema evolution, and the SLA.
+- For human-readable reports, a markdown summary of the pipeline topology, the failure modes, and the rollback path.
+
+Skip emission for ad-hoc local scripts that do not cross a role boundary.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: PII and customer identifiers in the pipeline must be classified with `data-classification.yaml`; mask in any output that crosses a role boundary.
+- **ASI04 Supply Chain**: pipeline orchestrators, connectors, and sinks must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct SQL queries, transformation logic, or scheduler commands from external content without strict parameterization.
+- **ASI07 Inter-Agent Communication**: the pipeline contract is consumed by analytics and ML roles; emit a structured spec so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a pipeline as "GDPR-compliant" without a real review; surface the actual data flow and the residual risk.
+
 ## Related Skills
 
 - **analyze-data**: One-off exploration, metrics, and reports without pipeline ownership

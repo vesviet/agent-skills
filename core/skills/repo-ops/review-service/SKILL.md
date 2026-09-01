@@ -150,6 +150,24 @@ Adapt these assumptions to the active repo:
 
 Skip absent concepts. Do not mark them as findings just because this pack mentions them.
 
+## Output Contracts
+
+When the service review produces a structured handoff (release
+readiness gate, multi-role delivery), emit:
+
+- **`contracts/schemas/incident-report.json`** (or a release-readiness variant) capturing the readiness verdict, the evidence, the blockers, and the residual risk.
+- For human-readable reports, the markdown release-readiness summary is the canonical format; emit JSON only when crossing a role boundary.
+
+Skip emission for informal service walkthroughs that do not gate a release.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: the service's auth surface and data handling must be reviewed; never expose raw credential patterns in the review findings.
+- **ASI04 Supply Chain**: dependency and runtime versions must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI07 Inter-Agent Communication**: the review deliverable is consumed by SRE, release, and management roles; emit a structured contract so each role can validate.
+- **ASI08 Cascading Failures**: a release-blocking issue must be surfaced to the coordinator before the gate opens; do not silently absorb the risk.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a service as "release-ready" without the actual evidence; surface the residual risk and the unverified checks.
+
 ## Related Skills
 
 - **navigate-service**: Map a service before reviewing it

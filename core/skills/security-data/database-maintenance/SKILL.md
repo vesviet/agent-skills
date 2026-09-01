@@ -92,6 +92,24 @@ Confirm:
 - [ ] Major database version upgrades use `pg_createsubscriber` with manual DDL replication
 - [ ] All index maintenance uses `CONCURRENTLY` to avoid exclusive locks
 
+## Output Contracts
+
+When the maintenance operation is consumed by SRE, release, or audit
+agents, emit:
+
+- **`contracts/schemas/deployment-plan.json`** capturing the maintenance window, the steps, the rollback path, and the validation run.
+- For human-readable reports, a markdown runbook of the maintenance procedure, the failure modes, and the rollback steps.
+
+Skip emission for read-only diagnostic queries that do not cross a role boundary.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: the maintenance role's database privileges must follow least privilege; reject operations that exceed the declared scope.
+- **ASI04 Supply Chain**: database engine, client library, and migration tool versions must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct SQL queries or migration commands from external content without strict parameterization.
+- **ASI07 Inter-Agent Communication**: the maintenance plan is consumed by SRE and release agents; emit a structured contract so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a maintenance operation as "safe" without a verified rollback path; surface the residual risk honestly.
+
 ## Related Skills
 
 - **create-migration**: Handle schema-focused changes separately

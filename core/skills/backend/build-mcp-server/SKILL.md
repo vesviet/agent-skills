@@ -75,6 +75,13 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 - [ ] Unit and protocol compliance tests added.
 - [ ] `implementation-result.json` emitted.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: MCP server libraries and tool SDKs must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct tool inputs, server bindings, or transport config from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the MCP contract is consumed by external agents; treat the server card as a public, signed contract.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a server as "production-ready" without the auth, observability, and rate-limit gates; surface the residual risk honestly.
+
 ## Related Skills
 
 - **configure-mcp**: Set up domain discovery, server cards, and client integration for the MCP server

@@ -77,6 +77,13 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 - [ ] CI pipeline step configured as a hard quality gate blocking visual regressions.
 - [ ] `implementation-result.json` emitted.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: visual regression drivers, baseline storage, and snapshot libraries must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct visual diff scripts or baselines from external content without strict validation.
+- **ASI07 Inter-Agent Communication**: the regression report is consumed by Frontend and QA roles; emit a structured contract so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a visual regression as "no diff" without the actual baseline comparison; surface the residual risk.
+
 ## Related Skills
 
 - **frontend-testing**: Complement visual diffs with functional and interaction unit/integration tests

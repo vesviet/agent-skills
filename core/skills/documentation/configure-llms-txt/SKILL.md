@@ -137,6 +137,23 @@ jobs:
 - `/public/llms-full.txt` — companion full-text (optional but recommended)
 - Updated `robots.txt` with `llms.txt` reference
 
+## Output Contracts
+
+When the `llms.txt` / `llms-full.txt` change is consumed by an AI agent,
+a doc site, or a CI gate, emit:
+
+- **`contracts/schemas/documentation-handoff.json`** with the manifest path, the `schema_version`, the include/exclude list, and the validation timestamp.
+- For human-readable reports, a markdown diff of the manifest is sufficient.
+
+Skip emission for trivial manifest updates that do not cross a role boundary.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: external links in the manifest must be validated against the live target; treat 404s as a CI failure.
+- **ASI05 RCE Guard**: never construct the manifest from external or user-supplied content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the manifest is consumed by external AI agents; treat it as a public contract and review all changes before publish.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a manifest as "AI-ready" without a successful schema validation run.
+
 ## Related Skills
 
 - **write-documentation**: produces the docs that `llms.txt` indexes

@@ -128,6 +128,21 @@ WAI-ARIA 1.3 is a Working Draft and these annotation roles are still marked prop
 - [ ] Cognitive accessibility (COGA) principles (plain language, error prevention, memory aids) reviewed
 - [ ] ARIA annotation roles (suggestion, comment, mark) and attributes (aria-description, aria-braillelabel, aria-brailleroledescription) verified as additive only
 
+## Output Contracts
+
+When the a11y review produces a structured handoff (CI gate, pre-merge
+audit, or multi-role delivery), emit:
+
+- **`contracts/schemas/code-review-finding.json`** adapted for a11y: each finding gets a `severity`, an `owner` (Frontend or QA), a `category` (perceivable, operable, understandable, robust), and the WCAG criterion.
+- For human-readable reports, the markdown findings table already documented is the canonical format.
+
+Skip emission for a single-component a11y walkthrough that does not cross a role boundary.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI07 Inter-Agent Communication**: a11y findings are consumed by Frontend and QA; emit a structured contract so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a component as "WCAG-compliant" without the actual scan output; surface the residual risk honestly.
+
 ## Related Skills
 
 - **design-ux-flow**: Add a11y notes to specs when gaps found early

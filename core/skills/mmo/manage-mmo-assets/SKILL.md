@@ -60,6 +60,31 @@ silos:
 - [ ] Asset catalog up to date (no stale/orphaned entries).
 - [ ] Recovery plan documented in case of cascading ban event.
 
+## Output Contracts
+
+When the asset handoff is consumed by a fleet operator, a release
+pipeline, or a cross-role handoff, emit:
+
+- **`contracts/schemas/deployment-plan.json`** capturing the asset id, the destination, the credential handling, the rotation status, and the rollback path.
+- For human-readable reports, a markdown summary of the asset inventory, the rotation cadence, and the compliance boundaries.
+
+Skip emission for local asset lookups that do not cross a role boundary.
+
+## Failure Modes
+
+- **Credential in asset export**: a token or account credential is committed to the export. Mitigation: load credentials at runtime from a secret store; never commit credentials.
+- **Asset rotation missed**: a Business Manager or account past its rotation cadence is still in use. Mitigation: enforce the rotation schedule; reject assets past their cadence.
+- **Asset handover not verified**: the receiving agent cannot read the new asset. Mitigation: verify the receiving agent's read access before treating the handover as complete.
+- **Compliance boundary crossed**: an asset handling pattern violates the documented Legal & Compliance Notice. Mitigation: keep the compliance boundary visible; reject any pattern outside the boundary.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: account credentials and Business Manager access are scoped to the asset's owner; never embed them in committed files.
+- **ASI04 Supply Chain**: asset sharing tools and rotation services must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct asset handoff payloads, rotation commands, or handover scripts from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by infra and security roles; emit a structured contract so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the asset inventory as "compliant" without naming the Legal & Compliance boundary; surface the residual risk honestly.
+
 ## Related Skills
 
 - **deploy-mmo-infrastructure**: Set up the ADB environments for asset access.

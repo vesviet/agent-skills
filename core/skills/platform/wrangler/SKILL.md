@@ -60,6 +60,24 @@ When this skill is invoked to plan or execute a deploy handoff (not just a local
 
 Skip emission for local-only `wrangler dev` troubleshooting sessions.
 
+## Failure Modes
+
+- **Wrangler v4 default surprise**: a CI runbook assumes `wrangler dev` defaults to `--remote`; in v4 it defaults to local. Mitigation: pass `--remote` explicitly; update runbooks.
+- **Secret on CLI**: a secret value is passed as a CLI argument and ends up in shell history. Mitigation: use `wrangler secret put`, file streams, or env vars in secure build runs.
+- **`.dev.vars` committed**: a `.dev.vars` or `.env` file is committed to the repo. Mitigation: verify `.gitignore`; run secret scanning in CI.
+- **Compatibility date drift**: the compatibility date is left unset or set far in the past. Mitigation: set a recent stable date (within 30 days); update on every deploy.
+- **Hand-written `Env` interface**: TS bindings are maintained by hand. Mitigation: regenerate via `wrangler types` after every config change.
+- **Direct deploy to production**: a single `wrangler deploy` ships to production without staging. Mitigation: use environments (`env.staging`, `env.production`); require staging verification before production.
+- **Version-then-deploy skipped**: a new version is deployed directly without the version-then-promote pattern. Mitigation: use `wrangler versions upload` then `wrangler deployments create` for rolling updates and instant rollback.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: secrets must be loaded via `wrangler secret put`; reject secrets in `wrangler.toml` or committed files.
+- **ASI04 Supply Chain**: Wrangler CLI and any binding library must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct Wrangler config, bindings, or env values from external or user-supplied content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the edge deployment spec is consumed by Cloudflare Engineer and DevOps Engineer; emit a structured contract so each role can validate the rollout.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a deploy as "safe" without a rollback strategy; surface the rollback path in the deployment spec.
+
 ## Related Skills
 - **workers-best-practices**: Review and implement worker codebase design patterns.
 - **durable-objects**: Configure and deploy Durable Objects class instances.

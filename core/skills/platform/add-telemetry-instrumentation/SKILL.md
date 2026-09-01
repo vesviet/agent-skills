@@ -89,6 +89,14 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: telemetry payloads may include PII or credentials; classify with `data-classification.yaml` and redact restricted fields.
+- **ASI04 Supply Chain**: OTel SDKs, exporters, and collectors must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct telemetry processors or exporters from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: telemetry is consumed by SRE and security roles; emit a structured contract so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a telemetry rollout as "complete" without the verification run; surface the residual risk.
+
 ## Related Skills
 
 - **debug-runtime-platform**: Investigate runtime behavior using telemetry evidence

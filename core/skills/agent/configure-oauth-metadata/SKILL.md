@@ -20,6 +20,9 @@ Use this skill when configuring `/.well-known/oauth-protected-resource`, `/.well
 - support OpenID Connect (OIDC) Dynamic Client Registration by exposing a POST endpoint that accepts the Agent Card JSON as input
 - bind issued access tokens cryptographically to agent identities using the `azp` and agent DID claims in the JWT payload
 - validate that the `agent_auth` configuration complies with isitagentready.com and WorkOS requirements
+- Treat the OAuth metadata as a public, signed contract: do not include client secrets or sensitive callback URLs in the served JSON (OWASP ASI03)
+- Verify every URL in `authorization_servers` resolves in public DNS before each deploy; a 530 error must fail the scanner run (OWASP ASI04)
+- After the 2026-07-28 changes, every metadata file must assert `code_challenge_methods_supported: ["S256"]`; reject metadata that does not
 
 ## When to Use
 
@@ -101,3 +104,34 @@ Dynamic registration allows new worker agents to register as OAuth clients on-th
 - **manage-auth-md**: Manage the `auth.md` discovery file that `agent_auth.skill` points to.
 - **debug-identity-provider**: Diagnose and fix scanner validation failures after configuring metadata.
 - **configure-agent-headers**: Expose OAuth metadata well-known paths via HTTP Link headers.
+- **configure-mcp**: Wire up OAuth 2.1 + PKCE for the MCP server card.
+- **manage-agent-identity**: Issue NHI credentials bound to the OAuth metadata scopes.
+
+## Output Contracts
+
+When the OAuth metadata configuration is recorded as a deployable artifact
+(CI output, edge-config change, or handoff to an infra agent), emit:
+
+- **`contracts/schemas/edge-deployment-spec.json`** listing the well-known paths, the served content types, the CORS headers, and the resolved DNS status of every `authorization_servers` entry.
+- **`contracts/schemas/api-contract-spec.json`** describing the metadata JSON shapes (with required vs optional fields) so the deployment agent can validate before serving.
+- For human-readable reports, a markdown summary of the scanner run output and any field-level failures.
+
+Skip emission for ad-hoc local edits.
+
+## Failure Modes
+
+- **Field name drift**: a legacy field name (`identity_endpoint`, `claim_endpoint`) is used instead of `register_uri`/`claim_uri`. Mitigation: copy field names from the current spec; CI must reject the legacy names.
+- **DNS dead link**: an `authorization_servers` URL does not resolve. Mitigation: CI must `dig` every URL and fail the deploy on NXDOMAIN or 530.
+- **Nesting error**: `credential_types_supported` is at the `agent_auth` root instead of inside `anonymous` or `identity_assertion`. Mitigation: validate against the current schema; reject mis-nested structures.
+- **`auth.md` H1 wrong**: the file starts with a different heading (case, BOM, or alternate phrasing). Mitigation: enforce `# Auth.md` exactly; lint on the first non-empty line.
+- **PKCE not asserted**: metadata does not list `code_challenge_methods_supported: ["S256"]`. Mitigation: scanner must reject; CI must include the assertion.
+- **OIDC registration endpoint unreachable**: `register_uri` returns non-200. Mitigation: e2e test the POST endpoint before each deploy; surface the failure in the scanner report.
+- **CORS blocking agent clients**: cross-origin agent clients cannot fetch the metadata. Mitigation: set `Access-Control-Allow-Origin` per the deployment's CORS policy; verify with a preflight.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: the metadata defines the auth surface; do not include client secrets, signing keys, or unreleased callback URLs in the served JSON.
+- **ASI04 Supply Chain**: the metadata must be schema-validated against the current `agent_auth` draft before every deploy; reject schema-drifted metadata.
+- **ASI05 RCE Guard**: never construct metadata JSON from dynamic template strings derived from external content; build the JSON from a static schema and merge only allowlisted fields.
+- **ASI07 Inter-Agent Communication**: the metadata is consumed by external agents and scanners; treat it as a public contract and review all changes before deploy.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a metadata set as "scanner-compliant" without a successful scanner run; surface the scanner output in the deploy record.

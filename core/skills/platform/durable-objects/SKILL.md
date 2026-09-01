@@ -57,57 +57,16 @@ Search: `blockConcurrencyWhile`, `idFromName`, `getByName`, `setAlarm`, `sql.exe
 
 ## Quick Reference
 
-### Wrangler Configuration
+Code samples (wrangler config, basic DO pattern, stub creation, storage
+operations, alarms, Vitest quick start) live in
+[`references/code-patterns.md`](references/code-patterns.md). The deeper
+guides (rules, testing, workers wiring) are in:
 
-```jsonc
-// wrangler.jsonc
-{
-  "durable_objects": {
-    "bindings": [{ "name": "MY_DO", "class_name": "MyDurableObject" }]
-  },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["MyDurableObject"] }]
-}
-```
+- `./references/rules.md` - Core rules, storage, concurrency, RPC, alarms
+- `./references/testing.md` - Vitest setup, unit/integration tests, alarm testing
+- `./references/workers.md` - Workers handlers, types, wrangler config, observability
 
-### Basic Durable Object Pattern
-
-```typescript
-import { DurableObject } from "cloudflare:workers";
-
-export interface Env {
-  MY_DO: DurableObjectNamespace<MyDurableObject>;
-}
-
-export class MyDurableObject extends DurableObject<Env> {
-  constructor(ctx: DurableObjectState, env: Env) {
-    super(ctx, env);
-    ctx.blockConcurrencyWhile(async () => {
-      this.ctx.storage.sql.exec(`
-        CREATE TABLE IF NOT EXISTS items (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          data TEXT NOT NULL
-        )
-      `);
-    });
-  }
-
-  async addItem(data: string): Promise<number> {
-    const result = this.ctx.storage.sql.exec<{ id: number }>(
-      "INSERT INTO items (data) VALUES (?) RETURNING id",
-      data
-    );
-    return result.one().id;
-  }
-}
-
-export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    const stub = env.MY_DO.getByName("my-instance");
-    const id = await stub.addItem("hello");
-    return Response.json({ id });
-  },
-};
-```
+Search: `blockConcurrencyWhile`, `idFromName`, `getByName`, `setAlarm`, `sql.exec`
 
 ## Core Rules
 
@@ -126,64 +85,6 @@ export default {
 - Storing critical state only in memory (lost on eviction/crash)
 - Using `await` between related storage writes (breaks atomicity)
 - Holding `blockConcurrencyWhile()` across `fetch()` or external I/O
-
-## Stub Creation
-
-```typescript
-// Deterministic - preferred for most cases
-const stub = env.MY_DO.getByName("room-123");
-
-// From existing ID string
-const id = env.MY_DO.idFromString(storedIdString);
-const stub = env.MY_DO.get(id);
-
-// New unique ID - store mapping externally
-const id = env.MY_DO.newUniqueId();
-const stub = env.MY_DO.get(id);
-```
-
-## Storage Operations
-
-```typescript
-// SQL (synchronous, recommended)
-this.ctx.storage.sql.exec("INSERT INTO t (c) VALUES (?)", value);
-const rows = this.ctx.storage.sql.exec<Row>("SELECT * FROM t").toArray();
-
-// KV (async)
-await this.ctx.storage.put("key", value);
-const val = await this.ctx.storage.get<Type>("key");
-```
-
-## Alarms
-
-```typescript
-// Schedule (replaces existing)
-await this.ctx.storage.setAlarm(Date.now() + 60_000);
-
-// Handler
-async alarm(): Promise<void> {
-  // Process scheduled work
-  // Optionally reschedule: await this.ctx.storage.setAlarm(...)
-}
-
-// Cancel
-await this.ctx.storage.deleteAlarm();
-```
-
-## Testing Quick Start
-
-```typescript
-import { env } from "cloudflare:test";
-import { describe, it, expect } from "vitest";
-
-describe("MyDO", () => {
-  it("should work", async () => {
-    const stub = env.MY_DO.getByName("test");
-    const result = await stub.addItem("test");
-    expect(result).toBe(1);
-  });
-});
-```
 
 ## Suggested Process
 1. Model the coordinate entity as a distinct class extend `DurableObject`.
@@ -209,6 +110,24 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 - **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
+
+## Failure Modes
+
+- **Single global DO**: a single DO handles all requests, creating a hot partition. Mitigation: model around coordination atoms; one DO per chat room, user, or game instance.
+- **`blockConcurrencyWhile` on every request**: schema setup is rerun on every request, killing throughput. Mitigation: use `blockConcurrencyWhile` only in the constructor for initial setup.
+- **In-memory only state**: critical state lives only in memory and is lost on eviction. Mitigation: persist first, then update in-memory state; never rely on memory alone.
+- **Multiple alarms**: a DO sets multiple alarms via parallel `setAlarm()` calls. Mitigation: `setAlarm()` replaces any existing alarm; design for one alarm per DO.
+- **Outbound connection for LLM streaming**: a DO closes its outbound connection before streaming completes. Mitigation: DOs stay alive for active outbound connections up to 15 minutes; structure the streaming call accordingly.
+- **SQLite 10 GB limit hit**: bulk deletes leave the DO close to the 10 GB per-DO storage limit. Mitigation: run `VACUUM` after bulk deletes; monitor storage size.
+- **Migration missing**: a new storage class is added without a migration entry. Mitigation: add a migration tag (`new_sqlite_classes`) for every new DO class.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: DO bindings must follow least-privilege scoping; reject DO classes that expose write APIs to unauthenticated callers.
+- **ASI04 Supply Chain**: `cloudflare:workers` and `@cloudflare/vitest-pool-workers` versions must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct SQL queries from external or user-supplied content without parameterized queries; treat `sql.exec` inputs as a hostile surface.
+- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by Cloudflare Engineer and DevOps; emit a structured contract so each role can validate the rollout.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a DO as "scalable" while still using a single global DO; surface the routing model honestly.
 
 ## Related Skills
 - **wrangler**: Manage deployment environments and bindings.

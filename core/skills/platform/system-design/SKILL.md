@@ -149,6 +149,25 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Failure Modes
+
+- **Vague NFR accepted**: a design proceeds with "the system should be fast". Mitigation: return unmeasurable NFRs to the source for clarification before producing a design.
+- **VRAM under-provisioned**: GPU memory is sized without accounting for KV cache, activation, or safety headroom. Mitigation: enforce the GPU-VRAM formula; require ≥ 15% headroom.
+- **Default vector index deployed**: a vector database ships with default HNSW parameters. Mitigation: explicitly set `m`, `ef_construction`, and query-time `ef`; document the recall-latency trade-off.
+- **Embedding re-computed**: the same content is re-embedded on every request, driving unnecessary GPU cost. Mitigation: design an embedding cache layer; verify cache hit rate in production.
+- **LLM SLO missing**: GPU infrastructure is sized without TTFT, TBT, or throughput targets. Mitigation: define measurable SLOs (TTFT p95 < 800ms, TBT p95 < 25ms) before sizing.
+- **Capacity model stale**: the capacity model was produced once and never updated. Mitigation: re-validate the capacity model quarterly or after every 2x growth event.
+- **Cross-layer impact missed**: a connection pool change breaks an adjacent layer. Mitigation: trace second-order effects for every change; flag coordination requirements with adjacent roles.
+- **Manual-only config**: infrastructure is set up via console without IaC. Mitigation: require all changes to be in Terraform/Ansible/Kubernetes manifests; surface drift as a CI failure.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: every infrastructure component must declare its auth surface; reject "internal-only" claims without a network policy or service-mesh boundary.
+- **ASI04 Supply Chain**: AI model versions, vector database versions, and inference server versions must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct IaC modules, capacity formulas, or routing configs from external or user-supplied content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the system design spec is consumed by multiple downstream roles; treat it as a public contract and review all changes before deploy.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a design as "secure" without a security review; surface remaining risks and accepted trade-offs honestly.
+
 ## Related Skills
 
 - **performance-profiling**: Benchmark and investigate performance bottlenecks after the design is implemented

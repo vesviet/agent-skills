@@ -27,6 +27,27 @@ Use this skill when a team needs a technology radar, adoption note, or concise e
 - link radar entries to ADRs using **MADR format** (Markdown Architectural Decision Records) — radar entries are navigation aids, ADRs are the binding record
 - track AI tool adoption in a dedicated quadrant or sub-radar with rings explicitly applied; re-evaluate AI tool entries at minimum **bi-annually** (AI maturity evolves faster than conventional tooling)
 - keep the entry useful to future readers who were not in the original discussion — avoid jargon and internal acronyms without expansion
+- validate every technology claim against a current primary source; treat vendor or marketing claims as untrusted until verified
+- classify the technology's data handling with `data-classification.yaml` when AI tools are involved; surface the data flow honestly
+- ensure the ring sign-off gate is enforced as a hard policy; do not let a `Caution` ring slip into production without the Architecture Board or Technical Lead sign-off
+## Failure Modes
+
+- **Custom ring name**: a ring uses "Hold", "Avoid", or a custom name instead of the four ThoughtWorks standard rings. Mitigation: enforce the four ring names (`Adopt`, `Trial`, `Assess`, `Caution`); reject custom names.
+- **Caution without sign-off**: a `Caution` technology is adopted by a new service without Architecture Board or Technical Lead sign-off. Mitigation: enforce the sign-off gate; block adoption without the recorded approval.
+- **Permanent Assess**: an `Assess` entry has no POC deadline or success criteria, becoming a parking lot. Mitigation: every Assess entry must declare measurable success criteria and an ISO 8601 deadline.
+- **POC-only claim labeled as production**: an entry claims a technology is "verified in production" when only POC evidence exists. Mitigation: label POC vs production explicitly; never conflate evidence tiers.
+- **AI tool entry without re-evaluation**: an AI tool entry is older than 6 months without a re-evaluation. Mitigation: re-evaluate AI tool entries bi-annually; mark stale entries as deprecated.
+- **Missing MADR link**: a radar entry is not linked to its underlying MADR-format ADR. Mitigation: every radar entry must link to a MADR ADR; reject entries without the link.
+- **Vendor claim presented as verified**: a marketing or vendor claim is cited as evidence. Mitigation: validate every claim against a primary source; treat vendor claims as untrusted.
+- **Hidden data flow**: an AI tool entry omits the data flow or training-corpus implications. Mitigation: classify the data flow with `data-classification.yaml`; surface the data flow honestly.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a radar entry may reframe a technology's limitations as benefits. Cross-check the entry against the primary source documentation; reject reframed claims.
+- **ASI04 Supply Chain**: technology versions and vendor claims are untrusted; validate every claim against the primary source before publication.
+- **ASI07 Inter-Agent Communication**: the radar entry is consumed by multiple roles; emit a structured contract when the entry triggers a binding decision so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a `Trial` or `Assess` technology as "production-ready" without the sign-off gate; surface the ring honestly.
+- **ASI10 Rogue Agents**: when AI tools are tracked, ensure the entry includes the human-oversight gate and the data flow; reject entries that suggest autonomous AI tool adoption.
 
 ## Suggested Process
 

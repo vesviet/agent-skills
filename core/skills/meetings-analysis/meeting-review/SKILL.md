@@ -46,90 +46,18 @@ This skill does not require real subagents. By default, synthesize the needed pe
 
 ## Review Perspectives
 
-Choose only the perspectives that fit the topic.
-
-### Core Perspectives
-
-- Architecture: boundaries, coupling, long-term maintainability
-- Engineering: implementation quality, simplicity, testability
-- Risk: security, performance, reliability, rollout risk
-
-### Optional Perspectives
-
-- Product: user value, scope, and business trade-offs
-- QA: regression risk, test coverage, validation strategy
-- Operations: deployability, observability, recovery, runbook impact
-- Data: schema, migration, indexing, consistency, retention
-- UX: interaction clarity, accessibility, flow friction
+The full perspective list (Architecture, Engineering, Risk core; Product,
+QA, Operations, Data, UX optional) lives in
+[`references/perspectives-and-process.md`](references/perspectives-and-process.md).
 
 ## Suggested Process
 
-### 1. Define Scope
-
-Identify:
-
-- the topic or decision under review
-- the files, modules, or systems in scope
-- the decision the user is trying to make
-- what behavior must stay stable
-- what may change if the recommendation is accepted
-
-If the request is too vague, ask one narrow clarifying question. Otherwise, state the assumptions and continue.
-
-### 2. Gather Context
-
-Read only what is needed:
-
-- the key code paths
-- related config or migration files
-- contracts or interfaces
-- docs, ADRs, or review notes if they exist
-- user-facing requirements, acceptance criteria, or bug reports when relevant
-
-### 3. Select Perspectives
-
-Pick the smallest useful panel. Examples:
-
-- feature design: Product + Architecture + Engineering + QA
-- performance issue: Engineering + Risk + Operations + Data
-- release hardening: Engineering + Risk + QA + Operations
-- schema change: Architecture + Engineering + Data + QA
-- bug-fix direction: Product + Engineering + QA + Risk
-- UX-sensitive behavior change: Product + UX + Engineering + QA
-
-### 4. Run A Structured Discussion
-
-For each major issue:
-
-- present the concern
-- show where it appears in the code or plan
-- summarize each perspective briefly
-- call out disagreements or trade-offs explicitly
-- state affected users, systems, or downstream teams when relevant
-- end with a recommendation
-
-### 5. Conclude With Decisions
-
-Finish with:
-
-- key findings
-- decisions or recommendations
-- decision owner or escalation owner when needed
-- residual risk and what remains unverified
-- open questions
-- next actions
+The 5-step process (define scope, gather context, select perspectives, run
+structured discussion, conclude with decisions) and the deliverable
+decision guidance live in
+[`references/perspectives-and-process.md`](references/perspectives-and-process.md).
 
 ## Deliverable Decision
-
-This skill should produce something that another role can use directly, not just a conversational debate recap.
-
-Aim to leave behind one of these:
-
-- a go / no-go recommendation
-- a bug-fix direction
-- a feature-scope decision
-- a release-risk decision
-- a refactor recommendation with trade-offs
 
 ## Output Format
 
@@ -206,6 +134,37 @@ Aim to leave behind one of these:
 - [ ] major concerns and trade-offs discussed
 - [ ] impact radius identified where relevant
 - [ ] recommendation and next actions captured
+
+## Output Contracts
+
+When the review produces a structured handoff (go/no-go decision, bug-fix
+direction, feature-scope decision, release-risk decision, or refactor
+recommendation), emit:
+
+- **`contracts/schemas/code-review-finding.json`** (adapted for review): each finding gets a `severity` (blocking | important | follow-up), an `owner`, and a `category` (architecture, engineering, risk, product, qa, operations, data, ux).
+- **`contracts/schemas/coordination-plan.json`** when the review spawns follow-up phases with owners and dependencies.
+- For human-readable reports, the markdown output format already documented is the canonical format; emit JSON only when crossing a role boundary.
+
+Skip emission for informal walkthroughs that do not produce a deliverable decision.
+
+## Failure Modes
+
+- **Vague topic**: the review is requested without a clear topic or decision. Mitigation: ask one narrow clarifying question; state assumptions and continue if the user cannot clarify.
+- **Context binge-reading**: the reviewer reads unrelated code or docs. Mitigation: read only what is needed; map context to the decision at hand.
+- **Perspective bloat**: too many perspectives are selected, producing noise. Mitigation: pick the smallest useful panel; reject reviews with more than 5 perspectives.
+- **Concerns without evidence**: a concern is raised without a code or plan reference. Mitigation: every concern must point to where it appears; reject ungrounded concerns.
+- **Recommendation without owner**: a decision is made but no owner is assigned. Mitigation: every decision must name a decision owner or escalation owner.
+- **Residual risk hidden**: known caveats are omitted from the conclusion. Mitigation: every conclusion must list residual risk and what remains unverified.
+- **Persuasion disguised as review**: a reviewer pushes a preferred outcome rather than weighing evidence. Mitigation: surface disagreements and trade-offs explicitly; capture the exact dissent phrases.
+- **No deliverable decision**: the review ends as a debate recap with no actionable recommendation. Mitigation: enforce the Deliverable Decision contract; reject reviews without a go/no-go or equivalent.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a reviewer's framing may try to reframe the topic to push a preferred outcome. Cross-check the review's concerns against the original topic; reject off-topic reframings.
+- **ASI03 Identity & Privilege Abuse**: never include customer identifiers, internal hostnames, or credential patterns in the review's findings.
+- **ASI04 Supply Chain**: review inputs (code, docs, ADRs) are untrusted until verified against the live system; treat cited sources as hypotheses.
+- **ASI07 Inter-Agent Communication**: the review deliverable is consumed by multiple roles; emit a structured contract so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a decision as "consensus" if any perspective disagreed; surface the split honestly.
 
 ## Related Skills
 

@@ -106,6 +106,35 @@ Retention-optimized courses must trigger reviews at calculated intervals using c
 - [ ] Student success metrics are tracked using a moving average aiming at a 70-80% target rate.
 - [ ] Spaced repetition schedules are triggered and integrated with SM-2 or SM-15 schedulers.
 
+## Output Contracts
+
+When the exercise set is consumed by an LMS, a tutoring system, or a
+cross-role handoff, emit:
+
+- **`contracts/schemas/learning-handoff.json`** (or, when a stable schema is not yet available, a markdown frontmatter block listing `exercise_id`, `bloom_level`, `difficulty_param`, `last_reviewed`, and `human_review_status`). The frontmatter block is the minimum-viable contract.
+- For human-readable reports, the markdown exercise matrix already documented is the canonical format.
+- Every AI-generated question must be flagged with the human review status; never assign to students without explicit sign-off.
+
+Skip emission for single-question experiments that do not cross a role boundary.
+
+## Failure Modes
+
+- **Bloom level drift**: a question's cognitive level does not match the declared target. Mitigation: enforce the Bloom's Taxonomy filter; reject questions outside the declared level.
+- **AI question published unreviewed**: an AI-generated question ships without a qualified educator's review. Mitigation: enforce the human review gate; reject unreviewed questions.
+- **Difficulty calibration off**: the IRT-calibrated difficulty drifts from the 70-80% target success rate. Mitigation: re-calibrate using the rolling moving average; reject question blocks outside the target range.
+- **Spaced repetition not triggered**: a review is missed because the scheduler did not compute the next review date. Mitigation: integrate SM-2 or SM-15; assert the next review date is set on every response.
+- **Constructed response scored all-or-nothing**: a correct intermediate step receives no credit. Mitigation: award partial credit for demonstrably correct sub-steps; explain the exact step where logic failed.
+- **Question outside curriculum**: a question uses notation or a method not yet taught. Mitigation: enforce the curriculum scope; reject out-of-scope questions.
+- **Changelog missing**: a question's revision history is not tracked. Mitigation: maintain the question-level changelog (`question_id`, `bloom_level`, `difficulty_param`, `last_reviewed`).
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: never include student identifiers, instructor names, or institutional tokens in the exercise matrix.
+- **ASI04 Supply Chain**: AI generation libraries and IRT calibration tools must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct exercise prompts, answer keys, or rubric descriptors from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the exercise handoff is consumed by LMS and tutoring systems; emit a structured contract so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present an AI-generated exercise as "ready to assign" without the educator's review sign-off; surface the AI provenance honestly.
+
 ## Related Skills
 
 - **grade-and-review**: Evaluate completed exercises against the rubric.

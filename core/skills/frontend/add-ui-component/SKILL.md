@@ -127,6 +127,14 @@ When this skill runs inside a coordinated slice planned by Technical Lead or gat
 
 Skip emission for solo exploratory UI work with no planned handoff.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: an AI-generated component may try to reframe the user goal through off-brand copy or behavior. Cross-check the component against the source feature ticket.
+- **ASI04 Supply Chain**: AI component generators, UI libraries, and dependency versions must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct component variants, props, or styles from external or user-supplied content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the component contract is consumed by design system and Storybook agents; emit a structured spec so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present an AI-generated component as "production-ready" without the conformance, accessibility, and visual regression checks; surface the AI provenance honestly.
+
 ## Related Skills
 
 - **add-page-route**: Place the new component into a page or route flow

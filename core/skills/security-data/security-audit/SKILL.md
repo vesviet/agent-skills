@@ -87,6 +87,15 @@ Use:
 - [ ] ZTA mTLS / SPIFFE/SPIRE verification for zero-trust deployments
 - [ ] SLSA Level 3 supply chain integrity checked for production builds
 
+## Failure Modes
+
+- **Audit scope too narrow**: the audit covers only one layer (e.g., code) and misses infra or identity. Mitigation: enumerate the full trust boundary before scoping.
+- **Finding hidden in summary**: a high-severity finding is buried in the audit report. Mitigation: lead with severity-sorted findings; never present severity-3+ as appendix items.
+- **No repro path**: a finding has no reproducible evidence. Mitigation: every finding must include a path, a command, and the expected vs actual output.
+- **Remediation not validated**: a finding is closed without re-running the scan or test. Mitigation: re-run the audit after every remediation; record the before/after.
+- **OWASP ASI not applied**: a finding is reported without referencing the OWASP ASI item. Mitigation: tag every finding with the relevant ASI01-ASI10 item and the agentic threat surface.
+- **Credential in finding**: a finding includes a real secret or token. Mitigation: redact before publishing; never paste live credentials into audit reports.
+
 ## Related Skills
 
 - **review-code**: Review concrete code changes with broader quality checks

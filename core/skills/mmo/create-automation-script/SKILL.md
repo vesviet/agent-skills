@@ -66,9 +66,27 @@ await page.mouse.move(200, 300, { steps: 12 }); // Bezier-like path
 When developing, updating, or validating an automation script or browser stealth profile, emit:
 
 - **`contracts/schemas/implementation-result.json`** — Emitted when completing the implementation and validation of an automation script, stealth profile, or CDP integration slice, detailing changes made, files touched, anti-detect checks passed, and test verification results. Set `produced_by_role: mmo-engineer`.
+- **`contracts/schemas/deployment-plan.json`** capturing the script path, the runtime, the credential handling, the anti-detection posture, and the rollback path.
+- For human-readable reports, a markdown summary of the script's inputs, outputs, and operational caveats.
 
 Skip emission for local scratch testing of browser selectors.
 
+## Failure Modes
+
+- **Credential in script**: a token or API key is hardcoded in the script. Mitigation: load credentials at runtime from a secret store; never commit credentials.
+- **Anti-detection posture over-broad**: the script's stealth pattern is more aggressive than the threat model requires. Mitigation: match the posture to the documented threat model; reject over-broad defaults.
+- **CDP target verification skipped**: the script connects to a CDP endpoint without verifying the target. Mitigation: verify the CDP target before issuing commands; reject unknown endpoints.
+- **Browser fingerprint drift**: the script uses a fingerprint that no longer matches the target's expected posture. Mitigation: keep fingerprint config under version control; verify against the target before each run.
+- **Cleanup not verified**: the script leaves orphan profiles, contexts, or temp files. Mitigation: implement and verify cleanup paths; assert the post-run state.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a maliciously crafted external input may try to redirect the script. Validate every script input against the declared schema before execution.
+- **ASI03 Identity & Privilege Abuse**: credentials are scoped to the script's runtime; never embed them in committed files.
+- **ASI04 Supply Chain**: anti-detection libraries, CDP clients, and browser drivers must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct shell commands, CDP payloads, or browser driver arguments from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the script's output is consumed by infra agents; emit a structured contract so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the script as "stealth-safe" without naming the anti-detection posture; surface the residual risk honestly.
 ## Related Skills
 
 - **deploy-mmo-infrastructure**: Provision the Anti-Detect Browsers the script will connect to.

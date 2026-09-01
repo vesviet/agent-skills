@@ -68,6 +68,24 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 - **`contracts/schemas/deployment-plan.json`** — Required fields: `infrastructure_changes[]`, `config_updates[]`, and `validation_run` output proving Prometheus is scraping DCGM metrics successfully.
 
+## Failure Modes
+
+- **DCGM not scraping**: the exporter is deployed but Prometheus cannot reach port 9400. Mitigation: verify NetworkPolicies and the ServiceMonitor selector; surface a smoke test in the deployment plan.
+- **MIG not configured**: H100/A100/B200 GPUs are shared without MIG partitions, allowing OOM cross-contamination. Mitigation: enable MIG partitions for multi-tenant GPUs; enforce memory and compute boundaries.
+- **Cost attribution missing**: Kubecost reports node-level cost but no per-namespace or per-model breakdown. Mitigation: configure custom GPU pricing sheets; verify the dashboard shows per-model dollar spend.
+- **Scale-to-zero flapping**: KEDA scales model replicas to zero and back rapidly under bursty load. Mitigation: set `cooldownPeriod: 900s`; tune the queue-depth threshold to prevent flapping.
+- **vLLM APC not enabled**: repeated system prompts are re-tokenized on every request. Mitigation: enable Automatic Prefix Caching in vLLM v0.6+; structure prompts with static content first.
+- **Idle GPU still running**: a GPU node sits at < 15% utilization for 30+ minutes without scaling down. Mitigation: configure Karpenter or Cluster Autoscaler to scale to zero on empty inference queues.
+- **Budget alert ignored**: a daily burn rate alert fires but no automation responds. Mitigation: wire PagerDuty/Slack; configure an automated circuit breaker for runaway jobs.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: GPU node access and DCGM endpoints must be access-controlled; reject anonymous scraping.
+- **ASI04 Supply Chain**: DCGM, KEDA, and Kubecost versions must be validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct KEDA ScaledObjects, MIG partition configs, or Kubecost pricing from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by FinOps and SRE roles; emit a structured contract so each role can validate the rollout.
+- **ASI09 Human-Agent Trust Exploitation**: do not present GPU spend as "optimized" without showing the per-model cost breakdown; surface unallocated cost honestly.
+
 ## Checklist
 
 - [ ] NVIDIA DCGM Exporter DaemonSet deployed and exposing metrics on GPU nodes.

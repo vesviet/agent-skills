@@ -84,6 +84,24 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Failure Modes
+
+- **Local-only assumption**: a fix is made locally and shipped without verifying on the deployed edge. Mitigation: always compare `wrangler dev --remote` against the deployed behavior before changing production.
+- **Status code guessing**: a 5xx is "fixed" based on the status alone without reading logs. Mitigation: read Workers Observability logs and request IDs first; never guess.
+- **Whole-zone cache purge**: a single-route cache issue triggers a full-zone purge. Mitigation: narrow the purge to the affected URL pattern; require approval for full-zone purges.
+- **Missing observability block**: `wrangler tail` is used to debug a production issue but logs are not persisted. Mitigation: require `"observability": { "enabled": true }` in `wrangler.jsonc` for all production Workers.
+- **Wrangler v4 default surprise**: a CI runbook assumes `wrangler dev` defaults to `--remote`; in v4 it defaults to local. Mitigation: pass `--remote` explicitly; update runbooks.
+- **Secret leaked in notes**: secret names (or values) are pasted into debug notes or chat. Mitigation: reference secrets by name only; never log values.
+- **Rollback skipped**: an incident is "fixed" without confirming the previous artifact is still available for rollback. Mitigation: verify the previous deployment ID is rollbackable before applying the new fix.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a debug session may drift into changing application code outside the incident's scope. Mitigation: scope every debug change to the failing layer; open a separate task for unrelated fixes.
+- **ASI03 Identity & Privilege Abuse**: a debug command that requires elevated scopes (e.g., secret rotation, DNS update) must be approved; reject ad-hoc privilege escalation.
+- **ASI04 Supply Chain**: Wrangler CLI, observability agents, and edge config must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI07 Inter-Agent Communication**: the incident report is consumed by SRE and DevOps; emit a structured contract so each role can validate the remediation.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a fix as "resolved" without a smoke test on the deployed edge; surface the residual risk honestly.
+
 ## Related Skills
 
 - **wrangler**: Wrangler CLI for deploying, developing, and managing Workers

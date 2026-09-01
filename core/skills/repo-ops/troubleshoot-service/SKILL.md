@@ -38,148 +38,16 @@ Service issue
 `- Environment or rollout failure
 ```
 
+The full per-layer failure pattern library lives in
+[`references/common-failure-areas.md`](references/common-failure-areas.md).
+
 ## Suggested Process
 
-### Step 1: Capture The Symptom
-
-Collect:
-
-- the exact command, request, or scenario that fails
-- the first meaningful error message
-- relevant logs or traces
-- when the issue started
-- what changed recently
-
-### Step 2: Classify The Failure
-
-Decide which layer is currently failing:
-
-- build or code generation
-- bootstrap or initialization
-- request or job execution
-- persistence or data shape
-- dependency or network path
-- environment, config, or rollout
-
-Use skill: `navigate-service` if the code path is not yet clear.
-
-### Step 3: Check The Simplest Explanations First
-
-Verify:
-
-- the expected revision is actually running
-- required config and secrets are present
-- dependencies are reachable
-- generated files or migrations are current
-- the failing path can be reproduced consistently
-
-### Step 4: Compare With Last Known Good
-
-Look for differences in:
-
-- recent code changes
-- dependency versions
-- schema or migration state
-- runtime config
-- deployment or release metadata
-
-### Step 5: Isolate The Failing Slice
-
-Reduce the problem to the smallest useful scope:
-
-- one package or build target
-- one endpoint or handler
-- one job or event consumer
-- one query or write path
-- one external dependency
-
-This usually reveals whether the root cause is in code, data, config, or environment.
-
-### Step 6: Form And Test A Hypothesis
-
-Examples:
-
-- generated artifacts are stale
-- a dependency contract changed
-- a migration and the running code are out of sync
-- a config value is missing or malformed
-- a timeout or retry policy is too aggressive
-- the wrong environment or resource revision is live
-
-Test one hypothesis at a time and record what confirmed or rejected it.
-
-### Step 7: Apply The Smallest Safe Fix
-
-Once the root cause is clear:
-
-- make the narrowest change that resolves the issue
-- avoid unrelated cleanup during incident handling
-- rerun the failing scenario immediately
-
-Use skill: `review-code` when the fix touches risky code paths.
-
-### Step 8: Verify Recovery
-
-Confirm:
-
-- the original failure is resolved
-- no nearby regressions appeared
-- logs and health signals look normal
-- dependent flows still work
-
-### Step 9: Capture Follow-Up
-
-If the issue exposed a process or design gap, note:
-
-- missing tests
-- missing alerts or dashboards
-- weak config validation
-- unsafe rollout assumptions
-- missing runbook or documentation updates
-
-## Common Failure Areas
-
-### Build Or Generation
-
-- stale generated artifacts
-- missing tools or wrong tool versions
-- bad imports or package references
-- incompatible dependency changes
-
-### Startup Or Initialization
-
-- missing env vars or secrets
-- invalid config values
-- bootstrap ordering problems
-- failed dependency connections
-
-### Runtime Behavior
-
-- unhandled edge cases
-- stale assumptions in business logic
-- race conditions or concurrency bugs
-- incorrect error handling
-
-### Data Or Persistence
-
-- schema drift
-- unsafe migration ordering
-- missing indexes or bad query shape
-- serialization or data-shape mismatches
-
-### Dependency Or Network
-
-- upstream contract drift
-- DNS, routing, or auth failures
-- timeout and retry misconfiguration
-- partial availability of a downstream system
-
-### Environment Or Rollout
-
-- wrong revision deployed
-- config source out of sync with code
-- incomplete rollout
-- missing runtime permissions or side resources
+The full 9-step process (capture the symptom, classify the failure, check
+simplest explanations, compare with last known good, isolate the failing
+slice, form and test a hypothesis, apply the smallest safe fix, verify
+recovery, capture follow-up) is documented in
+[`references/suggested-process.md`](references/suggested-process.md).
 
 ## What To Capture In Your Output
 
@@ -214,6 +82,30 @@ Use this for rapid troubleshooting:
 - isolate one narrow failing path
 - test one hypothesis
 - verify the recovery
+
+## Output Contracts
+
+When the troubleshooting work produces a structured handoff (postmortem,
+runbook update, or multi-role delivery), emit:
+
+- **`contracts/schemas/incident-report.json`** capturing the symptom, the suspected layer, the checks performed, the root cause, the fix applied, the verification result, and the follow-up items. The receiving agent or on-call reviewer can then validate the recovery.
+- For human-readable reports, the markdown `What To Capture In Your Output` section already documented is the canonical format; emit JSON only when crossing a role boundary.
+
+Skip emission for trivial symptom captures that do not cross a role boundary.
+
+## Failure Modes
+
+The full failure-mode catalog and the OWASP ASI security guardrails
+(symptom-before-change, multiple-layers-changed, fix-not-verified, AI log
+summary trusted blindly, stale artifact blamed, trace ignored, CPU
+throttling missed, ASI01 goal hijack, ASI03 PII handling, ASI04 supply
+chain, ASI05 RCE guard, ASI07 inter-agent communication, ASI09 human-agent
+trust exploitation) are documented in
+[`references/failure-modes-and-security.md`](references/failure-modes-and-security.md).
+The main file keeps the high-level reminder: capture the symptom before
+any change, isolate one layer at a time, verify recovery end-to-end, and
+treat AI log summaries as advisory signals that must be verified against
+raw evidence.
 
 ## Related Skills
 

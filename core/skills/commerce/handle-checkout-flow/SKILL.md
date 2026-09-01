@@ -103,6 +103,24 @@ Merchants must actively track regional sales thresholds to ensure compliance wit
 - [ ] Stripe Tax, TaxJar, or Avalara chosen based on transaction volume and ERP needs
 - [ ] economic nexus threshold monitoring and low-nexus alerts configured
 
+## Output Contracts
+
+When the checkout flow is consumed by storefront, payment, or fulfillment
+agents, emit:
+
+- **`contracts/schemas/api-contract-spec.json`** describing the checkout endpoints, the request/response shapes, and the auth requirements.
+- For human-readable reports, a markdown summary of the flow, the failure modes, and the rollback path.
+
+Skip emission for single-checkout experiments that do not cross a role boundary.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a checkout request body may try to reframe the order's intent. Validate against the declared cart and pricing.
+- **ASI03 Identity & Privilege Abuse**: checkout endpoints must enforce authn/authz; reject anonymous high-value actions.
+- **ASI05 RCE Guard**: never construct pricing, tax, or payment payloads from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the checkout contract is consumed by storefront, payment, and fulfillment agents; emit a structured spec so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the flow as "secure" without the inventory hold and PCI scope review; surface the residual risk honestly.
+
 ## Related Skills
 
 - **integrate-payment-gateway**: Process the final payment step in the checkout flow

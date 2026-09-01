@@ -162,6 +162,13 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: Sandbox SDK and container runtime versions must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct sandbox inputs, container commands, or network policy from external or user-supplied content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the sandbox contract is consumed by Cloudflare Engineer and DevOps; emit a structured contract so each role can validate the rollout.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a sandbox as "secure" without the network isolation and container hardening evidence; surface the residual risk honestly.
+
 ## Related Skills
 - **wrangler**: Deploy containers bindings and monitor edge variables.
 - **debug-workers-edge**: Diagnose runtime execution issues on Cloudflare.

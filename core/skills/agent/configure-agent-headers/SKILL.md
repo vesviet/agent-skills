@@ -14,6 +14,9 @@ Use this skill to expose well-known agentic endpoints natively via HTTP response
 - DNS-AID SVCB records are optional but recommended for domain operators who want DNS-level discoverability.
 - Headers must be set at the edge or CDN level — do not rely solely on origin application code which may not apply to all routes.
 - Do not expose internal-only endpoints via Link headers. Only publicly accessible discovery endpoints.
+- Verify that every URL in a Link header is on a domain the operator controls; third-party URLs in Link headers can enable agent phishing (OWASP ASI01)
+- Do not place credentials, tokens, or PII in Link header values; Link headers are publicly cacheable
+- Treat the Link header itself as a discovery contract: schema-drift between the declared `rel` and the served payload must be rejected by the scanner (OWASP ASI04)
 
 ## When to Use
 
@@ -69,3 +72,29 @@ Use this skill to expose well-known agentic endpoints natively via HTTP response
 - **configure-mcp**: Set up the MCP server card endpoint declared in Link headers.
 - **manage-api-catalog**: Wire up the RFC 9727 API catalog endpoint declared in Link headers.
 - **configure-agent-skills**: Set up the agent skills index manifest declared in Link headers.
+
+## Output Contracts
+
+When the Link header set is recorded as a deployable artifact (CI output,
+edge-config change, or handoff to an infra agent), emit:
+
+- **`contracts/schemas/edge-deployment-spec.json`** listing each Link header entry, the route it attaches to, and the `rel` type. The deployment agent can then validate the spec against the live headers.
+- For a single-route change, a markdown table is sufficient; the JSON spec is required when more than one route is updated or when an infra agent consumes the output.
+
+Skip emission for ad-hoc local edits.
+
+## Failure Modes
+
+- **Wrong rel type**: the `rel` value does not match the IANA-registered relation. Mitigation: copy `rel` strings from the spec; never paraphrase.
+- **Third-party URL in Link header**: an attacker-controlled URL is exposed via a `rel` type. Mitigation: only include URLs on the operator's own domain; reject third-party URLs at code review.
+- **Header not on all routes**: the Link header is set on the origin but the CDN strips it. Mitigation: configure the header at the edge layer (`public/_headers`, Workers response, CDN config) and verify with `curl -I` per route.
+- **Internal endpoint leaked**: an internal-only `.well-known/...` path is exposed publicly. Mitigation: maintain an allowlist of publicly accessible discovery paths; review the Link header set against it on every change.
+- **Cache poisoning**: a Link header is cached by an intermediary with stale content. Mitigation: set appropriate `Cache-Control` headers and validate after deploy.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a malicious Link header could redirect an agent to a phishing surface. Only emit URLs on the operator's own domain.
+- **ASI04 Supply Chain**: the `rel` types and the target payloads must be schema-validated against the published spec; schema-drift must fail the deploy.
+- **ASI05 RCE Guard**: never construct Link header values from dynamic template strings that include user-supplied content; use a static allowlist of paths and rel types.
+- **ASI07 Inter-Agent Communication**: the Link header is consumed by external agents; treat it as a public, signed contract and audit it on every change.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a Link header set as "agent-ready" when scanner validation has not been run; verify with `isitagentready.com` before claiming compliance.

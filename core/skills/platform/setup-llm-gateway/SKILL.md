@@ -68,6 +68,24 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 - **`contracts/schemas/deployment-plan.json`** — Required fields: `infrastructure_changes[]`, `config_updates[]`, and `validation_run` output proving the gateway successfully routes a test request and triggers a failover correctly.
 
+## Failure Modes
+
+- **Direct provider call**: an application calls OpenAI/Anthropic directly with a raw key, bypassing the gateway. Mitigation: enforce gateway-only routing via egress policy; reject direct provider URLs in the app's outbound allowlist.
+- **Provider key leaked**: an upstream provider API key is committed to the repo or exposed in client config. Mitigation: vault upstream keys in AWS Secrets Manager or HashiCorp Vault; never expose to client apps.
+- **Failover not tested**: a failover path is configured but never exercised. Mitigation: inject 500/429 in integration tests; assert fallback model responds without client disruption.
+- **Missing cost metadata**: a request arrives without `x-team-id`, `x-project-id`, `x-user-id`. Mitigation: reject requests missing cost metadata; enforce at the gateway.
+- **Token budget unmonitored**: monthly budgets are configured but no alert fires when exhausted. Mitigation: wire budget exhaustion to a 429 response; alert on > 80% consumption.
+- **Agent loop exhausts budget**: an autonomous agent loops and consumes the daily token budget. Mitigation: enforce the per-session circuit breaker (≤ 10% of daily budget); raise `budget_exhausted` on breach.
+- **Prompt version drift**: prompt template version changes are not reflected in the cost tuple. Mitigation: include `prompt_template_version` in the metadata tag; re-attribute cost after every prompt change.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: every client must authenticate to the gateway with a scoped key; reject anonymous or unscoped requests.
+- **ASI04 Supply Chain**: gateway engine, provider SDKs, and OTel collector must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct virtual model aliases, routing rules, or function-call payloads from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by DevOps and SRE roles; emit a structured contract so each role can validate the rollout.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the gateway as "failover-ready" without a test run; surface the actual failover coverage honestly.
+
 ## Checklist
 
 - [ ] LLM gateway service deployed in high-availability configuration.

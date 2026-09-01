@@ -140,6 +140,25 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Failure Modes
+
+- **Unverified sender domain**: a Worker or app sends from a domain not onboarded to Email Sending. Mitigation: run `wrangler email sending list` before deploy; reject unverified senders at CI.
+- **Missing SPF/DKIM/DMARC**: production emails are sent without authentication records. Mitigation: enforce DKIM + SPF + DMARC verification in the dashboard before any prod send; DMARC `p=reject` is required by Gmail, Yahoo, Outlook.
+- **High bounce rate**: hard bounces are not added to suppression lists within 24 hours. Mitigation: implement bounce webhook processing; alert when bounce rate > 2%.
+- **API token in source code**: an API token is hardcoded in a Worker or committed file. Mitigation: use `wrangler secret put` or environment variables; lint the repo for token patterns.
+- **REST API field drift**: the REST `from` object uses `email` instead of `address`, or `replyTo` instead of `reply_to`. Mitigation: copy field names from the REST spec; CI must reject the Worker-binding field names in REST calls.
+- **Single-use stream re-read**: `message.raw` is read twice in a receiving handler, returning empty on the second read. Mitigation: buffer first: `const raw = await new Response(message.raw).arrayBuffer()`.
+- **HTML-only email**: a template ships without a plain-text fallback. Mitigation: always include both `html` and `text`; spam scores improve with both.
+- **Marketing email sent via Email Service**: bulk or newsletter email is routed through Cloudflare Email Service. Mitigation: Email Service is transactional-only; use a dedicated marketing platform for campaigns.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: never embed API tokens in source code or commit local env files; use `wrangler secret put` and CI secret scanning.
+- **ASI04 Supply Chain**: validate the Email Service client library against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct email content, headers, or templates from external or user-supplied content without sanitization; treat HTML as a hostile surface.
+- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by DevOps and SRE roles; emit a structured contract so each role can validate the rollout.
+- **ASI09 Human-Agent Trust Exploitation**: do not present an email flow as "deliverability-ready" without DKIM/SPF/DMARC verification; surface the actual auth status.
+
 ## Related Skills
 - **wrangler**: Manage bindings and CLI environments.
 - **debug-workers-edge**: Troubleshoot edge runtime exceptions.

@@ -113,6 +113,36 @@ metadata:
 - [ ] Metadata fields (`graded_by_ai`, `reviewed_by`, and `ai_model`) are recorded correctly.
 - [ ] Feedback focuses on effort, uses 'not-yet' phrasing, and specifies exactly one actionable step.
 
+## Output Contracts
+
+When the grading result is consumed by a gradebook, a parent report, or
+a cross-role handoff, emit:
+
+- **`contracts/schemas/learning-handoff.json`** (or, when a stable schema is not yet available, a markdown frontmatter block listing `student_id`, `exercise_id`, `raw_score`, `max_points`, `grade_tier`, `rubric_breakdown`, and `metadata`). The frontmatter block is the minimum-viable contract.
+- For human-readable reports, the markdown feedback already documented is the canonical format; emit JSON only when crossing a role boundary.
+- Every AI-assisted grading record must include the mandatory audit metadata block (`graded_by_ai`, `reviewed_by`, `ai_model`, `verification_status`, `verification_timestamp`); records without this block are not submission-ready.
+
+Skip emission for inline explanatory feedback that does not produce a grade record.
+
+## Failure Modes
+
+- **AI grading without review**: an AI-generated grade ships to the student without a qualified educator's review. Mitigation: enforce the EU AI Act High-Risk AI classification; require human review and approval.
+- **Single-number grade**: a holistic single-number score is given without criterion breakdowns. Mitigation: enforce the four-tier criterion-referenced rubric; reject single-number scores.
+- **All-or-nothing scoring**: a correct intermediate step receives no credit. Mitigation: award partial credit for demonstrably correct sub-steps; explain the exact step where logic failed.
+- **Superficial fluency rewarded**: a high rubric mark is awarded for articulate phrasing alone. Mitigation: prioritize analytical rigor, reasoning evidence, and factual accuracy; reject fluency-only scores.
+- **More than one actionable step**: critical feedback lists multiple major actions. Mitigation: limit to exactly one major actionable step per review session; reject over-stuffed feedback.
+- **Effort vs ability praise**: feedback praises innate ability instead of effort and strategy. Mitigation: enforce the growth mindset protocol; use "not-yet" framing for gaps.
+- **Audit metadata missing**: a grading record lacks `graded_by_ai`, `reviewed_by`, or `ai_model`. Mitigation: enforce the mandatory audit metadata block; reject records without it.
+- **Tone mismatch**: feedback tone is harsh for a young or struggling student. Mitigation: calibrate encouragement tone to the learner's level.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: never include student identifiers, instructor names, or institutional tokens in shared grading records beyond what is required.
+- **ASI04 Supply Chain**: AI grading libraries and rubric validators must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct grading prompts, rubric scores, or feedback text from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the grading record is consumed by gradebook and parent-report systems; emit a structured contract so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present an AI-generated grade as the final grade; surface the AI provenance and the human reviewer honestly.
+
 ## Related Skills
 
 - **create-exercises**: Assign follow-up practice for identified weak points.

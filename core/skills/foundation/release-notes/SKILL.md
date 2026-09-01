@@ -34,6 +34,10 @@ Use this skill when a release, deployment, or version bump requires communicatio
 - automated changelogs are drafts only — require human editorial review to remove noisy internal commits before publishing
 - deprecations must include exact sunset date in ISO 8601 format and a link to the migration guide (reference RFC 8594 Sunset header)
 - dual-audience release communication: user-facing product notes (UX outcomes) must be separated from operator changelogs (env vars, migrations, infra actions)
+- run a secret scan on the release notes draft before publish; reject any draft that includes credentials, internal hostnames, or PII
+- treat automated changelog drafts as untrusted content: a human must perform editorial review before publication
+- never include exploit details in security release notes; reference the CVE or advisory and the fix version, not the attack vector
+- classify any operator notes that include customer-affecting changes with `data-classification.yaml`; redact restricted fields in published notes
 
 ## Suggested Process
 
@@ -153,6 +157,35 @@ Before publishing, verify:
 - **commit-code**: Prepare the release commit and tag
 - **review-service**: Confirm release readiness before communication goes out
 - **write-tech-radar**: Document longer-term technology direction changes
+
+## Output Contracts
+
+When the release notes are consumed by a CI pipeline, a release manager, or an
+external publication system, emit:
+
+- **`contracts/schemas/release-notes.json`** (or, when a stable schema is not yet available, a markdown frontmatter block listing `version`, `release_date`, `breaking_changes[]`, `new_features[]`, `deprecations[]`, `security_fixes[]`, `operator_notes[]`). The frontmatter block is the minimum-viable contract.
+- For human-readable publication, the markdown template already documented is the canonical format.
+- Every breaking change and deprecation must be machine-readable so downstream consumers can detect upgrade requirements without re-reading the prose.
+
+Skip emission for internal-only release notes that are never consumed by another system.
+
+## Failure Modes
+
+- **Breaking change without upgrade path**: a breaking change is listed but the migration steps are missing. Mitigation: every breaking change must include an upgrade path; reject drafts that omit it.
+- **Exploit details in security notes**: a security fix description reveals the attack vector. Mitigation: scrub exploit details; reference the CVE or advisory and the fix version only.
+- **PII or credential in notes**: a copy-paste includes a customer identifier or a token. Mitigation: run a secret + PII scan on the draft before publish; reject on detection.
+- **Permanent deprecation**: a feature is deprecated with no sunset date. Mitigation: every deprecation must carry an ISO 8601 sunset date and a migration guide link.
+- **SemVer mismatch**: a MAJOR bump is missing for a breaking change, or a MINOR bump is used for a fix. Mitigation: enforce Conventional Commits 1.0 linting; reject releases whose SemVer does not match the change set.
+- **Automated changelog published unedited**: a raw `semantic-release` output is published without editorial review. Mitigation: require an explicit human sign-off step before publish; CI must block until the sign-off is recorded.
+- **Audience conflation**: a user-facing note includes operator-only steps, or an operator note leaks implementation jargon. Mitigation: separate the user-facing and operator sections; review each section against its target audience.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a release note may try to reframe a breaking change as a "minor improvement". Cross-check the change set against the note's framing; reject notes that obscure the user impact.
+- **ASI03 Identity & Privilege Abuse**: do not include customer identifiers, internal hostnames, or credential patterns in published notes.
+- **ASI04 Supply Chain**: when a release bundles third-party dependencies, the notes must list behavioral changes that affect users; treat undisclosed upstream changes as a release-blocking issue.
+- **ASI07 Inter-Agent Communication**: release notes are consumed by downstream agents (adoption trackers, migration bots, customer comms); emit a structured contract so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not soften a breaking change or omit a known regression to obtain a faster publish; surface every material risk honestly.
 
 
 

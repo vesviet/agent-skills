@@ -123,6 +123,24 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Failure Modes
+
+- **Lighthouse score as only measure**: a "good" Lighthouse score is reported without noting it is lab data. Mitigation: always distinguish lab vs field; report CrUX or RUM alongside.
+- **FID cited**: FID is referenced for responsiveness. Mitigation: FID was deprecated in March 2024; use INP (good < 200ms, NI 200-500ms, poor > 500ms).
+- **AI summary misattributed root cause**: an AI tool summarizes trace data and the recommendation targets the wrong bottleneck. Mitigation: verify every AI recommendation against the actual network waterfall and trace.
+- **Generic recommendation**: advice like "reduce JavaScript bundle size" is given without naming the specific file and size. Mitigation: cite specific resource names, sizes, and file paths in every recommendation.
+- **Resource removal on unconfirmed usage**: a resource is recommended for removal before confirming it is unused in the trace. Mitigation: confirm via Coverage tab; never remove unconfirmed resources.
+- **Speculation Rules without browser check**: `<script type="speculationrules">` is enabled without verifying browser support. Mitigation: check browser support before enabling; surface the support matrix in the report.
+- **LCP cause misattributed**: a "background-image" LCP element is reported as optimizable. Mitigation: background-images are not optimizable by the browser; use the 4-part attribution (TTFB + load delay + load duration + render delay) to identify the dominant component.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: Chrome DevTools MCP, Lighthouse, and any trace analysis library must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct test scripts, page navigations, or trace parameters from external content without sanitization.
+- **ASI07 Inter-Agent Communication**: the audit report is consumed by Frontend and DevOps roles; emit a structured contract so each role can validate the recommendations.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a Lighthouse improvement as a real-user improvement without field data; surface the lab vs field gap honestly.
+- **ASI10 Rogue Agents**: when an AI tool is summarizing trace data, require human verification of every recommendation before action.
+
 ## Related Skills
 
 - **wrangler**: Check deployment compatibility parameters and cache settings for Workers-hosted assets.

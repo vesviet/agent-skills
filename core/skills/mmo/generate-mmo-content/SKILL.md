@@ -65,6 +65,34 @@ for angle in angles:
 - [ ] API cost for this run is within the declared budget cap.
 - [ ] Generated content does not violate compliance rules (no phishing or prohibited content).
 
+## Output Contracts
+
+When the generated content is consumed by a content scheduler, a landing
+page pipeline, or a cross-role handoff, emit:
+
+- **`contracts/schemas/content-handoff.json`** (or, when a stable schema is not yet available, a markdown frontmatter block listing `asset_type`, `channel`, `target_audience`, `compliance_boundary`, and `human_review_status`). The frontmatter block is the minimum-viable contract.
+- For human-readable reports, the markdown content brief already documented is the canonical format.
+- Every AI-generated asset must be flagged with the human review status; never publish without explicit sign-off.
+
+Skip emission for single-asset experiments that do not cross a role boundary.
+
+## Failure Modes
+
+- **AI asset published unreviewed**: an AI-generated landing page or creative ships without human review. Mitigation: enforce the human review gate; reject unreviewed assets.
+- **Compliance boundary crossed**: an asset violates the documented Legal & Compliance Notice. Mitigation: keep the compliance boundary visible; reject any pattern outside the boundary.
+- **Off-brand voice**: the generated copy drifts from the brand voice. Mitigation: validate the voice against the brand guidelines; reject assets that drift.
+- **Fact invented**: a claim appears in the asset that is not sourced. Mitigation: trace every claim to a primary source; flag unsourced claims as drafts.
+- **Token budget exceeded**: AI generation runs past the declared budget. Mitigation: enforce the budget gate; halt generation on breach and surface the alert.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a generated asset may try to reframe the campaign goal through off-brand copy. Cross-check the asset against the declared campaign objective.
+- **ASI03 Identity & Privilege Abuse**: never include customer identifiers, internal hostnames, or credential patterns in generated assets.
+- **ASI04 Supply Chain**: AI generation libraries and brand-voice validators must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct AI prompts, landing page templates, or creative payloads from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the asset handoff is consumed by content schedulers and marketing roles; emit a structured contract so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present an AI-generated asset as "ready to publish" without the human review sign-off; surface the AI provenance honestly.
+
 ## Related Skills
 
 - **setup-deployment**: Deploy generated landing pages to a CDN or hosting provider.

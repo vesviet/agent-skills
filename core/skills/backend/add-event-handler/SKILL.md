@@ -100,6 +100,14 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: an event payload may try to reframe the handler's intent. Validate the payload against the declared event schema.
+- **ASI03 Identity & Privilege Abuse**: event publishers and consumers must enforce authn/authz; reject anonymous or unscoped events.
+- **ASI05 RCE Guard**: never construct handler logic or event payloads from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the event contract is consumed by producers and consumers; emit a structured spec so each role can validate.
+- **ASI08 Cascading Failures**: when an event handler fails, surface the failure explicitly to the coordinator; do not silently drop the event.
+
 ## Related Skills
 
 - **navigate-service**: Trace existing event patterns in the repo

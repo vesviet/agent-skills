@@ -97,6 +97,24 @@ pending → cancelled (only before shipped)
 - [ ] Vietnamese carrier (Grab Express, GHN, GHTK) tracking is driven by webhook callbacks.
 - [ ] Carrier status codes are mapped to internal event-sourced order events.
 
+## Output Contracts
+
+When the fulfillment workflow is consumed by warehouse, shipping, or
+support agents, emit:
+
+- **`contracts/schemas/api-contract-spec.json`** describing the fulfillment endpoints, the request/response shapes, and the state transitions.
+- For human-readable reports, a markdown summary of the order state machine, the failure modes, and the rollback path.
+
+Skip emission for single-order experiments that do not cross a role boundary.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a fulfillment request may try to reframe the order's state. Validate against the declared order id and the state machine.
+- **ASI03 Identity & Privilege Abuse**: fulfillment endpoints must enforce role-based access; reject unscoped calls.
+- **ASI05 RCE Guard**: never construct shipping labels, tracking IDs, or webhook payloads from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the fulfillment contract is consumed by warehouse and support agents; emit a structured spec so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present fulfillment as "automated" without the actual state transition evidence; surface the residual risk.
+
 ## Related Skills
 
 - **integrate-payment-gateway**: Issue refunds against original payment transactions

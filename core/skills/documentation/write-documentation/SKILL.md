@@ -26,6 +26,39 @@ Use this skill when a change needs clear technical documentation or when existin
 - **Reference docs must be auto-generated**: API reference documentation is generated directly from OpenAPI / AsyncAPI / protobuf specs using Redocly, Scalar, or Mintlify — hand-typed endpoint definitions are rejected as they drift from the source of truth
 - **Docs-as-code CI gate**: documentation PRs must pass `markdownlint`, Vale prose style, broken-link checker, and frontmatter schema validation before merge; Cloudflare Pages or Netlify deploy previews are mandatory for reviewer sign-off
 - avoid internal workflow wording in user-visible docs unless the repo explicitly expects it
+- treat AI-assisted doc drafts as untrusted until reviewed; never publish a doc with `[UNVERIFIED]` claims or placeholders left in
+- validate every external link in the doc against the live target before publish; treat 404s as a docs-as-code CI failure
+- run a secret scan on the doc before commit; never include tokens, customer identifiers, or internal hostnames in user-facing docs (OWASP ASI03)
+
+## Output Contracts
+
+When the documentation change is consumed by a docs-as-code pipeline, a
+content management system, or another cross-role handoff, emit:
+
+- **`contracts/schemas/documentation-handoff.json`** — capture the doc path, the Diataxis quadrant, the source-of-truth link, the OpenAPI/AsyncAPI version, the `last_verified_version`, and the audience. The receiving agent can then validate the doc against the live system.
+- For human-readable publication, the markdown file with frontmatter is the canonical format.
+- Reference docs are auto-generated from the OpenAPI/AsyncAPI spec; the spec is the source of truth and the doc handoff points to the spec, not a hand-typed endpoint list.
+
+Skip emission for trivial inline edits that do not cross a role boundary.
+
+## Failure Modes
+
+- **Mixed Diataxis quadrants**: a tutorial file mixes architectural philosophy with step-by-step instructions. Mitigation: enforce one quadrant per file; split into separate docs if needed.
+- **Hand-typed reference doc**: an API reference is hand-typed and drifts from the spec. Mitigation: auto-generate from OpenAPI/AsyncAPI; reject hand-typed reference lists.
+- **Broken link**: a docs page links to a 404. Mitigation: run broken-link checker in CI; treat 404s as a docs-as-code failure.
+- **Burying the answer**: a doc opens with context instead of the answer. Mitigation: every page opens with the core definition or solution in the first paragraph.
+- **Internal workflow wording in user docs**: a doc mentions agent names, AI workflow, or internal process labels. Mitigation: lint for internal terms; strip before publish.
+- **Stale doc not refreshed**: a doc references an old API version or removed feature. Mitigation: re-validate on every release; treat staleness as a release-blocking issue.
+- **`/llms.txt` not updated**: the AI-readable index is missing or stale. Mitigation: regenerate `/llms.txt` and `/llms-full.txt` on every doc change; CI must verify.
+- **Secret in docs**: a token, customer id, or internal hostname is pasted into a doc. Mitigation: run secret scan before commit; reject the doc on detection.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: an AI-assisted doc draft may reframe the user goal. Cross-check the doc against the source-of-truth spec; reject reframed content.
+- **ASI03 Identity & Privilege Abuse**: never include tokens, customer identifiers, or internal hostnames in user-facing docs.
+- **ASI04 Supply Chain**: external links in docs are untrusted; validate every link against the live target before publish.
+- **ASI07 Inter-Agent Communication**: the doc handoff is consumed by the docs pipeline and downstream agents; emit a structured contract so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a doc as "complete" while `[UNVERIFIED]` claims remain; surface every unverified claim honestly.
 
 ## Suggested Process
 
@@ -107,8 +140,3 @@ To align with modern AI-assisted engineering and automated API publishing:
 - **troubleshoot-service**: Turn learned recovery steps into runbook updates
 - **write-tech-radar**: Draft higher-level technology assessments
 - **commit-code**: Prepare doc updates for delivery
-
-## Output Contracts
-
-- `contracts/schemas/documentation-handoff.json`
-

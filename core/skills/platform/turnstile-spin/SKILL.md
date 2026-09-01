@@ -49,133 +49,29 @@ Canonical instructions live at [`developers.cloudflare.com/turnstile/spin`](http
 ### Widget Modes, Token Handling, and Verification
 
 #### Widget Modes Selection
-- **`managed`**: The default and most robust challenge mode. Cloudflare analyzes user telemetry and behavior dynamically. If suspicious signals are present, it prompts the user with an interactive challenge. Ideal for checkout funnels, user login pages, and password resets.
-- **`non-interactive`**: Invisible challenge using browser telemetry signals only. If the browser is heavily privacy-hardened or tracking protections are blocked, this challenge type may fail or fall back, so it should be used for medium-risk actions (e.g., search forms).
-- **`invisible`**: Fully invisible CAPTCHA with no visual indicator. It presents the highest risk of false positives (legitimate users being blocked), so it must be selected carefully for low-risk checkpoints where seamless flow is prioritized.
-- **Rule of Thumb**: Always select the least-intrusive mode that satisfies the site's security threat model.
+
+Widget mode details (`managed`, `non-interactive`, `invisible`) and the
+rule-of-thumb for choosing the least-intrusive mode that satisfies the
+security threat model are documented in
+[`references/code-patterns.md`](references/code-patterns.md#widget-modes-reference).
+Framework-specific integration patterns (Astro, Hugo, Next.js app/pages,
+SvelteKit, vanilla HTML) live under `references/`.
 
 #### Token Expiry & Reuse Prevention
-Turnstile validation tokens are single-use to prevent replay attacks and remain valid for exactly 300 seconds (5 minutes).
-If validation fails on the backend, the token becomes spent. The frontend must immediately reset the widget instance rather than showing a generic submission failure.
 
-##### Frontend Integration Example:
-```html
-<form id="auth-form" action="/verify" method="POST">
-  <input type="email" name="email" required placeholder="name@domain.com" />
-  <!-- Turnstile widget placeholder container -->
-  <div id="cf-turnstile-container" class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-callback="onTurnstileSuccess"></div>
-  <button type="submit">Submit Verification</button>
-</form>
-
-<script>
-  let cfToken = null;
-
-  function onTurnstileSuccess(token) {
-    cfToken = token;
-  }
-
-  document.getElementById('auth-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!cfToken) {
-      alert('Verification required. Please wait for security check to complete.');
-      return;
-    }
-
-    try {
-      const resp = await fetch('/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: e.target.email.value,
-          cf_token: cfToken
-        })
-      });
-
-      if (!resp.ok) {
-        // Reset the token state and refresh the Turnstile widget dynamically
-        cfToken = null;
-        if (typeof turnstile !== 'undefined') {
-          turnstile.reset('#cf-turnstile-container');
-        }
-        alert('Validation failed. Security challenge has been reset. Please try again.');
-      } else {
-        alert('Validation successful!');
-      }
-    } catch (err) {
-      cfToken = null;
-      if (typeof turnstile !== 'undefined') {
-        turnstile.reset('#cf-turnstile-container');
-      }
-      alert('A network error occurred. Challenge reset, please try again.');
-    }
-  });
-</script>
-```
+Turnstile validation tokens are single-use to prevent replay attacks and
+remain valid for exactly 300 seconds (5 minutes). If validation fails on the
+backend, the token becomes spent. The frontend must immediately reset the
+widget instance rather than showing a generic submission failure. The full
+frontend reset pattern and the siteverify Worker template live in
+[`references/code-patterns.md`](references/code-patterns.md).
 
 #### Backend verify Worker Endpoint Pattern
-Always verify the client token server-side via a secure endpoint. Never invoke siteverify directly from the web client.
 
-##### siteverify Worker Implementation:
-```typescript
-interface Env {
-  TURNSTILE_SECRET_KEY: string;
-}
-
-export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    if (request.method !== 'POST') {
-      return new Response('Method Not Allowed', { status: 405 });
-    }
-
-    try {
-      const { cf_token } = await request.json() as { cf_token?: string };
-      if (!cf_token) {
-        return new Response(JSON.stringify({ success: false, message: 'Missing challenge token.' }), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' }
-        });
-      }
-
-      // Query Cloudstile validation endpoint
-      const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          secret: env.TURNSTILE_SECRET_KEY,
-          response: cf_token,
-          remoteip: request.headers.get('CF-Connecting-IP') || ''
-        })
-      });
-
-      const outcome = await res.json() as {
-        success: boolean;
-        'error-codes'?: string[];
-      };
-
-      if (!outcome.success) {
-        return new Response(JSON.stringify({
-          success: false,
-          message: 'Failed verification challenge',
-          errors: outcome['error-codes']
-        }), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' }
-        });
-      }
-
-      return new Response(JSON.stringify({ success: true, message: 'Token verified successfully.' }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    } catch (err) {
-      return new Response(JSON.stringify({ success: false, message: 'Internal server verify error' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-  }
-};
-```
+Always verify the client token server-side via a secure endpoint. Never
+invoke siteverify directly from the web client. The siteverify Worker
+implementation is in
+[`references/code-patterns.md`](references/code-patterns.md#backend-siteverify-worker-implementation).
 
 ## Checklist
 - [ ] Account and API auth are verified.
@@ -194,6 +90,26 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 - **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
+
+## Failure Modes
+
+- **Secret on disk**: the Turnstile secret is written to a file or committed. Mitigation: only pass the secret via stdin to `wrangler secret put`; never write it to disk.
+- **Validation skipped**: a form submits without siteverify server-side check. Mitigation: require server-side validation; treat browser-side checks as untrusted.
+- **Cross-account deploy**: a siteverify Worker is deployed to a different Cloudflare account than the widget. Mitigation: verify the active account before deploy; reject cross-account deploys.
+- **Siteverify called from browser**: the browser calls siteverify directly. Mitigation: always route browser → user's Worker → siteverify; reject client-side siteverify calls.
+- **Token reuse**: a failed submit does not reset the widget, allowing the same token to be retried. Mitigation: call `turnstile.reset(widgetId)` on backend validation failure; require a fresh challenge.
+- **CSP missing**: the widget does not load because the site CSP blocks the Turnstile script. Mitigation: add `challenges.cloudflare.com` to `script-src` and `frame-src` before deploy.
+- **Token expired**: a token is older than 300 seconds. Mitigation: re-trigger the widget automatically on token expiry; do not retry the same token.
+- **Wrong widget mode**: a low-risk checkpoint uses `invisible` for a high-risk flow. Mitigation: use `managed` for login/checkout/password-reset; reserve `invisible` for low-risk only.
+- **Diff not shown**: a frontend file is overwritten without showing a diff. Mitigation: always show a diff before writing; never overwrite silently.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a malicious frontend could try to bypass the widget by skipping the `cf_token` field. Mitigation: server-side validation must reject any request without a verified token.
+- **ASI03 Identity & Privilege Abuse**: the Turnstile secret must never reach the browser; load it only into the siteverify Worker via `wrangler secret put`.
+- **ASI04 Supply Chain**: the Turnstile widget script URL and the siteverify endpoint must be the canonical Cloudflare domains; reject third-party script sources.
+- **ASI05 RCE Guard**: never construct siteverify payloads, widget configs, or token-handling logic from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by Cloudflare Engineer and DevOps; emit a structured contract so each role can validate the rollout.
 
 ## Related Skills
 - **wrangler**: Manage deployment environments and bindings.

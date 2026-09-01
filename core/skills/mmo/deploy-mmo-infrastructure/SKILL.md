@@ -66,6 +66,31 @@ resource "docker_container" "adb_profile" {
 - [ ] 7-day account warm-up state machine implemented before production automation.
 - [ ] Handoff documentation provided for the automation team.
 
+## Output Contracts
+
+When the infrastructure change is consumed by an infra agent, a release
+pipeline, or a cross-role handoff, emit:
+
+- **`contracts/schemas/deployment-plan.json`** capturing the proxy or anti-detect environment, the credential handling, the network posture, and the rollback path.
+- For human-readable reports, a markdown summary of the infrastructure topology, the operational caveats, and the compliance boundaries.
+
+Skip emission for local sandbox experiments that do not cross a role boundary.
+
+## Failure Modes
+
+- **Credential in infra config**: a token or API key is committed to the proxy or anti-detect config. Mitigation: load credentials at runtime from a secret store; never commit credentials.
+- **Network posture over-broad**: the proxy or anti-detect network is more permissive than the threat model requires. Mitigation: match the network posture to the documented threat model; reject over-broad defaults.
+- **Cleanup not verified**: the infrastructure leaves orphan resources, subnets, or containers. Mitigation: implement and verify cleanup paths; assert the post-deploy state.
+- **Compliance boundary crossed**: a deployment pattern violates the documented Legal & Compliance Notice. Mitigation: keep the compliance boundary visible; reject any pattern outside the boundary.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: credentials and proxy identities are scoped to the infrastructure runtime; never embed them in committed files.
+- **ASI04 Supply Chain**: anti-detect browser images, proxy clients, and orchestration tools must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct infrastructure config, network policies, or anti-detect postures from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by infra and security roles; emit a structured contract so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the infrastructure as "compliant" without naming the Legal & Compliance boundary; surface the residual risk honestly.
+
 ## Related Skills
 
 - **deploy-proxyware-fleet**: Containerize bandwidth monetization nodes within the provisioned infrastructure.

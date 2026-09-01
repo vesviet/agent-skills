@@ -105,6 +105,13 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: route-level access control must follow least privilege; reject anonymous access to non-public routes.
+- **ASI05 RCE Guard**: never construct route handlers or navigation logic from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the route contract is consumed by backend, design, and QA roles; emit a structured spec so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a route as "ready to ship" without the accessibility and performance checks; surface the residual risk.
+
 ## Related Skills
 
 - **add-ui-component**: Build reusable UI used by the page

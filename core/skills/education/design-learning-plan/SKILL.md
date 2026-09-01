@@ -106,12 +106,32 @@ Integrate interactive AI tutoring systems directly into the study blocks:
 
 ## Output Contracts
 
-When this skill is the producing role for a `learning-handoff.json` artifact (per `core/contracts/schemas/learning-handoff.json`), emit:
+When the learning plan is consumed by another teacher, an automated
+tutoring system, or a cross-role handoff, emit:
 
 - **`contracts/schemas/learning-handoff.json`** — populate `moet_alignment[]` from the curriculum standards referenced, `plan_phases[]` mirroring the timeline blocks above, `exercise_refs[]` pointing at the artifacts produced by `create-exercises`, and `evaluation_rubric_ref` for `grade-and-review` to consume. This ensures downstream teachers or automated tutors ingest a machine-readable plan rather than re-parsing prose.
+- For human-readable reports, the markdown learning plan already documented is the canonical format.
+- Every plan must include spaced repetition milestones and Feynman checkpoints; downstream consumers must be able to validate these.
 
 Skip emission for one-off ad-hoc tutoring sessions with no persistent handoff.
 
+## Failure Modes
+
+- **No consolidation buffer**: a grade-transition plan omits the consolidation buffer. Mitigation: include the buffer for transition plans; reject plans that skip it.
+- **Cognitive load exceeded**: more than 3-5 new concepts are introduced in a single session. Mitigation: enforce the cognitive load limit; reject over-stacked sessions.
+- **Spaced repetition skipped**: a milestone at days 1, 3, 7, 14, 30 is missing. Mitigation: enforce the Ebbinghaus schedule; reject plans without the full milestone set.
+- **Feynman checkpoint missing**: a milestone lacks a jargon-free explanation checkpoint. Mitigation: enforce the Feynman checkpoint at every milestone; reject plans that skip it.
+- **Socratic bypass**: an LLM tutor outputs the final answer or a complete code block. Mitigation: enforce the Socratic constraint; reject tutor prompts that output answers.
+- **Calendar mismatch**: the plan's timeline does not match the standard academic calendar. Mitigation: align with the calendar; reject plans that don't.
+- **No machine-readable handoff**: a plan is delivered as prose only. Mitigation: emit `learning-handoff.json` for cross-role handoffs; the receiving teacher or tutor must be able to parse it.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: never include student identifiers, instructor names, or institutional tokens in the learning plan.
+- **ASI04 Supply Chain**: AI tutoring libraries and spaced repetition schedulers must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct tutor prompts, schedule calculations, or milestone definitions from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the learning plan handoff is consumed by teachers and tutoring systems; emit a structured contract so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present an AI tutor's output as the final answer; enforce the Socratic constraint honestly.
 ## Related Skills
 
 - **create-exercises**: Design practice materials that match the plan milestones.

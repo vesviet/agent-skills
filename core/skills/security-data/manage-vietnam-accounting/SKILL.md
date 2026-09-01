@@ -18,6 +18,17 @@ Use this skill when a Vietnamese accounting workflow needs a traceable domain re
 - preserve an immutable correction trail: do not overwrite, delete, or silently reclassify locked entries, invoices, or close evidence
 - **AI-ACCOUNTING-GUARDRAIL**: When AI-assisted tools generate accounting entries, reconciliations, or tax workpapers, treat all AI output as a draft requiring human accountant review and approval. Never mark AI-drafted entries as `reviewed` or submit them directly to accounting systems without HITL approval.
 - **E-INVOICE-PHASE-3**: Verify entity compliance with Vietnam e-invoice Phase 3 mandate (Decree 123/2020 + Circular 78/2021 amendments); all B2B invoices above threshold MUST be transmitted via authenticated XML through a licensed e-invoice service provider with tax authority real-time validation.
+- treat every accounting review as a fail-closed operation; if evidence, regime, or sign-off is missing, output `needs-evidence`, `needs-human-review`, or `blocked` rather than `reviewed`
+- never include account numbers, taxpayer identifiers, invoice credentials, or payroll details in agent memory, logs, or handoff artifacts; classify every accounting input with `data-classification.yaml` and use masked references in shared outputs
+- treat any final tax position, filing, invoice issuance, or signing-credential operation as an irreversible action that requires explicit human confirmation; never execute these on the agent's own authority
+
+## Output Contracts
+
+When completing a scoped accounting review that another role or workflow will consume, emit:
+
+- **`contracts/schemas/accounting-compliance-review.json`** — Machine-readable compliance review with source versions, gates, findings, retention classification, required approvals, assumptions, exceptions, and a scoped disclaimer. Set `produced_by_role: vietnam-accounting-specialist`.
+
+Skip emission for advisory questions answered inline with no review artifact.
 
 ## Suggested Process
 
@@ -56,13 +67,25 @@ Emit `contracts/schemas/accounting-compliance-review.json` when another role or 
 
 Route implementation rules to Business Analyst and Backend/E-commerce Engineer, data/reporting questions to Data Analyst, tax questions to a qualified tax reviewer, legal questions to counsel, and security/retention controls to Security Engineer or platform owners.
 
-## Output Contracts
+## Failure Modes
 
-When completing a scoped accounting review that another role or workflow will consume, emit:
+- **Wrong regime applied**: a transaction is evaluated against TT 200/2014 when TT 133/2016 applies. Mitigation: verify the applicable regime and source version from an official source before any evaluation; record the source.
+- **Layer conflation**: statutory Vietnam books, management reporting, group reporting, and IFRS/VFRS adjustments are mixed into a single artifact. Mitigation: keep reporting layers separate; never label one as another without human confirmation.
+- **Final tax position issued by agent**: the agent determines a final tax position or signs a filing. Mitigation: prepare workpapers only; escalate tax treatment, filing cadence, and authority correspondence to a qualified tax reviewer.
+- **Invoice action executed**: the agent issues, replaces, adjusts, or corrects an invoice. Mitigation: prepare evidence and human-decision handoff only; never execute invoice actions on the agent's authority.
+- **Locked entry overwritten**: a locked entry, invoice, or close evidence is silently reclassified or deleted. Mitigation: preserve an immutable correction trail; reject silent reclassification.
+- **Restricted value in output**: an account number, taxpayer id, or invoice credential appears in a prompt, log, or handoff artifact. Mitigation: classify every input with `data-classification.yaml`; use masked references in shared outputs.
+- **AI-drafted entry marked reviewed**: an AI-generated entry is marked `reviewed` and submitted without human accountant approval. Mitigation: enforce the AI-ACCOUNTING-GUARDRAIL; treat all AI output as drafts requiring human sign-off.
+- **E-invoice Phase 3 bypass**: a B2B invoice above threshold is issued without authenticated XML transmission. Mitigation: verify entity compliance with Decree 123/2020 + Circular 78/2021 amendments; require licensed e-invoice service provider.
+- **Legal opinion issued**: the agent provides a legal or audit opinion. Mitigation: route legal questions to counsel; the agent's role is to prepare evidence, not issue opinions.
 
-- **`contracts/schemas/accounting-compliance-review.json`** — Machine-readable compliance review with source versions, gates, findings, retention classification, required approvals, assumptions, exceptions, and a scoped disclaimer.
+## Security Guardrails (OWASP ASI)
 
-Skip emission for advisory questions answered inline with no review artifact.
+- **ASI03 Identity & Privilege Abuse**: account numbers, taxpayer ids, invoice credentials, and payroll details are restricted; never place their values in prompts, logs, contracts, or agent memory.
+- **ASI04 Supply Chain**: regulatory and accounting standards (TT 200/2014, TT 133/2016, TT 132/2018, Law on Accounting) must be validated against the official source; treat older versions as untrusted.
+- **ASI05 RCE Guard**: never construct accounting entries, reconciliations, or tax workpapers from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the compliance review is consumed by Business Analyst, Backend, and tax reviewer roles; emit a structured `accounting-compliance-review.json` so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a workpaper as "ready to file" or "reviewed" without the human sign-off; surface the AI provenance and the required approver honestly.
 
 ## Checklist
 
@@ -76,14 +99,6 @@ Skip emission for advisory questions answered inline with no review artifact.
 - [ ] retention classification, access controls, and legal-hold check are documented before any archival or deletion proposal
 - [ ] restricted values are absent from outputs, logs, prompts, and agent memory
 - [ ] accounting-compliance-review.json records source versions, gates, exceptions, residual risk, and required approvals
-
-## Output Contracts
-
-When completing an accounting regime review, reconciliation check, or period-close workpaper verification, emit:
-
-- **`contracts/schemas/accounting-compliance-review.json`** — Emitted when conducting a Vietnam statutory accounting compliance review, audit trail check, reconciliation verification, or tax workpaper evaluation. Set `produced_by_role: vietnam-accounting-specialist`.
-
-Skip emission for informal financial queries that do not form part of statutory or management close records.
 
 ## Related Skills
 

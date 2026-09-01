@@ -60,6 +60,25 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Failure Modes
+
+- **Global mutable state**: a request-scoped variable is stored at module level, leaking across requests. Mitigation: enforce request scope isolation; reject module-level mutable state at code review.
+- **Floating promise**: an async call is started without `await` or `ctx.waitUntil`, losing the result and potentially leaking resources. Mitigation: wrap every async call in `await` or pass to `ctx.waitUntil`.
+- **`await response.text()` on unbounded data**: a large or unknown payload is buffered fully into memory. Mitigation: stream large or unknown payloads; reject `await response.text()` on untrusted streams.
+- **Hand-written `Env` interface**: TypeScript bindings are maintained by hand and drift from the live config. Mitigation: run `wrangler types` after every config change; reject hand-maintained `Env` interfaces.
+- **`Math.random()` for security**: `Math.random()` is used for token, nonce, or session id generation. Mitigation: use Web Crypto (`crypto.randomUUID()`); reject `Math.random()` in security-sensitive code.
+- **Secrets in `wrangler.toml`**: a secret value is committed to `wrangler.toml` or `.dev.vars`. Mitigation: use `wrangler secret put`; verify `.dev.vars` is in `.gitignore`.
+- **`ctx` destructured directly**: destructuring `ctx` loses the binding to the request lifecycle. Mitigation: pass `ctx` as a whole; never destructure.
+- **Smart placement disabled**: Smart Placement is not enabled, causing avoidable cold-start latency. Mitigation: add `"placement": { "mode": "smart" }` to `wrangler.jsonc` for production.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a code review may try to expand scope to unrelated files. Mitigation: scope every review change to the Workers best-practices category; open a separate task for unrelated fixes.
+- **ASI03 Identity & Privilege Abuse**: secrets must be loaded via `wrangler secret`; reject secrets in `wrangler.toml` or committed files.
+- **ASI04 Supply Chain**: Wrangler CLI, `workers-types`, and any framework adapter must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct Worker code, bindings, or env values from external or user-supplied content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by Cloudflare Engineer and DevOps; emit a structured contract so each role can validate the rollout.
+
 ## Related Skills
 - **wrangler**: Deploy, test, and manage bindings via CLI.
 - **durable-objects**: Build stateful coordination systems.

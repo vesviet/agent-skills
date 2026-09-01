@@ -67,6 +67,31 @@ services:
 - [ ] Network routing (WireGuard/VPN/proxy-chains) tested end-to-end before scaling.
 - [ ] Fleet earnings baseline recorded before and after deployment for ROI validation.
 
+## Output Contracts
+
+When the proxyware fleet is consumed by an infra agent, a release
+pipeline, or a cross-role handoff, emit:
+
+- **`contracts/schemas/deployment-plan.json`** capturing the fleet size, the node distribution, the credential handling, the network posture, and the rollback path.
+- For human-readable reports, a markdown summary of the fleet topology, the operational caveats, and the compliance boundaries.
+
+Skip emission for local sandbox experiments that do not cross a role boundary.
+
+## Failure Modes
+
+- **Credential in fleet config**: a token or API key is committed to the fleet config. Mitigation: load credentials at runtime from a secret store; never commit credentials.
+- **Fleet size exceeds threat model**: more nodes are deployed than the threat model requires. Mitigation: size the fleet to the documented workload; reject over-broad defaults.
+- **Node cleanup not verified**: the fleet leaves orphan nodes or containers. Mitigation: implement and verify cleanup paths; assert the post-deploy state.
+- **Compliance boundary crossed**: a deployment pattern violates the documented Legal & Compliance Notice. Mitigation: keep the compliance boundary visible; reject any pattern outside the boundary.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: node credentials are scoped to the fleet runtime; never embed them in committed files.
+- **ASI04 Supply Chain**: proxyware images and orchestration tools must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct fleet config, network policies, or node distributions from external content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by infra and security roles; emit a structured contract so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the fleet as "compliant" without naming the Legal & Compliance boundary; surface the residual risk honestly.
+
 ## Related Skills
 
 - **deploy-mmo-infrastructure**: Set up the core proxy networks the fleet will route through.

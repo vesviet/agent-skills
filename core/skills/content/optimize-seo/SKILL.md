@@ -92,104 +92,30 @@ Adapted from the SEO-AEO engine skills in the agentic-awesome-skills catalog:
 
 ## Suggested Process
 
-### 1. Frame Intent
-
-Capture:
-
-- target URL or planned slug
-- audience and business outcome (lead, trust, education)
-- primary and secondary keywords
-- locale and competing pages on the same site
-- search intent classification: informational, commercial, navigational, or transactional
-- YMYL-adjacent flag (yes/no)
-
-### 2. Research (SERP + AI-focused)
-
-- review top SERP titles, snippets, and common H2 patterns (lightweight passes — not full Researcher depth)
-- note content gaps versus intent (informational, commercial, navigational)
-- record cannibalization risk against existing URLs
-- **AI search check**: search primary keyword in Google AI Overview, Perplexity, and ChatGPT to observe citation patterns, source types, and answer formats used
-- **information gain analysis**: identify what existing top results cover and what unique value this content can add
-- note **entity coverage**: which entities (brands, concepts, people, locations) appear consistently in AI answers
-
-### 3. Topical Authority Assignment
-
-- identify the **pillar page** this content belongs to (or flag need to create one)
-- assign **cluster position**: pillar, supporting, or supplementary
-- specify **content freshness type**: new_topic, evergreen_refresh, data_update, or experience_addition
-- list key **entities** the content must cover for topical completeness
-
-### 4. Brief Or Audit
-
-**Brief path:** outline H2s with answer-first guidance, FAQ, internal links, word-count band, out-of-scope topics, GEO/AEO fields, schema requirements, E-E-A-T gates → `seo-content-brief.json`
-
-Required GEO/AEO fields in brief:
-- answer-first block (≤60 words) for each H2
-- query fan-out list (3–5 sub-questions)
-- answer format per section (definition, table, steps, bullets)
-- fact density target
-- schema types: Article, FAQPage, HowTo, etc.
-- experience proof type required
-
-**Audit path:** score the page on four axes out of 100 — overall, SEO, AEO, readability — using pass bands: 85–100 strong (publish-ready), 70–84 acceptable, 50–69 needs work, below 50 do-not-publish. Rank issues as Blocking / Important / Follow-Up with exact fix instructions, and report the projected score once fixes are applied so prioritization is data-driven → `seo-audit-report.json` + updated `seo-metadata.json` when ready to publish
-
-AI extractability audit elements:
-- TL;DR / direct-answer block present near the top (2–3 sentences answerable without context)
-- answer-first structure present (yes/no)
-- heading hierarchy clean (H1→H2→H3)
-- fact density sufficient (verifiable data points per section)
-- schema markup present and valid
-- FAQ block carries at least 4 entries when present — fewer signals shallow coverage to extraction systems
-- AI bot crawlability (robots.txt check)
-- content uniqueness / information gain vs SERP competitors
-
-### 5. Hand Off
-
-- to **Content Writer** with brief, metadata draft, and E-E-A-T requirements
-- to **Task Planner** when board order, topic mix, or pillar–cluster balance must change
-- to **Frontend/DevOps** for technical SEO implementation tickets including schema specifications
-- to **Data Analyst** when metric definitions for GSC comparisons or AI citation tracking need formalization
+The full 5-step process (frame intent, research SERP + AI, assign topical
+authority, brief or audit, hand off) and the detailed itemized checklist
+(Traditional SEO, GEO/AEO, Internal Linking, Topical Authority & Entity,
+E-E-A-T) live in
+[`references/process-and-checklist.md`](references/process-and-checklist.md).
+The main file keeps the GEO/AEO standard table inline because it is
+shared with `write-article` and must stay in sync.
 
 ## Checklist
 
-### Traditional SEO
-- [ ] search intent classified (informational/commercial/navigational/transactional) and primary keyword explicit
-- [ ] secondary keywords listed (typically 2–4)
-- [ ] internal link targets named (minimum 3 when site baseline requires it)
-- [ ] title and meta within length limits and aligned with keyword
-- [ ] cannibalization check documented
-- [ ] facts separated from recommendations
-- [ ] technical items escalated, not silently implemented in prod
+The detailed itemized checklist lives in
+[`references/process-and-checklist.md`](references/process-and-checklist.md).
+The main file keeps a short checklist summary:
 
-### GEO / AEO
-- [ ] answer-first block present (≤60 words after H2)
-- [ ] query fan-out list included (3–5 sub-questions from PAA + LLM)
-- [ ] answer format specified per section
-- [ ] fact density requirement documented
+- [ ] search intent classified and primary keyword explicit
+- [ ] answer-first block present in every H2 (≤60 words)
+- [ ] internal link targets named with type labels
+- [ ] cannibalization check documented with resolution tactic
+- [ ] four-axis audit scored (overall, SEO, AEO, readability) with projected post-fix score
+- [ ] pillar URL and cluster position documented
+- [ ] E-E-A-T experience proof type specified and YMYL flag set when applicable
 - [ ] AI bot crawlability verified (OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot)
-- [ ] citation sampling done per engine (numbered vs inline styles noted), not in aggregate
-- [ ] audit scored on four axes with projected post-fix score reported
-
-### Internal Linking
-- [ ] every link recommendation labeled by type (cluster→pillar / pillar→cluster / cluster→cluster / contextual boost)
-- [ ] orphan pages detected and queued before new links proposed
-- [ ] no duplicated exact-match anchors to the same target; no generic anchor text
-- [ ] context sentence written for each anchor suggestion
-- [ ] cluster articles each carry at least one cluster → pillar link
-
-### Topical Authority & Entity
-- [ ] pillar page URL assigned; cluster position documented
-- [ ] information gain clearly stated
-- [ ] content freshness type specified
-- [ ] key entities listed for topical coverage
-- [ ] schema types recommended for Frontend (Article, FAQPage, HowTo, etc.)
-
-### E-E-A-T
-- [ ] experience proof type specified (original_photo, firsthand_account, documented_test, expert_interview, case_study)
-- [ ] author entity and profile linkage documented
-- [ ] YMYL-adjacent flag set when applicable
-- [ ] trust signals required (source citations, contact info, policy page)
-- [ ] claim policy stated
+- [ ] citation sampling done per engine, not in aggregate
+- [ ] facts separated from recommendations; technical items escalated to engineering
 
 ## Output Contracts
 
@@ -201,6 +127,25 @@ When completing search intent analysis, keyword planning, on-page audits, or mul
 - **`contracts/schemas/seo-weekly-board.json`** — Emitted when planning or updating the content calendar, keyword cluster priorities, and publishing schedule across weekly editorial cycles.
 
 Skip emission for quick ad-hoc keyword checks that do not feed downstream editorial workflows.
+
+## Failure Modes
+
+- **Cannibalization ignored**: two pages target the same primary keyword and split ranking. Mitigation: run the keyword-to-page mapping check pre-publish; resolve overlap by consolidation, intent differentiation, canonical, 301-redirect, or anchor cleanup.
+- **Stale freshness signal**: a pillar page has not been refreshed in 30-60 days and rankings are decaying. Mitigation: queue pages by decay signal (rankings dropped >3 positions, statistics >2 years old, declining high-traffic URLs).
+- **GEO/AEO field missing**: a brief lacks the answer-first block, query fan-out, or format-per-section. Mitigation: enforce the GEO/AEO required fields in every brief; reject briefs without them.
+- **Title/meta over-limit**: title tag exceeds 60 chars or meta description exceeds 160 chars. Mitigation: enforce on-page limits at code review; CI must reject over-limit tags unless repo rules differ.
+- **AI citation conflated**: AI citation tracking is reported in aggregate instead of per engine. Mitigation: sample per engine (Google AI Overview, Perplexity, ChatGPT Search, Bing AI); report numbered vs inline styles separately.
+- **AI bot blocked**: robots.txt blocks OAI-SearchBot, PerplexityBot, ClaudeBot, or BingBot. Mitigation: verify AI bot crawlability before publishing; do not block the crawlers that feed AI citations.
+- **Rankings promised**: the brief or audit promises a ranking improvement. Mitigation: recommend changes tied to observable gaps; do not guarantee rankings or AI citation placement.
+- **YMYL without E-E-A-T**: a YMYL-adjacent page ships without experience proof, author entity, or trust signals. Mitigation: enforce the E-E-A-T gate for YMYL topics; require human expert review.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a brief or audit may try to reframe the user goal through off-target keyword recommendations. Cross-check the keyword map against the original page objective.
+- **ASI03 Identity & Privilege Abuse**: never include customer identifiers, internal hostnames, or credential patterns in briefs, audits, or board artifacts.
+- **ASI04 Supply Chain**: SEO tooling (Otterly, RankScale) and AI bot user-agents must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI07 Inter-Agent Communication**: the brief or audit is consumed by Content Writer, Task Planner, and Frontend/DevOps; emit a structured contract so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present an AI citation metric as a guarantee; surface the per-engine variance and the assumptions honestly.
 
 ## Related Skills
 

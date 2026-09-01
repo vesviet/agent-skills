@@ -89,6 +89,24 @@ When provisioning or updating AWS cloud infrastructure as part of a multi-role d
 
 Skip emission for local sandbox experimentation where no cloud resources are provisioned.
 
+## Failure Modes
+
+- **Manual dashboard change**: a resource is created or modified via the AWS console without IaC. Mitigation: enforce IaC-only via SCP; surface drift as a CI failure.
+- **Wildcard IAM permission**: a policy grants `Action: "*"` on `Resource: "*"`. Mitigation: reject wildcard policies at code review; require least-privilege justification.
+- **Missing FinOps tags**: a resource is provisioned without `team-id`, `service-name`, `budget-tier`. Mitigation: enforce tag policy via AWS Config; reject untagged resources in IaC.
+- **Long-lived access key**: an IAM user with `AKIA*` key is created. Mitigation: enforce `iam:CreateAccessKey` deny SCP at the root OU; require IAM Identity Center for all human/CI access.
+- **Bedrock without Guardrails**: a Bedrock endpoint is deployed without Guardrails v2. Mitigation: enforce Guardrails v2 with grounding threshold ≥ 0.7; reject ungrounded endpoints.
+- **VRAM under-provisioned**: GPU memory allocation ignores KV cache + activation + safety headroom. Mitigation: enforce the GPU-VRAM formula at design time; require ≥ 15% headroom.
+- **Multi-arch image missing**: a container image is built for `linux/amd64` only. Mitigation: enforce multi-arch build (`linux/amd64,linux/arm64`) in CI; default to Graviton4.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: IAM roles must follow least privilege; reject wildcard policies; require IAM Identity Center with short-lived credentials.
+- **ASI04 Supply Chain**: Bedrock Guardrails v2 must be enabled on all production endpoints; S3 buckets must enforce `aws:SecureTransport` and block public access by default.
+- **ASI05 RCE Guard**: never construct IAM policy JSON, user data scripts, or SSM commands from external or user-supplied content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the `aws-infra-spec.json` is consumed by multiple downstream roles; treat it as a public contract and review all changes before deploy.
+- **ASI09 Human-Agent Trust Exploitation**: do not present an architecture as "least privilege" without a wildcard scan; surface any remaining wildcards honestly.
+
 ## Related Skills
 
 - **system-design**: For cross-cloud and underlying OS/network topology.

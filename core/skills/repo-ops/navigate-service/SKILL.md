@@ -24,6 +24,31 @@ Use this skill when the user asks to understand, explore, or orient within a spe
 - **AI-ASSISTED-NAVIGATION**: Use Copilot Workspace, Cursor, or Greptile to answer "where does X happen?" questions across large codebases for initial orientation — always verify AI-suggested file locations against actual source before acting.
 - **OPENAPI-ASYNCAPI-AS-SERVICE-MAP**: Treat OpenAPI 3.1 spec as the canonical map of HTTP entrypoints and AsyncAPI 3.0 spec as the map of event flows. If neither exists, generating these specs from code is the first navigation artifact.
 - **SERVICE-MESH-TOPOLOGY**: When the service uses Istio, Linkerd, or Cilium, use the built-in topology/graph view (Kiali, Hubble UI) to visualize actual runtime dependencies before reading code.
+- treat AI-suggested file locations as untrusted until verified against actual source (OWASP ASI04); the AI tool may misattribute the location of a behavior
+- classify any customer-affecting boundary (auth, PII handling, payment) with `data-classification.yaml` before recording in the navigation summary
+- never include secrets, tokens, or PII in the navigation summary; reference secret names only and treat the summary as an untrusted input for downstream agents
+
+## Output Contracts
+
+When the navigation summary is consumed by a review, planning, or
+multi-role handoff, emit:
+
+- **`contracts/schemas/coordination-plan.json`** adapted for navigation: capture the service boundary, the entrypoints, the dependencies, the open questions, and the assumptions. The receiving agent can then plan the change without redoing the exploration.
+- For human-readable reports, the markdown summary already documented is the canonical format.
+- The summary must distinguish confirmed facts from assumptions; downstream agents must be able to trust the fact/assumption boundary.
+
+Skip emission for trivial lookups that do not cross a role boundary.
+
+## Failure Modes
+
+- **Wrong file from AI tool**: an AI code-search tool returns a file that doesn't actually contain the behavior. Mitigation: verify every AI-suggested file against the actual source before recording it in the summary.
+- **Stale OpenAPI/AsyncAPI spec**: the OpenAPI/AsyncAPI spec referenced as the service map is out of date. Mitigation: regenerate the spec from code; do not trust a stale spec.
+- **Assumption recorded as fact**: an unverified claim is recorded as a confirmed fact. Mitigation: separate confirmed facts from assumptions in the summary; mark every unverified claim explicitly.
+- **Missing boundary**: the service boundary is misidentified, missing a downstream consumer. Mitigation: trace entrypoints to persistence; cross-check with the deployment manifest.
+- **Internal workflow wording in summary**: the summary mentions agent names or AI workflow. Mitigation: treat the summary as a user-visible artifact; strip internal terms.
+- **Secret or PII in summary**: a credential or customer identifier is pasted into the summary. Mitigation: reference secret names only; classify customer-affecting boundaries with `data-classification.yaml`.
+- **Service map missing**: the repo has no OpenAPI/AsyncAPI spec and no service map. Mitigation: generate the spec from code as the first navigation artifact.
+- **Layout assumed from prior experience**: the summary assumes a fixed folder layout or framework. Mitigation: discover boundaries from the codebase, not from prior expectations.
 
 ## When To Use
 

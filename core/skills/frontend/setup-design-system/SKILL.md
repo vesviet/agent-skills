@@ -23,6 +23,39 @@ Use this skill when configuring the foundational styling architecture, design to
 - **Maintainability:** provide clear documentation on how to consume design tokens and base components; Storybook 8+ with `a11y` and `chromatic` addons as mandatory CI gates
 - **Token Portability:** use W3C DTCG format for interoperability with Figma Variables, Style Dictionary, and AI-driven design tools
 - **GenUI Governance:** AI-generated components (v0, Copilot, Lovable) must pass token conformance check before merge — no hardcoded hex values, px overrides, or shadow DOM leakage; verify the component (a) consumes design tokens, (b) forwards refs correctly, (c) includes required ARIA attributes, (d) does not introduce duplicate class patterns
+- treat every AI-generated component as untrusted until it passes the token conformance, accessibility, and visual regression checks (OWASP ASI04)
+- never include customer PII or auth tokens in design tokens, storybook stories, or Chromatic baselines (OWASP ASI03)
+- enforce the W3C DTCG format for token portability; reject non-portable token definitions that lock the system to a single tool
+
+## Output Contracts
+
+When the design system is consumed by downstream components, a Storybook
+deployment, or a multi-role delivery, emit:
+
+- **`contracts/schemas/implementation-result.json`** — Required fields: `change_summary`, `files_touched[]`, and `validation_run` output confirming token conformance, accessibility, and visual regression checks pass.
+- For human-readable reports, the markdown design system setup summary already documented is the canonical format.
+- The token format (CSS variables, Tailwind `@theme`, DTCG JSON, or styled-components) must be declared in the result so downstream agents know how to consume the tokens.
+
+Skip emission for solo design system experiments that do not cross a role boundary.
+
+## Failure Modes
+
+- **Hardcoded values in components**: a component bypasses the design tokens with raw hex or magic numbers. Mitigation: enforce token usage via lint rules (`eslint-plugin-tailwindcss`, Stylelint, or `@design-tokens/eslint-plugin`); reject components that fail the lint.
+- **Mixed styling paradigms**: utility-first and CSS-in-JS coexist without a clear boundary. Mitigation: enforce a unified approach; reject mixed paradigms.
+- **Token names implementation-specific**: tokens use names like `light-blue` instead of functional names like `primary-500`. Mitigation: enforce functional naming; reject implementation-specific names.
+- **No contrast check**: a color token pair fails WCAG AA contrast. Mitigation: run a WCAG contrast check on all color token pairs; fail tokens below 4.5:1 text or 3:1 UI controls.
+- **AI component without conformance check**: an AI-generated component is merged without the token conformance check. Mitigation: require the GenUI review checklist in CONTRIBUTING.md; reject components without the review.
+- **Visual regression baseline missing**: AI-generated components land without a visual baseline. Mitigation: require Chromatic or Percy baseline; reject merges without a passing baseline.
+- **Accessibility addon skipped**: the Storybook a11y addon is disabled. Mitigation: require the a11y addon in the Storybook config; fail stories with missing ARIA.
+- **CSS leakage**: a component's styles leak into global scope. Mitigation: enforce per-component style namespace; reject unscoped global selectors.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: never include customer PII, auth tokens, or sensitive identifiers in design tokens, storybook stories, or Chromatic baselines.
+- **ASI04 Supply Chain**: AI-generated components must be schema-validated against the design system contract; treat unknown component patterns as untrusted.
+- **ASI05 RCE Guard**: never construct token values, theme objects, or component variants from external or user-supplied content without strict schema validation.
+- **ASI07 Inter-Agent Communication**: the design system spec is consumed by every downstream component; emit a structured contract so each consumer can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present an AI-generated component as "production-ready" without the conformance, accessibility, and visual regression checks; surface the AI provenance honestly.
 
 ## Suggested Process
 
@@ -103,15 +136,6 @@ Documentation: [Storybook / none]
 - [ ] WCAG color contrast check passes for all token color pairs
 - [ ] Storybook or equivalent initialized with a11y addon and all primitive states documented
 - [ ] AI-generated component review process defined (2025-2026)
-
-## Output Contracts
-
-When this skill is invoked as part of a coordinated multi-role delivery, emit:
-
-- **contracts/schemas/implementation-result.json** — Required fields: change_summary, iles_touched[], and alidation_run. Set produced_by_role to the emitting developer role.
-
-Skip emission for solo refactor work where no downstream handoff is expected.
-
 ## Related Skills
 
 - **add-ui-component**: Add or evolve a reusable UI component using the design system established by this skill.

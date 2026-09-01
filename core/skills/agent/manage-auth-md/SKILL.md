@@ -15,6 +15,10 @@ Use this skill when adding or updating the Agentic Registration Discovery file (
 - The file MUST be served publicly at `/auth.md` from the domain root (e.g., `https://example.com/auth.md`).
 - Link to the OAuth authorization metadata endpoints using exact URLs — do not use relative paths.
 - Do not embed credentials, secrets, or tokens in `auth.md`. Only reference public endpoint paths.
+- Treat `auth.md` as a public, signed contract: do not include internal-only registration endpoints or unreleased callback URLs
+- Validate the file against the current scanner rule set before every deploy; reject schema-drifted files (OWASP ASI04)
+- Every registration endpoint URL must be on the operator's own domain; reject third-party URLs at code review
+- Run a `curl` check from outside the cache to confirm the deployed content matches the source after each change
 
 ## When to Use
 
@@ -76,6 +80,36 @@ Use this skill when adding or updating the Agentic Registration Discovery file (
 - **configure-oauth-metadata**: Set up the `/.well-known/oauth-protected-resource` and `/.well-known/oauth-authorization-server` endpoints that `auth.md` references.
 - **debug-identity-provider**: Troubleshoot WorkOS agent registration and scanner failures.
 - **configure-agent-headers**: Expose `auth.md` presence via HTTP Link headers for passive discovery.
+- **configure-mcp**: Reference MCP servers from the `## MCP Servers` section with a `transport` field.
+- **manage-agent-identity**: Cross-link the registration endpoints declared in `auth.md` with the NHI lifecycle.
+
+## Output Contracts
+
+When the `auth.md` change is consumed by an infra agent, a CI pipeline, or an
+on-call engineer, emit:
+
+- **`contracts/schemas/edge-deployment-spec.json`** listing the served path (`/auth.md`), the content type, and the list of registration endpoints declared.
+- **`contracts/schemas/api-contract-spec.json`** describing each registration endpoint (HTTP method, path, expected payload) so the deployment agent can validate before serving.
+- For human-readable reports, a markdown diff of the file with the previous version is sufficient.
+
+Skip emission for trivial typo fixes that do not cross a role boundary.
+
+## Failure Modes
+
+- **Wrong H1 casing**: the file starts with `# Authentication` or `# auth` instead of `# Auth.md`. Mitigation: lint the first non-empty line; reject any deviation.
+- **Missing phrase**: the document body omits "agentic registration". Mitigation: lint the body for the required phrase; reject if absent.
+- **Wrong URLs**: a registration endpoint URL points to a non-operator domain. Mitigation: enforce an allowlist at code review; reject third-party URLs.
+- **BOM or invisible Unicode**: the file contains a UTF-8 BOM or non-ASCII whitespace that breaks the H1 check. Mitigation: strip the BOM in the deploy pipeline; re-serve with `Content-Type: text/markdown`.
+- **Stale cache**: a CDN or edge serves an older version after a fix. Mitigation: invalidate the cache or set `Cache-Control: no-store` during debug; verify with `curl` from outside the cache.
+- **MCP server missing transport**: the `## MCP Servers` section lists an MCP server without a `transport` field. Mitigation: enforce `transport: streamable-http | sse`; the scanner rejects SSE-only entries.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a malicious or compromised `auth.md` could redirect agents to attacker-controlled endpoints. Validate every URL against the operator's own domain allowlist.
+- **ASI03 Identity & Privilege Abuse**: do not include client secrets, signing keys, or unreleased callback URLs in the served file.
+- **ASI04 Supply Chain**: the file must be validated against the current scanner rule set before every deploy; reject schema-drifted files.
+- **ASI07 Inter-Agent Communication**: the file is consumed by external agents and scanners; treat it as a public contract and review all changes before deploy.
+- **ASI09 Human-Agent Trust Exploitation**: do not present `auth.md` as "scanner-compliant" without a successful scanner run; surface the scanner output in the deploy record.
 
 ### 2026: Auth.md Enhancements
 

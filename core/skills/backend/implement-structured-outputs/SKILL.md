@@ -69,6 +69,14 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 - [ ] Unit tests with valid and invalid mock responses written and passing.
 - [ ] `implementation-result.json` emitted.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a malformed or adversarial prompt may try to escape the constrained decoding envelope. Validate every output against the JSON Schema before returning to the caller.
+- **ASI04 Supply Chain**: schema validators, constrained decoding libraries, and model SDKs must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct schema, prompts, or constrained-decoding configs from external content without strict validation.
+- **ASI07 Inter-Agent Communication**: the structured output is consumed by downstream agents; require schema validation at the boundary.
+- **ASI09 Human-Agent Trust Exploitation**: do not present the structured output as "schema-valid" without a successful validation run; surface the actual validation status.
+
 ## Related Skills
 
 - **build-mcp-server**: Apply structured output validation to MCP tool call results and argument parsing

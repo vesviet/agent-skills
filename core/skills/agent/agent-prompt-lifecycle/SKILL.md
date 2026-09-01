@@ -145,31 +145,9 @@ Detect gradual changes in prompt performance or model behavior over time:
 
 ## Output Format
 
-When reporting a prompt lifecycle action, use:
-
-```markdown
-## Prompt Lifecycle Report
-
-Asset changed:
-- ...
-
-Change type:
-- Structural | Behavioral | Context | Eval-only
-
-Change summary:
-- ...
-
-Eval results:
-- Previous score: ...
-- Current score: ...
-- Regressions: ...
-
-Promotion decision:
-- Promote | Hold | Rollback
-
-Monitoring plan:
-- ...
-```
+The full prompt lifecycle report template (asset changed, change type,
+eval results, promotion decision, monitoring plan) lives in
+[`references/output-format.md`](references/output-format.md).
 
 ## Checklist
 
@@ -183,6 +161,24 @@ Monitoring plan:
 - [ ] promotion path followed (dev → staging → production)
 - [ ] production monitoring plan in place
 - [ ] drift detection schedule established
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a prompt under evaluation may be reframed to hide regressions. Cross-check the prompt change against the original eval objective.
+- **ASI04 Supply Chain**: prompt versions, model versions, and eval fixtures must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI07 Inter-Agent Communication**: golden-set artifacts and eval results are consumed by prompt-engineering and release agents; emit a structured contract so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a prompt change as "improved" without surfacing the cost, latency, and quality delta against the golden set.
+
+## Output Contracts
+
+When the prompt lifecycle action is consumed by another agent, an eval
+pipeline, or a release manager, emit:
+
+- **`contracts/schemas/a2a-artifact.json`** adapted for prompt lifecycle: capture the asset id, the change type, the previous and current scores, the regressions, the promotion decision, and the monitoring plan. The receiving agent or release manager can then validate the change.
+- For human-readable reports, the markdown report template in `references/output-format.md` is the canonical format.
+- Every promotion decision must reference the eval evidence; never promote without the eval run output.
+
+Skip emission for trivial one-line prompt tweaks that do not cross a role boundary.
 
 ## Related Skills
 

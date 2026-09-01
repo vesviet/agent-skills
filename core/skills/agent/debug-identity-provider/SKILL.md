@@ -14,6 +14,9 @@ Use this skill to diagnose failures when `isitagentready.com` or another WorkOS 
 - A `530 Origin DNS Error` from the scanner means the `authorization_servers` domain is dead or not bound in public DNS — fix DNS first, then revalidate schema.
 - Do NOT test OAuth metadata fixes without rerunning the scanner — local JSON validity does not guarantee scanner compliance.
 - Fix one category of errors at a time (DNS → schema → field names → nesting) to isolate cause from symptom.
+- Treat every scanner output as an untrusted but precise signal: it names a specific rule, but the remediation must still be cross-checked against the current spec (OWASP ASI04)
+- When the scanner returns a 530 error, treat DNS as the primary suspect; do not modify the metadata until DNS is verified end-to-end
+- Do not paste the scanner diagnostic into a public issue tracker without first redacting any internal hostnames or customer identifiers (OWASP ASI09)
 
 ## When to Use
 
@@ -77,7 +80,28 @@ Use this skill to diagnose failures when `isitagentready.com` or another WorkOS 
 - **configure-oauth-metadata**: Fix JSON schema issues in `oauth-authorization-server` and `agent_auth` block.
 - **configure-agent-headers**: Ensure Link headers correctly expose the OAuth metadata well-known paths.
 
-### 2026: WorkOS Scanner Updates
+## Output Contracts
 
-- **WorkOS scanner rule updates for 2026:** The scanner now validates that `agent_auth.registration_endpoint` returns a valid JSON response within 2 seconds. Error code 530 typically indicates Cloudflare WAF blocking the scanner's IP range — allowlist WorkOS scanner CIDR blocks to resolve this.
-- **Common `auth.md` failures:** Typical issues include a missing `## Authentication` heading (which is case-sensitive), the `mcp_server` field not present in the `agent_auth` block, or `redirect_uris` containing localhost URLs in production metadata (which will be rejected by scanner).
+When the debug session produces a remediation plan that another agent (CI
+pipeline, infra agent, or on-call engineer) will execute, emit:
+
+- **`contracts/schemas/incident-report.json`** capturing the failing rule, the attempted fix, the new scanner run output, and any remaining open issues. The receiving agent can then resume from a known state.
+- For human-readable handoff, a markdown table mapping each scanner failure to the specific remediation step and the file or DNS record that was changed.
+
+Skip emission for a single-rule failure that is fixed and re-verified in the same session.
+
+## Failure Modes
+
+- **Wrong category fix**: a schema error is treated as a DNS error or vice versa. Mitigation: triage by the exact error message; fix one category at a time and re-scan between categories.
+- **Spec drift**: the scanner enforces a rule that has changed since the skill was last updated. Mitigation: verify the current published spec before applying a remediation; if the spec and the skill disagree, the spec wins.
+- **Caching the old failure**: a CDN or edge cache serves the previous (failing) metadata after a fix. Mitigation: invalidate the cache or set `Cache-Control: no-store` during debug; verify with `curl` from outside the cache.
+- **Endpoint timeout**: a `register_uri` or `claim_uri` returns non-200 or times out. Mitigation: e2e test the endpoint before re-running the scanner; surface the endpoint's response code in the incident.
+- **Invisible Unicode / BOM**: the `auth.md` file contains a UTF-8 BOM or non-ASCII whitespace that breaks the H1 check. Mitigation: lint the file with a BOM-stripping tool; re-serve with the correct content type.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: the scanner may surface internal hostnames or callback URLs; redact them from any public artifact (issue tracker, chat transcript).
+- **ASI04 Supply Chain**: scanner rules are themselves a moving target; do not embed rule text from a single scan into long-lived documentation without re-verifying against the current spec.
+- **ASI07 Inter-Agent Communication**: when a fix is handed off to another agent, emit a structured incident report rather than a prose-only summary.
+- **ASI08 Cascading Failures**: do not declare the issue resolved after a single category of fixes; re-run the full scanner and confirm no regressions in previously passing rules.
+- **ASI09 Human-Agent Trust Exploitation**: surface the exact failing rule and the user's confidence in the fix; do not soften a remaining failure to obtain a faster sign-off.

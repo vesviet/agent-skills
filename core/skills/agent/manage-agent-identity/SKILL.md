@@ -18,6 +18,10 @@ Aligned with: **IMDA Model AI Governance Framework for Agentic AI (May 2026)**, 
 - **Formal registration**: every agent role in production must be registered in the organization's identity registry before receiving any access. Shadow agents must be discovered and registered or decommissioned.
 - **Behavioral baseline required**: every production agent role must declare a behavioral baseline (allowed tools, expected resource paths, rate limits). Out-of-baseline calls trigger immediate circuit breaker halts.
 - **Immediate offboarding**: when a task completes, fails, or an agent role is decommissioned, all associated credentials, tokens, and active sessions must be revoked immediately.
+- Never let an agent identity outlive its declared task: every offboarding must revoke credentials and archive the audit trail in the same atomic operation
+- Validate SPIFFE/SPIRE attestation at every credential issuance, not just at session start; rotated workload identity must re-attest before any new token is issued
+- Do not allow an agent to self-renew credentials without re-validation against `action-boundaries.yaml`; treat auto-renewal without re-check as a policy violation
+- Classify session traces with `data-classification.yaml`; redact PII and credentials before archiving to long-term storage
 
 ## When to Use
 
@@ -162,3 +166,33 @@ Produce an audit record for every production agent session:
 - **manage-secrets**: Securely store and rotate agent credentials in secret managers.
 - **security-audit**: Full security posture audit including NHI inventory review.
 - **agent-observability**: Trace spans for session monitoring — NHI session ID is a required span attribute.
+
+## Output Contracts
+
+When the NHI lifecycle produces structured artifacts that another agent (CI
+pipeline, audit system, or registry) must consume, emit:
+
+- **`agent_identity.yaml`** — registration record for the identity registry (already documented above).
+- **`session_baseline.yaml`** — behavioral baseline declaration for the session.
+- **`session_audit.json`** — post-session audit record. When this artifact is consumed by an audit agent or a downstream system, conform it to `contracts/schemas/incident-report.json` so the schema is enforced.
+- When an anomaly triggers an offboarding, emit `contracts/schemas/incident-report.json` capturing the anomaly type, the revoked session ids, and the residual risk for review.
+
+Skip structured emission for short-lived interactive sessions where the same role both writes and consumes the audit record.
+
+## Failure Modes
+
+- **Standing privilege**: an agent retains a token past its declared TTL. Mitigation: enforce TTL at the issuer; a token that approaches its expiry without renewal must trigger an automatic offboarding.
+- **Scope creep**: a session calls tools outside its declared `expected_tools` baseline. Mitigation: validate every tool call against the baseline; halt after the configured number of out-of-baseline calls.
+- **Credential leak in trace**: a tool call returns a token or PII and the trace is archived unredacted. Mitigation: classify session traces with `data-classification.yaml`; redact before archive.
+- **Missing offboarding**: a task completes but the session is not revoked, leaving a zombie credential. Mitigation: make offboarding part of the task's exit criteria; the task cannot be marked complete without it.
+- **Shadow agent**: an unregistered agent role is active in production. Mitigation: cross-check active sessions against the identity registry; surface unregistered roles as a policy violation.
+- **Re-attestation skipped**: a workload identity is rotated but the new attestation is not validated before a new token is issued. Mitigation: every credential issuance must re-validate the SPIFFE/SPIRE attestation.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: every active agent session must be tied to a registered NHI with a declared scope; reject anonymous or unscoped sessions.
+- **ASI04 Supply Chain**: SPIFFE/SPIRE attestation infrastructure must be schema-validated against the expected SVID format before any token issuance.
+- **ASI06 Memory & Context Poisoning**: session traces are untrusted inputs to the audit system; validate every trace against the declared baseline before acting on its contents.
+- **ASI07 Inter-Agent Communication**: when an NHI credential crosses a role boundary, the receiving role must re-validate the scope and TTL.
+- **ASI08 Cascading Failures**: an anomaly detected in one session must trigger a global review of all sessions owned by the same role; do not allow the anomaly to be silently absorbed.
+- **ASI10 Rogue Agents**: detect instruction drift across turns; if an agent starts using tools outside its declared baseline, halt the session and require re-authentication.

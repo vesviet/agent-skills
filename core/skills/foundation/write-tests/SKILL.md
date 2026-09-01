@@ -39,42 +39,9 @@ Use this skill when adding, updating, or strengthening tests for a code change.
 
 ## Choose The Right Test Scope
 
-### Unit Tests
-
-Best for:
-
-- business rules
-- validation logic
-- pure transformations
-- branching behavior
-- small state transitions
-
-### Integration Tests
-
-Best for:
-
-- repository or query behavior
-- serialization and contract boundaries
-- framework wiring
-- code that depends on a real database, queue, filesystem, or HTTP layer
-
-### Contract Or API Tests
-
-Best for:
-
-- request and response compatibility
-- versioned payloads
-- consumer/provider assumptions
-
-### End-To-End Tests
-
-Best for:
-
-- critical user journeys
-- cross-service flows
-- release confidence on high-risk paths
-
-Use them sparingly because they are usually slower and more brittle.
+For the full unit / integration / contract / E2E breakdown, the AI/LLM
+testing patterns, and the common testing mistakes, see
+[`references/patterns-and-ai-testing.md`](references/patterns-and-ai-testing.md).
 
 ## Suggested Process
 
@@ -144,10 +111,10 @@ If some risk is still untested, note it explicitly:
 
 ## Good Testing Patterns
 
-- table-driven or parameterized tests when many similar cases exist
-- focused fixtures with only the fields the scenario needs
-- builders or factories when setup is repetitive
-- regression tests named after the behavior or bug being protected
+For the full pattern list (table-driven tests, focused fixtures, builders,
+regression naming), the AI/LLM test patterns, and the common testing
+mistakes, see
+[`references/patterns-and-ai-testing.md`](references/patterns-and-ai-testing.md).
 
 ## Common Testing Mistakes
 
@@ -156,6 +123,9 @@ If some risk is still untested, note it explicitly:
 3. Adding large, brittle end-to-end tests for logic that belongs in unit tests.
 4. Relying on timing sleeps instead of explicit synchronization.
 5. Chasing coverage numbers while missing the risky path.
+
+For the full pattern list and the AI/LLM test patterns, see
+[`references/patterns-and-ai-testing.md`](references/patterns-and-ai-testing.md).
 
 ## What To Capture In Your Output
 
@@ -176,6 +146,11 @@ When reporting test work, include:
 - [ ] dependency strategy chosen intentionally
 - [ ] tests run successfully
 - [ ] remaining gaps documented if any
+- [ ] for AI/LLM features, structural assertions used (not exact content matches)
+- [ ] for AI/LLM features, LLM API calls stubbed with `vcr`-style fixtures in CI
+- [ ] golden-set baseline captured before any model update
+- [ ] HITL trigger paths and hallucination boundary inputs tested
+- [ ] for inter-service API, Pact `can-i-deploy` check passes in CI
 
 ## Quick Reference
 
@@ -203,3 +178,22 @@ Skip emission for rapid local test iterations during interactive development.
 - **troubleshoot-service**: Debug failing or flaky tests
 - **review-code**: Review whether tests match the change risk
 - **navigate-service**: Understand the target flow before adding tests
+
+## Failure Modes
+
+- **Implementation-detail tests**: tests are coupled to the internal structure and break on every refactor. Mitigation: assert behavior and contracts, not internals; the test should survive a refactor that preserves behavior.
+- **Brittle E2E for unit logic**: a unit-level decision is covered only by an end-to-end test. Mitigation: drop the E2E and add a focused unit test; reserve E2E for cross-service flows.
+- **Coverage theater**: a high line-coverage score is achieved without exercising the risky path. Mitigation: enforce the Testing Trophy (heavy integration, focused unit, lean E2E) and a mutation score ≥ 75-80% via Stryker for critical libraries.
+- **Live LLM in CI**: tests call a live LLM provider. Mitigation: stub with `vcr`-style fixtures; never call live LLM APIs in CI.
+- **Golden-set drift**: a model update degrades output on the golden set but no test catches it. Mitigation: capture a golden-set baseline before any model update; flag golden-set regressions as release-blocking.
+- **HITL untested**: the fallback-to-human path is shipped without a test. Mitigation: add explicit tests for HITL trigger conditions and hallucination boundary inputs.
+- **Timing sleep**: a test relies on `sleep` instead of explicit synchronization. Mitigation: replace with explicit waits; flaky tests are a release-blocking issue.
+- **Over-mocked simple code**: a simple pure function is mocked to test its caller. Mitigation: use the real function; reserve mocks for interaction-shape assertions.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a test that captures a fragile behavior may lock in an unintended contract. Review golden-set expectations against the declared user goal; reject tests that encode off-goal behavior.
+- **ASI04 Supply Chain**: test fixtures, VCR cassettes, and mock libraries must be schema-validated against the expected manifest; treat unknown test infrastructure as untrusted.
+- **ASI05 RCE Guard**: never construct test inputs from external or user-supplied content without sanitization; adversarial test inputs must come from a controlled fixture.
+- **ASI07 Inter-Agent Communication**: test reports are consumed by CI and release roles; emit a structured `test-report.json` so each consumer can validate against the same evidence.
+- **ASI09 Human-Agent Trust Exploitation**: do not present partial test runs as full coverage; surface skipped tests and their rationale honestly.

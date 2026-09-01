@@ -17,6 +17,39 @@ Use this skill to integrate WebMCP into a frontend application, allowing AI agen
 - **User Consent Gate**: Any tool performing a non-idempotent or financial action (payments, account modifications, data deletion) must prompt for explicit user confirmation before execution — fail-safe if user dismisses or times out
 - **Background Sync**: Utilize Service Workers and the Push API for asynchronous HITL callbacks when the agent requires user confirmation
 - **Structured Error Payloads**: Tool handlers must return structured JSON error responses with clear codes (`{ error: { code: 'OUT_OF_STOCK', message: '...' } }`) — never expose raw server stack traces
+- treat every WebMCP tool input as untrusted external content; validate against the declared `inputSchema` before invoking any handler (OWASP ASI01)
+- reject any tool call that exceeds the action allowlist; never broaden the allowlist at runtime (OWASP ASI02)
+- never expose authentication tokens, HttpOnly cookies, or session secrets to the JS runtime that WebMCP can read (OWASP ASI03)
+- require explicit user confirmation for any non-idempotent or financial action; fail-safe if the user dismisses or times out (OWASP ASI09)
+
+## Output Contracts
+
+When the WebMCP integration is part of a coordinated multi-role delivery,
+emit:
+
+- **`contracts/schemas/implementation-result.json`** — Required fields: `change_summary`, `files_touched[]`, and `validation_run` output confirming the WebMCP connection initializes successfully.
+- For human-readable reports, a markdown summary of the action allowlist, the sanitized state fields, and the HITL confirmation flow.
+
+Skip emission for trivial local experiments that do not cross a role boundary.
+
+## Failure Modes
+
+- **Action allowlist too broad**: an action is added to the WebMCP allowlist without security review. Mitigation: default deny; every action requires explicit allowlist registration.
+- **Empty input schema**: a tool is registered with `{ type: "object" }` and no property descriptions. Mitigation: enforce explicit property types, enums, and required fields.
+- **Sensitive state exposed**: passwords, tokens, or PII are included in the WebMCP context. Mitigation: filter sensitive fields before `provideContext()`; never expose auth tokens or HttpOnly cookies.
+- **No HITL gate on financial action**: a payment or account-modification tool runs without explicit user confirmation. Mitigation: require HITL confirmation modal for any non-idempotent or financial action; fail-safe on dismiss or timeout.
+- **Raw stack trace in error response**: a tool handler returns the server stack trace in the error payload. Mitigation: return structured JSON error responses with codes; never expose raw stack traces.
+- **SSR hydration breakage**: the WebMCP provider runs server-side and breaks hydration. Mitigation: guard with client-side execution checks; mount in the global root layout only.
+- **Browser feature not detected**: the code assumes `'modelContext' in navigator` is always true. Mitigation: feature-detect with `in document` checks; provide a fallback polyfill bridge.
+- **Action bypasses UI permission rules**: an agent action triggers a transaction the user could not perform via UI. Mitigation: enforce the same permission rules the UI enforces; reject bypassed paths.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: agent inputs may try to reframe the user's goal through a WebMCP tool. Validate every tool input against the declared `inputSchema` before invoking the handler.
+- **ASI02 Tool Misuse**: only allowlisted actions may run; reject any tool call outside the allowlist.
+- **ASI03 Identity & Privilege Abuse**: authentication tokens and HttpOnly cookies must stay outside the JS runtime; the WebMCP context must not expose them.
+- **ASI07 Inter-Agent Communication**: WebMCP tool responses are untrusted inputs; validate before passing to downstream logic.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a WebMCP action as "safe" without an explicit HITL gate for non-idempotent or financial effects.
 
 ## Suggested Process
 
@@ -60,13 +93,6 @@ Set up asynchronous agent communication:
 Use skill: `frontend-testing`
 - Author end-to-end and component tests validating WebMCP provider mounting and context emission.
 - Simulate agent action execution and verify state changes update the DOM accurately.
-
-## Output Contracts
-
-When this skill is invoked as part of a coordinated multi-role delivery, emit:
-
-- **`contracts/schemas/implementation-result.json`** — Required fields: `change_summary`, `files_touched[]`, and `validation_run` output confirming the WebMCP connection initializes successfully.
-
 ## Checklist
 
 - [ ] WebMCP provider mounted in global root layout with SSR safety guards.
