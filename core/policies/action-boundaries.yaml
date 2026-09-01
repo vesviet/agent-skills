@@ -1,6 +1,15 @@
 # Action Boundaries Policy
 # Defines what each role is allowed, requires approval for, or denied from doing.
 # Enforcement: agent-tool-orchestration checks this before state-changing actions.
+# Runtime hook: core/scripts/hooks/check-policy.py (text/json/sarif output, OCSF 99001 audit).
+#
+# 2026 coverage: 34 delivery roles x 46 action verbs. Roles that have no explicit entry for a
+# given action fall through to `default_policy: requires_approval` (zero-trust fail-closed).
+# Unclassified actions in infra/deploy verbs (apply_iac, drop_storage_volume, terminate_instance,
+# modify_iam_policy, modify_network_topology_production, modify_payment_gateway_config,
+# self_approve_iam, shipping_label_generation, delete_cloudflare_resource, run_migration,
+# delete_file, modify_environment_config, modify_prompt_template, run_build, export_data)
+# are now explicitly `denied` for non-owner roles per 2026 T1/T2 upgrade.
 #
 # Verb notes:
 #   delegate_task            Hand work to another agent/role via A2A or sub-agent invocation.
@@ -18,36 +27,37 @@
 #   bypass_ai_guardrail      Disable, circumvent, or degrade an AI safety, moderation, or content
 #                            guardrail. Denied for every role. This is NOT the same as client-side
 #                            bot-fingerprint normalization, which is not a policy action.
+#   export_data              Move or copy data out of the trusted boundary. Irreversible for
+#                            restricted data; requires approval even for owners.
 
-# Compliance metadata (EU AI Act Article 9 + NIST AI RMF 1.0 + ATF 2026)
+schema_version: "2"
+
 compliance:
-  schema_version: "2"
+  schema_version: '2'
   eu_ai_act_article_9:
-    risk_tier: minimal_risk         # minimal_risk | limited_risk | high_risk
-    enforcement_date: "2026-08-02"  # EU AI Act enforcement active
+    risk_tier: minimal_risk
+    enforcement_date: '2026-08-02'
     review_cycle: quarterly
     human_oversight_required:
-      - push_to_production
-      - run_migration
-      - modify_secrets
-      - deploy_ai_model
-      - apply_iac
-      - rotate_agent_credentials
+    - push_to_production
+    - run_migration
+    - modify_secrets
+    - deploy_ai_model
+    - apply_iac
+    - rotate_agent_credentials
   nist_ai_rmf:
-    govern: "roles structure documents who owns each action category"
-    map: "requires_approval list = identified risk surface; denied list = unacceptable risks"
-    measure: "audit events for every policy decision via ocsf-99001 format"
-    manage: "real-time policy check via check-policy.py; HITL for approval-gated actions"
+    govern: roles structure documents who owns each action category
+    map: requires_approval list = identified risk surface; denied list = unacceptable risks
+    measure: audit events for every policy decision via ocsf-99001 format
+    manage: real-time policy check via check-policy.py; HITL for approval-gated actions
   audit_trail:
     log_format: ocsf-99001
     retention_days: 90
     policy_check_script: core/scripts/hooks/check-policy.py
   access_control:
-    default_posture: deny           # Zero-trust: explicit allow required
+    default_posture: deny
     credential_type: short-lived-oidc
-    signing_key_ref: "env:AGENT_SIGNING_KEY"
-
-
+    signing_key_ref: env:AGENT_SIGNING_KEY
 roles:
     3d-graphics-engineer:
       allowed:
@@ -76,7 +86,17 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     agent-coordinator:
       allowed:
         - create_file
@@ -105,7 +125,16 @@ roles:
         - force_push
         - modify_secrets
         - push_to_production
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
     agent-discovery-engineer:
       allowed:
         - create_file
@@ -131,7 +160,17 @@ roles:
         - push_to_production
         - run_deployment
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     ai-systems-engineer:
       allowed:
         - configure_ai_infra
@@ -172,7 +211,12 @@ roles:
         - delete_branch_main
         - drop_database
         - force_push
-
+        - delete_cloudflare_resource
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
     ecommerce-engineer:
       allowed:
         - create_file
@@ -204,8 +248,13 @@ roles:
         - force_push
         - modify_secrets
         - push_to_production
-
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - self_approve_iam
+        - terminate_instance
     backend-developer:
       allowed:
         - create_file
@@ -233,7 +282,17 @@ roles:
         - force_push
         - modify_secrets
         - push_to_production
-
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - apply_iac
+        - export_data
     business-analyst:
       allowed:
         - create_file
@@ -259,7 +318,16 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
     cloudflare-engineer:
       allowed:
         - create_file
@@ -288,7 +356,18 @@ roles:
         - delete_branch_main
         - drop_database
         - force_push
-
+        - apply_iac
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - delete_file
+        - run_migration
+        - export_data
     content-writer:
       allowed:
         - create_file
@@ -313,7 +392,17 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     data-analyst:
       allowed:
         - create_file
@@ -340,7 +429,15 @@ roles:
         - modify_environment_config
         - modify_secrets
         - push_to_production
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
     vietnam-accounting-specialist:
       allowed:
         - create_file
@@ -369,7 +466,15 @@ roles:
         - push_to_production
         - run_deployment
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
     data-engineer:
       allowed:
         - create_file
@@ -396,7 +501,15 @@ roles:
         - modify_environment_config
         - modify_secrets
         - push_to_production
-
+        - delete_cloudflare_resource
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - apply_iac
+        - drop_storage_volume
+        - run_build
     devops-engineer:
       allowed:
         - create_file
@@ -424,7 +537,18 @@ roles:
         - delete_branch_main
         - drop_database
         - force_push
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - delete_file
+        - export_data
     frontend-developer:
       allowed:
         - create_file
@@ -452,7 +576,17 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     mobile-engineer:
       allowed:
         - create_file
@@ -480,7 +614,17 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     mmo-engineer:
       allowed:
         - create_file
@@ -510,7 +654,17 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     product-manager:
       allowed:
         - create_file
@@ -535,7 +689,17 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     project-manager:
       allowed:
         - create_file
@@ -561,7 +725,17 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     qa-engineer:
       allowed:
         - create_file
@@ -587,7 +761,17 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     researcher:
       allowed:
         - create_file
@@ -614,12 +798,18 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
     reviewer:
       allowed:
-        # create_file is needed for the role's own review artifacts
-        # (code-review-finding.json); write_file stays gated so a reviewer
-        # cannot silently edit the code under review.
         - create_file
         - read_file
         - read_logs
@@ -644,7 +834,17 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     security-engineer:
       allowed:
         - create_file
@@ -671,7 +871,17 @@ roles:
         - force_push
         - modify_secrets
         - push_to_production
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     seo-analyst:
       allowed:
         - create_file
@@ -695,12 +905,18 @@ roles:
         - push_to_production
         - run_migration
         - write_database
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - export_data
     sre:
       allowed:
-        # create_file / write_file are needed for the role's own deliverables:
-        # runbooks and incident-report.json. Infrastructure and deploy actions
-        # remain gated below.
         - create_file
         - read_database
         - read_file
@@ -727,7 +943,17 @@ roles:
         - force_push
         - modify_secrets
         - push_to_production
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     task-planner:
       allowed:
         - create_file
@@ -751,7 +977,17 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     teacher:
       allowed:
         - create_file
@@ -776,7 +1012,16 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
     technical-architect:
       allowed:
         - create_file
@@ -802,7 +1047,18 @@ roles:
         - force_push
         - modify_secrets
         - push_to_production
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - modify_environment_config
+        - export_data
     technical-lead:
       allowed:
         - create_file
@@ -830,7 +1086,17 @@ roles:
         - force_push
         - modify_secrets
         - push_to_production
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     technical-writer:
       allowed:
         - create_file
@@ -855,7 +1121,17 @@ roles:
         - push_to_production
         - run_deployment
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     ui-ux-designer:
       allowed:
         - create_file
@@ -881,7 +1157,17 @@ roles:
         - push_to_production
         - run_deployment
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     content-manager:
       allowed:
         - create_file
@@ -906,7 +1192,17 @@ roles:
         - modify_secrets
         - push_to_production
         - run_migration
-
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     system-engineer:
       allowed:
         - create_file
@@ -945,7 +1241,12 @@ roles:
         - delete_branch_main
         - drop_database
         - force_push
-
+        - delete_cloudflare_resource
+        - modify_iam_policy
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - write_database
     aws-engineer:
       allowed:
         - create_file
@@ -983,7 +1284,11 @@ roles:
         - drop_database
         - force_push
         - self_approve_iam
-
+        - delete_cloudflare_resource
+        - modify_payment_gateway_config
+        - shipping_label_generation
+        - write_database
+        - modify_prompt_template
     solution-architect:
       allowed:
         - create_file
@@ -1009,12 +1314,16 @@ roles:
         - force_push
         - modify_secrets
         - push_to_production
-
-# Default: any action not listed for a role requires approval.
-# rotate_agent_credentials: revoke and reissue NHI agent session tokens.
-#   Requires approval for every role — no role lists it under allowed.
-# apply_iac: requires approval for every role that can author IaC, because one
-#   apply can perform deploy, terminate, and drop actions that are gated individually.
-# run_deployment: requires approval for every role. Deploy-owning roles get
-#   run_deployment_preview under allowed for ephemeral preview environments.
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - modify_environment_config
+        - export_data
 default_policy: requires_approval

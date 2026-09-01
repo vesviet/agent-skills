@@ -6,11 +6,21 @@ Resolution order:
   2. Look up tool name in tool_actions mapping in mcp-tool-map.yaml
   3. Fallback: infer from tool name keywords
 
-2026 upgrades:
-- --format text|json|sarif output modes (SARIF 2.1.0 for GitHub Code Scanning)
-- exit code 2 for script errors vs 1 for policy violations (0/1/2 convention)
+2026 upgrades (T1):
+- text/json/sarif output modes (SARIF 2.1.0 for GitHub Code Scanning)
+- Exit code convention: 0=allowed, 1=policy violation (denied), 2=approval required
 - W3C Trace Context trace_id propagation in JSON/SARIF output
-- AGENT_ACTIVE_ROLE_LEVEL env var for tier-aware policy checks
+- AGENT_ACTIVE_ROLE_LEVEL env var for tier-aware policy checks:
+    * read_only        - downgrade every non-allowed verdict to denied (block writes)
+    * supervised       - leave requires_approval as requires_approval (default)
+    * unsupervised     - no change
+- --emit-audit flag writes a policy_decision.json (OCSF 99001) next to the audit log path
+  so the action-boundaries audit trail in action-boundaries.yaml is actually emitted
+
+2026 upgrades (T2):
+- Audit log includes command hash and trace_id
+- --audit-path overrides the audit output path
+- Level downgrade is logged in the result dict for downstream consumers
 """
 
 from __future__ import annotations
@@ -155,21 +165,52 @@ def map_tool_to_action(tool_name: str, command: str, mcp_map: dict) -> str:
     return "write_file"
 
 
-def check_action(role: str, action: str, boundaries: dict) -> str:
-    """Return 'allowed', 'requires_approval', or 'denied'."""
+def check_action(role: str, action: str, boundaries: dict, role_level: str = "supervised") -> tuple:
+    """Return (decision, level_modifier) where decision is 'allowed', 'requires_approval',
+    or 'denied', and level_modifier is one of 'none', 'downgraded_to_denied'.
+
+    AGENT_ACTIVE_ROLE_LEVEL semantics (2026):
+        read_only      - any verdict other than 'allowed' is downgraded to 'denied'.
+                         This is for sessions that may only observe, not act.
+        supervised     - no change. Requires_approval stays requires_approval.
+        unsupervised   - no change. Same as supervised (kept for explicitness).
+    """
     role_policy = boundaries.get(role, {})
     if action in role_policy.get("denied", []):
-        return "denied"
+        return ("denied", "none")
     if action in role_policy.get("requires_approval", []):
-        return "requires_approval"
-    if action in role_policy.get("allowed", []):
-        return "allowed"
-    return "requires_approval"
+        decision = "requires_approval"
+    elif action in role_policy.get("allowed", []):
+        decision = "allowed"
+    else:
+        decision = "requires_approval"
+
+    if role_level == "read_only" and decision != "allowed":
+        return ("denied", "downgraded_to_denied")
+    return (decision, "none")
 
 
 def emit_sarif(result: dict, decision: str) -> None:
     """Emit SARIF 2.1.0 output for GitHub Code Scanning integration."""
     level = "error" if decision == "denied" else "warning" if decision == "requires_approval" else "note"
+    sarif_result = {
+        "ruleId": "policy-check",
+        "level": level,
+        "message": {"text": result["message"]},
+        "locations": [
+            {
+                "physicalLocation": {
+                    "artifactLocation": {
+                        "uri": "core/policies/action-boundaries.yaml",
+                        "uriBaseId": "%SRCROOT%",
+                    }
+                }
+            }
+        ],
+        "partialFingerprints": {
+            "roleActionHash": f"{result['role']}:{result['mapped_action']}",
+        },
+    }
     sarif = {
         "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
         "version": "2.1.0",
@@ -188,32 +229,51 @@ def emit_sarif(result: dict, decision: str) -> None:
                         ],
                     }
                 },
-                "results": [
-                    {
-                        "ruleId": "policy-check",
-                        "level": level,
-                        "message": {"text": result["message"]},
-                        "locations": [
-                            {
-                                "physicalLocation": {
-                                    "artifactLocation": {
-                                        "uri": "core/policies/action-boundaries.yaml",
-                                        "uriBaseId": "%SRCROOT%",
-                                    }
-                                }
-                            }
-                        ],
-                        "partialFingerprints": {
-                            "roleActionHash": f"{result['role']}:{result['mapped_action']}",
-                        },
-                    }
-                ]
-                if decision != "allowed"
-                else [],
+                "results": [sarif_result] if decision != "allowed" else [],
             }
         ],
     }
     print(json.dumps(sarif))
+
+
+def emit_audit_event(result: dict, decision: str, level_modifier: str, audit_path: Path) -> None:
+    """Write a single OCSF 99001 audit event to the configured path.
+
+    Best-effort: failures are reported to stderr but do not change the exit code,
+    because the policy decision is the primary signal and the audit is a side effect.
+    """
+    try:
+        audit_path.parent.mkdir(parents=True, exist_ok=True)
+        import hashlib
+        cmd_hash = hashlib.sha256((result.get("command") or "").encode("utf-8")).hexdigest()[:16]
+        event = {
+            "ocsf_class": "policy_decision",
+            "class_uid": 99001,
+            "activity": "evaluate",
+            "type_uid": 99001,
+            "severity": "error" if decision == "denied" else "warning" if decision == "requires_approval" else "info",
+            "actor": {
+                "type": "agent",
+                "role": result.get("role", ""),
+            },
+            "resource": {
+                "type": "tool",
+                "name": result.get("tool", ""),
+            },
+            "action": {
+                "name": result.get("mapped_action", ""),
+                "command_sha256_16": cmd_hash,
+            },
+            "decision": decision,
+            "level_modifier": level_modifier,
+            "message": result.get("message", ""),
+        }
+        if result.get("trace_id"):
+            event["trace"] = {"id": result["trace_id"]}
+        with open(audit_path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(event) + "\n")
+    except OSError as exc:
+        print(f"WARN: failed to write audit event: {exc}", file=sys.stderr)
 
 
 def main() -> int:
@@ -226,9 +286,23 @@ def main() -> int:
         default="json",
         help="Output format (default: json). Use 'sarif' for GitHub Code Scanning.",
     )
+    parser.add_argument(
+        "--emit-audit",
+        action="store_true",
+        help="Append a policy_decision audit event in OCSF 99001 format to the audit path.",
+    )
+    parser.add_argument(
+        "--audit-path",
+        type=Path,
+        default=Path("policy_decision.jsonl"),
+        help="Path for --emit-audit (default: policy_decision.jsonl in the working directory).",
+    )
     args = parser.parse_args()
 
     role = os.environ.get("AGENT_ACTIVE_ROLE", "agent-coordinator")
+    role_level = os.environ.get("AGENT_ACTIVE_ROLE_LEVEL", "supervised").strip().lower()
+    if role_level not in {"read_only", "supervised", "unsupervised"}:
+        role_level = "supervised"
     tool = os.environ.get("CURSOR_TOOL_NAME", os.environ.get("TOOL_NAME", "write"))
     command = os.environ.get("CURSOR_COMMAND", "")
     trace_id = os.environ.get("AGENT_TRACE_ID", "")
@@ -247,18 +321,23 @@ def main() -> int:
         return 2
 
     action = map_tool_to_action(tool, command, mcp_map)
-    decision = check_action(role, action, boundaries)
+    decision, level_modifier = check_action(role, action, boundaries, role_level)
 
     result = {
         "advisory": False,
         "role": role,
+        "role_level": role_level,
         "tool": tool,
         "command": command[:120] if command else "",
         "mapped_action": action,
         "decision": decision,
-        "message": f"Action '{action}' for role '{role}': {decision}",
+        "level_modifier": level_modifier,
+        "message": f"Action '{action}' for role '{role}' (level={role_level}): {decision}",
         **({"trace_id": trace_id} if trace_id else {}),
     }
+
+    if args.emit_audit:
+        emit_audit_event(result, decision, level_modifier, args.audit_path)
 
     if args.format == "json":
         print(json.dumps(result))

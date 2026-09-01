@@ -76,6 +76,18 @@ tool_actions:
   composer_install: install_dependency
   composer_require: install_dependency
   composer_update: install_dependency
+  # Python (2026): uv is the recommended installer; poetry for project workflows; pipx for CLI tools
+  uv_add: install_dependency
+  uv_install: install_dependency
+  uv_run: run_build
+  uv_pip_install: install_dependency
+  poetry_add: install_dependency
+  poetry_install: install_dependency
+  poetry_update: install_dependency
+  pipx_install: install_dependency
+  # npx / pnpm dlx execute a package without installing it locally
+  npx: run_build
+  pnpm_dlx: run_build
 
   # Laravel / PHP
   php_artisan_serve: run_dev_server
@@ -122,8 +134,6 @@ destructive_patterns:
   # Database destructive operations
   - pattern: "drop database"
     action: drop_database
-  - pattern: "drop database"
-    action: drop_database
   - pattern: "drop table"
     action: drop_database
   - pattern: "truncate table"
@@ -162,6 +172,24 @@ destructive_patterns:
     action: install_dependency
   - pattern: "gem install"
     action: install_dependency
+  - pattern: "uv add"
+    action: install_dependency
+  - pattern: "uv pip install"
+    action: install_dependency
+  - pattern: "poetry add"
+    action: install_dependency
+  - pattern: "poetry install"
+    action: install_dependency
+  - pattern: "poetry update"
+    action: install_dependency
+  - pattern: "pipx install"
+    action: install_dependency
+  - pattern: "pipx run"
+    action: run_build
+  - pattern: "npx "
+    action: run_build
+  - pattern: "pnpm dlx"
+    action: run_build
 
   # Deployment
   - pattern: "wrangler deploy"
@@ -230,3 +258,45 @@ destructive_patterns:
   # Astro deploy (2026)
   - pattern: "astro deploy"
     action: run_deployment
+
+  # Docker (2026)
+  - pattern: "docker run"
+    action: run_deployment
+  - pattern: "docker compose up"
+    action: run_deployment
+  - pattern: "docker-compose up"
+    action: run_deployment
+  - pattern: "docker push"
+    action: run_deployment
+  - pattern: "docker rmi"
+    action: terminate_instance
+  - pattern: "docker volume rm"
+    action: drop_storage_volume
+  - pattern: "docker network rm"
+    action: modify_network_topology_production
+
+  # Kubernetes (2026)
+  - pattern: "kubectl delete"
+    action: terminate_instance
+  - pattern: "kubectl rollout undo"
+    action: rollback_deployment
+  - pattern: "kubectl rollout restart"
+    action: run_deployment
+  - pattern: "kubectl scale"
+    action: modify_environment_config
+  - pattern: "kubectl exec"
+    action: run_deployment
+
+  # GitHub CLI (2026)
+  - pattern: "gh pr create"
+    action: push_to_production
+  - pattern: "gh pr merge"
+    action: push_to_production
+  - pattern: "gh release create"
+    action: push_to_production
+  - pattern: "gh repo delete"
+    action: delete_branch_main
+  - pattern: "gh secret set"
+    action: modify_secrets
+  - pattern: "gh secret remove"
+    action: modify_secrets
