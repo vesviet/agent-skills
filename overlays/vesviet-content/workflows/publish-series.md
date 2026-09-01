@@ -85,3 +85,21 @@ Role: `reviewer`
 - [ ] Reviewer approved both Vietnamese and English versions
 - [ ] Both repos committed and pushed
 - [ ] Draft flags toggled for go-live
+
+### Failure Modes
+
+- **Plan saved without Table of Contents**: a series plan is filed without a numbered part list. **Mitigation:** Step 1 requires a TOC with part titles and one-line descriptions; reject the plan when the TOC is missing.
+- **Frontmatter drift across series parts**: a part uses a different frontmatter shape than the sibling parts. **Mitigation:** Step 3 requires cloning the frontmatter from the nearest sibling; reject the part when the shape drifts.
+- **AI Governance gate bypassed**: a draft ships without the firsthand experience, real-world failure stories, or Information Gain. **Mitigation:** Step 4 enforces the AI Governance Gate; reject the draft when the gate fails.
+- **Code snippet fails linting**: a Python or Go snippet in the draft has unused imports or syntax errors. **Mitigation:** Step 4 requires `py_compile` / `flake8` / `gofmt` to pass; reject the draft when the lint fails.
+- **Translation parallelization loses semantic consistency**: parallel subagent translations drift in terminology or formatting. **Mitigation:** Step 6 enforces a reviewer pass for terminology consistency; reject the English translation when the drift is unresolved.
+- **Draft flag toggled before review**: a part is set to `draft: false` before the AI Governance gate and the reviewer pass complete. **Mitigation:** Step 8 requires the draft flag to be toggled only after both gates pass; reject the change when the order is reversed.
+- **Cross-site link drift**: a Vietnamese URL on Learn does not have the matching English URL on Vesviet. **Mitigation:** Step 5 requires absolute URLs for cross-site links; reject the build when the links are relative.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/content-handoff.json`** (or markdown frontmatter block) from each draft, capturing the part slug, the language, the frontmatter gate verdict, the AI Governance verdict, and the reviewer verdict.
+- **`contracts/schemas/coordination-plan.json`** from Step 5, capturing the parallel subagent dispatch and the translation order.
+- **`contracts/schemas/release-notes.json`** (or frontmatter block) from Step 7-8, capturing the published series, the languages, and the go-live commit hashes.

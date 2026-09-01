@@ -107,3 +107,22 @@ Role: `devops-engineer`
 5. If VietQR changed: test QR generation endpoint with a safe test order.
 
 **Rollback:** Revert via cPanel Git or `git revert`, re-run steps 3–7.
+
+### Failure Modes
+
+- **Deploy with failing tests**: a release ships with red tests. **Mitigation:** Step 1 (Pre-flight) requires passing tests; reject the deploy when they fail.
+- **Destructive PostgreSQL migration without rollback**: a DROP, TRUNCATE, or large data migration ships without a verified rollback path. **Mitigation:** Step 1 requires a rollback plan; use `--pretend` for large tables in Step 4; reject the deploy when the plan is missing.
+- **VietQR or payment env vars missing**: a payment flow change ships without VietQR credentials on the server. **Mitigation:** Step 1 diffs `.env.production`; reject the deploy when a payment env var is missing.
+- **HEAD SHA mismatch after pull**: the deployed commit does not match the expected release. **Mitigation:** Step 2 requires an explicit SHA confirmation; reject the deploy when the SHA does not match.
+- **Composer update run in production**: `composer update` is used instead of `composer install`. **Mitigation:** Step 3 forbids it; verify the lock file is unchanged before deploy.
+- **Filament v3 cache command run on v4**: the v3 component cache command fails on v4. **Mitigation:** Step 5 is a Filament v3 cache command; replace with v4 equivalent (`filament:cache-components` may differ) and verify before deploy.
+- **Frontend assets out of sync with server**: server has no Node.js and the build was not run locally. **Mitigation:** Step 6 requires the build to be run locally when the server has no Node.js; commit compiled assets.
+- **VietQR change untested in production**: a QR generation change ships without a test order. **Mitigation:** Step 7 requires a VietQR smoke test when the integration changed; reject the deploy when the test is missing.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/deployment-plan.json`** — capture infrastructure changes, config updates, and the `validation_run` output proving the verify step passed.
+- **`contracts/schemas/api-contract-spec.json`** when the deploy introduces a new public API or a changed FormRequest contract.
+- **`contracts/schemas/incident-report.json`** when the deploy triggers an anomaly; capture the trace id, the threshold, and the recommended action.

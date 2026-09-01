@@ -75,6 +75,30 @@ D:\myproject\maydiengiaisaigon\
 - Cart total calculation and checkout flow (Pest PHP).
 - Run: `php artisan test` or `./vendor/bin/pest`.
 
+## Failure Modes
+
+- **v3 Filament API used instead of v4**: a resource is written with the deprecated `Form::schema()` API. **Mitigation:** the Core Rules require the v4 `Schema::components()` API; reject v3 code.
+- **Vietnamese slugs drift from web.php**: a new route uses a slug that does not match the existing convention. **Mitigation:** verify the slug pattern against the nearest sibling routes; reject non-conforming slugs.
+- **DB::transaction missing on multi-table writes**: a checkout writes to orders and order_items without a transaction. **Mitigation:** the Core Rules require `DB::transaction()`; reject un-wrapped multi-table writes.
+- **Sync email dispatch**: an order confirmation is sent synchronously inside the request. **Mitigation:** the Core Rules require queue dispatch; reject sync sends.
+- **Hard-coded currency or QR config**: a checkout path uses hard-coded values instead of the VietQR config. **Mitigation:** reference the project config; reject hard-coded values in PR.
+
+## Output Contracts
+
+When this skill produces a structured handoff, emit:
+
+- **`contracts/schemas/implementation-result.json`** — Required fields: `change_summary`, `files_touched[]`, and `validation_run` output proving Pest v5 tests pass.
+- **`contracts/schemas/api-contract-spec.json`** when a new Filament v4 Resource or public Blade route introduces a typed surface.
+- For checkout or cart changes, also emit **`contracts/schemas/feature-ticket.json`** with the cart-total invariant documented.
+
+Skip structured emission for trivial UI tweaks that do not cross a role boundary.
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: Filament v4 Resources and FormRequest validation must enforce role-based access; customer data must not be exposed to admin roles without an explicit policy profile.
+- **ASI04 Supply Chain**: every Laravel, Filament, Livewire, and Pest dependency must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: do not construct SQL queries, payment payloads, or Blade strings from external or user-supplied content without strict schema validation; reject string-concatenated SQL.
+- **ASI07 Inter-Agent Communication**: the implementation result is consumed by Backend Developer, QA Engineer, and Content Manager roles; emit a structured contract so each role can validate.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a checkout change as "safe" without the actual smoke test evidence; surface the residual risk honestly.
 ## Checklist
 
 - [ ] feature placed in the correct architectural layer

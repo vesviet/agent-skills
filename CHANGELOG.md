@@ -2,6 +2,108 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [Unreleased] - 2026-09-01
+
+Standard 2026 consistency upgrade pass. No breaking changes; every upgrade
+adds the optional `## Failure Modes`, `## Output Contracts`, and
+`## Security Guardrails (OWASP ASI)` sections without renumbering steps,
+renaming files, or changing the validator contract.
+
+### Skills (107 core)
+
+- Added `## Failure Modes` to 97 core skills (all of them).
+- Added `## Security Guardrails (OWASP ASI)` references to skills that touch
+  tools, agents, identity, memory, or untrusted content.
+- Renamed `## Output Format` to `## Output Contracts` and added explicit
+  `contracts/schemas/<name>.json` references where applicable.
+- Extracted long sections to `references/<topic>.md` for skills that exceeded
+  the 200-line cap; validator passes with 0 files over 200 lines.
+
+### Roles (34)
+
+- Added `## Failure Modes` to 34 role files (all of them), inserted before
+  `## Anti-Patterns To Reject` so the 17 mandatory sections keep their order.
+- Items are role-specific (4-6 per role, tiered by importance), with a
+  Scenario + Mitigation format.
+
+### Policies (3 YAML + 1 hook + 1 README)
+
+- `action-boundaries.yaml`: added explicit `denied` tier placement for 16
+  previously-unclassified infra/deploy verbs (apply_iac, drop_storage_volume,
+  terminate_instance, modify_iam_policy, modify_network_topology_production,
+  modify_payment_gateway_config, self_approve_iam,
+  shipping_label_generation, delete_cloudflare_resource, run_migration,
+  delete_file, modify_environment_config, modify_prompt_template, run_build,
+  export_data, write_database) so the file is fail-closed.
+- `data-classification.yaml`: added `schema_version: "1"`, an untrusted
+  inversion comment, an `internal` soft-PII list, and an ephemeral OIDC
+  token example under `restricted`.
+- `mcp-tool-map.yaml`: deduplicated the `drop database` pattern and added
+  Python (uv, poetry, pipx), Docker, kubectl (delete, rollout, scale, exec),
+  GitHub CLI, npx, and pnpm dlx coverage.
+- `core/scripts/hooks/check-policy.py`: fixed the misleading exit-code
+  docstring, fixed the SARIF emission structure, implemented
+  `AGENT_ACTIVE_ROLE_LEVEL=read_only` to downgrade any non-allowed verdict
+  to denied, and added `--emit-audit` to write OCSF 99001 audit events to
+  the configured path.
+- `README.md`: bumped the role count from 26 to 34, added the version
+  footer, the example decision table, and the EU AI Act / OCSF / check-policy
+  references.
+
+### Workflows (18)
+
+- Added `### Failure Modes` to 18 workflow files (all of them) using H3
+  (the workflow validator requires exactly 1 H2 per file).
+- Added `### Output Contracts` to 18 workflow files, naming the exact JSON
+  schemas the workflow emits (a2a-task.json, incident-report.json,
+  deployment-plan.json, etc.).
+- Added `### Security Guardrails (OWASP ASI)` to the 10 Tier-1 workflows
+  whose steps are irreversible, security-sensitive, or blast-radius
+  decisions.
+- Tier 1 (10): agent-a2a-delegation, build-deploy, data-migration,
+  dependency-upgrade, hotfix-production, revert-deployment,
+  security-incident-response, tech-repo-review, service-review-release,
+  troubleshooting.
+- Tier 2 (6): add-new-feature, content-audit, content-publishing,
+  qa-validation, refactoring, setup-new-service.
+- Tier 3 (2): seo-content-lifecycle, seo-keyword-brief.
+- Ad-hoc H3 failure lists (troubleshooting, data-migration, tech-repo-review,
+  service-review-release) preserved; the new `### Failure Modes` section
+  is added beneath them for cross-workflow consistency.
+
+### Overlays (10 skills + 6 workflows)
+
+- Added `## Failure Modes` + `## Output Contracts` to 10 overlay skills
+  (debug-3d-scene, integrate-r3f-three-legacy, optimize-3d-assets,
+  develop-obj-feature, develop-mdg-feature,
+  write-leaseinvietnam-maylanhtreotuong-data, develop-laravel-feature,
+  develop-icm-feature, develop-golf-feature, write-vesviet-learn-content).
+- Added `## Security Guardrails (OWASP ASI)` to overlay skills that touch
+  3D, AI-generated assets, payment, or commerce surfaces.
+- Added `### Failure Modes` + `### Output Contracts` to 6 overlay workflows
+  (deploy-laravel, deploy-mdg, publish-lease-content, affiliate-publishing,
+  content-audit-refresh, publish-series).
+
+### Validation
+
+- All 16 validators pass with 0 errors and 0 warnings.
+- `validate-skills.py`: 107 skills checked.
+- `validate-roles.py`: 34 roles checked.
+- `validate-workflows.py`: 18 workflows checked.
+- `validate-policy-consistency.py`: 34 role profiles checked.
+- `validate-2026-compliance.py`: 34 roles, 34 policies wired.
+- `validate-a2a-compliance.py`: A2A 1.0 + Antigravity adapter.
+- `validate-agent-cards.py`: 34 cards checked.
+- `validate-overlays.py`: 17 overlays checked.
+- `validate-packs.py`: 13 packs checked.
+- `validate-rules.py`: source and adapters checked.
+- `validate-skill-ownership.py`: 97/97 core skills have a Primary owner.
+- `validate-contract-coverage.py`: 34 roles checked.
+- `validate-contracts.py`: 43 schemas checked.
+- `validate-indexes.py`: all indexes current.
+- `validate-version-sync.py`: VERSION 4.0.1 consistent.
+- `validate-standardization.py`: 100% standardization score.
+
 ## [4.0.1] - 2026-08-26
 
 Consistency-hardening release from a full skill/role/rule refactor audit.

@@ -48,3 +48,21 @@ Before beginning a sprint, the `Task Planner` or `Content Manager` must ensure:
 - Verify `anti_slop_gate.gate_passed: true`.
 - Execute local build (`npm run build`). If exit 0, commit and push to Cloudflare.
 - Log entry into weekly publish tracker.
+
+### Failure Modes
+
+- **Cannibalization in the 7-day mix**: two posts in the same week target the same primary keyword intent. **Mitigation:** the 7-Day Content Mix Guardrails section requires a non-repeated intent; reject the plan that violates the guardrail.
+- **Brief published without anti-slop gate**: a brief ships without `anti_slop_gate: { gate_passed: true }`. **Mitigation:** Step 5 enforces the gate; reject the brief when the gate flag is missing.
+- **Answer-first blockquote used instead of `<AnswerFirst>`**: a draft uses `> **Quick Answer:**` instead of the component. **Mitigation:** the GEO/AEO 2026 standards forbid the blockquote pattern; reject the draft and refactor.
+- **Word count below 1,400**: a long-form article ships too short. **Mitigation:** Step 3 requires the 1,400-word minimum; reject the draft when the count is below the threshold.
+- **Internal links below 4**: a post ships with fewer than 3 contextual links plus 1 commercial link. **Mitigation:** Step 4 enforces the link count; reject the draft when the count is below.
+- **Affiliate link on a trust-safety article**: a cloaked `/go/partner` link lands in a scam/trust post. **Mitigation:** Step 4 forbids cloaked links in trust-safety articles; reject the link.
+- **Build failure on publish**: `npm run build` exits non-zero. **Mitigation:** Step 6 requires exit 0; do not commit when the build fails.
+
+### Output Contracts
+
+When this workflow produces a structured handoff, emit:
+
+- **`contracts/schemas/seo-content-brief.json`** from Step 1, capturing the H2 outline, the answer-first guidance, the FAQ, the internal-link targets, the word-count band, the GEO/AEO fields, the schema requirements, and the E-E-A-T gates.
+- **`contracts/schemas/seo-audit-report.json`** from Step 5, capturing the four-axis scores (overall, SEO, AEO, readability) and the projected post-fix score.
+- **`contracts/schemas/content-handoff.json`** (or markdown frontmatter block) from Step 6, capturing the publish event, the human review status, and the week log entry.

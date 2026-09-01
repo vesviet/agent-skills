@@ -86,6 +86,28 @@ Leave behind:
 
 Outputs must conform to the `contracts/schemas/performance-audit.json` schema. Provide this structured JSON instead of a raw Markdown block. Ensure `verdict`, `metrics` (like bundle size and frame rate expectations), and `findings` are explicitly populated.
 
+## Failure Modes
+
+- **Optimization targets wrong bottleneck**: time is spent on texture compression when the real bottleneck is polycount. **Mitigation:** the Identify The Asset Bottleneck step must classify the pressure source (format, polycount, texture, material, decode) before any optimization; reject premature micro-tuning.
+- **AI-generated mesh polycount exceeds budget**: an AI-generated mesh ships at 200k-2M triangles. **Mitigation:** the Polygon budget gate requires ≤10k triangles for interactive web use; reduce via Blender Decimate or gltf-transform optimize before commit.
+- **UV / normal corruption from AI generator**: an AI mesh has inverted normals or missing UVs, breaking lighting. **Mitigation:** the UV and normal validation step runs gltf-validator or Blender mesh analysis; reject assets that fail.
+- **Texture format bloat (4K-8K PNG)**: a large PNG ships without conversion. **Mitigation:** the Texture format compliance step requires WebP or KTX2 conversion with Basis Universal compression; mobile ≤ 1K, desktop ≤ 2K before commit.
+- **Unverified AI asset license**: an AI-generated asset ships without license verification. **Mitigation:** the Material attribution check verifies the provider's output license for commercial use; reject assets that fail.
+- **No LOD for high-detail AI mesh**: a 200k-triangle mesh ships without a simplified LOD for mobile. **Mitigation:** the LOD requirement check rejects assets that lack a 10%-25% polygon-count LOD for mobile browsers.
+
+## Output Contracts
+
+When this skill produces a structured handoff, emit:
+
+- **`contracts/schemas/performance-audit.json`** — required, since the existing Output Format already mandates this schema. Populate `verdict`, `metrics` (bundle size, frame rate expectations, draw calls), and `findings`.
+
+Skip the JSON contract only when the optimization is read-only and the result does not cross a role boundary.
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: every dependency (gltf-transform, draco, meshoptimizer, basis-universal) must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: AI-generated asset loader scripts must be schema-validated; never construct loader configs from external content without strict parameterization.
+- **ASI07 Inter-Agent Communication**: the audit is consumed by Frontend and 3D roles; do not include asset URLs pointing to operator-untrusted domains.
+- **ASI09 Human-Agent Trust Exploitation**: do not present an optimization as "shipping-ready" without the before-and-after metrics; surface the actual delta honestly.
 ## Checklist
 
 - [ ] main asset bottleneck identified

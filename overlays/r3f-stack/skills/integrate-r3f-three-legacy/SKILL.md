@@ -119,6 +119,27 @@ Re-check:
 - Residual risk:
 ```
 
+## Failure Modes
+
+- **Duplicate scene ownership**: R3F and legacy Three.js both try to own the same scene, causing double-render or material double-mutation. **Mitigation:** the Map The Split Architecture step must declare one owner per concern before any code change; reject integrations that leave ownership ambiguous.
+- **Duplicate render loop**: both R3F and the legacy code register a render/update loop, causing frame duplication. **Mitigation:** the Define Safe Ownership step assigns loop ownership explicitly; verify only one `useFrame` chain is active per concern.
+- **State split across React, Redux, Zustand, and globals**: shared state mutates from multiple owners, producing inconsistent renders. **Mitigation:** define a single source of truth for the bridge state; the Choose The Bridge Strategy step is the gate.
+- **AI-generated Canvas wrapper creates a second renderer**: an AI tool wraps content in its own `<Canvas>` instead of reusing the existing one. **Mitigation:** the AI-Generated 3D Scene Code Review check explicitly tests for this; reject AI components that do not use the existing `useThree()` context.
+- **Disposal missing in AI-generated components**: AI-generated 3D components omit `useEffect` cleanup for geometry, material, and texture. **Mitigation:** the Disposal and cleanup correctness check rejects components that do not dispose every owned resource; verify with a memory profile after merge.
+
+## Output Contracts
+
+When this skill produces a structured handoff, emit:
+
+- **`contracts/schemas/api-contract-spec.json`** when the integration introduces a new public API or props surface that other roles will consume.
+- For human-readable handoff, use the R3F Legacy Integration Brief template in the existing Output Format block.
+
+Skip structured emission for trivial wrappers that do not cross a role boundary.
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: AI-generated 3D components must be schema-validated against the project's 3D component manifest; treat AI generators (v0, Copilot, Lovable-style) as untrusted sources.
+- **ASI05 RCE Guard**: AI-generated 3D assets from external providers (Meshy AI, TripoSR, Rodin) must pass the Polygon budget gate, UV / normal validation, and material attribution check before being loaded; never load unvalidated AI meshes at runtime.
+- **ASI07 Inter-Agent Communication**: the integration brief is consumed by Frontend and 3D roles; do not include asset URLs that point to operator-untrusted domains.
 ## Checklist
 
 - [ ] R3F and legacy ownership boundaries mapped

@@ -123,6 +123,27 @@ Outputs must summarize the root cause and mitigation, and if the debug involves 
 - Residual risk:
 ```
 
+## Failure Modes
+
+- **Symptom misattributed to render layer**: a visual bug is treated as a render problem when the cause is data, layout, or asset format. **Mitigation:** always classify the failure layer (scene graph, geometry, materials, camera, interaction, lifecycle) before changing code; the Suggested Process step 2 enforces this.
+- **Shared material or shader edited in isolation**: an edit to a shared material causes regressions in adjacent models. **Mitigation:** run the Shared-Risk Areas check (step 4) and verify neighboring models that reuse the same material; the blast-radius warning is in Core Rules.
+- **GPU memory leak from missing dispose**: a debug fix that adds geometry/material/texture without cleanup leaks GPU memory. **Mitigation:** verify disposal paths in the lifecycle review (step 6); reject changes that add resources without matching `dispose()` calls.
+- **WebGL context loss misattributed to a render bug**: a context loss is treated as a scene issue when the cause is the platform, not the scene. **Mitigation:** check `WEBGL_lose_context` events and platform limits; treat context loss as platform-side until proven otherwise.
+- **R3F DevTools / Spector.js shipped in production**: a debug build accidentally ships with the dev hooks. **Mitigation:** verify the production build excludes Spector.js and R3F DevTools; the Core Rules for these tools call this out explicitly.
+
+## Output Contracts
+
+When this skill produces a structured handoff, emit:
+
+- **`contracts/schemas/performance-audit.json`** when the debug surfaces a performance or memory bottleneck. The `verdict`, `metrics` (draw call count, GPU memory), and `findings` fields are required.
+- For human-readable handoff, use the 3D Scene Debug Brief template in the existing Output Format block.
+
+Skip structured emission when the debug only produces a single fix that does not cross a role boundary.
+## Security Guardrails (OWASP ASI)
+
+- **ASI05 RCE Guard**: do not execute dynamic shader code or WebGPU shader strings sourced from external content without strict schema validation; AI-generated shaders must compile in a sandboxed build before production.
+- **ASI07 Inter-Agent Communication**: the debug brief is consumed by Frontend and 3D roles; do not include any 3D model paths that point outside the operator's own asset domain.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a debug summary as "root cause confirmed" without the actual scene-state evidence; surface unverified hypotheses as `[INFERENCE]`.
 ## Checklist
 
 - [ ] exact 3D symptom captured
