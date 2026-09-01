@@ -220,6 +220,14 @@ Contracts owned by other roles — do not author these as 3D Graphics Engineer:
 - splat count / high-poly budget validated against scene targets (per mobile vs desktop threshold)
 - NeRF→mesh or splat bake fidelity verified: shape, shading, and collision volume within documented tolerance
 
+
+## Failure Modes
+
+- **Render regression from a 3D library upgrade**: an upgrade to React Three Fiber or Three.js changes the default behavior. **Mitigation:** capture a visual regression baseline before any upgrade; require a passing Chromatic or Percy diff in CI; do not ship without baseline parity.
+- **Performance regression on low-end devices**: a 3D scene targets a high-end GPU but ships to mobile. **Mitigation:** profile the scene on the lowest-tier supported device; require the target FPS at the agreed quality level before approval.
+- **Asset loading race condition**: a 3D asset is referenced before the loader returns. **Mitigation:** every asset reference is wrapped in a Suspense boundary or a loader state; reject the scene spec without a loading state.
+- **Lighting / shadow baseline drift**: a change to lighting or post-processing alters the scene mood. **Mitigation:** capture a per-scene golden frame in CI; reject changes whose diff exceeds the agreed threshold.
+- **A11y scene without fallback**: a 3D-heavy page has no text or non-3D alternative. **Mitigation:** require a non-3D equivalent (text, video, or static screenshot) for every 3D primary view; reject the scene without it.
 ## Anti-Patterns To Reject
 
 - ignoring WebGL context loss or hardware limitations

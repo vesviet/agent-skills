@@ -554,6 +554,13 @@ Use when:
 - high-risk unvalidated assumptions escalated to PM with build-cost comparison
 - kill-or-pivot recommendation issued when discovery invalidates the underlying user need
 
+
+## Failure Modes
+
+- **Requirement drift after ticket approval**: a feature ticket is approved, then expands during implementation. **Mitigation:** freeze the AC at the ticket-creation step; any new requirement is re-scoped and re-prioritized before acceptance.
+- **Hidden stakeholder**: a downstream role is not in the recipient list and the deliverable arrives without their input. **Mitigation:** every ticket must enumerate the affected stakeholders; surface any missing recipient before the ticket is locked.
+- **AC written from the solution, not the user outcome**: acceptance criteria describe the implementation rather than the user behavior. **Mitigation:** rewrite AC in user-observable terms; reject criteria that name the implementation.
+- **YMYL feature without expert sign-off**: a YMYL-adjacent feature ships without the SME sign-off. **Mitigation:** require the YMYL gate before AC is approved; reject the deliverable when the sign-off is missing.
 ## Anti-Patterns To Reject
 
 - writing vague requirements that cannot be tested

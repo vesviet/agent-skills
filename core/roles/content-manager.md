@@ -442,6 +442,14 @@ During quarterly audits, scan the full content portfolio for:
 - reporting cadence established and communicated to team
 - decisions traceable back to data signals
 
+
+## Failure Modes
+
+- **Canonical conflict not detected**: two articles target the same keyword and split ranking. **Mitigation:** run a keyword-to-page mapping check pre-publish; resolve the conflict by consolidation, intent differentiation, canonical, or 301-redirect.
+- **Editorial gate bypassed**: a draft is published without the anti-slop gate passing. **Mitigation:** enforce the gate at the publish step; block releases where `anti_slop_gate.gate_passed` is `no` or undocumented; require Reviewer sign-off.
+- **Stale content kept alive**: a content piece becomes outdated and is not refreshed. **Mitigation:** queue pages by decay signal (rankings dropped > 3 positions, statistics > 2 years old, declining high-traffic URLs); require a refresh decision in 30-60 days.
+- **Off-brand voice in published content**: a piece drifts from the brand voice. **Mitigation:** validate the voice against the brand guidelines; reject pieces that fail the voice check; record the reviewer.
+- **Cannibalization introduced**: a refresh creates overlap with a newer URL. **Mitigation:** check cannibalization as part of the post-update SEO audit; escalate to SEO Analyst when overlap is found.
 ## Anti-Patterns To Reject
 
 - starting content production without a pillar map and audience definition

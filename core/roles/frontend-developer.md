@@ -549,6 +549,15 @@ For micro-frontend architectures or large frontend applications with independent
 - Multi-step flows auto-populate previously entered data (WCAG 3.3.7)
 - Authentication does not require cognitive function tests; CAPTCHA choice is compliant (WCAG 3.3.8)
 
+
+## Failure Modes
+
+- **Visual regression introduced silently**: a UI change ships without a Chromatic or Percy baseline. **Mitigation:** every UI-touching PR must include a passing visual regression baseline; reject merges that lack the artifact.
+- **A11y regression from an AI component**: an AI-generated component introduces a contrast, focus, or ARIA issue. **Mitigation:** run axe-core and the Storybook a11y addon on every component; surface findings as blocking; require human review for components that fail.
+- **Token conformance broken**: a component bypasses the design system with hardcoded hex or magic numbers. **Mitigation:** enforce token-enforcement lint rules (eslint-plugin-tailwindcss or equivalent); reject components that fail the lint.
+- **Style namespace pollution**: a component's CSS leaks into global scope. **Mitigation:** enforce per-component style namespace; reject unscoped global selectors; verify in CI.
+- **Critical interactive state missing**: a generated component ships without an empty / loading / error / unauthorized state. **Mitigation:** every component must declare all five UI states; reject specs or stories that omit a state.
+- **API client widened the auth scope**: an AI-suggested client pattern uses a token scope broader than the feature needs. **Mitigation:** validate AI-generated code per the trust zones; reject code that requests auth scopes outside the feature's declared scope.
 ## Anti-Patterns To Reject
 
 - hiding backend failures behind generic success states

@@ -399,6 +399,13 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 - AI-generated code reviewed for design drift: no bypass of token system
 - **dual-audience token documentation**: token definitions and component specs in strict Markdown hierarchy (H1→H2→H3) for LLM parse efficiency; `llms.txt`/`llms-full.txt` provided for agent-facing design system docs when in scope; coordinate with Technical Writer
 
+
+## Failure Modes
+
+- **State omission**: a screen spec misses one of the five required states (Empty, Loading, Populated, Error, Unauthorized). **Mitigation:** enforce the state checklist on every screen spec; reject specs that skip a state.
+- **Token hardcoding**: a generated component bypasses the design system with hardcoded values. **Mitigation:** run the token-conformance check before any handoff; reject components with raw hex, magic spacing, or raw typography.
+- **A11y regression from AI component**: a generated component introduces a contrast or focus issue. **Mitigation:** run axe-core on every generated component; surface findings as blocking; require human review for components that fail.
+- **Prototype missing for multi-screen flow**: a flow with more than 2 screens is reviewed without an interactive Figma prototype. **Mitigation:** refuse the review; require the prototype link before proceeding.
 ## Anti-Patterns To Reject
 
 - designing only the happy path

@@ -300,6 +300,13 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 - Evaluation metric documentation present and ops-readable
 - Multi-agent workflow runbook includes: inspect, interrupt, replay, and audit procedures
 
+
+## Failure Modes
+
+- **Docs drift from the live system**: a doc references an old API version or a removed feature. **Mitigation:** re-validate on every release; treat staleness as a release-blocking issue; auto-generate reference docs from the OpenAPI / AsyncAPI spec.
+- **Internal workflow wording in user docs**: a doc mentions agent names, AI workflow, or internal process labels. **Mitigation:** lint for internal terms; strip before publish; treat the doc as a user-visible artifact.
+- **Broken link**: a docs page links to a 404. **Mitigation:** run broken-link checker in CI; treat 404s as a docs-as-code failure.
+- **Secret in docs**: a token, customer id, or internal hostname is pasted into a doc. **Mitigation:** run secret scan before commit; reject the doc on detection; rotate the affected credential.
 ## Anti-Patterns To Reject
 
 - documenting guesses instead of verified contracts

@@ -210,6 +210,14 @@ Contracts owned by other roles — do not author these as AI Systems Engineer:
 - [ ] automated evaluation (Evals) validates accuracy, hallucination rate, and prompt injection defense before release
 - [ ] output contracts (`system-design-spec.json`, `test-report.json`, `performance-audit.json`) are valid and complete
 
+
+## Failure Modes
+
+- **Model regression undetected**: a model upgrade degrades output on the eval set. **Mitigation:** capture a golden-set baseline before any model update; flag regressions as release-blocking; require a rollback path.
+- **Eval set outdated**: the eval set no longer matches production traffic. **Mitigation:** refresh the eval set at least quarterly; track `eval_coverage_vs_production` and surface the gap.
+- **Cost overrun from a new model tier**: a model upgrade increases per-request cost beyond the budget. **Mitigation:** enforce the per-model cost ceiling in the gateway; route to a cheaper tier on breach; surface the alert.
+- **PII sent to the model provider**: a prompt contains customer identifiers or restricted data. **Mitigation:** classify prompts with `data-classification.yaml`; mask restricted fields before model call; reject the call on detection.
+- **RAG retrieval without grounding check**: the model returns an answer that contradicts the retrieved context. **Mitigation:** enforce a grounding threshold (e.g., cosine similarity ≥ 0.7) before returning the answer; surface the ungrounded answer as `[UNVERIFIED]`.
 ## Anti-Patterns To Reject
 
 - **"Vibe-driven" model promotion**: deploying model or prompt adjustments based on ad-hoc qualitative impressions rather than statistically sound evaluation suites

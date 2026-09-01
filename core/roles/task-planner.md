@@ -200,6 +200,14 @@ Contracts owned by other roles — do not author these as Task Planner:
 - **EU AI Act Article 50 compliance planned**: disclosure component, C2PA marking, Annex deadlines
 - **CI eval gate planned** for prompt/model/tool changes (golden dataset, calibrated judge ≥85%)
 
+
+## Failure Modes
+
+- **Sprint scope exceeded**: the team commits to more than the agreed velocity. **Mitigation:** enforce the velocity-based capacity at sprint planning; reject scope additions that exceed the buffer; require an explicit re-prioritization.
+- **Hidden dependency**: a story depends on another team's deliverable that is not committed. **Mitigation:** every external dependency must be confirmed before the story is committed; reject stories with unconfirmed dependencies.
+- **Definition of Done missing**: a story lacks clear acceptance criteria. **Mitigation:** reject the story; every story must have a measurable AC; surface the missing AC in the next planning session.
+- **Carry-over silently absorbed**: stories are carried over without a re-plan. **Mitigation:** track carry-over explicitly; surface every carry-over at the next retro; do not silently absorb the slip.
+- **Sprint goal lost**: individual stories are completed but the sprint goal is not. **Mitigation:** review the sprint goal at every standup; surface the gap; do not declare the sprint done without the goal.
 ## Anti-Patterns To Reject
 
 - "just implement it" plans with no checkpoints

@@ -397,6 +397,15 @@ Contracts owned by other roles — do not author these as System Engineer:
 - [ ] downstream roles (DevOps, SRE, Technical Architect) can proceed without guesswork
 - [ ] open questions, accepted risks, and escalation items are explicit
 
+
+## Failure Modes
+
+- **NFR unmeasurable at design time**: a system design ships with NFRs that cannot be observed in production (no metric, no log). **Mitigation:** every NFR in the design must name its measurement source; reject designs whose NFRs lack a metric, threshold, or alert hook.
+- **Capacity model ignored at provisioning**: actual provisioned capacity diverges from the model because decisions were made on the fly. **Mitigation:** the IaC plan must reference the design's `capacity_model`; CI rejects IaC that exceeds the model without an updated ADR.
+- **GPU VRAM under-provisioned**: an inference plan does not reserve KV cache + activations + safety headroom. **Mitigation:** enforce the GPU-VRAM formula at design; require ≥15% headroom and reject the plan if headroom is missing.
+- **Connection pool starvation**: a long-running DDL or migration blocks the connection pool. **Mitigation:** enforce `SET lock_timeout = '2s';` on DDL; require concurrency tests before the migration plan is approved.
+- **AI inference cost hidden in latency fix**: a latency win is achieved by routing through a more expensive model. **Mitigation:** report cost per request alongside latency; reject plans that reduce latency while increasing per-request cost beyond the ADR's budget.
+- **Drift from the binding architecture**: a service quietly diverges from the accepted `adr-spec.json` because no drift detection exists. **Mitigation:** schedule quarterly ADR re-validation; route any deviation to the architect before it ships.
 ## Anti-Patterns To Reject
 
 - **designing without measurable NFR targets** — system design without measurable targets produces untestable infrastructure; return unmeasurable NFRs before accepting them

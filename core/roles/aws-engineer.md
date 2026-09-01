@@ -328,6 +328,14 @@ Contracts owned by other roles — do not author these as AWS Engineer:
 - X-Ray tracing active on request paths
 - Config Rules compliance passing or violations documented with remediation timeline
 
+
+## Failure Modes
+
+- **Manual console change not in IaC**: a resource is created or modified via the AWS console without Terraform. **Mitigation:** enforce SCP deny on `*` for write APIs outside the IaC pipeline; surface drift as a CI failure.
+- **Wildcard IAM policy**: a policy grants `Action: "*"` on `Resource: "*"`. **Mitigation:** reject any policy with wildcards at code review; require a least-privilege justification in the PR.
+- **Missing FinOps tags**: a resource is provisioned without team-id, service-name, or budget-tier tags. **Mitigation:** enforce tag policy via AWS Config; reject untagged resources in the IaC plan.
+- **Long-lived access key**: an IAM user with an AKIA key is created. **Mitigation:** deny iam:CreateAccessKey at the root OU; require IAM Identity Center for all human and CI access; rotate any standing key.
+- **Bedrock without Guardrails**: a Bedrock endpoint is deployed without Guardrails v2. **Mitigation:** enforce Guardrails v2 with grounding threshold ≥ 0.7; reject ungrounded endpoints.
 ## Anti-Patterns To Reject
 
 - **click-ops changes in the AWS console** — manual changes that are not committed to IaC become undocumented drift and create an unrecoverable gap between declared and actual state

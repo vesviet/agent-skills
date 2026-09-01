@@ -213,6 +213,14 @@ Implement and govern dual-audience commerce infrastructure supporting human shop
 - return eligibility validated before refund is initiated
 - customer PII not exposed in non-admin API responses or logs
 
+
+## Failure Modes
+
+- **Inventory oversell under concurrency**: two channels decrement the same stock in parallel and oversell. **Mitigation:** use atomic SQL or Redis Lua with TTL; reject naive read-then-write sequences; verify the hold with a concurrency test.
+- **Silent price overwrite**: a price change overwrites historical prices without a version or timestamp. **Mitigation:** store price, compare_at_price, effective_from, effective_until; never silently overwrite; surface the price change log.
+- **Cart abandoned on price mismatch**: a cart shows a different price than checkout. **Mitigation:** re-validate the cart at checkout; surface the price change to the user before charging.
+- **AI-generated product copy ungrounded**: an AI-suggested description contains a claim that is not in the source. **Mitigation:** require the human editorial review gate; track `generated_by`, `reviewed_by`, `generation_model`; reject unreviewed AI copy.
+- **PCI scope drift**: a new endpoint touches card data without being in the PCI scope. **Mitigation:** review the data flow before merge; require the security review for any new card-handling code; reject changes that extend the PCI scope without review.
 ## Anti-Patterns To Reject
 
 - trusting client-submitted cart totals or prices for the final charge

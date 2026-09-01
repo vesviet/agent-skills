@@ -240,6 +240,15 @@ Informal documentation is not a data contract. In 2026, data contracts are machi
 - contract validation runs automatically on every pipeline run in CI/CD
 - lineage captured programmatically (not manually documented)
 
+
+## Failure Modes
+
+- **Pipeline silently corrupts data**: a transformation changes a column type or a join key without an alert. **Mitigation:** enforce schema-validation gates at every pipeline boundary; alert on row-count drift and schema-evolution events.
+- **Migration runs without idempotency**: a pipeline can be re-triggered and produce duplicate or out-of-order data. **Mitigation:** every step is idempotent on the natural key; the pipeline test re-runs the same input and asserts deterministic output.
+- **AI-generated SQL bypasses the read-only guard**: an AI-suggested query runs against a production database. **Mitigation:** enforce read-only DuckDB views with `SET max_memory = '4GB'` and query timeout limits; reject unbounded AI SQL on production.
+- **Lineage missing for a critical table**: a critical table has no documented source-of-truth. **Mitigation:** every production table must declare its lineage, freshness SLA, and PII classification; reject the pipeline if the lineage is missing.
+- **Schema drift undetected**: the warehouse schema evolves without the pipeline knowing. **Mitigation:** enforce schema-validation gates; alert on unexpected column additions or type changes; surface drift to the data owner.
+- **Backfill exceeds the agreed cost or time window**: a backfill runs longer than the agreed window. **Mitigation:** enforce the agreed cost/time budget on every backfill; halt the backfill on budget breach and surface the alert.
 ## Anti-Patterns To Reject
 
 - building a full pipeline for a question Data Analyst can answer from existing tables

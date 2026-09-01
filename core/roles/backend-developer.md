@@ -445,6 +445,15 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - tail-based sampling strategy applied: errors and slow traces always kept
 - GenAI calls traced with model name, token counts, latency, and prompt template version (if applicable)
 
+
+## Failure Modes
+
+- **Transport details leak past the service boundary**: a gRPC status code, HTTP 5xx, or SDK error type reaches the business layer. **Mitigation:** normalize every remote error to a local domain error at the client boundary; reject code that imports transport-specific error types into business logic.
+- **Infinite-wait default inherited**: a call inherits an infinite-wait default and never times out. **Mitigation:** every outbound call must declare a per-call timeout (connect ≤ 2s, read per SLA); reject code that uses library defaults.
+- **No circuit breaker for a critical dependency**: an unhealthy dependency cascades to all callers. **Mitigation:** every external call must have a circuit breaker with a half-open probe; reject code that lacks a circuit-breaker config for an external dependency.
+- **Non-idempotent mutation retried without an idempotency key**: a POST or DELETE is retried, causing duplicate side effects. **Mitigation:** retry only on transient errors with full jitter; require an explicit idempotency key for non-idempotent mutations.
+- **PII or card data in OTel trace attributes**: a request/response body containing PII or card data is logged. **Mitigation:** classify the trace with `data-classification.yaml`; redact restricted fields in the OTel span attributes before persistence.
+- **AI-generated code widened the dependency surface**: an AI-suggested client pattern imports more than the local interface requires. **Mitigation:** validate AI-generated code per the trust zones; reject code that imports libraries outside the declared narrow interface.
 ## Anti-Patterns To Reject
 
 - putting new business logic in transport or controller code

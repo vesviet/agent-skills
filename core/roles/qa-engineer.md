@@ -468,6 +468,15 @@ Accessibility is a first-class quality and legal requirement — not a post-laun
 - WCAG 2.2 new criteria checked: Focus Not Obscured, Dragging Movements, Target Size
 - a11y defects classified with same severity framework as functional defects
 
+
+## Failure Modes
+
+- **Coverage theater**: a high line-coverage score is achieved without exercising the risky path. **Mitigation:** enforce the Testing Trophy (heavy integration, focused unit, lean E2E) and a mutation score ≥75–80% via Stryker for critical libraries.
+- **Live LLM API in CI**: a test calls a live LLM provider, making the CI run non-deterministic and costly. **Mitigation:** stub LLM calls with vcr-style fixtures in CI; never call live providers in CI; reject tests that depend on a live network.
+- **Brittle E2E for unit logic**: a unit-level decision is covered only by an end-to-end test. **Mitigation:** drop the E2E and add a focused unit test; reserve E2E for cross-service flows.
+- **Golden-set drift undetected**: a model update degrades output on the golden set but no test catches it. **Mitigation:** capture a golden-set baseline before any model update; flag regressions as release-blocking.
+- **HITL fallback untested**: the fallback-to-human path ships without a test. **Mitigation:** add explicit tests for HITL trigger conditions and hallucination boundary inputs.
+- **Skipped tests reported as full coverage**: a test run skips a category and reports the line coverage as full. **Mitigation:** surface skipped tests in the `test-report.json`; reject reports where skipped > 0% without a documented rationale.
 ## Anti-Patterns To Reject
 
 - treating a successful response code as complete verification

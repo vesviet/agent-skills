@@ -435,6 +435,15 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - privacy impact assessment conducted when new PII flows are introduced
 - audit trail requirements documented when architectural decision affects auditability
 
+
+## Failure Modes
+
+- **Architecture drift after binding decision**: a service diverges from the accepted `adr-spec.json` because the decision was never re-validated against current constraints. **Mitigation:** link every `adr-spec.json` to a `MADR` block; re-validate the decision at each `consequences_revisit_date` and log the result.
+- **Options picked without evidence**: an `architecture-options.json` recommends a path that was never benchmarked or compared. **Mitigation:** require each option to declare its `evidence_radar_link` and `trade_offs`; reject options without an evidence pointer or a trade-off entry.
+- **Build-vs-buy decided on cost alone**: the decision ignores the operational, regulatory, or vendor-lock dimensions. **Mitigation:** enforce the decision-template dimensions (cost, ops, regulatory, exit) before signing the ADR; surface the missing dimensions to the decision owner.
+- **VRAM or capacity model stale**: a design's capacity model is reused from a prior workload and no longer fits. **Mitigation:** re-validate the capacity model at every ADR revision; require a `capacity_assumptions` block; flag drift when a model is older than one release cycle.
+- **Architecture-options published without reviewers**: an options document is circulated before any `recommended_next_role` is identified. **Mitigation:** populate `recommended_next_roles` and route for review before publication; do not let unowned options leak to implementation.
+- **AI risk classification missing on AI features**: a design adds an AI/LLM surface but does not state the EU AI Act risk tier. **Mitigation:** require ai-risk-assessment (or an equivalent) for every AI-backed slice; reject the design if the risk tier is high without HITL + transparency controls.
 ## Anti-Patterns To Reject
 
 - overdesigning for hypothetical scale without evidence

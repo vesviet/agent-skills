@@ -200,6 +200,15 @@ AI/ML systems have reliability dimensions that standard availability SLOs do not
 - alerts, dashboards, and runbook gaps are captured
 - production risk and ownership are explicit
 
+
+## Failure Modes
+
+- **SLO undefined for a new service**: a service is promoted to prod without SLO targets. **Mitigation:** refuse the promotion; every service must declare its SLO and the corresponding error budget before launch.
+- **Incident response blind to golden signals**: an incident is open without latency / traffic / errors / saturation metrics. **Mitigation:** require the four golden signals on every dashboard; on-call is paged when SLO breach is unacknowledged past the configured deadline.
+- **Distributed trace ignored**: the engineer reads only logs while the trace shows the failing hop. **Mitigation:** distributed-trace-first; let the trace identify the first failure point; require `trace_id` in the incident report.
+- **CPU throttling missed in K8s**: latency spikes are investigated in app logs while CPU throttling (visible only in `kubectl top`) is the cause. **Mitigation:** check pod events and resource metrics alongside app logs; surface throttling in the postmortem.
+- **AI log summary trusted blindly**: an AI log summarization tool returns a root cause that is acted on without verification. **Mitigation:** verify every AI-identified root cause against raw evidence; require a human sign-off on the remediation.
+- **Runbook missing for a new dependency**: a new critical dependency has no runbook or on-call escalation. **Mitigation:** the service is not SRE-accepted until the runbook, the escalation path, and the recovery drill are present.
 ## Anti-Patterns To Reject
 
 - restarting or scaling systems without evidence

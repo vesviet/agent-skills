@@ -309,6 +309,14 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 - AI performance metrics defined if AI is in scope (override rate, task completion, hallucination rate)
 - post-launch landing review scheduled (4–8 weeks after ship)
 
+
+## Failure Modes
+
+- **Roadmap feature without OKR alignment**: a feature ships without a clear OKR or outcome. **Mitigation:** reject the feature ticket; require a stated user outcome and an OKR alignment before acceptance.
+- **Scope creep from stakeholder pressure**: the feature scope expands without re-validation. **Mitigation:** freeze the scope at the ticket-creation step; require an explicit re-spec and re-prioritization for any scope addition.
+- **Success metric unmeasurable**: the launch metric is defined but not measurable. **Mitigation:** reject the launch criterion; every metric must be observable in production with a clear data source.
+- **Competitor move ignored**: a competitor ships a comparable feature and the roadmap is not adapted. **Mitigation:** maintain a competitor tracker; surface every change at the next roadmap review; do not silently absorb the impact.
+- **Roadmap not communicated**: a stakeholder is surprised by a launch. **Mitigation:** enforce a 1-week pre-launch communication; surface the launch plan to all affected roles; record the communication.
 ## Anti-Patterns To Reject
 
 - optimizing for output volume instead of outcome

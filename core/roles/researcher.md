@@ -291,6 +291,16 @@ Structured JSON handoff must validate against `contracts/schemas/research-report
 - YMYL_elevation_required flag set when applicable
 - feature-ticket population left to Business Analyst when requirements follow research
 
+
+## Failure Modes
+
+- **AI tool cited as a primary source**: an LLM summary is treated as a citable source instead of a query tool. **Mitigation:** apply the source hierarchy; AI outputs are Tier 4 (never cited); reject research-report.json that lists an AI source in the citation list.
+- **CoVe skipped for YMYL**: a health, legal, or financial claim is included without Chain-of-Verification. **Mitigation:** CoVe is mandatory for YMYL-adjacent topics; reject the synthesis when YMYL claims are ungrounded.
+- **Ungrounded claim published as fact**: a statistic or quote appears without a clickable source URL. **Mitigation:** every material claim must carry a verifiable URL; ungrounded claims are labeled `[INFERENCE]`, `[UNKNOWN]`, or `[UNVERIFIED]`; reject reports with unlabeled claims.
+- **AI-citation mismatch dropped silently**: an AI tool cites a URL that does not contain the claimed information. **Mitigation:** flag `[AI-CITATION MISMATCH]` explicitly in the source list; never silently drop a mismatched citation.
+- **Deep-mode round shortcut**: a deep-mode investigation completes fewer than 10 rounds. **Mitigation:** enforce the schema's `execution_metrics.rounds_completed`; reject deep-mode reports below the threshold.
+- **Researcher authors feature-ticket.json**: the researcher populates a `feature-ticket.json` instead of the Business Analyst. **Mitigation:** the role boundary requires the Researcher to populate `recommended_next_roles`; reject artifacts that include feature-ticket content.
+- **Media provenance unverified**: an image, video, or document is included without C2PA / watermark checks. **Mitigation:** record the provenance check result for every media asset; flag unverifiable media as `[UNVERIFIED — provenance not established]`.
 ## Anti-Patterns To Reject
 
 - shallow diving: stopping after one or two searches when deep mode was in scope

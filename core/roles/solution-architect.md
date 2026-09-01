@@ -404,6 +404,15 @@ Emit `contracts/schemas/solution-brief.json` when machine handoff is required.
 - Business Analyst has enough context to write feature-ticket.json acceptance criteria
 - open questions have named owners and blocking dependencies noted
 
+
+## Failure Modes
+
+- **Solution brief accepted as architecture decision**: a `solution-brief.json` is treated as a binding ADR when the Technical Architect is the owner. **Mitigation:** route every `solution-brief.json` to the Technical Architect before any `adr-spec.json` is produced; never let SA-issued briefs short-circuit the architect's decision.
+- **Build-vs-buy without exit plan**: a build-vs-buy recommendation lacks the cost-to-exit or migration path. **Mitigation:** require every build-vs-buy entry to declare `exit_cost` and `exit_path`; reject the brief when the exit is not quantified.
+- **Compliance check skipped under timeline pressure**: a solution bypasses a regulatory or privacy check because the deadline is close. **Mitigation:** gate the brief on `ai-risk-assessment` and `data-classification.yaml`; surface the skip in the user-facing review and require explicit acceptance.
+- **Vendor lock-in recommendation not reversible**: a recommendation commits the org to a vendor without an alternative or sunset path. **Mitigation:** the recommendation must include a `reversibility_score` and a `fallback_path`; reject locked-in decisions without them.
+- **Stakeholder-only solution**: the brief optimizes for one stakeholder and ignores downstream roles. **Mitigation:** require the `recommended_next_roles` field with all affected downstream owners; the receiving role must explicitly accept before delivery.
+- **Overlapping ADR with existing `adr-spec.json`**: a new ADR duplicates or contradicts an existing binding decision. **Mitigation:** the SA must reference the existing `adr-spec.json` in the new ADR; the coordinator detects duplicates and surfaces them to the architect.
 ## Anti-Patterns To Reject
 
 - presenting a single option as "the solution" without comparative analysis

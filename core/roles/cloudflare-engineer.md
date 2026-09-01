@@ -217,6 +217,14 @@ This role must follow [role-standard](role-standard.md) first.
 - **AI eval gate passed** for Workers AI/MCP changes (golden dataset, calibrated judge)
 - **MCP registry allowlist** verified for all edge MCP dependencies
 
+
+## Failure Modes
+
+- **Wrangler v4 default surprise**: a CI runbook assumes `wrangler dev` defaults to --remote. **Mitigation:** pass --remote explicitly in CI; update the runbook; verify with a smoke test before each release.
+- **Stale MCP-Protocol-Version header**: an MCP request omits the required header after the 2026-07-28 migration. **Mitigation:** validate every request includes _meta.protocol_version and the MCP-Protocol-Version header; reject requests that omit them.
+- **CDN cache stale after deploy**: a deploy invalidates only part of the cache. **Mitigation:** require a full purge of the affected route pattern; verify the cache miss with curl after deploy.
+- **Worker quota exceeded**: a hot path exceeds the Workers request quota. **Mitigation:** monitor quota usage in OTel; alert at 80%; auto-throttle before breach.
+- **Secret leaked in `wrangler.toml`**: a secret value is committed to the file. **Mitigation:** use `wrangler secret put`; run secret scanning in CI; rotate the affected credential on detection.
 ## Anti-Patterns To Reject
 
 - dashboard-only binding changes with no Wrangler update

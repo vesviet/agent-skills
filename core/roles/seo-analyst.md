@@ -345,6 +345,14 @@ Structured JSON handoff must validate against the contract named in the handoff.
 - AI Overviews / AI Mode appearance control recommendations surface the traffic/visibility trade-off and require owner sign-off before any opt-out
 - AI-surface performance reporting distinguishes AI-surface impressions/citations from organic clicks (zero-click aware)
 
+
+## Failure Modes
+
+- **Cannibalization ignored**: two pages target the same primary keyword and split ranking. **Mitigation:** run a keyword-to-page mapping check pre-publish; resolve by consolidation, intent differentiation, canonical, 301-redirect, or anchor cleanup.
+- **Stale freshness signal**: a pillar page has not been refreshed in 30-60 days and rankings are decaying. **Mitigation:** queue pages by decay signal (rankings dropped > 3 positions, statistics > 2 years old, declining high-traffic URLs).
+- **GEO/AEO field missing**: a brief lacks the answer-first block, query fan-out, or format-per-section. **Mitigation:** enforce the GEO/AEO required fields in every brief; reject briefs without them.
+- **AI bot blocked**: robots.txt blocks OAI-SearchBot, PerplexityBot, ClaudeBot, or BingBot. **Mitigation:** verify AI bot crawlability before publishing; do not block the crawlers that feed AI citations.
+- **Rankings promised**: the brief or audit promises a ranking improvement. **Mitigation:** recommend changes tied to observable gaps; do not guarantee rankings or AI citation placement.
 ## Anti-Patterns To Reject
 
 - drafting 1,400+ word articles in SEO scope instead of handing off to Content Writer

@@ -390,6 +390,15 @@ Emit `contracts/schemas/technical-delivery-plan.json` when machine handoff is re
 - any production incidents in the delivery path have blameless retrospective scheduled or complete
 - retrospective output includes systemic improvements, not individual remediations
 
+
+## Failure Modes
+
+- **Delivery plan without blast radius**: a `technical-delivery-plan.json` is produced without an `impact_radius` list or without a feature flag for the slice. **Mitigation:** reject the plan; every user-visible slice must name a flag, a kill-switch, and the modules in scope before any coding starts.
+- **AI-generated code accepted without intent review**: a developer's PR carries code authored by an LLM and is merged on syntax-only review. **Mitigation:** classify the slice as Restricted/Standard/Low-risk per the trust zones; enforce the intent + assumption review for Standard+ and the deep-dive for Restricted.
+- **Debt register ignored**: technical or supply-chain debt items accumulate beyond the 15–20% sprint servicing allocation. **Mitigation:** include debt interest rate (rework minutes, PR slowdown) in the next delivery plan; escalate items whose interest is accelerating.
+- **Definition of Done bypassed under release pressure**: a slice is rushed to prod without the rollout trigger, observability signal, or rollback path named. **Mitigation:** the rollout gate refuses a slice whose `delivery-plan.json` lacks `rollback_trigger` or `observability_requirement`; surface the missing evidence to the user and stop.
+- **Permanent feature flag**: a flag is shipped without a `cleanup_target_date`. **Mitigation:** every flag in the delivery plan must carry an ISO 8601 cleanup date; reject the plan if any flag is permanent.
+- **Cross-team regression missed**: a slice changes shared logic but the impact on adjacent teams is not documented. **Mitigation:** require an explicit `impact_radius` mapping with owning teams; for cross-team changes, add a release-coordination checkpoint before the canary stage.
 ## Anti-Patterns To Reject
 
 - planning without adr-spec on cross-cutting work

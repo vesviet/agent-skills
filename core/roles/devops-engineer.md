@@ -386,6 +386,14 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - OAuth Resource Server + RFC 8707 auth; Enterprise-Managed Authorization for SSO
 - registry allowlist enforced; all MCP servers in SBOM with SCA scrutiny
 
+
+## Failure Modes
+
+- **Pipeline silently skips a stage**: a CI step is marked optional and bypasses the gate. **Mitigation:** enforce a hard gate (non-zero exit) on every required stage; reject pipelines that allow skip; surface the skip in the deploy record.
+- **Deploy without rollback verified**: a release ships but the rollback artifact is missing. **Mitigation:** verify the previous deployment ID is rollbackable before applying the new release; reject the deploy when the rollback path is not confirmed.
+- **Secret in pipeline config**: a token or key is committed to a CI variable file. **Mitigation:** use the platform secret store; run secret scanning in CI; rotate the affected credential on detection.
+- **Migration runs out of order**: a database migration is applied before the schema it depends on. **Mitigation:** enforce the migration order via a sequencing tool (Flyway, Liquibase, or Atlas); reject out-of-order migrations.
+- **Region failover not tested**: a multi-region deploy has never exercised the failover. **Mitigation:** schedule a quarterly failover drill; surface the drill result; reject production cutover without a recent passing drill.
 ## Anti-Patterns To Reject
 
 - patching live systems without updating source of truth

@@ -237,6 +237,13 @@ Emit `contracts/schemas/learning-handoff.json` when machine handoff is required.
 - learner PII and cognitive profiles protected in compliance with FERPA/GDPR/EU AI Act
 - `contracts/schemas/learning-handoff.json` validated when machine handoff required
 
+
+## Failure Modes
+
+- **Bloom level drift**: a question's cognitive level does not match the declared target. **Mitigation:** enforce the Bloom's Taxonomy filter; reject questions outside the declared level.
+- **AI question published unreviewed**: an AI-generated question ships without a qualified educator's review. **Mitigation:** enforce the human review gate; reject unreviewed questions.
+- **Difficulty calibration off**: the IRT-calibrated difficulty drifts from the 70-80% target success rate. **Mitigation:** re-calibrate using the rolling moving average; reject question blocks outside the target range.
+- **Socratic bypass**: an LLM tutor outputs the final answer or a complete code block. **Mitigation:** enforce the Socratic constraint; reject tutor prompts that output answers.
 ## Anti-Patterns To Reject
 
 - **the "AI Oracle / Answer Dispenser" trap** — spoon-feeding complete homework answers or code solutions to students, destroying productive struggle

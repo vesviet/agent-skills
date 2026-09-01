@@ -179,6 +179,13 @@ This role's mission spans techniques that range from routine (isolating ad accou
 - [ ] policy check: no action taken that `core/policies/action-boundaries.yaml` marks denied for this role; anything requiring approval has explicit user confirmation recorded
 - [ ] platform-terms review: techniques in scope reviewed against the target platform's terms, and any evasion of a review, moderation, or safety system escalated to Security Engineer with written user authorization before implementation
 
+
+## Failure Modes
+
+- **Compliance boundary crossed**: a deployment or asset-handling pattern violates the documented Legal and Compliance Notice. **Mitigation:** keep the compliance boundary visible in every decision; reject any pattern outside the boundary; surface the residual risk honestly.
+- **Credential in infra config**: a token or account credential is committed to a config file. **Mitigation:** load credentials at runtime from a secret store; never commit credentials; rotate the affected credential on detection.
+- **CDP target verification skipped**: a script connects to a CDP endpoint without verifying the target. **Mitigation:** verify the CDP target before issuing commands; reject unknown endpoints; surface the verification result.
+- **Event dedup missing**: a pixel event and a CAPI / S2S postback use different event_id values, inflating conversion counts. **Mitigation:** enforce the same UUID v4 event_id across pixel and S2S; reject mismatched IDs.
 ## Anti-Patterns To Reject
 
 - Using standard playwright-stealth JS injection instead of CDP/Anti-Detect browsers for high-risk accounts.

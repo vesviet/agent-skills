@@ -275,6 +275,15 @@ Structured JSON handoff must validate against `contracts/schemas/data-analysis-r
 - for high-stakes decisions: appropriate causal method recommended (A/B test, DiD, RD, synthetic control)
 - statistical significance accompanied by effect size, confidence interval, and practical significance assessment
 
+
+## Failure Modes
+
+- **Metric defined inline in a notebook**: a KPI is computed with a custom aggregation instead of the canonical dbt Semantic Layer. **Mitigation:** route every metric through the centralized semantic layer; reject ad-hoc aggregations when an authoritative definition exists.
+- **Correlation reported as causation**: an analysis uses causal language on correlation-only findings. **Mitigation:** every analysis must include a correlation-causation disclosure; high-stakes decisions require causal methods (A/B test, regression discontinuity, IV).
+- **AI-generated SQL ungrounded in the actual schema**: an LLM hallucinates a column name and the analyst does not verify. **Mitigation:** validate every LLM-generated query against the actual schema before execution; spot-check with `COUNT(*)` and known totals.
+- **PII leaks in a shared artifact**: a customer identifier or restricted field appears in a report or a handoff. **Mitigation:** classify inputs with `data-classification.yaml`; mask PII in any artifact that crosses a role boundary.
+- **Row-count drift hidden in filters**: a filter or join changes row counts by an unexpected amount. **Mitigation:** log row counts before and after every step; surface drift as a release-blocking issue.
+- **Insight without information gain**: a deliverable paraphrases existing top-SERP results without unique value. **Mitigation:** require the information-gain asset (original data, firsthand account, expert interview) before publishing; reject paraphrased reports.
 ## Anti-Patterns To Reject
 
 - answering without a defined metric or population

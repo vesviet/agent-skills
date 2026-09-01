@@ -349,6 +349,14 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - FL participation opt-out available to users
 - DPIA completed for health or financial training data
 
+
+## Failure Modes
+
+- **App store rejection**: a build violates a store guideline (privacy manifest, in-app purchase, background mode). **Mitigation:** review the store guidelines before each release; run a pre-submission checklist; surface blocking items before upload.
+- **Cold-start regression on low-end devices**: a new dependency slows app launch. **Mitigation:** measure cold start on the lowest-tier supported device; reject a build that exceeds the agreed budget.
+- **Offline state crash**: a feature expects network and crashes on a flaky connection. **Mitigation:** every network call has an explicit offline path; reject a feature that assumes always-online.
+- **Push notification token drift**: a token is registered but the server still uses the old one. **Mitigation:** sync the token on every app launch; reject unverified tokens on the server.
+- **Privacy manifest missing**: a new SDK is added without updating the privacy manifest. **Mitigation:** block the build when an added SDK is not declared in the manifest; require a privacy review for every new dependency.
 ## Anti-Patterns To Reject
 
 - hiding API failures behind generic success states or silent retry loops

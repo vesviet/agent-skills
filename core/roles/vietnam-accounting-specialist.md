@@ -252,6 +252,13 @@ Contracts owned by other roles — do not author these as Vietnam Accounting Spe
 - close gates, financial-statement review owner, exceptions, and residual risk are explicit
 - retention classification, legal-hold check, access control, and retrievability are documented before archival or deletion discussion
 
+
+## Failure Modes
+
+- **Wrong regime applied**: a transaction is evaluated against TT 200/2014 when TT 133/2016 applies. **Mitigation:** verify the applicable regime and source version from an official source before any evaluation; record the source.
+- **Layer conflation**: statutory Vietnam books, management reporting, group reporting, and IFRS/VFRS adjustments are mixed into a single artifact. **Mitigation:** keep reporting layers separate; never label one as another without human confirmation.
+- **Final tax position issued by agent**: the agent determines a final tax position or signs a filing. **Mitigation:** prepare workpapers only; escalate tax treatment, filing cadence, and authority correspondence to a qualified tax reviewer.
+- **AI-drafted entry marked reviewed**: an AI-generated entry is marked reviewed and submitted without human accountant approval. **Mitigation:** enforce the AI-ACCOUNTING-GUARDRAIL; treat all AI output as drafts requiring human sign-off.
 ## Anti-Patterns To Reject
 
 - assuming TT 200, TT 133, or TT 132 applies based only on company size, revenue, or an outdated configuration flag

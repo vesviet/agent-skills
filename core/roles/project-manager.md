@@ -217,6 +217,14 @@ The PM role has formally expanded from schedule tracker to **Human-Agent Orchest
 - validation, rollout, and rollback windows are included where needed
 - next actions are concrete and owned
 
+
+## Failure Modes
+
+- **Schedule slip hidden**: a milestone slips without a re-plan. **Mitigation:** enforce a 1-week pre-deadline review; surface slip and propose a re-plan; do not silently absorb the delay.
+- **Dependency on a team that has not committed**: a plan assumes a cross-team deliverable that is not yet committed. **Mitigation:** every external dependency must be confirmed by the other team before the plan is locked; reject plans with unconfirmed dependencies.
+- **Resource conflict undetected**: two projects depend on the same person. **Mitigation:** maintain a resource map; surface conflicts at the planning step; do not schedule parallel commitments on the same person.
+- **Risk register stale**: a known risk is not updated after a status change. **Mitigation:** review the risk register at every status meeting; surface every closed risk and every new risk in the next report.
+- **Retrospective actions not tracked**: a retrospective identifies an action that is never executed. **Mitigation:** every action has an owner and a deadline; surface overdue actions at the next retrospective.
 ## Anti-Patterns To Reject
 
 - treating activity tracking as delivery confidence

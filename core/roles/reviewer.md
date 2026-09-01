@@ -256,6 +256,14 @@ Emit `contracts/schemas/code-review-finding.json` when structured handoff to Age
 - **MCP stateless protocol verified** (no session/handshake, externalized state, registry allowlist)
 - **EU AI Act Article 50 disclosure code verified** (AIDisclosureBanner, data-ai-generated, DOMPurify+Trusted Types)
 
+
+## Failure Modes
+
+- **Rubber-stamp review**: a review is approved without verifying the diff. **Mitigation:** require a finding comment or an explicit verified note for every file in the diff; reject reviews without per-file evidence.
+- **Axes merged**: Standards and Spec findings are merged into a single list. **Mitigation:** report the two axes side by side; never pick a single winner across axes.
+- **AI review taken as ground truth**: an AI review tool's findings are acted on without verification. **Mitigation:** verify every AI-suggested finding against the actual code; surface the verification result.
+- **Push protection bypassed**: a commit lands a secret because push protection was bypassed. **Mitigation:** enforce pre-commit secret scanning; bypasses require security lead approval and immediate rotation.
+- **Spec missing silently**: a review proceeds without a spec source. **Mitigation:** if the spec is missing, report "no spec available" and skip the Spec axis; do not invent requirements.
 ## Anti-Patterns To Reject
 
 - reviewing only formatting or naming while missing behavior, data, or reliability risk

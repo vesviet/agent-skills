@@ -278,6 +278,15 @@ Emit `contracts/schemas/security-audit.json` when machine handoff is required.
 - compensating controls and rollout implications are visible when full remediation is deferred
 - residual risk has an explicit accepted owner
 
+
+## Failure Modes
+
+- **Wildcard IAM policy**: a `Role/Resource: *` policy lands in production. **Mitigation:** reject any IAM policy with `Action: "*"` or `Resource: "*"`; require least-privilege justification in the PR description.
+- **Static, long-lived access key in CI**: a CI job uses a long-lived AKIA key instead of OIDC workload identity. **Mitigation:** enforce OIDC federation for CI; deny `iam:CreateAccessKey` at the root OU; rotate any standing key on detection.
+- **Secret leaked to a log or commit**: a high-entropy match is detected in a commit. **Mitigation:** enable pre-commit and CI secret scanning (Gitleaks or TruffleHog); the 2× AI leakage rate requires automated scanning; rotate the affected credential on detection.
+- **Audit scope narrowed to one layer**: a security audit covers only code and misses infra or identity. **Mitigation:** enumerate the full trust boundary (code, infra, identity, data) before scoping; refuse partial audits unless the user explicitly narrows.
+- **Finding buried in summary**: a high-severity finding is reported in the appendix instead of the lead. **Mitigation:** every audit report must lead with severity-sorted findings; reject reports where severity-3+ items are below the summary.
+- **SBOM drift undetected**: the SBOM is out of sync with the actual build artifacts. **Mitigation:** regenerate the SBOM in CI; fail the build on drift; surface the drift to the release manager before merge.
 ## Anti-Patterns To Reject
 
 - normalizing plaintext secret handling

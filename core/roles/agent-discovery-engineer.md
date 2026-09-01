@@ -183,6 +183,14 @@ Shared skills note: `configure-agent-headers` and `manage-api-catalog` appear in
 - [ ] Verification tests pass successfully on the scanner (target 19/19 on isitagentready.com or equivalent).
 - [ ] Previous vs current scan score captured in compliance report.
 
+
+## Failure Modes
+
+- **Stale agent registry**: the `.well-known/agent-registry.json` does not match the current `agent-card.json` files. **Mitigation:** regenerate the registry from cards; fail the deploy on drift; surface the missing card paths.
+- **Schema-drifted MCP server card**: a card lists a removed `mcp_version` or a deprecated server path. **Mitigation:** validate every card against the current MCP spec; reject cards that lack the 2026-07-28 server-discover shape.
+- **Discovery path not served**: an external scanner hits a discovery path that returns 404. **Mitigation:** verify every discovery path with `curl -I` before each release; surface the 404 in the deploy report.
+- **Token leaked in card metadata**: an agent card references an internal hostname or a customer id. **Mitigation:** classify card metadata with `data-classification.yaml`; redact restricted fields before publish; reject cards with token patterns.
+- **OAuth metadata not PKCE**: an `oauth-authorization-server` metadata file lists `grant_types: ["client_credentials"]` without PKCE. **Mitigation:** validate the metadata against the current spec; reject any metadata file that lists client credentials without PKCE.
 ## Anti-Patterns To Reject
 
 - guessing JSON schemas instead of reading log details

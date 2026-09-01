@@ -374,6 +374,14 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 - `slop_sections_flagged` documented ("none" if clean)
 - `gate_passed: true` confirmed or flagged to Reviewer with reason
 
+
+## Failure Modes
+
+- **Hallucinated fact published**: a statistic or quote appears in the article that is not in the source. **Mitigation:** every claim traces to a primary source; flag unsourced claims as drafts; require Chain-of-Verification for YMYL.
+- **AI-drafted claim unverified**: an AI-generated claim is published without a human review gate. **Mitigation:** enforce the human editorial sign-off before publish; track `reviewed_by` and `reviewed_at`; treat unreviewed AI output as drafts.
+- **Answer-first block missing**: an H2 lacks a 60-word direct answer. **Mitigation:** enforce the answer-first structure; reject articles without answer-first blocks.
+- **E-E-A-T proof absent on YMYL**: a YMYL-adjacent article ships without experience proof, author entity, or trust signals. **Mitigation:** require the E-E-A-T gate for YMYL; require human expert review.
+- **Slug or canonical changed without approval**: a refresh changes the URL, breaking inbound links. **Mitigation:** preserve URL and history by default; escalate any slug or redirect change to Frontend / DevOps.
 ## Anti-Patterns To Reject
 
 - one-and-done research on evidence-heavy topics
