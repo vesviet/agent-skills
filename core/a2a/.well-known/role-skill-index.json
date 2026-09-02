@@ -390,7 +390,7 @@
     "3d-graphics-engineer": {
       "name": "3d-graphics-engineer",
       "title": "3D Graphics Engineer",
-      "description": "- 3D Graphics Plan",
+      "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGL/WebGPU implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility. In 2025–2026, this extends to governing AI-generated 3D assets (gaussian splatting, neural radiance fields, generative textures and meshes) with explicit quality and performance gates before pipeline integration, validating generative content against fidelity and memory budgets, and enforcing safe composition patterns for procedural and AI-authored geometry in real-time scenes.",
       "file": "core/roles/3d-graphics-engineer.md",
       "skills": [
         "debug-3d-scene",
@@ -410,7 +410,7 @@
     "agent-coordinator": {
       "name": "agent-coordinator",
       "title": "Agent Coordinator",
-      "description": "`), `data-ai-generated` attributes on AI content, C2PA marking for AI media (deadline 2026-12-02), Annex type identified with correct deadline. Treat missing disclosure as an irreversible action requiring explicit human sign-off.",
+      "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality gates, and driving work from intake to validated handoff without losing context or skipping safety. In 2025–2026, this means treating multi-agent systems as distributed software: enforcing deterministic state transitions, applying runtime guardrails (not prompt-based trust), maintaining end-to-end trace observability, managing token budgets as a design constraint, and applying explicit HITL gates before irreversible actions. In 2026, this further extends to **MCP 2026-07-28 stateless protocol enforcement** in A2A delegation, **EU AI Act Article 50 disclosure gate** for AI feature deployments, **NHI lifecycle governance** per agent phase, and **agentic fitness function calibration** before CI gating.",
       "file": "core/roles/agent-coordinator.md",
       "skills": [
         "agent-a2a-protocol",
@@ -438,7 +438,7 @@
     "agent-discovery-engineer": {
       "name": "agent-discovery-engineer",
       "title": "Agent Discovery Engineer",
-      "description": "## Context",
+      "description": "Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance across all 19 checks of the Agent Readiness standards (e.g., isitagentready.com). This covers Protocol Discovery, Commerce Standards, Discoverability, and Bot Access Control. In 2025–2026, this extends to enforcing compliance as the A2A, MCP, Auth.md, x402, and Agent Skills protocol landscape rapidly standardizes — tracking spec drift between experimental drafts and stable scanner implementations, wiring agentic endpoint discovery into Cloudflare edge responses via RFC 8288 Link headers, and ensuring the registry is machine-readable and interoperable with emerging AI agent orchestration frameworks.",
       "file": "core/roles/agent-discovery-engineer.md",
       "skills": [
         "manage-auth-md",
@@ -459,7 +459,7 @@
     "ai-systems-engineer": {
       "name": "ai-systems-engineer",
       "title": "AI Systems Engineer",
-      "description": "OpenAI -> local Ollama/vLLM) to ensure 99.99% availability",
+      "description": "architect, deploy, evaluate, and optimize production-grade AI and LLM systems — bridging machine learning models with resilient backend serving infrastructure, intelligent LLM gateways, structured output enforcement, and empirical evaluation frameworks while enforcing GPU FinOps and defense-in-depth against prompt injection and model drift.",
       "file": "core/roles/ai-systems-engineer.md",
       "skills": [
         "setup-llm-gateway",
@@ -483,7 +483,7 @@
     "aws-engineer": {
       "name": "aws-engineer",
       "title": "AWS Engineer",
-      "description": ".bedrock-runtime`, `com.amazonaws.<region>.bedrock`); direct public internet access to Bedrock is a data exfiltration risk for enterprise workloads",
+      "description": "build, operate, and optimize AWS-native managed services with a focus on Infrastructure as Code, IAM least-privilege design, Amazon Bedrock AI integration, and FinOps enforcement — ensuring every AWS resource is provisioned securely, cost-attributed, and observable. In 2025–2026, this extends to orchestrating Amazon Bedrock agents and knowledge bases as first-class infrastructure components, enforcing per-team cost attribution via tagging SCPs, rightsizing compute with Compute Optimizer, and treating IAM role design as a security deliverable that requires explicit review before production apply.",
       "file": "core/roles/aws-engineer.md",
       "skills": [
         "aws-infrastructure",
@@ -504,7 +504,7 @@
     "backend-developer": {
       "name": "backend-developer",
       "title": "Backend Developer",
-      "description": "P95 latency), and traces from new deployments (canary window)",
+      "description": "build correct, maintainable, testable backend behavior across APIs, business logic, data access, and integrations while preserving business rules and avoiding regressions when fixes alter contracts, data flow, or side effects. In 2025–2026, this extends to governing AI-generated code with tiered trust validation, designing APIs that are consumable by both humans and AI agents, and ensuring all integration points are instrumented with structured observability (OpenTelemetry) from the first commit.",
       "file": "core/roles/backend-developer.md",
       "skills": [
         "add-api-endpoint",
@@ -530,7 +530,7 @@
     "business-analyst": {
       "name": "business-analyst",
       "title": "Business Analyst",
-      "description": "- Business Analysis Brief",
+      "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules, edge cases, or downstream impact. In 2025–2026, this extends to writing behavioral requirements for AI/LLM features with probabilistic acceptance criteria and HITL escalation triggers, and to maintaining a living assumption register that makes the riskiest unverified beliefs visible before engineering builds.",
       "file": "core/roles/business-analyst.md",
       "skills": [
         "analyze-business-requirements",
@@ -547,7 +547,7 @@
     "cloudflare-engineer": {
       "name": "cloudflare-engineer",
       "title": "Cloudflare Engineer",
-      "description": "— Edge Deployment",
+      "description": "own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration, and edge incident recovery — so application teams ship safely on Cloudflare without platform guesswork. In 2025–2026, this extends to governing Workers AI inference at the edge (latency, caching, cost budgets), routing agentic requests safely across LLM and tool-call boundaries, injecting RFC 8288 Agent Discovery headers at the edge layer, and enforcing security boundaries for AI-augmented edge workloads. In 2026, this further extends to **MCP 2026-07-28 stateless protocol compliance** (no session/handshake, HTTP default), **LLM Gateway integration** for token budgeting and provider failover at the edge, **Durable Workflows** (Cloudflare Workflows) deployment with in-flight execution compatibility, and **AI evaluation gates** in CI/CD before edge deploy.",
       "file": "core/roles/cloudflare-engineer.md",
       "skills": [
         "wrangler",
@@ -577,7 +577,7 @@
     "content-manager": {
       "name": "content-manager",
       "title": "Content Manager",
-      "description": "25% MoM decay in search impressions or LLM citations must immediately enter the `audit-content` pipeline.",
+      "description": "direct the overall content strategy of a website — from building content pillar architecture, managing the content lifecycle (production → distribution → measurement → refresh), to leveraging internal subject matter expertise (SME) and optimizing for AI search. Serve as the bridge between business goals and day-to-day content production; ensure every published piece reaches the right audience, serves the right objective, on the right channel, at the right stage of the website's growth. In 2025–2026, this extends to governing AI-generated content pipelines with human-in-the-loop editorial review gates, enforcing AI content labeling and accuracy standards, defining information gain strategy that differentiates site content from AI-synthesized aggregations, and maintaining brand and factual integrity when content is surfaced or repurposed by generative systems.",
       "file": "core/roles/content-manager.md",
       "skills": [
         "audit-content",
@@ -598,7 +598,7 @@
     "content-writer": {
       "name": "content-writer",
       "title": "Content Writer",
-      "description": "**Overlay-scoped skill**: `write-tech-radar` is only relevant under `overlays/vesviet-content` (Vesviet radar subtree). Activate it only when that overlay is active — do not load it for lease-content or seo-publishing workflows.",
+      "description": "produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Write for humans first and for machine extractability second: answer-first structure, high fact density, and clear modular formatting so content is citable by both readers and AI answer engines (Google AI Overviews and AI Mode, Perplexity, ChatGPT/SearchGPT). In 2025–2026, this extends to producing AI-citable content with explicit E-E-A-T firsthand proof signals, operating within AI-governed content pipelines with human editorial review gates, structuring every article for answer-engine extractability (GEO/AEO-compliant), and maintaining brand and factual integrity when content is synthesized or repurposed by generative systems.",
       "file": "core/roles/content-writer.md",
       "skills": [
         "write-article",
@@ -617,7 +617,7 @@
     "data-analyst": {
       "name": "data-analyst",
       "title": "Data Analyst",
-      "description": "— Data Analysis Report",
+      "description": "answer business questions with reproducible, well-documented analysis from tabular and warehouse data — defining metrics clearly, separating evidence from interpretation, and delivering stakeholder-ready reports without owning production pipeline infrastructure. In 2025–2026, this extends to using AI tools as analysis accelerators while owning all interpretation and causal reasoning decisions, and applying causal inference methods for high-stakes decisions rather than reporting correlation as causation.",
       "file": "core/roles/data-analyst.md",
       "skills": [
         "analyze-data",
@@ -633,7 +633,7 @@
     "data-engineer": {
       "name": "data-engineer",
       "title": "Data Engineer",
-      "description": "— Data Engineering Plan",
+      "description": "design, build, and maintain reliable data pipelines and storage layers so analysts and applications can trust timely, well-modeled, and governable data products. In 2025–2026, this extends to engineering data supply chains for AI/ML systems (embeddings, feature stores, multimodal lakehouses), enforcing data contracts as machine-readable engineering artifacts with automated validation, and owning real-time freshness requirements for AI-native applications.",
       "file": "core/roles/data-engineer.md",
       "skills": [
         "build-data-pipeline",
@@ -652,7 +652,7 @@
     "devops-engineer": {
       "name": "devops-engineer",
       "title": "DevOps Engineer",
-      "description": "- Delivery Plan",
+      "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollout safety, configuration integrity, and recovery paths. In 2025–2026, this extends to operating as an internal platform product team (Platform Engineering / IDP), governing AI/ML model deployment pipelines with the same rigor as application deployments, enforcing GitOps-first infrastructure with automated drift detection, applying supply chain security (SLSA, SBOM) to all delivery artifacts, managing AI inference cost via FinOps enforcement, and establishing governance frameworks for AI-assisted incident response. In 2026, this further extends to **MCP 2026-07-28 stateless hosting** (horizontal scaling, OAuth Resource Server + RFC 8707, Enterprise-Managed Authorization), **Durable Workflow deployment** (Temporal/Cloudflare Workflows with in-flight compatibility), **AI remediation agent governance** (graded autonomy, audit-grade logging, kill switch), **Value-Per-Token FinOps** (business output per inference dollar), and **Golden Path templates** for self-service provisioning.",
       "file": "core/roles/devops-engineer.md",
       "skills": [
         "setup-deployment",
@@ -676,7 +676,7 @@
     "ecommerce-engineer": {
       "name": "ecommerce-engineer",
       "title": "Ecommerce Engineer",
-      "description": "— E-commerce Engineering Plan",
+      "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to architecting dual-audience commerce systems serving both human shoppers and autonomous AI agents: implementing agentic commerce protocols (Universal Commerce Protocol UCP, Agent Payments Protocol AP2, Machine Payments Protocol MPP, x402, ACP) with cryptographic purchase mandates, enforcing strict PCI-DSS v4.1.0 controls (Req 6.4.3 script integrity and Req 11.6.1 tamper detection), building TTL-bounded distributed inventory reservation state machines, and enforcing zero-trust database-level payment idempotency.",
       "file": "core/roles/ecommerce-engineer.md",
       "skills": [
         "integrate-payment-gateway",
@@ -701,7 +701,7 @@
     "frontend-developer": {
       "name": "frontend-developer",
       "title": "Frontend Developer",
-      "description": "` component with the EU-approved AI icon for AI-generated content labels; use this component consistently across all AI-powered features — do not recreate disclosure UI per feature",
+      "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to governing AI-generated UI code with tiered trust validation, owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, architecting PWA service workers as agentic orchestration control-planes, implementing EU AI Act Article 50 disclosure UI components as a legal requirement (live from 2 August 2026), and sanitizing AI-generated content before DOM insertion using Trusted Types and DOMPurify.",
       "file": "core/roles/frontend-developer.md",
       "skills": [
         "add-ui-component",
@@ -728,7 +728,7 @@
     "mmo-engineer": {
       "name": "mmo-engineer",
       "title": "MMO Engineer",
-      "description": "— MMO Engineering Plan",
+      "description": "Design, deploy, and operate end-to-end Make Money Online (MMO) operations. Maximize ROI through advanced stealth automation, privacy-first tracking (S2S), anti-detect infrastructure, AI-driven content generation, secure asset sharing, and large-scale proxyware farming, adapting to the 2025-2026 landscape of fingerprinting and bot detection.",
       "file": "core/roles/mmo-engineer.md",
       "skills": [
         "deploy-mmo-infrastructure",
@@ -747,7 +747,7 @@
     "mobile-engineer": {
       "name": "mobile-engineer",
       "title": "Mobile Engineer",
-      "description": "20%); never interrupt user sessions for FL computation",
+      "description": "deliver correct, performant, and accessible mobile experiences on iOS and Android by owning native app logic, platform integration, offline behavior, and release readiness without hiding device, OS version, or distribution risk. In 2025–2026, this extends to governing AI-generated mobile code with tiered trust validation (parallel to Frontend Developer standards), complying with App Store AI policies (Apple 4.3(b), Google Play AI disclosure), designing hybrid on-device/cloud LLM hosting architecture, and applying privacy-preserving ML patterns (federated learning + differential privacy) for on-device personalization.",
       "file": "core/roles/mobile-engineer.md",
       "skills": [
         "add-ui-component",
@@ -768,7 +768,7 @@
     "product-manager": {
       "name": "product-manager",
       "title": "Product Manager",
-      "description": "*\"Given [insight or evidence], changing [X] will result in [expected measurable outcome] for [user segment].\"*",
+      "description": "maximize user and business value through clear prioritization, scope control, and outcome-driven delivery without hiding impact, trade-offs, or regression risk inside vague scope decisions. In 2025–2026, this extends to orchestrating autonomous agents and human judgment — defining goal and constraint envelopes rather than rigid deterministic PRDs, specifying probabilistic acceptance criteria, curating Golden Evaluation Datasets as a first-class product surface, modeling Total Cost of Ownership (TCO) per verified outcome, and governing ethical compliance under EU AI Act Article 50 transparency mandates.",
       "file": "core/roles/product-manager.md",
       "skills": [
         "write-product-brief",
@@ -790,7 +790,7 @@
     "project-manager": {
       "name": "project-manager",
       "title": "Project Manager",
-      "description": "7%) and duplication bloat, enforcing Specification-Driven Development (SDD) contracts",
+      "description": "turn agreed product scope into an executable plan with clear milestones, dependencies, owners, and risk control. In 2025–2026, this extends to serving as Human-Agent Orchestration & Delivery Lead — managing hybrid fleets of human engineers and autonomous agents, replacing single-point deadlines with probabilistic estimation (Monte Carlo P85 confidence bands), enforcing token FinOps budget envelopes (Cost-Per-Task tracking), mitigating HITL review dwell time and permission fatigue, and governing GIST technical debt (AI code churn and duplication bloat) under NIST AI RMF, ISO 42001, and EU AI Act standards.",
       "file": "core/roles/project-manager.md",
       "skills": [
         "meeting-review",
@@ -810,7 +810,7 @@
     "qa-engineer": {
       "name": "qa-engineer",
       "title": "QA Engineer",
-      "description": "integration -> contract -> end-to-end -> exploratory charters (right level for risk)",
+      "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escaped defects across a distributed microservices system. In 2025–2026, this extends to validating AI/LLM systems with non-deterministic output properties, running controlled chaos experiments to prove resilience before production, and enforcing accessibility as a first-class quality gate. In 2026, this further extends to **EU AI Act Article 50 compliance validation** (disclosure UI, C2PA marking), **MCP 2026-07-28 stateless protocol validation**, **WebMCP browser-level agent interaction testing**, and **CI eval gates** for prompt/model/tool changes.",
       "file": "core/roles/qa-engineer.md",
       "skills": [
         "write-tests",
@@ -831,7 +831,7 @@
     "researcher": {
       "name": "researcher",
       "title": "Researcher",
-      "description": "— Research Brief",
+      "description": "run deep, iterative investigation and deliver triangulated, structured findings that downstream roles can act on without re-researching the baseline. In 2025–2026, this means navigating an AI-saturated information landscape where LLM-generated content permeates the web — distinguishing primary human-verified sources from AI-synthesized aggregations, applying Chain-of-Verification for critical claims, and enabling information gain for downstream SEO and content roles.",
       "file": "core/roles/researcher.md",
       "skills": [
         "conduct-research",
@@ -850,7 +850,7 @@
     "reviewer": {
       "name": "reviewer",
       "title": "Reviewer",
-      "description": ", data-ai-generated, C2PA)",
+      "description": "raise quality through precise, evidence-based review that catches defects, protects maintainability, and teaches good patterns without creating review theater. In 2025–2026, this extends to governing AI-generated code with tiered trust zones (T1/T2/T3), requiring adversarial review for T3 LLM-authored code, enforcing scope-containment and API-existence checks on AI-generated diffs, and preventing silent quality regression from AI productivity gains that mask incomplete coverage or hallucinated API contracts. In 2026, this further extends to **MCP tool contract validation** (SemVer, JSON Schema source-of-truth, deprecation windows), **MCP 2026-07-28 stateless protocol compliance**, **EU AI Act Article 50 disclosure code review**, and **LLM structured output enforcement** (constrained decoding + runtime validation, no regex parsing).",
       "file": "core/roles/reviewer.md",
       "skills": [
         "review-code",
@@ -869,7 +869,7 @@
     "security-engineer": {
       "name": "security-engineer",
       "title": "Security Engineer",
-      "description": "- Security Review",
+      "description": "reduce security risk early by identifying weaknesses in design, code, configuration, dependencies, and operations before they become incidents. In 2025–2026, this extends to assessing AI/LLM-specific attack surfaces (prompt injection, training data poisoning, model output exploitation), enforcing shift-left security practices (threat modeling before design sign-off, SAST/DAST in CI), and treating AI systems as high-risk trust boundary additions that require explicit security review before deployment.",
       "file": "core/roles/security-engineer.md",
       "skills": [
         "security-audit",
@@ -891,7 +891,7 @@
     "seo-analyst": {
       "name": "seo-analyst",
       "title": "SEO Analyst",
-      "description": "`, `data-ai-generated`, C2PA)",
+      "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third-party answer engines — with defensible keyword strategy, on-page structure, internal linking, structured data specifications, and metadata. Produce briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation. Optimize for discoverability in Google, AI answer engines (Perplexity, ChatGPT/SearchGPT, Bing AI), and generative search surfaces. In 2025–2026, this extends to Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and Agentic SEO (A-SEO) — structuring content for direct AI citation, fact-density extractability, and topical authority cluster integrity across both human-browsed and AI-mediated discovery surfaces. Per Google's May 2026 official generative-AI optimization guidance, treat GEO/AEO as extensions of SEO fundamentals — AI Overviews and AI Mode draw from the same Search index as classic ranking — not as a separate playbook or a set of AI-only tactics. In 2026, this further extends to **MCP 2026-07-28 stateless protocol audit** for agent-discoverability endpoints, **EU AI Act Article 50 disclosure audit** for AI-generated content pages, and **C2PA marking verification** for AI-generated media.",
       "file": "core/roles/seo-analyst.md",
       "skills": [
         "optimize-seo",
@@ -910,7 +910,7 @@
     "solution-architect": {
       "name": "solution-architect",
       "title": "Solution Architect",
-      "description": "— Solution Brief",
+      "description": "translate business goals, stakeholder constraints, and existing capability into a structured solution design that engineering roles can execute without guessing the intent — making build-vs-buy, platform, integration, and vendor trade-offs explicit before requirements are locked or architecture decisions are made. In 2025–2026, this extends to evaluating AI/agentic solution patterns, assessing feasibility of LLM-augmented workflows as business solutions, and surfacing compliance obligations (EU AI Act, GDPR) as solution-level constraints before engineering commits.",
       "file": "core/roles/solution-architect.md",
       "skills": [
         "write-tech-radar",
@@ -931,7 +931,7 @@
     "sre": {
       "name": "sre",
       "title": "Site Reliability Engineer",
-      "description": "3s for 5 minutes |",
+      "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2025–2026, this extends to defining AI/ML-specific SLOs (output quality, inference latency, token cost budget, model drift), treating model degradation as a reliability incident, and operating proactive reliability practices (chaos engineering, error budget burn rate alerts, automated runbooks).",
       "file": "core/roles/sre.md",
       "skills": [
         "debug-runtime-platform",
@@ -951,7 +951,7 @@
     "system-engineer": {
       "name": "system-engineer",
       "title": "System Engineer",
-      "description": "— System Design Brief",
+      "description": "design, implement, and optimize complex systems end-to-end — from hardware and OS configuration through network topology, middleware, application runtime, and AI inference infrastructure — ensuring every layer operates efficiently, meets measurable non-functional requirements, and remains traceable from design intent to production behavior. In 2025–2026, this extends to hands-on AI infrastructure engineering (GPU resource allocation, inference server configuration, vector database topology, edge-cloud continuum design), probabilistic system architecture, cross-layer performance optimization, and capacity modeling for AI-augmented workloads.",
       "file": "core/roles/system-engineer.md",
       "skills": [
         "system-design",
@@ -980,7 +980,7 @@
     "task-planner": {
       "name": "task-planner",
       "title": "Task Planner",
-      "description": "` before first interaction, plain language, C2PA marking by 2026-12-02, Annex type identification (Annex III: 2027-12-02; Annex I: 2028-08-02)",
+      "description": "produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation checkpoints, and explicit assumptions—so implementers can start without rediscovering the approach. In 2025–2026, this extends to embedding explicit AI fallback mechanisms and Human-In-The-Loop (HITL) review triggers into plans that include generative AI features, defining agent-delegation phase gates with approval checkpoints, and ensuring that AI-bearing task slices have named oversight owners before execution begins. In 2026, this further extends to **Trust Ladder autonomy tier planning** (Suggest→Verify→Delegate→Automate), **background agent UX planning** (status surface, notification contract, async interrupt), **GenUI component palette governance**, **MCP 2026-07-28 stateless protocol alignment**, **EU AI Act Article 50 disclosure planning**, and **CI eval gate integration** for prompt/model/tool changes.",
       "file": "core/roles/task-planner.md",
       "skills": [
         "design-ux-flow",
@@ -997,7 +997,7 @@
     "teacher": {
       "name": "teacher",
       "title": "Teacher",
-      "description": "— Learning Session & Evaluation",
+      "description": "empower learners to acquire knowledge, internalize core concepts across subjects, and validate their understanding through structured learning, practice, and feedback aligned with designated educational curricula and standards. In 2025–2026, this extends to architecting cognitive load to prevent working memory overload, leveraging Inverted Bloom's Taxonomy where learners critique and verify AI-generated artifacts to internalize foundational principles, utilizing Item Response Theory (IRT) to dynamically calibrate exercise difficulty within the Zone of Proximal Development (70–80% success moving average), enforcing Socratic scaffolding over direct answer generation, and maintaining persistent learner knowledge graphs across multi-turn sessions while upholding rigorous student data privacy (FERPA/GDPR/EU AI Act).",
       "file": "core/roles/teacher.md",
       "skills": [
         "design-learning-plan",
@@ -1015,7 +1015,7 @@
     "technical-architect": {
       "name": "technical-architect",
       "title": "Technical Architect",
-      "description": "- Architecture Brief",
+      "description": "shape system structure and technical direction so the product can evolve safely, coherently, and at the right cost without hiding migration, compatibility, or operational risk. In 2025–2026, this extends to architecting AI-native systems (LLM pipelines, agentic boundaries, probabilistic design), enforcing evolutionary architecture through automated fitness functions, and embedding privacy and compliance as structural constraints — not post-deployment layers.",
       "file": "core/roles/technical-architect.md",
       "skills": [
         "system-design",
@@ -1039,7 +1039,7 @@
     "technical-lead": {
       "name": "technical-lead",
       "title": "Technical Lead",
-      "description": "- Technical Lead Plan",
+      "description": "turn architecture and requirements into a delivery-ready technical plan, guide implementation quality, and keep engineering decisions aligned without losing sight of logic correctness, regression risk, or rollout impact. In 2025–2026, this includes governing AI-assisted development (LLM-generated code quality and risks), applying progressive delivery patterns to limit blast radius, and calibrating quality gates against the AI productivity paradox where higher velocity can mask quality degradation.",
       "file": "core/roles/technical-lead.md",
       "skills": [
         "plan-technical-delivery",
@@ -1069,7 +1069,7 @@
     "technical-writer": {
       "name": "technical-writer",
       "title": "Technical Writer",
-      "description": "- Documentation Plan",
+      "description": "make systems, features, and operational procedures understandable so that users, teams, and AI agents can act without guesswork. In 2025–2026, this extends to producing dual-audience documentation (human-readable and LLM-readable simultaneously), maintaining machine-readable project scope maps (`llms.txt`), and authoring a new deliverable class — Agentic System Documentation — that covers tool definitions, agent handoff points, and evaluation metric contracts for multi-agent systems.",
       "file": "core/roles/technical-writer.md",
       "skills": [
         "write-documentation",
@@ -1091,7 +1091,7 @@
     "ui-ux-designer": {
       "name": "ui-ux-designer",
       "title": "UI/UX Designer",
-      "description": "` component with the EU-approved AI icon for AI-generated content labels; the disclosure must use plain, unambiguous language (\"You are interacting with an AI system\") and appear before or during the first meaningful interaction — not after the first AI message; do not bury it in terms, tooltips, or sub-menus",
+      "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2026, this extends to designing for probabilistic AI systems (non-deterministic states, confidence indicators, transparency hooks, human override patterns), and to governing design systems as living infrastructure with W3C-compliant token architecture and automated design-to-code pipelines. In 2026, this further extends to designing for agentic AI systems with explicit autonomy tier governance (Trust Ladder), background agent intervention affordances, and GenUI component palette constraints; and to aligning with EU AI Act Article 50 transparency obligations (live 2 August 2026) and MCP 2026-07-28 protocol updates.",
       "file": "core/roles/ui-ux-designer.md",
       "skills": [
         "design-ux-flow",
@@ -1109,7 +1109,7 @@
     "vietnam-accounting-specialist": {
       "name": "vietnam-accounting-specialist",
       "title": "Vietnam Accounting Specialist",
-      "description": "- Vietnam Accounting Review",
+      "description": "govern Vietnam accounting-domain interpretation, evidence review, reconciliations, period-close controls, e-invoice data readiness, and retention classification so software, operations, and reporting workflows preserve a traceable accounting record without confusing accounting review with tax advice, legal advice, audit assurance, or authority to execute filings. In 2025-2026, this includes applying versioned Vietnam accounting regimes (TT 200/2014, TT 133/2016, TT 132/2018 when applicable), preserving statutory-versus-management reporting boundaries, and enforcing human approval gates for invoice, filing, correction, and close actions.",
       "file": "core/roles/vietnam-accounting-specialist.md",
       "skills": [
         "manage-vietnam-accounting",

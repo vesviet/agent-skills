@@ -271,7 +271,9 @@ def parse_roles() -> dict:
             continue
         content = r_file.read_text(encoding="utf-8")
         title_m = re.search(r"^#\s+(.+)$", content, re.MULTILINE)
-        desc_m = re.search(r">\s*(.+)$", content, re.MULTILINE)
+        desc_m = re.search(r"^Mission:\s*(.+)$", content, re.MULTILINE | re.IGNORECASE)
+        if not desc_m:
+            desc_m = re.search(r"^>\s*(.+)$", content, re.MULTILINE)
         skills = re.findall(r"- `([a-z0-9-]+)`", content)
         
         irrev_m = re.search(r"## Irreversible Actions\s*\n((?:[^\n]+\n)+)", content)
