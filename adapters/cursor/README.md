@@ -152,3 +152,35 @@ AGENT_SKILLS_ROOT="$PWD" \
 # Run full A2A compliance check:
 python3 core/scripts/validate-a2a-compliance.py
 ```
+
+## Standard 2026 Alignment
+
+This adapter preserves every parity group in `core/adapter-parity.md`. The
+2026 upgrade pass added Failure Modes, Output Contracts, and Security
+Guardrails to match the rest of the pack.
+
+### Failure Modes
+
+- **`.cursorrules` re-introduced by copy-paste**: a developer copies the deprecated `.cursorrules` path back into a project. **Mitigation:** the `.mdc` rules format is the only supported format as of late 2025; surface the deprecation in PR review and reject the change.
+- **Hook exit-code semantics regress**: a future Cursor version changes the meaning of non-zero exit codes in `beforeReadFile` or `preToolUse`. **Mitigation:** the `check-policy.py` exit-code contract (0=allowed, 1=denied, 2=requires_approval) is documented in the Enforcement note; downstream scripts must remain consistent.
+- **Hook does not call `check-policy.py`**: a hook calls a different script or skips the policy check. **Mitigation:** every state-changing hook (write, delete, shell, MCP) must route through `core/scripts/hooks/check-policy.py`; reject the hook if the script is missing.
+- **AGENT_SKILLS_ROOT unresolved**: a hook fires before `AGENT_SKILLS_ROOT` is set, returning a fallback verdict. **Mitigation:** every hook must validate the env var at startup and exit non-zero with a clear error when the pack root is missing.
+- **Trace span log drifts from the live OTel GenAI convention**: a `log-trace-span.py` invocation uses deprecated `prompt_tokens` / `completion_tokens` instead of `gen_ai.usage.input_tokens` / `output_tokens`. **Mitigation:** the script follows `core/observability/otel-genai.md`; reject any span attribute that is not in the OTel registry.
+
+### Output Contracts
+
+When this adapter is part of a coordinated multi-role delivery, emit:
+
+- **`contracts/schemas/implementation-result.json`** for the result of any agent session that touched code, skills, or content.
+- **`contracts/schemas/incident-report.json`** when a hook blocks an action.
+- **`contracts/schemas/api-contract-spec.json`** for new `.mdc` rules that change the public agent surface.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: hook inputs are untrusted; `beforeSubmitPrompt` must re-validate the prompt against the active role's goal before allowing submission.
+- **ASI03 Identity & Privilege Abuse**: `preToolUse` and `beforeMCPExecution` must enforce role-based action boundaries via `action-boundaries.yaml`.
+- **ASI05 RCE Guard**: `beforeShellExecution` and `beforeMCPExecution` must schema-validate every command and tool input before dispatch.
+- **ASI07 Inter-Agent Communication**: the trace span log is a cross-agent surface; emit `gen_ai.*` attributes per the OTel GenAI semantic conventions.
+- **ASI09 Human-Agent Trust Exploitation**: `requires_approval` (exit 2) must pause and surface a clear message; never auto-approve.
+
+Last updated: 2026-09-01

@@ -17,7 +17,7 @@ Use this skill when the task involves building, extending, or debugging the step
 ## Core Rules
 
 - **Zero Client-Trust Pricing**: recalculate all line items, discounts, taxes, and shipping server-side immediately before creating the payment intent — discard any client-submitted monetary amounts
-- **PCI DSS v4.0.1 Script Integrity** (req 6.4.3): all JavaScript executing on payment pages must be inventoried, justified, and loaded with **Subresource Integrity (SRI) hashes** and a strict **CSP nonce** (`script-src 'nonce-...'`)
+- **PCI DSS v4.1.0 Script Integrity** (req 6.4.3): all JavaScript executing on payment pages must be inventoried, justified, and loaded with **Subresource Integrity (SRI) hashes** and a strict **CSP nonce** (`script-src 'nonce-...'`)
 - **Tamper Detection** (req 11.6.1): an automated mechanism must monitor payment page HTTP headers and client-side scripts at least weekly (or continuously) to detect unauthorized modifications (Magecart/formjacking)
 - validate inventory availability at checkout submission time, not only at add-to-cart time; use **two-phase atomic hold** (soft reserve with TTL → hard commit on payment success / release on failure)
 - apply discounts and promotions server-side only; wrap coupon validation and usage increment in an **atomic transaction with row-level lock** (`SELECT ... FOR UPDATE`) to prevent TOCTOU race conditions under concurrent requests

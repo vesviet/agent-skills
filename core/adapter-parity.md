@@ -104,3 +104,25 @@ Adapters (and the source rules) must not contain:
 - Adapters may be shorter than the full source documentation.
 - Adapters may rephrase wording when the target platform needs different phrasing.
 - Adapters must not weaken any parity group even if the wording changes.
+
+## Standard 2026 Alignment
+
+This parity document governs every adapter. The 2026 upgrade pass added the
+following invariants; adapters that mirror these groups must also mirror
+the new failure-mode coverage below.
+
+### Failure Modes
+
+- **Parity drift between adapters**: a core rule changes but the Antigravity / Cursor / Claude / Kiro / Kilo Code / Copilot mirrors do not pick up the change. **Mitigation:** the parity validator (`validate-rules.py`) blocks the change when the mirrors drift; require `python3 core/scripts/validate-rules.py` to pass before merging any rule change.
+- **Forbidden wording introduced**: an adapter uses `P0` / `P1` / `P2` labels or exposes thought-process narration in user-visible artifacts. **Mitigation:** the parity validator scans for forbidden wording; the build fails on detection.
+- **Comment hygiene violated in an adapter example**: a code example in an adapter is over-commented or restates the code. **Mitigation:** examples must obey the same comment-hygiene rules as the core; review every example block in the adapter diff.
+- **Adapters weakening the rule set**: an adapter omits a parity group to fit character limits. **Mitigation:** if a group cannot fit, prefer a reference link to `core/rules/code.md` rather than dropping the rule; the parity validator flags missing groups.
+- **Policy reference omitted**: an adapter stops pointing to `action-boundaries.yaml` and `data-classification.yaml`. **Mitigation:** the parity validator confirms both paths are present; reject adapters that lose the policy reference.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI07 Inter-Agent Communication**: every adapter must preserve the policy-as-code enforcement contract so cross-agent payloads remain schema-validated.
+- **ASI09 Human-Agent Trust Exploitation**: every adapter must preserve the explicit commit / push / publish approval requirement so the user is never bypassed.
+- **ASI10 Rogue Agents**: every adapter must preserve the meta-rule that halts and asks the user when an action would violate the rules; never let an adapter silently absorb a rule violation.
+
+Last updated: 2026-09-01

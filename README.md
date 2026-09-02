@@ -2,7 +2,7 @@
 
 Global engineering skill pack for software delivery work.
 
-**Version 4.0.1** is a consistency-hardening release from a full skill/role/rule refactor audit. It standardizes the role file contract (`Deliverable Routing` is now a mandatory, validator-enforced section with a normalized routing table; single-footer rule enforced), closes adapter parity gaps (environment-file protection, repo-local override, and comment hygiene are now mirrored into every adapter and machine-checked), normalizes contract-emission section naming across skills, extracts `write-article` deep templates into `references/`, makes `INDEX.md` counts version-pins dynamic in `generate-index.py` with a staleness gate in `validate-indexes.py`.
+**Version 4.1.0** is a **Standard 2026 consistency upgrade**. It adds the optional `## Failure Modes` and `## Output Contracts` sections to every skill, role, and workflow in the pack, and `## Security Guardrails (OWASP ASI)` to the security-sensitive ones. It also makes `action-boundaries.yaml` fail-closed by adding explicit `denied` tier placement for every previously-unclassified infra/deploy verb, brings `check-policy.py` up to 2026 with `--emit-audit` (OCSF 99001) and `AGENT_ACTIVE_ROLE_LEVEL=read_only` tier downgrades, and extends `mcp-tool-map.yaml` to cover Python `uv` / `poetry` / `pipx`, Docker, `kubectl delete` / `rollout`, the GitHub CLI, and `npx`. The `## Standard 2026 Alignment` footer is added to every prose file in the pack (root docs, adapters, overlay rules, overlay READMEs) so the pattern is visible at every level. No breaking changes.
 
 Version 4.0.0 was a corrective release from a full-pack audit. It fixes external-standard claims that were wrong or unsourced (WCAG 2.2 criterion numbering and a non-existent ARIA attribute, x402 v2 header names, ACP discovery paths, A2A event and signing details, the MCP baseline revision), resolves role ownership contradictions and policy-boundary conflicts, restores the strict commit gate across all workflows, and adds four validators so each of those drift classes fails the quality gate instead of passing silently.
 
@@ -228,3 +228,25 @@ Use a manifest from `packs/` to combine the core with one or more overlays for a
 The core pack is intended to remain broadly reusable across stacks and repositories.
 
 Repo-specific content, absolute paths, brand voice, and org-local conventions belong in overlays rather than the global core.
+
+## Standard 2026 Alignment
+
+This file is part of the agent-skills engineering pack. The 2026 upgrade
+pass added this footer so every prose file in the pack carries a
+consistent Standard 2026 pointer.
+
+- **OWASP ASI**: applied as described in `core/roles/role-standard.md`
+  (ASI01-ASI10) and the per-skill `## Security Guardrails (OWASP ASI)` sections.
+- **Failure Modes**: the rule in this file can be violated by drift, missing
+  context, or untracked exceptions. Concrete failure scenarios belong in the
+  related skill or workflow's `### Failure Modes` section.
+- **Output Contracts**: structured artifacts produced under this file must
+  conform to schemas in `core/contracts/schemas/`.
+- **Skill Toolbox Lock**: this file's rules are enforced by the role that
+  owns the affected action; the runtime gate is
+  `core/scripts/hooks/check-policy.py`.
+- **Commit / publish gate**: changes that affect user-visible behavior
+  follow the META-RULE in `core/rules/code.md` — no commit, no push, no
+  publish without explicit user confirmation.
+
+Last updated: 2026-09-01

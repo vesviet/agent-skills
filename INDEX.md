@@ -1,6 +1,6 @@
 # Agent-Skills Master Index & Router
 
-> **Location:** `core/` & `overlays/` | **Version:** `4.0.1` (A2A 1.0 + Antigravity)
+> **Location:** `core/` & `overlays/` | **Version:** `4.1.0` (A2A 1.0 + Antigravity)
 > **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **18 Workflows** | **43 Data Contracts**
 
 ---

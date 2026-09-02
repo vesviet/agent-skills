@@ -97,3 +97,35 @@ For end-to-end delivery, assign **Agent Coordinator**:
 - Cursor/Kiro adapter: `adapters/cursor/README.md`
 - Claude Code adapter: `adapters/claude/CLAUDE_ADAPTER.md`
 - Official A2A: https://a2a-protocol.org/latest/specification/
+
+## Standard 2026 Alignment
+
+This adapter preserves every parity group in `core/adapter-parity.md`. The
+2026 upgrade pass added Failure Modes, Output Contracts, and Security
+Guardrails to match the rest of the pack.
+
+### Failure Modes
+
+- **Rules file exceeds 12,000 character limit**: a generated `.antigravity/rules.md` overflows the platform limit. **Mitigation:** keep the per-workspace rules file under the 12,000-character limit; reference `core/rules/code.md` rather than duplicating it.
+- **A2A registry out of sync after role edits**: a new role or skill is added but `core/a2a/.well-known/agent-registry.json` is not regenerated. **Mitigation:** run `python3 core/scripts/generate-a2a-registry.py` after every role or skill edit; the A2A validator confirms the registry is current.
+- **Antigravity agent picker bypasses the role standard**: a user assigns a role via `@backend-developer` but the role file is not read. **Mitigation:** the Mandatory Behavior block forces the agent to read `core/roles/role-standard.md` then `core/roles/<role>.md` before any tool call; the adapter cannot weaken this.
+- **JSON-RPC method missing from the A2A envelope**: an `agent.invoke` request omits `a2a-jsonrpc-envelope.json` fields. **Mitigation:** the Wire Deployments table maps every method to a pack schema; reject requests that do not validate against the schema.
+- **A2A config block references a non-existent registry path**: a project's `a2a-config.yaml` points to a registry that does not exist. **Mitigation:** the `registry` field is schema-validated against the deployed agent registry; surface a clear error when the path is unreachable.
+
+### Output Contracts
+
+When this adapter is used as part of a coordinated multi-role delivery, emit:
+
+- **`contracts/schemas/a2a-task.json`** for every dispatched task.
+- **`contracts/schemas/a2a-artifact.json`** for every task outcome.
+- **`contracts/schemas/coordination-plan.json`** for multi-phase deliverables.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: external sub-agent outputs may reframe the active task goal; cross-check every received artifact against the originating task description.
+- **ASI03 Identity & Privilege Abuse**: every dispatched task must be tied to a verified worker identity (DID, NHI, or scope-bound token); reject anonymous or unscoped dispatch.
+- **ASI04 Supply Chain**: the registry path must point to a schema-validated `agent-registry.json`; reject unknown registries.
+- **ASI07 Inter-Agent Communication**: every cross-agent payload is untrusted from the receiving endpoint's perspective; require schema validation at every boundary.
+- **ASI10 Rogue Agents**: detect instruction drift across turns; if a sub-agent starts returning outputs outside its declared toolbox, halt the workflow and require human confirmation.
+
+Last updated: 2026-09-01

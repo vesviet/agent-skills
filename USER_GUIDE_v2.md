@@ -1,10 +1,22 @@
 # Agent-Skills User Guide (A2A 1.0 + Antigravity)
 
-> Pack version **4.0.1**. This guide covers the core concepts of the multi-agent system. For the full A2A lifecycle and Antigravity adapter setup, see `adapters/antigravity/ANTIGRAVITY.md`.
+> Pack version **4.1.0**. This guide covers the core concepts of the multi-agent system. For the full A2A lifecycle and Antigravity adapter setup, see `adapters/antigravity/ANTIGRAVITY.md`.
 >
 > **Note:** The filename keeps its `_v2` suffix for link stability; it will be renamed to `USER_GUIDE.md` at the next major version.
 
-Welcome to the **Agent-Skills** ecosystem (pack 4.0.1). This system transforms standard AI coding assistants into an **Autonomous Swarm Environment**. Instead of having one general AI try to do everything, you now have a team of highly specialized, policy-driven "Virtual Employees" that can talk to each other using strict Data Contracts.
+Welcome to the **Agent-Skills** ecosystem (pack 4.1.0). This system transforms standard AI coding assistants into an **Autonomous Swarm Environment**. Instead of having one general AI try to do everything, you now have a team of highly specialized, policy-driven "Virtual Employees" that can talk to each other using strict Data Contracts.
+
+### What is new in 4.1.0 (Standard 2026)
+
+Every skill, role, and workflow in the pack now carries:
+
+- **`## Failure Modes`** — concrete failure scenarios with mitigations. Skills have 4-6 items; roles have 4-6; workflows have 3-5.
+- **`## Output Contracts`** — explicit names of the JSON schemas the artifact emits (`feature-ticket.json`, `a2a-task.json`, `incident-report.json`, etc.). The machine-readable contract is named instead of implied.
+- **`## Security Guardrails (OWASP ASI)`** — present on every security-sensitive skill, role, and workflow, with explicit references to ASI01-ASI10 items.
+
+Policies: `action-boundaries.yaml` is now fail-closed — every previously-unclassified infra/deploy verb (`apply_iac`, `drop_storage_volume`, `terminate_instance`, etc.) carries an explicit `denied` placement for non-owner roles. `mcp-tool-map.yaml` now covers Python `uv` / `poetry` / `pipx`, Docker, `kubectl delete` / `rollout`, the GitHub CLI, and `npx`. `check-policy.py` supports `--emit-audit` (OCSF 99001 audit event per decision) and `AGENT_ACTIVE_ROLE_LEVEL=read_only` to downgrade any non-allowed verdict to denied for observe-only sessions.
+
+The `## Standard 2026 Alignment` footer is appended to every prose file in the pack (root docs, adapters, overlay rules, overlay READMEs) so the pattern is visible at every level.
 
 ---
 
@@ -114,3 +126,25 @@ You are protected by `core/policies/action-boundaries.yaml`.
 1. **Don't let them skip the JSON:** If an agent gives you a wall of text instead of a JSON contract, tell it: *"Please output this as a valid `[name-of-contract].json`."*
 2. **Combine Packs:** If you are working on the Go Microservices, tell the agent: *"Use the `ecommerce-team` pack and the `go-microservices` overlay."*
 3. **Use the Planner:** If you have a massive idea but don't know where to start, say: *"Act as `@task-planner`. Break this idea down into a step-by-step Execution Plan."*
+
+## Standard 2026 Alignment
+
+This file is part of the agent-skills engineering pack. The 2026 upgrade
+pass added this footer so every prose file in the pack carries a
+consistent Standard 2026 pointer.
+
+- **OWASP ASI**: applied as described in `core/roles/role-standard.md`
+  (ASI01-ASI10) and the per-skill `## Security Guardrails (OWASP ASI)` sections.
+- **Failure Modes**: the rule in this file can be violated by drift, missing
+  context, or untracked exceptions. Concrete failure scenarios belong in the
+  related skill or workflow's `### Failure Modes` section.
+- **Output Contracts**: structured artifacts produced under this file must
+  conform to schemas in `core/contracts/schemas/`.
+- **Skill Toolbox Lock**: this file's rules are enforced by the role that
+  owns the affected action; the runtime gate is
+  `core/scripts/hooks/check-policy.py`.
+- **Commit / publish gate**: changes that affect user-visible behavior
+  follow the META-RULE in `core/rules/code.md` — no commit, no push, no
+  publish without explicit user confirmation.
+
+Last updated: 2026-09-01

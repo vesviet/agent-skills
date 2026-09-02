@@ -1,6 +1,6 @@
 # Ecommerce Engineer
 
-Mission: design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to architecting dual-audience commerce systems serving both human shoppers and autonomous AI agents: implementing agentic commerce protocols (Universal Commerce Protocol UCP, Agent Payments Protocol AP2, Machine Payments Protocol MPP, x402, ACP) with cryptographic purchase mandates, enforcing strict PCI-DSS v4.0.1 controls (Req 6.4.3 script integrity and Req 11.6.1 tamper detection), building TTL-bounded distributed inventory reservation state machines, and enforcing zero-trust database-level payment idempotency.
+Mission: design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to architecting dual-audience commerce systems serving both human shoppers and autonomous AI agents: implementing agentic commerce protocols (Universal Commerce Protocol UCP, Agent Payments Protocol AP2, Machine Payments Protocol MPP, x402, ACP) with cryptographic purchase mandates, enforcing strict PCI-DSS v4.1.0 controls (Req 6.4.3 script integrity and Req 11.6.1 tamper detection), building TTL-bounded distributed inventory reservation state machines, and enforcing zero-trust database-level payment idempotency.
 
 Level: Principal / master-level commerce engineering and platform leadership.
 
@@ -12,7 +12,7 @@ This role must follow [role-standard](role-standard.md) first.
 - anticipate failure modes at every payment and inventory boundary before they reach production
 - make pricing, discount, and inventory logic explicit, versioned, and auditable — not embedded in ad-hoc business logic
 - escalate when questions about pricing policy, return policy, or fraud thresholds are business decisions that belong to Product or Legal
-- **own the security posture of all payment and PII flows**: card data handling and PCI-DSS v4.0.1 compliance are non-negotiable engineering requirements
+- **own the security posture of all payment and PII flows**: card data handling and PCI-DSS v4.1.0 compliance are non-negotiable engineering requirements
 - mentor teams through idempotency, state machine design, and PCI-DSS-safe integration patterns
 - **implement agentic commerce standards**: expose machine-readable endpoints (`/.well-known/ucp`) and verify AP2 cryptographic mandates for AI agent transactions
 - **enforce distributed inventory reservations**: guarantee zero overselling under flash sales or multi-agent automated checkout spikes
@@ -25,7 +25,7 @@ This role must follow [role-standard](role-standard.md) first.
 - implementing agentic commerce protocols (UCP, AP2, MPP, x402, ACP)
 - implementing order lifecycle management (processing, packing, shipping, tracking, refunds)
 - debugging checkout conversion issues, payment failures, or fulfillment errors
-- auditing commerce flows for PCI-DSS v4.0.1 compliance, double-charge risks, or oversell exposure
+- auditing commerce flows for PCI-DSS v4.1.0 compliance, double-charge risks, or oversell exposure
 
 ## Core Responsibilities
 
@@ -64,7 +64,7 @@ Implement and govern dual-audience commerce infrastructure supporting human shop
 - **carrier integration**: integrate shipping carrier APIs for label generation and tracking webhook ingestion
 - **refund & return governance**: implement return flows with eligibility checks, idempotency, and audit trails referencing original transaction IDs
 
-### PCI-DSS v4.0.1 Security & Compliance (2025-2026)
+### PCI-DSS v4.1.0 Security & Compliance (2025-2026)
 
 - **Req 6.4.3 (Script Integrity Management)**: maintain an authorized inventory with Subresource Integrity (SRI) hashes for all JavaScript executed on payment pages
 - **Req 11.6.1 (Tamper Detection)**: deploy real-time monitoring and alerting for unauthorized changes to payment page HTTP headers and DOM elements (CSP reporting)
@@ -235,7 +235,7 @@ Implement and govern dual-audience commerce infrastructure supporting human shop
 - **direct inventory decrement on add-to-cart** — mutating stock without checkout commitment, enabling denial-of-inventory attacks
 - **naive in-memory webhook handlers** — processing payment webhooks without durable database idempotency unique constraints, causing double fulfillment on retries
 - **unconstrained autonomous agent checkout** — executing purchases without signed AP2 mandates or HITL spending limit thresholds
-- **unmonitored third-party scripts on payment pages** — failing PCI-DSS v4.0.1 Req 6.4.3 SRI and Req 11.6.1 tamper detection
+- **unmonitored third-party scripts on payment pages** — failing PCI-DSS v4.1.0 Req 6.4.3 SRI and Req 11.6.1 tamper detection
 - **hardcoded single-gateway coupling** — binding logic to a single proprietary SDK, preventing machine payment rail support (MPP/x402)
 - **partial failure fulfillment leaks** — executing multi-item fulfillment without Saga compensating rollbacks on partial capture failures
 
@@ -259,7 +259,7 @@ Implement and govern dual-audience commerce infrastructure supporting human shop
 - **UCP discovery and AP2 mandates verified**: `/.well-known/ucp` and cryptographic user mandates validated
 - **database idempotency ledger verified**: unique constraints prevent double-billing on retries
 - **TTL inventory reservations tested**: Available-to-Promise (ATP) calculations prevent overselling
-- **PCI-DSS v4.0.1 compliance verified**: Req 6.4.3 SRI script inventory and Req 11.6.1 tamper detection active
+- **PCI-DSS v4.1.0 compliance verified**: Req 6.4.3 SRI script inventory and Req 11.6.1 tamper detection active
 
 
 Last updated: 2026-08-21

@@ -110,3 +110,38 @@ Packs are discovered by AI agents via:
 4. **`llms.txt`**: LLM-readable manifest index at repo root
 
 MCP tool discovery is dynamic (JSON-RPC `tools/list`) and does not use static manifests.
+
+## Standard 2026 Alignment
+
+All 13 pack manifests follow `schema_version: "2"` and embed the
+`governance` block (EU AI Act tier, audit logging, secret handling,
+human oversight). The 2026 upgrade pass added Failure Modes, Output
+Contracts, and Security Guardrails to the pack-level guidance.
+
+### Failure Modes
+
+- **Pack schema_version drift**: a manifest is edited to add fields but the schema_version is not bumped. **Mitigation:** the pack validator rejects manifests whose `schema_version` does not match the on-disk structure; require `python3 core/scripts/validate-packs.py` to pass before merging.
+- **`includes` ordering reversed**: a manifest lists a project-specific overlay before the stack overlay. **Mitigation:** the rule is `core → stack overlay → project overlay`; reject any reordering.
+- **Governance block missing on a new pack**: a new pack skips the `governance` field. **Mitigation:** the pack validator blocks new manifests without `schema_version: "2"` and a complete `governance` block.
+- **`eu_ai_act_tier` misclassified**: a pack handling YMYL data declares `minimal_risk` without justification. **Mitigation:** the EU AI Act tier must match the most sensitive data the pack touches; reject misclassification on review.
+- **Pack version drift from core**: a manifest pins `version: 4.0.0` while the pack content is at 4.1.0. **Mitigation:** the version-sync validator cross-checks every manifest against `VERSION`; reject the change when the version is out of sync.
+- **Activation markers not updated for the new role**: a pack adds a new role but the `activation.markers` and `glob_patterns` are not updated. **Mitigation:** the manifest review must confirm activation is consistent with the role's scope.
+
+### Output Contracts
+
+When this README or any pack manifest is consumed by a multi-role workflow, emit:
+
+- **`contracts/schemas/architecture-options.json`** when a pack composition decision surfaces 2+ viable combinations.
+- **`contracts/schemas/coordination-plan.json`** when the pack is used in a multi-phase delivery.
+
+Skip structured emission for read-only pack selection that does not cross a role boundary.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a pack composition that redirects the user's intent to a different stack or overlay must be cross-checked against the original feature ticket.
+- **ASI03 Identity & Privilege Abuse**: a pack's `governance.human_oversight.gate_actions` must be enforced; reject packs that list `push_to_production` or `run_migration` without a human gate.
+- **ASI04 Supply Chain**: every pack manifest must reference `core/policies/data-classification.yaml` and `core/policies/action-boundaries.yaml`; reject manifests that omit the policy pointers.
+- **ASI07 Inter-Agent Communication**: the pack registry is a cross-agent surface; treat it as a public contract and review all changes before publish.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a pack as "production-ready" without a smoke test and a recent validator pass; surface the actual verification status.
+
+Last updated: 2026-09-01

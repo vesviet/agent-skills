@@ -2,9 +2,9 @@
 
 All notable changes to the agent-skills engineering pack.
 
-## [Unreleased] - 2026-09-01
+## [4.1.0] - 2026-09-01
 
-Standard 2026 consistency upgrade pass. No breaking changes; every upgrade
+Standard 2026 consistency upgrade release. No breaking changes; every upgrade
 adds the optional `## Failure Modes`, `## Output Contracts`, and
 `## Security Guardrails (OWASP ASI)` sections without renumbering steps,
 renaming files, or changing the validator contract.

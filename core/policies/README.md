@@ -14,13 +14,7 @@ Policies answer: "Is this agent, in this role, allowed to perform this action on
 | --- | --- | --- |
 | `action-boundaries.yaml` | 34 delivery roles × 46 action verbs (allowed / requires_approval / denied) | `2` |
 | `data-classification.yaml` | 5 sensitivity levels (untrusted, public, internal, confidential, restricted) | `1` |
-| `mcp-tool-map.yaml` | 65 tool-action mappings + 53 destructive patterns | implicit `1` |
-
-## Why Policies Exist
-
-Text-based rules in `core/rules/code.md` are advisory. Policies in this directory are structured YAML definitions that can be checked programmatically at runtime.
-
-Policies answer: "Is this agent, in this role, allowed to perform this action on this data?"
+| `mcp-tool-map.yaml` | 75 tool-action mappings + 79 destructive patterns | implicit `1` |
 
 ## Policy Types
 
