@@ -103,6 +103,13 @@ Merchants must actively track regional sales thresholds to ensure compliance wit
 - [ ] Stripe Tax, TaxJar, or Avalara chosen based on transaction volume and ERP needs
 - [ ] economic nexus threshold monitoring and low-nexus alerts configured
 
+## Failure Modes
+
+- **Cart abandoned on price mismatch**: the cart shows a different price than checkout. **Mitigation:** re-validate the cart at checkout; surface the price change to the user before charging.
+- **Inventory oversell under concurrency**: two channels decrement the same stock in parallel and oversell. **Mitigation:** use atomic SQL or Redis Lua with TTL; reject naive read-then-write sequences.
+- **Silent price overwrite**: a price change overwrites historical prices without a version or timestamp. **Mitigation:** store `price`, `compare_at_price`, `effective_from`, and `effective_until`; never silently overwrite.
+- **PCI scope drift**: a new endpoint touches card data without being in the PCI scope. **Mitigation:** review the data flow before merge; require a security review for any new card-handling code.
+
 ## Output Contracts
 
 When the checkout flow is consumed by storefront, payment, or fulfillment

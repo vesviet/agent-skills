@@ -172,6 +172,13 @@ Produce `contracts/schemas/ai-risk-register.json` (or YAML equivalent) when form
 - `owasp_asi_alignment` mapping
 - `residual_risks` with acceptance sign-offs
 
+## Failure Modes
+
+- **Risk tier down-classified**: a feature is labeled `minimal_risk` when it triggers EU AI Act `high_risk`. **Mitigation:** require a documented rationale for any down-classification; reject the assessment when the rationale is missing.
+- **Fail-open fallback**: a High-Risk AI feature's fallback is "show AI output anyway". **Mitigation:** reject fail-open fallbacks for High-Risk; require a deterministic alternative.
+- **HITL trigger missing**: a High-Risk feature ships without a human-in-the-loop gate. **Mitigation:** require the HITL gate before the feature is promoted; surface the missing gate in the assessment.
+- **AI transparency disclosure missing**: an AI feature ships without a user-facing label. **Mitigation:** require the AI label before promotion; surface the missing label in the assessment.
+
 ## Output Contracts
 
 When completing an AI governance, safety, or compliance risk evaluation, emit:

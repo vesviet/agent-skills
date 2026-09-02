@@ -59,6 +59,13 @@ Use skill: `write-tests`
 - Test tool discovery via MCP Inspector or mock client initialization.
 - Author unit and integration tests covering happy paths, schema validation failures, and downstream error handling.
 
+## Failure Modes
+
+- **Server card published without server-discover**: the MCP server card lacks the `server/discover` endpoint required by 2026-07-28. **Mitigation:** validate the card against the current MCP spec; reject cards without the discover endpoint.
+- **Tool handler missing input schema**: a tool is registered without an `inputSchema` field. **Mitigation:** require an explicit `inputSchema` for every tool; reject registrations without it.
+- **Auth scope too broad**: a tool grants the entire `admin` scope to any caller. **Mitigation:** validate every tool's required scope against the smallest-privilege profile; reject tools with over-broad scopes.
+- **Streaming HTTP header missing**: a tool uses streamable HTTP without the `Accept: text/event-stream` header. **Mitigation:** enforce the streamable HTTP transport headers; reject tools without the header.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:

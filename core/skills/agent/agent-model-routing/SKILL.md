@@ -149,6 +149,13 @@ After completion:
 - **ASI07 Inter-Agent Communication**: model outputs are untrusted inputs; validate against the declared output schema before passing downstream.
 - **ASI09 Human-Agent Trust Exploitation**: do not present a model selection as "best" without surfacing the cost, latency, and quality trade-offs.
 
+## Failure Modes
+
+- **Routing decision bypasses cost ceiling**: a route selects an expensive model when a cheaper tier would meet the SLA. **Mitigation:** enforce the per-task cost ceiling in the gateway; route to the cheaper tier on breach; surface the cost delta in the audit log.
+- **Routing drift**: a routing decision is made without checking the live provider health. **Mitigation:** query provider health (`/healthz`, status API) before routing; fail-over to a healthy provider when the primary is degraded; surface the fail-over in the trace span.
+- **Model version drift**: an inference call uses a deprecated model version. **Mitigation:** validate the model version against the live provider registry before pinning; reject unresolvable versions and surface the version mismatch.
+- **Routing decision without risk tier**: a request is routed without mapping to a risk tier. **Mitigation:** compute the risk tier from the request payload before routing; surface the tier in the trace span; reject the routing when the tier is undetermined.
+
 ## Output Contracts
 
 When the routing decision is consumed by another agent or persisted as a routing record, emit:

@@ -120,6 +120,13 @@ Cover:
 - [ ] loading and error states handled
 - [ ] tests added or updated
 
+## Failure Modes
+
+- **API client widens auth scope**: the client requests a token scope broader than the feature needs. **Mitigation:** validate every client against the feature's declared auth scope; reject clients that request broader scopes.
+- **AI-suggested client widens dependency surface**: an AI-suggested client pattern imports libraries outside the feature's interface. **Mitigation:** validate AI-generated code against the feature's narrow interface; reject patterns that deviate.
+- **Client retries non-idempotent mutations**: a POST or DELETE is retried without an idempotency key. **Mitigation:** require an explicit idempotency key on every non-idempotent mutation; reject retries without the key.
+- **Client ignores error codes**: the client treats 4xx and 5xx identically. **Mitigation:** require explicit handling for every documented error code; reject clients that lump error codes together.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:

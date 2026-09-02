@@ -155,6 +155,13 @@ See `core/roles/business-analyst.md` for full handoff rules for Researcher, Data
 - **Living requirements traceability:** Link requirements to design docs, code modules, and test cases using AI-assisted traceability tools (Trace.space, getleo.ai). This is especially critical for EU AI Act compliance and regulated industries requiring chain-of-causality audit trails.
 - **Agentic AC format:** When the downstream delivery involves AI agents, write acceptance criteria as deterministic, observable assertions (not prose intent) so agents can auto-validate implementation output.
 
+## Failure Modes
+
+- **AC written from the solution, not the user outcome**: acceptance criteria describe the implementation rather than the user behavior. **Mitigation:** rewrite AC in user-observable terms; reject criteria that name the implementation.
+- **Hidden stakeholder**: a downstream role is not in the recipient list. **Mitigation:** every ticket must enumerate the affected stakeholders; surface any missing recipient before the ticket is locked.
+- **YMYL feature without expert sign-off**: a YMYL-adjacent feature ships without the SME sign-off. **Mitigation:** require the YMYL gate before AC is approved; reject the deliverable when the sign-off is missing.
+- **Requirement drift after ticket approval**: a feature ticket is approved, then expands during implementation. **Mitigation:** freeze the AC at the ticket-creation step; any new requirement is re-scoped and re-prioritized.
+
 ## Output Contracts
 
 - `contracts/schemas/feature-ticket.json`

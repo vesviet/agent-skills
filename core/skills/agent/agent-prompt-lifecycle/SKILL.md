@@ -169,6 +169,13 @@ eval results, promotion decision, monitoring plan) lives in
 - **ASI07 Inter-Agent Communication**: golden-set artifacts and eval results are consumed by prompt-engineering and release agents; emit a structured contract so each role can validate.
 - **ASI09 Human-Agent Trust Exploitation**: do not present a prompt change as "improved" without surfacing the cost, latency, and quality delta against the golden set.
 
+## Failure Modes
+
+- **Prompt promoted without eval evidence**: a new prompt version is promoted without the golden-set eval passing. **Mitigation:** enforce the eval gate before promotion; reject promotions where the golden-set delta is below the threshold.
+- **Golden-set drift**: the golden set no longer matches production traffic. **Mitigation:** re-validate the golden set quarterly; surface the drift in the eval report; reject promotions when the golden set is older than 90 days.
+- **AI-suggested prompt change without human review**: a prompt change is shipped without the human sign-off gate. **Mitigation:** enforce the human review gate before promotion; track `reviewed_by` and `reviewed_at`; reject unreviewed promotions.
+- **Version drift from spec**: a prompt's contract diverges from the spec. **Mitigation:** validate the prompt's contract against the source spec before promotion; surface the divergence in the eval report.
+
 ## Output Contracts
 
 When the prompt lifecycle action is consumed by another agent, an eval

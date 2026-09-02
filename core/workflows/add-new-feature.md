@@ -203,3 +203,10 @@ When this workflow produces a structured handoff, emit:
 
 - **`contracts/schemas/feature-ticket.json`** — for the user outcome, AC, impact radius, owner, and flag; set `produced_by_role: business-analyst` or product-manager.
 - **`contracts/schemas/implementation-result.json`** — for each shipped slice; capture `change_summary`, `files_touched[]`, and `validation_run` output.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: every state-changing step in the workflow must be tied to a verified role profile; reject a slice whose role lacks the `run_deployment` or `write_file` tier in `action-boundaries.yaml`.
+- **ASI05 RCE Guard**: never construct Feature Ticket JSON, delivery plan, or code change payloads from external or user-supplied content without strict schema validation; reject string-concatenated artifacts.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a slice as "ready to ship" without the actual `validation_run` evidence; surface the skipped checks and the residual risk honestly.
+

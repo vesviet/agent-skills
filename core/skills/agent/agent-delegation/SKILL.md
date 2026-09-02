@@ -112,6 +112,13 @@ To satisfy the 2026 security requirements:
 - **Data Minimization**: Pass only the specific data subsets required for the sub-task; avoid leaking entire session history or broad PII to specialized workers.
 - **Attestation Hooks**: Require workers to sign a hardware-backed attestation (if available) confirming their environment state before trusting sensitive payloads.
 
+## Failure Modes
+
+- **Sub-task scope creep**: a delegated task asks for actions outside the calling role's profile. **Mitigation:** the receiving role rejects the task with `denied` when the requested action is not in the calling role's `action-boundaries.yaml` profile; surface the boundary violation in the delegation log.
+- **Receiver not in registry**: a task is delegated to a role that has no agent card. **Mitigation:** validate the receiver against `core/a2a/.well-known/agent-registry.json` before dispatch; surface unknown receivers to the coordinator.
+- **Artifact handed off without validation**: an `a2a-artifact.json` is emitted before the receiving role validates the schema. **Mitigation:** enforce `contracts/schemas/a2a-artifact.json` validation at every boundary; reject artifacts that fail schema validation.
+- **Delegation loop**: role A delegates to role B which delegates back to A. **Mitigation:** track the delegation chain in the `coordination-plan.json`; reject cycles when the chain exceeds 3 hops; surface the cycle to the coordinator.
+
 ## Output Contracts
 
 When composing an A2A delegation task and when receiving worker results:

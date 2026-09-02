@@ -137,6 +137,13 @@ Weekly:
 - **ASI09 Human-Agent Trust Exploitation**: do not present a trace summary as definitive without surfacing the actual events; redacted traces lose signal.
 - **ASI04 Supply Chain**: OTel collectors, tracing SDKs, and observability agents must be schema-validated against the expected manifest; treat unknown versions as untrusted.
 
+## Failure Modes
+
+- **Trace span drift from OTel GenAI convention**: a span attribute uses deprecated names (`prompt_tokens`, `completion_tokens`) instead of `gen_ai.usage.input_tokens` / `output_tokens`. **Mitigation:** validate every span attribute against `core/observability/otel-genai.md`; reject spans that use non-registered keys.
+- **Span emitted without `trace_id`**: a tool call is logged without a trace context. **Mitigation:** require `AGENT_TRACE_ID` env var for every span emission; reject spans without a valid `trace_id`.
+- **Cost attribution missing**: a tool call is logged without `team_id`, `project_id`, or `user_id`. **Mitigation:** reject tool calls missing the cost metadata; enforce at the gateway.
+- **Retention policy drift**: a span is retained longer than the agreed 90 days. **Mitigation:** enforce the retention policy at the storage layer; surface the violation in the audit log; purge the over-retained spans.
+
 ## Output Contracts
 
 When the observability data is consumed by another agent, an audit system,

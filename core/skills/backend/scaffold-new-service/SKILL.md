@@ -100,6 +100,13 @@ Make sure the new service has:
 - [ ] tests added
 - [ ] delivery handoff prepared
 
+## Failure Modes
+
+- **Service scaffolded without observability**: a new service is created without OTel, health probes, or audit-trail wiring. **Mitigation:** enforce the OTel + health + audit contract in the scaffold template; reject services that ship without instrumentation.
+- **Service scaffolded without auth profile**: a new service has no authn/authz. **Mitigation:** require an auth profile before the service is promoted; reject services with anonymous access to non-public routes.
+- **Migration runs out of order**: a new service's first migration runs before the schema it depends on. **Mitigation:** enforce the migration order via a sequencing tool; reject out-of-order migrations.
+- **Secret in scaffold**: a token or key is committed to the new service's source. **Mitigation:** use the platform secret store; run secret scanning in CI; rotate the affected credential on detection.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:

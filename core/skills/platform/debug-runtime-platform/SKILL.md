@@ -98,6 +98,13 @@ Confirm:
 - [ ] smallest safe repair applied
 - [ ] rollout and health verified
 
+## Failure Modes
+
+- **Symptom before change**: a fix is applied before the symptom is captured. **Mitigation:** capture the exact symptom and the recent changes before any change.
+- **Multiple layers changed**: build, config, and code are all modified in one incident response. **Mitigation:** isolate one failure layer at a time; avoid unrelated cleanup.
+- **Fix not verified**: the fix is applied but recovery is not confirmed. **Mitigation:** verify recovery end-to-end; rerun the failing scenario; check for nearby regressions.
+- **AI log summary trusted blindly**: an AI log summarization tool returns a root cause that is acted on without verification. **Mitigation:** verify every AI-identified root cause against raw evidence.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:

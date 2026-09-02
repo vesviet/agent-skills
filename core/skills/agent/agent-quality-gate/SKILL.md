@@ -126,6 +126,13 @@ Risk acceptance owner if needed:
 - [ ] final status reported with residual risk
 - [ ] phase exit decision stated explicitly
 
+## Failure Modes
+
+- **Gate bypassed under release pressure**: a release skips the gate to meet a deadline. **Mitigation:** the release pipeline rejects releases that do not pass the gate; surface the bypass in the postmortem.
+- **Two-axis collapse**: a review merges the Standards and Spec axes into a single ranking. **Mitigation:** the report format requires side-by-side axes; reject reports that cross-rerank.
+- **Empty diff reviewed**: a reviewer approves a diff that is empty or points to the wrong ref. **Mitigation:** fail fast on bad ref or empty diff; surface the failure to the reviewer.
+- **AI review trusted blindly**: an AI-suggested finding is acted on without verification. **Mitigation:** verify every AI-suggested finding against the actual code; reject findings that cannot be reproduced.
+
 ## Output Contracts
 
 When evaluating phase-exit criteria, validator outputs, or test execution results, emit:

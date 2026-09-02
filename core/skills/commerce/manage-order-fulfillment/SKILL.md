@@ -97,6 +97,13 @@ pending → cancelled (only before shipped)
 - [ ] Vietnamese carrier (Grab Express, GHN, GHTK) tracking is driven by webhook callbacks.
 - [ ] Carrier status codes are mapped to internal event-sourced order events.
 
+## Failure Modes
+
+- **Order fulfilled twice**: a fulfillment is recorded twice due to a retry or duplicate webhook. **Mitigation:** require an idempotency key on every fulfillment call; reject duplicate fulfillments.
+- **Inventory not decremented**: an order is fulfilled without decrementing the inventory. **Mitigation:** enforce the inventory decrement in the same transaction as the fulfillment; reject fulfillments without the decrement.
+- **Tracking ID not propagated**: a tracking id is generated but not sent to the customer. **Mitigation:** require a notification step on every fulfillment; surface unfulfilled notifications in the audit log.
+- **Carrier mismatch**: the carrier chosen does not service the destination. **Mitigation:** validate the carrier against the destination at fulfillment time; reject unfulfillable orders before charging.
+
 ## Output Contracts
 
 When the fulfillment workflow is consumed by warehouse, shipping, or

@@ -154,6 +154,13 @@ const files = await sandbox.listFiles('/workspace/project');
 - [ ] Explicit resource limits (`timeout_ms`, `memory_mb`, `cpu_ms`) are configured for sandbox executions.
 - [ ] Network isolation is managed securely, routing necessary fetches through the allowed host callback via `env.SANDBOX`.
 
+## Failure Modes
+
+- **Sandbox input not validated**: a sandbox runs untrusted input without schema validation. **Mitigation:** validate every input against the declared `inputSchema` before dispatch; reject inputs that fail validation.
+- **Sandbox network policy too broad**: a sandbox can reach the public internet. **Mitigation:** enforce the least-privilege network policy; reject sandboxes that egress to untrusted domains.
+- **Sandbox resource limits unset**: a sandbox runs without CPU or memory limits. **Mitigation:** enforce the default resource limits at the orchestrator; reject sandboxes without limits.
+- **Sandbox output not classified**: a sandbox emits output without a `data-classification` tag. **Mitigation:** require a classification tag on every sandbox output; reject unclassified output.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:

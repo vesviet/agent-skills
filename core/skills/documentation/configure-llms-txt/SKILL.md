@@ -137,6 +137,13 @@ jobs:
 - `/public/llms-full.txt` — companion full-text (optional but recommended)
 - Updated `robots.txt` with `llms.txt` reference
 
+## Failure Modes
+
+- **`/llms.txt` not regenerated on doc change**: a doc is added but the AI-readable index is stale. **Mitigation:** regenerate `/llms.txt` and `/llms-full.txt` on every doc change; fail the CI on staleness.
+- **External link rot**: a doc references a 404. **Mitigation:** run broken-link checker in CI; fail the build on 404.
+- **Schema invalid**: the manifest is published with a malformed JSON. **Mitigation:** validate the JSON against the current schema; fail the build on schema mismatch.
+- **Secret leaked in the manifest**: a token, customer id, or internal hostname is pasted into the manifest. **Mitigation:** run secret scan on every commit; reject the change on detection.
+
 ## Output Contracts
 
 When the `llms.txt` / `llms-full.txt` change is consumed by an AI agent,

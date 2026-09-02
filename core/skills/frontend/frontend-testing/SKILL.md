@@ -116,6 +116,13 @@ Run:
 - [ ] async behavior made deterministic
 - [ ] tests run successfully
 
+## Failure Modes
+
+- **Coverage theater**: a high line-coverage score is achieved without exercising the risky path. **Mitigation:** enforce the Testing Trophy and a mutation score ≥ 75-80% via Stryker for critical libraries.
+- **Brittle E2E for unit logic**: a unit-level decision is covered only by an E2E test. **Mitigation:** drop the E2E and add a focused unit test; reserve E2E for cross-service flows.
+- **Live LLM in CI**: a test calls a live LLM provider. **Mitigation:** stub LLM calls with `vcr`-style fixtures in CI; never call live providers in CI.
+- **Skipped tests reported as full coverage**: a test run skips a category and reports the line coverage as full. **Mitigation:** surface skipped tests in the test report; reject reports where skipped > 0% without a documented rationale.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:

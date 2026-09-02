@@ -150,6 +150,13 @@ Adapt these assumptions to the active repo:
 
 Skip absent concepts. Do not mark them as findings just because this pack mentions them.
 
+## Failure Modes
+
+- **Review without a fixed point**: a review is requested before the diff is complete. **Mitigation:** fail fast on bad ref or empty diff; surface the failure to the reviewer.
+- **Two-axis collapse**: the Standards and Spec axes are merged into a single ranking. **Mitigation:** report the two axes side by side; never pick a single winner across axes.
+- **Spec missing silently**: a review proceeds without a spec source. **Mitigation:** if the spec is missing, report "no spec available" and skip the Spec axis; do not invent requirements.
+- **Smell baseline over repo standard**: a finding flags a smell that the repo explicitly endorses. **Mitigation:** repo-documented standards override the smell baseline; suppress the smell where the repo endorses it.
+
 ## Output Contracts
 
 When the service review produces a structured handoff (release

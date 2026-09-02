@@ -102,6 +102,13 @@ Answer before building:
 - [ ] A2A bank settlement flow webhook states handled dynamically with inventory TTL locks
 - [ ] HTTP 402/MPP programmatic checkout path supported and tested for non-interactive agent payments
 
+## Failure Modes
+
+- **Provider webhook signature not verified**: a webhook handler accepts a payload without verifying the signature. **Mitigation:** verify the signature against the provider's public key on every webhook call; reject unsigned webhooks.
+- **Currency mismatch between cart and gateway**: the cart total in one currency is sent to a gateway in another. **Mitigation:** validate the currency on the cart and on the gateway call; reject mismatched calls.
+- **Refund issued without original charge lookup**: a refund is sent without a verifiable original charge id. **Mitigation:** require the original charge id on every refund call; reject refunds without a matching charge.
+- **PCI scope drift**: a new field is added to the checkout that includes card data. **Mitigation:** review the data flow before merge; require a security review for any new card-handling code.
+
 ## Output Contracts
 
 When the payment integration is consumed by storefront, checkout, or

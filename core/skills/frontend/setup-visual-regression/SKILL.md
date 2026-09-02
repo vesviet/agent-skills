@@ -61,6 +61,13 @@ Document snapshot maintenance procedures:
 - Define the CLI command for regenerating baselines when intentional UI changes land (e.g., `npm run test:visual -- -u`).
 - Enforce mandatory reviewer sign-off from designated UI/UX or frontend leads before updating baselines.
 
+## Failure Modes
+
+- **Baseline not captured for new component**: a new component ships without a visual baseline. **Mitigation:** require a Chromatic or Percy baseline at component registration; reject components without the baseline.
+- **Baseline drift undetected**: a visual baseline changes without a corresponding PR. **Mitigation:** lock the baseline to the component version; surface drift in the diff report.
+- **Driver version drift**: the visual driver (Chromatic, Percy) is updated without re-baselining. **Mitigation:** re-baseline every component on driver upgrades; surface the missing re-baseline in CI.
+- **Threshold too loose**: a visual regression below the threshold is allowed. **Mitigation:** set the threshold per component category; reject thresholds looser than 0.1% pixel delta.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:

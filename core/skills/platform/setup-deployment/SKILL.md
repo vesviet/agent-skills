@@ -97,6 +97,13 @@ For machine-to-machine handoff, output a structured JSON plan (e.g., `deployment
 - [ ] validation commands run
 - [ ] health and rollback behavior reviewed
 
+## Failure Modes
+
+- **Deploy without rollback verified**: a release ships but the previous deployment is not rollbackable. **Mitigation:** verify the rollback path before the deploy; reject the deploy when the path is not confirmed.
+- **Pipeline silently skips a stage**: a CI step is marked optional and bypasses the gate. **Mitigation:** enforce a hard gate on every required stage; reject pipelines that allow skip.
+- **Secret in pipeline config**: a token or key is committed to a CI variable file. **Mitigation:** use the platform secret store; run secret scanning in CI; rotate the affected credential on detection.
+- **Region failover not tested**: a multi-region deploy has never exercised the failover. **Mitigation:** schedule a quarterly failover drill; surface the drill result; reject production cutover without a recent passing drill.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:

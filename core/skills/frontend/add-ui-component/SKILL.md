@@ -119,6 +119,13 @@ Cover:
 - [ ] tests added or updated
 - [ ] `implementation-result.json` emitted for the change slice (see Output Contracts)
 
+## Failure Modes
+
+- **Token hardcoding**: a component bypasses the design system with raw values. **Mitigation:** enforce token-enforcement lint rules; reject components that fail the lint.
+- **AI component without conformance check**: an AI-generated component is merged without the GenUI review. **Mitigation:** require the review checklist; reject components without the review.
+- **Visual regression baseline missing**: a UI change ships without a visual baseline. **Mitigation:** require a Chromatic or Percy baseline; reject merges without a passing baseline.
+- **Critical state missing**: a component omits one of the required UI states. **Mitigation:** enforce the state checklist; reject specs that skip a state.
+
 ## Output Contracts
 
 When this skill runs inside a coordinated slice planned by Technical Lead or gated by Reviewer, emit:

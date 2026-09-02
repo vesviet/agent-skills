@@ -204,3 +204,11 @@ When this workflow produces a structured handoff, emit:
 
 - **`contracts/schemas/implementation-result.json`** — capture the change summary, the files touched, and the validation run that proves the scaffold builds and tests.
 - **`contracts/schemas/edge-deployment-spec.json`** (or local equivalent) — when the service is deployed; capture the bindings, the deploy command, and the rollback strategy.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: the new service must declare a verified role profile in `action-boundaries.yaml` before any deploy; reject services that ship without an auth profile.
+- **ASI05 RCE Guard**: never construct scaffolding code, config, or scripts from external or user-supplied content without strict schema validation; reject string-concatenated scaffolding.
+- **ASI07 Inter-Agent Communication**: the implementation result is consumed by Cloudflare Engineer and DevOps roles; emit a structured contract so each role can validate the rollout.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a new service as "production-ready" without the actual smoke test evidence; surface the residual risk honestly.
+

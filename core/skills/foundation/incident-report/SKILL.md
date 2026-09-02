@@ -166,6 +166,13 @@ Emit `contracts/schemas/incident-report.json` when machine handoff to Agent Coor
 - [ ] AI-assisted RCA findings validated and confirmed by a human operator
 - [ ] replayable agent audit trail (model version, prompts, tool calls, policy logs) attached as postmortem evidence
 
+## Failure Modes
+
+- **Symptom before change**: a fix is applied before the symptom is captured. **Mitigation:** capture the exact symptom, the first meaningful error, and the recent changes before any change.
+- **Multiple layers changed**: build, config, and code are all modified in one incident response. **Mitigation:** isolate one failure layer at a time; avoid unrelated cleanup during incident handling.
+- **Postmortem skipped**: the incident is closed without a root cause analysis. **Mitigation:** require a postmortem in `contracts/schemas/incident-report.json` within 72 hours of resolution; reject the close without the postmortem.
+- **Customer impact not captured**: the incident is closed without recording the customer impact. **Mitigation:** capture DORA Change Failure Rate, MTTR, and customer impact before the incident is closed; surface the missing impact in the postmortem.
+
 ## Output Contracts
 
 When responding to, documenting, or completing the post-mortem of an operational incident, emit:

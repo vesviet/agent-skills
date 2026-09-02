@@ -97,6 +97,13 @@ Cover:
 - [ ] SEO/SSR verified for public-facing routes (meta tags, OG, SSG behavior)
 - [ ] tests added or updated
 
+## Failure Modes
+
+- **Route added without SEO metadata**: a new page ships without title and description. **Mitigation:** require the SEO metadata at the route registration; reject pages without it.
+- **Route added without authn/authz**: a new route is open to anonymous access. **Mitigation:** require an auth profile at the route registration; reject public exposure of non-public routes.
+- **Layout drift from the design system**: a new page uses raw values instead of design tokens. **Mitigation:** enforce token-enforcement lint rules; reject pages that fail the lint.
+- **A11y state missing**: a page omits one of the required UI states. **Mitigation:** enforce the state checklist on every page; reject pages that skip a state.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:

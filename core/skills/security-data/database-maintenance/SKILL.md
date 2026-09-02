@@ -92,6 +92,13 @@ Confirm:
 - [ ] Major database version upgrades use `pg_createsubscriber` with manual DDL replication
 - [ ] All index maintenance uses `CONCURRENTLY` to avoid exclusive locks
 
+## Failure Modes
+
+- **Maintenance without rollback verified**: a migration runs without a verified rollback path. **Mitigation:** require a rollback plan for every maintenance operation; reject the operation when the plan is missing.
+- **Maintenance outside window**: a destructive operation runs during peak traffic. **Mitigation:** require an explicit maintenance window; reject operations that fall outside the agreed window.
+- **Privileged role used for routine work**: a superuser role is used for non-privileged operations. **Mitigation:** enforce least-privilege scoping; reject operations that exceed the role's declared scope.
+- **Lock pool starvation**: a long-running DDL blocks the connection pool. **Mitigation:** set `SET lock_timeout = '2s';` on every DDL; surface the timeout in CI.
+
 ## Output Contracts
 
 When the maintenance operation is consumed by SRE, release, or audit

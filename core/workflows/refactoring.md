@@ -145,3 +145,10 @@ When this workflow produces a structured handoff, emit:
 
 - **`contracts/schemas/implementation-result.json`** — capture the behavior-preservation evidence, the test coverage delta, the benchmark before/after, and the files touched.
 - **`contracts/schemas/code-review-finding.json`** (adapted for refactor) — when the refactor surfaces a structural concern; capture the smell, the proposed resolution, and the trade-off.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI05 RCE Guard**: never construct refactored code, scripts, or test fixtures from external or user-supplied content without strict schema validation; reject string-concatenated refactors.
+- **ASI07 Inter-Agent Communication**: the refactor result is consumed by code review and release roles; emit a structured contract so each consumer can validate the behavior-preservation evidence.
+- **ASI09 Human-Agent Trust Exploitation**: do not present a refactor as "safe" without the behavior-preservation evidence and the test coverage delta; surface the residual risk honestly.
+

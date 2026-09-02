@@ -119,6 +119,13 @@ Cover:
 - [ ] tests added or updated
 - [ ] `implementation-result.json` emitted for the change slice (see Output Contracts)
 
+## Failure Modes
+
+- **Endpoint added without authn/authz**: a new endpoint is created without an explicit auth profile. **Mitigation:** reject the endpoint if it has no authn/authz; surface the missing policy to the reviewer.
+- **Input schema drift from the contract**: an endpoint accepts a request shape that does not validate against `contracts/schemas/api-contract-spec.json`. **Mitigation:** validate the request shape at the handler boundary; reject the request on schema mismatch.
+- **Endpoint added without rate limit**: a new endpoint is open to unbounded traffic. **Mitigation:** enforce the rate limit at the gateway; reject endpoints without a rate-limit profile.
+- **Error response leaks stack trace**: a 5xx response includes the server stack trace. **Mitigation:** return structured JSON error responses with codes; never expose raw stack traces.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery (Technical Lead planned, Reviewer/QA will gate), emit:

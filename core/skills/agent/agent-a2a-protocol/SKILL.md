@@ -148,6 +148,13 @@ See `./references/a2a-spec.md` for signed Agent Card verification, the full stre
 
 Emit `agent-trace-span.json` records (or JSONL via Cursor hooks) for material operations. Include `trace_id` on artifacts for correlation.
 
+## Failure Modes
+
+- **Schema-drifted a2a-task.json**: a task is dispatched with a `a2a_protocol_version` below the current floor. **Mitigation:** validate the task against the current A2A 1.0 schema before dispatch; reject tasks whose version is below the floor and surface the minimum required version in the error.
+- **Receiver not in registry**: a task is sent to a role that has no `*.agent-card.json` in `core/a2a/registry/`. **Mitigation:** validate the receiver against `core/a2a/.well-known/agent-registry.json` before dispatch; surface unknown receivers to the coordinator and require a manual role assignment.
+- **Push notification token drift**: a long-running task's `push_notification_config.url` points to a stale endpoint. **Mitigation:** validate the token freshness and the endpoint reachability before each push; require an explicit `push_notification_config` block on tasks that exceed the streaming timeout.
+- **Streaming SSE leak**: a long-running task stream is not closed cleanly. **Mitigation:** set explicit stream timeouts and a stream-id; close on task completion or cancel; surface the unclosed stream in the incident report.
+
 ## Output Contracts
 
 When managing task lifecycles under the A2A 1.0 protocol, emit the following structured lifecycle artifacts:

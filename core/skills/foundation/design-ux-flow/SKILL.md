@@ -104,6 +104,13 @@ Markdown brief (see `core/roles/ui-ux-designer.md` template) **plus** JSON contr
 - [ ] Figma variables used to prototype dynamic data states (empty states, errors, long values)
 - [ ] progressive disclosure applied to separate primary actions from advanced configuration options
 
+## Failure Modes
+
+- **State omission**: a screen spec misses one of the five required states (Empty, Loading, Populated, Error, Unauthorized). **Mitigation:** enforce the state checklist on every screen spec; reject specs that skip a state.
+- **Off-brand voice in copy**: a generated copy drifts from the brand voice. **Mitigation:** validate the voice against the brand guidelines; reject copy that drifts.
+- **Prototype missing for multi-screen flow**: a flow with more than 2 screens is reviewed without an interactive prototype. **Mitigation:** refuse the review; require the prototype link before proceeding.
+- **AI component without conformance check**: an AI-generated component is merged without the token conformance check. **Mitigation:** require the GenUI review checklist; reject components without the review.
+
 ## Output Contracts
 
 When delivering screen interaction flows or component design specifications for engineering handoff, emit:

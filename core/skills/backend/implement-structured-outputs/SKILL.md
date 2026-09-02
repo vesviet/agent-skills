@@ -54,6 +54,13 @@ Use skill: `write-tests`
 - Author unit tests using mock provider responses (valid payload, partial payload, malformed payload, refusal).
 - Assert that invalid model responses never reach core business logic without triggering the recovery flow.
 
+## Failure Modes
+
+- **Schema drift from the source spec**: a generated output diverges from the JSON Schema the spec declares. **Mitigation:** validate every output against the source JSON Schema before returning; reject outputs that fail validation.
+- **Constrained decoding disabled**: a tool returns free-form text instead of a schema-validated object. **Mitigation:** enforce structured outputs (constrained decoding) at the model gateway; reject free-form responses.
+- **Field rename in a future model version**: a model version change renames a field. **Mitigation:** validate every output against the schema; surface the rename in the eval report; update the schema and the prompt.
+- **Ungrounded output**: the model returns a value that is not in the source data. **Mitigation:** enforce a grounding check (cosine similarity ≥ 0.7) on retrieval-augmented outputs; surface the ungrounded output as `[UNVERIFIED]`.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:

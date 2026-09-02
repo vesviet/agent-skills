@@ -187,3 +187,10 @@ When this workflow produces a structured handoff, emit:
 
 - **`contracts/schemas/content-handoff.json`** (or markdown frontmatter) — capture `source_url`, `channels[]`, `ai_label_required[]`, `human_review_status`, and `fact_density_check`.
 - **`contracts/schemas/seo-metadata.json`** — when the published piece has updated SEO metadata; capture the title, meta, canonical, and schema decisions.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: an AI-drafted article may reframe the user goal through off-brand copy. **Mitigation:** cross-check the article's core claim against the source brief; reject reframed goals.
+- **ASI03 Identity & Privilege Abuse**: editorial roles must own the publish gate; never let a non-editorial role auto-publish without the human editorial sign-off.
+- **ASI09 Human-Agent Trust Exploitation**: do not present AI-generated content as fully verified without the human editorial sign-off; surface the AI provenance and the reviewer honestly.
+

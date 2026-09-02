@@ -128,6 +128,13 @@ WAI-ARIA 1.3 is a Working Draft and these annotation roles are still marked prop
 - [ ] Cognitive accessibility (COGA) principles (plain language, error prevention, memory aids) reviewed
 - [ ] ARIA annotation roles (suggestion, comment, mark) and attributes (aria-description, aria-braillelabel, aria-brailleroledescription) verified as additive only
 
+## Failure Modes
+
+- **A11y regression undetected**: a UI change introduces a contrast or focus issue. **Mitigation:** run axe-core on every component; surface findings as blocking; require human review for components that fail.
+- **WCAG version drift**: the review references a deprecated WCAG criterion. **Mitigation:** validate every reference against the current WCAG version; surface the drift in the review.
+- **Screen reader not tested**: a component passes automated checks but fails screen reader. **Mitigation:** require a manual screen reader pass on critical components; surface the missing test in the review.
+- **Color-only signal**: a component conveys state by color alone. **Mitigation:** require an alternative signal (icon, text, ARIA); reject components with color-only state.
+
 ## Output Contracts
 
 When the a11y review produces a structured handoff (CI gate, pre-merge

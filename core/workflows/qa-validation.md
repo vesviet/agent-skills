@@ -221,3 +221,11 @@ When this workflow produces a structured handoff, emit:
 
 - **`contracts/schemas/test-report.json`** (or equivalent) — capture the run id, the test categories, the pass/fail counts, the skipped tests with rationale, and the release confidence verdict.
 - **`contracts/schemas/code-review-finding.json`** (adapted for QA) — when the run surfaces a test gap; capture the category, severity, and the fix path.
+
+### Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: every test runner, e2e driver, and fixture library must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 RCE Guard**: never construct test scripts or fixture payloads from external or user-supplied content without sanitization; treat adversarial test inputs as a hostile surface.
+- **ASI07 Inter-Agent Communication**: the test report is consumed by CI and release roles; emit a structured contract so each consumer can validate the run.
+- **ASI09 Human-Agent Trust Exploitation**: do not present partial test runs as full coverage; surface skipped tests and their rationale honestly.
+

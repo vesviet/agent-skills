@@ -92,6 +92,13 @@ Cover:
 - [ ] observability instrumented (OTel span on publish/consume)
 - [ ] tests added or updated
 
+## Failure Modes
+
+- **Event emitted without schema validation**: a handler emits an event with a shape that does not validate against the event schema. **Mitigation:** validate the event at the producer boundary; reject the event on schema mismatch.
+- **Dead-letter queue missing**: a handler fails silently without a DLQ for retry. **Mitigation:** require a DLQ binding on every event handler; surface the missing binding at review.
+- **Idempotency key missing on retry**: a handler retries without an idempotency key, producing duplicate side effects. **Mitigation:** require an explicit idempotency key on every non-idempotent handler; reject handlers without the key.
+- **Consumer lag undetected**: the consumer is lagging but no alert fires. **Mitigation:** wire a consumer-lag alert at the 80th percentile; surface the lag in the SRE dashboard.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:

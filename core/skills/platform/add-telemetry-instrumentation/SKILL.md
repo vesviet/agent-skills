@@ -81,6 +81,13 @@ Confirm that logs, metrics labels, and trace attributes do not expose secrets, c
 - [ ] Cloudflare Workers telemetry configured with wrangler `observability` block and OTLP push
 - [ ] GPU metrics (`hw.gpu.*`) scraped via OTel Collector and DCGM exporter
 
+## Failure Modes
+
+- **Instrumentation added without a dashboard**: a metric is emitted but no dashboard consumes it. **Mitigation:** require a dashboard at every instrumentation point; reject metrics without a dashboard.
+- **PII in span attributes**: a span attribute contains PII or a credential. **Mitigation:** classify every span attribute with `data-classification.yaml`; redact restricted fields before persistence.
+- **OTel SDK version drift**: an instrumentation library is updated without re-pinning the OTel registry. **Mitigation:** re-validate every span attribute against the current OTel GenAI convention on SDK upgrade; surface the drift.
+- **Alert noise**: a new alert is added with no runbook. **Mitigation:** require a runbook at every alert; reject alerts without a runbook link.
+
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:

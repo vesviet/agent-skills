@@ -144,6 +144,13 @@ At each layer boundary:
 - [ ] PII masked or aggregated before any report or log output
 - [ ] results spot-checked against source before stakeholder delivery
 
+## Failure Modes
+
+- **Pipeline silently corrupts data**: a transformation changes a column type or a join key without an alert. **Mitigation:** enforce schema-validation gates at every pipeline boundary; alert on row-count drift and schema-evolution events.
+- **Migration runs without idempotency**: a pipeline can be re-triggered and produce duplicate or out-of-order data. **Mitigation:** every step is idempotent on the natural key; the pipeline test re-runs the same input and asserts deterministic output.
+- **AI-generated SQL bypasses the read-only guard**: an AI-suggested query runs against a production database. **Mitigation:** enforce read-only DuckDB views with `SET max_memory = '4GB'` and query timeout limits.
+- **Schema drift undetected**: the warehouse schema evolves without the pipeline knowing. **Mitigation:** enforce schema-validation gates; alert on unexpected column additions or type changes.
+
 ## Output Contracts
 
 When the data pipeline is consumed by analytics, ML, or downstream
