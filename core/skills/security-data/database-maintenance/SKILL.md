@@ -1,127 +1,91 @@
 ---
 name: database-maintenance
-description: Plan or perform operational database maintenance by following the repo's safety, backup, rollback, and verification patterns. Use for cleanup, backfill, index work, repair tasks, restore preparation, or other operational data changes.
+description: Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/Delta compaction, snapshot expiration, orphan vacuuming, clustering optimization, query cost monitoring/FinOps, and relational/vector DB index tuning. Use for cleanup, compaction, repair, and operational performance tasks.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, query_db, read_database, run_tests]
 ---
 
 # Database Maintenance
 
-Use this skill when a task is operationally focused on keeping a data store healthy, safe, or recoverable rather than just changing application schema.
+Use this skill when planning or performing operational maintenance on relational databases, pgvector stores, or modern lakehouses to preserve health, query performance, and financial efficiency.
 
 ## When to Use
 
-- cleanup, backfill, or index work
-- restore preparation or repair tasks
-- operational data changes
-- following backup/rollback verification
+- compacting small files in Apache Iceberg or Delta Lake tables via bin-pack rewriting
+- expiring stale lakehouse snapshots and vacuuming orphaned data files
+- tuning multi-dimensional Z-Order clustering and partition pruning strategies
+- monitoring analytical query costs, setting scan limits, and enforcing Data FinOps
+- rebuilding fragmented B-tree, HNSW, or IVFFlat pgvector indexes
+- executing zero-downtime database upgrades with `pg_createsubscriber`
 
 ## Core Rules
 
-- understand the operational goal before running maintenance
-- favor reversible or restartable actions where possible
-- protect availability, integrity, and recovery first
-- separate schema evolution from operational maintenance when that reduces risk
-- verify outcomes with the smallest safe checks before declaring success
-- Rebuild HNSW and IVFFlat pgvector indexes using `REINDEX INDEX CONCURRENTLY` after bulk embedding updates, monitoring index bloat and running `VACUUM ANALYZE`.
-- Standardize on `REINDEX CONCURRENTLY` rather than plain `REINDEX` to avoid exclusive locks and keep tables accessible.
-- Apply `pg_createsubscriber` in PostgreSQL 17 for zero-downtime upgrades, manually replicating and applying any DDL schema changes.
+- understand operational goals and assess bloat metrics before executing maintenance
+- favor non-blocking, concurrent operations: always use `REINDEX CONCURRENTLY` in relational stores
+- enforce mandatory lock timeout: execute `SET lock_timeout = '2s';` on every maintenance DDL
+- enforce a 7-day snapshot retention policy on Iceberg/Delta lakehouses to prevent catalog metadata bloat
+- compact lakehouse Parquet files to 128 MB–512 MB target file sizes; vacuum unreferenced orphan files
+- apply Data FinOps scan limits: auto-abort queries projecting >50 GB scans without partition filters
+- refresh optimizer statistics with `VACUUM ANALYZE` following bulk data ingestion or vector updates
+- utilize PostgreSQL 17 `pg_createsubscriber` for zero-downtime major version upgrades
+- require an approved rollback and backup plan before initiating any destructive or compaction operation
+- detailed SQL runbooks, procedures, and FinOps policies are maintained in [`references/lakehouse-ops-and-finops.md`](references/lakehouse-ops-and-finops.md) and [`references/relational-and-vector-maintenance.md`](references/relational-and-vector-maintenance.md)
 
 ## Suggested Process
 
-### 1. Define The Maintenance Goal
+### 1. Assess Store State & Bloat Metrics
+Inspect table bloat, dead tuple ratios, fragmented vector index graphs, or lakehouse small file counts and snapshot ages.
 
-Clarify whether the task is mainly:
+### 2. Formulate Maintenance Window & Rollback Plan
+Determine online concurrency feasibility. Establish maintenance windows, lock timeout thresholds, and rollback criteria.
 
-- cleanup
-- backfill
-- index or performance work
-- repair or reconciliation
-- backup or restore preparation
-- retention or archival work
+### 3. Execute Compaction, Vacuum, or Index Rebuild
+Run Iceberg bin-pack compaction (`rewrite_data_files`), expire stale snapshots, or rebuild pgvector indexes concurrently.
 
-### 2. Inspect The Current State
+### 4. Enforce FinOps Controls & Pruning Rules
+Verify warehouse auto-suspend timers (≤60s), query scan ceilings (50 GB), and partition clustering layouts.
 
-Gather:
-
-- affected database or storage system
-- object size or data volume
-- current health indicators
-- maintenance windows or traffic sensitivity
-- backup and restore posture
-
-### 3. Plan The Safe Execution Path
-
-Decide:
-
-- what can run online versus needs a window
-- whether batching or throttling is needed
-- whether dry-run or preview is possible
-- how progress and failure will be observed
-- what the stop or rollback criteria are
-
-### 4. Execute The Maintenance Carefully
-
-Prefer:
-
-- narrow scopes
-- explicit ordering
-- resumable steps
-- progress checkpoints
-
-Avoid large destructive operations without clear recovery steps.
-
-### 5. Verify And Capture Follow-Up
-
-Confirm:
-
-- intended records or structures were updated
-- performance and correctness did not regress
-- backups or recovery assumptions still hold
-- any deferred cleanup or monitoring follow-up is recorded
+### 5. Verify Health & Post-Maintenance SLA
+Validate query latency improvements, verify optimizer statistics, and confirm table integrity before closing the window.
 
 ## Checklist
 
-- [ ] maintenance goal defined
-- [ ] current state inspected
-- [ ] safe execution plan prepared
-- [ ] backup or recovery posture verified before starting destructive steps
-- [ ] recovery path understood
-- [ ] maintenance executed with checkpoints
-- [ ] post-maintenance verification completed
-- [ ] pgvector indexes (HNSW/IVFFlat) rebuilt via `REINDEX INDEX CONCURRENTLY` after bulk updates
-- [ ] `VACUUM ANALYZE` run following bulk inserts to update optimizer statistics
-- [ ] Major database version upgrades use `pg_createsubscriber` with manual DDL replication
-- [ ] All index maintenance uses `CONCURRENTLY` to avoid exclusive locks
-
-## Failure Modes
-
-- **Maintenance without rollback verified**: a migration runs without a verified rollback path. **Mitigation:** require a rollback plan for every maintenance operation; reject the operation when the plan is missing.
-- **Maintenance outside window**: a destructive operation runs during peak traffic. **Mitigation:** require an explicit maintenance window; reject operations that fall outside the agreed window.
-- **Privileged role used for routine work**: a superuser role is used for non-privileged operations. **Mitigation:** enforce least-privilege scoping; reject operations that exceed the role's declared scope.
-- **Lock pool starvation**: a long-running DDL blocks the connection pool. **Mitigation:** set `SET lock_timeout = '2s';` on every DDL; surface the timeout in CI.
-
-## Output Contracts
-
-When the maintenance operation is consumed by SRE, release, or audit
-agents, emit:
-
-- **`contracts/schemas/deployment-plan.json`** capturing the maintenance window, the steps, the rollback path, and the validation run.
-- For human-readable reports, a markdown runbook of the maintenance procedure, the failure modes, and the rollback steps.
-
-Skip emission for read-only diagnostic queries that do not cross a role boundary.
-
-## Security Guardrails (OWASP ASI)
-
-- **ASI03 Identity & Privilege Abuse**: the maintenance role's database privileges must follow least privilege; reject operations that exceed the declared scope.
-- **ASI04 Supply Chain**: database engine, client library, and migration tool versions must be schema-validated against the expected manifest; treat unknown versions as untrusted.
-- **ASI05 RCE Guard**: never construct SQL queries or migration commands from external content without strict parameterization.
-- **ASI07 Inter-Agent Communication**: the maintenance plan is consumed by SRE and release agents; emit a structured contract so each role can validate.
-- **ASI09 Human-Agent Trust Exploitation**: do not present a maintenance operation as "safe" without a verified rollback path; surface the residual risk honestly.
+- [ ] maintenance goal and target system health indicators inspected before execution
+- [ ] rollback plan and recovery posture verified before starting destructive or compaction steps
+- [ ] `SET lock_timeout = '2s';` configured on all relational DDL operations to prevent connection pool starvation
+- [ ] all relational and pgvector index maintenance executed with `CONCURRENTLY`
+- [ ] `VACUUM ANALYZE` executed following bulk operations to update query planner statistics
+- [ ] Apache Iceberg/Delta small files compacted to 128 MB–512 MB target sizes using bin-pack strategy
+- [ ] stale snapshots older than 7 days expired and orphaned data files vacuumed
+- [ ] Data FinOps scan limits (projected scan ≤ 50 GB) and warehouse auto-suspend (≤ 60s) enforced
+- [ ] post-maintenance query benchmarks and table integrity verified against SLA targets
+- [ ] deployment plan emitted and validated against `contracts/schemas/deployment-plan.json`
 
 ## Related Skills
 
-- **create-migration**: Handle schema-focused changes separately
-- **performance-profiling**: Measure performance-sensitive maintenance impact
-- **troubleshoot-service**: Investigate runtime issues caused by data problems
-- **review-service**: Review release risk after operational data changes
-- **commit-code**: Prepare any required source-of-truth updates for delivery
+- **create-migration**: Separate schema migrations from operational maintenance tasks
+- **performance-profiling**: Measure query latencies, execution plans, and maintenance impact
+- **troubleshoot-service**: Diagnose operational bottlenecks caused by index bloat or lock contention
+- **review-service**: Review release and operational risks following data store maintenance
+- **commit-code**: Safely commit updated maintenance runbooks and configuration scripts
+
+## Output Contracts
+
+When maintenance operations are coordinated with SRE, release managers, or audit agents, emit:
+
+- `contracts/schemas/deployment-plan.json` — detailing maintenance window, target tables, execution steps, rollback procedure, and validation benchmarks.
+- Markdown runbook summarizing executed maintenance SQL, pre/post latency metrics, and residual risks.
+
+## Failure Modes
+
+- **Exclusive lock starvation**: long-running maintenance blocks incoming application transactions. Mitigation: enforce `SET lock_timeout = '2s';` on every DDL.
+- **Lakehouse metadata explosion**: unexpired snapshots slow query planning across all consumers. Mitigation: enforce automated 7-day TTL snapshot expiration.
+- **Uncontrolled query scan costs**: unpartitioned queries scan entire lakehouse partitions. Mitigation: enforce 50 GB query scan ceilings and compute quota limits.
+- **Corrupted snapshot cleanup**: aggressive vacuuming removes active time-travel references. Mitigation: maintain a minimum 10-snapshot retention safety floor.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: restrict maintenance roles to least-privilege operations; avoid superuser connections for routine index or compaction work.
+- **ASI04 Supply Chain**: validate maintenance CLI tools, database extensions, and catalog drivers against approved manifests.
+- **ASI05 RCE Guard**: parameterize all maintenance commands; never build dynamic SQL from untrusted inputs.
+- **ASI07 Inter-Agent Communication**: emit structured `deployment-plan.json` so coordinating agents share identical execution parameters.
+- **ASI09 Human-Agent Trust Exploitation**: surface rollback risks, expected lock impacts, and storage reclaimed honestly without omitting failure probabilities.

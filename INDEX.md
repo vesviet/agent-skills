@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `4.1.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **21 Workflows** | **45 Data Contracts**
+> **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **22 Workflows** | **46 Data Contracts**
 
 ---
 
@@ -42,8 +42,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@cloudflare-engineer`** | Cloudflare Engineer | `@cloudflare`, `@cf`, `@workers` | `wrangler`, `durable-objects`, `turnstile-spin` *(+18 more)* | [`core/roles/cloudflare-engineer.md`](./core/roles/cloudflare-engineer.md) |
 | **`@content-manager`** | Content Manager | — | `audit-content`, `repurpose-content`, `optimize-seo` *(+9 more)* | [`core/roles/content-manager.md`](./core/roles/content-manager.md) |
 | **`@content-writer`** | Content Writer | `@writer`, `@copywriter`, `@author`, `@article-writer`, `@blog-writer` | `write-article`, `repurpose-content`, `audit-content` *(+7 more)* | [`core/roles/content-writer.md`](./core/roles/content-writer.md) |
-| **`@data-analyst`** | Data Analyst | `@da`, `@data-analytics` | `analyze-data`, `analyze-business-requirements`, `build-data-pipeline` *(+4 more)* | [`core/roles/data-analyst.md`](./core/roles/data-analyst.md) |
-| **`@data-engineer`** | Data Engineer | `@de`, `@data-eng` | `build-data-pipeline`, `database-maintenance`, `create-migration` *(+7 more)* | [`core/roles/data-engineer.md`](./core/roles/data-engineer.md) |
+| **`@data-analyst`** | Data Analyst | `@da`, `@data-analytics` | `analyze-data`, `analyze-business-requirements`, `build-data-pipeline` *(+5 more)* | [`core/roles/data-analyst.md`](./core/roles/data-analyst.md) |
+| **`@data-engineer`** | Data Engineer | `@de`, `@data-eng` | `build-data-pipeline`, `database-maintenance`, `create-migration` *(+9 more)* | [`core/roles/data-engineer.md`](./core/roles/data-engineer.md) |
 | **`@devops-engineer`** | DevOps Engineer | `@devops`, `@infra`, `@infrastructure` | `setup-deployment`, `debug-runtime-platform`, `add-telemetry-instrumentation` *(+12 more)* | [`core/roles/devops-engineer.md`](./core/roles/devops-engineer.md) |
 | **`@ecommerce-engineer`** | Ecommerce Engineer | `@ecommerce`, `@ecom` | `integrate-payment-gateway`, `handle-checkout-flow`, `manage-product-catalog` *(+13 more)* | [`core/roles/ecommerce-engineer.md`](./core/roles/ecommerce-engineer.md) |
 | **`@frontend-developer`** | Frontend Developer | `@frontend`, `@fe`, `@frontend-dev`, `@ui-developer` | `add-ui-component`, `add-page-route`, `integrate-api-client` *(+15 more)* | [`core/roles/frontend-developer.md`](./core/roles/frontend-developer.md) |
@@ -177,7 +177,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | Skill Slug | Description | File |
 |:---|:---|:---|
 | **`@analyze-business-requirements`** | Analyze and write business requirements by making actors, business rules, state transitions, excepti... | [`core/skills/meetings-analysis/analyze-business-requirements/SKILL.md`](./core/skills/meetings-analysis/analyze-business-requirements/SKILL.md) |
-| **`@analyze-data`** | Explore datasets, define metrics, run reproducible SQL or tabular analysis, and produce stakeholder-... | [`core/skills/meetings-analysis/analyze-data/SKILL.md`](./core/skills/meetings-analysis/analyze-data/SKILL.md) |
+| **`@analyze-data`** | Explore analytical datasets using DuckDB/Polars, query canonical Semantic Metric Catalogs to elimina... | [`core/skills/meetings-analysis/analyze-data/SKILL.md`](./core/skills/meetings-analysis/analyze-data/SKILL.md) |
 | **`@meeting-review`** | Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky ch... | [`core/skills/meetings-analysis/meeting-review/SKILL.md`](./core/skills/meetings-analysis/meeting-review/SKILL.md) |
 
 ### Category: `mmo` (7 skills)
@@ -277,8 +277,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
-| **`@build-data-pipeline`** | Design and implement data ingestion, transformation, and delivery pipelines including ETL/ELT, Parqu... | [`core/skills/security-data/build-data-pipeline/SKILL.md`](./core/skills/security-data/build-data-pipeline/SKILL.md) |
-| **`@database-maintenance`** | Plan or perform operational database maintenance by following the repo's safety, backup, rollback, a... | [`core/skills/security-data/database-maintenance/SKILL.md`](./core/skills/security-data/database-maintenance/SKILL.md) |
+| **`@build-data-pipeline`** | Design and implement transactional lakehouse pipelines (Iceberg/Delta), enforce ODCS v3 data contrac... | [`core/skills/security-data/build-data-pipeline/SKILL.md`](./core/skills/security-data/build-data-pipeline/SKILL.md) |
+| **`@database-maintenance`** | Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/D... | [`core/skills/security-data/database-maintenance/SKILL.md`](./core/skills/security-data/database-maintenance/SKILL.md) |
 | **`@manage-secrets`** | Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-contr... | [`core/skills/security-data/manage-secrets/SKILL.md`](./core/skills/security-data/manage-secrets/SKILL.md) |
 | **`@manage-vietnam-accounting`** | Prepare and review Vietnam accounting controls, accounting-regime evidence, reconciliations, invoice... | [`core/skills/security-data/manage-vietnam-accounting/SKILL.md`](./core/skills/security-data/manage-vietnam-accounting/SKILL.md) |
 | **`@security-audit`** | Review code, configuration, and service behavior for security risks by checking trust boundaries, se... | [`core/skills/security-data/security-audit/SKILL.md`](./core/skills/security-data/security-audit/SKILL.md) |
@@ -383,7 +383,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🔄 Workflows (21 Workflows)
+## 🔄 Workflows (22 Workflows)
 
 | Workflow | Title | File |
 |:---|:---|:---|
@@ -395,6 +395,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`/content-audit`** | content-audit | [`core/workflows/content-audit.md`](./core/workflows/content-audit.md) |
 | **`/content-publishing`** | content-publishing | [`core/workflows/content-publishing.md`](./core/workflows/content-publishing.md) |
 | **`/data-migration`** | data-migration | [`core/workflows/data-migration.md`](./core/workflows/data-migration.md) |
+| **`/data-pipeline-incident`** | data-pipeline-incident | [`core/workflows/data-pipeline-incident.md`](./core/workflows/data-pipeline-incident.md) |
 | **`/dependency-upgrade`** | dependency-upgrade | [`core/workflows/dependency-upgrade.md`](./core/workflows/dependency-upgrade.md) |
 | **`/feature-delivery`** | feature-delivery | [`core/workflows/feature-delivery.md`](./core/workflows/feature-delivery.md) |
 | **`/hotfix-production`** | hotfix-production | [`core/workflows/hotfix-production.md`](./core/workflows/hotfix-production.md) |
@@ -411,7 +412,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 📑 Data Contracts & Schemas (45 Schemas)
+## 📑 Data Contracts & Schemas (46 Schemas)
 
 | Schema File | Schema Title | Path |
 |:---|:---|:---|
@@ -436,6 +437,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | `content-handoff.json` | Content Handoff | [`core/contracts/schemas/content-handoff.json`](./core/contracts/schemas/content-handoff.json) |
 | `coordination-plan.json` | Coordination Plan | [`core/contracts/schemas/coordination-plan.json`](./core/contracts/schemas/coordination-plan.json) |
 | `data-analysis-report.json` | Data Analysis Report | [`core/contracts/schemas/data-analysis-report.json`](./core/contracts/schemas/data-analysis-report.json) |
+| `data-pipeline-spec.json` | Data Pipeline Specification | [`core/contracts/schemas/data-pipeline-spec.json`](./core/contracts/schemas/data-pipeline-spec.json) |
 | `deployment-plan.json` | Deployment Plan | [`core/contracts/schemas/deployment-plan.json`](./core/contracts/schemas/deployment-plan.json) |
 | `documentation-handoff.json` | Documentation Handoff | [`core/contracts/schemas/documentation-handoff.json`](./core/contracts/schemas/documentation-handoff.json) |
 | `edge-deployment-spec.json` | Edge Deployment Specification | [`core/contracts/schemas/edge-deployment-spec.json`](./core/contracts/schemas/edge-deployment-spec.json) |

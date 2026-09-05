@@ -152,6 +152,7 @@ Core workflows live in [core/workflows/README.md](core/workflows/README.md).
 - `/content-publishing`
 - `/content-audit`
 - `/data-migration`
+- `/data-pipeline-incident`
 - `/dependency-upgrade`
 - `/qa-validation`
 - `/security-incident-response`

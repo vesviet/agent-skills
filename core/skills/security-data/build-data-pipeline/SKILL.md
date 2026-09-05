@@ -1,181 +1,113 @@
 ---
 name: build-data-pipeline
-description: Design and implement data ingestion, transformation, and delivery pipelines including ETL/ELT, Parquet/DuckDB warehousing, dbt modeling, Airflow orchestration, Kafka streaming, and data quality gates. Use when the work requires a repeatable, owned pipeline — not a one-off analytical query.
+description: Design and implement transactional lakehouse pipelines (Iceberg/Delta), enforce ODCS v3 data contracts at producer boundaries, integrate Great Expectations/dbt-expectations quality gates, and isolate invalid records in DLQ quarantine with deterministic replayability. Use when the work requires an owned, repeatable data pipeline.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, query_db, read_database, run_tests]
 ---
 
 # Build Data Pipeline
 
-Use this skill when the task requires building or maintaining repeatable data infrastructure: ingestion pipelines, warehousing, transformation models, orchestration, streaming, or quality gates.
+Use this skill when building or maintaining repeatable data infrastructure: ingestion pipelines, lakehouses, transformation models, quality gates, dead-letter quarantine, or orchestration. For one-off analytical queries, use `analyze-data` instead.
 
-For one-off queries, comparisons, or stakeholder reports from existing tables, use `analyze-data` instead.
+## When to Use
 
-## When To Use
-
-- importing data from files (Excel, CSV, JSON) or APIs into a clean, queryable format with idempotent runs
-- building ETL or ELT pipelines from raw sources to a target warehouse or lakehouse
-- converting flat files to Parquet and managing with DuckDB or Polars
-- authoring Airflow DAGs to schedule and orchestrate pipeline steps
-- modeling star schemas, Kimball dimensional models, or dbt projects
-- building Kafka producers, consumers, or Faust stream processing
-- designing Bronze → Silver → Gold Medallion architecture with Delta Lake or Iceberg
-- implementing data quality gates with Great Expectations, Soda, or dbt tests
-- generating formatted Excel or HTML reports as a scheduled or repeatable pipeline output
-
-## Pipeline Triggers
-
-- the work needs a repeatable owned pipeline
-- ETL/ELT, warehousing, or dbt modeling
-- Kafka streaming or Airflow orchestration
-- not a one-off analytical query
+- implementing transactional lakehouse pipelines with Apache Iceberg or Delta Lake
+- enforcing Open Data Contract Standard (ODCS v3) at producer perimeters
+- establishing automated data quality gates using Great Expectations or dbt-expectations
+- routing poisoned or non-conformant records into Dead-Letter Queue (DLQ) quarantine stores
+- authoring idempotent transformations, dbt microbatch models, or deterministic replay runbooks
+- building streaming or microbatch pipelines with Kafka and Airflow DAGs
 
 ## Core Rules
 
-- treat all source inputs as **read-only** — never modify source files
-- cast columns to explicit types after cleaning; do not leave `dtype=str` as the final state
-- use `utf-8-sig` encoding for CSV/Excel output to preserve non-ASCII characters
-- log row counts **before and after every transformation** for traceability
-- timestamp all report and export filenames — never silently overwrite
-- parameterize all paths via config, argparse, or env vars — no hardcoded paths
-- never place credentials in code; use `.env` or environment variables, never committed
-- pipelines must be **idempotent** — running twice must not duplicate data
-- mask or aggregate PII before any output or logging
-- spot-check row counts and values against source before handoff
-- **dbt 1.9 microbatch**: use `incremental_strategy: 'microbatch'` with `event_time` and `begin` configs to enable auto-retry and partition-based updates; test microbatch bounds locally before production
-- **Iceberg lakehouse**: prefer Apache Iceberg for time-travel queries, schema evolution, and partition pruning; use dbt-duckdb with Iceberg catalogs for transactional lakehouse reads/writes
-- **EU AI Act data lineage**: retain all training data lineage metadata (dbt DAG provenance from raw sources to model output) for a minimum of 10 years; audit ingestion pipelines to verify no toxic, protected, or biased attributes propagate into model inputs
-- **DuckDB production**: deploy DuckDB embedded for < 100 GB analytical workloads or via MotherDuck serverless; maintain separate dev/prod environments and configure memory limits for concurrent query scenarios
+- treat all source inputs as **read-only** — never modify upstream files or producer sources
+- enforce **ODCS v3 data contracts** at producer boundaries before persisting into storage
+- implement the **Medallion architecture**: immutable Bronze landing, conformed Silver, aggregated Gold
+- cast columns to explicit types; never allow untyped string states as the final schema
+- pipelines must be **idempotent**: running twice must produce identical results via `MERGE INTO` natural keys
+- isolate poisoned records in **DLQ quarantine** with metadata; trip circuit-breaker if error rate exceeds 1.0%
+- enforce **EU AI Act lineage tracking**: retain dbt DAG provenance for 10+ years; audit for toxic or biased attributes
+- deploy **DuckDB** embedded for <100 GB analytical workloads with explicit memory limits (`SET max_memory = '4GB'`)
+- mask or aggregate PII before emitting any output or logging; classify with `data-classification.yaml`
+- log row counts and drift before and after every transformation step
+- detailed specifications, schemas, and runbooks are maintained in [`references/producer-contracts-and-lakehouse.md`](references/producer-contracts-and-lakehouse.md) and [`references/quality-gates-dlq-and-replayability.md`](references/quality-gates-dlq-and-replayability.md)
 
 ## Suggested Process
 
-### 1. Clarify Pipeline Requirements
+### 1. Ingest & Validate Producer Contract
+Ingest source events and evaluate raw payloads against the ODCS v3 contract schema. Reject unannounced breaking schema shifts at the boundary.
 
-Answer before building:
+### 2. Lakehouse Bronze Staging & Schema Verification
+Stage raw inputs into Bronze Iceberg/Parquet tables with immutable audit trails (`_ingested_at`, `_source_file`, `trace_id`).
 
-- where are the source files and in what format?
-- which sheets, partitions, or API endpoints to read?
-- what column(s) form the unique key for matching or joining rows?
-- what is the target: DuckDB, Parquet, dbt model, Kafka topic, Delta table, or Excel report?
-- what output does the consumer need: cleaned data, diff, aggregation, or formatted report?
-- what is the expected row count — and does it match after ingestion?
+### 3. Silver Layer Transformation & Automated DQ Gates
+Apply cleaning, deduplication, and type casting. Run Great Expectations and dbt-expectations assertion suites (nullability, uniqueness, foreign keys).
 
-### 2. Set Up Working Structure
+### 4. DLQ Quarantine & Error Routing
+Route contract-failing or malformed records into structured DLQ quarantine. Halt ingestion and notify on-call if error rate exceeds 1.0%.
 
-Follow the repo's existing layout or establish:
+### 5. Gold Layer Modeling & Metric Publishing
+Build business aggregates and dimensional models. Configure dbt 1.9 microbatch strategies and publish clean tables to the semantic layer.
 
-- `input/` — raw source files (read-only)
-- `store/` — normalized Parquet or warehouse files
-- `scripts/` — numbered pipeline scripts (01_ingest, 02_load, 03_aggregate, 04_report)
-- `.env.example` — environment variable template (committed); `.env` in `.gitignore`
+### 6. Emit Pipeline Spec & Monitor
+Validate output against contract specifications. Record lineage, execution benchmarks, and verify deterministic replayability.
 
-Pin all dependencies and document install requirements.
+## Inputs
 
-### 3. Implement Ingestion
+- Producer schema contracts (ODCS v3 YAML or JSON Schema)
+- Raw source data (Kafka streams, object storage Parquet/CSV, REST APIs, database CDC)
+- Business transformation requirements and SLA parameters
 
-- read source files with encoding fallback (utf-8 → cp1252 → iso-8859-1)
-- strip and normalize column names
-- log initial and post-cleaning row counts
-- cast types explicitly after cleaning
-- write to Parquet with `engine="pyarrow"` and a timestamp suffix when needed
+## Role Boundaries
 
-### 4. Load And Model
-
-- load Parquet into warehouse (DuckDB, BigQuery, Redshift) with `CREATE OR REPLACE` for idempotency
-- log table row counts after load
-- apply dbt models or aggregate queries in the correct dependency order
-
-### 5. Implement Quality Gates
-
-At each layer boundary:
-
-- assert expected row count within tolerance
-- check for null violations in required fields
-- validate key uniqueness where required
-- fail fast and surface errors — do not swallow exceptions silently
-
-### 6. Deliver Output
-
-- generate stakeholder reports with timestamps in filenames
-- produce `data-pipeline-spec.json` or equivalent contract when machine handoff is required
-- update docs or README with pipeline freshness, ownership, and re-run instructions
-
-## 2026 Data Engineering Patterns
-
-### 2026: dbt 1.9 Microbatch Incremental Strategy
-- Configure dbt 1.9 microbatch incremental strategy (`incremental_strategy: 'microbatch'`) by specifying `event_time`, `begin`, and other relevant configs to enable auto-retry and partition-based updates.
-- Ensure the model's SQL references input streams with filtering on target microbatch execution windows.
-- Test microbatch bounds locally to confirm backfill and incremental behaviors are correctly aligned.
-
-### 2026: Apache Iceberg as Lakehouse Storage Layer
-- Integrate dbt-duckdb with Apache Iceberg to handle time-travel queries, schema evolution, and partition pruning.
-- Use Iceberg metadata catalogs to orchestrate transactional writes and queries over modern lakehouse storage layouts.
-- Track metadata files and storage sizes to manage catalog cleanup tasks periodically.
-
-### 2026: EU AI Act Training Data Lineage
-- Leverage dbt DAG data provenance to map dependencies from raw training files to final training dataset outputs.
-- Retain all data lineage metadata for a minimum of 10 years to comply with EU AI Act data governance and auditability requirements.
-- Audit ingestion pipelines to verify that no toxic, protected, or biased attributes propagate into downstream model inputs.
-
-### 2026: DuckDB in Production Patterns
-- Deploy DuckDB using embedded models, MotherDuck serverless integration, or as an Iceberg query engine for analytical workloads up to 100GB.
-- Maintain separate development/production environments and manage memory limits under concurrent querying environments.
-- Optimize query execution plans by checking catalog statistics and partitioning layouts.
-
-## Common Pitfalls
-
-- comparing floats read as strings causes false positives — normalize before diff
-- Excel date serial numbers need explicit conversion with a known epoch
-- large files (>100 MB) need chunked reading or Polars/DuckDB instead of pandas
-- old `.xls` format requires `xlrd`, not `openpyxl`
-- files open in Excel on Windows cause permission errors during read
-- `dtype=str` for the entire DataFrame blocks all downstream numeric aggregation
-- swallowing exceptions with bare `continue` hides failures — always log and count
+| Role | Owns |
+| ---- | ---- |
+| Data Engineer | Pipeline topology, ODCS enforcement, Iceberg storage, DLQ quarantine, replayability |
+| Solution Architect | System architecture, storage technology selection, cross-system boundaries |
+| Data Analyst | Semantic layer metrics, business queries, ad-hoc exploratory reports |
+| QA Engineer | Test automation, failure injection testing, mutation validation |
 
 ## Checklist
 
-- [ ] source files treated as read-only
-- [ ] `.env.example` committed; real `.env` in `.gitignore`
-- [ ] dependencies pinned in `requirements.txt` or equivalent
-- [ ] ingestion logs row counts at each step
-- [ ] column types explicitly cast after cleaning
-- [ ] cleaned data saved as Parquet (not raw CSV) when intermediate storage used
-- [ ] pipeline runs idempotently — re-run produces same result
-- [ ] quality gates assert row counts and key integrity at layer boundaries
-- [ ] output filenames include timestamps — no silent overwrites
-- [ ] PII masked or aggregated before any report or log output
-- [ ] results spot-checked against source before stakeholder delivery
-
-## Failure Modes
-
-- **Pipeline silently corrupts data**: a transformation changes a column type or a join key without an alert. **Mitigation:** enforce schema-validation gates at every pipeline boundary; alert on row-count drift and schema-evolution events.
-- **Migration runs without idempotency**: a pipeline can be re-triggered and produce duplicate or out-of-order data. **Mitigation:** every step is idempotent on the natural key; the pipeline test re-runs the same input and asserts deterministic output.
-- **AI-generated SQL bypasses the read-only guard**: an AI-suggested query runs against a production database. **Mitigation:** enforce read-only DuckDB views with `SET max_memory = '4GB'` and query timeout limits.
-- **Schema drift undetected**: the warehouse schema evolves without the pipeline knowing. **Mitigation:** enforce schema-validation gates; alert on unexpected column additions or type changes.
-
-## Output Contracts
-
-When the data pipeline is consumed by analytics, ML, or downstream
-services, emit:
-
-- **`contracts/schemas/data-analysis-report.json`** or a pipeline-spec variant describing the source, the transformation steps, the schema evolution, and the SLA.
-- For human-readable reports, a markdown summary of the pipeline topology, the failure modes, and the rollback path.
-
-Skip emission for ad-hoc local scripts that do not cross a role boundary.
-
-## Security Guardrails (OWASP ASI)
-
-- **ASI03 Identity & Privilege Abuse**: PII and customer identifiers in the pipeline must be classified with `data-classification.yaml`; mask in any output that crosses a role boundary.
-- **ASI04 Supply Chain**: pipeline orchestrators, connectors, and sinks must be schema-validated against the expected manifest; treat unknown versions as untrusted.
-- **ASI05 RCE Guard**: never construct SQL queries, transformation logic, or scheduler commands from external content without strict parameterization.
-- **ASI07 Inter-Agent Communication**: the pipeline contract is consumed by analytics and ML roles; emit a structured spec so each consumer can validate.
-- **ASI09 Human-Agent Trust Exploitation**: do not present a pipeline as "GDPR-compliant" without a real review; surface the actual data flow and the residual risk.
+- [ ] source files and upstream databases treated as strictly read-only
+- [ ] ODCS v3 producer contracts validated and enforced at ingestion perimeter
+- [ ] Medallion architecture (Bronze → Silver → Gold) implemented on Apache Iceberg or Delta Lake
+- [ ] column types explicitly cast after cleaning; no unvalidated string schemas retained
+- [ ] automated quality gates (Great Expectations/dbt-expectations) configured for critical assertions
+- [ ] non-conformant records routed to DLQ quarantine without silent drops
+- [ ] circuit-breaker trips and halts pipeline when DLQ error rate exceeds 1.0%
+- [ ] deterministic replayability verified using idempotent `MERGE INTO` on natural keys
+- [ ] EU AI Act 10-year lineage metadata recorded across the dbt DAG
+- [ ] PII masked and classified per `data-classification.yaml` before handoff
+- [ ] pipeline outputs match `contracts/schemas/data-pipeline-spec.json` and `contracts/schemas/data-analysis-report.json`
 
 ## Related Skills
 
-- **analyze-data**: One-off exploration, metrics, and reports without pipeline ownership
-- **database-maintenance**: Operational changes to a running data store
-- **create-migration**: Schema migrations for production databases
-- **security-audit**: Review data handling for PII or sensitive exposure
-- **write-documentation**: Document pipeline architecture and data dictionaries
-- **review-code**: Review pipeline scripts for correctness, safety, and idempotency
-- **commit-code**: Commit finalized pipeline scripts to version control
+- **analyze-data**: Query and explore data without owning production pipeline infrastructure
+- **database-maintenance**: Operational storage maintenance, Iceberg compaction, and index tuning
+- **create-migration**: Manage relational database schema migrations
+- **security-audit**: Audit pipeline data flow for PII exposure and access control
+- **write-documentation**: Document pipeline runbooks, schemas, and data dictionaries
+- **review-code**: Review transformation logic, concurrency, and SQL performance
+- **commit-code**: Safely commit pipeline definitions to version control
+
+## Output Contracts
+
+When emitting pipeline specifications for downstream consumers, orchestrators, or data analyst roles, emit:
+
+- `contracts/schemas/data-pipeline-spec.json` — complete pipeline definition, ODCS contract version, freshness SLA, quality gates, and quarantine policy.
+- `contracts/schemas/data-analysis-report.json` — summary of ingested row counts, validation results, and quality metrics when cross-role handoff is required.
+
+## Failure Modes
+
+- **Contract violation crash**: unannounced upstream schema changes crash the pipeline. Mitigation: enforce ODCS v3 pre-ingestion validation; route non-conforming payloads to DLQ quarantine.
+- **Silent data corruption**: untracked transformation defects propagate downstream. Mitigation: run automated Great Expectations suites with critical gate thresholds.
+- **DLQ overflow**: unbounded poison records exhaust storage without remediation. Mitigation: enforce circuit-breaker halting at 1.0% error rate and alert engineers.
+- **Non-idempotent replay**: re-running a pipeline creates duplicate records. Mitigation: require idempotent `MERGE INTO` operations on immutable natural keys.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: classify PII with `data-classification.yaml`; restrict database credentials to least-privilege roles; mask sensitive fields.
+- **ASI04 Supply Chain**: validate versions of connectors, dbt packages, and ingestion libraries against approved dependency manifests.
+- **ASI05 RCE Guard**: parameterize all dynamic SQL and file paths; never format queries directly from raw external payloads.
+- **ASI07 Inter-Agent Communication**: emit structured contracts (`data-pipeline-spec.json`) so consuming analyst and ML roles share identical definitions.
+- **ASI09 Human-Agent Trust Exploitation**: disclose residual ingestion risks, data lineage provenance, and quality validation metrics truthfully.

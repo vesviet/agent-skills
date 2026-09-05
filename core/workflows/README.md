@@ -20,6 +20,7 @@ This directory contains reusable, longer-form workflows that sit above the indiv
 | [agent-a2a-delegation](agent-a2a-delegation.md) | Full A2A 1.0 delegate with discovery, streaming, and artifact validation |
 | [security-incident-response](security-incident-response.md) | Respond to confirmed or suspected security incidents with safe containment and disclosure |
 | [data-migration](data-migration.md) | Plan, execute, and verify database schema migrations safely |
+| [data-pipeline-incident](data-pipeline-incident.md) | Detect, contain (DLQ), investigate (RCA), and recover from data pipeline incidents with idempotent replay |
 | [dependency-upgrade](dependency-upgrade.md) | Safely upgrade dependencies with regression testing and security review |
 | [seo-keyword-brief](seo-keyword-brief.md) | SEO Analyst: research intent, define keywords, map topical authority, produce seo-content-brief.json |
 | [content-publishing](content-publishing.md) | Brief → draft → SEO audit → publish → publish-log (Content Writer + SEO Analyst + User) |

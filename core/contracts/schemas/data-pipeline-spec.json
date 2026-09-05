@@ -1,0 +1,333 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "data-pipeline-spec",
+  "title": "Data Pipeline Specification",
+  "description": "Open Data Contract Standard (ODCS v3) compatible specification for engineered data pipelines, lakehouse datasets, quality gates, quarantine policies, and compute budgets.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "data-pipeline-spec",
+      "description": "Machine-readable contract discriminator."
+    },
+    "pipeline_id": {
+      "type": "string",
+      "description": "Unique pipeline identifier (kebab-case)."
+    },
+    "contract_version": {
+      "type": "string",
+      "pattern": "^3\\.[0-9]+\\.[0-9]+$",
+      "description": "ODCS version (v3.x.x)."
+    },
+    "dataset_name": {
+      "type": "string",
+      "description": "Canonical dataset or table name."
+    },
+    "domain": {
+      "type": "string",
+      "description": "Business domain owning this dataset (e.g. ecommerce, logistics, finance)."
+    },
+    "owner_role": {
+      "type": "string",
+      "description": "Role accountable for pipeline maintenance and SLA."
+    },
+    "storage_format": {
+      "type": "string",
+      "enum": [
+        "iceberg",
+        "delta_lake",
+        "parquet",
+        "duckdb",
+        "postgres"
+      ]
+    },
+    "storage_location": {
+      "type": "string",
+      "description": "Storage URI or warehouse table reference."
+    },
+    "freshness_sla": {
+      "type": "object",
+      "description": "Freshness SLA and delivery expectations.",
+      "properties": {
+        "max_latency_seconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cron_schedule": {
+          "type": "string"
+        },
+        "update_frequency": {
+          "type": "string",
+          "enum": [
+            "real_time_streaming",
+            "microbatch_hourly",
+            "daily_batch",
+            "weekly"
+          ]
+        },
+        "sla_breach_escalation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "max_latency_seconds",
+        "update_frequency"
+      ]
+    },
+    "quality_gates": {
+      "type": "array",
+      "description": "Automated data quality assertions executed at layer boundaries.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "gate_name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "null_check",
+              "uniqueness",
+              "range_check",
+              "distribution_drift",
+              "schema_evolution",
+              "custom_sql"
+            ]
+          },
+          "column_name": {
+            "type": "string"
+          },
+          "assertion": {
+            "type": "string"
+          },
+          "action_on_failure": {
+            "type": "string",
+            "enum": [
+              "quarantine_and_continue",
+              "halt_pipeline",
+              "warn_only"
+            ]
+          }
+        },
+        "required": [
+          "gate_name",
+          "type",
+          "action_on_failure"
+        ]
+      }
+    },
+    "quarantine_policy": {
+      "type": "object",
+      "description": "DLQ isolation policy for poison pill records.",
+      "properties": {
+        "dlq_target": {
+          "type": "string"
+        },
+        "error_threshold_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "poison_pill_handling": {
+          "type": "string",
+          "enum": [
+            "isolate_to_dlq",
+            "circuit_breaker_trip",
+            "drop_with_audit"
+          ]
+        },
+        "retention_days": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "replay_strategy": {
+          "type": "string",
+          "enum": [
+            "idempotent_merge_replay",
+            "backfill_slice",
+            "manual_intervention"
+          ]
+        }
+      },
+      "required": [
+        "dlq_target",
+        "error_threshold_pct",
+        "poison_pill_handling",
+        "replay_strategy"
+      ]
+    },
+    "compute_budget": {
+      "type": "object",
+      "description": "Data FinOps governance rules and resource boundaries.",
+      "properties": {
+        "max_scan_bytes_gb": {
+          "type": "number",
+          "minimum": 0
+        },
+        "max_runtime_seconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "slot_or_worker_cap": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "partition_pruning_required": {
+          "type": "boolean"
+        },
+        "finops_cost_alert_usd": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "max_runtime_seconds",
+        "partition_pruning_required"
+      ]
+    },
+    "schema_fields": {
+      "type": "array",
+      "description": "Physical and logical column contract definitions.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "nullable": {
+            "type": "boolean"
+          },
+          "primary_key": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          },
+          "pii_classification": {
+            "type": "string",
+            "enum": [
+              "public",
+              "internal",
+              "confidential",
+              "restricted"
+            ]
+          },
+          "semantic_definition": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "nullable",
+          "pii_classification"
+        ]
+      }
+    },
+    "circuit_breaker_config": {
+      "type": "object",
+      "properties": {
+        "failure_rate_threshold_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "evaluation_window_minutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "auto_recovery_enabled": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "pipeline_id",
+    "contract_version",
+    "dataset_name",
+    "owner_role",
+    "freshness_sla",
+    "quality_gates",
+    "quarantine_policy",
+    "compute_budget",
+    "schema_fields"
+  ],
+  "examples": [
+    {
+      "contract_type": "data-pipeline-spec",
+      "pipeline_id": "gold-customer-orders-pipeline",
+      "contract_version": "3.0.0",
+      "dataset_name": "gold_customer_orders",
+      "domain": "ecommerce",
+      "owner_role": "data-engineer",
+      "storage_format": "iceberg",
+      "storage_location": "s3://lakehouse-gold/orders/",
+      "freshness_sla": {
+        "max_latency_seconds": 3600,
+        "cron_schedule": "0 * * * *",
+        "update_frequency": "microbatch_hourly",
+        "sla_breach_escalation": "sre-oncall-alert"
+      },
+      "quality_gates": [
+        {
+          "gate_name": "order_id_not_null",
+          "type": "null_check",
+          "column_name": "order_id",
+          "assertion": "IS NOT NULL",
+          "action_on_failure": "quarantine_and_continue"
+        },
+        {
+          "gate_name": "order_id_unique",
+          "type": "uniqueness",
+          "column_name": "order_id",
+          "assertion": "COUNT(order_id) == COUNT(DISTINCT order_id)",
+          "action_on_failure": "halt_pipeline"
+        }
+      ],
+      "quarantine_policy": {
+        "dlq_target": "iceberg_quarantine.dlq_orders",
+        "error_threshold_pct": 2.0,
+        "poison_pill_handling": "isolate_to_dlq",
+        "retention_days": 30,
+        "replay_strategy": "idempotent_merge_replay"
+      },
+      "compute_budget": {
+        "max_scan_bytes_gb": 50.0,
+        "max_runtime_seconds": 600,
+        "slot_or_worker_cap": 8,
+        "partition_pruning_required": true,
+        "finops_cost_alert_usd": 15.0
+      },
+      "schema_fields": [
+        {
+          "name": "order_id",
+          "type": "string",
+          "nullable": false,
+          "primary_key": true,
+          "description": "Unique order identifier",
+          "pii_classification": "internal",
+          "semantic_definition": "Primary identifier for customer transaction"
+        },
+        {
+          "name": "customer_email",
+          "type": "string",
+          "nullable": true,
+          "primary_key": false,
+          "description": "Customer contact email",
+          "pii_classification": "confidential",
+          "semantic_definition": "Masked email address for communication"
+        }
+      ],
+      "circuit_breaker_config": {
+        "failure_rate_threshold_pct": 5.0,
+        "evaluation_window_minutes": 15,
+        "auto_recovery_enabled": true
+      }
+    }
+  ]
+}

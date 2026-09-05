@@ -25,7 +25,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
             → validation-result.json ← Agent Coordinator (phase gate)
 ```
 
-## All Schemas (45 total)
+## All Schemas (46 total)
 
 ### Solution & Governance
 - `solution-brief.json` — Solution Architect scoping handoff (build-vs-buy, capability gaps, AI feasibility, compliance)
@@ -43,6 +43,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
 - `system-design-spec.json` — System Engineer topology, capacity, and AI-infra design
 - `aws-infra-spec.json` — AWS Engineer managed-service and IAM infrastructure spec
 - `pull-request-spec.json` — Pull Request specification with blast radius, mutation score, execution proof, and review attestations
+- `data-pipeline-spec.json` — Data Pipeline Specification (ODCS v3 compatible data contract, freshness SLA, quality gates, quarantine policy, and compute budget)
 
 ### Quality & Review
 - `code-review-finding.json` — Full code review with findings matrix

@@ -5,8 +5,8 @@
   "stats": {
     "roles": 34,
     "skills": 107,
-    "workflows": 21,
-    "schemas": 45
+    "workflows": 22,
+    "schemas": 46
   },
   "role_aliases": {
     "writer": "content-writer",
@@ -617,7 +617,7 @@
     "data-analyst": {
       "name": "data-analyst",
       "title": "Data Analyst",
-      "description": "answer business questions with reproducible, well-documented analysis from tabular and warehouse data — defining metrics clearly, separating evidence from interpretation, and delivering stakeholder-ready reports without owning production pipeline infrastructure. In 2025–2026, this extends to using AI tools as analysis accelerators while owning all interpretation and causal reasoning decisions, and applying causal inference methods for high-stakes decisions rather than reporting correlation as causation.",
+      "description": "answer critical business and product questions with reproducible, statistically grounded, and well-documented analysis from lakehouse and tabular data — defining metrics rigorously through canonical semantic layers, separating verifiable evidence from narrative interpretation, and delivering stakeholder-ready insights without owning production pipeline infrastructure. In 2026–2027, this extends to conducting Semantic Metric Querying to prevent Text-to-SQL hallucination, leveraging DuckDB and Polars for lightning-fast in-process analysis, executing statistical drift and anomaly detection, enforcing rigorous causal DAG reasoning for high-stakes decisions, and delivering quantitative reports with verifiable cryptographic sources.",
       "file": "core/roles/data-analyst.md",
       "skills": [
         "analyze-data",
@@ -626,14 +626,15 @@
         "database-maintenance",
         "conduct-research",
         "write-documentation",
-        "agent-delegation"
+        "agent-delegation",
+        "sandbox-sdk"
       ],
       "irreversible_actions": []
     },
     "data-engineer": {
       "name": "data-engineer",
       "title": "Data Engineer",
-      "description": "design, build, and maintain reliable data pipelines and storage layers so analysts and applications can trust timely, well-modeled, and governable data products. In 2025–2026, this extends to engineering data supply chains for AI/ML systems (embeddings, feature stores, multimodal lakehouses), enforcing data contracts as machine-readable engineering artifacts with automated validation, and owning real-time freshness requirements for AI-native applications.",
+      "description": "design, build, and maintain deterministic, high-throughput data pipelines, lakehouse storage layers, and unified semantic layers so analysts, applications, and autonomous AI agents can consume reliable, timely, and governable data products. In 2026–2027, this extends to enforcing Open Data Contract Standard (ODCS v3) specifications at producer boundaries, architecting Modern Lakehouses with Apache Iceberg v3 and Delta Lake, ensuring strict idempotency and deterministic upsert MERGE semantics, deploying automated circuit-breakers with Dead-Letter Queue (DLQ) quarantine, practicing Data FinOps resource governance, and maintaining Zero-Trust data security under OWASP ASI03/ASI06.",
       "file": "core/roles/data-engineer.md",
       "skills": [
         "build-data-pipeline",
@@ -644,8 +645,10 @@
         "write-documentation",
         "security-audit",
         "add-telemetry-instrumentation",
+        "performance-profiling",
         "agent-delegation",
-        "configure-mcp"
+        "configure-mcp",
+        "sandbox-sdk"
       ],
       "irreversible_actions": []
     },
@@ -1563,7 +1566,7 @@
       "category": "meetings-analysis",
       "type": "core",
       "file": "core/skills/meetings-analysis/analyze-data/SKILL.md",
-      "description": "Explore datasets, define metrics, run reproducible SQL or tabular analysis, and produce stakeholder-ready insights with documented assumptions and lineage. Use when answering business questions from data, comparing datasets, building KPI definitions, or drafting dashboard requirements without owning production pipeline infrastructure."
+      "description": "Explore analytical datasets using DuckDB/Polars, query canonical Semantic Metric Catalogs to eliminate Text-to-SQL hallucinations, detect statistical distribution drift, and deliver quantitatively verified insights with explicit fact/interpretation separation. Use when answering business questions from data without owning production pipeline infrastructure."
     },
     "meeting-review": {
       "name": "meeting-review",
@@ -1773,14 +1776,14 @@
       "category": "security-data",
       "type": "core",
       "file": "core/skills/security-data/build-data-pipeline/SKILL.md",
-      "description": "Design and implement data ingestion, transformation, and delivery pipelines including ETL/ELT, Parquet/DuckDB warehousing, dbt modeling, Airflow orchestration, Kafka streaming, and data quality gates. Use when the work requires a repeatable, owned pipeline — not a one-off analytical query."
+      "description": "Design and implement transactional lakehouse pipelines (Iceberg/Delta), enforce ODCS v3 data contracts at producer boundaries, integrate Great Expectations/dbt-expectations quality gates, and isolate invalid records in DLQ quarantine with deterministic replayability. Use when the work requires an owned, repeatable data pipeline."
     },
     "database-maintenance": {
       "name": "database-maintenance",
       "category": "security-data",
       "type": "core",
       "file": "core/skills/security-data/database-maintenance/SKILL.md",
-      "description": "Plan or perform operational database maintenance by following the repo's safety, backup, rollback, and verification patterns. Use for cleanup, backfill, index work, repair tasks, restore preparation, or other operational data changes."
+      "description": "Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/Delta compaction, snapshot expiration, orphan vacuuming, clustering optimization, query cost monitoring/FinOps, and relational/vector DB index tuning. Use for cleanup, compaction, repair, and operational performance tasks."
     },
     "manage-secrets": {
       "name": "manage-secrets",
@@ -1914,6 +1917,11 @@
       "name": "data-migration",
       "title": "data-migration",
       "file": "core/workflows/data-migration.md"
+    },
+    "data-pipeline-incident": {
+      "name": "data-pipeline-incident",
+      "title": "data-pipeline-incident",
+      "file": "core/workflows/data-pipeline-incident.md"
     },
     "dependency-upgrade": {
       "name": "dependency-upgrade",
@@ -2107,6 +2115,12 @@
       "stem": "data-analysis-report",
       "title": "Data Analysis Report",
       "file": "core/contracts/schemas/data-analysis-report.json"
+    },
+    "data-pipeline-spec.json": {
+      "name": "data-pipeline-spec.json",
+      "stem": "data-pipeline-spec",
+      "title": "Data Pipeline Specification",
+      "file": "core/contracts/schemas/data-pipeline-spec.json"
     },
     "deployment-plan.json": {
       "name": "deployment-plan.json",

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "data-analysis-report",
   "title": "Data Analysis Report",
-  "description": "Structured analyst deliverable for metrics, findings, and recommendations.",
+  "description": "Structured analyst deliverable for metrics, statistical findings, verifiable data provenance, and recommendations.",
   "type": "object",
   "properties": {
     "contract_type": {
@@ -31,6 +31,102 @@
           },
           "time_range": {
             "type": "string"
+          },
+          "semantic_metric_id": {
+            "type": "string",
+            "description": "Identifier in dbt Semantic Layer / Cube / MetricFlow to prevent Text-to-SQL hallucination."
+          },
+          "sample_size": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Total records or sample size evaluated for this metric."
+          },
+          "confidence_interval": {
+            "type": "object",
+            "description": "Statistical confidence interval for metric value.",
+            "properties": {
+              "confidence_level": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "lower_bound": {
+                "type": "number"
+              },
+              "upper_bound": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "confidence_level",
+              "lower_bound",
+              "upper_bound"
+            ]
+          },
+          "p_value": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Calculated p-value for statistical significance tests."
+          },
+          "statistical_significance": {
+            "type": "boolean",
+            "description": "True if the observed delta or finding is statistically significant."
+          },
+          "standard_deviation": {
+            "type": "number"
+          },
+          "distribution_quantiles": {
+            "type": "object",
+            "properties": {
+              "p50": {
+                "type": "number"
+              },
+              "p90": {
+                "type": "number"
+              },
+              "p95": {
+                "type": "number"
+              },
+              "p99": {
+                "type": "number"
+              }
+            }
+          },
+          "drift_metrics": {
+            "type": "object",
+            "description": "Distribution drift measurement against historical baseline.",
+            "properties": {
+              "drift_detected": {
+                "type": "boolean"
+              },
+              "method": {
+                "type": "string",
+                "enum": [
+                  "wasserstein",
+                  "psi",
+                  "ks_test",
+                  "none"
+                ]
+              },
+              "drift_score": {
+                "type": "number"
+              },
+              "threshold": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "drift_detected",
+              "method",
+              "drift_score"
+            ]
+          },
+          "anomaly_score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Calculated anomaly score between 0 (normal) and 1 (extreme outlier)."
           }
         },
         "required": [
@@ -55,6 +151,48 @@
           },
           "limitations": {
             "type": "string"
+          },
+          "verification_engine": {
+            "type": "string",
+            "enum": [
+              "duckdb",
+              "polars",
+              "dbt_semantic_layer",
+              "lakehouse_engine",
+              "sql_database",
+              "other"
+            ],
+            "description": "Engine utilized to compute or verify metrics independently."
+          },
+          "snapshot_id_or_version": {
+            "type": "string",
+            "description": "Apache Iceberg snapshot ID, Delta Lake version, or Git commit hash for point-in-time reproducibility."
+          },
+          "row_count_examined": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "data_hash_or_checksum": {
+            "type": "string",
+            "description": "SHA-256 hash or checksum of raw input partition for auditability."
+          },
+          "independent_verification": {
+            "type": "object",
+            "properties": {
+              "verified_by_independent_source": {
+                "type": "boolean"
+              },
+              "verification_method": {
+                "type": "string"
+              },
+              "reconciliation_diff_pct": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "verified_by_independent_source"
+            ]
           }
         },
         "required": [
@@ -95,6 +233,54 @@
         "Low"
       ]
     },
+    "causal_inference": {
+      "type": "object",
+      "description": "Causal analysis framework details if inferring business impact.",
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "ab_test",
+            "difference_in_differences",
+            "synthetic_control",
+            "propensity_score_matching",
+            "observational_none"
+          ]
+        },
+        "assumptions_validated": {
+          "type": "boolean"
+        },
+        "effect_size": {
+          "type": "number"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "method",
+        "assumptions_validated"
+      ]
+    },
+    "anti_hallucination_verification": {
+      "type": "object",
+      "description": "Guardrails against Text-to-SQL hallucinations and unbounded execution.",
+      "properties": {
+        "semantic_catalog_conformance": {
+          "type": "boolean"
+        },
+        "unbounded_sql_check_passed": {
+          "type": "boolean"
+        },
+        "duckdb_sandbox_executed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "semantic_catalog_conformance",
+        "duckdb_sandbox_executed"
+      ]
+    },
     "artifacts": {
       "type": "array",
       "items": {
@@ -118,34 +304,86 @@
   "examples": [
     {
       "contract_type": "data-analysis-report",
-      "report_id": "2026-06-12-cod-order-failure-analysis",
-      "feature_ticket_ref": "2026-06-12-change-store-order-cod",
-      "question": "How often do COD store orders fail due to warehouse routing vs store routing mismatch?",
-      "period": "2026-05-01 to 2026-06-11",
-      "findings": [
+      "business_question": "How often do COD store orders fail due to warehouse routing vs store routing mismatch?",
+      "metrics": [
         {
-          "metric": "COD orders with store_id mis-routed to warehouse",
-          "value": "34%",
-          "context": "Of all COD+store orders in the period"
-        },
-        {
-          "metric": "Delivery failure rate for mis-routed COD orders",
-          "value": "18%",
-          "context": "vs 6% for correctly routed orders"
+          "name": "cod_store_routing_failure_rate",
+          "definition": "Ratio of failed deliveries for store-pickup orders mistakenly routed to central warehouse",
+          "value": "18.2%",
+          "grain": "order",
+          "time_range": "2026-05-01 to 2026-06-11",
+          "semantic_metric_id": "metric.orders.cod_store_routing_failure_pct",
+          "sample_size": 42500,
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 0.171,
+            "upper_bound": 0.193
+          },
+          "p_value": 0.0012,
+          "statistical_significance": true,
+          "standard_deviation": 0.038,
+          "distribution_quantiles": {
+            "p50": 0.18,
+            "p90": 0.22,
+            "p95": 0.24,
+            "p99": 0.29
+          },
+          "drift_metrics": {
+            "drift_detected": false,
+            "method": "psi",
+            "drift_score": 0.042,
+            "threshold": 0.1
+          },
+          "anomaly_score": 0.15
         }
       ],
-      "recommendation": "Implement COD store routing to reduce delivery failure rate by estimated 12 percentage points",
-      "caveats": [
-        "Analysis based on store_id field which was only 60% filled pre-Q2"
+      "sources": [
+        {
+          "name": "gold_orders_silver_routes",
+          "path_or_table": "lakehouse_gold.orders_routing_summary",
+          "as_of": "2026-06-12T00:00:00Z",
+          "limitations": "store_id field coverage was 60% in early Q1 but reached 99.4% post-Q2",
+          "verification_engine": "duckdb",
+          "snapshot_id_or_version": "iceberg_snap_9847192410294812",
+          "row_count_examined": 142050,
+          "data_hash_or_checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "independent_verification": {
+            "verified_by_independent_source": true,
+            "verification_method": "Dual-engine reconciliation between DuckDB in-process analysis and Iceberg warehouse",
+            "reconciliation_diff_pct": 0.0
+          }
+        }
       ],
-      "visualizations": [
-        "bar_chart: COD routing by month",
-        "funnel: mis-routing → delivery failure"
+      "findings": [
+        "34% of all COD store orders were mistakenly routed to the regional warehouse rather than store fulfillment.",
+        "Delivery failure rate for mis-routed COD orders was 18.2% vs 6.1% for correctly routed orders (p < 0.01)."
       ],
-      "business_question": "What changed in the selected metric?",
-      "metrics": [],
-      "sources": [],
-      "confidence": "Medium"
+      "interpretation": [
+        "Warehouse routing introduces a 3-day transit delay leading to customer refusal upon cash-on-delivery attempt."
+      ],
+      "data_quality_issues": [
+        "Historical store_id nullability prior to 2026-04 required backfill partition pruning."
+      ],
+      "recommendations": [
+        "Implement mandatory store routing validation in checkout service to reduce failure rates by ~12 percentage points."
+      ],
+      "confidence": "High",
+      "causal_inference": {
+        "method": "difference_in_differences",
+        "assumptions_validated": true,
+        "effect_size": -0.121,
+        "notes": "Parallel trends assumption verified against pre-intervention store order routing cohorts."
+      },
+      "anti_hallucination_verification": {
+        "semantic_catalog_conformance": true,
+        "unbounded_sql_check_passed": true,
+        "duckdb_sandbox_executed": true
+      },
+      "artifacts": [
+        "s3://analytics-artifacts/reports/2026-06-12-cod-failure-analysis.parquet",
+        "s3://analytics-artifacts/charts/cod-routing-funnel.png"
+      ],
+      "ai_hallucination_disclaimer": false
     }
   ]
 }

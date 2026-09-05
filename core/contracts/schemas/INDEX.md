@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**45 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 44/45
+**46 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 45/46
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 
@@ -25,6 +25,7 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | `system-design-spec.json` | System Design Specification | ✅ | ✅ |
 | `aws-infra-spec.json` | AWS Infrastructure Specification | ❌ | ✅ |
 | `pull-request-spec.json` | Pull Request Specification | ✅ | ✅ |
+| `data-pipeline-spec.json` | Data Pipeline Specification | ✅ | ✅ |
 | **Quality & Review** | | | |
 | `code-review-finding.json` | Code Review Finding | ✅ | ✅ |
 | `test-report.json` | QA Test Report | ✅ | ✅ |
