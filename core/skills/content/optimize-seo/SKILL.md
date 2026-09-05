@@ -40,24 +40,22 @@ Optimize for three search discovery layers simultaneously:
 
 Rules for GEO/AEO:
 
-- mandate **answer-first structure**: open each H2 section with a direct answer (≤60 words) before elaboration
+- mandate **answer-first BLUF structure**: open each H2 section with an atomic direct answer (≤60 words) before narrative elaboration
+- apply **engine-specific citation playbooks** per [`references/geo-ai-citation-playbook.md`](references/geo-ai-citation-playbook.md): optimize for Perplexity (opening sentence data, bracketed citations `[1][2]`), SearchGPT (conversational entity fidelity, concise summaries), and Google AI Overviews (passage-level BLUF, ordered procedural steps)
+- format with **structured comparison tables & quantitative lists**: markdown comparison tables and dense quantitative data points (≥3 verifiable data points per 500 words) to maximize RAG passage extraction
 - include **query fan-out list**: 3–5 related sub-questions from People Also Ask + LLM suggestions
-- specify **answer format** per section: definition, comparison table, numbered steps, or bullet list — matching the format AI engines prefer for the query type
-- require **fact density**: minimum 3 verifiable data points per 500 words (statistics, expert quotes, specific numbers)
 - verify **AI bot crawlability**: robots.txt must allow OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot — flag blocks in audits
-- measure citations **per engine, not in aggregate**: Perplexity emits numbered `[1][2]` sources while ChatGPT uses inline mentions and footnotes — sample each engine separately, tag AI-referred traffic with dedicated UTM parameters, and track "according to \<brand\>" phrasing as the citation proxy
-- treat **entity consistency** as a GEO lever: identical brand facts (name, positioning, credentials) across the site, author profiles, and third-party listings consolidate entity recognition
+- measure citations **per engine, not in aggregate**: sample Perplexity, SearchGPT, and AI Overviews separately
+- treat **entity consistency** as a GEO lever: identical brand facts across channels consolidate knowledge graph recognition
 - do not claim AI citation placement as guaranteed — present GEO/AEO as structural best practices
 
-### Topical Authority & Entity SEO
+### Topical Authority & Entity Salience
 
-- assign each article to a **pillar–cluster position**: pillar, supporting, or supplementary
-- link each article explicitly to its **pillar page URL**
+- enforce **Entity-First SEO and Entity Salience** per [`references/entity-salience-and-schema.md`](references/entity-salience-and-schema.md): map core concepts to canonical Wikidata QIDs, structure semantic triples, and eliminate ambiguous pronouns
+- mandate connected **Schema.org JSON-LD `@graph`**: include `TechArticle`, `Person` (with E-E-A-T `sameAs` links), and `FAQPage`
+- assign each article to a **pillar–cluster position**: pillar, supporting, or supplementary, linked to pillar URL
 - document **information gain**: what this content adds beyond top-3 SERP results (unique data, firsthand experience, original analysis)
 - specify **content freshness type**: new_topic, evergreen_refresh, data_update, or experience_addition
-- define key **entities** (people, brands, concepts, locations) that must appear for topical coverage
-- recommend **schema types** for each article: Article, FAQPage, HowTo, Product, BreadcrumbList, Person (author), Organization
-- use stable `@id` patterns for entity references (e.g. `https://site.com/#organization`)
 
 ### Internal Linking Discipline
 
@@ -108,7 +106,10 @@ The detailed itemized checklist lives in
 The main file keeps a short checklist summary:
 
 - [ ] search intent classified and primary keyword explicit
-- [ ] answer-first block present in every H2 (≤60 words)
+- [ ] answer-first BLUF block present in every H2 (≤60 words)
+- [ ] engine-specific citation rules applied (Perplexity, SearchGPT, AI Overviews) per geo-ai-citation-playbook.md
+- [ ] comparison tables and quantitative fact density (≥3 data points / 500 words) implemented
+- [ ] entity salience and connected Schema.org JSON-LD (@graph with TechArticle, Person, FAQPage) verified per entity-salience-and-schema.md
 - [ ] internal link targets named with type labels
 - [ ] cannibalization check documented with resolution tactic
 - [ ] four-axis audit scored (overall, SEO, AEO, readability) with projected post-fix score

@@ -128,14 +128,14 @@ When unique imagery is required (and original photography is not available), gen
 
 ## Prompt Framework For AI-Assisted Drafting
 
-When handing the outline to an LLM for first-draft generation, wrap the request in this **5-component frame** to minimize slop:
+When handing the outline to an LLM for section drafting or first-draft generation, wrap the request in this **5-component frame with Anti-AI constraints** to minimize slop:
 
 | Component | Content | Why it matters |
 | --------- | ------- | -------------- |
-| 1. **Role** | "You are <SEO specialist / subject-matter expert / investigative journalist> with <N years> experience in <domain>" | Anchors the model's generated voice and benchmark for topical depth |
+| 1. **Role** | "You are <SEO specialist / subject-matter expert / senior systems architect> with <N years> hands-on production experience in <domain>" | Anchors the model's generated voice and benchmark for topical depth |
 | 2. **Brief** | audience + goal + tone + business outcome + YMYL flag from `seo-content-brief.json` | Prevents generic tone and mispositioned CTAs |
-| 3. **Structure** | the signed-off outline (H1/H2/H3 with answer format per section) | Keeps the LLM from reorganizing into a worse flow |
-| 4. **Keyword policy** | primary + secondary keywords, density target, placement rules (H2, first 100 words, conclusion), "do not stuff" explicit | Aligns output with SEO brief and prevents keyword-stuffing failure modes |
-| 5. **Visual & media spec** | list of AI image prompts per section (from the Image Generation Brief), callouts, code blocks, tables to insert | Ensures visuals are placed at the right depth, not appended at end |
+| 3. **Structure & BLUF** | the signed-off outline with section-level BLUF answers (≤60 words) and answer format per section | Enforces RAG-friendly passage retrieval and prevents buried conclusions |
+| 4. **Anti-AI & Keyword Policy** | zero-tolerance blacklist (no "delve", "tapestry", "unlock", "game-changer"), 20/60/20 burstiness, ≥85% active voice, primary/secondary keyword targets without stuffing | Eliminates AI clichés and robotic cadence at the point of generation |
+| 5. **Visual & Empirical Spec** | list of empirical proof requirements (telemetry, reproduction logs, benchmark numbers), code blocks, comparison tables, and image prompts | Ensures factual depth and verifiable data points are integrated inline |
 
 A prompt missing **any** of the five components statistically produces boilerplate. Keep all five inline with each section-level drafting call when invoking sub-agents.

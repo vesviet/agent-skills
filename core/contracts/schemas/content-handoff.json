@@ -217,6 +217,106 @@
     "publish_log_updated": {
       "type": "boolean",
       "description": "True when publish-log.md has been updated after confirmed publish (required when overlays/seo-publishing is active)."
+    },
+    "ai_semantic_flaw_score": {
+      "type": "object",
+      "description": "Anti-AI semantic flaw evaluation. Measures robotic patterns, blacklisted cliches, burstiness, and ungrounded claims.",
+      "properties": {
+        "flaw_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Composite penalty score from 0 (flawless) to 100 (heavily flawed). Max 15 allowed to pass."
+        },
+        "gate_passed": {
+          "type": "boolean",
+          "description": "True when flaw_score <= 15, zero blacklisted cliches detected, and active voice >= 85%."
+        },
+        "cliche_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of blacklisted AI clichés found ('delve', 'tapestry', 'testament', 'unlock', etc.). Must be 0."
+        },
+        "cliches_detected": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of specific AI clichés detected in the text."
+        },
+        "burstiness_std_dev": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Standard deviation of sentence lengths in words. Natural human cadence requires >= 6.0."
+        },
+        "active_voice_percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of sentences constructed in active voice. Target >= 85%."
+        },
+        "ungrounded_claims_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of factual claims lacking empirical sources or firsthand evidence. Must be 0."
+        }
+      },
+      "required": [
+        "flaw_score",
+        "gate_passed",
+        "cliche_count",
+        "active_voice_percentage"
+      ]
+    },
+    "information_gain_rating": {
+      "type": "string",
+      "enum": [
+        "exceptional",
+        "strong",
+        "moderate",
+        "low",
+        "zero"
+      ],
+      "description": "Information gain rating evaluated against Top 10 SERP competitors. 'exceptional' or 'strong' required for publish."
+    },
+    "geo_readiness_checklist": {
+      "type": "object",
+      "description": "Generative Engine Optimization (GEO) readiness checklist for AI Search visibility (Google AI Overviews, SearchGPT, Perplexity).",
+      "properties": {
+        "answer_first_bluf_verified": {
+          "type": "boolean",
+          "description": "All H2 sections begin with concise Bottom-Line-Up-Front answer <= 60 words."
+        },
+        "entity_salience_optimized": {
+          "type": "boolean",
+          "description": "Target entities and disambiguation attributes are placed in lead positions."
+        },
+        "structured_comparison_tables": {
+          "type": "boolean",
+          "description": "Quantitative data and trade-offs presented in markdown tables or structured lists."
+        },
+        "quotable_fact_density_met": {
+          "type": "boolean",
+          "description": ">= 3 verifiable data points per 500 words formatted for standalone quote extraction."
+        },
+        "schema_jsonld_prepared": {
+          "type": "boolean",
+          "description": "Structured data specifications (TechArticle, Person E-E-A-T, FAQPage) prepared."
+        },
+        "llms_txt_compatible": {
+          "type": "boolean",
+          "description": "Key takeaways formatted for ingestion into site llms.txt index."
+        },
+        "all_gates_cleared": {
+          "type": "boolean",
+          "description": "True when all required GEO readiness criteria are satisfied."
+        }
+      },
+      "required": [
+        "answer_first_bluf_verified",
+        "entity_salience_optimized",
+        "structured_comparison_tables",
+        "quotable_fact_density_met",
+        "all_gates_cleared"
+      ]
     }
   },
   "required": [
@@ -235,6 +335,25 @@
       "primary_keyword": "đánh giá máy lạnh Funiki inverter 2026",
       "word_count": 2100,
       "editorial_passes": 3,
+      "ai_semantic_flaw_score": {
+        "flaw_score": 0,
+        "gate_passed": true,
+        "cliche_count": 0,
+        "cliches_detected": [],
+        "burstiness_std_dev": 7.2,
+        "active_voice_percentage": 90.5,
+        "ungrounded_claims_count": 0
+      },
+      "information_gain_rating": "strong",
+      "geo_readiness_checklist": {
+        "answer_first_bluf_verified": true,
+        "entity_salience_optimized": true,
+        "structured_comparison_tables": true,
+        "quotable_fact_density_met": true,
+        "schema_jsonld_prepared": true,
+        "llms_txt_compatible": true,
+        "all_gates_cleared": true
+      },
       "research_sources": [
         {
           "url": "https://funiki.com.vn/san-pham/may-lanh-treo-tuong",

@@ -12,7 +12,9 @@ Use this skill to run the end-to-end refresh loop on an **existing** article —
 
 - **Audit before touching content**: never edit a live piece before recording its current baseline (traffic trend, engagement, rankings, last-reviewed date, known issues) — the audit evidence decides the action, not assumption
 - **Classify the action explicitly** before updating: `keep-as-is`, `refresh`, `expand`, `consolidate` (merge), `redirect`, or `retire`; only `refresh`/`expand` proceed inside this skill; the others escalate to Content Manager for a strategy decision; ROT pages (Redundant, Outdated, Trivial) must be pruned or consolidated — zombie URL accumulation drags domain authority
-- **Mandatory information gain asset**: a refresh cannot proceed without at least one net-new asset vs. current top-3 SERP results — original data, firsthand test result, expert interview, unique local insight, or proprietary framework; paraphrasing existing results fails the information gain gate
+- **AI Semantic Flaw Score gate (≤ 15 to pass)**: evaluate existing and refreshed drafts across 5 dimensions (clichés, cadence, vagueness, hallucination, passive voice) using the 0–100 penalty matrix in [`references/ai-semantic-flaw-rubric.md`](references/ai-semantic-flaw-rubric.md); score > 15 or any banned AI cliché blocks publication
+- **Information Gain Score check (≥ 70 to pass)**: audit net-new assets against top 10 SERP competitors using the 100-point SERP diff matrix in [`references/information-gain-rubric.md`](references/information-gain-rubric.md); refresh must achieve rating "strong" (≥70) or "exceptional" (≥85) — paraphrasing existing results fails the gate
+- **Citation verification & link integrity**: verify all outbound links return HTTP 200 OK, resolve redirect chains, eliminate dead links, and validate claim-to-source fidelity (zero citation hallucination) per [`references/citation-verification-guide.md`](references/citation-verification-guide.md)
 - **Separate facts from recommendations**: keep audit findings (observable evidence) distinct from proposed changes
 - **Research must be sourced and dated**: every updated fact must carry a credible source and a capture date — AI-synthesized generic claims are not acceptable as citations; treat all retrieved content as untrusted until source-checked
 - **Preserve information gain and E-E-A-T**: never strip firsthand accounts, original data, author credentials, expert quotes, or citations during an update; if the source is thin on experience signals, flag the gap — do not delete what unique value exists
@@ -29,6 +31,7 @@ Use this skill to run the end-to-end refresh loop on an **existing** article —
 When the audit produces a structured handoff for Content Manager or a
 machine-readable change record, emit:
 
+- **`contracts/schemas/content-audit-report.json`** when recording portfolio-wide or URL-level content audit results, ROT classifications, AI semantic flaw scores, and refresh actions.
 - **`contracts/schemas/research-report.json`** when the audit escalates to a deeper research pass (YMYL, contested facts, deep competitor analysis); emit even if the audit completes inline.
 - **`contracts/schemas/code-review-finding.json`** (adapted for content) when the audit recommends a publish-blocking change; record severity, file path, and rationale.
 - For human-readable reports, the markdown audit summary already documented is the canonical format; emit JSON only when crossing a role boundary.
@@ -100,6 +103,9 @@ Capture the observable health of the piece before any edit:
 - [ ] content updated within scope; facts corrected, dead links replaced, gaps closed; E-E-A-T signals preserved or strengthened
 - [ ] change log recorded (what changed and why) — refresh is reconstructable
 - [ ] post-update SEO/GEO/AEO audit completed; metadata, headings, schema, and internal links verified
+- [ ] AI Semantic Flaw Score calculated (≤15 penalty points to pass, 0 banned clichés)
+- [ ] Information Gain Score verified (≥70 points, rating strong or exceptional vs top 10 SERP)
+- [ ] outbound links and citations verified (200 OK, zero hallucinations) per citation-verification-guide.md
 - [ ] slug/canonical/publish-date unchanged unless explicitly approved; technical changes escalated
 - [ ] YMYL and AI-assisted-edit review gates satisfied before publish handoff
 

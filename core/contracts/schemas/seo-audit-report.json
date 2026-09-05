@@ -765,6 +765,97 @@
       "required": [
         "overall_status"
       ]
+    },
+    "anti_ai_semantic_audit": {
+      "type": "object",
+      "description": "Audit of AI semantic flaws, robotic cadence, blacklisted cliches, and synthetic patterns.",
+      "required": [
+        "ai_semantic_flaw_score",
+        "gate_passed",
+        "cliche_findings",
+        "burstiness_assessment"
+      ],
+      "properties": {
+        "ai_semantic_flaw_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Penalty score (0-100). Scores <= 15 pass; > 15 require revision."
+        },
+        "gate_passed": {
+          "type": "boolean",
+          "description": "True when flaw score <= 15 and zero blacklisted clichés exist."
+        },
+        "cliche_findings": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of AI clichés found with line references."
+        },
+        "burstiness_assessment": {
+          "type": "string",
+          "enum": ["natural_human", "moderate_variation", "robotic_uniform"],
+          "description": "Cadence classification based on sentence length variance."
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "information_gain_audit": {
+      "type": "object",
+      "description": "Rigorous comparison against Top 10 SERP results to verify unique value contribution.",
+      "required": [
+        "information_gain_rating",
+        "gate_passed",
+        "net_new_assets"
+      ],
+      "properties": {
+        "information_gain_rating": {
+          "type": "string",
+          "enum": ["exceptional", "strong", "moderate", "low", "zero"],
+          "description": "Rating against top 10 competitors. Must be 'exceptional' or 'strong' to pass."
+        },
+        "gate_passed": {
+          "type": "boolean",
+          "description": "True if article provides distinct, verifiable net-new information."
+        },
+        "net_new_assets": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Specific unique assets present (e.g., 'benchmark telemetry logs', 'original architectural trade-off diagram')."
+        },
+        "competitor_serp_overlap_notes": {
+          "type": "string",
+          "description": "Assessment of how the draft avoids generic paraphrasing of top SERP pages."
+        }
+      }
+    },
+    "geo_readiness_checklist": {
+      "type": "object",
+      "description": "Checklist evaluating content extractability by AI Search engines (Google AI Overviews, SearchGPT, Perplexity).",
+      "required": [
+        "answer_first_bluf",
+        "entity_salience",
+        "tabular_data_density",
+        "citation_readiness_score",
+        "overall_geo_status"
+      ],
+      "properties": {
+        "answer_first_bluf": { "type": "boolean" },
+        "entity_salience": { "type": "boolean" },
+        "tabular_data_density": { "type": "boolean" },
+        "citation_readiness_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "AI citation readiness score. 80+ indicates high probability of extraction."
+        },
+        "llms_txt_compatibility": { "type": "boolean" },
+        "overall_geo_status": {
+          "type": "string",
+          "enum": ["pass", "conditional_pass", "fail"]
+        }
+      }
     }
   },
   "examples": [
@@ -775,6 +866,30 @@
       "audited_url_or_path": "post/neighborhood/thu-thiem-neighborhood-guide-2026.mdx",
       "audit_type": "pre_publish",
       "brief_ref": "2026-06-12-lease-thu-thiem-neighborhood-guide",
+      "anti_ai_semantic_audit": {
+        "ai_semantic_flaw_score": 0,
+        "gate_passed": true,
+        "cliche_findings": [],
+        "burstiness_assessment": "natural_human",
+        "notes": "Zero blacklisted cliches found; burstiness variance indicates natural human cadence."
+      },
+      "information_gain_audit": {
+        "information_gain_rating": "exceptional",
+        "gate_passed": true,
+        "net_new_assets": [
+          "2026 live rental price ranges",
+          "firsthand walkability telemetry"
+        ],
+        "competitor_serp_overlap_notes": "Includes firsthand empirical pricing and map walkability data not present in top 10 SERP."
+      },
+      "geo_readiness_checklist": {
+        "answer_first_bluf": true,
+        "entity_salience": true,
+        "tabular_data_density": true,
+        "citation_readiness_score": 88,
+        "llms_txt_compatibility": true,
+        "overall_geo_status": "pass"
+      },
       "traditional_seo": {
         "issues": [
           {

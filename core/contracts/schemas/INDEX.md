@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**43 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 42/43
+**44 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 43/44
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 
@@ -37,6 +37,7 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | `ux-flow-spec.json` | UX Flow Specification | ✅ | ✅ |
 | `ui-component-spec.json` | UI Component Specification | ✅ | ✅ |
 | `content-handoff.json` | Content Handoff | ✅ | ✅ |
+| `content-audit-report.json` | Content Audit Report | ✅ | ✅ |
 | `documentation-handoff.json` | Documentation Handoff | ✅ | ✅ |
 | `learning-handoff.json` | Learning Handoff | ✅ | ✅ |
 | `research-report.json` | Research Report Specification | ✅ | ✅ |

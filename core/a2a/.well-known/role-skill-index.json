@@ -6,7 +6,7 @@
     "roles": 34,
     "skills": 107,
     "workflows": 18,
-    "schemas": 43
+    "schemas": 44
   },
   "role_aliases": {
     "writer": "content-writer",
@@ -577,7 +577,7 @@
     "content-manager": {
       "name": "content-manager",
       "title": "Content Manager",
-      "description": "direct the overall content strategy of a website — from building content pillar architecture, managing the content lifecycle (production → distribution → measurement → refresh), to leveraging internal subject matter expertise (SME) and optimizing for AI search. Serve as the bridge between business goals and day-to-day content production; ensure every published piece reaches the right audience, serves the right objective, on the right channel, at the right stage of the website's growth. In 2025–2026, this extends to governing AI-generated content pipelines with human-in-the-loop editorial review gates, enforcing AI content labeling and accuracy standards, defining information gain strategy that differentiates site content from AI-synthesized aggregations, and maintaining brand and factual integrity when content is surfaced or repurposed by generative systems.",
+      "description": "direct the overall content portfolio strategy of a website — from designing content pillar architecture, governing the content lifecycle (production → distribution → measurement → refresh), to enforcing Top 10 SERP Information Gain, authenticating subject matter expert (SME) credentials, and optimizing for Generative Engine Optimization (GEO). Bridge business goals and day-to-day content operations; ensure every published asset delivers novel value, serves the right audience, on the right channel, at the right stage of website growth. In 2025–2026, this extends to governing AI-assisted content pipelines with mandatory human editorial gates, enforcing the Top 10 SERP Information Gain differential threshold (≥75/100, rejecting zero-gain skyscraper rewrites), managing a 3-tier content decay monitoring system (Algorithmic, GEO Citation, and Factual), authenticating real-world SME provenance, and enforcing semantic drift prevention across multi-channel distribution.",
       "file": "core/roles/content-manager.md",
       "skills": [
         "audit-content",
@@ -598,7 +598,7 @@
     "content-writer": {
       "name": "content-writer",
       "title": "Content Writer",
-      "description": "produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Write for humans first and for machine extractability second: answer-first structure, high fact density, and clear modular formatting so content is citable by both readers and AI answer engines (Google AI Overviews and AI Mode, Perplexity, ChatGPT/SearchGPT). In 2025–2026, this extends to producing AI-citable content with explicit E-E-A-T firsthand proof signals, operating within AI-governed content pipelines with human editorial review gates, structuring every article for answer-engine extractability (GEO/AEO-compliant), and maintaining brand and factual integrity when content is synthesized or repurposed by generative systems.",
+      "description": "produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Write for humans first and for machine extractability second: answer-first (BLUF) structure, high fact density, quantitative burstiness (20/60/20), and strict active voice (≥85%) so content is authoritative to human readers and citable by AI answer engines (Google AI Overviews, Perplexity, SearchGPT). In 2025–2026, this extends to rigorous late-2026 Anti-AI Clichés elimination (zero tolerance for banned AI vocabulary), mandatory first-hand empirical proof (minimum 2 verified proof types), operating within AI-governed pipelines with human editorial gates, structuring every section for answer-engine extractability, and preventing semantic drift when content is repurposed into multi-channel formats.",
       "file": "core/roles/content-writer.md",
       "skills": [
         "write-article",
@@ -891,7 +891,7 @@
     "seo-analyst": {
       "name": "seo-analyst",
       "title": "SEO Analyst",
-      "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third-party answer engines — with defensible keyword strategy, on-page structure, internal linking, structured data specifications, and metadata. Produce briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation. Optimize for discoverability in Google, AI answer engines (Perplexity, ChatGPT/SearchGPT, Bing AI), and generative search surfaces. In 2025–2026, this extends to Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and Agentic SEO (A-SEO) — structuring content for direct AI citation, fact-density extractability, and topical authority cluster integrity across both human-browsed and AI-mediated discovery surfaces. Per Google's May 2026 official generative-AI optimization guidance, treat GEO/AEO as extensions of SEO fundamentals — AI Overviews and AI Mode draw from the same Search index as classic ranking — not as a separate playbook or a set of AI-only tactics. In 2026, this further extends to **MCP 2026-07-28 stateless protocol audit** for agent-discoverability endpoints, **EU AI Act Article 50 disclosure audit** for AI-generated content pages, and **C2PA marking verification** for AI-generated media.",
+      "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third-party answer engines — with defensible keyword strategy, Entity-First SEO, Answer-First (BLUF) structure, connected Schema.org `@graph` specifications, and metadata. Produce briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation. Optimize for discoverability in Google, AI answer engines (Perplexity, SearchGPT, Bing AI), and generative search surfaces. In 2025–2026, this extends to Generative Engine Optimization (GEO), Entity-First SEO (Wikidata QID mapping, semantic triples, and entity salience), strict Answer-First (BLUF) formulation (≤30-word answer + ≤30-word metric proof), connected Schema.org `@graph` architecture (`TechArticle`, `Person` E-E-A-T, `FAQPage`), authoring and auditing `/llms.txt` and `/llms-full.txt` agentic discovery manifests, MCP 2026-07-28 stateless protocol audits, EU AI Act Article 50 disclosure audits, and C2PA marking verification.",
       "file": "core/roles/seo-analyst.md",
       "skills": [
         "optimize-seo",
@@ -2068,6 +2068,12 @@
       "stem": "code-review-finding",
       "title": "Code Review Finding",
       "file": "core/contracts/schemas/code-review-finding.json"
+    },
+    "content-audit-report.json": {
+      "name": "content-audit-report.json",
+      "stem": "content-audit-report",
+      "title": "Content Audit Report",
+      "file": "core/contracts/schemas/content-audit-report.json"
     },
     "content-handoff.json": {
       "name": "content-handoff.json",

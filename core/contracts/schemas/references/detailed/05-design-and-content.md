@@ -29,6 +29,14 @@ Required fields: `contract_type`, `content_path`, `status`
 Size: 12,064 bytes
 ✅ Has example
 
+#### `content-audit-report.json`
+
+**Content Audit Report**
+Structured deliverable emitted by Content Manager using audit-content skill. Records portfolio-wide or URL-level content audit results, ROT classifications, AI semantic flaw scores, information gain ratings, and refresh actions.
+
+Required fields: `contract_type`, `audit_id`, `created_at`, `site`, `audit_scope`, `audited_items`, `portfolio_summary`, `handoff`
+✅ Has example
+
 #### `documentation-handoff.json`
 
 **Documentation Handoff**  

@@ -19,46 +19,37 @@ The specific thresholds below (answer-first ≤60 words, fact density, E-E-A-T p
 
 ## Core Rules
 
-### Research & Evidence Integrity
-- clarify audience, goal, CTA, and channel before drafting
-- when research is required, run **at least three to four distinct passes** (different questions, sources, or angles) unless Researcher already delivered research-report.json
-- when sources are supplied, synthesize only from that material — do not duplicate research
-- separate verified facts, attributed claims, and author judgment
-- follow seo-content-brief.json when SEO Analyst provided a brief; do not invent keyword or link strategy
-- apply site overlay skills (lease-content, vesviet-content) for frontmatter, paths, and schema
-- produce `contracts/schemas/content-handoff.json` when machine handoff is required
+### Anti-AI Style & Natural Cadence
+- **Zero-tolerance Anti-AI clichés blacklist**: prohibit "delve", "tapestry", "testament", "unlock", "game-changer", "foster", etc. per [`references/anti-ai-style-guide.md`](references/anti-ai-style-guide.md)
+- **Burstiness & natural cadence**: enforce 20/60/20 sentence length distribution (<12w: ~20%, 12–25w: ~60%, >25w: ~20%) to avoid robotic monotony; cadence std dev ≥ 6.5 words
+- **Active voice mandate**: require ≥85% active voice with clear subject agency; eliminate passive evasion
 
-### Answer-First Structure (AEO/GEO mandatory)
-- open each H2 section with a **direct answer ≤60 words** before elaboration — this is mandatory for informational and commercial queries
-- do not bury the answer: eliminate slow-burn introductions that delay the answer past paragraph 2–3
-- mirror H2 headings to natural language queries: "How to...", "What is...", "Why does..."
-- H3 subheadings address follow-up sub-questions within each H2 cluster
+### Answer-First & Section BLUF Structure (AEO/GEO mandatory)
+- open each H2 section with an atomic **BLUF answer ≤60 words** before narrative elaboration — mandatory for RAG passage extraction by AI Overviews and SearchGPT
+- do not bury the answer: eliminate slow-burn introductions that delay the takeaway past paragraph 2–3
+- mirror H2 headings to natural language queries; address sub-questions with H3 subheadings
 
-### Information Gain (Hard Quality Gate)
-- every article must document what it adds beyond top-3 SERP results: this is a quality gate, not optional
-- acceptable information gain types: original_data, firsthand_account, local_insight, expert_interview, unique_framework, contrarian_perspective
-- **no skyscraper regurgitation**: if the draft only paraphrases existing results, it fails the gate — flag and escalate to user or Researcher
-- use AI tools for research and outlining, but inject ≥30% unique human insight, local knowledge, or original data
+### Information Gain & Shallow Synthesis Prevention
+- **Shallow synthesis prevention**: reject drafts that merely synthesize top-5 SERP results without firsthand engineering commentary, benchmarks, or telemetry
+- every article must document what it adds beyond top-3 SERP results (acceptable types: original_data, firsthand_account, expert_interview, unique_framework)
+- inject ≥30% unique human insight, local knowledge, or original empirical data
 
-### Fact Density
-- minimum **3 verifiable data points** (statistics, specific numbers, sourced expert quotes) per 500 words
-- cite primary sources or explicitly attribute each significant claim
-- write **citation-ready sentences**: tight, factual, ≤25 words — making them easy for AI engines to extract and quote
-- flag unverified claims rather than inventing detail
+### Authentic Sourcing & Fact Density
+- enforce Tier 1/2 source credibility taxonomy per [`references/authentic-source-matrix.md`](references/authentic-source-matrix.md); prohibit unverified blogs and AI summaries
+- mandate minimum **3 verifiable data points** (statistics, numbers, sourced quotes) per 500 words
+- require at least two empirical proof types (production telemetry, reproduction logs, benchmark numbers, C2PA media)
+- write citation-ready sentences: tight, factual, ≤25 words
 
 ### Scanability & Machine Readability
-- preferred sentence length: **≤20 words** for body text; vary for rhythm
-- preferred paragraph length: **2–4 lines** — one idea per paragraph
-- use **bullet points** for unranked lists; **numbered lists** for sequential steps; **comparison tables** for feature/price/spec data
-- use **bolded lead-ins** in bullet lists for scannable entries
-- FAQ block at end when brief/SERP requires it: format as `## FAQ` with `### Question?` subheadings for schema compatibility
-- **JSON-LD structured data is mandatory**: every article must include `Article` schema with `datePublished`, `dateModified`, `author` (linked `Person` entity), and `publisher`; add `FAQPage` when a FAQ block is present; validate against Google Rich Results Test with zero warnings before publish
-- **Atomic modular content**: structure each H2 section as a self-contained semantic module with a BLUF answer ≤60 words — RAG extractors retrieve passages atomically, not full articles; wall-of-text blocks over 100 words without subheadings fail RAG chunking
+- preferred sentence length: **≤20 words** for body text; vary for rhythm; paragraphs **2–4 lines**
+- use bullet points for unranked lists; numbered lists for sequential steps; comparison tables for feature/price/spec data
+- FAQ block at end formatted as `## FAQ` with `### Question?` subheadings for schema compatibility
+- **JSON-LD structured data is mandatory**: include `Article` schema with author `Person` entity; add `FAQPage` when FAQ block is present
+- **Atomic modular content**: structure each H2 section as a self-contained semantic module with a BLUF answer ≤60 words for atomic RAG chunking
 
 ### E-E-A-T Experience Signals
-- implement the experience proof type specified in the SEO brief: original photo, firsthand account, documented test result, expert interview excerpt, or case study
-- do not fabricate experience signals — if you cannot produce the required proof type, flag the gap and escalate
-- include author entity reference when brief specifies it
+- implement the experience proof type specified in the SEO brief: original photo, firsthand account, documented test result, expert interview, or case study
+- do not fabricate experience signals — flag gaps and escalate
 - include trust signals: source citations with links, verifiable claims, contact/policy references
 
 ## Research Depth Decision
@@ -74,11 +65,7 @@ The specific thresholds below (answer-first ≤60 words, fact density, E-E-A-T p
 
 ## Suggested Process
 
-The full 6-step process (define question, research with CoVe + AEO
-discovery, outline with answer-first, draft, fact-density + E-E-A-T pass,
-self-audit) lives in
-[
-eferences/suggested-process.md](references/suggested-process.md).
+The full 6-step process (define question, research with CoVe + AEO discovery, outline with answer-first, draft, fact-density + E-E-A-T pass, self-audit) lives in [`references/suggested-process.md`](references/suggested-process.md).
 
 ## AI-Assisted Drafting Protocol
 
@@ -112,11 +99,15 @@ When AI support is used anywhere in drafting, apply three disciplines — full t
 ### Information Gain & Originality
 - [ ] information gain documented: what this content adds beyond top SERP results
 - [ ] information gain type specified (original_data, firsthand_account, local_insight, etc.)
-- [ ] information gain gate: passed (not a mere rewrite of existing results)
+- [ ] shallow synthesis check passed: firsthand engineering commentary or telemetry present
 - [ ] AI-generated sections supplemented with unique human insight or original data
 
-### GEO / AEO Execution
-- [ ] answer-first block (≤60 words) after each H2
+### Anti-AI Style & GEO / AEO Execution
+- [ ] answer-first BLUF block (≤60 words) after each H2
+- [ ] Anti-AI scan passed: 0 banned clichés from anti-ai-style-guide.md
+- [ ] burstiness verified (20/60/20 distribution, cadence std dev ≥6.5)
+- [ ] active voice mandate verified (≥85% active voice)
+- [ ] authentic source matrix applied (Tier 1/2 primary sources verified)
 - [ ] query fan-out sub-questions from brief addressed in body
 - [ ] answer formats applied per section (definition, steps, table, bullets)
 - [ ] fact density met (≥3 verifiable data points per 500 words)

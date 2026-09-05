@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/schemas/content-audit-report.json",
+  "title": "Content Audit Report",
+  "description": "Structured deliverable emitted by Content Manager using audit-content skill. Records portfolio-wide or URL-level content audit results, ROT classifications, AI semantic flaw scores, information gain ratings, and refresh actions.",
+  "type": "object",
+  "required": [
+    "contract_type",
+    "audit_id",
+    "created_at",
+    "site",
+    "audit_scope",
+    "audited_items",
+    "portfolio_summary",
+    "handoff"
+  ],
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "content-audit-report",
+      "description": "Machine-readable contract discriminator."
+    },
+    "audit_id": {
+      "type": "string",
+      "description": "Unique identifier for this audit. Convention: YYYY-MM-DD-site-scope."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "site": {
+      "type": "string",
+      "description": "Target site slug (e.g. tanhdev, vesviet, learn, leaseinvietnam)."
+    },
+    "audit_scope": {
+      "type": "string",
+      "description": "Pillar, cluster, or URL scope audited."
+    },
+    "audited_items": {
+      "type": "array",
+      "description": "Audit findings per individual URL.",
+      "items": {
+        "type": "object",
+        "required": [
+          "url_or_path",
+          "action",
+          "ai_semantic_flaw_score",
+          "information_gain_rating",
+          "rot_classification"
+        ],
+        "properties": {
+          "url_or_path": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "keep_as_is",
+              "refresh",
+              "expand",
+              "consolidate",
+              "redirect",
+              "retire"
+            ]
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "traffic_trend": {
+            "type": "string",
+            "enum": [
+              "growing",
+              "stable",
+              "declining",
+              "zero_traffic"
+            ]
+          },
+          "staleness_months": {
+            "type": "number"
+          },
+          "rot_classification": {
+            "type": "string",
+            "enum": [
+              "none",
+              "redundant",
+              "outdated",
+              "trivial"
+            ]
+          },
+          "ai_semantic_flaw_score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "cliches_present": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "information_gain_rating": {
+            "type": "string",
+            "enum": [
+              "exceptional",
+              "strong",
+              "moderate",
+              "low",
+              "zero"
+            ]
+          },
+          "geo_readiness_score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      }
+    },
+    "portfolio_summary": {
+      "type": "object",
+      "required": [
+        "total_urls_audited",
+        "action_counts",
+        "average_ai_semantic_flaw_score",
+        "average_information_gain_rating"
+      ],
+      "properties": {
+        "total_urls_audited": {
+          "type": "integer"
+        },
+        "action_counts": {
+          "type": "object",
+          "properties": {
+            "keep_as_is": {
+              "type": "integer"
+            },
+            "refresh": {
+              "type": "integer"
+            },
+            "expand": {
+              "type": "integer"
+            },
+            "consolidate": {
+              "type": "integer"
+            },
+            "redirect": {
+              "type": "integer"
+            },
+            "retire": {
+              "type": "integer"
+            }
+          }
+        },
+        "average_ai_semantic_flaw_score": {
+          "type": "number"
+        },
+        "average_information_gain_rating": {
+          "type": "string"
+        }
+      }
+    },
+    "handoff": {
+      "type": "object",
+      "required": [
+        "status",
+        "action_required",
+        "recommended_next_roles"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "audit_completed",
+            "refreshes_delegated",
+            "governance_action_needed"
+          ]
+        },
+        "action_required": {
+          "type": "string"
+        },
+        "recommended_next_roles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "content-writer",
+              "seo-analyst",
+              "frontend-developer",
+              "data-analyst"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "contract_type": "content-audit-report",
+      "audit_id": "2026-09-05-tanhdev-architecture-audit",
+      "created_at": "2026-09-05T10:00:00+07:00",
+      "site": "tanhdev",
+      "audit_scope": "Technical Architecture & API Guides",
+      "audited_items": [
+        {
+          "url_or_path": "posts/microservices-event-sourcing-patterns",
+          "title": "Event Sourcing Patterns in Production",
+          "action": "refresh",
+          "rationale": "High traffic but contains robotic cadence and lacks 2026 production telemetry metrics.",
+          "traffic_trend": "declining",
+          "staleness_months": 14,
+          "rot_classification": "outdated",
+          "ai_semantic_flaw_score": 28,
+          "cliches_present": [
+            "delve",
+            "tapestry",
+            "game-changer"
+          ],
+          "information_gain_rating": "moderate",
+          "geo_readiness_score": 62
+        }
+      ],
+      "portfolio_summary": {
+        "total_urls_audited": 1,
+        "action_counts": {
+          "keep_as_is": 0,
+          "refresh": 1,
+          "expand": 0,
+          "consolidate": 0,
+          "redirect": 0,
+          "retire": 0
+        },
+        "average_ai_semantic_flaw_score": 28.0,
+        "average_information_gain_rating": "moderate"
+      },
+      "handoff": {
+        "status": "refreshes_delegated",
+        "action_required": "Delegate refresh to Content Writer with strict anti-cliche directive and firsthand benchmark integration.",
+        "recommended_next_roles": [
+          "content-writer",
+          "seo-analyst"
+        ]
+      }
+    }
+  ]
+}

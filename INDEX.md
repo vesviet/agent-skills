@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `4.1.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **18 Workflows** | **43 Data Contracts**
+> **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **18 Workflows** | **44 Data Contracts**
 
 ---
 
@@ -408,7 +408,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 📑 Data Contracts & Schemas (43 Schemas)
+## 📑 Data Contracts & Schemas (44 Schemas)
 
 | Schema File | Schema Title | Path |
 |:---|:---|:---|
@@ -429,6 +429,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | `architecture-options.json` | Architecture Options Brief | [`core/contracts/schemas/architecture-options.json`](./core/contracts/schemas/architecture-options.json) |
 | `aws-infra-spec.json` | AWS Infrastructure Specification | [`core/contracts/schemas/aws-infra-spec.json`](./core/contracts/schemas/aws-infra-spec.json) |
 | `code-review-finding.json` | Code Review Finding | [`core/contracts/schemas/code-review-finding.json`](./core/contracts/schemas/code-review-finding.json) |
+| `content-audit-report.json` | Content Audit Report | [`core/contracts/schemas/content-audit-report.json`](./core/contracts/schemas/content-audit-report.json) |
 | `content-handoff.json` | Content Handoff | [`core/contracts/schemas/content-handoff.json`](./core/contracts/schemas/content-handoff.json) |
 | `coordination-plan.json` | Coordination Plan | [`core/contracts/schemas/coordination-plan.json`](./core/contracts/schemas/coordination-plan.json) |
 | `data-analysis-report.json` | Data Analysis Report | [`core/contracts/schemas/data-analysis-report.json`](./core/contracts/schemas/data-analysis-report.json) |

@@ -24,7 +24,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
             → validation-result.json ← Agent Coordinator (phase gate)
 ```
 
-## All Schemas (43 total)
+## All Schemas (44 total)
 
 ### Solution & Governance
 - `solution-brief.json` — Solution Architect scoping handoff (build-vs-buy, capability gaps, AI feasibility, compliance)
@@ -57,6 +57,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
 - `ux-flow-spec.json` — Multi-screen UX flow handoff
 - `ui-component-spec.json` — UI component specification
 - `content-handoff.json` — Article/content completion handoff
+- `content-audit-report.json` — Content audit report and refresh actions
 - `documentation-handoff.json` — Technical doc update handoff
 - `learning-handoff.json` — Teaching/exercise handoff
 - `research-report.json` — Research findings

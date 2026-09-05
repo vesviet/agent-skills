@@ -26,31 +26,32 @@ Before drafting, identify what unique value this article will provide:
 
 ### 4. Outline And Draft
 
-- map H2 structure to GEO/AEO brief: each H2 = direct answer block + elaboration
+- map H2 structure to GEO/AEO brief: each H2 begins with an atomic **BLUF answer block (≤60 words)** before narrative elaboration
 - match query fan-out sub-questions from brief to H3 subheadings or inline answers
-- implement answer format per section (definition, steps, table, bullets) from brief
+- implement answer format per section (definition, steps, comparison table, quantitative bullets) from brief
 - implement internal links from brief or plan (minimum 3, prioritize high-value product/property pages)
-- use overlay skill for MDX/Markdown file authoring
-- inject experience signals, firsthand data, or original insight per E-E-A-T requirement
+- source all technical claims using `references/authentic-source-matrix.md` (Tier 1/2 sources mandatory)
+- inject at least two empirical proof types (telemetry, reproduction logs, benchmark numbers) per E-E-A-T requirement
 
-### 5. Scanability Pass
+### 5. Scanability & Anti-AI Style Pass
 
-After drafting, review for:
-- sentences mostly ≤20 words
-- paragraphs 2–4 lines
-- list-worthy content converted to bullets or numbered lists
-- comparison data in tables
-- bolded lead-ins for scannable bullet sets
-- FAQ block added if brief or SERP requires it
+After drafting, run the mandatory quality gate:
+- **BLUF Verification**: confirm every H2 opens with a direct, quotable answer ≤60 words
+- **Anti-AI Clichés Scan**: verify 0 occurrences of banned buzzwords ("delve", "tapestry", "unlock", "game-changer") against `references/anti-ai-style-guide.md`
+- **Burstiness & Rhythm Check**: enforce 20/60/20 sentence length distribution (<12 words: ~20%, 12–25 words: ~60%, >25 words: ~20%)
+- **Active Voice Benchmark**: verify ≥85% active voice with explicit subject agency
+- **Scanability**: paragraphs 2–4 lines, list-worthy items converted to bullets/tables with bolded lead-ins
+- **FAQ Block**: validate against Schema.org FAQPage requirements when present
 
 ### 6. Package Handoff
 
 Emit content-handoff.json with:
 - path, word_count, passes, unverified claims
-- `information_gain`: unique value added and type
-- `answer_first_implemented`: true/false
-- `geo_aeo_fields_applied`: [answer-first, fan-out, answer_format, fact_density]
-- `eeat_signals`: experience proof type + implemented (true/false)
+- `ai_semantic_flaw_score`: flaw score (≤15 to pass), cliché count (0), active voice percentage (≥85%)
+- `information_gain`: unique value added, type, and competitor SERP overlap analysis
+- `answer_first_implemented`: true/false (BLUF verified across all H2s)
+- `geo_aeo_fields_applied`: [answer-first, fan-out, answer_format, fact_density, comparison_tables]
+- `eeat_signals`: experience proof types + implemented (true/false)
 - request SEO Analyst audit before publish when site requires it
 
 ### 7. Publish Sprint (optional)

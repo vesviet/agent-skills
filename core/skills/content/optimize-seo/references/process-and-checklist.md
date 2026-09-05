@@ -78,12 +78,13 @@ AI extractability audit elements:
 - [ ] facts separated from recommendations
 - [ ] technical items escalated, not silently implemented in prod
 
-### GEO / AEO
+### GEO / AEO & AI Engine Citations
 
-- [ ] answer-first block present (≤60 words after H2)
+- [ ] answer-first BLUF block present (≤60 words after each H2)
 - [ ] query fan-out list included (3–5 sub-questions from PAA + LLM)
-- [ ] answer format specified per section
-- [ ] fact density requirement documented
+- [ ] engine-specific citation rules applied per `references/geo-ai-citation-playbook.md` (Perplexity tables, SearchGPT entity fidelity, Google AI Overviews lists)
+- [ ] structured comparison tables and dense quantitative lists implemented
+- [ ] fact density requirement documented (≥3 verifiable data points per 500 words)
 - [ ] AI bot crawlability verified (OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot)
 - [ ] citation sampling done per engine (numbered vs inline styles noted), not in aggregate
 - [ ] audit scored on four axes with projected post-fix score reported
@@ -96,13 +97,15 @@ AI extractability audit elements:
 - [ ] context sentence written for each anchor suggestion
 - [ ] cluster articles each carry at least one cluster → pillar link
 
-### Topical Authority & Entity
+### Topical Authority & Entity Salience
 
 - [ ] pillar page URL assigned; cluster position documented
-- [ ] information gain clearly stated
+- [ ] entity salience and knowledge graph alignment verified per `references/entity-salience-and-schema.md`
+- [ ] canonical Wikidata QID mapped for core technical concepts
+- [ ] subject-predicate-object semantic triples structured with unambiguous nouns
+- [ ] connected Schema.org JSON-LD `@graph` (`TechArticle`, `Person`, `FAQPage`) specified
+- [ ] information gain clearly stated with SERP diff analysis
 - [ ] content freshness type specified
-- [ ] key entities listed for topical coverage
-- [ ] schema types recommended for Frontend (Article, FAQPage, HowTo, etc.)
 
 ### E-E-A-T
 

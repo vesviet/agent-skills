@@ -18,7 +18,9 @@ Modern content distribution requires a single narrative to be adapted into multi
 
 ## Core Rules
 
-- **Native Format Alignment**: adapt strictly to channel conventions — LinkedIn (150–300 words, hook + bulleted insights + community question); X/Threads (5–7 posts: Hook → Tension → Insight 1 → Insight 2 → CTA); Newsletter snippet (80–150 words, Tension Hook format + canonical backlink); Short video script (≤150 words/60s with `[Visual]`, `[Hook]`, `[Body]`, `[CTA]` markers) — never cross-post identical text without channel reformatting
+- **Cross-Format Entity Fidelity**: preserve 100% technical entity precision preservation without degrading technical constraints, version numbers, or benchmark metrics per [`references/entity-fidelity-guide.md`](references/entity-fidelity-guide.md); never oversimplify architectural claims into vague marketing copy
+- **Zero Semantic Hallucination**: strictly prohibit fabricated anecdotes, clickbait hooks, or exaggerated assertions; every claim, metric, and causal link must be directly traceable to the verified source asset
+- **Native Format Alignment**: adapt strictly to channel conventions — LinkedIn (150–300 words, hook + bulleted insights + community question); X/Threads (5–7 posts: Hook → Tension → Insight 1 → Insight 2 → CTA); Newsletter snippet (80–150 words, Tension Hook format + canonical backlink); Short video script (≤150 words/60s with `[Visual]`, `[Hook]`, `[Body]`, `[CTA]` markers) — follow [`references/channel-repurposing-playbook.md`](references/channel-repurposing-playbook.md)
 - **No Fact Invention**: do not introduce any claim, statistic, or example not explicitly present in the verified source asset; flag gaps and note they need original sourcing
 - **Preserve E-E-A-T / Information Gain**: the unique insight, firsthand evidence, and source attribution from the parent article must survive in every derivative variant — never strip credentials, citations, or expert quotes to hit word count
 - **Source Must Exist and Be Validated**: do not generate repurposed content from an unverified or AI-generated source article — repurposing amplifies errors across every channel; validate the source's factual accuracy before distributing variants
@@ -127,8 +129,11 @@ Skip emission for trivial single-channel variants that do not cross a role bound
 ## Checklist
 
 - [ ] source article's core thesis and key facts identified
+- [ ] cross-format entity fidelity verified per references/entity-fidelity-guide.md
+- [ ] zero semantic hallucination audit passed (all claims and numbers trace 100% to source)
+- [ ] entity mapping matrix verified with zero semantic drift
 - [ ] E-E-A-T signals (credentials, citations, firsthand proof) mapped from source
-- [ ] variants drafted using channel-native formatting (spacing, hooks, threads)
+- [ ] variants drafted using channel-native formatting (spacing, hooks, threads) per references/channel-repurposing-playbook.md
 - [ ] no facts invented or imported from outside the source
 - [ ] CTA is present and context-appropriate in each variant
 - [ ] visual cues or multimedia prompts formatted for video scripts
