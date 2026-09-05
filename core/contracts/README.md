@@ -25,7 +25,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
             → validation-result.json ← Agent Coordinator (phase gate)
 ```
 
-## All Schemas (46 total)
+## All Schemas (48 total)
 
 ### Solution & Governance
 - `solution-brief.json` — Solution Architect scoping handoff (build-vs-buy, capability gaps, AI feasibility, compliance)
@@ -55,6 +55,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
 
 ### Finance, Accounting & Compliance
 - `accounting-compliance-review.json` — Vietnam Accounting Specialist accounting-regime, evidence, reconciliation, close, retention, and human-approval handoff; not a tax filing, legal opinion, audit opinion, or authorization for external action
+- `period-end-closing-report.json` — Vietnam Accounting Specialist period-end closing report covering subledger reconciliations, closing adjustments, Account 911 zero-balance verification, financial statement package, and immutable HITL sign-off
 
 ### Design & Content
 - `ux-flow-spec.json` — Multi-screen UX flow handoff
@@ -63,6 +64,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
 - `content-audit-report.json` — Content audit report and refresh actions
 - `documentation-handoff.json` — Technical doc update handoff
 - `learning-handoff.json` — Teaching/exercise handoff
+- `learning-assessment-report.json` — Teacher assessment report covering student competency evaluation, 4-tier rubric breakdowns with line citations, cognitive error diagnoses, growth mindset feedback, and HITL verification metadata
 - `research-report.json` — Research findings
 - `data-analysis-report.json` — Data analysis findings
 - `schema-migration.json` — Database migration definition

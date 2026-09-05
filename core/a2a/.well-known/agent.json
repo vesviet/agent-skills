@@ -63,7 +63,7 @@
     {
       "id": "content-manager",
       "name": "Content Manager",
-      "description": "direct the overall content strategy of a website — from building content pillar architecture, managing the content lifec"
+      "description": "direct the overall content portfolio strategy of a website — from designing content pillar architecture, governing the c"
     },
     {
       "id": "content-writer",
@@ -73,12 +73,12 @@
     {
       "id": "data-analyst",
       "name": "Data Analyst",
-      "description": "answer business questions with reproducible, well-documented analysis from tabular and warehouse data — defining metrics"
+      "description": "answer critical business and product questions with reproducible, statistically grounded, and well-documented analysis f"
     },
     {
       "id": "data-engineer",
       "name": "Data Engineer",
-      "description": "design, build, and maintain reliable data pipelines and storage layers so analysts and applications can trust timely, we"
+      "description": "design, build, and maintain deterministic, high-throughput data pipelines, lakehouse storage layers, and unified semanti"
     },
     {
       "id": "devops-engineer",

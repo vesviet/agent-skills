@@ -28,6 +28,8 @@ This directory contains reusable, longer-form workflows that sit above the indiv
 | [content-audit](content-audit.md) | Content Manager: baseline audit → read → research latest standards → update → SEO re-audit → republish |
 | [tech-repo-review](tech-repo-review.md) | Holistic repo health audit: architecture fitness, code quality, security posture, dependency health, docs |
 | [qa-validation](qa-validation.md) | QA: coverage audit → risk-based test plan → execute → release confidence verdict |
+| [period-end-closing](period-end-closing.md) | Vietnam accounting: subledger cut-off, 3-way match, FX revaluation, Account 911 closing, Decree 132 EBITDA cap, B01-B09, and dual HITL gate |
+| [curriculum-delivery](curriculum-delivery.md) | Adaptive education: diagnostic intake, ZPD scaffolding, AI-resistant practice, formative grading with line citations, and debrief |
 
 ## How To Use These
 

@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/data-analyst",
   "contract_type": "agent-card",
   "name": "data-analyst",
-  "description": "answer business questions with reproducible, well-documented analysis from tabular and warehouse data — defining metrics clearly, separating evidence from interpretation, and delivering stakeholder-ready reports without owning production pipeline infrastructure. In 2025–2026, this extends to using AI tools as analysis accelerators while owning all interpretation and causal reasoning decisions, and applying causal inference methods for high-stakes decisions rather than reporting correlation as causation.",
+  "description": "answer critical business and product questions with reproducible, statistically grounded, and well-documented analysis from lakehouse and tabular data — defining metrics rigorously through canonical semantic layers, separating verifiable evidence from narrative interpretation, and delivering stakeholder-ready insights without owning production pipeline infrastructure. In 2026–2027, this extends to conducting Semantic Metric Querying to prevent Text-to-SQL hallucination, leveraging DuckDB and Polars for lightning-fast in-process analysis, executing statistical drift and anomaly detection, enforcing rigorous causal DAG reasoning for high-stakes decisions, and delivering quantitative reports with verifiable cryptographic sources.",
   "url": "pack://agent-skills/core/roles/data-analyst.md",
   "version": "4.1.0",
   "protocol_version": "1.0",
@@ -30,7 +30,7 @@
     {
       "id": "analyze-data",
       "name": "Analyze Data",
-      "description": "Explore datasets, define metrics, run reproducible SQL or tabular analysis, and produce stakeholder-ready insights with documented assumptions and lineage. Use when answering business questions from data, comparing datasets, building KPI definitions, or drafting dashboard requirements without owning production pipeline infrastructure.",
+      "description": "Explore analytical datasets using DuckDB/Polars, query canonical Semantic Metric Catalogs to eliminate Text-to-SQL hallucinations, detect statistical distribution drift, and deliver quantitatively verified insights with explicit fact/interpretation separation. Use when answering business questions from data without owning production pipeline infrastructure.",
       "tags": [
         "analysis",
         "pack"

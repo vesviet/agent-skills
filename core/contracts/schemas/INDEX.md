@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**46 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 45/46
+**48 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 47/48
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 
@@ -35,6 +35,7 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | `incident-report.json` | Incident Report | ✅ | ✅ |
 | **Finance, Accounting & Compliance** | | | |
 | `accounting-compliance-review.json` | Vietnam Accounting Compliance Review | ✅ | ✅ |
+| `period-end-closing-report.json` | Period-End Closing Report | ✅ | ✅ |
 | **Design & Content** | | | |
 | `ux-flow-spec.json` | UX Flow Specification | ✅ | ✅ |
 | `ui-component-spec.json` | UI Component Specification | ✅ | ✅ |
@@ -42,6 +43,7 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | `content-audit-report.json` | Content Audit Report | ✅ | ✅ |
 | `documentation-handoff.json` | Documentation Handoff | ✅ | ✅ |
 | `learning-handoff.json` | Learning Handoff | ✅ | ✅ |
+| `learning-assessment-report.json` | Learning Assessment Report | ✅ | ✅ |
 | `research-report.json` | Research Report Specification | ✅ | ✅ |
 | `data-analysis-report.json` | Data Analysis Report | ✅ | ✅ |
 | `schema-migration.json` | Schema Migration Plan | ✅ | ✅ |
@@ -161,11 +163,13 @@ feature-ticket.json
 | `performance-audit.json` | Frontend Developer (via perf-profiling), SRE | Technical Lead, Backend Developer |
 | `incident-report.json` | SRE | Technical Writer, Technical Lead, Project Manager |
 | `accounting-compliance-review.json` | Vietnam Accounting Specialist | Business Analyst, Backend Developer, E-commerce Engineer, Data Analyst, QA Engineer, Security Engineer, Agent Coordinator, qualified human reviewers |
+| `period-end-closing-report.json` | Vietnam Accounting Specialist | Chief Accountant, CFO, Legal Representative, qualified human reviewers, Tax Authority auditors |
 | `ux-flow-spec.json` | UI/UX Designer | Frontend Developer, Backend Developer, QA Engineer, Technical Lead |
 | `ui-component-spec.json` | UI/UX Designer | Frontend Developer, Mobile Engineer, QA Engineer |
 | `content-handoff.json` | Content Writer | SEO Analyst, Publisher, Editor |
 | `documentation-handoff.json` | Technical Writer | DevOps Engineer, SRE, Publisher |
 | `learning-handoff.json` | Teacher | Learner, Content Writer |
+| `learning-assessment-report.json` | Teacher | Learner, Senior Faculty, Curriculum Coordinator, human educators |
 | `research-report.json` | Researcher | Business Analyst, Technical Architect, Data Analyst |
 | `data-analysis-report.json` | Data Analyst | Business Analyst, Product Manager, Researcher |
 | `schema-migration.json` | Data Engineer, Backend Developer | DevOps Engineer, SRE, QA Engineer |

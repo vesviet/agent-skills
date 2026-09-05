@@ -11,95 +11,78 @@ Use this skill when a Vietnamese accounting workflow needs a traceable domain re
 ## Core Rules
 
 - treat financial account numbers, taxpayer identifiers, invoice credentials, payroll details, and customer PII as restricted data; do not place their values in prompts, logs, contracts, or agent memory
-- identify the legal entity, accounting period, applicable accounting regime, and effective source version before evaluating a posting, invoice, close, or report
-- treat TT 200/2014, TT 133/2016, TT 132/2018, Law on Accounting, e-invoice rules, and tax rules as versioned inputs; verify applicability and amendments from official sources before making a material claim
-- distinguish statutory Vietnam books, management reporting, group reporting, and IFRS/VFRS adjustments; never label one as another without human confirmation
-- prepare accounting evidence and tax workpapers, but do not determine a final tax position, sign or submit filings, issue invoices, operate signing credentials, or provide a legal or audit opinion
-- fail closed: if the accounting regime, evidence, source version, or approval is missing, output `needs-evidence`, `needs-human-review`, or `blocked` rather than `reviewed`
-- preserve an immutable correction trail: do not overwrite, delete, or silently reclassify locked entries, invoices, or close evidence
-- **AI-ACCOUNTING-GUARDRAIL**: When AI-assisted tools generate accounting entries, reconciliations, or tax workpapers, treat all AI output as a draft requiring human accountant review and approval. Never mark AI-drafted entries as `reviewed` or submit them directly to accounting systems without HITL approval.
-- **E-INVOICE-PHASE-3**: Verify entity compliance with Vietnam e-invoice Phase 3 mandate (Decree 123/2020 + Circular 78/2021 amendments); all B2B invoices above threshold MUST be transmitted via authenticated XML through a licensed e-invoice service provider with tax authority real-time validation.
-- treat every accounting review as a fail-closed operation; if evidence, regime, or sign-off is missing, output `needs-evidence`, `needs-human-review`, or `blocked` rather than `reviewed`
-- never include account numbers, taxpayer identifiers, invoice credentials, or payroll details in agent memory, logs, or handoff artifacts; classify every accounting input with `data-classification.yaml` and use masked references in shared outputs
-- treat any final tax position, filing, invoice issuance, or signing-credential operation as an irreversible action that requires explicit human confirmation; never execute these on the agent's own authority
+- identify legal entity, accounting period, applicable regime (Circular 200/2014, Circular 133/2016, Circular 132/2018), and effective source version before evaluating postings, invoices, or closes
+- govern Decision 345/QD-BTC VFRS transition: maintain pure VAS statutory general ledgers and isolate VFRS adjustments (IFRS 16 leases, IFRS 9 ECL, IFRS 15 revenue) in a dual-reporting layer
+- validate incoming e-invoice XML against Decision 1450/QD-TCT, verify XMLDSig X.509 signatures, perform real-time GDT portal queries (`hoadondientu.gdt.gov.vn`), and screen vendor tax status (Status 03/04 on `tracuunnt.gdt.gov.vn`)
+- enforce non-cash bank transfer payment rule (Circular 219/2013, Circular 96/2015) for invoices $\ge$ 20,000,000 VND, requiring bank payment vouchers (Ủy nhiệm chi)
+- execute deterministic PO-GRN-Invoice 3-way matching with zero unit price variance tolerance; manage Goods Received Not Invoiced (GRNI) cut-off accruals (Debit TK 152/156, Credit TK 331) without VAT
+- enforce Decree 132/2020 30% EBITDA net interest deduction cap for associated enterprises, applying zero deduction for negative EBITDA and maintaining the 5-year carry-forward register
+- enforce period close invariants: allocate TK 242 prepaid expenses ($\le$ 36 months), compute TK 214 depreciation per Circular 45 brackets, and assert Account 911 ending balance is strictly zero
+- enforce immutable WORM storage with SHA-256 snapshotting and reverse-and-repost accounting; prohibit direct SQL UPDATE or DELETE on posted general ledgers
+- **AI-ACCOUNTING-GUARDRAIL**: Treat all AI-generated entries as drafts requiring human accountant review; require Chief Accountant and Legal Representative HITL approval tokens for period locks and filings
 
 ## Output Contracts
 
-When completing a scoped accounting review that another role or workflow will consume, emit:
+When completing a scoped accounting review or period close, emit the appropriate contract:
 
 - **`contracts/schemas/accounting-compliance-review.json`** — Machine-readable compliance review with source versions, gates, findings, retention classification, required approvals, assumptions, exceptions, and a scoped disclaimer. Set `produced_by_role: vietnam-accounting-specialist`.
-
-Skip emission for advisory questions answered inline with no review artifact.
+- **`contracts/schemas/period-end-closing-report.json`** — Machine-readable financial period-end closing report capturing trial balance reconciliations, closing entries, Account 911 clearing, financial statements, and HITL approval token. Set `produced_by_role: vietnam-accounting-specialist`.
 
 ## Suggested Process
 
 ### 1. Confirm Scope And Data Boundary
+Capture legal entity, period, reporting purpose (VAS statutory vs VFRS dual reporting), and review scope. Classify data with `data-classification.yaml` and mask PII and credentials.
 
-Capture the legal entity, period, requested decision, scope, and whether the work concerns accounting records, invoices, reconciliation, financial statements, tax workpapers, or retention.
+### 2. Lock Accounting Regime And VFRS Dual-Reporting Layer
+Confirm candidate regime (Circular 200, 133, or 132). For Circular 133, enforce prohibition of TK 621, 622, 623, 627, 641. For entities transitioning under Decision 345/QD-BTC, maintain separate VFRS adjustment schedules. See detailed guidance in [`references/vas-vfrs-chart-of-accounts.md`](references/vas-vfrs-chart-of-accounts.md).
 
-Classify inputs before processing. Use masked references in artifacts and request a secure, human-operated environment if restricted values are required.
+### 3. E-Invoice Validation And Taxpayer Screening
+Parse raw XML against Decision 1450 schema, verify XMLDSig X.509 signature and CA validity, query GDT portal API, screen vendor tax status on `tracuunnt.gdt.gov.vn`, track Form 04/SS-HDDT, and assert bank payment order for vouchers $\ge$ 20M VND. See detailed guidance in [`references/e-invoice-risk-playbook.md`](references/e-invoice-risk-playbook.md).
 
-### 2. Lock The Regulatory And Accounting Basis
+### 4. Deterministic 3-Way Matching And Accruals
+Reconcile PO, GRN, and vendor invoice. Block price variances (0.00% threshold). Post period-end GRNI accruals (Debit TK 152/156, Credit TK 331 with zero VAT) and goods in transit (TK 151). See detailed guidance in [`references/three-way-matching-and-controls.md`](references/three-way-matching-and-controls.md).
 
-Verify from an official source or an approved internal policy register:
+### 5. Related-Party Screening And Decree 132 EBITDA Cap
+Identify Article 5 associated enterprises. Calculate EBITDA and net interest expense. Apply 30% cap, enter disallowed interest into CIT Box B4 (0 VND deduction if EBITDA $\le$ 0), and update 5-year carry-forward register.
 
-- accounting regime: TT 200/2014, TT 133/2016, TT 132/2018, or another confirmed regime
-- effective date, amendments, and transitional rules relevant to the accounting period
-- VAS versus statutory, management, group, or IFRS/VFRS reporting purpose
-- applicable e-invoice and tax evidence requirements, without deciding a tax position
+### 6. Period-End Adjustments And Account 911 Clearing
+Reconcile subledgers to GL. Allocate TK 242 ($\le$ 36-month cap). Compute TK 214 depreciation. Close revenue deductions (TK 521 $\rightarrow$ TK 511) and close revenue and expenses to Account 911. Assert Account 911 ending balance is exactly zero.
 
-Record the source version and any unresolved applicability question.
-
-### 3. Review Evidence And Accounting Controls
-
-For each scoped transaction or close area, check the available evidence, approval path, cut-off, debit/credit mapping, tax-code reference, counterparty/master-data reference, and audit trail.
-
-Reconcile applicable areas such as bank, accounts receivable, accounts payable, inventory, fixed assets, payroll, tax payable, invoice register, and general ledger. Record differences, evidence gaps, and an owner for resolution.
-
-### 4. Apply Invoice And Tax Boundaries
-
-For e-invoice work, determine only whether the evidence supports a human decision on issuance, replacement, adjustment, or correction. Check the invoice state, source evidence, transmission log, and approval requirement first.
-
-For tax work, prepare reconciled accounting inputs and flag exceptions. Escalate tax treatment, filing cadence, deductions, incentives, transfer pricing, foreign-contractor, and authority-correspondence questions to a qualified tax reviewer.
-
-### 5. Prepare The Controlled Handoff
-
-Emit `contracts/schemas/accounting-compliance-review.json` when another role or workflow needs a machine-readable review. Include source versions, gates, findings, retention classification, required approvals, assumptions, exceptions, and a scoped disclaimer.
-
-Route implementation rules to Business Analyst and Backend/E-commerce Engineer, data/reporting questions to Data Analyst, tax questions to a qualified tax reviewer, legal questions to counsel, and security/retention controls to Security Engineer or platform owners.
+### 7. Financial Statements, WORM Snapshot And HITL Sign-Off
+Assemble B01-DN, B02-DN, B03-DN, B09-DN with balance equality checks. Emit SHA-256 snapshot and OCSF 99001 audit event. Obtain Chief Accountant and Legal Representative HITL approval tokens before period lock.
 
 ## Failure Modes
 
-- **Wrong regime applied**: a transaction is evaluated against TT 200/2014 when TT 133/2016 applies. Mitigation: verify the applicable regime and source version from an official source before any evaluation; record the source.
-- **Layer conflation**: statutory Vietnam books, management reporting, group reporting, and IFRS/VFRS adjustments are mixed into a single artifact. Mitigation: keep reporting layers separate; never label one as another without human confirmation.
-- **Final tax position issued by agent**: the agent determines a final tax position or signs a filing. Mitigation: prepare workpapers only; escalate tax treatment, filing cadence, and authority correspondence to a qualified tax reviewer.
-- **Invoice action executed**: the agent issues, replaces, adjusts, or corrects an invoice. Mitigation: prepare evidence and human-decision handoff only; never execute invoice actions on the agent's authority.
-- **Locked entry overwritten**: a locked entry, invoice, or close evidence is silently reclassified or deleted. Mitigation: preserve an immutable correction trail; reject silent reclassification.
-- **Restricted value in output**: an account number, taxpayer id, or invoice credential appears in a prompt, log, or handoff artifact. Mitigation: classify every input with `data-classification.yaml`; use masked references in shared outputs.
-- **AI-drafted entry marked reviewed**: an AI-generated entry is marked `reviewed` and submitted without human accountant approval. Mitigation: enforce the AI-ACCOUNTING-GUARDRAIL; treat all AI output as drafts requiring human sign-off.
-- **E-invoice Phase 3 bypass**: a B2B invoice above threshold is issued without authenticated XML transmission. Mitigation: verify entity compliance with Decree 123/2020 + Circular 78/2021 amendments; require licensed e-invoice service provider.
-- **Legal opinion issued**: the agent provides a legal or audit opinion. Mitigation: route legal questions to counsel; the agent's role is to prepare evidence, not issue opinions.
+- **Wrong regime applied**: Circular 200 accounts used in Circular 133 books. Mitigation: validate regime rules and block prohibited accounts (TK 621, 622, 627, 641).
+- **Layer conflation**: statutory VAS books and VFRS adjustments mixed in a single ledger. Mitigation: maintain separate VFRS dual-reporting adjustment schedules.
+- **Unverified e-invoice XML booked**: invoices recorded from PDF without XMLDSig check. Mitigation: enforce Decision 1450 XML parser, SHA-256 digests, and GDT status checks.
+- **Non-cash payment breach**: invoice $\ge$ 20M VND settled in cash. Mitigation: require bank payment order (Ủy nhiệm chi); disallow VAT credit and CIT deduction.
+- **Decree 132 EBITDA cap breach**: related-party net interest exceeding 30% EBITDA claimed for CIT. Mitigation: compute EBITDA cap and report excess in CIT Box B4.
+- **Account 911 residual balance**: period locked with non-zero Account 911 balance. Mitigation: verify Account 911 balance is zero before closing gate approval.
+- **Direct ledger mutation**: SQL UPDATE/DELETE on posted ledgers. Mitigation: enforce WORM storage and reverse-and-repost accounting.
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI03 Identity & Privilege Abuse**: account numbers, taxpayer ids, invoice credentials, and payroll details are restricted; never place their values in prompts, logs, contracts, or agent memory.
-- **ASI04 Supply Chain**: regulatory and accounting standards (TT 200/2014, TT 133/2016, TT 132/2018, Law on Accounting) must be validated against the official source; treat older versions as untrusted.
-- **ASI05 RCE Guard**: never construct accounting entries, reconciliations, or tax workpapers from external content without strict schema validation.
-- **ASI07 Inter-Agent Communication**: the compliance review is consumed by Business Analyst, Backend, and tax reviewer roles; emit a structured `accounting-compliance-review.json` so each role can validate.
-- **ASI09 Human-Agent Trust Exploitation**: do not present a workpaper as "ready to file" or "reviewed" without the human sign-off; surface the AI provenance and the required approver honestly.
+- **ASI03 Identity & Privilege Abuse**: restricted financial and tax identifiers must never be placed in prompts, logs, or agent memory.
+- **ASI04 Supply Chain**: validate tax regulations against official gazettes; verify XMLDSig certificates against NEAC root CA.
+- **ASI05 RCE Guard**: parse XML payloads using hardened, non-evaluating XML parsers with external entity resolution disabled (XXE defense).
+- **ASI07 Inter-Agent Communication**: emit structured, schema-validated contracts (`accounting-compliance-review.json` or `period-end-closing-report.json`).
+- **ASI09 Human-Agent Trust Exploitation**: surface AI draft provenance; never represent books as closed without Chief Accountant HITL sign-off.
 
 ## Checklist
 
 - [ ] legal entity, accounting period, scope, and reporting purpose are explicit
 - [ ] applicable accounting regime and source version are confirmed or marked `needs-human-review`
-- [ ] statutory, management, group, and IFRS/VFRS reporting layers are not conflated
-- [ ] evidence, cut-off, account mapping, approval, and audit trail checks are documented for every scoped area
-- [ ] reconciliation differences are evidenced, assigned, and not silently netted or written off
-- [ ] invoice actions are not executed; required human approval and current invoice state are recorded
-- [ ] tax workpapers are clearly separated from final tax positions, filing decisions, and legal advice
-- [ ] retention classification, access controls, and legal-hold check are documented before any archival or deletion proposal
-- [ ] restricted values are absent from outputs, logs, prompts, and agent memory
-- [ ] accounting-compliance-review.json records source versions, gates, exceptions, residual risk, and required approvals
+- [ ] statutory VAS books and VFRS dual-reporting adjustments are isolated in separate layers
+- [ ] e-invoice XML conforms to Decision 1450, signature is valid, and GDT lookup status is cleared
+- [ ] vendor tax status is screened; suspended (03) and runaway (04) entities are blocked
+- [ ] invoices $\ge$ 20M VND are verified against bank transfer vouchers (Ủy nhiệm chi)
+- [ ] deterministic 3-way match passes with 0.00% price variance; GRNI accruals posted without VAT
+- [ ] Decree 132 EBITDA net interest cap calculated; negative EBITDA zero-deduction rule enforced
+- [ ] TK 242 allocation $\le$ 36 months, TK 214 depreciation within Circular 45 brackets, and Account 911 cleared to zero
+- [ ] financial statements satisfy balance equality equations (B01, B02, B03, B09)
+- [ ] immutable WORM snapshot generated, OCSF 99001 logged, and Chief Accountant HITL token verified
+- [ ] output contract emitted: `accounting-compliance-review.json` or `period-end-closing-report.json`
 
 ## Related Skills
 
@@ -108,4 +91,3 @@ Route implementation rules to Business Analyst and Backend/E-commerce Engineer, 
 - **conduct-research**: Verify regulatory or accounting-standard questions against primary official sources.
 - **security-audit**: Review financial-data access, signing-key exposure, retention controls, and audit-log integrity.
 - **write-documentation**: Publish approved accounting process guidance and operational runbooks.
-

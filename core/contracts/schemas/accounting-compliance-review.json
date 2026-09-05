@@ -34,7 +34,7 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["regime", "posting", "invoice", "reconciliation", "period-close", "financial-statements", "tax-workpaper", "retention"]
+        "enum": ["regime", "posting", "invoice", "reconciliation", "period-close", "financial-statements", "tax-workpaper", "retention", "e-invoice", "three-way-matching", "related-party"]
       },
       "minItems": 1,
       "uniqueItems": true
@@ -130,6 +130,72 @@
         },
         "required": ["action", "approver_role", "status"]
       }
+    },
+    "reporting_framework": {
+      "type": "object",
+      "properties": {
+        "framework_type": { "type": "string", "enum": ["VAS", "VFRS_dual", "VFRS_direct"] },
+        "vfrs_transition_status": { "type": "string", "enum": ["not_started", "assessment", "parallel_run", "adopted"] },
+        "standards_referenced": { "type": "array", "items": { "type": "string" } },
+        "adjustment_schedule_required": { "type": "boolean" }
+      },
+      "required": ["framework_type", "vfrs_transition_status"]
+    },
+    "e_invoice_verification": {
+      "type": "object",
+      "properties": {
+        "xml_syntax_valid": { "type": "boolean" },
+        "digital_signature_valid": { "type": "boolean" },
+        "gdt_portal_status": { "type": "string", "enum": ["valid_and_existing", "not_found", "canceled", "replaced", "adjusted"] },
+        "vendor_tax_suspension_status": { "type": "string", "enum": ["active_status_00", "suspended_status_03", "runaway_status_04", "unknown"] },
+        "form_04_ss_discrepancy_detected": { "type": "boolean" },
+        "non_cash_transfer_verified": { "type": "boolean" }
+      },
+      "required": [
+        "xml_syntax_valid",
+        "digital_signature_valid",
+        "gdt_portal_status",
+        "vendor_tax_suspension_status",
+        "form_04_ss_discrepancy_detected",
+        "non_cash_transfer_verified"
+      ]
+    },
+    "three_way_matching": {
+      "type": "object",
+      "properties": {
+        "matching_status": {
+          "type": "string",
+          "enum": [
+            "fully_matched",
+            "price_variance_detected",
+            "quantity_variance_detected",
+            "grni_accrual_pending",
+            "goods_in_transit_tk151",
+            "not_applicable"
+          ]
+        },
+        "po_reference": { "type": "string" },
+        "grn_reference": { "type": "string" },
+        "invoice_reference": { "type": "string" },
+        "price_variance_amount": { "type": "number" },
+        "quantity_variance": { "type": "number" },
+        "tolerance_gate_passed": { "type": "boolean" }
+      },
+      "required": ["matching_status", "tolerance_gate_passed"]
+    },
+    "related_party_transactions": {
+      "type": "object",
+      "properties": {
+        "associated_enterprise_identified": { "type": "boolean" },
+        "decree_132_relationship_criteria": { "type": "array", "items": { "type": "string" } },
+        "ebitda_amount": { "type": "number" },
+        "net_interest_expense": { "type": "number" },
+        "interest_to_ebitda_ratio": { "type": "number" },
+        "thirty_percent_ebitda_cap_exceeded": { "type": "boolean" },
+        "disallowed_interest_amount": { "type": "number" },
+        "carry_forward_register_updated": { "type": "boolean" }
+      },
+      "required": ["associated_enterprise_identified", "thirty_percent_ebitda_cap_exceeded"]
     },
     "assumptions": { "type": "array", "items": { "type": "string" } },
     "exceptions": { "type": "array", "items": { "type": "string" } },
@@ -262,9 +328,42 @@
       "review_id": "2026-08-month-end-close-example",
       "entity": { "legal_name": "Example Trading Company", "legal_form": "limited-liability-company" },
       "accounting_period": { "from": "2026-07-01", "to": "2026-07-31", "status": "closing" },
-      "scope": ["regime", "reconciliation", "period-close", "retention"],
+      "scope": ["regime", "reconciliation", "period-close", "retention", "e-invoice", "three-way-matching", "related-party"],
       "accounting_regime": { "name": "TT-133-2016", "effective_from": "2026-01-01", "basis_references": ["Internal accounting-policy reference"], "human_confirmation": "confirmed" },
+      "reporting_framework": {
+        "framework_type": "VAS",
+        "vfrs_transition_status": "assessment",
+        "standards_referenced": ["VAS-01", "IFRS-16"],
+        "adjustment_schedule_required": false
+      },
       "source_version_register": [{ "source": "Accounting policy register", "url_or_internal_reference": "internal-policy-ref", "effective_date": "2026-01-01", "verified_at": "2026-08-04T13:00:00Z", "status": "verified" }],
+      "e_invoice_verification": {
+        "xml_syntax_valid": true,
+        "digital_signature_valid": true,
+        "gdt_portal_status": "valid_and_existing",
+        "vendor_tax_suspension_status": "active_status_00",
+        "form_04_ss_discrepancy_detected": false,
+        "non_cash_transfer_verified": true
+      },
+      "three_way_matching": {
+        "matching_status": "fully_matched",
+        "po_reference": "PO-2026-08-0129",
+        "grn_reference": "GRN-2026-08-0145",
+        "invoice_reference": "INV-1C26T-0004512",
+        "price_variance_amount": 0,
+        "quantity_variance": 0,
+        "tolerance_gate_passed": true
+      },
+      "related_party_transactions": {
+        "associated_enterprise_identified": false,
+        "decree_132_relationship_criteria": [],
+        "ebitda_amount": 4500000000,
+        "net_interest_expense": 250000000,
+        "interest_to_ebitda_ratio": 0.055,
+        "thirty_percent_ebitda_cap_exceeded": false,
+        "disallowed_interest_amount": 0,
+        "carry_forward_register_updated": false
+      },
       "reconciliations": [{ "area": "bank", "status": "matched", "evidence_references": ["masked-bank-reconciliation-ref"], "resolution_owner": "accounting-owner", "required_action": "retain-reconciliation-evidence" }],
       "findings": [],
       "validation_gates": [{ "name": "scope-confirmed", "status": "passed" }, { "name": "regime-confirmed", "status": "passed" }, { "name": "handoff-ready", "status": "needs-human-review" }],

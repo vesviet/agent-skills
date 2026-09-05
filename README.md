@@ -159,6 +159,8 @@ Core workflows live in [core/workflows/README.md](core/workflows/README.md).
 - `/seo-content-lifecycle`
 - `/seo-keyword-brief`
 - `/tech-repo-review`
+- `/period-end-closing`
+- `/curriculum-delivery`
 
 ## Quality Gates
 

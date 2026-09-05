@@ -55,6 +55,15 @@ Required fields: `contract_type`, `subject`, `grade`, `topic`, `artifact_type`, 
 Size: 2,792 bytes  
 ✅ Has example
 
+#### `learning-assessment-report.json`
+
+**Learning Assessment Report**  
+Structured deliverable emitted by Teacher using grade-and-review skill. Records student competency assessment results, 4-tier standardized analytic rubric evaluations, anti-hallucination line citations from student submissions, cognitive error diagnoses (conceptual, procedural, boundary, overload), growth mindset Socratic feedback adhering to the Rule of One, ZPD ability parameter ($\theta$) tracking, and human educator review sign-off satisfying EU AI Act High-Risk AI governance.
+
+Required fields: `contract_type`, `assessment_id`, `student_token`, `subject`, `topic`, `assessment_type`, `overall_score`, `rubric_breakdown`, `cognitive_error_diagnosis`, `growth_mindset_feedback`, `audit_metadata`, `privacy_compliance`  
+Size: 10,305 bytes  
+✅ Has example
+
 #### `research-report.json`
 
 **Research Report Specification**  

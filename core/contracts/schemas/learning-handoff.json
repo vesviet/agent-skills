@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "learning-handoff",
   "title": "Learning Handoff",
-  "description": "Structured handoff for MOET-aligned middle-school learning plans, exercises, and evaluations.",
+  "description": "Structured handoff for universal educational learning plans, exercises, curriculum progression, and evaluations across K-12, higher education, and professional engineering onboarding.",
   "type": "object",
   "properties": {
     "contract_type": {
@@ -11,13 +11,11 @@
     },
     "subject": {
       "type": "string",
-      "description": "Subject name (e.g., Toán, Ngữ văn, Tiếng Anh)."
+      "description": "Subject name or domain (e.g., Computer Science, Mathematics, Software Engineering, Ngữ văn)."
     },
     "grade": {
-      "type": "integer",
-      "minimum": 6,
-      "maximum": 9,
-      "description": "Vietnamese middle school grade (Lớp 6-9)."
+      "type": ["integer", "string"],
+      "description": "Educational level or grade (K-12 grades 1-12, or levels like 'undergraduate', 'graduate', 'professional-engineering')."
     },
     "topic": {
       "type": "string"
@@ -70,12 +68,101 @@
     },
     "moet_alignment_notes": {
       "type": "string",
-      "description": "How content maps to textbook chapter or exam standard."
+      "description": "How content maps to textbook chapter, curricular milestone, or certification standard."
     },
     "open_questions": {
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "learner_profile_level": {
+      "type": "string",
+      "enum": ["beginner", "intermediate", "advanced", "expert"]
+    },
+    "zpd_assessment": {
+      "type": "object",
+      "properties": {
+        "actual_capability_level": { "type": "string" },
+        "potential_target_level": { "type": "string" },
+        "success_moving_average": { "type": "number", "minimum": 0, "maximum": 1 },
+        "scaffolding_tier": {
+          "type": "string",
+          "enum": ["tier_1_universal", "tier_2_targeted", "tier_3_intensive"]
+        }
+      },
+      "required": ["actual_capability_level", "potential_target_level", "scaffolding_tier"]
+    },
+    "smart_objectives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "specific_competency": { "type": "string" },
+          "measurable_target": { "type": "string" },
+          "achievable_zpd_fit": { "type": "string" },
+          "relevant_standard": { "type": "string" },
+          "time_bound_milestone": { "type": "string" }
+        },
+        "required": ["id", "specific_competency", "measurable_target", "time_bound_milestone"]
+      }
+    },
+    "bloom_taxonomy_tier": {
+      "type": "string",
+      "enum": ["remember", "understand", "apply", "analyze", "evaluate", "create"]
+    },
+    "dok_level": {
+      "type": "string",
+      "enum": ["dok_1", "dok_2", "dok_3", "dok_4"]
+    },
+    "ai_resistance_mechanisms": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "case_based_context",
+          "intentional_flaw_injection",
+          "oral_defense_simulation",
+          "scratchpad_process_audit",
+          "artifact_grounded_inquiry"
+        ]
+      }
+    },
+    "formative_scaffolding_tiers": {
+      "type": "object",
+      "properties": {
+        "tier_1_universal": { "type": "string" },
+        "tier_2_targeted": { "type": "string" },
+        "tier_3_intensive": { "type": "string" }
+      }
+    },
+    "spaced_repetition_schedule": {
+      "type": "object",
+      "properties": {
+        "algorithm": { "type": "string" },
+        "intervals_days": { "type": "array", "items": { "type": "integer" } },
+        "next_review_due": { "type": "string", "format": "date" }
+      }
+    },
+    "audit_metadata": {
+      "type": "object",
+      "properties": {
+        "graded_by_ai": { "type": "boolean" },
+        "reviewed_by": { "type": "string" },
+        "ai_model": { "type": "string" },
+        "verification_status": {
+          "type": "string",
+          "enum": ["verified_and_approved", "flagged_for_revision", "escalated_to_senior_educator", "draft"]
+        },
+        "verification_timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+    "privacy_compliance": {
+      "type": "object",
+      "properties": {
+        "pii_anonymized": { "type": "boolean" },
+        "ferpa_compliant": { "type": "boolean" }
       }
     }
   },
@@ -91,32 +178,67 @@
   "examples": [
     {
       "contract_type": "learning-handoff",
-      "handoff_id": "2026-06-12-order-service-patterns",
-      "learner_profile": "New backend developer joining DMS team",
-      "topic": "Order assignment command patterns in orders-service",
-      "exercises_assigned": [
-        "trace COD routing path end-to-end",
-        "write test for fallback case"
-      ],
-      "key_concepts": [
-        "COD routing branch",
-        "store_couriers lookup",
-        "fallback with warning log"
-      ],
-      "resources": [
-        "docs/order-assignment-runbook.md",
-        "orders-service/app/Console/Commands/NewLogicAutoAssign.php"
-      ],
-      "assessment_criteria": "Can explain when COD routing branch activates and what happens when store service is unavailable",
-      "subject": "Science",
-      "grade": "8",
+      "subject": "Software Engineering",
+      "grade": "professional-engineering",
+      "topic": "Distributed Consensus & Raft Election Safety",
       "artifact_type": "learning_plan",
       "goals": [
-        "Understand the core concept."
+        "Master Raft leader election safety invariants under network partitions",
+        "Implement deterministic term increment and split-vote handling"
       ],
       "next_steps": [
-        "Complete the practice exercise."
-      ]
+        "Complete exercise 01: Simulating partition split-vote in local harness",
+        "Review state machine log compaction edge cases"
+      ],
+      "content_paths": [
+        "docs/raft-election-guide.md",
+        "exercises/raft-split-vote.go"
+      ],
+      "learner_profile_level": "intermediate",
+      "zpd_assessment": {
+        "actual_capability_level": "Can implement basic RPC server and single-node mutex state",
+        "potential_target_level": "Can design term-based distributed lease and election loop",
+        "success_moving_average": 0.75,
+        "scaffolding_tier": "tier_2_targeted"
+      },
+      "smart_objectives": [
+        {
+          "id": "SMART-RAFT-01",
+          "specific_competency": "Formulate election timeout jitter randomization",
+          "measurable_target": "Pass 100/100 repeated simulated partition recovery tests",
+          "achievable_zpd_fit": "Fits current understanding of async timers and channels",
+          "relevant_standard": "SWE-DIST-2027.2",
+          "time_bound_milestone": "End of Module 3 (Day 7)"
+        }
+      ],
+      "bloom_taxonomy_tier": "analyze",
+      "dok_level": "dok_3",
+      "ai_resistance_mechanisms": [
+        "case_based_context",
+        "intentional_flaw_injection",
+        "scratchpad_process_audit"
+      ],
+      "formative_scaffolding_tiers": {
+        "tier_1_universal": "Faded worked example of Raft vote request message struct",
+        "tier_2_targeted": "Graduated Socratic hint ladder on election timer randomization",
+        "tier_3_intensive": "Byzantine fault tolerance extension challenge"
+      },
+      "spaced_repetition_schedule": {
+        "algorithm": "ebbinghaus-sm2",
+        "intervals_days": [1, 3, 7, 14, 30],
+        "next_review_due": "2026-09-12"
+      },
+      "audit_metadata": {
+        "graded_by_ai": false,
+        "reviewed_by": "Staff Engineer Mentor (ID TECH-552)",
+        "ai_model": "gemini-2.5-pro",
+        "verification_status": "verified_and_approved",
+        "verification_timestamp": "2026-09-05T08:15:00Z"
+      },
+      "privacy_compliance": {
+        "pii_anonymized": true,
+        "ferpa_compliant": true
+      }
     }
   ]
 }

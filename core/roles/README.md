@@ -209,7 +209,7 @@ All roles in this pack are expected to:
 | Project Manager | `/add-new-feature`, `/service-review-release` |
 | Task Planner | `/add-new-feature`, `/refactoring`, `/troubleshooting` |
 | Business Analyst | `/add-new-feature` |
-| Vietnam Accounting Specialist | `/add-new-feature`, `/service-review-release`, `/qa-validation` |
+| Vietnam Accounting Specialist | `/period-end-closing`, `/add-new-feature`, `/service-review-release`, `/qa-validation` |
 | Researcher | `/add-new-feature`, `/troubleshooting` |
 | UI/UX Designer | `/add-new-feature` |
 | Solution Architect | `/add-new-feature`, `/setup-new-service` |
@@ -234,7 +234,7 @@ All roles in this pack are expected to:
 | Data Analyst | `/add-new-feature`, `/troubleshooting` |
 | Data Engineer | `/troubleshooting`, `/setup-new-service`, `/data-migration` |
 | Ecommerce Engineer | `/add-new-feature`, `/refactoring`, `/hotfix-production`, `/troubleshooting` |
-| Teacher | `/add-new-feature`, `/refactoring` |
+| Teacher | `/curriculum-delivery`, `/add-new-feature`, `/refactoring` |
 | MMO Engineer | `/add-new-feature`, `/troubleshooting` |
 
 ## Usage Notes

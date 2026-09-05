@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `4.1.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **22 Workflows** | **46 Data Contracts**
+> **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **24 Workflows** | **48 Data Contracts**
 
 ---
 
@@ -140,7 +140,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | Skill Slug | Description | File |
 |:---|:---|:---|
 | **`@create-exercises`** | Design educational assignments, practice tests, and quizzes following designated curriculum matrices... | [`core/skills/education/create-exercises/SKILL.md`](./core/skills/education/create-exercises/SKILL.md) |
-| **`@design-learning-plan`** | Create a structured, curriculum-aligned learning plan or syllabus. Use when planning a study schedul... | [`core/skills/education/design-learning-plan/SKILL.md`](./core/skills/education/design-learning-plan/SKILL.md) |
+| **`@design-learning-plan`** | Create a structured, curriculum-aligned learning plan or syllabus following ZPD pathways, SMART obje... | [`core/skills/education/design-learning-plan/SKILL.md`](./core/skills/education/design-learning-plan/SKILL.md) |
 | **`@grade-and-review`** | Evaluate learner work and provide constructive feedback on the designated grading scale. Use when gr... | [`core/skills/education/grade-and-review/SKILL.md`](./core/skills/education/grade-and-review/SKILL.md) |
 
 ### Category: `foundation` (12 skills)
@@ -383,7 +383,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🔄 Workflows (22 Workflows)
+## 🔄 Workflows (24 Workflows)
 
 | Workflow | Title | File |
 |:---|:---|:---|
@@ -394,11 +394,13 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`/code-review`** | code-review | [`core/workflows/code-review.md`](./core/workflows/code-review.md) |
 | **`/content-audit`** | content-audit | [`core/workflows/content-audit.md`](./core/workflows/content-audit.md) |
 | **`/content-publishing`** | content-publishing | [`core/workflows/content-publishing.md`](./core/workflows/content-publishing.md) |
+| **`/curriculum-delivery`** | curriculum-delivery | [`core/workflows/curriculum-delivery.md`](./core/workflows/curriculum-delivery.md) |
 | **`/data-migration`** | data-migration | [`core/workflows/data-migration.md`](./core/workflows/data-migration.md) |
 | **`/data-pipeline-incident`** | data-pipeline-incident | [`core/workflows/data-pipeline-incident.md`](./core/workflows/data-pipeline-incident.md) |
 | **`/dependency-upgrade`** | dependency-upgrade | [`core/workflows/dependency-upgrade.md`](./core/workflows/dependency-upgrade.md) |
 | **`/feature-delivery`** | feature-delivery | [`core/workflows/feature-delivery.md`](./core/workflows/feature-delivery.md) |
 | **`/hotfix-production`** | hotfix-production | [`core/workflows/hotfix-production.md`](./core/workflows/hotfix-production.md) |
+| **`/period-end-closing`** | period-end-closing | [`core/workflows/period-end-closing.md`](./core/workflows/period-end-closing.md) |
 | **`/qa-validation`** | qa-validation | [`core/workflows/qa-validation.md`](./core/workflows/qa-validation.md) |
 | **`/refactoring`** | refactoring | [`core/workflows/refactoring.md`](./core/workflows/refactoring.md) |
 | **`/revert-deployment`** | revert-deployment | [`core/workflows/revert-deployment.md`](./core/workflows/revert-deployment.md) |
@@ -412,7 +414,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 📑 Data Contracts & Schemas (46 Schemas)
+## 📑 Data Contracts & Schemas (48 Schemas)
 
 | Schema File | Schema Title | Path |
 |:---|:---|:---|
@@ -444,8 +446,10 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | `feature-ticket.json` | Feature Ticket Specification | [`core/contracts/schemas/feature-ticket.json`](./core/contracts/schemas/feature-ticket.json) |
 | `implementation-result.json` | Implementation Result | [`core/contracts/schemas/implementation-result.json`](./core/contracts/schemas/implementation-result.json) |
 | `incident-report.json` | Incident Report | [`core/contracts/schemas/incident-report.json`](./core/contracts/schemas/incident-report.json) |
+| `learning-assessment-report.json` | Learning Assessment Report | [`core/contracts/schemas/learning-assessment-report.json`](./core/contracts/schemas/learning-assessment-report.json) |
 | `learning-handoff.json` | Learning Handoff | [`core/contracts/schemas/learning-handoff.json`](./core/contracts/schemas/learning-handoff.json) |
 | `performance-audit.json` | Performance Audit Result | [`core/contracts/schemas/performance-audit.json`](./core/contracts/schemas/performance-audit.json) |
+| `period-end-closing-report.json` | Period-End Closing Report | [`core/contracts/schemas/period-end-closing-report.json`](./core/contracts/schemas/period-end-closing-report.json) |
 | `pull-request-spec.json` | Pull Request Specification | [`core/contracts/schemas/pull-request-spec.json`](./core/contracts/schemas/pull-request-spec.json) |
 | `research-report.json` | Research Report Specification | [`core/contracts/schemas/research-report.json`](./core/contracts/schemas/research-report.json) |
 | `schema-migration.json` | Schema Migration Plan | [`core/contracts/schemas/schema-migration.json`](./core/contracts/schemas/schema-migration.json) |

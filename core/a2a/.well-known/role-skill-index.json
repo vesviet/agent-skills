@@ -5,8 +5,8 @@
   "stats": {
     "roles": 34,
     "skills": 107,
-    "workflows": 22,
-    "schemas": 46
+    "workflows": 24,
+    "schemas": 48
   },
   "role_aliases": {
     "writer": "content-writer",
@@ -1000,7 +1000,7 @@
     "teacher": {
       "name": "teacher",
       "title": "Teacher",
-      "description": "empower learners to acquire knowledge, internalize core concepts across subjects, and validate their understanding through structured learning, practice, and feedback aligned with designated educational curricula and standards. In 2025–2026, this extends to architecting cognitive load to prevent working memory overload, leveraging Inverted Bloom's Taxonomy where learners critique and verify AI-generated artifacts to internalize foundational principles, utilizing Item Response Theory (IRT) to dynamically calibrate exercise difficulty within the Zone of Proximal Development (70–80% success moving average), enforcing Socratic scaffolding over direct answer generation, and maintaining persistent learner knowledge graphs across multi-turn sessions while upholding rigorous student data privacy (FERPA/GDPR/EU AI Act).",
+      "description": "empower learners to acquire knowledge, internalize core concepts across technical and scientific disciplines, and validate their competencies through adaptive, AI-resilient learning, practice, and feedback aligned with designated educational curricula and standards. In 2026–2027, this extends to calibrating cognitive load to prevent working memory fatigue (3–5 concurrent novel elements), designing Webb's Depth of Knowledge (DOK 1 to 4) assignments resistant to superficial AI generation, utilizing Rasch 1PL/3PL Item Response Theory (IRT) to dynamically adjust difficulty within the Zone of Proximal Development (70–80% success moving average), evaluating submissions via 4-tier analytic rubrics with anti-hallucination line citations, diagnosing cognitive error categories, delivering growth-mindset feedback under the Rule of One, and enforcing zero-PII student privacy (FERPA/GDPR/EU AI Act).",
       "file": "core/roles/teacher.md",
       "skills": [
         "design-learning-plan",
@@ -1112,7 +1112,7 @@
     "vietnam-accounting-specialist": {
       "name": "vietnam-accounting-specialist",
       "title": "Vietnam Accounting Specialist",
-      "description": "govern Vietnam accounting-domain interpretation, evidence review, reconciliations, period-close controls, e-invoice data readiness, and retention classification so software, operations, and reporting workflows preserve a traceable accounting record without confusing accounting review with tax advice, legal advice, audit assurance, or authority to execute filings. In 2025-2026, this includes applying versioned Vietnam accounting regimes (TT 200/2014, TT 133/2016, TT 132/2018 when applicable), preserving statutory-versus-management reporting boundaries, and enforcing human approval gates for invoice, filing, correction, and close actions.",
+      "description": "govern Vietnam accounting-domain interpretation, evidence review, reconciliations, period-close controls, e-invoice data readiness, and retention classification so software, operations, and reporting workflows preserve a traceable accounting record without confusing accounting review with tax advice, legal advice, audit assurance, or authority to execute filings. In 2026-2027, this includes applying versioned Vietnam accounting regimes (Circular 200/2014, Circular 133/2016, Circular 132/2018), governing the VFRS roadmap (Decision 345/QD-BTC), enforcing e-invoice XML compliance (Decree 123/2020, Circular 78/2021, Decision 1450/QD-TCT), executing deterministic 3-way matching, monitoring Decree 132 related-party net interest caps, orchestrating Period-End Closing, and maintaining immutable WORM audit trails with human approval gates.",
       "file": "core/roles/vietnam-accounting-specialist.md",
       "skills": [
         "manage-vietnam-accounting",
@@ -1405,14 +1405,14 @@
       "category": "education",
       "type": "core",
       "file": "core/skills/education/create-exercises/SKILL.md",
-      "description": "Design educational assignments, practice tests, and quizzes following designated curriculum matrices and cognitive models. Use when generating exercises, mock exams, or exam preparation materials for specific learning objectives."
+      "description": "Design educational assignments, practice tests, and quizzes following designated curriculum matrices, Webb's DOK 1-4, and cognitive models. Use when generating exercises, mock exams, or exam preparation materials for specific learning objectives."
     },
     "design-learning-plan": {
       "name": "design-learning-plan",
       "category": "education",
       "type": "core",
       "file": "core/skills/education/design-learning-plan/SKILL.md",
-      "description": "Create a structured, curriculum-aligned learning plan or syllabus. Use when planning a study schedule, syllabus, exam preparation roadmap, or grade transition plan for any educational level."
+      "description": "Create a structured, curriculum-aligned learning plan or syllabus following ZPD pathways, SMART objectives, and spaced repetition. Use when planning a study schedule, syllabus, exam preparation roadmap, or grade transition plan for any educational level."
     },
     "grade-and-review": {
       "name": "grade-and-review",
@@ -1913,6 +1913,11 @@
       "title": "content-publishing",
       "file": "core/workflows/content-publishing.md"
     },
+    "curriculum-delivery": {
+      "name": "curriculum-delivery",
+      "title": "curriculum-delivery",
+      "file": "core/workflows/curriculum-delivery.md"
+    },
     "data-migration": {
       "name": "data-migration",
       "title": "data-migration",
@@ -1937,6 +1942,11 @@
       "name": "hotfix-production",
       "title": "hotfix-production",
       "file": "core/workflows/hotfix-production.md"
+    },
+    "period-end-closing": {
+      "name": "period-end-closing",
+      "title": "period-end-closing",
+      "file": "core/workflows/period-end-closing.md"
     },
     "qa-validation": {
       "name": "qa-validation",
@@ -2158,6 +2168,12 @@
       "title": "Incident Report",
       "file": "core/contracts/schemas/incident-report.json"
     },
+    "learning-assessment-report.json": {
+      "name": "learning-assessment-report.json",
+      "stem": "learning-assessment-report",
+      "title": "Learning Assessment Report",
+      "file": "core/contracts/schemas/learning-assessment-report.json"
+    },
     "learning-handoff.json": {
       "name": "learning-handoff.json",
       "stem": "learning-handoff",
@@ -2169,6 +2185,12 @@
       "stem": "performance-audit",
       "title": "Performance Audit Result",
       "file": "core/contracts/schemas/performance-audit.json"
+    },
+    "period-end-closing-report.json": {
+      "name": "period-end-closing-report.json",
+      "stem": "period-end-closing-report",
+      "title": "Period-End Closing Report",
+      "file": "core/contracts/schemas/period-end-closing-report.json"
     },
     "pull-request-spec.json": {
       "name": "pull-request-spec.json",

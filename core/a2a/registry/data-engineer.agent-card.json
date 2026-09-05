@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/data-engineer",
   "contract_type": "agent-card",
   "name": "data-engineer",
-  "description": "design, build, and maintain reliable data pipelines and storage layers so analysts and applications can trust timely, well-modeled, and governable data products. In 2025–2026, this extends to engineering data supply chains for AI/ML systems (embeddings, feature stores, multimodal lakehouses), enforcing data contracts as machine-readable engineering artifacts with automated validation, and owning real-time freshness requirements for AI-native applications.",
+  "description": "design, build, and maintain deterministic, high-throughput data pipelines, lakehouse storage layers, and unified semantic layers so analysts, applications, and autonomous AI agents can consume reliable, timely, and governable data products. In 2026–2027, this extends to enforcing Open Data Contract Standard (ODCS v3) specifications at producer boundaries, architecting Modern Lakehouses with Apache Iceberg v3 and Delta Lake, ensuring strict idempotency and deterministic upsert MERGE semantics, deploying automated circuit-breakers with Dead-Letter Queue (DLQ) quarantine, practicing Data FinOps resource governance, and maintaining Zero-Trust data security under OWASP ASI03/ASI06.",
   "url": "pack://agent-skills/core/roles/data-engineer.md",
   "version": "4.1.0",
   "protocol_version": "1.0",
@@ -30,7 +30,7 @@
     {
       "id": "build-data-pipeline",
       "name": "Build Data Pipeline",
-      "description": "Design and implement data ingestion, transformation, and delivery pipelines including ETL/ELT, Parquet/DuckDB warehousing, dbt modeling, Airflow orchestration, Kafka streaming, and data quality gates. Use when the work requires a repeatable, owned pipeline — not a one-off analytical query.",
+      "description": "Design and implement transactional lakehouse pipelines (Iceberg/Delta), enforce ODCS v3 data contracts at producer boundaries, integrate Great Expectations/dbt-expectations quality gates, and isolate invalid records in DLQ quarantine with deterministic replayability. Use when the work requires an owned, repeatable data pipeline.",
       "tags": [
         "security",
         "pack"
@@ -45,13 +45,14 @@
         "text"
       ],
       "output_schema_refs": [
+        "data-pipeline-spec.json",
         "schema-migration.json"
       ]
     },
     {
       "id": "database-maintenance",
       "name": "Database Maintenance",
-      "description": "Plan or perform operational database maintenance by following the repo's safety, backup, rollback, and verification patterns. Use for cleanup, backfill, index work, repair tasks, restore preparation, or other operational data changes.",
+      "description": "Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/Delta compaction, snapshot expiration, orphan vacuuming, clustering optimization, query cost monitoring/FinOps, and relational/vector DB index tuning. Use for cleanup, compaction, repair, and operational performance tasks.",
       "tags": [
         "security",
         "pack"
@@ -66,6 +67,7 @@
         "text"
       ],
       "output_schema_refs": [
+        "data-pipeline-spec.json",
         "schema-migration.json"
       ]
     },
@@ -87,11 +89,13 @@
         "text"
       ],
       "output_schema_refs": [
+        "data-pipeline-spec.json",
         "schema-migration.json"
       ]
     }
   ],
   "defaultOutputSchemas": [
+    "data-pipeline-spec.json",
     "schema-migration.json"
   ],
   "role_file": "core/roles/data-engineer.md",

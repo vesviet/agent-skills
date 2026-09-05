@@ -1,142 +1,80 @@
 ---
 name: create-exercises
-description: Design educational assignments, practice tests, and quizzes following designated curriculum matrices and cognitive models. Use when generating exercises, mock exams, or exam preparation materials for specific learning objectives.
+description: Design educational assignments, practice tests, and quizzes following designated curriculum matrices, Webb's DOK 1-4, and cognitive models. Use when generating exercises, mock exams, or exam preparation materials for specific learning objectives.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
 # Create Exercises
 
-Use this skill to generate practical tasks, tests, or mock exams strictly following the educational standards and curriculum matrices specified for the target learners.
+Use this skill to generate practical tasks, problem sets, and exams strictly following the educational standards, Depth of Knowledge (DOK) levels, and curriculum matrices specified for the target learners.
 
 ## When to Use
 
-- generating practice tests or quizzes
-- building exam-prep materials
-- mapping exercises to curriculum objectives
-- designing assignments for a learning goal
+- generating practice tests, coding katas, or diagnostic quizzes
+- engineering AI-resistant case studies and flawed artifacts for student debugging
+- calibrating exercise sets to learner ZPD using Item Response Theory (IRT)
+- mapping exercises to curriculum objectives and Bloom 2027 HOTS tiers
+- structuring granular partial-credit scoring matrices and answer keys
 
 ## Core Rules
 
-- strictly adhere to the requested testing format (short quiz, unit test, mid-term, final) and the target grade or proficiency level; never use notations, formulas, or methods not yet taught in the target curriculum
-- map every question to a **Bloom's Taxonomy level** (Remember → Understand → Apply → Analyze → Evaluate → Create) and declare the target level explicitly in the exercise matrix before generation
-- **AI-generated questions are drafts only**: all AI-generated exercises must pass a qualified educator's review gate before assignment to students — autonomous publish of AI-generated exercise sets is not permitted
-- calibrate difficulty dynamically using **Item Response Theory (IRT)** metrics targeting a **70–80% student success rate** — enough challenge to stimulate learning, enough success to sustain motivation
-- integrate **spaced repetition triggers** (SM-2 or SM-15 algorithm) in the question scheduler: calculate the next review date from the student's response quality score and easiness factor; never use fixed equal-interval review schedules
-- award **partial credit** for correct intermediate steps in constructed-response questions; never score as all-or-nothing when sub-steps are demonstrably correct
-- keep a question-level changelog (`question_id`, `bloom_level`, `difficulty_param`, `last_reviewed`) so exercise sets are auditable and adjustable without full regeneration
+- strictly adhere to the requested testing format (short quiz, unit test, mid-term, final) and target proficiency level; never use notations, formulas, or methods not yet taught in the target curriculum
+- map every question to **Webb's Depth of Knowledge (DOK 1 to 4)** and **Bloom's Taxonomy 2027**; declare target cognitive levels explicitly before generation (see [`references/dok-and-ai-resistant-exercise-design.md`](references/dok-and-ai-resistant-exercise-design.md))
+- implement **AI-Shortcut Resistance**: embed proprietary context, synthetic flaws/hallucinations for student debugging, raw artifact telemetry, or oral defense prompts to prevent copy-paste solving
+- calibrate difficulty dynamically using **Item Response Theory (IRT)** (Rasch 1PL / 3PL models) targeting a **70–80% student success moving average** across a rolling 10-item window (see [`references/irt-calibration-and-scoring-matrices.md`](references/irt-calibration-and-scoring-matrices.md))
+- award **granular partial credit** across conceptual setup (25%), execution logic (50%), and edge-case boundary verification (25%); strictly prohibit all-or-nothing scoring for constructed responses
+- **AI-generated questions are drafts only**: all AI-generated exercises must pass a qualified human educator's review gate before assignment to students
+- keep a question-level changelog (`question_id`, `dok_level`, `difficulty_param`, `last_reviewed`, `human_review_status`) for auditability
 
 ## Suggested Process
 
-1. **Identify the Objective & Format**: Determine the test type and the specific chapters or modules being tested.
-2. **Design the Exam Matrix**: Allocate points across cognitive levels based on the testing goal.
-3. **Draft the Questions**: Write age-appropriate questions. Mix multiple-choice and constructed response formats as suitable.
-4. **Define the Answer Key & Rubric**: Create a precise grading rubric down to the required partial point steps.
-5. **Review for Edge Cases**: Ensure no questions fall outside the defined curriculum scope.
+1. **Intake & Diagnostic Assessment**: Determine target subject, curriculum standards, and learner latent ability ($\theta$).
+2. **Design Exercise Matrix**: Allocate items across Webb's DOK 1–4 and Bloom HOTS (Analyze, Evaluate, Create).
+3. **Draft Context-Bound Problems**: Engineer exercises embedding real-world constraints, synthetic flaws, or artifact telemetry.
+4. **Calibrate IRT Parameters**: Model item difficulty ($\beta$) to sustain a 70–80% success moving average in the learner's ZPD.
+5. **Construct Scoring Barems**: Author granular partial-credit answer matrices (25% setup / 50% execution / 25% edge cases).
+6. **Human Educator Verification Gate**: Route drafted exercises for educator review and sign-off prior to student release.
 
-### 2026: Exercise Engineering and Spaced Repetition
-
-To meet modern digital education requirements, three key practices must be implemented in the exercise generation flow:
-
-#### 1. AI-Assisted Exercise Generation Workflow
-When using Large Language Models to generate exercises, follow a structured generative pipeline:
-- **Bloom's Taxonomy Filtering**: System prompts must specify the target cognitive level (e.g., Remember, Understand, Apply, Analyze, Evaluate, Create). For example, a prompt asking for "Apply" level should generate real-world scenario questions requiring formula usage, not just concept definitions.
-- **Taxonomy Level Breakdown**:
-  - **Remember**: Recall facts and basic concepts. (Exercise format: Multiple choice, flashcards, definition matching).
-  - **Understand**: Explain ideas or concepts. (Exercise format: Summarization, grouping, concept mapping).
-  - **Apply**: Use information in new situations. (Exercise format: Calculations, code execution, simulation tasks).
-  - **Analyze**: Draw connections among ideas. (Exercise format: Bug identification, architectural comparison, diagram analysis).
-  - **Evaluate**: Justify a stand or decision. (Exercise format: Code review reviews, security posture audits, trade-off analyses).
-  - **Create**: Produce new or original work. (Exercise format: System design, writing complete modules, project prototyping).
-- **Cognitive Complexity Guardrails**: Restrict AI output from generating overly complex or convoluted language that confuses the target grade level.
-- **Human Review Gate**: AI-generated questions are treated as drafts. A qualified educator must review, edit, and approve every question before it is compiled into a student quiz or exam database.
-
-#### Cognitive Matrix and Exercise Alignment Table
-
-| Bloom's Level | Cognitive Process | Target Task Type | Assessment Criteria | Example Exercise |
-|---|---|---|---|---|
-| Remember | Retrieving relevant knowledge | Multiple-choice questions | Accurate recall of facts | "Define the time complexity of binary search." |
-| Understand | Constructing meaning | Concept mapping, explanations | Clear explanation of patterns | "Explain how a hash collision is resolved in Java." |
-| Apply | Carrying out or using a procedure | Practical calculations, coding | Execution accuracy and output | "Implement a function to reverse a linked list." |
-| Analyze | Breaking material into parts | Debugging, parsing log traces | Identification of root cause | "Determine the memory leak source from this pprof output." |
-| Evaluate | Making judgments based on criteria | Code reviews, design critique | Structural and safety arguments | "Review this SQL schema design for N+1 vulnerabilities." |
-| Create | Putting elements together | System architecture design | Design novelty and integration | "Design a distributed notification system for 10M users." |
-
-#### 2. Adaptive Difficulty Calibration
-Exercise sets should adapt dynamically to student performance to optimize engagement and prevent frustration:
-- **Item Response Theory (IRT)**: Model student ability and question difficulty as parameters. Questions are selected based on the student's probability of answering correctly, aiming for optimal information gain.
-- **Mathematical Calibration (Rasch Model)**:
-  - We use the One-Parameter Logistic Model to compute probability:
-  - $$P(X_i = 1 | \theta, \beta_i) = \frac{e^{\theta - \beta_i}}{1 + e^{\theta - \beta_i}}$$
-  - Where $\theta$ represents student ability and $\beta_i$ represents item difficulty.
-- **Three-Parameter Logistic Model (3PL)**:
-  - For multiple-choice questions with guessing factors:
-  - $$P(X_i = 1 | \theta, a_i, b_i, c_i) = c_i + (1 - c_i) \frac{e^{a_i(\theta - b_i)}}{1 + e^{a_i(\theta - b_i)}}$$
-  - Where $a_i$ is discrimination, $b_i$ is difficulty, and $c_i$ is the pseudo-guessing probability.
-- **Moving Average Baseline**: Track the student's recent performance using a rolling moving average (e.g., the last 10 exercises).
-- **Target Success Rate**: Calibrate the difficulty of the next question block to maintain a 70-80% student success rate. This level of challenge is high enough to stimulate learning but low enough to build confidence.
-
-#### 3. Spaced Repetition Triggers
-Retention-optimized courses must trigger reviews at calculated intervals using cognitive science models:
-- **SM-2 Algorithm Integration**: Schedule reviews based on the SuperMemo-2 algorithm. Calculate intervals ($I$) using response quality ($q$ from 0 to 5) and easiness factor ($EF$):
-  - $I(1) = 1$ day
-  - $I(2) = 6$ days
-  - For $n > 2$: $I(n) = I(n-1) \times EF$
-  - Adjust $EF$ based on performance: $EF' = EF + (0.1 - (5 - q) \times (0.08 + (5 - q) \times 0.02))$
-- **SM-15 Algorithm Integration**: For fine-grained adaptive systems, use the SuperMemo-15 algorithm, which models memory retention based on three variables: difficulty, stability, and retrievability.
-- **Retrievability Math**:
-  - $$R = e^{-\ln(2) \cdot \frac{t}{S}}$$
-  - Where $t$ is elapsed time since last review and $S$ is memory stability.
-- **Scheduler Integration**: Connect the exercise engine to a background scheduling worker. When a student completes a review, calculate the next review date and queue the notification or study block accordingly.
-- **Database Schema Schema**:
-  - `card_id` - Identifier for the flashcard or exercise.
-  - `repetitions` - Number of successful consecutive reviews.
-  - `easiness_factor` - The difficulty multiplier.
-  - `next_review_due` - Timestamp of next scheduled review.
+### In-Depth Reference Guides
+- **DOK & AI Resistance**: [`references/dok-and-ai-resistant-exercise-design.md`](references/dok-and-ai-resistant-exercise-design.md) — DOK 1–4 matrix, cognitive verb distribution, and 5 AI-shortcut resistance archetypes.
+- **IRT Calibration & Scoring**: [`references/irt-calibration-and-scoring-matrices.md`](references/irt-calibration-and-scoring-matrices.md) — Rasch 1PL/3PL formulas, rolling moving average calibration, and partial-credit barems.
 
 ## Checklist
 
-- [ ] Test format and duration are clearly stated.
-- [ ] Target grade or proficiency level is confirmed before setting difficulty.
-- [ ] Questions are distributed according to a clear cognitive matrix.
-- [ ] Difficulty ratio reflects the educational goal (foundational vs advanced prep).
-- [ ] Answer key provides granular point breakdowns.
-- [ ] Language and terminology match official textbooks or standards for that level.
-- [ ] AI-assisted generation workflow filters by Bloom's Taxonomy level.
-- [ ] Human review gate is defined and implemented before student assignment.
-- [ ] Difficulty calibration maps against Item Response Theory (IRT) model.
-- [ ] Student success metrics are tracked using a moving average aiming at a 70-80% target rate.
-- [ ] Spaced repetition schedules are triggered and integrated with SM-2 or SM-15 schedulers.
+- [ ] Target grade, subject domain, and curriculum standards are verified before generation.
+- [ ] Questions are distributed according to Webb's DOK 1–4 matrix and Bloom 2027 HOTS alignment.
+- [ ] Problem prompts incorporate at least one AI-shortcut resistance archetype (context-bound, synthetic flaw, raw telemetry).
+- [ ] Difficulty parameter ($\beta$) is calibrated via IRT to target a 70–80% rolling success rate in the learner's ZPD.
+- [ ] Constructed-response items have granular partial-credit scoring barems (25% setup / 50% execution / 25% boundary).
+- [ ] No constructed-response items use all-or-nothing scoring.
+- [ ] AI-generated exercise sets contain explicit human review gate metadata (`reviewed_by`, `verification_status`).
+- [ ] Question-level changelog tracks `question_id`, `dok_level`, `difficulty_param`, and `last_reviewed`.
 
 ## Output Contracts
 
-When the exercise set is consumed by an LMS, a tutoring system, or a
-cross-role handoff, emit:
+When the exercise set crosses a role boundary or is handed off to an LMS, tutoring engine, or teacher, emit:
 
-- **`contracts/schemas/learning-handoff.json`** (or, when a stable schema is not yet available, a markdown frontmatter block listing `exercise_id`, `bloom_level`, `difficulty_param`, `last_reviewed`, and `human_review_status`). The frontmatter block is the minimum-viable contract.
-- For human-readable reports, the markdown exercise matrix already documented is the canonical format.
-- Every AI-generated question must be flagged with the human review status; never assign to students without explicit sign-off.
-
-Skip emission for single-question experiments that do not cross a role boundary.
+- **`contracts/schemas/learning-handoff.json`** — populating `artifact_type: "exercises"`, `dok_level`, `bloom_taxonomy_tier`, `ai_resistance_mechanisms`, and `content_paths`.
+- For human-readable formats, emit an exercise matrix markdown file detailing questions, DOK tags, IRT parameters, and partial-credit barems.
+- Every AI-generated question set must record human review metadata before student assignment.
 
 ## Failure Modes
 
-- **Bloom level drift**: a question's cognitive level does not match the declared target. Mitigation: enforce the Bloom's Taxonomy filter; reject questions outside the declared level.
-- **AI question published unreviewed**: an AI-generated question ships without a qualified educator's review. Mitigation: enforce the human review gate; reject unreviewed questions.
-- **Difficulty calibration off**: the IRT-calibrated difficulty drifts from the 70-80% target success rate. Mitigation: re-calibrate using the rolling moving average; reject question blocks outside the target range.
-- **Spaced repetition not triggered**: a review is missed because the scheduler did not compute the next review date. Mitigation: integrate SM-2 or SM-15; assert the next review date is set on every response.
-- **Constructed response scored all-or-nothing**: a correct intermediate step receives no credit. Mitigation: award partial credit for demonstrably correct sub-steps; explain the exact step where logic failed.
-- **Question outside curriculum**: a question uses notation or a method not yet taught. Mitigation: enforce the curriculum scope; reject out-of-scope questions.
-- **Changelog missing**: a question's revision history is not tracked. Mitigation: maintain the question-level changelog (`question_id`, `bloom_level`, `difficulty_param`, `last_reviewed`).
+- **DOK level drift**: a question's cognitive depth does not match the declared DOK tier. Mitigation: verify active verbs and multi-step reasoning requirements; reject rote questions labeled as DOK 3/4.
+- **Trivial LLM copy-paste vulnerability**: an exercise is solved instantly by generic AI without critical thinking. Mitigation: apply Archetype 1 (context-bound) or Archetype 2 (synthetic flaw injection).
+- **Difficulty calibration drift**: student success rate diverges from the 70–80% target window. Mitigation: recalibrate difficulty parameter $\beta$ via Rasch 1PL model using rolling moving average.
+- **All-or-nothing scoring**: intermediate correct logic receives 0 points due to final step slip. Mitigation: enforce the 25/50/25 partial-credit barem.
+- **Unreviewed exercise release**: AI-drafted questions assigned directly to learners without educator sign-off. Mitigation: enforce the EU AI Act human review gate.
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI03 Identity & Privilege Abuse**: never include student identifiers, instructor names, or institutional tokens in the exercise matrix.
-- **ASI04 Supply Chain**: AI generation libraries and IRT calibration tools must be schema-validated against the expected manifest; treat unknown versions as untrusted.
-- **ASI05 RCE Guard**: never construct exercise prompts, answer keys, or rubric descriptors from external content without strict schema validation.
-- **ASI07 Inter-Agent Communication**: the exercise handoff is consumed by LMS and tutoring systems; emit a structured contract so each consumer can validate.
-- **ASI09 Human-Agent Trust Exploitation**: do not present an AI-generated exercise as "ready to assign" without the educator's review sign-off; surface the AI provenance honestly.
+- **ASI03 Identity & Privilege Abuse**: never include student personal identifiers or institutional credentials in exercise sets.
+- **ASI04 Supply Chain**: validate automated test harnesses and IRT calculation modules against approved manifests.
+- **ASI05 RCE Guard**: sanitize test execution environments when executing student-submitted code or tests.
+- **ASI07 Inter-Agent Communication**: emit structured `learning-handoff.json` payloads for reliable multi-agent processing.
+- **ASI09 Human-Agent Trust Exploitation**: transparently declare AI provenance and require human educator sign-off.
 
 ## Related Skills
 
-- **grade-and-review**: Evaluate completed exercises against the rubric.
-- **design-learning-plan**: Align exercises with the broader curriculum sequence.
+- **grade-and-review**: Evaluate completed exercises against 4-tier analytic rubrics and diagnose cognitive errors.
+- **design-learning-plan**: Sequence exercises within broader adaptive ZPD pathways and spaced repetition schedules.
