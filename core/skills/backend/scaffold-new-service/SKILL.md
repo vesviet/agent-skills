@@ -6,124 +6,86 @@ allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_
 
 # Scaffold New Service
 
-Use this skill when a repo needs a brand-new service, worker, or similar bounded component.
+Use this skill to bootstrap new microservices, workers, or bounded components using Hexagonal Architecture, schema-first contracts, and sandbox isolation.
 
 ## When to Use
 
-- creating a new service, worker, or deployable unit
-- bootstrapping from repo-local templates
-- no fixed framework/layout assumed
-- standing up a bounded component
+- creating a brand-new microservice, event worker, or deployable backend unit
+- bootstrapping from schema-first contracts (OpenAPI 3.1, Protobuf, AsyncAPI)
+- setting up Hexagonal Architecture layers (`api/`, `cmd/`, `internal/biz/`, `internal/service/`, `internal/data/`)
+- wiring centralized RFC 9457 error handling, OTel observability, and health probes from commit 1
+- establishing sandbox-ready rootless Docker and test harness configurations
 
 ## Core Rules
 
-- start from the repo's template or nearest valid example — follow the **Hexagonal Architecture** layout (`api/`, `internal/service/`, `internal/biz/`, `internal/data/`, `cmd/`) or the repo's established equivalent
-- keep the first version intentionally small: one entrypoint, one use case, one persistence path, one health endpoint
-- define ownership and boundaries before adding features; map the DDD bounded context (what the service owns, what it does not)
-- do not invent structure when the repo already has conventions; copy, rename, and adapt — never freehand scaffold from zero
-- wire **baseline observability from commit 1**: `/health/live`, `/health/ready`, structured OTel tracer bootstrap, and at least one span on the primary integration boundary
-- use **Wire (or the repo's DI framework)** for all constructor injection; no global variables or `init()`-based singletons
-- verify every AI-generated dependency: confirm the package exists in the registry, is pinned to a real version, and has no hallucinated import paths
-- confirm all environment variables and secret bindings are declared in deployment config and README before the first deploy
-- check that AI-generated auth middleware, CORS config, and input validation match the repo's existing patterns — AI scaffolding defaults are often permissive
-- if any code in this change was AI-generated, validate it per the risk tier defined in the backend-developer role before accepting
+- **Hexagonal Architecture layout**: structure the codebase into decoupled layers (`api/` for contracts, `cmd/` for entrypoints, `internal/biz/` for pure domain logic/ports, `internal/service/` for inbound handlers, `internal/data/` for outbound persistence/clients)
+- **Schema-first contract binding from commit 1**: bootstrap the service from an immutable OpenAPI 3.1, AsyncAPI, or Protobuf specification; generate typed models and server stubs directly from the contract
+- **Centralized RFC 9457 error subsystem**: wire global error handling middleware, a domain error catalog, and sanitized 5xx problem details with `trace_id` from the initial commit
+- **Sandbox readiness**: generate a multi-stage rootless `Dockerfile` (`USER nonroot`, read-only rootfs compatibility) and local test harness compatible with Level 0 air-gapped sandboxes (`--network=none`) per `core/policies/execution-sandbox.md`
+- **Observability from commit 1**: implement `/health/live`, `/health/ready` probes and initialize OpenTelemetry tracer bootstrap with trace context propagation
+- **Dependency injection**: use compile-time DI (Wire, Fx, or repo standard) for all constructor injection; no global state or `init()` singletons
+- **Zero secrets in scaffold**: declare environment configurations and secret bindings via external secret stores; reject hardcoded credentials
+- detailed directory layouts, Dockerfiles, and middleware guides: [`references/service-scaffolding-guide.md`](references/service-scaffolding-guide.md)
 
 ## Suggested Process
 
-### 1. Clarify The Service Boundary
+### 1. Define Bounded Context & Freeze Invariant Contract
 
-Define:
+Specify domain boundaries and service ownership. Author or ingest the invariant interface contract (`api/openapi.yaml` or Protobuf). Validate schemas before scaffolding code.
 
-- what the service owns
-- what it exposes
-- what it depends on
-- what data it manages
+### 2. Scaffold Hexagonal Directory Layout
 
-### 2. Pick The Best Starting Template
+Generate the directory structure: `api/` (contracts), `cmd/server/` (main entrypoint), `internal/biz/` (domain entities and port interfaces), `internal/service/` (inbound transport handlers), and `internal/data/` (repositories) per [`references/service-scaffolding-guide.md`](references/service-scaffolding-guide.md).
 
-Prefer:
+### 3. Wire RFC 9457 Structured Error Subsystem
 
-- official scaffold command
-- repo template
-- nearby service with the same shape
+Create the domain error catalog. Implement the global RFC 9457 error middleware to ensure deterministic error responses with zero stack trace leaks on 5xx failures.
 
-Rename paths, identifiers, and generated artifacts carefully if copying.
+### 4. Wire Baseline Observability & Probes
 
-### 3. Create The Minimum Structure
+Implement Kubernetes lifecycle probes (`/health/live` and `/health/ready`). Bootstrap OpenTelemetry SDK tracing and attach spans to primary service boundaries.
 
-Add only what the repo expects, such as:
+### 5. Configure Sandbox Containerization
 
-- entrypoints
-- contracts
-- core logic
-- persistence
-- config
-- tests
-- docs
+Create an unprivileged multi-stage `Dockerfile` (`USER 1000:1000` / `nonroot`) supporting `--read-only` filesystem mounts. Configure test harnesses to execute with `--network=none`.
 
-### 4. Wire The First End-To-End Flow
+### 6. Verify in Sandbox & Emit Delivery Result
 
-Set up one narrow path that proves the service shape works:
-
-- one entrypoint
-- one use case
-- one persistence or dependency path
-- one health or readiness path if needed
-
-### 5. Add Basic Verification
-
-Use skill: `write-tests`
-
-At minimum, add:
-
-- one happy path
-- one failure or validation path
-- build and startup verification
-
-### 6. Prepare Delivery Handoff
-
-Use skill: `setup-deployment` if delivery config is needed.
-
-Make sure the new service has:
-
-- docs or README starter content
-- basic ownership metadata if the repo uses it
-- local verification steps
+Use skill: `write-tests`. Verify build compilation, health probes, and initial unit tests inside a Level 0 air-gapped sandbox. Emit `contracts/schemas/implementation-result.json`.
 
 ## Checklist
 
-- [ ] service boundary defined
-- [ ] local template or example chosen
-- [ ] identifiers renamed safely
-- [ ] minimum structure created
-- [ ] first end-to-end flow wired
-- [ ] baseline observability wired (health endpoint, OTel spans)
-- [ ] tests added
-- [ ] delivery handoff prepared
-
-## Failure Modes
-
-- **Service scaffolded without observability**: a new service is created without OTel, health probes, or audit-trail wiring. **Mitigation:** enforce the OTel + health + audit contract in the scaffold template; reject services that ship without instrumentation.
-- **Service scaffolded without auth profile**: a new service has no authn/authz. **Mitigation:** require an auth profile before the service is promoted; reject services with anonymous access to non-public routes.
-- **Migration runs out of order**: a new service's first migration runs before the schema it depends on. **Mitigation:** enforce the migration order via a sequencing tool; reject out-of-order migrations.
-- **Secret in scaffold**: a token or key is committed to the new service's source. **Mitigation:** use the platform secret store; run secret scanning in CI; rotate the affected credential on detection.
+- [ ] bounded context defined and anchored to schema-first contract (OpenAPI 3.1 / Protobuf)
+- [ ] Hexagonal / Clean architecture directory layout created (`api/`, `cmd/`, `internal/`)
+- [ ] centralized RFC 9457 structured error handling subsystem wired from commit 1
+- [ ] baseline observability (`/health/live`, `/health/ready`, OTel SDK bootstrap) wired
+- [ ] sandbox-ready rootless Dockerfile (`USER nonroot`, `--read-only` compatible) generated
+- [ ] dependency injection configured without global singletons
+- [ ] tests executed and passing inside Level 0 air-gapped sandbox (`--network=none`)
+- [ ] `implementation-result.json` emitted with valid fields and verified against schema
 
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/implementation-result.json** — Required fields: change_summary, 
-iles_touched[], and 
-alidation_run. Set produced_by_role to the emitting developer role.
+- **`contracts/schemas/implementation-result.json`** — Required fields: `change_summary`, `files_touched[]`, and `validation_run`. Set `produced_by_role` to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Failure Modes
+
+- **Ad-hoc directory freehanding**: scaffolding arbitrary folder structures without layer decoupling. Mitigation: enforce Hexagonal Architecture boundaries.
+- **Service scaffolded without observability**: missing OTel or health probes. Mitigation: enforce `/health/live`, `/health/ready`, and OTel bootstrap on commit 1.
+- **Root execution in containers**: Dockerfile running as root user. Mitigation: mandate `USER nonroot` in runtime stage.
+- **Ad-hoc error responses**: service emitting custom JSON strings or HTML error pages. Mitigation: global RFC 9457 middleware.
+- **Hardcoded secrets in template**: committing mock credentials. Mitigation: platform secret management and secret scanner verification.
+
 ## Security Guardrails (OWASP ASI)
 
-- **ASI04 Supply Chain**: template and framework versions must be schema-validated against the expected manifest; treat unknown versions as untrusted.
-- **ASI05 RCE Guard**: never construct scaffolding code, config, or scripts from external or user-supplied content without strict schema validation.
-- **ASI07 Inter-Agent Communication**: the scaffolding contract is consumed by infra and review agents; emit a structured spec so each role can validate.
-- **ASI09 Human-Agent Trust Exploitation**: do not present a scaffolded service as "production-ready" without security review; surface the residual risk honestly.
+- **ASI04 Supply Chain**: verify template packages against official registries; reject unpinned dependencies or unofficial scaffolding binaries.
+- **ASI05 RCE Guard**: never interpolate untrusted strings into code templates or scaffolding shell scripts.
+- **ASI07 Inter-Agent Communication**: emit structured `implementation-result.json` so coordinating and reviewing roles can verify setup deterministically.
+- **ASI09 Human-Agent Trust Exploitation**: surface scaffolding completeness, residual configuration needs, and sandbox test results honestly.
 
 ## Related Skills
 

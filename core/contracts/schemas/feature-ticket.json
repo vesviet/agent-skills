@@ -39,7 +39,7 @@
         "medium",
         "low"
       ],
-      "description": "Business priority — not technical complexity."
+      "description": "Business priority \u2014 not technical complexity."
     },
     "business_value": {
       "type": "string",
@@ -86,7 +86,7 @@
     },
     "acceptance_criteria": {
       "type": "array",
-      "description": "Testable acceptance scenarios in Given/When/Then format. For AI features, use ai_feature_spec for probabilistic AC — do not encode statistical thresholds in this plain GWT format.",
+      "description": "Testable acceptance scenarios in Given/When/Then format. For AI features, use ai_feature_spec for probabilistic AC \u2014 do not encode statistical thresholds in this plain GWT format.",
       "minItems": 1,
       "items": {
         "type": "object",
@@ -148,11 +148,11 @@
     },
     "ai_feature_spec": {
       "type": "object",
-      "description": "Required when the feature involves AI/LLM behavior. Owned by Business Analyst. Consumed by Technical Lead, QA Engineer, and Reviewer as AI acceptance criteria evidence. Binary pass/fail AC must NOT be used for AI features — use this block instead.",
+      "description": "Required when the feature involves AI/LLM behavior. Owned by Business Analyst. Consumed by Technical Lead, QA Engineer, and Reviewer as AI acceptance criteria evidence. Binary pass/fail AC must NOT be used for AI features \u2014 use this block instead.",
       "properties": {
         "behavioral_boundaries": {
           "type": "string",
-          "description": "Acceptable output range expressed as intent — not exact string match. E.g. 'Response must be professional in tone, contain no hallucinated product names, and cite only verified sources.'"
+          "description": "Acceptable output range expressed as intent \u2014 not exact string match. E.g. 'Response must be professional in tone, contain no hallucinated product names, and cite only verified sources.'"
         },
         "probabilistic_ac": {
           "type": "object",
@@ -162,7 +162,7 @@
               "type": "number",
               "minimum": 0,
               "maximum": 100,
-              "description": "Minimum percentage of correct outcomes. E.g. 95 means ≥95% of N samples must meet the criteria."
+              "description": "Minimum percentage of correct outcomes. E.g. 95 means \u226595% of N samples must meet the criteria."
             },
             "population": {
               "type": "string",
@@ -185,7 +185,7 @@
             },
             "judge": {
               "type": "string",
-              "description": "Who or what acts as the judge — specify model name, rubric reference, or reviewer role."
+              "description": "Who or what acts as the judge \u2014 specify model name, rubric reference, or reviewer role."
             }
           },
           "required": [
@@ -294,7 +294,7 @@
     },
     "assumption_register": {
       "type": "array",
-      "description": "Risk-scored assumptions that underlie the requirements. Required for significant bets. Risk score = impact × (6 − confidence). Highest-risk assumptions must be validated before build commitment. ASSUMPTION LOCK applies.",
+      "description": "Risk-scored assumptions that underlie the requirements. Required for significant bets. Risk score = impact \u00d7 (6 \u2212 confidence). Highest-risk assumptions must be validated before build commitment. ASSUMPTION LOCK applies.",
       "items": {
         "type": "object",
         "properties": {
@@ -316,7 +316,7 @@
           },
           "risk_score": {
             "type": "number",
-            "description": "Computed as impact × (6 − confidence). Range 1–25. Scores ≥15 require validation before build commitment."
+            "description": "Computed as impact \u00d7 (6 \u2212 confidence). Range 1\u201325. Scores \u226515 require validation before build commitment."
           },
           "validation_method": {
             "type": "string",
@@ -348,7 +348,7 @@
     },
     "analytics_request": {
       "type": "object",
-      "description": "Optional handoff block for Data Analyst — triggers data investigation request.",
+      "description": "Optional handoff block for Data Analyst \u2014 triggers data investigation request.",
       "properties": {
         "decision_supported": {
           "type": "string",
@@ -388,7 +388,7 @@
     },
     "seo_content_request": {
       "type": "object",
-      "description": "Optional handoff block for SEO Analyst — triggers content or discoverability work.",
+      "description": "Optional handoff block for SEO Analyst \u2014 triggers content or discoverability work.",
       "properties": {
         "business_outcome": {
           "type": "string"
@@ -425,7 +425,7 @@
     },
     "research_request": {
       "type": "object",
-      "description": "Optional handoff block for Researcher — triggers domain or compliance research. depth must align with researcher.md depth_mode: deep (10+ rounds, default) or scoped (3+ rounds, requires scope_waiver_note).",
+      "description": "Optional handoff block for Researcher \u2014 triggers domain or compliance research. depth must align with researcher.md depth_mode: deep (10+ rounds, default) or scoped (3+ rounds, requires scope_waiver_note).",
       "properties": {
         "research_question": {
           "type": "string",
@@ -447,7 +447,7 @@
             "deep",
             "scoped"
           ],
-          "description": "deep: 10+ research rounds (default). scoped: minimum 3 rounds — requires scope_waiver_note explaining why deep is not needed."
+          "description": "deep: 10+ research rounds (default). scoped: minimum 3 rounds \u2014 requires scope_waiver_note explaining why deep is not needed."
         },
         "scope_waiver_note": {
           "type": "string",
@@ -484,6 +484,78 @@
           "type": "string"
         }
       }
+    },
+    "blast_radius_assessment": {
+      "type": "object",
+      "description": "Assessment of potential blast radius and failure domain impact.",
+      "properties": {
+        "impact_tier": {
+          "type": "string",
+          "enum": [
+            "isolated_component",
+            "service_level",
+            "cross_service",
+            "critical_infrastructure"
+          ]
+        },
+        "failure_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Bounded contexts or failure domains exposed to this change."
+        },
+        "downstream_consumers_affected": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Services, queues, or client apps dependent on changed behavior."
+        },
+        "data_blast_radius": {
+          "type": "string",
+          "enum": [
+            "read_only",
+            "isolated_write",
+            "schema_migration",
+            "irreversible_deletion"
+          ]
+        }
+      },
+      "required": [
+        "impact_tier",
+        "failure_domains"
+      ]
+    },
+    "sandbox_isolation_tier": {
+      "type": "string",
+      "enum": [
+        "tier_0_ephemeral_container",
+        "tier_1_isolated_microvm",
+        "tier_2_airgapped_sandbox",
+        "local_dev_workspace"
+      ],
+      "description": "Required execution environment isolation tier for code generation and testing."
+    },
+    "test_strategy_ref": {
+      "type": "object",
+      "description": "Testing strategy standards for this feature ticket.",
+      "properties": {
+        "red_green_required": {
+          "type": "boolean"
+        },
+        "mutation_score_threshold_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "reproduction_test_required": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "red_green_required"
+      ]
     }
   },
   "required": [
@@ -555,7 +627,7 @@
           "risk_score": 12,
           "validation_method": "Interview 3 Store Managers before sprint planning",
           "status": "validated",
-          "outcome_note": "Confirmed in stakeholder session 2026-06-10 — Store Managers prefer automated routing"
+          "outcome_note": "Confirmed in stakeholder session 2026-06-10 \u2014 Store Managers prefer automated routing"
         }
       ],
       "dependencies": [
@@ -579,6 +651,22 @@
         "scope_waiver_note": "Domain is narrow and well-defined; 3 targeted research passes sufficient before locking courier SLA AC.",
         "output_contract": "research-report.json",
         "deadline": "2026-06-15"
+      },
+      "blast_radius_assessment": {
+        "impact_tier": "isolated_component",
+        "failure_domains": [
+          "order_routing"
+        ],
+        "downstream_consumers_affected": [
+          "courier-mobile-app"
+        ],
+        "data_blast_radius": "isolated_write"
+      },
+      "sandbox_isolation_tier": "tier_0_ephemeral_container",
+      "test_strategy_ref": {
+        "red_green_required": true,
+        "mutation_score_threshold_pct": 75.0,
+        "reproduction_test_required": false
       }
     },
     {
@@ -656,10 +744,10 @@
           "risk_score": 20,
           "validation_method": "Structured interview with 5 Credit Officers + 2-week pilot with shadow mode (AI scores hidden from officers until after their decision)",
           "status": "escalated",
-          "outcome_note": "Risk score 20 — escalated to PM 2026-06-12. Pilot proposed before sprint commitment. Build commitment deferred pending pilot results."
+          "outcome_note": "Risk score 20 \u2014 escalated to PM 2026-06-12. Pilot proposed before sprint commitment. Build commitment deferred pending pilot results."
         },
         {
-          "assumption": "AI model accuracy ≥95% is achievable with current training data volume (12 months)",
+          "assumption": "AI model accuracy \u226595% is achievable with current training data volume (12 months)",
           "impact": 5,
           "confidence": 3,
           "risk_score": 15,
@@ -675,7 +763,23 @@
       "open_questions": [
         "Has legal confirmed EU AI Act high-risk classification and conformity assessment timeline?",
         "Who is the designated Human Review Board required under EU AI Act Article 14?"
-      ]
+      ],
+      "blast_radius_assessment": {
+        "impact_tier": "isolated_component",
+        "failure_domains": [
+          "order_routing"
+        ],
+        "downstream_consumers_affected": [
+          "courier-mobile-app"
+        ],
+        "data_blast_radius": "isolated_write"
+      },
+      "sandbox_isolation_tier": "tier_0_ephemeral_container",
+      "test_strategy_ref": {
+        "red_green_required": true,
+        "mutation_score_threshold_pct": 75.0,
+        "reproduction_test_required": false
+      }
     }
   ]
 }

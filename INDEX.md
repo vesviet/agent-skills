@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `4.1.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **18 Workflows** | **44 Data Contracts**
+> **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **21 Workflows** | **45 Data Contracts**
 
 ---
 
@@ -383,17 +383,20 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🔄 Workflows (18 Workflows)
+## 🔄 Workflows (21 Workflows)
 
 | Workflow | Title | File |
 |:---|:---|:---|
 | **`/add-new-feature`** | add-new-feature | [`core/workflows/add-new-feature.md`](./core/workflows/add-new-feature.md) |
 | **`/agent-a2a-delegation`** | agent-a2a-delegation | [`core/workflows/agent-a2a-delegation.md`](./core/workflows/agent-a2a-delegation.md) |
+| **`/bug-fix`** | bug-fix | [`core/workflows/bug-fix.md`](./core/workflows/bug-fix.md) |
 | **`/build-deploy`** | build-deploy | [`core/workflows/build-deploy.md`](./core/workflows/build-deploy.md) |
+| **`/code-review`** | code-review | [`core/workflows/code-review.md`](./core/workflows/code-review.md) |
 | **`/content-audit`** | content-audit | [`core/workflows/content-audit.md`](./core/workflows/content-audit.md) |
 | **`/content-publishing`** | content-publishing | [`core/workflows/content-publishing.md`](./core/workflows/content-publishing.md) |
 | **`/data-migration`** | data-migration | [`core/workflows/data-migration.md`](./core/workflows/data-migration.md) |
 | **`/dependency-upgrade`** | dependency-upgrade | [`core/workflows/dependency-upgrade.md`](./core/workflows/dependency-upgrade.md) |
+| **`/feature-delivery`** | feature-delivery | [`core/workflows/feature-delivery.md`](./core/workflows/feature-delivery.md) |
 | **`/hotfix-production`** | hotfix-production | [`core/workflows/hotfix-production.md`](./core/workflows/hotfix-production.md) |
 | **`/qa-validation`** | qa-validation | [`core/workflows/qa-validation.md`](./core/workflows/qa-validation.md) |
 | **`/refactoring`** | refactoring | [`core/workflows/refactoring.md`](./core/workflows/refactoring.md) |
@@ -408,7 +411,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 📑 Data Contracts & Schemas (44 Schemas)
+## 📑 Data Contracts & Schemas (45 Schemas)
 
 | Schema File | Schema Title | Path |
 |:---|:---|:---|
@@ -441,6 +444,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | `incident-report.json` | Incident Report | [`core/contracts/schemas/incident-report.json`](./core/contracts/schemas/incident-report.json) |
 | `learning-handoff.json` | Learning Handoff | [`core/contracts/schemas/learning-handoff.json`](./core/contracts/schemas/learning-handoff.json) |
 | `performance-audit.json` | Performance Audit Result | [`core/contracts/schemas/performance-audit.json`](./core/contracts/schemas/performance-audit.json) |
+| `pull-request-spec.json` | Pull Request Specification | [`core/contracts/schemas/pull-request-spec.json`](./core/contracts/schemas/pull-request-spec.json) |
 | `research-report.json` | Research Report Specification | [`core/contracts/schemas/research-report.json`](./core/contracts/schemas/research-report.json) |
 | `schema-migration.json` | Schema Migration Plan | [`core/contracts/schemas/schema-migration.json`](./core/contracts/schemas/schema-migration.json) |
 | `security-audit.json` | Security Audit Report | [`core/contracts/schemas/security-audit.json`](./core/contracts/schemas/security-audit.json) |

@@ -21,10 +21,11 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
       → implementation-result.json  ← Developer (per slice)
         → code-review-finding.json  ← Reviewer
           → test-report.json        ← QA Engineer
+              → pull-request-spec.json  ← Developer / Technical Lead (release package)
             → validation-result.json ← Agent Coordinator (phase gate)
 ```
 
-## All Schemas (44 total)
+## All Schemas (45 total)
 
 ### Solution & Governance
 - `solution-brief.json` — Solution Architect scoping handoff (build-vs-buy, capability gaps, AI feasibility, compliance)
@@ -41,6 +42,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
 - `edge-deployment-spec.json` — Cloudflare-specific deployment
 - `system-design-spec.json` — System Engineer topology, capacity, and AI-infra design
 - `aws-infra-spec.json` — AWS Engineer managed-service and IAM infrastructure spec
+- `pull-request-spec.json` — Pull Request specification with blast radius, mutation score, execution proof, and review attestations
 
 ### Quality & Review
 - `code-review-finding.json` — Full code review with findings matrix

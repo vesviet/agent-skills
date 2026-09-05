@@ -5,8 +5,8 @@
   "stats": {
     "roles": 34,
     "skills": 107,
-    "workflows": 18,
-    "schemas": 44
+    "workflows": 21,
+    "schemas": 45
   },
   "role_aliases": {
     "writer": "content-writer",
@@ -1885,10 +1885,20 @@
       "title": "agent-a2a-delegation",
       "file": "core/workflows/agent-a2a-delegation.md"
     },
+    "bug-fix": {
+      "name": "bug-fix",
+      "title": "bug-fix",
+      "file": "core/workflows/bug-fix.md"
+    },
     "build-deploy": {
       "name": "build-deploy",
       "title": "build-deploy",
       "file": "core/workflows/build-deploy.md"
+    },
+    "code-review": {
+      "name": "code-review",
+      "title": "code-review",
+      "file": "core/workflows/code-review.md"
     },
     "content-audit": {
       "name": "content-audit",
@@ -1909,6 +1919,11 @@
       "name": "dependency-upgrade",
       "title": "dependency-upgrade",
       "file": "core/workflows/dependency-upgrade.md"
+    },
+    "feature-delivery": {
+      "name": "feature-delivery",
+      "title": "feature-delivery",
+      "file": "core/workflows/feature-delivery.md"
     },
     "hotfix-production": {
       "name": "hotfix-production",
@@ -2140,6 +2155,12 @@
       "stem": "performance-audit",
       "title": "Performance Audit Result",
       "file": "core/contracts/schemas/performance-audit.json"
+    },
+    "pull-request-spec.json": {
+      "name": "pull-request-spec.json",
+      "stem": "pull-request-spec",
+      "title": "Pull Request Specification",
+      "file": "core/contracts/schemas/pull-request-spec.json"
     },
     "research-report.json": {
       "name": "research-report.json",

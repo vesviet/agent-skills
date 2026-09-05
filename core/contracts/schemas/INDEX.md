@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**44 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 43/44
+**45 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 44/45
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 
@@ -24,6 +24,7 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | `edge-deployment-spec.json` | Edge Deployment Specification | ✅ | ✅ |
 | `system-design-spec.json` | System Design Specification | ✅ | ✅ |
 | `aws-infra-spec.json` | AWS Infrastructure Specification | ❌ | ✅ |
+| `pull-request-spec.json` | Pull Request Specification | ✅ | ✅ |
 | **Quality & Review** | | | |
 | `code-review-finding.json` | Code Review Finding | ✅ | ✅ |
 | `test-report.json` | QA Test Report | ✅ | ✅ |
@@ -151,6 +152,7 @@ feature-ticket.json
 | `edge-deployment-spec.json` | Cloudflare Engineer | DevOps Engineer, SRE, Agent Coordinator |
 | `system-design-spec.json` | System Engineer | AWS Engineer, DevOps Engineer, Cloudflare Engineer, SRE |
 | `aws-infra-spec.json` | AWS Engineer | DevOps Engineer, SRE, Security Engineer, System Engineer |
+| `pull-request-spec.json` | Backend/Frontend/Mobile Engineer, Technical Lead | Reviewer, Technical Lead, Product Manager, Agent Coordinator |
 | `code-review-finding.json` | Reviewer | Developers, Technical Lead, QA Engineer, Agent Coordinator |
 | `test-report.json` | QA Engineer | Technical Lead, Reviewer, Project Manager, Agent Coordinator |
 | `validation-result.json` | QA Engineer, Agent Coordinator | Technical Lead, Agent Coordinator (phase gate) |

@@ -1,7 +1,7 @@
 # Pack Status (post-4.1.0 + Tier 1+2+3 sweep)
 
-**Validators:** 16/16 pass, 0 errors, 0 warnings.
-**Catalog:** 34 roles, 107 skills (97 core + 10 overlay), 18 workflows, 43 contracts, 13 packs, 17 overlays.
+**Validators:** 17/17 pass, 0 errors, 0 warnings.
+**Catalog:** 34 roles, 107 skills (97 core + 10 overlay), 21 workflows, 45 contracts, 13 packs, 17 overlays.
 
 ## 1. Things that pass every check
 
@@ -10,7 +10,7 @@
 | Skills (97 core + 10 overlay) | 100% have `## Failure Modes` + `## Output Contracts` + `## Security Guardrails (OWASP ASI)` |
 | Roles (34) | 100% have `## Failure Modes` + OWASP + contract refs + Last updated footer |
 | Policies (3 YAML + 1 hook + 1 README) | `## Failure Modes` not applicable (YAML); README has Failure Modes + Standard 2026 footer |
-| Workflows (18 core + 6 overlay) | 100% have `### Failure Modes` + `### Output Contracts` + `### Security Guardrails (OWASP ASI)` |
+| Workflows (21 core + 6 overlay) | 100% have `### Failure Modes` + `### Output Contracts` + `### Security Guardrails (OWASP ASI)` |
 | Overlay rules (25) | 100% have Standard 2026 footer |
 | Overlay READMEs (22) | 100% have Standard 2026 footer |
 | Root docs (6) | 100% have Standard 2026 footer |

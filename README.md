@@ -138,6 +138,9 @@ Full inventory: [core/skills/README.md](core/skills/README.md)
 Core workflows live in [core/workflows/README.md](core/workflows/README.md).
 
 - `/add-new-feature`
+- `/feature-delivery`
+- `/bug-fix`
+- `/code-review`
 - `/build-deploy`
 - `/hotfix-production`
 - `/revert-deployment`

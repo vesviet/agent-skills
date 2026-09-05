@@ -6,161 +6,90 @@ allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_
 
 # Write Tests
 
-Use this skill when adding, updating, or strengthening tests for a code change.
+Use this skill to author independent, property-verified, and mutation-tested test suites that provide regression resilience.
 
 ## When to Use
 
-- new business logic needs coverage
-- a bug fix needs regression protection
-- a refactor needs a safety net
-- an integration boundary needs validation
-- missing edge-case coverage is increasing release risk
+- new business logic, API endpoint, or data transformation needs coverage
+- practicing Red-Green TDD with independent test authoring prior to implementation
+- verifying mathematical and structural invariants via Property-Based Testing (PBT)
+- synthesizing combinatorial boundary and edge-case suites
+- enforcing mutation test kill thresholds (≥75–80%) on critical packages
+- executing test suites inside isolated sandboxes
 
 ## Core Rules
 
-- follow repo-local testing conventions before introducing a new style
-- test behavior and risk, not just line coverage — align test distribution with the Testing Trophy: heavy integration, focused unit, lean E2E
-- prefer the smallest test scope that proves the requirement; unit tests for complex logic, integration tests for boundaries, Pact contract tests for inter-service API compatibility
-- isolate dependencies when a unit test should not rely on external systems; use MSW v2 for network boundary mocking — do not mock `global.fetch` or internal Axios instances directly
-- enforce mutation score ≥75–80% via Stryker for critical business libraries — raw coverage percentage is insufficient without mutation validation
-- run Pact `can-i-deploy` checks in CI before merging service PRs to verify consumer/provider compatibility
-- do not commit or push test changes unless the user or repo-local process explicitly allows that action
-- for AI/LLM features: use structural assertion over content assertion (test JSON shape, field types, word count bounds — not exact string matches) — exact content changes between model versions
-- for AI/LLM features: use property-based assertions ("response is in Vietnamese", "no PII present") checked by classifiers, not equality; stub LLM API calls in CI with `vcr`-style fixtures — never call live LLM APIs in CI
-- capture a golden-set baseline before any model update and flag outputs that degrade on the golden set as regressions
-- test HITL trigger paths and hallucination boundary inputs (adversarial false-premise prompts) explicitly — do not leave fallback-to-human paths untested
-
-## First Questions To Answer
-
-1. What behavior or risk needs protection?
-2. Is this best covered by a unit, integration, contract, or end-to-end test?
-3. Which dependencies should be real, stubbed, mocked, or faked?
-4. What edge cases are most likely to break?
-5. What existing test patterns in the repo should be reused?
-
-## Choose The Right Test Scope
-
-For the full unit / integration / contract / E2E breakdown, the AI/LLM
-testing patterns, and the common testing mistakes, see
-[`references/patterns-and-ai-testing.md`](references/patterns-and-ai-testing.md).
+- **Independent test authoring (Anti-Tautological TDD)**: author tests directly from immutable contracts/specs *before* writing code; verify tests fail deterministically (Red phase) against baseline to prevent test-implementation co-leakage
+- **Property-based testing (PBT)**: verify invariants (round-trip serialization, idempotence, state transition constraints) using generative engines (`fast-check`, `Hypothesis`, `RapidCheck`) with automatic shrinking
+- **Edge case synthesis**: systematically synthesize boundary cases across numeric extremes, Unicode/RTL/invisible characters, temporal/timezone shifts, and concurrency hazards
+- **Mutation testing quality gate**: enforce mutation score ≥75–80% via Stryker, mutmut, or cargo-mutants on core libraries; raw line coverage without mutation kill rate is insufficient
+- **Physical sandbox execution**: all test executions must run inside isolated Level 0 air-gapped containers (`--network=none`, non-root user, read-only rootfs) per `core/policies/execution-sandbox.md`
+- **Testing Trophy distribution**: focus on heavy integration, focused unit, and lean E2E; isolate external HTTP dependencies via MSW v2 or local fixtures
+- **AI/LLM feature testing**: use structural assertions (JSON shape, bounds) over exact string equality; evaluate semantic properties with classifiers; stub LLM calls in CI with VCR cassettes
+- run Pact `can-i-deploy` checks in CI for inter-service contract verification
+- deep methodologies and pattern guides: [`references/advanced-testing-methodologies.md`](references/advanced-testing-methodologies.md) and [`references/patterns-and-ai-testing.md`](references/patterns-and-ai-testing.md)
 
 ## Suggested Process
 
-### Step 1: Inspect Existing Test Patterns
+### Step 1: Spec Review & Test Scoping
 
-Before writing new tests:
+Read the contract spec (`OpenAPI 3.1`, `JSON Schema`, or ticket). Select test scope using the Testing Trophy (unit for pure domain rules, integration for queries/handlers, contract for APIs).
 
-- find nearby tests in the same area
-- match local naming and fixture patterns
-- reuse local helpers, builders, or fixtures when they are clear and stable
+### Step 2: Independent Test Authoring (Red Phase)
 
-### Step 2: Identify The Required Cases
+Write deterministic tests based solely on the specification before changing implementation code. Run tests in the execution sandbox to confirm they fail as expected.
 
-At minimum, consider:
+### Step 3: Property & Edge Case Synthesis
 
-- happy path
-- validation failures
-- dependency failures
-- edge cases around empty, nil, zero, or missing values
-- backward compatibility or migration-sensitive cases when relevant
+Formulate property-based invariants (idempotence, round-trip). Synthesize boundary cases covering numeric extremes, Unicode, timezone shifts, and empty/nil structures per [`references/advanced-testing-methodologies.md`](references/advanced-testing-methodologies.md).
 
-### Step 3: Choose A Dependency Strategy
+### Step 4: Implement & Verify (Green Phase)
 
-Use the lightest useful option:
+Author minimal implementation to satisfy the tests. Execute the test suite inside the Level 0 air-gapped sandbox (`--network=none`) to verify green status.
 
-- real dependency for narrow integration coverage
-- fake or stub for simple, predictable behavior
-- mock when interaction shape or call expectations matter
+### Step 5: Mutation Testing & Coverage Audit
 
-Do not assume a specific mocking framework. Follow the repo's local toolchain if it has one.
+Run mutation tests (Stryker / mutmut) across changed packages. Verify mutation kill score reaches ≥75–80%. Eliminate surviving non-equivalent mutants by tightening assertions.
 
-### Step 4: Write Deterministic Tests
+### Step 6: Emit Test Report
 
-Keep tests stable:
-
-- avoid hidden time dependencies
-- avoid random data unless it is seeded and controlled
-- avoid environment coupling unless the test is explicitly integration scoped
-- ensure cleanup is handled for files, processes, and shared state
-
-### Step 5: Verify The Right Signals
-
-Assert the behavior that matters:
-
-- returned value or state transition
-- visible side effect
-- persisted change
-- emitted event or outbound call
-- error type or message shape when that is contractually important
-
-### Step 6: Run The Appropriate Validation
-
-Run the local commands for the test scope you changed:
-
-- targeted package or module tests first inside an isolated sandbox (`core/policies/execution-sandbox.md`)
-- broader test suite if the risk is wider
-- coverage or benchmark checks only when the repo actually uses them for the change type
-
-### Step 7: Capture Remaining Gaps
-
-If some risk is still untested, note it explicitly:
-
-- difficult-to-reproduce integration path
-- missing fixture support
-- shared environment dependency
-- follow-up test needed after a larger refactor
-
-## Good Testing Patterns
-
-For the full pattern list (table-driven tests, focused fixtures, builders,
-regression naming), the AI/LLM test patterns, and the common testing
-mistakes, see
-[`references/patterns-and-ai-testing.md`](references/patterns-and-ai-testing.md).
-
-## Common Testing Mistakes
-
-1. Testing implementation details instead of behavior.
-2. Over-mocking simple code paths that would be clearer with a fake or real helper.
-3. Adding large, brittle end-to-end tests for logic that belongs in unit tests.
-4. Relying on timing sleeps instead of explicit synchronization.
-5. Chasing coverage numbers while missing the risky path.
-
-## What To Capture In Your Output
-
-When reporting test work, include:
-
-- test scope chosen
-- behaviors covered
-- important edge cases added
-- commands run
-- remaining validation gaps
+Generate test artifacts. Report execution results and coverage metrics to downstream coordinating roles.
 
 ## Checklist
 
-- [ ] existing local test patterns reviewed
-- [ ] right test scope chosen
-- [ ] happy path covered
-- [ ] error or edge cases covered
-- [ ] dependency strategy chosen intentionally
-- [ ] tests run successfully
-- [ ] remaining gaps documented if any
-- [ ] for AI/LLM features, structural assertions used (not exact content matches)
-- [ ] for AI/LLM features, LLM API calls stubbed with `vcr`-style fixtures in CI
-- [ ] golden-set baseline captured before any model update
-- [ ] HITL trigger paths and hallucination boundary inputs tested
-- [ ] for inter-service API, Pact `can-i-deploy` check passes in CI
-
-## Quick Reference
-
-Inspect nearby tests, identify risky behaviors, choose unit/integration scope, isolate dependencies, add happy and failure path coverage, and run targeted tests.
+- [ ] tests authored independently from spec and verified failing (Red phase) before implementation
+- [ ] property-based tests (PBT) formulated for core data invariants and transformations
+- [ ] edge case synthesis applied across numeric, Unicode, temporal, and concurrency boundaries
+- [ ] mutation testing executed with kill score meeting or exceeding ≥75–80% threshold
+- [ ] tests executed inside isolated Level 0 air-gapped sandbox (`--network=none`, non-root)
+- [ ] network boundaries mocked with MSW v2 or local fixtures; no unmanaged live I/O in CI
+- [ ] AI/LLM tests use structural/property assertions with VCR cassettes for CI determinism
+- [ ] inter-service API changes verified with Pact contract checks
+- [ ] `test-report.json` emitted and validated against schema
 
 ## Output Contracts
 
 When executing or updating automated tests for behavior verification, emit:
 
-- **`contracts/schemas/test-report.json`** — Emitted when executing automated test suites or regression tests, documenting test suite configurations, pass/fail execution results, coverage metrics, and identified test failures. Set `produced_by_role` to the executing role.
+- **`contracts/schemas/test-report.json`** — Documents test suite configurations, pass/fail execution results, mutation scores, coverage metrics, and identified test failures. Set `produced_by_role` to the executing role.
 
 Skip emission for rapid local test iterations during interactive development.
+
+## Failure Modes
+
+- **Tautological / co-leaked tests**: agent writes implementation and tests together, encoding hallucinations into assertions. Mitigation: mandate independent test authoring and verify Red failure before green implementation.
+- **Coverage theater without mutation testing**: 100% line coverage achieved with hollow assertions. Mitigation: enforce mutation score ≥75–80% on critical packages.
+- **Live external network calls in CI**: tests hit live third-party APIs. Mitigation: enforce Level 0 airgap (`--network=none`) and MSW v2 stubs in CI.
+- **Brittle E2E tests for unit logic**: slow UI tests written for internal domain calculations. Mitigation: push assertions down to unit/integration levels per Testing Trophy.
+- **Flaky sleep-based waits**: tests rely on arbitrary timing. Mitigation: replace sleeps with explicit polling and event synchronization.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: cross-check test assertions against source spec to prevent locking in unintentional drift or malicious scope changes.
+- **ASI04 Supply Chain**: validate test fixtures, VCR cassettes, and mocking libraries against project manifests; reject untrusted test packages.
+- **ASI05 RCE Guard**: test suites must run inside an isolated sandbox per `core/policies/execution-sandbox.md` without root privileges.
+- **ASI07 Inter-Agent Communication**: emit structured `test-report.json` for CI and reviewer verification.
+- **ASI09 Human-Agent Trust Exploitation**: surface skipped tests, surviving mutants, and mock fidelity limitations transparently.
 
 ## Related Skills
 
@@ -169,22 +98,3 @@ Skip emission for rapid local test iterations during interactive development.
 - **troubleshoot-service**: Debug failing or flaky tests
 - **review-code**: Review whether tests match the change risk
 - **navigate-service**: Understand the target flow before adding tests
-
-## Failure Modes
-
-- **Implementation-detail tests**: tests are coupled to the internal structure and break on every refactor. Mitigation: assert behavior and contracts, not internals; the test should survive a refactor that preserves behavior.
-- **Brittle E2E for unit logic**: a unit-level decision is covered only by an end-to-end test. Mitigation: drop the E2E and add a focused unit test; reserve E2E for cross-service flows.
-- **Coverage theater**: a high line-coverage score is achieved without exercising the risky path. Mitigation: enforce the Testing Trophy (heavy integration, focused unit, lean E2E) and a mutation score ≥ 75-80% via Stryker for critical libraries.
-- **Live LLM in CI**: tests call a live LLM provider. Mitigation: stub with `vcr`-style fixtures; never call live LLM APIs in CI.
-- **Golden-set drift**: a model update degrades output on the golden set but no test catches it. Mitigation: capture a golden-set baseline before any model update; flag golden-set regressions as release-blocking.
-- **HITL untested**: the fallback-to-human path is shipped without a test. Mitigation: add explicit tests for HITL trigger conditions and hallucination boundary inputs.
-- **Timing sleep**: a test relies on `sleep` instead of explicit synchronization. Mitigation: replace with explicit waits; flaky tests are a release-blocking issue.
-- **Over-mocked simple code**: a simple pure function is mocked to test its caller. Mitigation: use the real function; reserve mocks for interaction-shape assertions.
-
-## Security Guardrails (OWASP ASI)
-
-- **ASI01 Goal Hijack**: a test that captures a fragile behavior may lock in an unintended contract. Review golden-set expectations against the declared user goal; reject tests that encode off-goal behavior.
-- **ASI04 Supply Chain**: test fixtures, VCR cassettes, and mock libraries must be schema-validated against the expected manifest; treat unknown test infrastructure as untrusted.
-- **ASI05 RCE Guard**: never construct test inputs without sanitization; execute test suites inside an isolated sandbox per `core/policies/execution-sandbox.md`.
-- **ASI07 Inter-Agent Communication**: test reports are consumed by CI and release roles; emit a structured `test-report.json` so each consumer can validate against the same evidence.
-- **ASI09 Human-Agent Trust Exploitation**: do not present partial test runs as full coverage; surface skipped tests and their rationale honestly.

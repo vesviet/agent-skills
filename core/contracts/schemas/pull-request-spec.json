@@ -1,0 +1,338 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pull-request-spec",
+  "title": "Pull Request Specification",
+  "description": "Structured output defining a pull request specification for agentic SWE delivery. Encapsulates PR metadata, linked tickets, touched files, blast radius assessment, mutation score, sandbox isolation tier, test report ref, and reviewer attestations.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "pull-request-spec",
+      "description": "Machine-readable contract discriminator."
+    },
+    "pr_id": {
+      "type": "string",
+      "description": "Unique identifier for the pull request or delivery package. E.g., PR-2026-06-12-cod-routing."
+    },
+    "title": {
+      "type": "string",
+      "description": "Descriptive title of the pull request."
+    },
+    "ticket_ref": {
+      "type": "string",
+      "description": "Referenced feature-ticket.json ticket_id or bug ticket identifier."
+    },
+    "delivery_plan_ref": {
+      "type": "string",
+      "description": "Referenced technical-delivery-plan.json plan_id."
+    },
+    "source_branch": {
+      "type": "string",
+      "description": "Source git branch containing changes."
+    },
+    "target_branch": {
+      "type": "string",
+      "description": "Target integration branch (e.g. main, release/v4.2)."
+    },
+    "author_role": {
+      "type": "string",
+      "description": "Primary role authoring the delivery slice."
+    },
+    "files_changed": {
+      "type": "array",
+      "description": "List of files modified, added, or deleted in this pull request.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "add",
+              "modify",
+              "delete"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "lines_added": {
+            "type": "integer"
+          },
+          "lines_deleted": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "path",
+          "action",
+          "summary"
+        ]
+      }
+    },
+    "blast_radius_assessment": {
+      "type": "object",
+      "description": "Assessment of potential failure domain and consumer impact.",
+      "properties": {
+        "impact_tier": {
+          "type": "string",
+          "enum": [
+            "isolated_component",
+            "service_level",
+            "cross_service",
+            "critical_infrastructure"
+          ]
+        },
+        "failure_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Bounded contexts or subsystems impacted."
+        },
+        "downstream_consumers_affected": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Services, message queues, or client apps dependent on changed behavior."
+        },
+        "data_blast_radius": {
+          "type": "string",
+          "enum": [
+            "read_only",
+            "isolated_write",
+            "schema_migration",
+            "irreversible_deletion"
+          ]
+        }
+      },
+      "required": [
+        "impact_tier",
+        "failure_domains"
+      ]
+    },
+    "sandbox_isolation_tier": {
+      "type": "string",
+      "enum": [
+        "tier_0_ephemeral_container",
+        "tier_1_isolated_microvm",
+        "tier_2_airgapped_sandbox",
+        "local_dev_workspace"
+      ],
+      "description": "Environment isolation tier used for test execution and verification."
+    },
+    "mutation_score": {
+      "type": "object",
+      "description": "Mutation testing verification results.",
+      "properties": {
+        "score_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "threshold_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "mutants_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mutants_killed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mutants_survived": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tool": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "skipped"
+          ]
+        }
+      },
+      "required": [
+        "score_pct",
+        "threshold_pct",
+        "status"
+      ]
+    },
+    "security_checks": {
+      "type": "object",
+      "description": "Static analysis and OWASP ASI security audit outcomes.",
+      "properties": {
+        "static_analysis_passed": {
+          "type": "boolean"
+        },
+        "owasp_asi_checked": {
+          "type": "boolean"
+        },
+        "findings_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "details": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "static_analysis_passed",
+        "owasp_asi_checked"
+      ]
+    },
+    "execution_proof": {
+      "type": "object",
+      "description": "Artifact references and verification evidence.",
+      "properties": {
+        "ci_run_url": {
+          "type": "string"
+        },
+        "test_report_ref": {
+          "type": "string"
+        },
+        "log_artifact_path": {
+          "type": "string"
+        },
+        "reproduction_test_verified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "test_report_ref",
+        "log_artifact_path"
+      ]
+    },
+    "adversarial_review_signoff": {
+      "type": "object",
+      "description": "Attestation from adversarial code reviewer.",
+      "properties": {
+        "reviewer_role": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "approved",
+            "changes_requested",
+            "escalate_hitl"
+          ]
+        },
+        "review_finding_ref": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "reviewer_role",
+        "status"
+      ]
+    },
+    "hitl_approval_status": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "pending",
+        "rejected",
+        "not_required"
+      ],
+      "description": "Human-in-the-loop sign-off status."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional contextual notes or rollout instructions."
+    }
+  },
+  "required": [
+    "contract_type",
+    "pr_id",
+    "title",
+    "ticket_ref",
+    "blast_radius_assessment",
+    "sandbox_isolation_tier",
+    "execution_proof",
+    "hitl_approval_status"
+  ],
+  "examples": [
+    {
+      "contract_type": "pull-request-spec",
+      "pr_id": "PR-2026-06-12-change-store-order-cod",
+      "title": "feat(orders): route COD store orders to local store courier",
+      "ticket_ref": "2026-06-12-change-store-order-cod",
+      "delivery_plan_ref": "2026-06-12-change-store-order-cod",
+      "source_branch": "feat/cod-store-courier-routing",
+      "target_branch": "main",
+      "author_role": "Backend Developer",
+      "files_changed": [
+        {
+          "path": "services/order-service/src/routing/CourierAssigner.ts",
+          "action": "modify",
+          "summary": "Add store courier lookup and fallback logic for COD orders",
+          "lines_added": 48,
+          "lines_deleted": 6
+        },
+        {
+          "path": "services/order-service/tests/routing/CourierAssignerTest.ts",
+          "action": "add",
+          "summary": "Unit and property tests for store courier assignment",
+          "lines_added": 120,
+          "lines_deleted": 0
+        }
+      ],
+      "blast_radius_assessment": {
+        "impact_tier": "isolated_component",
+        "failure_domains": [
+          "order_routing",
+          "store_courier_pool"
+        ],
+        "downstream_consumers_affected": [
+          "courier-mobile-app",
+          "warehouse-dispatch-worker"
+        ],
+        "data_blast_radius": "isolated_write"
+      },
+      "sandbox_isolation_tier": "tier_0_ephemeral_container",
+      "mutation_score": {
+        "score_pct": 84.5,
+        "threshold_pct": 75.0,
+        "mutants_total": 58,
+        "mutants_killed": 49,
+        "mutants_survived": 9,
+        "tool": "Stryker",
+        "status": "passed"
+      },
+      "security_checks": {
+        "static_analysis_passed": true,
+        "owasp_asi_checked": true,
+        "findings_count": 0,
+        "details": "Zero static analysis warnings. OWASP ASI01-ASI10 audited with 0 findings."
+      },
+      "execution_proof": {
+        "ci_run_url": "https://ci.internal.example.com/builds/1042",
+        "test_report_ref": "2026-06-12-change-store-order-cod",
+        "log_artifact_path": "artifacts/logs/2026-06-12-ci-run-1042.log",
+        "reproduction_test_verified": true
+      },
+      "adversarial_review_signoff": {
+        "reviewer_role": "Reviewer",
+        "status": "approved",
+        "review_finding_ref": "2026-06-12-change-store-order-cod",
+        "notes": "Clean minimal change. Verified fallback behavior and mutation score > 75%."
+      },
+      "hitl_approval_status": "approved",
+      "notes": "Ready for staged canary deployment behind OpenFeature flag store-cod-routing."
+    }
+  ]
+}

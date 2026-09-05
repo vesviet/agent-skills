@@ -6,143 +6,89 @@ allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_
 
 # Add API Endpoint
 
-Use this skill when a service needs a new endpoint or when an existing endpoint must change shape or behavior.
+Use this skill when adding or modifying service endpoints governed by schema-first contracts, structured RFC 9457 error handling, and sandbox isolation.
 
 ## When to Use
 
-- creating a brand-new HTTP/RPC entrypoint in a service
-- evolving an existing endpoint's request/response shape
-- adding auth/authz middleware to a route
-- splitting or versioning an endpoint under an API namespace
-- changing the contract that Frontend or A2A consumers depend on
-
-## Example (Express-style boundary with validation + authz)
-
-```typescript
-app.post(
-  "/v1/orders",
-  requireAuth,                 // auth/authz middleware per repo pattern
-  validate(createOrderSchema), // boundary validation
-  async (req, res) => {
-    const order = await orderService.create(req.user.id, req.body);
-    res.status(201).json(order);
-  }
-);
-```
+- creating a new HTTP/RPC entrypoint anchored to OpenAPI 3.1 or JSON Schema
+- evolving an existing endpoint's request/response shape with backward compatibility
+- implementing RFC 9457 Problem Details error responses and boundary validators
+- wiring default-deny auth/authz, idempotency keys, and rate limiting
+- preparing endpoints and test suites for Level 0 air-gapped sandbox execution
 
 ## Core Rules
 
-- follow the repo's existing contract and routing pattern; publish changes to `contracts/schemas/api-contract-spec.json` as the single source of truth
-- preserve backward compatibility unless the change is intentionally breaking; use **API versioning** (URI prefix `/v2/` or `Accept-Version` header) for breaking changes
-- keep validation close to the boundary using the repo's canonical schema library (Zod, Pydantic, `class-validator`); reject malformed requests with structured RFC 9457 Problem Details responses
-- keep transport logic thin and business logic in the repo's expected layer; no database calls or domain logic directly in route handlers
-- wire auth/authz middleware per the repo's security pattern for **every** new endpoint — default-deny, not default-allow
-- enforce **rate limiting** and **idempotency keys** (`Idempotency-Key` header) on all state-mutating endpoints to prevent replay and duplicate-charge bugs
-- emit an **OTel span** (`gen_ai.operation.name: "execute_tool"` for MCP-backed endpoints, or standard HTTP server span) on every handler; propagate `trace_id` in error responses
-- update tests and user-visible docs (OpenAPI 3.1 spec or gRPC Protobuf) when the endpoint contract changes
-- if any code in this change was AI-generated, validate it per the risk tier defined in the backend-developer role before accepting
+- **Schema-first contract invariance**: author and validate OpenAPI 3.1 or JSON Schema specifications (`contracts/schemas/api-contract-spec.json`) before writing handler code; runtime boundary validators (Zod, Pydantic, TypeBox) must bind strictly to the spec with zero deviation
+- **Structured error handling (RFC 9457)**: reject invalid requests and exceptions with RFC 9457 Problem Details envelopes (`type`, `title`, `status`, `detail`, `instance`, `invalid_params`); 5xx responses must never leak stack traces, internal paths, or credentials
+- **Sandbox readiness**: handler integration tests must pass within Level 0 air-gapped containers (`--network=none`, non-root, read-only rootfs) per `core/policies/execution-sandbox.md`; stub external HTTP dependencies via MSW v2 or local mock fixtures
+- **Default-deny auth/authz**: wire authentication and authorization middleware per the repo's security pattern on every non-public endpoint
+- **Idempotency & rate limiting**: enforce idempotency keys (`Idempotency-Key` header) and rate limiting on all state-mutating endpoints (`POST`, `PUT`, `PATCH`, `DELETE`)
+- **Observability instrumentation**: emit an OTel span on every handler and propagate `trace_id` in response headers and RFC 9457 error bodies
+- **Backward compatibility**: preserve API versioning namespaces (`/v1/`, `/v2/`); never introduce breaking changes without deprecation cycles
+- detailed contract schemas, RFC 9457 templates, and MSW v2 patterns: [`references/api-contracts-and-error-specs.md`](references/api-contracts-and-error-specs.md)
 
 ## Suggested Process
 
-### 1. Inspect A Similar Endpoint
+### 1. Ingest Spec & Freeze Invariant Contract
 
-Find a nearby endpoint that matches the shape you need:
+Review the originating requirement (`feature-ticket.json` or ADR). Author or update the OpenAPI 3.1 / JSON Schema contract. Validate against schema meta-validators and freeze the contract.
 
-- request and response format
-- auth or permission model
-- validation pattern
-- error mapping
-- test style
+### 2. Implement Boundary Validation & RFC 9457 Handler
 
-### 2. Update The Contract
+Generate or bind types directly from the schema. Wire boundary validation middleware (Zod, Pydantic) to reject non-conforming payloads with RFC 9457 Problem Details. Ensure 5xx errors emit sanitized envelopes with `trace_id`.
 
-Modify the source of truth the repo uses for APIs, and if delivering a spec for A2A or Frontend handoff, use `contracts/schemas/api-contract-spec.json`. This may involve:
+### 3. Wire Business Flow & Security Controls
 
-- schema or IDL files
-- route definitions
-- typed request and response models
-- exporting the JSON API contract for downstream consumers
+Connect the handler to internal domain services or use cases. Enforce default-deny auth middleware, idempotency checks on mutating requests, and rate-limiting policies.
 
-If the repo uses generated code, regenerate it with the local command after editing the contract.
+### 4. Instrument Observability
 
-### 3. Implement The Boundary
+Add OpenTelemetry tracing spans to the handler boundary. Ensure `trace_id` is propagated across downstream RPC/database calls and returned in error responses.
 
-Add or update:
+### 5. Execute Tests in Isolated Sandbox
 
-- handler or controller wiring
-- auth/authz middleware per the repo's security pattern
-- request parsing
-- validation
-- error mapping
-- response shaping
+Use skill: `write-tests`. Run unit, boundary validation, and MSW v2 integration tests inside a Level 0 air-gapped container (`--network=none`). Verify both 2xx success and RFC 9457 error paths.
 
-### 4. Wire The Business Flow
+### 6. Emit Implementation Result & Contract Artifacts
 
-Connect the endpoint to the right internal flow:
-
-- use case or service method
-- repository or dependency calls
-- events or side effects when required
-
-Avoid leaking transport-specific details into core business code.
-
-### 5. Check Compatibility And Rollout Risk
-
-Verify:
-
-- consumers can tolerate the new response shape
-- removed or renamed fields are handled safely
-- new auth or config requirements are documented
-- if the repo uses API versioning, the endpoint is in the correct version namespace
-
-### 6. Add Tests
-
-Use skill: `write-tests`
-
-Cover:
-
-- happy path
-- validation failures
-- dependency or downstream failure
-- compatibility-sensitive behavior
+Emit `contracts/schemas/api-contract-spec.json` and `contracts/schemas/implementation-result.json` documenting changes, endpoints added, and validation commands.
 
 ## Checklist
 
-- [ ] similar local pattern reviewed
-- [ ] API contract updated
-- [ ] generated artifacts updated if needed
-- [ ] auth/authz middleware wired
-- [ ] boundary validation added
-- [ ] business flow wired correctly
-- [ ] observability instrumented (OTel span on endpoint handler)
-- [ ] compatibility risk checked
-- [ ] API versioning verified (if repo uses versioned endpoints)
-- [ ] tests added or updated
-- [ ] `implementation-result.json` emitted for the change slice (see Output Contracts)
-
-## Failure Modes
-
-- **Endpoint added without authn/authz**: a new endpoint is created without an explicit auth profile. **Mitigation:** reject the endpoint if it has no authn/authz; surface the missing policy to the reviewer.
-- **Input schema drift from the contract**: an endpoint accepts a request shape that does not validate against `contracts/schemas/api-contract-spec.json`. **Mitigation:** validate the request shape at the handler boundary; reject the request on schema mismatch.
-- **Endpoint added without rate limit**: a new endpoint is open to unbounded traffic. **Mitigation:** enforce the rate limit at the gateway; reject endpoints without a rate-limit profile.
-- **Error response leaks stack trace**: a 5xx response includes the server stack trace. **Mitigation:** return structured JSON error responses with codes; never expose raw stack traces.
+- [ ] OpenAPI 3.1 or JSON Schema contract validated and frozen before implementation
+- [ ] boundary validation wired with runtime schema enforcement (Zod/Pydantic/TypeBox)
+- [ ] RFC 9457 Problem Details error handling implemented (no 5xx stack trace leaks)
+- [ ] auth/authz middleware wired with default-deny security profile
+- [ ] idempotency keys (`Idempotency-Key`) and rate limiting enforced on mutating routes
+- [ ] OpenTelemetry spans instrumented with `trace_id` propagation
+- [ ] integration tests pass inside Level 0 air-gapped sandbox (`--network=none`) with MSW v2 stubs
+- [ ] backward compatibility and API versioning verified
+- [ ] `api-contract-spec.json` and `implementation-result.json` emitted and validated
 
 ## Output Contracts
 
-When this skill is invoked as part of a coordinated multi-role delivery (Technical Lead planned, Reviewer/QA will gate), emit:
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **`contracts/schemas/api-contract-spec.json`** — Emitted when adding or updating HTTP/RPC service endpoints, defining request/response shapes, schema models, query parameters, auth requirements, and error payloads.
-- **`contracts/schemas/implementation-result.json`** — one artifact per change slice. Required fields: `change_summary` (what was added/changed), `files_touched[]`, `endpoints_added[]` with method+path, `tests_added[]` with file refs, `preserved_behavior[]` (explicitly note any auth shape, error contract, or response envelope kept identical), `validation_run` (commands + pass/fail). Set `produced_by_role` to the emitting developer role so Coordinator and Reviewer can route follow-ups without re-parsing diffs.
+- **`contracts/schemas/api-contract-spec.json`** — Defines request/response shapes, schema models, query parameters, auth requirements, and RFC 9457 error payloads.
+- **`contracts/schemas/implementation-result.json`** — Required fields: `change_summary`, `files_touched[]`, `endpoints_added[]`, `tests_added[]`, `preserved_behavior[]`, and `validation_run`. Set `produced_by_role` to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
+## Failure Modes
+
+- **Schema drift**: runtime handler accepts fields not defined in OpenAPI spec. Mitigation: enforce strict schema validation at the HTTP boundary.
+- **Leaked stack traces in 5xx**: unhandled exceptions return raw stack traces or SQL snippets. Mitigation: global RFC 9457 exception filter returning sanitized Problem Details with `trace_id`.
+- **Missing auth/authz**: endpoint created without permission checks. Mitigation: default-deny middleware required on all non-whitelisted routes.
+- **Unbounded mutations**: mutating endpoint lacks idempotency key or rate limit. Mitigation: mandate idempotency middleware for state transitions.
+- **Network-coupled tests**: tests fail in sandbox because they make live external calls. Mitigation: enforce Level 0 sandbox isolation and MSW v2 stubs.
+
 ## Security Guardrails (OWASP ASI)
 
-- **ASI01 Goal Hijack**: a request body or query param may try to reframe the endpoint's purpose. Validate the request against the declared `api-contract-spec.json`.
-- **ASI02 Tool Misuse**: a handler must stay within the active role's declared toolbox; reject handlers that exceed the scope.
-- **ASI03 Identity & Privilege Abuse**: every endpoint must enforce authn/authz per the active role's policy profile; reject anonymous access to non-public routes.
-- **ASI05 RCE Guard**: never construct SQL queries, command strings, or eval-adjacent patterns from external or user-supplied content without strict parameterization.
-- **ASI07 Inter-Agent Communication**: the endpoint contract is consumed by frontend and infra agents; emit a structured spec so each consumer can validate.
+- **ASI01 Goal Hijack**: validate incoming request bodies and query parameters strictly against invariant `api-contract-spec.json`.
+- **ASI02 Tool Misuse**: route handlers must stay within the active role's declared toolbox and permissions.
+- **ASI03 Identity & Privilege Abuse**: reject anonymous access to protected endpoints; verify identity tokens at boundary.
+- **ASI05 RCE Guard**: never interpolate user inputs directly into SQL queries, commands, or system evaluations; enforce parameterized interfaces.
+- **ASI07 Inter-Agent Communication**: emit structured `api-contract-spec.json` so downstream frontend and client agents share the identical interface contract.
 
 ## Related Skills
 

@@ -69,6 +69,49 @@
         "type": "string"
       },
       "description": "Events fired, database mutations, or cache invalidations."
+    },
+    "blast_radius_assessment": {
+      "type": "object",
+      "description": "Assessment of endpoint blast radius, failure domain, and resiliency policy.",
+      "properties": {
+        "failure_domain": {
+          "type": "string"
+        },
+        "circuit_breaker_policy": {
+          "type": "string"
+        },
+        "slo_impact": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "failure_domain"
+      ]
+    },
+    "sandbox_isolation_tier": {
+      "type": "string",
+      "enum": [
+        "tier_0_ephemeral_container",
+        "tier_1_isolated_microvm",
+        "tier_2_airgapped_sandbox",
+        "local_dev_workspace"
+      ],
+      "description": "Required execution environment isolation tier for testing this endpoint."
+    },
+    "mutation_score_threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Target mutation test kill score percentage (e.g., 75.0) for tests exercising this endpoint."
+    },
+    "idempotency_guarantee": {
+      "type": "string",
+      "enum": [
+        "idempotent_header_required",
+        "naturally_idempotent",
+        "non_idempotent_strictly_guarded"
+      ],
+      "description": "Idempotency behavior and client header guarantee."
     }
   },
   "required": [
@@ -134,7 +177,15 @@
       "side_effects": [
         "order.assignment.created event published",
         "warehouse_courier_pool updated if fallback triggered"
-      ]
+      ],
+      "blast_radius_assessment": {
+        "failure_domain": "order_fulfillment",
+        "circuit_breaker_policy": "trip_at_50pct_failures_in_10s_fallback_warehouse",
+        "slo_impact": "critical_path_order_processing"
+      },
+      "sandbox_isolation_tier": "tier_0_ephemeral_container",
+      "mutation_score_threshold": 75.0,
+      "idempotency_guarantee": "idempotent_header_required"
     }
   ]
 }

@@ -8,6 +8,9 @@ This directory contains reusable, longer-form workflows that sit above the indiv
 |----------|------------|
 | [build-deploy](build-deploy.md) | Build, validate, ship, and verify a change |
 | [add-new-feature](add-new-feature.md) | End-to-end feature work across code, tests, docs, and rollout |
+| [feature-delivery](feature-delivery.md) | 2027 Agentic SWE: Spec Review -> Red-Green TDD -> Sandbox Run -> Adversarial Review -> HITL Approval |
+| [bug-fix](bug-fix.md) | Standardized bug fix: mandatory Failing Reproduction Test (Red Gate) before any code edits |
+| [code-review](code-review.md) | Multi-dimensional review: static analysis, anti-vibe-slop inspection, OWASP ASI checks, execution proof |
 | [service-review-release](service-review-release.md) | Full readiness review before release |
 | [troubleshooting](troubleshooting.md) | Diagnose build, startup, runtime, and platform problems |
 | [setup-new-service](setup-new-service.md) | Bootstrap a new service or bounded component |

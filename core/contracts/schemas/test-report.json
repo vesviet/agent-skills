@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "test-report",
   "title": "QA Test Report",
-  "description": "Structured output from QA Engineer using write-tests, frontend-testing, or review-service skills. Emitted after test execution. Consumed by Technical Lead, Reviewer, Project Manager, and Agent Coordinator as release confidence evidence. Complements code-review-finding.json — review catches code issues, test-report catches behavior risk.",
+  "description": "Structured output from QA Engineer using write-tests, frontend-testing, or review-service skills. Emitted after test execution. Consumed by Technical Lead, Reviewer, Project Manager, and Agent Coordinator as release confidence evidence. Complements code-review-finding.json \u2014 review catches code issues, test-report catches behavior risk.",
   "type": "object",
   "properties": {
     "contract_type": {
@@ -67,7 +67,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Scenario name — should match feature-ticket AC scenario label when covering AC."
+            "description": "Scenario name \u2014 should match feature-ticket AC scenario label when covering AC."
           },
           "type": {
             "type": "string",
@@ -88,7 +88,10 @@
             "description": "CI run link, screenshot path, log excerpt, or 'manual verified' description."
           },
           "notes": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           }
         },
         "required": [
@@ -153,7 +156,7 @@
     },
     "residual_risk": {
       "type": "string",
-      "description": "Remaining risk that won't be covered before release — should be visible to Technical Lead and PM."
+      "description": "Remaining risk that won't be covered before release \u2014 should be visible to Technical Lead and PM."
     },
     "release_recommendation": {
       "type": "string",
@@ -165,8 +168,85 @@
       "description": "QA recommendation on whether to proceed with release."
     },
     "mitigation_notes": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Required when release_recommendation=ship_with_mitigations. Describe the mitigations."
+    },
+    "mutation_score": {
+      "type": "object",
+      "description": "Mutation testing verification results (e.g. Stryker, mutmut, go-mutesting).",
+      "properties": {
+        "score_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "threshold_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "mutants_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mutants_killed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mutants_survived": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tool": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "skipped"
+          ]
+        }
+      },
+      "required": [
+        "score_pct",
+        "threshold_pct",
+        "status"
+      ]
+    },
+    "sandbox_isolation_tier": {
+      "type": "string",
+      "enum": [
+        "tier_0_ephemeral_container",
+        "tier_1_isolated_microvm",
+        "tier_2_airgapped_sandbox",
+        "local_dev_workspace"
+      ],
+      "description": "Environment isolation tier where tests were executed."
+    },
+    "reproduction_test_verified": {
+      "type": "boolean",
+      "description": "For bug fixes: confirms that a failing reproduction test was verified Red prior to code modification."
+    },
+    "blast_radius_assessment": {
+      "type": "object",
+      "description": "Verification of bounded failure domain during test execution.",
+      "properties": {
+        "verified_failure_domain": {
+          "type": "string"
+        },
+        "cross_boundary_impact_detected": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verified_failure_domain",
+        "cross_boundary_impact_detected"
+      ]
     }
   },
   "required": [
@@ -196,38 +276,53 @@
           "name": "COD order assigned to store courier",
           "type": "integration",
           "passed": true,
-          "evidence": "CI run #1042, test NewLogicAutoAssignTest::testCodOrderAssignedToStoreCourier — passed",
+          "evidence": "CI run #1042, test NewLogicAutoAssignTest::testCodOrderAssignedToStoreCourier \u2014 passed",
           "notes": null
         },
         {
           "name": "COD order with no store courier falls back",
           "type": "integration",
           "passed": true,
-          "evidence": "CI run #1042, test NewLogicAutoAssignTest::testCodOrderFallsBackToWarehouse — passed; warning log verified",
+          "evidence": "CI run #1042, test NewLogicAutoAssignTest::testCodOrderFallsBackToWarehouse \u2014 passed; warning log verified",
           "notes": null
         },
         {
           "name": "Non-COD order unaffected",
           "type": "unit",
           "passed": true,
-          "evidence": "CI run #1042 — all existing non-COD tests pass without modification",
+          "evidence": "CI run #1042 \u2014 all existing non-COD tests pass without modification",
           "notes": null
         },
         {
           "name": "Store service 503 fallback (code-review F-01)",
           "type": "integration",
           "passed": true,
-          "evidence": "Manual test with store-service stub returning 503 — fallback to warehouse confirmed; error logged with order_id",
+          "evidence": "Manual test with store-service stub returning 503 \u2014 fallback to warehouse confirmed; error logged with order_id",
           "notes": "Added after code-review finding F-01 raised by Reviewer"
         }
       ],
       "defects": [],
       "coverage_gaps": [
-        "Load test for COD routing under high batch volume — deferred to next sprint"
+        "Load test for COD routing under high batch volume \u2014 deferred to next sprint"
       ],
       "residual_risk": "Batch performance under > 500 concurrent COD orders not validated. Low risk given current store volume.",
       "release_recommendation": "ship",
-      "mitigation_notes": null
+      "mitigation_notes": null,
+      "mutation_score": {
+        "score_pct": 82.0,
+        "threshold_pct": 75.0,
+        "mutants_total": 50,
+        "mutants_killed": 41,
+        "mutants_survived": 9,
+        "tool": "Stryker",
+        "status": "passed"
+      },
+      "sandbox_isolation_tier": "tier_0_ephemeral_container",
+      "reproduction_test_verified": true,
+      "blast_radius_assessment": {
+        "verified_failure_domain": "order_fulfillment",
+        "cross_boundary_impact_detected": false
+      }
     }
   ]
 }

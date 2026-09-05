@@ -1,5 +1,7 @@
 ## Review Checklist
 
+This reference checklist provides detailed engineering, validation, and security criteria for backend development to meet 2027 Agentic SWE standards.
+
 ### Service Integrity
 - local architecture and layer boundaries are preserved
 - business logic, invariants, and state transitions match requirements
@@ -12,6 +14,32 @@
 - tests cover the main behavior, risky edge cases, and impact radius
 - runtime config, logs, monitoring, and release impact are considered
 - unverified risk is called out explicitly instead of implied away
+
+### Red-Green TDD Protocol
+- **Independent Test Authoring**: Verification tests are authored and committed prior to writing implementation code, deriving assertions directly from `feature-ticket.json` and `api-contract-spec.json`.
+- **Verified Failing State (Red)**: The test suite is executed to confirm it fails for the expected behavioral reason, proving the test is not vacuously passing or testing existing implementation details.
+- **Minimal Implementation (Green)**: Only the minimal code required to satisfy the failing test is implemented; unnecessary additions outside the contract are avoided.
+- **Refactoring Under Test Coverage (Refactor)**: Code is cleaned up and optimized while all tests remain green and invariants are preserved.
+- **TDD Verification Evidence**: Test run failure output and subsequent passing output are documented in `implementation-result.json`.
+
+### Execution Sandbox Isolation (OWASP ASI05)
+- **Isolated Test Execution**: Unit and integration test suites run inside ephemeral, hardened execution sandboxes with restricted network egress and limited filesystem access.
+- **Database & Script Sandboxing**: Database migrations, seed scripts, and dynamic data utilities are executed in isolated disposable container environments.
+- **No Direct Shell Execution**: Dynamic command execution (`exec`, `shell=True`, `system`) is strictly prohibited; safe parameterized APIs are used exclusively.
+- **Untrusted Script Quarantine**: Any agentic or dynamic script generation is quarantined within sandboxed runtimes preventing access to host credentials or environment secrets.
+
+### Anti Vibe-Slop Verification
+- **No Superficial Logic**: Code is actively scrutinized for plausible-looking but logically vacuous implementations (e.g., methods returning dummy success values without performing real state changes).
+- **Comprehensive Boundary & Null Handling**: All optional fields, empty collections, null inputs, and numeric overflow boundaries are explicitly validated and handled.
+- **Transaction Boundary Integrity**: Multi-step database mutations are wrapped in atomic database transactions with proper rollback handling; partial writes are prevented.
+- **Genuine Test Assertions**: Tests assert specific post-conditions, database states, and emitted event payloads, rejecting superficial assertions that only verify status codes or mock return shapes.
+- **Unswallowed Contextual Errors**: Error handlers preserve the root cause error context and trace ID rather than suppressing exceptions or logging generic messages.
+
+### Invariant Preservation & Deterministic Error Handling
+- **Domain Invariant Enforcement**: Invariants and business rules are validated at domain model instantiation and mutation boundaries; invalid domain objects cannot be constructed.
+- **Deterministic Error Types**: Errors are modeled as closed algebraic types or structured error envelopes with machine-readable error codes; untyped nulls or ambiguous runtime exceptions are forbidden.
+- **Safe Boundary Mapping**: Internal exceptions, stack traces, and database error messages are sanitized at the API boundary, mapping deterministically to documented client error contracts.
+- **Idempotent Recovery**: Failure recovery mechanisms and retry handlers ensure that re-executing failed operations preserves state invariants without duplicate side effects.
 
 ### AI-Generated Code Validation (when AI tools contributed to this change)
 - risk tier classified: [high / medium / low]
