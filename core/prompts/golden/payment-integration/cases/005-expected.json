@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "200 OK",
+    "500ms",
+    "worker queue",
+    "offload",
+    "asynchronous processing"
+  ],
+  "must_not_include": [
+    "synchronous processing in webhook",
+    "block on order fulfillment"
+  ],
+  "required_tokens": [
+    "200 OK",
+    "500ms",
+    "worker queue",
+    "offload",
+    "asynchronous processing"
+  ],
+  "forbidden_tokens": [
+    "synchronous processing in webhook",
+    "block on order fulfillment"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

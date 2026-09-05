@@ -1,6 +1,7 @@
 ---
 name: agent-delegation
 description: Delegate scoped sub-tasks from a supervisor agent to specialist worker agents using structured A2A task contracts, validate returned artifacts against output schemas, and handle delegation failures. Use when a task exceeds one agent's role boundary, requires parallel specialist work, or benefits from isolated context to reduce hallucination risk.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, delegate_task, a2a_send_task, run_tests, execute_command]
 ---
 
 # Agent Delegation

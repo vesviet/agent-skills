@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "timestamp",
+    "300 seconds",
+    "replay attack",
+    "tolerance window",
+    "drift check"
+  ],
+  "must_not_include": [
+    "ignore timestamp",
+    "infinite tolerance"
+  ],
+  "required_tokens": [
+    "timestamp",
+    "300 seconds",
+    "replay attack",
+    "tolerance window",
+    "drift check"
+  ],
+  "forbidden_tokens": [
+    "ignore timestamp",
+    "infinite tolerance"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

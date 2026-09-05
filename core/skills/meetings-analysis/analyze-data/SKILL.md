@@ -1,6 +1,7 @@
 ---
 name: analyze-data
 description: Explore datasets, define metrics, run reproducible SQL or tabular analysis, and produce stakeholder-ready insights with documented assumptions and lineage. Use when answering business questions from data, comparing datasets, building KPI definitions, or drafting dashboard requirements without owning production pipeline infrastructure.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, query_db, read_database, run_tests, execute_command]
 ---
 
 # Analyze Data

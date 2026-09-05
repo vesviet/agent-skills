@@ -32,7 +32,7 @@ Look for the originating spec, in this order:
 
 ### 3. Gather Standards Sources And Baseline
 
-Collect every file documenting how code should be written. On top of repo docs, the Standards axis always carries the **Fowler smell baseline** (12 smells from _Refactoring_ ch.3) — see [references/two-axis-review.md](references/two-axis-review.md) for the full table and paste-ready sub-agent briefs. The baseline binds by two rules: the repo overrides it, and each hit is a labelled judgement call.
+Collect every file documenting how code should be written. On top of repo docs, the Standards axis always carries the **Fowler smell baseline** (12 smells from _Refactoring_ ch.3) — see [two-axis-review.md](two-axis-review.md) for the full table and paste-ready sub-agent briefs. The baseline binds by two rules: the repo overrides it, and each hit is a labelled judgement call.
 
 ### 4. Run Both Axes In Parallel
 

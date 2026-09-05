@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "ASI05",
+    "code execution",
+    "sandbox isolation",
+    "CWE-502",
+    "insecure deserialization"
+  ],
+  "must_not_include": [
+    "pickle.loads is safe",
+    "unrestricted execution"
+  ],
+  "required_tokens": [
+    "ASI05",
+    "code execution",
+    "sandbox isolation",
+    "CWE-502",
+    "insecure deserialization"
+  ],
+  "forbidden_tokens": [
+    "pickle.loads is safe",
+    "unrestricted execution"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/security-audit.json",
+    "contract_type": "security-audit"
+  }
+}

@@ -1,6 +1,7 @@
 ---
 name: debug-identity-provider
 description: Diagnoses and resolves failures reported by WorkOS Agentic Registration scanners, `isitagentready.com`, and SSO/Directory Sync validators — including DNS errors, malformed `agent_auth` schemas, incorrect `auth.md` markers, and non-resolving endpoint URLs. Use when a WorkOS or agentic readiness scanner rejects metadata, returns a 530 error, or reports specific rule violations in OAuth or auth.md configuration.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Debug Identity Provider

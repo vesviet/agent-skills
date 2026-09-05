@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "A10",
+    "fail-closed",
+    "information leakage",
+    "sanitized error message",
+    "stack trace"
+  ],
+  "must_not_include": [
+    "show stack trace to client",
+    "expose connection string"
+  ],
+  "required_tokens": [
+    "A10",
+    "fail-closed",
+    "information leakage",
+    "sanitized error message",
+    "stack trace"
+  ],
+  "forbidden_tokens": [
+    "show stack trace to client",
+    "expose connection string"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/security-audit.json",
+    "contract_type": "security-audit"
+  }
+}

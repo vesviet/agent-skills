@@ -1,6 +1,7 @@
 ---
 name: setup-design-system
 description: Configure a scalable design system, styling framework, and component architecture for a frontend project. Use when initializing a new project, migrating to a unified CSS strategy, or setting up a component library (e.g., Tailwind, Storybook, Radix).
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, run_dev_server, execute_command]
 ---
 
 # Setup Design System

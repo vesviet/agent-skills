@@ -1,6 +1,7 @@
 ---
 name: integrate-payment-gateway
 description: Integrate or extend a payment gateway (Stripe, VNPay, PayPal, Momo, etc.) into an e-commerce application. Use when adding, replacing, or auditing a payment provider's checkout, refund, or webhook flow.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, fetch]
 ---
 
 # Integrate Payment Gateway

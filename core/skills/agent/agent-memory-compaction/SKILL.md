@@ -1,6 +1,7 @@
 ---
 name: agent-memory-compaction
 description: Compact long-running agent conversation context into a minimal working state by preserving goals, constraints, current phase, active owner, decisions, changed files, validation, blockers, and next actions while dropping stale detail. Use when a chat grows long, context becomes noisy, or work needs a clean resume checkpoint during bug or feature control work.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, delegate_task, a2a_send_task, run_tests, execute_command]
 ---
 
 # Agent Memory Compaction

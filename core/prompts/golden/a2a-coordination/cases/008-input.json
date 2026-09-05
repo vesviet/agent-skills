@@ -1,0 +1,13 @@
+{
+  "case_id": "A2A-008",
+  "name": "Long-Running Task Push Notification Registration with SSRF Guards",
+  "work_type": "coordination",
+  "role": "agent-coordinator",
+  "skill": "agent-a2a-protocol",
+  "user_request": "Register asynchronous push notification webhook for long-running batch indexing task.",
+  "target": "notifications/webhook_subscriber.ts",
+  "context": {
+    "schema": "core/contracts/schemas/a2a-push-notification-config.json",
+    "threat": "Adversarial callback URL targeting AWS IMDS 169.254.169.254"
+  }
+}

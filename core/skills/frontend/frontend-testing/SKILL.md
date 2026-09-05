@@ -1,6 +1,7 @@
 ---
 name: frontend-testing
 description: Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Frontend Testing
@@ -127,7 +128,9 @@ Run:
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/implementation-result.json** — Required fields: change_summary, iles_touched[], and alidation_run. Set produced_by_role to the emitting developer role.
+- **contracts/schemas/implementation-result.json** — Required fields: change_summary, 
+iles_touched[], and 
+alidation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 

@@ -1,6 +1,7 @@
 ---
 name: agent-a2a-protocol
 description: Implement the full A2A 1.0 task lifecycle including Agent Card discovery, JSON-RPC invoke/stream, task get/list/cancel, SSE progress events, and Antigravity-compatible handoffs. Use when integrating multi-agent systems, exposing agent services, or operating as Antigravity with structured agent-to-agent communication.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, delegate_task, a2a_send_task, run_tests, execute_command]
 ---
 
 # Agent A2a Protocol

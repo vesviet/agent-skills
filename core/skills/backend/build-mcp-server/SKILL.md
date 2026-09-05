@@ -1,6 +1,7 @@
 ---
 name: build-mcp-server
 description: Scaffolds and implements a new Model Context Protocol (MCP) server. Use when exposing new backend tools or resources to AI agents.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, mcp_call, run_tests, execute_command]
 ---
 
 # Build MCP Server

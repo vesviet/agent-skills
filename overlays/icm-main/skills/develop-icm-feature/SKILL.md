@@ -1,6 +1,7 @@
 ---
 name: develop-icm-feature
 description: Develop features for the ICM Factory Direct main site — an Astro v5 B2B manufacturing catalog on Cloudflare Pages. Use when adding pages, product data, components, contact forms, or R2 integrations in this project.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, astro_build, astro_check, astro_dev, run_tests]
 ---
 
 # Develop ICM Feature

@@ -1,6 +1,7 @@
 ---
 name: security-audit
 description: Review code, configuration, and service behavior for security risks by checking trust boundaries, secret handling, auth, validation, and operational exposure. For AI/ML systems, apply OWASP ASI Top 10 2026 (ASI01–ASI10), NIST AI RMF Measure function, and ISO/IEC 42001:2023 controls assessment. Use for focused security review of changes or full-service risk assessment.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Security Audit
@@ -23,7 +24,7 @@ Use this skill when reviewing a change, service, or deployment for security post
 - avoid exposing real secrets or exploit details unnecessarily in user-visible artifacts
 - **CVSS 4.0**: Score vulnerabilities using CVSS 4.0 with CVSS-BTE nomenclature distinguishing Vulnerable System (VC/VI/VA) from Subsequent Systems (SC/SI/SA); MSS (Supplemental) metrics include Automatable and Recovery. Translate to P0/P1/P2/P3 severity tiers.
 - **OWASP Top 10:2025 A10**: A10:2025 is "Mishandling of Exceptional Conditions" — audit error-handling paths and exception blocks; ensure fail-closed behavior (deny by default on uncaught exceptions, release DB connections, no stack trace leakage).
-- **OWASP ASI01–10**: For agentic AI systems apply all 10 ASI controls: ASI01 Prompt Injection, ASI02 Agent Impersonation, ASI03 Excessive Agency, ASI04 Supply Chain, ASI05 Insecure Output Handling, ASI06 Data Leakage, ASI07 Cascading Delegation, ASI08 Missing HITL, ASI09 Insecure Retrieval, ASI10 Observability Gaps.
+- **OWASP ASI01–10**: For agentic AI systems apply all 10 ASI controls: ASI01 Prompt Injection, ASI02 Agent Impersonation, ASI03 Excessive Agency, ASI04 Supply Chain, ASI05 Unexpected Code Execution (verify sandbox boundary adherence against `core/policies/execution-sandbox.md`), ASI06 Data Leakage, ASI07 Cascading Delegation, ASI08 Missing HITL, ASI09 Insecure Retrieval, ASI10 Observability Gaps.
 - **ZTA-MTLS**: Zero Trust Architecture deployments MUST enforce mTLS between all internal services using SPIFFE/SPIRE for workload identity issuance; block any service-to-service communication without a valid SVID.
 
 ## Suggested Process
@@ -83,7 +84,7 @@ Use:
 - [ ] runtime exposure checked
 - [ ] findings reported with clear severity using CVSS 4.0 BTE nomenclature
 - [ ] OWASP Top 10:2025 gaps reviewed (A03 Supply Chain, A10 Exceptional Conditions, Misconfiguration)
-- [ ] OWASP ASI01–10 checks applied for agentic AI systems
+- [ ] OWASP ASI01–10 checks applied for agentic AI systems (ASI05 execution sandbox verified per `core/policies/execution-sandbox.md`)
 - [ ] ZTA mTLS / SPIFFE/SPIRE verification for zero-trust deployments
 - [ ] SLSA Level 3 supply chain integrity checked for production builds
 

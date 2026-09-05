@@ -1,6 +1,7 @@
 ---
 name: analyze-campaign-roi
 description: Analyze S2S conversion data, monitor ad account die-rates, and calculate campaign ROI based on proxy and API costs. Use when evaluating campaign profitability, diagnosing tracking attribution gaps, comparing offer performance, or deciding to pause or scale ad spend.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Analyze Campaign ROI

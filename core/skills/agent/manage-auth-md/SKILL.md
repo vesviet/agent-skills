@@ -1,6 +1,7 @@
 ---
 name: manage-auth-md
 description: Use when creating, updating, or auditing the /auth.md file at the repository or domain root to ensure agentic registration discovery compliance with WorkOS and isitagentready.com standards.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Manage Auth.md

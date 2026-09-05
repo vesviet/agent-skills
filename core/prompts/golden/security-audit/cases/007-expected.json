@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "algorithm confusion",
+    "JWT",
+    "signature verification",
+    "critical",
+    "CWE-347"
+  ],
+  "must_not_include": [
+    "none algorithm allowed",
+    "valid token"
+  ],
+  "required_tokens": [
+    "algorithm confusion",
+    "JWT",
+    "signature verification",
+    "critical",
+    "CWE-347"
+  ],
+  "forbidden_tokens": [
+    "none algorithm allowed",
+    "valid token"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/security-audit.json",
+    "contract_type": "security-audit"
+  }
+}

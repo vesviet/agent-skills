@@ -1,6 +1,7 @@
 ---
 name: web-perf
 description: Analyzes web page performance using Chrome DevTools MCP — measuring Core Web Vitals (LCP, INP, CLS), identifying render-blocking resources, network dependency chains, and caching issues to produce specific, actionable optimization recommendations. Use when auditing Lighthouse scores, debugging slow page loads, profiling Core Web Vitals regressions, or validating performance improvements before release.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, wrangler_deploy, execute_command]
 ---
 
 # Web Perf
@@ -119,7 +120,8 @@ Tool: Chrome DevTools MCP | Lighthouse | CrUX
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and 
+alidation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 

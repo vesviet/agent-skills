@@ -374,7 +374,7 @@ Structured JSON must validate against `contracts/schemas/coordination-plan.json`
 - all phase artifacts correlated by trace_id before phase marked complete
 - progress events emitted for engineering-tier long-running phases
 
-### Interruption Recovery
+### Interruption Recovery Protocol
 - coordination-plan.json updated at every phase gate (checkpoint current)
 - interruption recovery point documented in execution state
 - resume path defined: last completed phase gate identified

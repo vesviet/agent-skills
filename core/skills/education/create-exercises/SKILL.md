@@ -1,6 +1,7 @@
 ---
 name: create-exercises
 description: Design educational assignments, practice tests, and quizzes following designated curriculum matrices and cognitive models. Use when generating exercises, mock exams, or exam preparation materials for specific learning objectives.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
 # Create Exercises

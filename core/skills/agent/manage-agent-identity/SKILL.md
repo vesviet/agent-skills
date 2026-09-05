@@ -1,6 +1,7 @@
 ---
 name: manage-agent-identity
 description: Manages the full lifecycle of Non-Human Identities (NHI) for AI agent sessions — including provisioning scoped credentials, enforcing just-in-time access, behavioral baseline monitoring, and secure offboarding. Use when onboarding a new agent role to production, rotating agent credentials, auditing active agent sessions, or responding to anomalous agent behavior.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Manage Agent Identity
@@ -133,8 +134,6 @@ Produce an audit record for every production agent session:
 | `anomalies_detected` | Any out-of-baseline events |
 | `policy_violations` | Any action-boundaries violations |
 
----
-
 ## Checklist
 
 - [ ] Agent role is registered in identity registry before any access is granted.
@@ -147,17 +146,6 @@ Produce an audit record for every production agent session:
 - [ ] Audit record produced for every production session.
 - [ ] Shadow agent inventory check completed (no unregistered agents in production).
 - [ ] OWASP ASI03 (Identity & Privilege Abuse) threat mitigated: no privilege escalation chains.
-
----
-
-## Output Format
-
-- `agent_identity.yaml` — registration record for the identity registry
-- `session_baseline.yaml` — behavioral baseline declaration for the session
-- `session_audit.json` — post-session audit record
-- Updated identity registry entry (offboarding status)
-
----
 
 ## Related Skills
 

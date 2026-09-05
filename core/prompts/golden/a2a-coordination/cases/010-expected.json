@@ -1,0 +1,31 @@
+{
+  "must_include": [
+    "JWS",
+    "JWK Set",
+    "RFC 8785",
+    "JSON Canonicalization Scheme",
+    "kid",
+    "signature verification"
+  ],
+  "must_not_include": [
+    "trust unverified agent card",
+    "skip signature verification"
+  ],
+  "required_tokens": [
+    "JWS",
+    "JWK Set",
+    "RFC 8785",
+    "JSON Canonicalization Scheme",
+    "kid",
+    "signature verification"
+  ],
+  "forbidden_tokens": [
+    "trust unverified agent card",
+    "skip signature verification"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/coordination-plan.json",
+    "contract_type": "coordination-plan"
+  }
+}

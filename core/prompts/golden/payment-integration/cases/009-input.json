@@ -1,0 +1,13 @@
+{
+  "case_id": "PAY-009",
+  "name": "Autonomous Agent Programmatic Payment Flow (HTTP 402 / MPP)",
+  "work_type": "implementation",
+  "role": "ecommerce-engineer",
+  "skill": "integrate-payment-gateway",
+  "user_request": "Implement machine-to-machine payment protocol where autonomous AI agents purchase API inference credits via HTTP 402.",
+  "target": "api/agent/payments.ts",
+  "context": {
+    "protocol": "HTTP 402 Payment Required / Machine Payments Protocol (MPP)",
+    "actor": "Autonomous Agent Swarm"
+  }
+}

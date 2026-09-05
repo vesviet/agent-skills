@@ -1,0 +1,12 @@
+{
+  "case_id": "REF-009",
+  "name": "Dead Code & Speculative Generality Elimination (YAGNI)",
+  "work_type": "refactoring",
+  "role": "technical-lead",
+  "skill": "review-code",
+  "user_request": "Audit codebase for unused experimental helper functions and delete dead code safely.",
+  "target": "legacy/unused_helpers.ts",
+  "context": {
+    "finding": "12 unreferenced utility functions written 3 years ago for an abandoned plugin architecture"
+  }
+}

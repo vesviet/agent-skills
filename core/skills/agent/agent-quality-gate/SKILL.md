@@ -1,6 +1,7 @@
 ---
 name: agent-quality-gate
 description: Run and interpret repository quality gates for agent-delivered changes, including validators, lint, tests, build checks, diff sanity checks, and phase-exit evidence. Use when reporting completion, advancing a bug or feature to the next phase, or declaring a pack, role, workflow, or code change ready.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Agent Quality Gate

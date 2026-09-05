@@ -1,0 +1,12 @@
+{
+  "case_id": "REF-007",
+  "name": "Replace Complex Conditionals with Strategy Pattern (SOLID OCP)",
+  "work_type": "refactoring",
+  "role": "technical-lead",
+  "skill": "review-code",
+  "user_request": "Refactor nested switch-statement calculating discounts into open-closed Strategy pattern classes.",
+  "target": "services/discounts/calculator.ts",
+  "context": {
+    "smell": "200-line switch case branching on 14 customer tier enum types"
+  }
+}

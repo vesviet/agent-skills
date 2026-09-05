@@ -1,6 +1,7 @@
 ---
 name: generate-mmo-content
 description: Use AI APIs to procedurally generate landing pages, creatives, and spin content for large-scale campaign deployment at scale. Use when launching new creatives, scaling content volume for A/B testing, or refreshing ad sets. Includes hard caps on API usage.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Generate MMO Content

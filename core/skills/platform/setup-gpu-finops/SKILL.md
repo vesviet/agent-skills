@@ -1,6 +1,7 @@
 ---
 name: setup-gpu-finops
 description: Configure GPU telemetry, DCGM metrics, and Kubecost to attribute AI compute costs to specific namespaces or teams. Use when managing GPU infrastructure budgets, tracking AI workload unit economics, or optimizing accelerator capacity.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Setup GPU FinOps

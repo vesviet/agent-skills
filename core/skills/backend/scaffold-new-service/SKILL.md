@@ -1,6 +1,7 @@
 ---
 name: scaffold-new-service
 description: Bootstrap a new service or bounded component from repo-local templates and conventions. Use when creating a new service, worker, or deployable unit without assuming a fixed framework or folder layout.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Scaffold New Service
@@ -111,7 +112,9 @@ Make sure the new service has:
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/implementation-result.json** — Required fields: change_summary, iles_touched[], and alidation_run. Set produced_by_role to the emitting developer role.
+- **contracts/schemas/implementation-result.json** — Required fields: change_summary, 
+iles_touched[], and 
+alidation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 

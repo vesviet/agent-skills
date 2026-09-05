@@ -1,6 +1,7 @@
 ---
 name: setup-llm-gateway
 description: Configure a centralized LLM proxy gateway for token routing, budgeting, and failover. Use when deploying multi-model routing, enforcing token rate limits, managing provider credentials, or centralizing AI observability.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Setup LLM Gateway

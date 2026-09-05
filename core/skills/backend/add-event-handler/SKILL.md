@@ -1,6 +1,7 @@
 ---
 name: add-event-handler
 description: Add or modify event publishers, consumers, or subscriber flows by following the repo's event contract, delivery semantics, idempotency rules, and rollout constraints. Use for event-driven service work.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Add Event Handler
@@ -103,7 +104,9 @@ Cover:
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/implementation-result.json** — Required fields: change_summary, iles_touched[], and alidation_run. Set produced_by_role to the emitting developer role.
+- **contracts/schemas/implementation-result.json** — Required fields: change_summary, 
+iles_touched[], and 
+alidation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 

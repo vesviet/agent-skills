@@ -1,6 +1,7 @@
 ---
 name: configure-mcp
 description: Sets up the full MCP presence for a web service — experimental Server Card discovery, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
 # Configure MCP

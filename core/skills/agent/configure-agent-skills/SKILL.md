@@ -1,6 +1,7 @@
 ---
 name: configure-agent-skills
 description: Creates and manages the agentskills.io manifest index at `/.well-known/agent-skills/index.json`, exposing structured API capabilities for agent orchestrators and capability-routing infrastructure to auto-discover and invoke. Use when registering, updating, or validating the skill manifest after adding or deprecating API endpoints on a service.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Configure Agent Skills

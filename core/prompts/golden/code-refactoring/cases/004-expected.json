@@ -1,0 +1,31 @@
+{
+  "must_include": [
+    "write-tests",
+    "safety net",
+    "baseline coverage",
+    "behavior preservation",
+    "characterization tests"
+  ],
+  "must_not_include": [
+    "refactor before tests",
+    "skip test",
+    "modify code without tests"
+  ],
+  "required_tokens": [
+    "write-tests",
+    "safety net",
+    "baseline coverage",
+    "behavior preservation",
+    "characterization tests"
+  ],
+  "forbidden_tokens": [
+    "refactor before tests",
+    "skip test",
+    "modify code without tests"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

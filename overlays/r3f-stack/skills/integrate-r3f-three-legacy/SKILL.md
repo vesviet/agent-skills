@@ -1,6 +1,7 @@
 ---
 name: integrate-r3f-three-legacy
 description: Integrate or migrate between React Three Fiber and legacy imperative Three.js code by controlling scene ownership, render loops, loaders, interaction state, and cleanup boundaries. Use when a 3D web app mixes R3F with older Three.js modules, global bridge state, or imperative scene utilities and needs safe coexistence or staged migration.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_build, run_dev_server, run_tests]
 ---
 
 # Integrate R3F Three Legacy

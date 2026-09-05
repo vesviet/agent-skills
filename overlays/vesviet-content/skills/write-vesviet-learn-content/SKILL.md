@@ -1,6 +1,7 @@
 ---
 name: write-vesviet-learn-content
 description: Draft or update Hugo Markdown for the Vesviet portfolio site or the Learn notes site. Use when creating or editing content under `vesviet/content` or `learn/content` (paths relative to the workspace root), including posts, series, radar entries, or learn docs.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
 # Write Vesviet Learn Content

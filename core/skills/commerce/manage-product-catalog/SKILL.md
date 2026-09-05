@@ -1,6 +1,7 @@
 ---
 name: manage-product-catalog
 description: Build or maintain a product catalog including product creation, variant management (size, color, SKU), pricing, and inventory synchronization across channels. Use when adding, updating, or structuring product data in an e-commerce system.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, fetch]
 ---
 
 # Manage Product Catalog

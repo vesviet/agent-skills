@@ -1,6 +1,7 @@
 ---
 name: agent-prompt-lifecycle
 description: Manage prompt assets through their full lifecycle including versioning, evaluation against golden datasets, drift detection, and controlled promotion across environments. Use when creating, updating, reviewing, or auditing prompt definitions in roles, skills, workflows, or system instructions to ensure measurable quality and safe deployment.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Agent Prompt Lifecycle
@@ -77,14 +78,7 @@ For every prompt change, record:
 - which block was modified (identity, scope, workflow, output contract, fallback, etc.)
 - the expected impact on output behavior
 
-Use a changelog entry format:
-
-```text
-v1.3 — 2026-05-09
-- narrowed scope: removed financial advice from allowed topics
-- added output contract: require JSON with confidence scores
-- reason: reduce hallucination rate on financial queries
-```
+Record in changelog format: `v1.3 — [date]: narrowed scope; added JSON contract; reason: reduce hallucination`.
 
 ### 3. Build Or Update The Golden Dataset
 

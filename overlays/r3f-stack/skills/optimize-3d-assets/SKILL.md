@@ -1,6 +1,7 @@
 ---
 name: optimize-3d-assets
 description: Optimize 3D assets and rendering inputs by reviewing model formats, geometry density, texture memory, material strategy, compression, and loading behavior. Use when a 3D web experience suffers from heavy OBJ/GLTF assets, texture bloat, long load times, frame drops, or unnecessary GPU and memory pressure.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_build, run_dev_server, run_tests]
 ---
 
 # Optimize 3D Assets

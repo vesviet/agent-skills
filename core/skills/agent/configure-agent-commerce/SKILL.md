@@ -1,6 +1,7 @@
 ---
 name: configure-agent-commerce
 description: Implements agentic commerce standards — x402 and Stripe's Machine Payments Protocol (MPP) for HTTP 402 machine payments, the Universal Commerce Protocol (UCP) for agent checkout, the Agentic Commerce Protocol (ACP), and Google's Agent Payments Protocol (AP2) for delegated purchase authorization — to make a service billable and discoverable by AI agents. Use when adding agent-to-agent payment, delegated purchase authorization, or agentic commerce directory registration to a web service.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, fetch]
 ---
 
 # Configure Agent Commerce

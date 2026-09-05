@@ -1,0 +1,13 @@
+{
+  "case_id": "PAY-004",
+  "name": "Dual-Write Storage Idempotency Guard on Webhook Events",
+  "work_type": "implementation",
+  "role": "ecommerce-engineer",
+  "skill": "integrate-payment-gateway",
+  "user_request": "Design database idempotency guard guaranteeing at-most-once processing of payment webhooks during concurrent retries.",
+  "target": "services/payment/idempotency.ts",
+  "context": {
+    "db": "PostgreSQL",
+    "scenario": "Simultaneous duplicate deliveries of invoice.paid from Stripe"
+  }
+}

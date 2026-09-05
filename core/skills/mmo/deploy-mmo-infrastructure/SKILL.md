@@ -1,6 +1,7 @@
 ---
 name: deploy-mmo-infrastructure
 description: Deploy and manage proxy pools (Residential/4G) and Anti-Detect Browser orchestration environments (via Docker/Terraform) ensuring zero IP/footprint leaks. Use when deploying a new MMO operation, expanding to new ad accounts, or migrating proxy infrastructure.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Deploy MMO Infrastructure

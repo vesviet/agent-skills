@@ -1,6 +1,7 @@
 ---
 name: audit-content
 description: Run a structured content refresh cycle on an existing published piece — audit current performance and health, read the full content, research the latest standards and facts, update the content, then re-audit for SEO/GEO/AEO readiness. Use when refreshing stale or declining content, correcting outdated facts, closing information-gain gaps against newer competitors, or bringing a legacy article up to current E-E-A-T and AI-search standards without rewriting from scratch.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, fetch]
 ---
 
 # Audit Content

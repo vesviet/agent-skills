@@ -1,0 +1,12 @@
+{
+  "case_id": "REF-006",
+  "name": "Clean Architecture Layer Isolation (Domain vs Infrastructure)",
+  "work_type": "refactoring",
+  "role": "technical-lead",
+  "skill": "review-code",
+  "user_request": "Refactor domain entity to remove direct Prisma ORM dependencies and preserve clean domain boundaries.",
+  "target": "core/domain/user_entity.ts",
+  "context": {
+    "violation": "Domain entity imports @prisma/client and runs database queries internally"
+  }
+}

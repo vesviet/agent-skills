@@ -1,6 +1,7 @@
 ---
 name: agent-handoff
 description: Produce concise agent handoffs, status updates, and completion summaries that preserve phase state, decisions, changed files, validation evidence, blockers, and next actions. Use when pausing, resuming, handing work to another session, or reporting completed engineering work across bug or feature control flows.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, delegate_task, a2a_send_task, run_tests, execute_command]
 ---
 
 # Agent Handoff

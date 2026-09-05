@@ -1,0 +1,13 @@
+{
+  "case_id": "A2A-010",
+  "name": "JWS Cryptographic Signature Verification of Remote Agent Card",
+  "work_type": "coordination",
+  "role": "agent-coordinator",
+  "skill": "agent-a2a-protocol",
+  "user_request": "Verify JSON Web Signature (JWS) on remote Agent Card before delegating tasks to external swarm peer.",
+  "target": "security/agent_verifier.ts",
+  "context": {
+    "standard": "RFC 8785 JSON Canonicalization Scheme (JCS) and RFC 7515 JWS",
+    "threat": "Tampered agent capability declarations"
+  }
+}

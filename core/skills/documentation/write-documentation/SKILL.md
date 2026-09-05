@@ -1,6 +1,7 @@
 ---
 name: write-documentation
 description: Draft or update technical documentation by following the repo's existing doc structure, audience needs, and source-of-truth boundaries. Use for README updates, service docs, runbooks, integration notes, or change explanations.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
 # Write Documentation

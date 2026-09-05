@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "value object",
+    "domain boundary",
+    "immutability",
+    "validation on creation",
+    "type safety"
+  ],
+  "must_not_include": [
+    "raw number for currency",
+    "primitive string without validation"
+  ],
+  "required_tokens": [
+    "value object",
+    "domain boundary",
+    "immutability",
+    "validation on creation",
+    "type safety"
+  ],
+  "forbidden_tokens": [
+    "raw number for currency",
+    "primitive string without validation"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

@@ -1,6 +1,7 @@
 ---
 name: setup-tracking-system
 description: Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta Conversion API (CAPI), and tracker setups (Voluum/Binom) without relying solely on client-side cookies. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Setup Tracking System

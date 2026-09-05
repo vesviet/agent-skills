@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "IDOR",
+    "CWE-639",
+    "tenant isolation",
+    "authorization check",
+    "ownership verification"
+  ],
+  "must_not_include": [
+    "safe",
+    "bypass authorization"
+  ],
+  "required_tokens": [
+    "IDOR",
+    "CWE-639",
+    "tenant isolation",
+    "authorization check",
+    "ownership verification"
+  ],
+  "forbidden_tokens": [
+    "safe",
+    "bypass authorization"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/security-audit.json",
+    "contract_type": "security-audit"
+  }
+}

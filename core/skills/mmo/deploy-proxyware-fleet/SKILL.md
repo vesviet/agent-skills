@@ -1,6 +1,7 @@
 ---
 name: deploy-proxyware-fleet
 description: Containerize and orchestrate massive fleets of passive income nodes (Honeygain, EarnApp, Pawns.app) with proxy routing and resource limits. Use when scaling bandwidth monetization nodes, migrating from datacenter to residential routing, or expanding an existing fleet.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Deploy Proxyware Fleet

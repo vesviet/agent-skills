@@ -1,6 +1,7 @@
 ---
 name: performance-profiling
 description: Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, and validating improvements with repo-local tools. Use when performance, capacity, or resource usage needs evidence-based diagnosis.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Performance Profiling

@@ -1,6 +1,7 @@
 ---
 name: create-automation-script
 description: Build Playwright/Puppeteer automation scripts that connect via CDP to Anti-Detect browsers or use C++ patched engines. Implements behavioral mimicry to bypass AI detection. Use when building multi-account automation, login flows, ad account warm-up sequences, or scraping high-trust platforms.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Create Automation Script

@@ -1,6 +1,7 @@
 ---
 name: write-tech-radar
 description: Draft or update a technology radar entry by summarizing context, trade-offs, recommendation, and adoption guidance in a concise decision-oriented format. Use when documenting technology choices, trials, or directional guidance.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
 # Write Tech Radar

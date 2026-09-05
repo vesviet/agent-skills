@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "a2a-task.json",
+    "task_id",
+    "interaction_mode",
+    "output_schema_ref",
+    "submitted"
+  ],
+  "must_not_include": [
+    "untyped message",
+    "unconstrained prompt dispatch"
+  ],
+  "required_tokens": [
+    "a2a-task.json",
+    "task_id",
+    "interaction_mode",
+    "output_schema_ref",
+    "submitted"
+  ],
+  "forbidden_tokens": [
+    "untyped message",
+    "unconstrained prompt dispatch"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/coordination-plan.json",
+    "contract_type": "coordination-plan"
+  }
+}

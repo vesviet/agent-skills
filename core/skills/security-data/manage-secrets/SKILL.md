@@ -1,6 +1,7 @@
 ---
 name: manage-secrets
 description: Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-control, and rollout patterns. Use when code or deployment work touches credentials, tokens, keys, or sensitive configuration.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Manage Secrets

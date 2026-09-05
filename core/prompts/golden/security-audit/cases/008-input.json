@@ -1,0 +1,13 @@
+{
+  "case_id": "SEC-008",
+  "name": "Exception Handling Stack Trace & Schema Leakage (OWASP Top 10:2025 A10)",
+  "work_type": "audit",
+  "role": "security-engineer",
+  "skill": "security-audit",
+  "user_request": "Audit API error handling middleware for information disclosure and exception mishandling.",
+  "target": "middleware/error_handler.ts",
+  "context": {
+    "code_snippet": "export function errorHandler(err: any, req: Request, res: Response, next: NextFunction) {\n  res.status(500).json({\n    error: err.message,\n    stack: err.stack,\n    query: err.sql,\n    internal_state: process.env\n  });\n}",
+    "environment": "production"
+  }
+}

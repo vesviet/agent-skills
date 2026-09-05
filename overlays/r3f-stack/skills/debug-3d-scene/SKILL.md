@@ -1,6 +1,7 @@
 ---
 name: debug-3d-scene
 description: Debug 3D scene behavior by tracing scene graph structure, transforms, raycasting, decals, materials, camera logic, render loops, and WebGL lifecycle issues. Use when a Three.js, React Three Fiber, WebGL, or WebGPU scene has rendering bugs, interaction bugs, clipping problems, context instability, or suspicious visual math.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_build, run_dev_server, run_tests]
 ---
 
 # Debug 3D Scene

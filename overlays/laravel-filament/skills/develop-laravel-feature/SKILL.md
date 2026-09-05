@@ -1,6 +1,7 @@
 ---
 name: develop-laravel-feature
 description: Develop features in a Laravel 13 + Filament v4 + Livewire 3 monolith. Use when adding admin resources, Blade pages, Livewire components, Actions, Services, or database migrations in this stack.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, php_artisan_test, php_artisan_lint, php_artisan_serve, run_tests]
 ---
 
 # Develop Laravel Feature

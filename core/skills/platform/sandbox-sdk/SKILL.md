@@ -1,6 +1,7 @@
 ---
 name: sandbox-sdk
 description: Builds secure, isolated code execution environments on Cloudflare Workers using the Cloudflare Sandbox SDK — enabling AI code interpreters, interactive dev environments, and sandboxed application runtimes. Use when implementing LLM-generated code execution, user-submitted script running, or any scenario requiring isolated compute with file system access on the Cloudflare edge.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, wrangler_deploy, execute_command]
 ---
 
 # Sandbox SDK
@@ -21,6 +22,7 @@ Build secure, isolated code execution environments on Cloudflare Workers.
 - Keep container images lean in the Dockerfile to optimize startup and prevent cold start latency.
 - Always set explicit resource limits including `timeout_ms` (up to 30,000 ms), `memory_mb`, and `cpu_ms` on every sandbox invocation to prevent unbounded execution.
 - Manage network isolation by routing necessary sandboxed network requests through the Worker's allowed callback pattern using the `env.SANDBOX` binding.
+- Adhere to overarching policy `core/policies/execution-sandbox.md` (Tier 4 Managed Cloud Sandbox) for universal resource quotas and containment standards.
 
 ## Retrieval Sources
 
@@ -172,7 +174,7 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 ## Security Guardrails (OWASP ASI)
 
 - **ASI04 Supply Chain**: Sandbox SDK and container runtime versions must be schema-validated against the expected manifest; treat unknown versions as untrusted.
-- **ASI05 RCE Guard**: never construct sandbox inputs, container commands, or network policy from external or user-supplied content without strict schema validation.
+- **ASI05 RCE Guard**: never construct sandbox inputs, container commands, or network policy from external content without strict schema validation; align with `core/policies/execution-sandbox.md`.
 - **ASI07 Inter-Agent Communication**: the sandbox contract is consumed by Cloudflare Engineer and DevOps; emit a structured contract so each role can validate the rollout.
 - **ASI09 Human-Agent Trust Exploitation**: do not present a sandbox as "secure" without the network isolation and container hardening evidence; surface the residual risk honestly.
 

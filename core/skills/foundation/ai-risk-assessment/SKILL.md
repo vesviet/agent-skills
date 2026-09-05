@@ -1,6 +1,7 @@
 ---
 name: ai-risk-assessment
 description: Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure/Manage) and NIST AI 600-1 GenAI Profile (12 risk categories), classify EU AI Act risk tiers, and produce an AI risk register covering hallucination thresholds, model degradation signals, bias exposure, and compliance drift. Use when onboarding a new AI feature, scoping an AI system for delivery, or conducting a periodic AI governance audit.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # AI Risk Assessment
@@ -163,14 +164,6 @@ ai_risk_register:
 - [ ] HITL mechanism documented (if high-risk tier)
 - [ ] AI risk register produced and stored alongside feature ticket
 - [ ] Review cadence set for ongoing monitoring
-
-## Output Format
-
-Produce `contracts/schemas/ai-risk-register.json` (or YAML equivalent) when formal handoff is required. Include:
-- `eu_ai_act_tier` field
-- `nist_600_1_risks` section
-- `owasp_asi_alignment` mapping
-- `residual_risks` with acceptance sign-offs
 
 ## Failure Modes
 

@@ -1,6 +1,7 @@
 ---
 name: build-data-pipeline
 description: Design and implement data ingestion, transformation, and delivery pipelines including ETL/ELT, Parquet/DuckDB warehousing, dbt modeling, Airflow orchestration, Kafka streaming, and data quality gates. Use when the work requires a repeatable, owned pipeline — not a one-off analytical query.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, query_db, read_database, run_tests]
 ---
 
 # Build Data Pipeline
@@ -21,7 +22,7 @@ For one-off queries, comparisons, or stakeholder reports from existing tables, u
 - implementing data quality gates with Great Expectations, Soda, or dbt tests
 - generating formatted Excel or HTML reports as a scheduled or repeatable pipeline output
 
-## When to Use
+## Pipeline Triggers
 
 - the work needs a repeatable owned pipeline
 - ETL/ELT, warehousing, or dbt modeling

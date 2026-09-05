@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "single responsibility",
+    "extract method",
+    "pure function",
+    "preserved behavior",
+    "decomposition"
+  ],
+  "must_not_include": [
+    "leave 500-line method",
+    "monolith method intact"
+  ],
+  "required_tokens": [
+    "single responsibility",
+    "extract method",
+    "pure function",
+    "preserved behavior",
+    "decomposition"
+  ],
+  "forbidden_tokens": [
+    "leave 500-line method",
+    "monolith method intact"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

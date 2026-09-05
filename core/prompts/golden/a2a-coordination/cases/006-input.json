@@ -1,0 +1,12 @@
+{
+  "case_id": "A2A-006",
+  "name": "Three-Layer Error Recovery on Subagent Schema Failure",
+  "work_type": "coordination",
+  "role": "agent-coordinator",
+  "skill": "agent-a2a-protocol",
+  "user_request": "Handle subagent response that failed JSON Schema validation during task delivery.",
+  "target": "handlers/worker_error_handler.ts",
+  "context": {
+    "policy": "3-layer error recovery: Layer 1 reflection retry, Layer 2 exponential backoff jitter, Layer 3 circuit breaker to HITL"
+  }
+}

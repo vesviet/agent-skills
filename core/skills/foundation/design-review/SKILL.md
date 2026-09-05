@@ -1,6 +1,7 @@
 ---
 name: design-review
 description: Review UX flows, visual hierarchy, interaction patterns, and design-system alignment against specs and user goals. Use when validating ui-component-spec or ux-flow-spec before implementation, or critiquing marketing/product UI without reviewing application code.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Design Review

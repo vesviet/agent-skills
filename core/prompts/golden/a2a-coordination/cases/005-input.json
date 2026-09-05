@@ -1,0 +1,16 @@
+{
+  "case_id": "A2A-005",
+  "name": "SSE Streaming Lifecycle Event Monitoring (task.status, task.artifact)",
+  "work_type": "coordination",
+  "role": "agent-coordinator",
+  "skill": "agent-a2a-protocol",
+  "user_request": "Listen to worker event stream and track execution progress and artifact delivery in real time.",
+  "target": "protocol/stream_listener.ts",
+  "context": {
+    "stream_type": "Server-Sent Events (SSE)",
+    "events": [
+      "task.status",
+      "task.artifact"
+    ]
+  }
+}

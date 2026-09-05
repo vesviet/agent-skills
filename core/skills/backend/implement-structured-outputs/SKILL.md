@@ -1,6 +1,7 @@
 ---
 name: implement-structured-outputs
 description: Implements strict constrained decoding and validation for LLM responses. Use when enforcing JSON Schema guarantees on model generations, eliminating regex parsing, or integrating structured LLM outputs into backend services.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Implement Structured Outputs

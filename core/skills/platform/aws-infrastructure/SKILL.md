@@ -1,6 +1,7 @@
 ---
 name: aws-infrastructure
 description: Provision, configure, and optimize AWS managed services following IaC-first discipline. Use when provisioning VPC, EC2, EKS, RDS, Lambda, S3, Bedrock, or SageMaker infrastructure; authoring IAM roles and policies; enforcing FinOps tagging and rightsizing; or configuring CloudWatch, X-Ray, and AWS Config observability.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # AWS Infrastructure

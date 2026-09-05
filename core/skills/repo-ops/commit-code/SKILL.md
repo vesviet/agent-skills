@@ -1,6 +1,7 @@
 ---
 name: commit-code
 description: Validate and package a finished change into a clean commit by following repo-local validation, generation, release-note, and approval rules. Use when the user explicitly asks to prepare or create a commit.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, run_dev_server, execute_command]
 ---
 
 # Commit Code

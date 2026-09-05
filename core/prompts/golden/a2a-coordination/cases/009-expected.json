@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "a2a-task-cancel.json",
+    "state: canceled",
+    "clean teardown",
+    "abort signal",
+    "rollback"
+  ],
+  "must_not_include": [
+    "leave orphan worker running",
+    "ignore user abort"
+  ],
+  "required_tokens": [
+    "a2a-task-cancel.json",
+    "state: canceled",
+    "clean teardown",
+    "abort signal",
+    "rollback"
+  ],
+  "forbidden_tokens": [
+    "leave orphan worker running",
+    "ignore user abort"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/coordination-plan.json",
+    "contract_type": "coordination-plan"
+  }
+}

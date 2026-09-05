@@ -1,6 +1,7 @@
 ---
 name: develop-golf-feature
 description: Develop features for the Golf ICM niche catalog — an Astro v5 golf apparel site on Cloudflare Pages. Use when adding pages, gallery content, MDX articles, or components for the golf apparel niche.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, astro_build, astro_check, astro_dev, run_tests]
 ---
 
 # Develop Golf Feature

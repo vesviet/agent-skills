@@ -1,6 +1,7 @@
 ---
 name: accessibility-review
 description: Audit UI for keyboard navigation, focus order, screen-reader labels, color contrast, motion preferences, and ARIA correctness against WCAG 2.2 criteria (including Focus Not Obscured 2.4.11, Target Size 2.5.8, Accessible Authentication 3.3.8, Dragging Movements 2.5.7, Redundant Entry 3.3.7). Use automated CI gates via @axe-core/playwright for regression detection alongside manual screen-reader testing. Use when validating user-facing flows before release, after design specs land, or when fixing reported a11y defects.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Accessibility Review

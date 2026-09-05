@@ -1,6 +1,7 @@
 ---
 name: develop-obj-feature
 description: Develop features for the OBJ 3D Product Configurator — an Astro + React Three Fiber app with Three.js engine, Redux/Zustand state, and Prisma backend. Use when modifying 3D scenes, decals, UI panels, or design persistence.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_build, run_dev_server, run_tests]
 ---
 
 # Develop OBJ Feature

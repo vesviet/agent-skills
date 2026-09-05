@@ -1,25 +1,20 @@
 ---
 name: incident-report
 description: Capture, structure, and communicate an incident from triage through resolution and prevention. Use when a production failure, degradation, or security event requires a formal timeline, impact assessment, root cause analysis, and follow-up action items.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Incident Report
 
 Use this skill when a production incident, degradation, or security event requires structured documentation and handoff.
 
-## When To Use
+## When to Use
 
 - a service failure, degradation, or data issue is affecting users or downstream systems
 - an on-call or SRE investigation needs to be handed off to another team
 - a postmortem or retrospective requires evidence-backed findings
 - incident action items need owners and timelines to prevent recurrence
-
-## When to Use
-
-- a production failure or degradation occurs
-- a security event requires formal comms
-- capturing timeline + root cause
-- defining prevention action items
+- a security event requires formal communications
 
 ## Core Rules
 

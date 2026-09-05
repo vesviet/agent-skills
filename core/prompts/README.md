@@ -18,9 +18,13 @@ prompts/
 
 ## Current Prompt Assets
 
-| Asset ID | Role | Version | Min Pass Rate | Cases |
-|----------|------|---------|---------------|-------|
-| [agent-coordinator-phase-gate](golden/agent-coordinator-phase-gate/manifest.yaml) | `agent-coordinator` | 1.0.0 | 90% | 18 |
+| Asset ID | Role | Skill | Version | Min Pass Rate | Cases |
+|----------|------|-------|---------|---------------|-------|
+| [agent-coordinator-phase-gate](golden/agent-coordinator-phase-gate/manifest.yaml) | `agent-coordinator` | `agent-a2a-protocol` | 1.0.0 | 90% | 18 |
+| [security-audit](golden/security-audit/manifest.yaml) | `security-engineer` | `security-audit` | 1.0.0 | 95% | 10 |
+| [payment-integration](golden/payment-integration/manifest.yaml) | `ecommerce-engineer` | `integrate-payment-gateway` | 1.0.0 | 95% | 10 |
+| [code-refactoring](golden/code-refactoring/manifest.yaml) | `technical-lead` | `review-code` | 1.0.0 | 90% | 10 |
+| [a2a-coordination](golden/a2a-coordination/manifest.yaml) | `agent-coordinator` | `agent-a2a-protocol` | 1.0.0 | 95% | 10 |
 
 ## How To Use
 

@@ -373,7 +373,7 @@ Emit `contracts/schemas/solution-brief.json` when machine handoff is required.
 - data boundary is documented for any option where data leaves our system
 - **MCP marketplace tools** evaluated with: provenance vetting, data residency check, rug-pull risk mitigation, exit cost documented
 
-### Capability Mapping
+### Swarm Capability Mapping
 - current capabilities mapped to required capabilities
 - capability gaps explicitly named for Technical Architect consumption
 - reuse, rebuild, and retirement candidates identified

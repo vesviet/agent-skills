@@ -1,6 +1,7 @@
 ---
 name: agent-context-management
 description: Manage working context across long or multi-step agent tasks by tracking user intent, current phase, active owner, repo rules, explored evidence, assumptions, and remaining work. Use when a task spans many files, resumes after interruption, or needs reliable bug or feature control across phases.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, delegate_task, a2a_send_task, run_tests, execute_command]
 ---
 
 # Agent Context Management

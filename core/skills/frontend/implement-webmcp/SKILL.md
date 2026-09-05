@@ -1,6 +1,7 @@
 ---
 name: implement-webmcp
 description: Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when enabling in-browser AI agent interactions, DOM context sharing, or client-side action execution.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, mcp_call, run_tests, execute_command]
 ---
 
 # Implement WebMCP

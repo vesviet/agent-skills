@@ -1,6 +1,7 @@
 ---
 name: review-code
 description: Review a diff since a fixed point along two separate axes — Standards (does the code follow this repo's documented standards plus a fixed smell baseline?) and Spec (does it faithfully implement the originating issue or spec?). Runs both axes as parallel sub-agents and reports them side by side without reranking. Use for PR reviews, "review since X", local change reviews, and pre-merge audits.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Review Code

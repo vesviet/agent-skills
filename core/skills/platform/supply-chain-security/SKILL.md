@@ -1,6 +1,7 @@
 ---
 name: supply-chain-security
 description: Implement software supply chain security by generating SBOMs (CycloneDX/SPDX), enforcing SLSA build provenance levels, integrating artifact signing (Sigstore), and maintaining VEX context for vulnerability management. Use when hardening CI/CD pipelines, generating per-build inventory, achieving SLSA Level 2 or 3 compliance, or auditing third-party dependencies including MCP server registries.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Supply Chain Security
@@ -161,7 +162,8 @@ Feed SBOMs into Dependency-Track or equivalent SCA tool:
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and 
+alidation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 

@@ -1,6 +1,7 @@
 ---
 name: configure-oauth-metadata
 description: Configures well-known OAuth 2.0 and OpenID Connect discovery endpoints (`oauth-protected-resource`, `oauth-authorization-server`, `openid-configuration`) including the `agent_auth` block required for agentic registration flows. Use when setting up or correcting OAuth metadata for AI agent authentication, WorkOS agentic registration, or any service that exposes agent-accessible authorization endpoints.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, query_db, read_database, run_tests, execute_command]
 ---
 
 # Configure OAuth Metadata

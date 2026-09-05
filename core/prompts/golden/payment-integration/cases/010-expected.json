@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "compensating action",
+    "refund",
+    "inventory release",
+    "saga pattern",
+    "reversal"
+  ],
+  "must_not_include": [
+    "leave partial state",
+    "ignore compensation failure"
+  ],
+  "required_tokens": [
+    "compensating action",
+    "refund",
+    "inventory release",
+    "saga pattern",
+    "reversal"
+  ],
+  "forbidden_tokens": [
+    "leave partial state",
+    "ignore compensation failure"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

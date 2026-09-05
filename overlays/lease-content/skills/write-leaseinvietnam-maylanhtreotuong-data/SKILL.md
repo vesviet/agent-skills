@@ -1,6 +1,7 @@
 ---
 name: write-leaseinvietnam-maylanhtreotuong-data
 description: Draft or update Astro Content Collection Markdown/MDX for the Lease in Vietnam and Máy Lạnh Treo Tường sites. Use when editing files under `leaseinvietnam/src/data` or `maylanhtreotuong/src/data` (paths relative to the workspace root).
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
 # Write Leaseinvietnam Maylanhtreotuong Data

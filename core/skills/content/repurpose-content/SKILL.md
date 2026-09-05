@@ -1,6 +1,7 @@
 ---
 name: repurpose-content
 description: Extract and format micro-content variants (social threads, newsletters, short video scripts) from a core long-form article or asset. Use when creating derivative content for omnichannel distribution.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
 # Repurpose Content

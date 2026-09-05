@@ -1,6 +1,7 @@
 ---
 name: write-tests
 description: Add or update tests by following repo-local test conventions, choosing the right test scope, isolating dependencies, and validating risky paths before delivery. Use when behavior needs regression coverage or release confidence.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Write Tests
@@ -96,7 +97,7 @@ Assert the behavior that matters:
 
 Run the local commands for the test scope you changed:
 
-- targeted package or module tests first
+- targeted package or module tests first inside an isolated sandbox (`core/policies/execution-sandbox.md`)
 - broader test suite if the risk is wider
 - coverage or benchmark checks only when the repo actually uses them for the change type
 
@@ -123,9 +124,6 @@ mistakes, see
 3. Adding large, brittle end-to-end tests for logic that belongs in unit tests.
 4. Relying on timing sleeps instead of explicit synchronization.
 5. Chasing coverage numbers while missing the risky path.
-
-For the full pattern list and the AI/LLM test patterns, see
-[`references/patterns-and-ai-testing.md`](references/patterns-and-ai-testing.md).
 
 ## What To Capture In Your Output
 
@@ -154,14 +152,7 @@ When reporting test work, include:
 
 ## Quick Reference
 
-Use this when adding tests quickly:
-
-- inspect nearby tests
-- identify risky behaviors
-- choose unit or integration scope
-- isolate dependencies appropriately
-- add happy path and failure path coverage
-- run targeted tests
+Inspect nearby tests, identify risky behaviors, choose unit/integration scope, isolate dependencies, add happy and failure path coverage, and run targeted tests.
 
 ## Output Contracts
 
@@ -194,6 +185,6 @@ Skip emission for rapid local test iterations during interactive development.
 
 - **ASI01 Goal Hijack**: a test that captures a fragile behavior may lock in an unintended contract. Review golden-set expectations against the declared user goal; reject tests that encode off-goal behavior.
 - **ASI04 Supply Chain**: test fixtures, VCR cassettes, and mock libraries must be schema-validated against the expected manifest; treat unknown test infrastructure as untrusted.
-- **ASI05 RCE Guard**: never construct test inputs from external or user-supplied content without sanitization; adversarial test inputs must come from a controlled fixture.
+- **ASI05 RCE Guard**: never construct test inputs without sanitization; execute test suites inside an isolated sandbox per `core/policies/execution-sandbox.md`.
 - **ASI07 Inter-Agent Communication**: test reports are consumed by CI and release roles; emit a structured `test-report.json` so each consumer can validate against the same evidence.
 - **ASI09 Human-Agent Trust Exploitation**: do not present partial test runs as full coverage; surface skipped tests and their rationale honestly.

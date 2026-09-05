@@ -1,6 +1,7 @@
 ---
 name: system-design
 description: Design, specify, and document complex system architectures covering compute, network, storage, middleware, and AI inference layers. Translate NFRs into measurable infrastructure targets and produce capacity models. Use when designing or reviewing system topology, sizing infrastructure, planning capacity, or specifying AI infrastructure (GPU, inference servers, vector databases).
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # System Design

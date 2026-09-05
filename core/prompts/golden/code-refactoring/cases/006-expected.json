@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "entities",
+    "use cases",
+    "adapters",
+    "framework independence",
+    "clean architecture"
+  ],
+  "must_not_include": [
+    "import ORM in entity",
+    "database query inside domain entity"
+  ],
+  "required_tokens": [
+    "entities",
+    "use cases",
+    "adapters",
+    "framework independence",
+    "clean architecture"
+  ],
+  "forbidden_tokens": [
+    "import ORM in entity",
+    "database query inside domain entity"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "PAY-007",
+  "name": "Idempotency Key Generation for PaymentIntent Creation",
+  "work_type": "implementation",
+  "role": "ecommerce-engineer",
+  "skill": "integrate-payment-gateway",
+  "user_request": "Author PaymentIntent creation logic preventing accidental double-billing upon network timeouts using idempotency keys.",
+  "target": "services/payment/charge.ts",
+  "context": {
+    "method": "stripe.paymentIntents.create",
+    "failure_mode": "Client retry on network connection reset"
+  }
+}

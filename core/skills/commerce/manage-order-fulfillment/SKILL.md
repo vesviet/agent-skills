@@ -1,6 +1,7 @@
 ---
 name: manage-order-fulfillment
 description: Implement and manage the post-purchase order lifecycle including order status management, packing, shipping label generation, carrier tracking, and refund or return processing. Use when building or maintaining fulfillment workflows after a successful payment.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, fetch]
 ---
 
 # Manage Order Fulfillment

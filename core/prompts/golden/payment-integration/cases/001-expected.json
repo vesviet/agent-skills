@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "req.rawBody",
+    "stripe.webhooks.constructEvent",
+    "STRIPE_WEBHOOK_SECRET",
+    "raw payload"
+  ],
+  "must_not_include": [
+    "JSON.parse(req.body)",
+    "req.body as string",
+    "skip signature"
+  ],
+  "required_tokens": [
+    "req.rawBody",
+    "stripe.webhooks.constructEvent",
+    "STRIPE_WEBHOOK_SECRET",
+    "raw payload"
+  ],
+  "forbidden_tokens": [
+    "JSON.parse(req.body)",
+    "req.body as string",
+    "skip signature"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

@@ -1,6 +1,7 @@
 ---
 name: meeting-review
 description: Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Meeting Review
@@ -33,7 +34,7 @@ This skill does not require real subagents. By default, synthesize the needed pe
 - inferred risks must be explicitly marked `[INFERRED — requires human validation]` when not validated against code or docs
 - prune any AI-generated perspective that cannot be grounded in a specific code path, requirement, or stakeholder constraint — avoid synthetic disagreement manufacturing
 
-## When To Use
+## Review Triggers
 
 - architecture or design reviews
 - large refactors

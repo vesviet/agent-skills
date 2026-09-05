@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "contract test",
+    "Pact",
+    "consumer-driven",
+    "backward compatibility",
+    "zero breaking changes"
+  ],
+  "must_not_include": [
+    "break consumer schema",
+    "unannounced breaking change"
+  ],
+  "required_tokens": [
+    "contract test",
+    "Pact",
+    "consumer-driven",
+    "backward compatibility",
+    "zero breaking changes"
+  ],
+  "forbidden_tokens": [
+    "break consumer schema",
+    "unannounced breaking change"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

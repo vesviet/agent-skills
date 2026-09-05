@@ -1,6 +1,7 @@
 ---
 name: agent-model-routing
 description: Select the most cost-effective model for each task or sub-task based on complexity, risk tier, and budget constraints. Use when orchestrating multi-step workflows, delegating tasks, or when token costs need active management.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, delegate_task, a2a_send_task, run_tests, execute_command]
 ---
 
 # Agent Model Routing

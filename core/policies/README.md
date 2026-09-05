@@ -14,6 +14,7 @@ Policies answer: "Is this agent, in this role, allowed to perform this action on
 | --- | --- | --- |
 | `action-boundaries.yaml` | 34 delivery roles × 46 action verbs (allowed / requires_approval / denied) | `2` |
 | `data-classification.yaml` | 5 sensitivity levels (untrusted, public, internal, confidential, restricted) | `1` |
+| `execution-sandbox.md` | Containerized execution sandbox spec, 4 isolation tiers, and OWASP ASI05 | `1` |
 | `mcp-tool-map.yaml` | 75 tool-action mappings + 79 destructive patterns | implicit `1` |
 
 ## Policy Types
@@ -29,6 +30,16 @@ The default for any action not listed for a role is `requires_approval` (zero-tr
 `data-classification.yaml` defines sensitivity levels for different data types to prevent accidental exposure. Levels (low → high): public → internal → confidential → restricted, plus the inversion level `untrusted`.
 
 The `restricted` level carries an explicit PII catalog (8 categories: full_name, email_address, phone_number, physical_address, date_of_birth, national_id_or_passport, financial_account_number, biometric_data, ip_address_when_linked_to_person). The `internal` level now lists soft-PII examples (internal emails, org-chart data, non-customer phones and chat handles).
+
+### Execution Sandbox Specification
+
+`execution-sandbox.md` defines mandatory containerized runtime isolation constraints for high-risk operations (`run_tests`, `run_build`, `execute_command`, and dynamic code interpretation) under OWASP ASI05 (Unexpected Code Execution). It establishes:
+
+- **4-Tier Isolation Architecture**: Tier 1 (WASI), Tier 2 (Hardened OCI/Docker with gVisor/seccomp), Tier 3 (MicroVMs/Firecracker), and Tier 4 (Managed Cloud Sandboxes / E2B & Cloudflare Sandbox).
+- **Resource Limits**: CPU quotas (1.0–2.0 vCPU, 30s timeout with hard SIGKILL), memory ceilings (512MB–2GB, swap disabled), PID limits (64–128), and scratchpad volumes (2GB scratchpad, 128MB tmpfs noexec).
+- **Network Isolation**: Level 0 (Air-gapped `--network=none` default for test/code execution), Level 1 (Restricted proxy allowlist with non-bypassable IMDS `169.254.169.254` and RFC 1918 block), and Level 2 (Ephemeral host callbacks).
+- **Filesystem Containment**: Read-only rootfs (`--read-only`), non-root user (`--user 1000:1000`), capability stripping (`--cap-drop=ALL`), and prohibited bind mounts (host root, `~`, `docker.sock`, `.git/`, `.env`).
+- **Telemetry & Audit**: Mandatory argument array parameterization (ASI05-2) and OCSF 99001 audit event emission.
 
 ### MCP Tool Mapping
 

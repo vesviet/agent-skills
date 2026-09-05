@@ -1,6 +1,7 @@
 ---
 name: agent-graph-orchestration
 description: Model multi-phase delivery as a directed graph with parallel branches, phase gates, and A2A delegations per node. Use when coordinating bugs or features across multiple specialist roles, parallel validation tracks, or merge points that require evidence before advancing.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, delegate_task, a2a_send_task, run_tests, execute_command]
 ---
 
 # Agent Graph Orchestration

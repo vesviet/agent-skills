@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "schema error reflection",
+    "exponential backoff",
+    "circuit breaker",
+    "HITL escalation",
+    "three-layer recovery"
+  ],
+  "must_not_include": [
+    "infinite retry loop",
+    "silent error drop"
+  ],
+  "required_tokens": [
+    "schema error reflection",
+    "exponential backoff",
+    "circuit breaker",
+    "HITL escalation",
+    "three-layer recovery"
+  ],
+  "forbidden_tokens": [
+    "infinite retry loop",
+    "silent error drop"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/coordination-plan.json",
+    "contract_type": "coordination-plan"
+  }
+}

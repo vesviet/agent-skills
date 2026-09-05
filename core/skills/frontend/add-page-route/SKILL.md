@@ -1,6 +1,7 @@
 ---
 name: add-page-route
 description: Add or modify a page, screen, or route by following the repo's navigation, data-loading, layout, and auth patterns. Use when frontend work requires new route-level behavior or page wiring.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, run_dev_server, execute_command]
 ---
 
 # Add Page Route
@@ -108,7 +109,9 @@ Cover:
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/implementation-result.json** — Required fields: change_summary, iles_touched[], and alidation_run. Set produced_by_role to the emitting developer role.
+- **contracts/schemas/implementation-result.json** — Required fields: change_summary, 
+iles_touched[], and 
+alidation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 

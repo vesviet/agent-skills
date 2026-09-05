@@ -1,6 +1,7 @@
 ---
 name: design-learning-plan
 description: Create a structured, curriculum-aligned learning plan or syllabus. Use when planning a study schedule, syllabus, exam preparation roadmap, or grade transition plan for any educational level.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
 # Design Learning Plan

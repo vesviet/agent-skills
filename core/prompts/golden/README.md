@@ -21,6 +21,16 @@ golden/
 - rubric-based expected output — not brittle exact-string match unless stable
 - run eval before promoting prompt changes (see agent-prompt-lifecycle checklist)
 
+## Promoted Datasets
+
+| Asset ID | Role | Skill | Contract | Min Pass Rate | Cases |
+|----------|------|-------|----------|---------------|-------|
+| [agent-coordinator-phase-gate](agent-coordinator-phase-gate/manifest.yaml) | `agent-coordinator` | `agent-a2a-protocol` | `coordination-plan.json` | 90% | 18 |
+| [security-audit](security-audit/manifest.yaml) | `security-engineer` | `security-audit` | `security-audit.json` | 95% | 10 |
+| [payment-integration](payment-integration/manifest.yaml) | `ecommerce-engineer` | `integrate-payment-gateway` | `api-contract-spec.json` | 95% | 10 |
+| [code-refactoring](code-refactoring/manifest.yaml) | `technical-lead` | `review-code` | `implementation-result.json` | 90% | 10 |
+| [a2a-coordination](a2a-coordination/manifest.yaml) | `agent-coordinator` | `agent-a2a-protocol` | `coordination-plan.json` | 95% | 10 |
+
 ## Example manifest.yaml
 
 ```yaml

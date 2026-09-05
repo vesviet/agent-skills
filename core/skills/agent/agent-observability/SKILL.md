@@ -1,6 +1,7 @@
 ---
 name: agent-observability
 description: Trace agent reasoning chains, tool call sequences, context injections, and token costs to enable debugging, cost attribution, and continuous evaluation improvement. Use when deploying agents to production, diagnosing unexpected outputs, tracking costs across tenants, or building evaluation datasets from real-world failures.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, delegate_task, a2a_send_task, run_tests, execute_command]
 ---
 
 # Agent Observability

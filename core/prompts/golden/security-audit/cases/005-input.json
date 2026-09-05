@@ -1,0 +1,13 @@
+{
+  "case_id": "SEC-005",
+  "name": "Hardcoded Secret & Credential Exposure in Config (CWE-798)",
+  "work_type": "audit",
+  "role": "security-engineer",
+  "skill": "security-audit",
+  "user_request": "Examine the backend database configuration module for secret leakage or credential storage violations.",
+  "target": "config/database.ts",
+  "context": {
+    "code_snippet": "export const dbConfig = {\n  host: process.env.DB_HOST || 'db.internal.net',\n  user: 'admin',\n  password: 'ProductionSecretPassword2026!',\n  database: 'customer_records'\n};",
+    "environment": "production"
+  }
+}

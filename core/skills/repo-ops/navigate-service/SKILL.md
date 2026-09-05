@@ -1,6 +1,7 @@
 ---
 name: navigate-service
 description: Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, run_dev_server, execute_command]
 ---
 
 # Navigate Service
@@ -50,7 +51,7 @@ Skip emission for trivial lookups that do not cross a role boundary.
 - **Service map missing**: the repo has no OpenAPI/AsyncAPI spec and no service map. Mitigation: generate the spec from code as the first navigation artifact.
 - **Layout assumed from prior experience**: the summary assumes a fixed folder layout or framework. Mitigation: discover boundaries from the codebase, not from prior expectations.
 
-## When To Use
+## Navigation Triggers
 
 - the user asks how a service works
 - the user needs to find where a behavior is implemented

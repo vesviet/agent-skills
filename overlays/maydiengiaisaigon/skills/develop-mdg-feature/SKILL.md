@@ -1,6 +1,7 @@
 ---
 name: develop-mdg-feature
 description: Develop features for the Máy Điện Giải Sài Gòn Laravel 13 + Filament v4 e-commerce. Use when adding Filament admin resources, Blade pages, Livewire components, or e-commerce logic (cart, checkout, orders) in this specific project.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, astro_build, astro_check, astro_dev, run_tests]
 ---
 
 # Develop MDG Feature

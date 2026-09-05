@@ -1,6 +1,7 @@
 ---
 name: conduct-research
 description: Execute iterative, deeply-verified research to discover, validate, and synthesize complex information. Use for deep (10+ round) or scoped (3+ round with waiver) investigation before architecture, product, or content decisions. Applies AI-era source discipline (primary source hierarchy, Chain-of-Verification, hallucination mitigation, grounding protocol) and delivers information gain assessment for SEO/content handoffs. Primary skill for the Researcher role.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Conduct Research

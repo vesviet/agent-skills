@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "PushNotificationConfig",
+    "SSRF validation",
+    "private IP range block",
+    "callback_url",
+    "allowlist"
+  ],
+  "must_not_include": [
+    "allow internal loopback callback",
+    "bypass SSRF filter"
+  ],
+  "required_tokens": [
+    "PushNotificationConfig",
+    "SSRF validation",
+    "private IP range block",
+    "callback_url",
+    "allowlist"
+  ],
+  "forbidden_tokens": [
+    "allow internal loopback callback",
+    "bypass SSRF filter"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/coordination-plan.json",
+    "contract_type": "coordination-plan"
+  }
+}

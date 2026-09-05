@@ -105,6 +105,6 @@ For the per-layer failure pattern library (Build/Generation, Startup,
 Runtime, Data/Persistence, Dependency/Network, Environment/Rollout), the
 diagnostic decision tree, the K8s diagnostic signals, the distributed-trace
 rule, and the AI log analysis advisory, see
-[`references/common-failure-areas.md`](references/common-failure-areas.md).
+[`common-failure-areas.md`](common-failure-areas.md).
 
 

@@ -1,6 +1,7 @@
 ---
 name: configure-llms-txt
 description: Create and maintain the llms.txt and llms-full.txt files for a domain or project, making documentation and content discoverable by AI agents, LLMs, and automated tools per the llmstxt.org specification. Use when a site or API has AI agent interfaces, when optimizing for Generative Engine Optimization (GEO) and Agentic SEO (A-SEO), or when implementing the dual-audience documentation standard required by technical-writer role.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, fetch]
 ---
 
 # Configure llms.txt

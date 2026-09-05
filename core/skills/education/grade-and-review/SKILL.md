@@ -1,6 +1,7 @@
 ---
 name: grade-and-review
 description: Evaluate learner work and provide constructive feedback on the designated grading scale. Use when grading assignments, reviewing student submissions, or providing improvement guidance at any educational level.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
 # Grade And Review

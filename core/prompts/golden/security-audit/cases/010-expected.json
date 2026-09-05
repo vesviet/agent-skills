@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "ASI04",
+    "supply chain",
+    "hash pinning",
+    "unverified MCP tool",
+    "integrity verification"
+  ],
+  "must_not_include": [
+    "latest tag safe",
+    "unpinned dependency approved"
+  ],
+  "required_tokens": [
+    "ASI04",
+    "supply chain",
+    "hash pinning",
+    "unverified MCP tool",
+    "integrity verification"
+  ],
+  "forbidden_tokens": [
+    "latest tag safe",
+    "unpinned dependency approved"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/security-audit.json",
+    "contract_type": "security-audit"
+  }
+}

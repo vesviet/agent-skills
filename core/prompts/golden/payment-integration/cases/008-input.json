@@ -1,0 +1,12 @@
+{
+  "case_id": "PAY-008",
+  "name": "Stripe Dynamic Payment Methods Configuration",
+  "work_type": "implementation",
+  "role": "ecommerce-engineer",
+  "skill": "integrate-payment-gateway",
+  "user_request": "Configure Stripe Checkout / PaymentIntent to leverage dynamic automatic payment methods rather than hardcoded cards.",
+  "target": "services/checkout/session.ts",
+  "context": {
+    "methods_supported": "Apple Pay, Google Pay, Klarna, SEPA, iDEAL"
+  }
+}

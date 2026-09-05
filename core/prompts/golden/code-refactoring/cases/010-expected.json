@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "performance-profiling",
+    "benchmark before/after",
+    "zero regression",
+    "memory allocation",
+    "hot path"
+  ],
+  "must_not_include": [
+    "optimize without measurement",
+    "untested micro-optimization"
+  ],
+  "required_tokens": [
+    "performance-profiling",
+    "benchmark before/after",
+    "zero regression",
+    "memory allocation",
+    "hot path"
+  ],
+  "forbidden_tokens": [
+    "optimize without measurement",
+    "untested micro-optimization"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

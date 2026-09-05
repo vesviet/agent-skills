@@ -1,6 +1,7 @@
 ---
 name: plan-technical-delivery
 description: Turn architecture decisions and requirements into a delivery-ready technical plan with slices, quality gates, impact radius, and rollout notes. Use when Technical Lead breaks down implementation work for developers, QA, and release.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Plan Technical Delivery

@@ -1,6 +1,7 @@
 ---
 name: create-migration
 description: Create safe schema or data migrations by following the repo's local migration tool, naming rules, rollout constraints, and rollback expectations. Use when adding, changing, backfilling, cleaning, or repairing persisted data structures.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, query_db, read_database, run_tests]
 ---
 
 # Create Migration

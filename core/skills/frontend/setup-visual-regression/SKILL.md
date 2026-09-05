@@ -1,6 +1,7 @@
 ---
 name: setup-visual-regression
 description: Configure automated visual diffing for UI components and pages. Use when establishing pixel-level regression testing, cross-browser snapshot baselines, or CI visual gates.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, run_dev_server, execute_command]
 ---
 
 # Setup Visual Regression

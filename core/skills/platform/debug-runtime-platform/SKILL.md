@@ -1,6 +1,7 @@
 ---
 name: debug-runtime-platform
 description: Investigate deployment, environment, runtime, and rollout issues that are not purely application-code bugs. Use when the service behaves differently across environments or when deployment health is unclear.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Debug Runtime Platform
@@ -109,7 +110,8 @@ Confirm:
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and 
+alidation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 

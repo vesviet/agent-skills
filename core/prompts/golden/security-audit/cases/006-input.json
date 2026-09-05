@@ -1,0 +1,13 @@
+{
+  "case_id": "SEC-006",
+  "name": "Insecure Deserialization in Sandbox Runtime (CWE-502 / OWASP ASI05)",
+  "work_type": "audit",
+  "role": "security-engineer",
+  "skill": "security-audit",
+  "user_request": "Audit python executor worker receiving serialized task payloads over queue.",
+  "target": "runtime/sandbox/executor.py",
+  "context": {
+    "code_snippet": "import pickle\n\ndef handle_task_message(raw_bytes: bytes):\n    task_payload = pickle.loads(raw_bytes)\n    return task_payload.execute()",
+    "environment": "execution_sandbox"
+  }
+}

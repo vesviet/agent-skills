@@ -1,6 +1,7 @@
 ---
 name: optimize-seo
 description: Research search intent, define keywords, produce SEO content briefs, audit on-page elements, optimize for AI search visibility (GEO/AEO), specify structured data, enforce E-E-A-T quality gates, and deliver metadata and recommendations without owning full article drafting or technical deployment. Use when planning publishable content, reviewing drafts before release, mapping internal links, interpreting Search Console signals, or ensuring AI citation readiness.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, fetch]
 ---
 
 # Optimize SEO

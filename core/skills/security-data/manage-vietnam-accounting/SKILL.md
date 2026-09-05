@@ -1,6 +1,7 @@
 ---
 name: manage-vietnam-accounting
 description: Prepare and review Vietnam accounting controls, accounting-regime evidence, reconciliations, invoice data, period-close workpapers, and retention records without executing filings or external accounting actions. Use when a Vietnamese entity needs an accounting-domain handoff, control review, or implementation-ready accounting rule clarification.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Manage Vietnam Accounting

@@ -1,6 +1,7 @@
 ---
 name: troubleshoot-service
 description: Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the failing layer, validating assumptions, and confirming recovery. Use when a service fails, behaves unexpectedly, or differs across environments.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Troubleshoot Service

@@ -1,6 +1,7 @@
 ---
 name: add-ui-component
 description: Add or evolve a reusable UI component by following the repo's design system, composition patterns, accessibility rules, and state boundaries. Use when building frontend components or shared presentation elements.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, run_dev_server, execute_command]
 ---
 
 # Add UI Component

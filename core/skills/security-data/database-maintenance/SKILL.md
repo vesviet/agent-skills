@@ -1,6 +1,7 @@
 ---
 name: database-maintenance
 description: Plan or perform operational database maintenance by following the repo's safety, backup, rollback, and verification patterns. Use for cleanup, backfill, index work, repair tasks, restore preparation, or other operational data changes.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, query_db, read_database, run_tests]
 ---
 
 # Database Maintenance

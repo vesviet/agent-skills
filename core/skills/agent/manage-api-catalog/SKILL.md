@@ -1,6 +1,7 @@
 ---
 name: manage-api-catalog
 description: Use when publishing and maintaining RFC 9727 API Catalog registries for automated API discovery by agents, developer tools, and client SDKs.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, fetch, http_get, http_post, execute_command]
 ---
 
 # Manage API Catalog

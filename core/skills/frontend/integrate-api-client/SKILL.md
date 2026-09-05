@@ -1,6 +1,7 @@
 ---
 name: integrate-api-client
 description: Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handling, and state-management patterns. Use when a UI needs to read or mutate backend data.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, run_dev_server, execute_command]
 ---
 
 # Integrate API Client
@@ -131,7 +132,9 @@ Cover:
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/implementation-result.json** — Required fields: change_summary, iles_touched[], and alidation_run. Set produced_by_role to the emitting developer role.
+- **contracts/schemas/implementation-result.json** — Required fields: change_summary, 
+iles_touched[], and 
+alidation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 

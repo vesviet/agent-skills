@@ -1,0 +1,13 @@
+{
+  "case_id": "SEC-009",
+  "name": "Stored Cross-Site Scripting in Render Pipeline (CWE-79)",
+  "work_type": "audit",
+  "role": "security-engineer",
+  "skill": "security-audit",
+  "user_request": "Review frontend article viewer component rendering user-submitted markdown content.",
+  "target": "components/ArticleViewer.vue",
+  "context": {
+    "code_snippet": "<template>\n  <div class=\"article-body\" v-html=\"marked(article.content)\"></div>\n</template>\n<script setup>\nimport { marked } from 'marked';\nconst props = defineProps(['article']);\n</script>",
+    "environment": "production"
+  }
+}

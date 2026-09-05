@@ -1,6 +1,7 @@
 ---
 name: release-notes
 description: Draft, structure, and review release notes for a software change so that users, operators, and downstream consumers understand what changed, what broke compatibility, and what action they must take. Use when shipping a feature, fix, or breaking change that requires external communication.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
 # Release Notes
@@ -14,7 +15,7 @@ Use this skill when a release, deployment, or version bump requires communicatio
 - a changelog or release communication needs to be written and reviewed
 - internal teams need a structured summary of what changed for handoff or support
 
-## When to Use
+## Scope & Triggers
 
 - shipping a feature, fix, or breaking change
 - external communication of what changed

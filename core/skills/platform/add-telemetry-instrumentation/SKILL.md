@@ -1,6 +1,7 @@
 ---
 name: add-telemetry-instrumentation
 description: Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.input_tokens, gen_ai.request.model), multi-agent workflow correlation, RAG step spans, and tool invocation traces.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Add Telemetry Instrumentation
@@ -92,7 +93,8 @@ Confirm that logs, metrics labels, and trace attributes do not expose secrets, c
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and alidation_run. Set produced_by_role to the emitting developer role.
+- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and 
+alidation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 

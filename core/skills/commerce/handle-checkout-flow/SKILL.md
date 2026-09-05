@@ -1,6 +1,7 @@
 ---
 name: handle-checkout-flow
 description: Design and implement the end-to-end checkout flow including cart management, tax and shipping calculation, discount/coupon application, and order confirmation. Use when building or fixing any step in the purchase funnel from cart to payment confirmation.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, fetch]
 ---
 
 # Handle Checkout Flow

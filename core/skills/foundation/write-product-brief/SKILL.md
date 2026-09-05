@@ -1,6 +1,7 @@
 ---
 name: write-product-brief
 description: Write or refine a product brief that makes user value, business outcome, preserved behavior, affected users, acceptance boundaries, and trade-offs explicit. Use when a feature, bug fix, workaround, rollback, or scope decision needs a product-facing decision artifact before implementation or release.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Write Product Brief

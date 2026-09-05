@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Validate the engineering skill pack without third-party dependencies."""
 
-from __future__ import annotations
-
 import re
 import sys
 from pathlib import Path
+
+import yaml
 
 from common import (
     ROOT,
@@ -21,10 +21,84 @@ from common import (
 
 
 SKILL_NAME_RE = re.compile(r"^[a-z0-9-]{1,64}$")
+TOOL_NAME_RE = re.compile(r"^[a-z0-9_]{1,64}$")
 XML_TAG_RE = re.compile(r"<[a-zA-Z][^>]*>")
+FORBIDDEN_TOOL_CHARS = set(";&|`$<>(){}[]*?\\\"'")
 # Reserved per the Anthropic platform rules layered on the open Agent Skills
 # spec (agentskills.io) that skills.sh indexes against.
 RESERVED_NAME_WORDS = ("anthropic", "claude")
+RESERVED_TOOL_WORDS = ("anthropic", "claude")
+
+OVERLAY_SKILL_ROLES: dict[str, list[str]] = {
+    "develop-golf-feature": ["frontend-developer"],
+    "develop-icm-feature": ["frontend-developer"],
+    "develop-laravel-feature": ["backend-developer"],
+    "write-leaseinvietnam-maylanhtreotuong-data": ["content-writer"],
+    "develop-mdg-feature": ["frontend-developer"],
+    "develop-obj-feature": ["3d-graphics-engineer"],
+    "debug-3d-scene": ["3d-graphics-engineer"],
+    "integrate-r3f-three-legacy": ["3d-graphics-engineer"],
+    "optimize-3d-assets": ["3d-graphics-engineer"],
+    "write-vesviet-learn-content": ["content-writer"],
+}
+
+_TOOL_MAP_CACHE: dict[str, str] | None = None
+_ROLE_DENIED_CACHE: dict[str, set[str]] | None = None
+_SKILL_TO_ROLE_CACHE: dict[str, list[str]] | None = None
+
+
+def get_tool_actions() -> dict[str, str]:
+    global _TOOL_MAP_CACHE
+    if _TOOL_MAP_CACHE is None:
+        policy_file = CORE_ROOT / "policies" / "mcp-tool-map.yaml"
+        if policy_file.exists():
+            data = yaml.safe_load(policy_file.read_text(encoding="utf-8"))
+            _TOOL_MAP_CACHE = data.get("tool_actions", {})
+        else:
+            _TOOL_MAP_CACHE = {}
+    return _TOOL_MAP_CACHE
+
+
+def get_role_denied_actions() -> dict[str, set[str]]:
+    global _ROLE_DENIED_CACHE
+    if _ROLE_DENIED_CACHE is None:
+        policy_file = CORE_ROOT / "policies" / "action-boundaries.yaml"
+        if policy_file.exists():
+            data = yaml.safe_load(policy_file.read_text(encoding="utf-8"))
+            roles_data = data.get("roles", {})
+            _ROLE_DENIED_CACHE = {
+                role: set(perms.get("denied", []))
+                for role, perms in roles_data.items()
+            }
+        else:
+            _ROLE_DENIED_CACHE = {}
+    return _ROLE_DENIED_CACHE
+
+
+def get_skill_to_role() -> dict[str, list[str]]:
+    global _SKILL_TO_ROLE_CACHE
+    if _SKILL_TO_ROLE_CACHE is None:
+        mapping: dict[str, list[str]] = {
+            sk: list(roles) if isinstance(roles, (list, tuple, set)) else [roles]
+            for sk, roles in OVERLAY_SKILL_ROLES.items()
+        }
+        role_files = sorted(
+            p for p in (CORE_ROOT / "roles").glob("*.md")
+            if p.name not in {"README.md", "role-standard.md"}
+        )
+        for rf in role_files:
+            text = rf.read_text(encoding="utf-8")
+            prim = re.search(r"### Primary Skills\s*\n(.*?)(?=\n### |\n## |\Z)", text, re.S)
+            if prim:
+                for sk in re.findall(r"(?m)^- `([a-z0-9-]+)`", prim.group(1)):
+                    if sk not in mapping:
+                        mapping[sk] = []
+                    if rf.stem not in mapping[sk]:
+                        mapping[sk].append(rf.stem)
+        _SKILL_TO_ROLE_CACHE = mapping
+    return _SKILL_TO_ROLE_CACHE
+
+
 REQUIRED_SECTIONS = (
     "## Core Rules",
     "## Suggested Process",
@@ -93,7 +167,10 @@ def slug_from_h1(line: str) -> str:
 
 
 def validate_skill(path: Path, known_skills: set[str]) -> list[str]:
-    rel = path.relative_to(ROOT)
+    try:
+        rel = path.relative_to(ROOT)
+    except ValueError:
+        rel = path
     text = path.read_text(encoding="utf-8")
     metadata, body, errors = parse_frontmatter(text)
 
@@ -140,6 +217,51 @@ def validate_skill(path: Path, known_skills: set[str]) -> list[str]:
         and all(isinstance(k, str) and isinstance(v, str) for k, v in spec_metadata.items())
     ):
         errors.append("metadata must be a map of string keys to string values")
+
+    # allowed-tools validation (agentskills.io late-2026 standard)
+    if "allowed-tools" not in metadata:
+        errors.append("missing frontmatter field: allowed-tools")
+    else:
+        allowed_tools = metadata.get("allowed-tools")
+        if not isinstance(allowed_tools, list) or len(allowed_tools) == 0:
+            errors.append("allowed-tools must be a non-empty list of tool names")
+        else:
+            tool_actions = get_tool_actions()
+            role_denied = get_role_denied_actions()
+            skill_roles = get_skill_to_role()
+            owning_roles = skill_roles.get(name, [])
+
+            for tool in allowed_tools:
+                if not isinstance(tool, str):
+                    errors.append(f"allowed-tools item must be a string: {tool}")
+                    continue
+                if not TOOL_NAME_RE.fullmatch(tool):
+                    errors.append(f"tool '{tool}' must be lowercase letters, numbers, and underscores, max 64 chars")
+                if tool.startswith(("-", "_")) or tool.endswith(("-", "_")):
+                    errors.append(f"tool '{tool}' must not start or end with a hyphen or underscore")
+                if "--" in tool or "__" in tool:
+                    errors.append(f"tool '{tool}' must not contain consecutive hyphens or underscores")
+                if XML_TAG_RE.search(tool):
+                    errors.append(f"tool '{tool}' must not contain XML tags")
+                if any(c in tool for c in FORBIDDEN_TOOL_CHARS):
+                    errors.append(f"tool '{tool}' contains forbidden shell metacharacters")
+                lowered_tool = tool.lower()
+                for word in RESERVED_TOOL_WORDS:
+                    if word in lowered_tool:
+                        errors.append(f"tool '{tool}' must not contain reserved word: {word}")
+                if tool not in tool_actions:
+                    errors.append(f"allowed-tools references unknown tool: {tool}")
+                elif owning_roles:
+                    action = tool_actions[tool]
+                    for owning_role in owning_roles:
+                        if owning_role in role_denied and action in role_denied[owning_role]:
+                            errors.append(
+                                f"tool '{tool}' (action: {action}) is denied for role '{owning_role}' in action-boundaries.yaml"
+                            )
+
+    total_lines = len(text.splitlines())
+    if total_lines >= 200:
+        errors.append(f"SKILL.md exceeds maximum allowed length (< 200 lines, current: {total_lines})")
 
     body_without_fences = strip_fenced_blocks(body)
     h1_lines = [line for line in body_without_fences.splitlines() if line.startswith("# ")]

@@ -1,6 +1,7 @@
 ---
 name: add-service-client
 description: Add or modify a service-to-service client or downstream integration by following the repo's transport, timeout, retry, auth, and error-mapping patterns. Use when one service needs to call another system.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Add Service Client

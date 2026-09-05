@@ -1,0 +1,13 @@
+{
+  "case_id": "A2A-004",
+  "name": "A2A Task Dispatch with Input Constraints and Schema Reference",
+  "work_type": "coordination",
+  "role": "agent-coordinator",
+  "skill": "agent-a2a-protocol",
+  "user_request": "Dispatch a schema-validated task to backend-developer specifying api-contract-spec output contract.",
+  "target": "protocol/dispatcher.ts",
+  "context": {
+    "payload_schema": "core/contracts/schemas/a2a-task.json",
+    "task_state": "submitted"
+  }
+}
