@@ -6,7 +6,7 @@
     "roles": 34,
     "skills": 107,
     "workflows": 24,
-    "schemas": 48
+    "schemas": 50
   },
   "role_aliases": {
     "writer": "content-writer",
@@ -2078,6 +2078,12 @@
       "title": "AI Risk Register",
       "file": "core/contracts/schemas/ai-risk-register.json"
     },
+    "amis-voucher-contract.json": {
+      "name": "amis-voucher-contract.json",
+      "stem": "amis-voucher-contract",
+      "title": "AMIS Accounting Voucher Contract",
+      "file": "core/contracts/schemas/amis-voucher-contract.json"
+    },
     "api-contract-spec.json": {
       "name": "api-contract-spec.json",
       "stem": "api-contract-spec",
@@ -2251,6 +2257,12 @@
       "stem": "solution-brief",
       "title": "Solution Brief",
       "file": "core/contracts/schemas/solution-brief.json"
+    },
+    "stock-audit-session.json": {
+      "name": "stock-audit-session.json",
+      "stem": "stock-audit-session",
+      "title": "Stock Audit Session Contract",
+      "file": "core/contracts/schemas/stock-audit-session.json"
     },
     "system-design-spec.json": {
       "name": "system-design-spec.json",

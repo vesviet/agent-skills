@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**48 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 47/48
+**50 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 49/50
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 
@@ -36,6 +36,8 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | **Finance, Accounting & Compliance** | | | |
 | `accounting-compliance-review.json` | Vietnam Accounting Compliance Review | ✅ | ✅ |
 | `period-end-closing-report.json` | Period-End Closing Report | ✅ | ✅ |
+| `amis-voucher-contract.json` | AMIS Accounting Voucher Contract | ✅ | ✅ |
+| `stock-audit-session.json` | Stock Audit Session Contract | ✅ | ✅ |
 | **Design & Content** | | | |
 | `ux-flow-spec.json` | UX Flow Specification | ✅ | ✅ |
 | `ui-component-spec.json` | UI Component Specification | ✅ | ✅ |
@@ -137,6 +139,14 @@ feature-ticket.json
           → validation-result.json (phase gate, Agent Coordinator)
 ```
 
+The retail inventory & accounting chain references:
+
+```
+stock-audit-session.json
+  → amis-voucher-contract.json (adjustment entries: TK 1381 / TK 3381)
+    → period-end-closing-report.json (financial period cut-off & trial balance)
+```
+
 ---
 
 ## Ownership
@@ -164,6 +174,8 @@ feature-ticket.json
 | `incident-report.json` | SRE | Technical Writer, Technical Lead, Project Manager |
 | `accounting-compliance-review.json` | Vietnam Accounting Specialist | Business Analyst, Backend Developer, E-commerce Engineer, Data Analyst, QA Engineer, Security Engineer, Agent Coordinator, qualified human reviewers |
 | `period-end-closing-report.json` | Vietnam Accounting Specialist | Chief Accountant, CFO, Legal Representative, qualified human reviewers, Tax Authority auditors |
+| `amis-voucher-contract.json` | Vietnam Accounting Specialist, Data Engineer | Chief Accountant, MISA AMIS ERP, Auditor |
+| `stock-audit-session.json` | Store Manager, Inventory Counter | Vietnam Accounting Specialist, Operations Manager, Lakehouse ETL |
 | `ux-flow-spec.json` | UI/UX Designer | Frontend Developer, Backend Developer, QA Engineer, Technical Lead |
 | `ui-component-spec.json` | UI/UX Designer | Frontend Developer, Mobile Engineer, QA Engineer |
 | `content-handoff.json` | Content Writer | SEO Analyst, Publisher, Editor |

@@ -102,7 +102,7 @@ def check_no_stray_versions(version: str) -> list[str]:
     context that reads like the pack's own version."""
     errors: list[str] = []
     pattern = re.compile(r"agent-skills[ @v]+([0-9]+\.[0-9]+\.[0-9]+)")
-    skip_parts = {".git", "__pycache__", "node_modules"}
+    skip_parts = {".git", "__pycache__", "node_modules", ".agents"}
     for path in sorted(ROOT.rglob("*")):
         if not path.is_file() or set(path.parts) & skip_parts:
             continue

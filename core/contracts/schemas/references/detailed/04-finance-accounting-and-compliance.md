@@ -18,3 +18,20 @@ Structured deliverable emitted by Vietnam Accounting Specialist upon executing p
 Required fields: `contract_type`, `closing_id`, `entity`, `period`, `accounting_regime`, `subledger_reconciliations`, `closing_adjustments`, `account_911_clearing`, `financial_statements_package`, `audit_trail`, `hitl_approval`, `data_classification`
 Size: 17,053 bytes
 ✅ Has example
+
+#### `amis-voucher-contract.json`
+
+**AMIS Accounting Voucher Contract**
+Enterprise financial schema for multi-channel retail vouchers (Sales Invoices, Delivery Notes cum Sales Invoices, Receipt Vouchers, and Platform Fee Allocations) exported to MISA AMIS ERP, enforcing VAS 14 revenue recognition, 3-tier voucher breakdown, pre-tax VAT decomposition, and strict debit-credit balance verification.
+
+Required fields: `contract_type`, `batch_id`, `accounting_period`, `legal_entity`, `accounting_regime`, `channel`, `summary`, `vouchers`
+✅ Has example
+
+#### `stock-audit-session.json`
+
+**Stock Audit Session Contract**
+Physical inventory stocktake contract governing the entire audit lifecycle (draft, in_progress, review, recount, closed), offline PWA/HID barcode event streams, tolerance thresholds, anti-anchoring blind recounts, variance reconciliation, TK 1381/3381 suspense accounting, and multi-tier approval sign-offs.
+
+Required fields: `contract_type`, `session_id`, `store_code`, `store_name`, `audit_type`, `lifecycle_status`, `created_by`, `created_at`, `tolerance_config`, `reconciliation_summary`, `items_variance`, `approvals`
+✅ Has example
+

@@ -57,6 +57,7 @@ Current overlays:
 - `seo-publishing`: SEO publishing cadence and board conventions
 - `sport-icm`: Sport catalog conventions for the ICM Cloudflare site
 - `ui-design-system`: shared UI/design-system conventions
+- `retail-data-warehouse`: retail data warehouse conventions (DuckDB Single-Writer, MISA AMIS ERP, Blind Recount, PII Masking)
 
 Overlay-specific skills are intentionally kept out of the global core inventory.
 

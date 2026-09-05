@@ -2,7 +2,7 @@
 
 Packs describe how to assemble the portable core with zero or more overlays for a target team. Each pack has a `manifest.yaml` that declares which `core` and `overlays/` to include, along with 2026 governance metadata.
 
-## Available Packs (13)
+## Available Packs (14)
 
 | Pack | Manifest | Composition | Capabilities |
 |------|----------|-------------|-------------|
@@ -19,6 +19,7 @@ Packs describe how to assemble the portable core with zero or more overlays for 
 | `data-engineer-team` | [manifest.yaml](data-engineer-team/manifest.yaml) | `core` + `overlays/data-engineer-rabity` | dbt 1.9, Iceberg, Kafka, Spark |
 | `content-sprint-team` | [manifest.yaml](content-sprint-team/manifest.yaml) | `core` + `overlays/seo-publishing` | GEO/AEO, AI Overviews, publishing cadence |
 | `donthan-team` | [manifest.yaml](donthan-team/manifest.yaml) | `core` + `overlays/donthan-web` | Frontend, UX, livestream, PWA |
+| `retail-warehouse-team` | [manifest.yaml](retail-warehouse-team/manifest.yaml) | `core` + `overlays/retail-data-warehouse` | DuckDB Single-Writer, MISA AMIS ERP, Blind Recount, PII Masking |
 
 ## 2026 Manifest Schema (v2)
 
@@ -113,7 +114,7 @@ MCP tool discovery is dynamic (JSON-RPC `tools/list`) and does not use static ma
 
 ## Standard 2026 Alignment
 
-All 13 pack manifests follow `schema_version: "2"` and embed the
+All 14 pack manifests follow `schema_version: "2"` and embed the
 `governance` block (EU AI Act tier, audit logging, secret handling,
 human oversight). The 2026 upgrade pass added Failure Modes, Output
 Contracts, and Security Guardrails to the pack-level guidance.

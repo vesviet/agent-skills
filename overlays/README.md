@@ -9,7 +9,7 @@ Use an overlay when:
 - a workflow assumes one repository family or publishing pipeline
 - a pack needs local conventions that do not belong in the global core
 
-## Current Overlays (17)
+## Current Overlays (18)
 
 ### Stack Overlays (tech-specific, project-agnostic)
 
@@ -35,13 +35,14 @@ Use an overlay when:
 ### Content & Domain Overlays (domain-specific, project-agnostic)
 
 | Overlay | Domain | What it adds |
-|---------|--------|--------------|
+|---------|-------|--------------|
 | [vesviet-content](vesviet-content/README.md) | Vesviet / Learn Hugo sites | Brand voice, content schema, `write-vesviet-learn-content` skill, series publishing workflow |
 | [lease-content](lease-content/README.md) | Lease in Vietnam / Máy Lạnh Treo Tường (Astro) | Content schema, GEO/AEO baselines, `write-leaseinvietnam-maylanhtreotuong-data` skill |
 | [seo-publishing](seo-publishing/README.md) | Dual-site SEO sprint | 7-day topic boards, 2026 GEO/AI visibility tracking, cannibalization rules, cadence runbook |
 | [ui-design-system](ui-design-system/README.md) | UI design systems | Flow/component handoff conventions |
 | [data-analyst-stack](data-analyst-stack/README.md) | DuckDB + Metabase BI + dbt 1.9 + Iceberg | BI metric templates, Metabase spec template, dbt microbatch, Iceberg REST Catalog patterns |
 | [data-engineer-rabity](data-engineer-rabity/README.md) | Data engineering learning project | Learning conventions, 10-phase roadmap (Iceberg, dbt 1.9, Kafka, Spark) |
+| [retail-data-warehouse](retail-data-warehouse/README.md) | Omnichannel retail platform (DuckDB 1.5+, MISA AMIS, VAS 14, PWA) | DuckDB Single-Writer, MISA AMIS VAS 14 voucher splitting, blind recount physical stocktaking, Decree 13/2023/ND-CP PII masking |
 
 ## 2026 Critical Migration Notes
 

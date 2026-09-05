@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `4.1.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **24 Workflows** | **48 Data Contracts**
+> **Total Catalog:** **34 Roles** | **107 Skills** (97 Core + 10 Overlays) | **24 Workflows** | **50 Data Contracts**
 
 ---
 
@@ -414,7 +414,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 📑 Data Contracts & Schemas (48 Schemas)
+## 📑 Data Contracts & Schemas (50 Schemas)
 
 | Schema File | Schema Title | Path |
 |:---|:---|:---|
@@ -431,6 +431,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | `agent-card.json` | A2A Agent Card | [`core/contracts/schemas/agent-card.json`](./core/contracts/schemas/agent-card.json) |
 | `agent-trace-span.json` | Agent Trace Span | [`core/contracts/schemas/agent-trace-span.json`](./core/contracts/schemas/agent-trace-span.json) |
 | `ai-risk-register.json` | AI Risk Register | [`core/contracts/schemas/ai-risk-register.json`](./core/contracts/schemas/ai-risk-register.json) |
+| `amis-voucher-contract.json` | AMIS Accounting Voucher Contract | [`core/contracts/schemas/amis-voucher-contract.json`](./core/contracts/schemas/amis-voucher-contract.json) |
 | `api-contract-spec.json` | API Contract Specification | [`core/contracts/schemas/api-contract-spec.json`](./core/contracts/schemas/api-contract-spec.json) |
 | `architecture-options.json` | Architecture Options Brief | [`core/contracts/schemas/architecture-options.json`](./core/contracts/schemas/architecture-options.json) |
 | `aws-infra-spec.json` | AWS Infrastructure Specification | [`core/contracts/schemas/aws-infra-spec.json`](./core/contracts/schemas/aws-infra-spec.json) |
@@ -460,6 +461,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | `seo-weekly-board.json` | SEO Weekly Board | [`core/contracts/schemas/seo-weekly-board.json`](./core/contracts/schemas/seo-weekly-board.json) |
 | `series-article.json` | Series Article | [`core/contracts/schemas/series-article.json`](./core/contracts/schemas/series-article.json) |
 | `solution-brief.json` | Solution Brief | [`core/contracts/schemas/solution-brief.json`](./core/contracts/schemas/solution-brief.json) |
+| `stock-audit-session.json` | Stock Audit Session Contract | [`core/contracts/schemas/stock-audit-session.json`](./core/contracts/schemas/stock-audit-session.json) |
 | `system-design-spec.json` | System Design Specification | [`core/contracts/schemas/system-design-spec.json`](./core/contracts/schemas/system-design-spec.json) |
 | `technical-delivery-plan.json` | Technical Delivery Plan | [`core/contracts/schemas/technical-delivery-plan.json`](./core/contracts/schemas/technical-delivery-plan.json) |
 | `test-report.json` | QA Test Report | [`core/contracts/schemas/test-report.json`](./core/contracts/schemas/test-report.json) |

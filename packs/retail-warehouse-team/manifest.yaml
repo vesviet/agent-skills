@@ -1,0 +1,75 @@
+schema_version: "2"
+
+name: retail-warehouse-team
+display_name: Retail Data Warehouse & Stock Audit Team
+description: Global engineering core plus retail data warehouse overlay for omnichannel retail platforms. Covers DuckDB 1.5+ Single-Writer concurrency with AsyncCrossProcessLock, MISA AMIS ERP accounting under VAS 14, blind recount physical stocktaking, and PII masking via Salted SHA-256 / Pseudonymization under Decree 13/2023/ND-CP.
+version: 4.0.0
+
+tags:
+  - core
+  - retail
+  - data-warehouse
+  - duckdb
+  - amis-accounting
+  - stocktake
+  - pii-masking
+  - python
+author: user
+maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
+includes:
+  - core
+  - overlays/retail-data-warehouse
+
+capabilities:
+  - data-warehouse
+  - duckdb-single-writer
+  - accounting-automation
+  - stocktake-audit
+  - pii-scrubbing
+  - pipeline-development
+  - backend
+  - testing
+
+data_classification: confidential
+
+activation:
+  strategy: marker_first
+  markers:
+    - store/warehouse.duckdb
+    - libs/core/locks.py
+    - pipeline/channels/
+    - apps/stock-audit-svc/
+  glob_patterns:
+    - "pipeline/**/*.py"
+    - "apps/**/*.py"
+    - "libs/**/*.py"
+    - "store/**/*.duckdb"
+    - "specs/**/*.json"
+  exclude_patterns:
+    - "store/archive/**"
+    - "raw_data/pii/**"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - modify_production_data
+      - export_pii_data
+      - approve_stocktake_variance
+      - sync_amis_accounting
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly
