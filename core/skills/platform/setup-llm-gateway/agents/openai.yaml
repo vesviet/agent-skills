@@ -1,0 +1,4 @@
+interface:
+  display_name: "Setup Llm Gateway"
+  short_description: "Configure a centralized LLM proxy gateway for token routing, budgeting, and f..."
+  default_prompt: "Use $setup-llm-gateway to execute setup llm gateway tasks in this codebase."

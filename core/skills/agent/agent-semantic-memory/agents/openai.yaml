@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Semantic Memory"
+  short_description: "Read from and write to persistent memory stores so agents retain codebase pat..."
+  default_prompt: "Use $agent-semantic-memory to execute agent semantic memory tasks in this codebase."

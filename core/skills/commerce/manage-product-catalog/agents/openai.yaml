@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Product Catalog"
+  short_description: "Build or maintain a product catalog including product creation, variant manag..."
+  default_prompt: "Use $manage-product-catalog to execute manage product catalog tasks in this codebase."

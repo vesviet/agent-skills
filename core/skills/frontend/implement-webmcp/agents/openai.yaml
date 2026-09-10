@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement Webmcp"
+  short_description: "Exposes browser context, DOM state, and client-side actions to AI agents via ..."
+  default_prompt: "Use $implement-webmcp to execute implement webmcp tasks in this codebase."

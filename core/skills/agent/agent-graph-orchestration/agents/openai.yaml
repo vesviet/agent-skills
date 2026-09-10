@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Graph Orchestration"
+  short_description: "Model multi-phase delivery as a directed graph with parallel branches, phase ..."
+  default_prompt: "Use $agent-graph-orchestration to execute agent graph orchestration tasks in this codebase."

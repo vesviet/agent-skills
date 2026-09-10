@@ -213,7 +213,7 @@ def main() -> int:
                 "name": entry["role"].replace("-", " ").title(),
                 "description": entry["description"],
             }
-            for entry in entries[:20]  # top 20 roles for discovery
+            for entry in entries  # all 34 roles for comprehensive discovery
         ],
     }
     WELL_KNOWN_AGENT.write_text(
@@ -227,7 +227,9 @@ def main() -> int:
             {"type": "a2a", "url": "/.well-known/agent-card.json"},
             {"type": "registry", "url": "/.well-known/agent-registry.json"},
         ],
-        "mcp": [],
+        "mcp": [
+            {"type": "mcp-tool-map", "url": "core/policies/mcp-tool-map.yaml"},
+        ],
         "openapi": [],
     }
     AI_CATALOG.write_text(

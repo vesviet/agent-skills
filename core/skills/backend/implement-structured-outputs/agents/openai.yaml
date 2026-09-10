@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement Structured Outputs"
+  short_description: "Implements strict constrained decoding and validation for LLM responses"
+  default_prompt: "Use $implement-structured-outputs to execute implement structured outputs tasks in this codebase."

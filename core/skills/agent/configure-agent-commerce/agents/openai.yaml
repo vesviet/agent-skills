@@ -1,0 +1,4 @@
+interface:
+  display_name: "Configure Agent Commerce"
+  short_description: "Implements agentic commerce standards — x402 and Stripe's Machine Payments Pr..."
+  default_prompt: "Use $configure-agent-commerce to execute configure agent commerce tasks in this codebase."

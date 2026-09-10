@@ -39,12 +39,17 @@ Before executing any state-changing bash command or tool call:
    - `denied` → refuse and explain
 4. Classify any output data with `core/policies/data-classification.yaml` before sharing.
 
-You can run the policy check script manually:
+Configure `.claude/settings.json` (via `adapters/claude/settings.template.json`) to automate pre-command verification via `PreToolUse` hooks, or run manually:
 
 ```bash
 AGENT_SKILLS_ROOT=$(pwd) AGENT_ACTIVE_ROLE=<role> CURSOR_TOOL_NAME=<tool> \
   python3 core/scripts/hooks/check-policy.py
 ```
+
+Available slash commands (`adapters/claude/commands/`):
+- `/check-policy` — audit active role permissions against `action-boundaries.yaml`
+- `/coordinate` — dispatch multi-role plan via `agent-coordinator`
+- `/review` — perform rigorous code review with `code-review-finding.json`
 
 ---
 
@@ -146,6 +151,8 @@ python3 core/scripts/generate-a2a-registry.py
 | Kilo Code rules | `.kilocode/rules/agent-skills.md` |
 | Codex adapter | `core/codex/README.md` |
 | Claude adapter | `adapters/claude/CLAUDE_ADAPTER.md` |
+| Claude settings template | `adapters/claude/settings.template.json` |
+| Claude slash commands | `adapters/claude/commands/` |
 | Action boundaries | `core/policies/action-boundaries.yaml` |
 | MCP tool map | `core/policies/mcp-tool-map.yaml` |
 | Overlay index | `overlays/README.md` |
@@ -170,4 +177,4 @@ consistent Standard 2026 pointer.
   follow the META-RULE in `core/rules/code.md` — no commit, no push, no
   publish without explicit user confirmation.
 
-Last updated: 2026-09-01
+Last updated: 2026-09-10

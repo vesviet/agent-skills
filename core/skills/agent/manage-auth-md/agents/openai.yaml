@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Auth Md"
+  short_description: "Execute specialized engineering skill"
+  default_prompt: "Use $manage-auth-md to execute manage auth md tasks in this codebase."

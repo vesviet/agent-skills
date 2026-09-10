@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage API Catalog"
+  short_description: "Execute specialized engineering skill"
+  default_prompt: "Use $manage-api-catalog to execute manage api catalog tasks in this codebase."

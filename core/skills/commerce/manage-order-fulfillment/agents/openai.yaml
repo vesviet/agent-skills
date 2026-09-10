@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Order Fulfillment"
+  short_description: "Implement and manage the post-purchase order lifecycle including order status..."
+  default_prompt: "Use $manage-order-fulfillment to execute manage order fulfillment tasks in this codebase."

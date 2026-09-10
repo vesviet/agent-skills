@@ -1,0 +1,4 @@
+interface:
+  display_name: "Configure Agent Skills"
+  short_description: "Creates and manages the agentskills.io manifest index at `/.well-known/agent-..."
+  default_prompt: "Use $configure-agent-skills to execute configure agent skills tasks in this codebase."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy Proxyware Fleet"
+  short_description: "Containerize and orchestrate massive fleets of passive income nodes (Honeygai..."
+  default_prompt: "Use $deploy-proxyware-fleet to execute deploy proxyware fleet tasks in this codebase."

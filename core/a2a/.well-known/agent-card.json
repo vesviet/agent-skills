@@ -119,6 +119,76 @@
       "id": "qa-engineer",
       "name": "Qa Engineer",
       "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escap"
+    },
+    {
+      "id": "researcher",
+      "name": "Researcher",
+      "description": "run deep, iterative investigation and deliver triangulated, structured findings that downstream roles can act on without"
+    },
+    {
+      "id": "reviewer",
+      "name": "Reviewer",
+      "description": "raise quality through precise, evidence-based review that catches defects, protects maintainability, and teaches good pa"
+    },
+    {
+      "id": "security-engineer",
+      "name": "Security Engineer",
+      "description": "reduce security risk early by identifying weaknesses in design, code, configuration, dependencies, and operations before"
+    },
+    {
+      "id": "seo-analyst",
+      "name": "Seo Analyst",
+      "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third"
+    },
+    {
+      "id": "solution-architect",
+      "name": "Solution Architect",
+      "description": "translate business goals, stakeholder constraints, and existing capability into a structured solution design that engine"
+    },
+    {
+      "id": "sre",
+      "name": "Sre",
+      "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2025–2026"
+    },
+    {
+      "id": "system-engineer",
+      "name": "System Engineer",
+      "description": "design, implement, and optimize complex systems end-to-end — from hardware and OS configuration through network topology"
+    },
+    {
+      "id": "task-planner",
+      "name": "Task Planner",
+      "description": "produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation check"
+    },
+    {
+      "id": "teacher",
+      "name": "Teacher",
+      "description": "empower learners to acquire knowledge, internalize core concepts across technical and scientific disciplines, and valida"
+    },
+    {
+      "id": "technical-architect",
+      "name": "Technical Architect",
+      "description": "shape system structure and technical direction so the product can evolve safely, coherently, and at the right cost witho"
+    },
+    {
+      "id": "technical-lead",
+      "name": "Technical Lead",
+      "description": "turn architecture and requirements into a delivery-ready technical plan, guide implementation quality, and keep engineer"
+    },
+    {
+      "id": "technical-writer",
+      "name": "Technical Writer",
+      "description": "make systems, features, and operational procedures understandable so that users, teams, and AI agents can act without gu"
+    },
+    {
+      "id": "ui-ux-designer",
+      "name": "Ui Ux Designer",
+      "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2"
+    },
+    {
+      "id": "vietnam-accounting-specialist",
+      "name": "Vietnam Accounting Specialist",
+      "description": "govern Vietnam accounting-domain interpretation, evidence review, reconciliations, period-close controls, e-invoice data"
     }
   ]
 }

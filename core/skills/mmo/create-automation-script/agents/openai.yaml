@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Automation Script"
+  short_description: "Build Playwright/Puppeteer automation scripts that connect via CDP to Anti-De..."
+  default_prompt: "Use $create-automation-script to execute create automation script tasks in this codebase."

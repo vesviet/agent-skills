@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Observability"
+  short_description: "Trace agent reasoning chains, tool call sequences, context injections, and to..."
+  default_prompt: "Use $agent-observability to execute agent observability tasks in this codebase."

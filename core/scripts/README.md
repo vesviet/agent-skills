@@ -75,6 +75,13 @@ Generate skill dependency graph (Mermaid):
 python3 core/scripts/generate-skill-graph.py
 ```
 
+Generate OpenAI Codex interface descriptors (`agents/openai.yaml`):
+
+```bash
+python3 core/scripts/generate-codex-skills.py
+python3 core/scripts/generate-codex-skills.py --check
+```
+
 ## Utility Scripts
 
 Inject `## Output Contracts` into SKILL.md files (cross-platform, no hardcoded paths):

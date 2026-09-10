@@ -4,8 +4,69 @@
   "rules_source": "AGENTS.md",
   "a2a-discovery": {
     "registryURL": "pack://agent-skills/core/a2a/.well-known/agent-registry.json",
+    "canonicalAgent": "core/a2a/.well-known/agent.json",
+    "aiCatalog": "core/a2a/.well-known/ai-catalog.json",
+    "agentCardsPattern": "core/a2a/registry/{role}.agent-card.json",
     "syncInterval": 3600,
     "notificationTimeout": 10,
     "discoveryDelay": 5
+  },
+  "defaults": {
+    "interaction_mode": "stream",
+    "risk_tier": "engineering",
+    "timeout_minutes": 120,
+    "authentication_scheme": "pack-local"
+  },
+  "streaming": {
+    "enabled": true,
+    "event_schema": "core/contracts/schemas/a2a-task-progress.json",
+    "sse_content_type": "text/event-stream"
+  },
+  "operations": {
+    "invoke_schema": "core/contracts/schemas/a2a-jsonrpc-envelope.json",
+    "task_schema": "core/contracts/schemas/a2a-task.json",
+    "artifact_schema": "core/contracts/schemas/a2a-artifact.json",
+    "status_schema": "core/contracts/schemas/a2a-task-status.json",
+    "cancel_schema": "core/contracts/schemas/a2a-task-cancel.json"
+  },
+  "coordinator": {
+    "role": "agent-coordinator",
+    "plan_schema": "core/contracts/schemas/coordination-plan.json"
+  },
+  "policies": {
+    "action_boundaries": "core/policies/action-boundaries.yaml",
+    "data_classification": "core/policies/data-classification.yaml",
+    "mcp_tool_map": "core/policies/mcp-tool-map.yaml"
+  },
+  "capability_role_map": {
+    "coordinate-delivery": "agent-coordinator",
+    "discover-agents": "agent-discovery-engineer",
+    "backend-implement": "backend-developer",
+    "frontend-implement": "frontend-developer",
+    "mobile-implement": "mobile-engineer",
+    "cloudflare-deploy": "cloudflare-engineer",
+    "devops-deploy": "devops-engineer",
+    "graphics-3d": "3d-graphics-engineer",
+    "ecommerce-implement": "ecommerce-engineer",
+    "review-code": "reviewer",
+    "run-qa": "qa-engineer",
+    "security-audit": "security-engineer",
+    "sre-reliability": "sre",
+    "architect-system": "technical-architect",
+    "lead-delivery": "technical-lead",
+    "plan-task": "task-planner",
+    "manage-project": "project-manager",
+    "manage-product": "product-manager",
+    "manage-engineering": "engineering-manager",
+    "analyze-business": "business-analyst",
+    "analyze-data": "data-analyst",
+    "engineer-data": "data-engineer",
+    "deep-research": "researcher",
+    "write-article": "content-writer",
+    "optimize-seo": "seo-analyst",
+    "manage-content": "content-manager",
+    "write-docs": "technical-writer",
+    "teach-lesson": "teacher",
+    "design-ux": "ui-ux-designer"
   }
 }

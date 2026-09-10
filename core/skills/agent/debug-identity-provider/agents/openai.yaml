@@ -1,0 +1,4 @@
+interface:
+  display_name: "Debug Identity Provider"
+  short_description: "Diagnoses and resolves failures reported by WorkOS Agentic Registration scann..."
+  default_prompt: "Use $debug-identity-provider to execute debug identity provider tasks in this codebase."

@@ -10,6 +10,11 @@
       "url": "/.well-known/agent-registry.json"
     }
   ],
-  "mcp": [],
+  "mcp": [
+    {
+      "type": "mcp-tool-map",
+      "url": "core/policies/mcp-tool-map.yaml"
+    }
+  ],
   "openapi": []
 }

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Configure Llms Txt"
+  short_description: "Create and maintain the llms.txt and llms-full.txt files for a domain or proj..."
+  default_prompt: "Use $configure-llms-txt to execute configure llms txt tasks in this codebase."

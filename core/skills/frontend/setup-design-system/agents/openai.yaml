@@ -1,0 +1,4 @@
+interface:
+  display_name: "Setup Design System"
+  short_description: "Configure a scalable design system, styling framework, and component architec..."
+  default_prompt: "Use $setup-design-system to execute setup design system tasks in this codebase."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy Mmo Infrastructure"
+  short_description: "Deploy and manage proxy pools (Residential/4G) and Anti-Detect Browser orches..."
+  default_prompt: "Use $deploy-mmo-infrastructure to execute deploy mmo infrastructure tasks in this codebase."

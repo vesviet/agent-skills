@@ -1,0 +1,4 @@
+interface:
+  display_name: "Setup Visual Regression"
+  short_description: "Configure automated visual diffing for UI components and pages"
+  default_prompt: "Use $setup-visual-regression to execute setup visual regression tasks in this codebase."

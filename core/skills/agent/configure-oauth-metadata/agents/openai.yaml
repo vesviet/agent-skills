@@ -1,0 +1,4 @@
+interface:
+  display_name: "Configure Oauth Metadata"
+  short_description: "Configures well-known OAuth 2.0 and OpenID Connect discovery endpoints (`oaut..."
+  default_prompt: "Use $configure-oauth-metadata to execute configure oauth metadata tasks in this codebase."

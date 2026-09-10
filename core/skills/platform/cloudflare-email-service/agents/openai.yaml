@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cloudflare Email Service"
+  short_description: "Send and receive transactional emails with Cloudflare Email Service (Email Se..."
+  default_prompt: "Use $cloudflare-email-service to execute cloudflare email service tasks in this codebase."

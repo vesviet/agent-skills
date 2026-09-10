@@ -11,17 +11,20 @@ Pack version: **5.0.0** | A2A: **1.0** | OWASP ASI: **2026**
 ```bash
 # 1. CLAUDE.md is already at repo root — Claude Code loads it automatically.
 
-# 2. Generate baseline CLAUDE.md for a new project (Claude Code CLI):
-claude /init        # Scans codebase and drafts a CLAUDE.md with detected patterns
+# 2. Configure deterministic hooks & permissions (recommended for Policy-as-Code):
+mkdir -p .claude && cp adapters/claude/settings.template.json .claude/settings.json
 
-# 3. Generate A2A registry (after role edits):
+# 3. Install custom slash commands (optional):
+cp -r adapters/claude/commands/ .claude/commands/
+
+# 4. Generate A2A registry (after role edits):
 python3 core/scripts/generate-a2a-registry.py
 
-# 4. Verify pack integrity:
+# 5. Verify pack integrity:
 python3 core/scripts/validate-all.py
 ```
 
-No additional files need to be copied. Claude Code reads `CLAUDE.md` at session start.
+No additional files need to be copied for basic usage. Claude Code reads `CLAUDE.md` at session start. Copying `settings.template.json` to `.claude/settings.json` activates deterministic runtime hooks.
 
 ---
 
@@ -68,10 +71,40 @@ For sub-directories, Claude Code also reads `CLAUDE.md` files up the tree. Place
 
 ## Policy-as-Code Integration
 
-Claude Code executes bash commands directly. Run the policy check before any destructive operation:
+Claude Code executes bash commands directly. To enforce policy deterministically and prevent prompt drift or tool misuse, the adapter provides runtime enforcement and interactive commands:
+
+### 1. Deterministic Hooks (`.claude/settings.json`)
+
+Configure `.claude/settings.json` (from `adapters/claude/settings.template.json`) to register a `PreToolUse` hook on `"Bash"`:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 core/scripts/hooks/check-policy.py"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+When Claude Code attempts to run a bash command, the hook triggers `core/scripts/hooks/check-policy.py`:
+- `exit 0` (`allowed`) → command proceeds immediately.
+- `exit 2` (`requires_approval`) → command pauses and prompts user for explicit confirmation.
+- `exit 1` (`denied`) → command execution is rejected outright.
+
+### 2. Manual Verification & Policy Audits
+
+Check if a tool action is allowed for the active role:
 
 ```bash
-# Check if a tool action is allowed for the active role:
 AGENT_SKILLS_ROOT=$(pwd) \
   AGENT_ACTIVE_ROLE=backend-developer \
   CURSOR_TOOL_NAME=run_migration \
@@ -86,6 +119,26 @@ AGENT_SKILLS_ROOT=$(pwd) \
 The script reads:
 - `core/policies/action-boundaries.yaml` — role → allowed/requires_approval/denied actions
 - `core/policies/mcp-tool-map.yaml` — tool name + command → action ID mapping
+- `core/policies/data-classification.yaml` — confidentiality & sensitivity boundaries
+
+### 3. Custom Slash Commands (`.claude/commands/`)
+
+Custom slash commands streamline frequent workflows in Claude Code:
+
+| Slash Command | Template | Purpose |
+|---------------|----------|---------|
+| `/check-policy` | `.claude/commands/check-policy.md` | Audit active role permissions and boundaries against `action-boundaries.yaml` |
+| `/coordinate` | `.claude/commands/coordinate.md` | Activate `agent-coordinator` to generate multi-role `coordination-plan.json` |
+| `/review` | `.claude/commands/review.md` | Activate `reviewer` to produce structured `code-review-finding.json` |
+
+---
+
+## Skills & Native Extension in Claude Code
+
+Claude Code integrates with this pack's skills through two complementary patterns:
+
+1. **CLAUDE.md Catalog Routing (Universal)**: Claude Code reads the `core/skills/` index referenced in `CLAUDE.md` and loads individual `SKILL.md` documents on-demand.
+2. **Native `.claude/skills/` (Directory Integration)**: For projects using Claude Code's native skill-directory discovery, you can link or copy selected skills (e.g. from `core/skills/` or `overlays/`) into `.claude/skills/<skill-name>/SKILL.md`.
 
 ---
 
@@ -196,6 +249,7 @@ Guardrails to match the rest of the pack.
 - **CLAUDE.md exceeds 200 lines**: the auto-curated CLAUDE.md grows past the recommended 100-line cap. **Mitigation:** move domain-specific rules to `.claude/rules/*.md`; keep the root CLAUDE.md to the 5-7 core sections.
 - **Sub-directory CLAUDE.md overrides contradict pack defaults**: a project-level CLAUDE.md weakens a parity group. **Mitigation:** the meta-rule always references `core/rules/code.md`; project rules may extend but never weaken.
 - **Bash policy check skipped under `run_in_background`**: a destructive command is launched in the background and the policy check is bypassed. **Mitigation:** `check-policy.py` must be invoked in the prompt-evaluation hook, not in the foreground tool execution only.
+- **PreToolUse hook misconfiguration or bypass**: a developer executes shell commands without `.claude/settings.json` configured. **Mitigation:** provide `adapters/claude/settings.template.json` in quickstart and register the `PreToolUse` hook on `Bash` to invoke `check-policy.py`.
 - **MCP server config drift**: a `claude_desktop_config.json` adds an MCP server that is not in the pack's mcp-tool-map. **Mitigation:** reject MCP servers that are not schema-validated against `core/policies/mcp-tool-map.yaml`.
 
 ### Output Contracts
@@ -214,4 +268,4 @@ When this adapter is part of a coordinated multi-role delivery, emit:
 - **ASI07 Inter-Agent Communication**: every cross-agent payload is untrusted from the receiving endpoint's perspective; require schema validation at every boundary.
 - **ASI10 Rogue Agents**: detect instruction drift across turns; if the active role's objective changes mid-session, halt and require human confirmation.
 
-Last updated: 2026-09-01
+Last updated: 2026-09-10
