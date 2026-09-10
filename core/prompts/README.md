@@ -1,43 +1,94 @@
-# Prompts
+# PromptOps & Context Engineering Architecture (2026/2027 Standards)
 
-This directory stores versioned prompt assets used by the `agent-prompt-lifecycle` skill (PromptOps).
+This directory serves as the centralized repository for versioned prompt assets, golden evaluation fixtures, and PromptOps standards within the `agent-skills` pack.
 
-## Layout
+---
 
+## 1. The PromptOps Philosophy
+
+In 2026/2027, prompt engineering for autonomous agent systems has evolved from ad-hoc text tuning into a disciplined software engineering practice (**PromptOps**):
+
+- **Prompts are code**: Prompt assets are versioned, modular, and tracked with semantic change logs.
+- **Context over phrasing**: Output quality is driven by context engineering (MCP tool context, dynamic RAG injection, and memory state) rather than syntactic instruction tricks.
+- **Evaluation-driven development**: No prompt is deployed or promoted to production without passing rigorous evaluation against curated golden datasets.
+- **Continuous Virtuous Cycle**: Production anomalies and edge-case failures are sanitized and fed back into evaluation datasets to permanently prevent regressions.
+
+---
+
+## 2. The 5-Stage PromptOps Lifecycle
+
+```mermaid
+graph LR
+  A["1. Registry<br/>(Versioned Assets)"] --> B["2. Golden Dataset<br/>(Cases & Rubrics)"]
+  B --> C["3. Automated Eval<br/>(LLM Judge + Tests)"]
+  C --> D["4. Promotion Gate<br/>(Threshold Check)"]
+  D --> E["5. Observability<br/>(Drift Detection)"]
+  E -.->|"Anomalies Feedback"| B
 ```
-prompts/
-  README.md
-  golden/              # Evaluation fixtures for promoted prompt assets
-    README.md
-    <prompt-asset-id>/
-      manifest.yaml    # version, role, skill, eval threshold
-      cases/
-        001-input.json    # input context for the eval case
-        001-expected.json # expected behavior rubric (not exact match)
+
+1. **Registry (`prompts/`)**: Versioned prompt templates declared with metadata manifests, target roles, and owned skills.
+2. **Golden Datasets (`prompts/golden/`)**: Representative test cases covering nominal workflows, edge cases, and adversarial guardrails.
+3. **Automated Evaluation**: Multi-faceted testing:
+   - Programmatic token assertion (`must_include`, `must_not_include`, `required_tokens`, `forbidden_tokens`).
+   - JSON Schema contract conformance validation against `core/contracts/schemas/`.
+   - LLM-as-a-Judge semantic rubric scoring for open-ended generation.
+4. **Promotion Gates**: Gating deployment based on minimum pass rate thresholds ($\ge 90\%-95\%$) and statistical significance testing ($p < 0.05$).
+5. **Production Observability & Drift Detection**:
+   - Tracking semantic output drift via cosine similarity of embedding centroids.
+   - Tracing token usage and latency via OpenTelemetry GenAI Semantic Conventions (`core/observability/`).
+
+---
+
+## 3. Context Engineering & Programmatic Optimization
+
+Modern agent skills leverage programmatic prompt optimization:
+
+- **DSPy Integration**: Using typed signatures, Teleprompters, and **MIPROv2** (Multi-prompt Instruction Proposal and Optimization) to systematically optimize prompt instructions and few-shot demonstrations against target metrics.
+- **Model Context Protocol (MCP)**: Decoupling tools and data sources from static instructions; dynamically injecting tool definitions and resource context via standardized MCP endpoints.
+- **A/B Testing**: Controlled canary deployments of prompt revisions to measure impact on resolution accuracy and Cost per Successful Task Resolution (CPTR).
+
+---
+
+## 4. Current Golden Prompt Datasets
+
+The pack maintains 5 production evaluation fixtures (58 total test cases) under [`golden/`](golden/):
+
+| Asset ID | Target Role | Target Skill | Output Contract | Min Pass Rate | Cases |
+|----------|-------------|--------------|-----------------|---------------|-------|
+| [`a2a-coordination`](golden/a2a-coordination/manifest.yaml) | `agent-coordinator` | `agent-a2a-protocol` | `coordination-plan.json` | 95% | 10 |
+| [`agent-coordinator-phase-gate`](golden/agent-coordinator-phase-gate/manifest.yaml) | `agent-coordinator` | `agent-a2a-protocol` | `coordination-plan.json` | 90% | 18 |
+| [`security-audit`](golden/security-audit/manifest.yaml) | `security-engineer` | `security-audit` | `security-audit.json` | 95% | 10 |
+| [`payment-integration`](golden/payment-integration/manifest.yaml) | `ecommerce-engineer` | `integrate-payment-gateway` | `api-contract-spec.json` | 95% | 10 |
+| [`code-refactoring`](golden/code-refactoring/manifest.yaml) | `technical-lead` | `review-code` | `implementation-result.json` | 90% | 10 |
+
+---
+
+## 5. Automated CI Validation
+
+Every prompt asset and evaluation fixture is verified by the pack's continuous integration gates:
+
+```bash
+# Validate all golden evaluation manifests and test case pairs:
+python3 core/scripts/validate-golden-evals.py
 ```
 
-## Current Prompt Assets
+The validator verifies:
+- Manifest schema version, prompt slug, version, target role, and target skill.
+- Existence of target role and skill in core registries.
+- Case file pairing (`NNN-input.json` and `NNN-expected.json`) with minimum 10 cases per asset.
+- JSON syntax validity and non-empty assertion rubrics.
+- Resolution of referenced output contract schemas against `core/contracts/schemas/`.
 
-| Asset ID | Role | Skill | Version | Min Pass Rate | Cases |
-|----------|------|-------|---------|---------------|-------|
-| [agent-coordinator-phase-gate](golden/agent-coordinator-phase-gate/manifest.yaml) | `agent-coordinator` | `agent-a2a-protocol` | 1.0.0 | 90% | 18 |
-| [security-audit](golden/security-audit/manifest.yaml) | `security-engineer` | `security-audit` | 1.0.0 | 95% | 10 |
-| [payment-integration](golden/payment-integration/manifest.yaml) | `ecommerce-engineer` | `integrate-payment-gateway` | 1.0.0 | 95% | 10 |
-| [code-refactoring](golden/code-refactoring/manifest.yaml) | `technical-lead` | `review-code` | 1.0.0 | 90% | 10 |
-| [a2a-coordination](golden/a2a-coordination/manifest.yaml) | `agent-coordinator` | `agent-a2a-protocol` | 1.0.0 | 95% | 10 |
+---
 
-## How To Use
+## 6. Related Resources
 
-1. When you add or modify a prompt asset, create a subdirectory under `golden/` with a `manifest.yaml` and at least one `cases/` pair.
-2. Run evaluation before promoting (see `agent-prompt-lifecycle` skill checklist).
-3. Never store secrets or production customer data in case files.
-4. Use rubric-based expected output — not brittle exact-string match.
+- **PromptOps Skill**: [`core/skills/agent/agent-prompt-lifecycle/SKILL.md`](../skills/agent/agent-prompt-lifecycle/SKILL.md)
+- **Authoring Guidelines**: [`core/prompts/golden/README.md`](golden/README.md)
+- **A2A Protocol**: [`core/a2a/README.md`](../a2a/README.md)
+- **Observability Architecture**: [`core/observability/README.md`](../observability/README.md)
 
-Full authoring rules: `golden/README.md`
-
-## Related Skill
-
-- `agent-prompt-lifecycle` — `core/skills/agent/agent-prompt-lifecycle/SKILL.md`
+---
 
 ## Standard 2026 Alignment
 
@@ -59,4 +110,4 @@ consistent Standard 2026 pointer.
   follow the META-RULE in `core/rules/code.md` — no commit, no push, no
   publish without explicit user confirmation.
 
-Last updated: 2026-09-02
+Last updated: 2026-09-10
