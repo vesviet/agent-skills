@@ -1,0 +1,105 @@
+schema_version: "2"
+
+name: maylanhtreotuong-team
+display_name: Máy Lạnh Treo Tường Content & Engineering Team
+description: Content, SEO, and Cloudflare Pages engineering pack for Máy Lạnh Treo Tường (Vietnam air conditioning knowledge & review portal). Composes portable core with astro-cloudflare, maylanhtreotuong-content, and seo-publishing overlays. Enforces TCVN 7830:2021 CSPF standards, ASHRAE 55-2023 comfort metrics, empirical power/acoustic testing (Hioki & RION), 7-category Silo link topology, and 2026/2027 GEO/AEO Answer-First rigor.
+version: 5.0.0
+
+tags:
+  - core
+  - content
+  - seo
+  - hvac
+  - astro
+  - cloudflare
+  - geo-aeo
+  - vietnam
+author: user
+maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
+includes:
+  - core
+  - overlays/astro-cloudflare
+  - overlays/maylanhtreotuong-content
+  - overlays/seo-publishing
+
+capabilities:
+  - content-strategy
+  - content-generation
+  - seo
+  - geo-aeo
+  - hvac-engineering
+  - product-catalog
+  - publishing-workflow
+  - empirical-content-upgrade
+  - silo-internal-linking
+
+content_focus:
+  primary_roles:
+    - content-writer
+    - seo-analyst
+    - task-planner
+    - content-manager
+  secondary_roles:
+    - cloudflare-engineer
+    - frontend-developer
+    - reviewer
+  drafting_skills:
+    - write-maylanhtreotuong-content
+    - write-article
+  audit_skills:
+    - optimize-seo
+    - audit-content
+  standards:
+    - "maylanhtreotuong-content rules: content-schema, hvac-engineering-standards, silo-linking"
+    - "seo-publishing overlay: 7-day boards, GEO/AI visibility tracking"
+  workflows:
+    - publish-maylanhtreotuong-content
+    - seo-content-lifecycle
+    - content-publishing
+    - seo-keyword-brief
+
+corpus:
+  snapshot: "2026-09-10"
+  maylanhtreotuong:
+    posts: 300
+    products: 72
+    categories: 7
+    answerfirst_coverage: "300/300"
+    anti_slop_coverage: "300/300"
+    indexes:
+      - maylanhtreotuong/plan/content-inventory-index-2027.md
+
+data_classification: internal
+
+activation:
+  strategy: marker_first
+  markers:
+    - maylanhtreotuong/
+    - src/data/product/
+    - src/data/post/
+  glob_patterns:
+    - "maylanhtreotuong/src/data/**/*.md"
+    - "maylanhtreotuong/src/data/**/*.mdx"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - publish_to_production
+      - modify_secrets
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

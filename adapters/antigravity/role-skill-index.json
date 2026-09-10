@@ -4,7 +4,7 @@
   "root": ".",
   "stats": {
     "roles": 34,
-    "skills": 108,
+    "skills": 109,
     "workflows": 24,
     "schemas": 50
   },
@@ -1840,6 +1840,13 @@
       "type": "overlay",
       "file": "overlays/maydiengiaisaigon/skills/develop-mdg-feature/SKILL.md",
       "description": "Develop features for the Máy Điện Giải Sài Gòn Laravel 13 + Filament v4 e-commerce. Use when adding Filament admin resources, Blade pages, Livewire components, or e-commerce logic (cart, checkout, orders) in this specific project."
+    },
+    "write-maylanhtreotuong-content": {
+      "name": "write-maylanhtreotuong-content",
+      "category": "overlay/maylanhtreotuong-content",
+      "type": "overlay",
+      "file": "overlays/maylanhtreotuong-content/skills/write-maylanhtreotuong-content/SKILL.md",
+      "description": "\"Draft, optimize, and update technical HVAC Astro Content Collection Markdown/MDX for Máy Lạnh Treo Tường (Vietnam air conditioning portal). Use when editing or creating posts under maylanhtreotuong/src/data/post or products under maylanhtreotuong/src/data/product.\""
     },
     "develop-obj-feature": {
       "name": "develop-obj-feature",

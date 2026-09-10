@@ -6,6 +6,7 @@ Overlay-specific content publishing or maintenance workflows:
 - `affiliate-publishing.md` — affiliate/hybrid SEO production for `learn`
 - `masterclass-batch-upgrade.md` — deep-research batch upgrades (100 rounds → 20 posts)
 - `publish-series.md` — bilingual series production across both sites
+- `series-sync-upgrade.md` — per-post 100-round deep research and synchronized twin upgrade of a full series (researcher → content-writer → technical-writer → seo-analyst → reviewer pipeline)
 
 ## Standard 2026 Alignment
 

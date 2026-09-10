@@ -9,7 +9,7 @@ Use an overlay when:
 - a workflow assumes one repository family or publishing pipeline
 - a pack needs local conventions that do not belong in the global core
 
-## Current Overlays (17)
+## Current Overlays (18)
 
 ### Stack Overlays (tech-specific, project-agnostic)
 
@@ -38,6 +38,7 @@ Use an overlay when:
 |---------|-------|--------------|
 | [vesviet-content](vesviet-content/README.md) | Vesviet / Learn Hugo twin sites (content + SEO) | Technical Article Standard 2027 (7 gates), twin SEO authority + AI-citation rules, hub-and-spoke topology, `write-vesviet-learn-content` + `audit-technical-article` skills, masterclass batch workflow |
 | [lease-content](lease-content/README.md) | Lease in Vietnam / Máy Lạnh Treo Tường (Astro) | Content schema, GEO/AEO baselines, `write-leaseinvietnam-maylanhtreotuong-data` skill |
+| [maylanhtreotuong-content](maylanhtreotuong-content/README.md) | Máy Lạnh Treo Tường (Astro v5 / Cloudflare Pages) | HVAC engineering standards (TCVN 7830:2021, ASHRAE 55-2023), 7-category Silo linking (300 posts -> 72 products), `write-maylanhtreotuong-content` skill, empirical power/acoustic protocols |
 | [seo-publishing](seo-publishing/README.md) | Dual-site SEO sprint | 7-day topic boards, 2026 GEO/AI visibility tracking, cannibalization rules, cadence runbook |
 | [ui-design-system](ui-design-system/README.md) | UI design systems | Flow/component handoff conventions |
 | [data-analyst-stack](data-analyst-stack/README.md) | DuckDB + Metabase BI + dbt 1.9 + Iceberg | BI metric templates, Metabase spec template, dbt microbatch, Iceberg REST Catalog patterns |

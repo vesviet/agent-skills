@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `5.0.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **34 Roles** | **108 Skills** (97 Core + 11 Overlays) | **24 Workflows** | **50 Data Contracts**
+> **Total Catalog:** **34 Roles** | **109 Skills** (97 Core + 12 Overlays) | **24 Workflows** | **50 Data Contracts**
 
 ---
 
@@ -69,7 +69,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🛠️ Skill Directory (108 Skills)
+## 🛠️ Skill Directory (109 Skills)
 
 ### Category: `agent` (22 skills)
 
@@ -221,6 +221,12 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | Skill Slug | Description | File |
 |:---|:---|:---|
 | **`@develop-mdg-feature`** | Develop features for the Máy Điện Giải Sài Gòn Laravel 13 + Filament v4 e-commerce. Use when adding ... | [`overlays/maydiengiaisaigon/skills/develop-mdg-feature/SKILL.md`](./overlays/maydiengiaisaigon/skills/develop-mdg-feature/SKILL.md) |
+
+### Category: `overlay/maylanhtreotuong-content` (1 skills)
+
+| Skill Slug | Description | File |
+|:---|:---|:---|
+| **`@write-maylanhtreotuong-content`** | "Draft, optimize, and update technical HVAC Astro Content Collection Markdown/MDX for Máy Lạnh Treo ... | [`overlays/maylanhtreotuong-content/skills/write-maylanhtreotuong-content/SKILL.md`](./overlays/maylanhtreotuong-content/skills/write-maylanhtreotuong-content/SKILL.md) |
 
 ### Category: `overlay/obj-configurator` (1 skills)
 

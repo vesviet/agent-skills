@@ -41,7 +41,8 @@ See [packs/README.md](packs/README.md) for composition and distribution.
 Current overlays:
 
 - `vesviet-content`: content-writing helpers for Vesviet and Learn Hugo sites
-- `lease-content`: content-writing helpers for Lease in Vietnam and May Lanh Treo Tuong Astro content trees
+- `lease-content`: content-writing helpers for Lease in Vietnam Astro content trees
+- `maylanhtreotuong-content`: HVAC engineering, empirical testing, and content/SEO conventions for May Lanh Treo Tuong Astro site
 - `ecommerce-microservices`: reserved for service-level or platform-specific conventions
 - `astro-cloudflare`: Astro v5 on Cloudflare Pages/Workers conventions
 - `data-analyst-stack`: DuckDB + Metabase + Excel/BI workflow conventions

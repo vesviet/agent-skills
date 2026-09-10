@@ -41,6 +41,7 @@ OVERLAY_SKILL_ROLES: dict[str, list[str]] = {
     "optimize-3d-assets": ["3d-graphics-engineer"],
     "write-vesviet-learn-content": ["content-writer"],
     "audit-technical-article": ["seo-analyst"],
+    "write-maylanhtreotuong-content": ["content-writer"],
 }
 
 _TOOL_MAP_CACHE: dict[str, str] | None = None
