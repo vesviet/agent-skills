@@ -39,6 +39,40 @@
         "unset"
       ]
     },
+    "span_kind": {
+      "type": "string",
+      "enum": [
+        "INTERNAL",
+        "SERVER",
+        "CLIENT",
+        "PRODUCER",
+        "CONSUMER"
+      ]
+    },
+    "resource": {
+      "type": "object",
+      "properties": {
+        "service.name": {
+          "type": "string"
+        },
+        "service.version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
     "attributes": {
       "type": "object",
       "properties": {
@@ -50,6 +84,27 @@
         },
         "output_tokens": {
           "type": "integer"
+        },
+        "reasoning_tokens": {
+          "type": "integer"
+        },
+        "cache_read_tokens": {
+          "type": "integer"
+        },
+        "cache_creation_tokens": {
+          "type": "integer"
+        },
+        "finish_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cost_usd": {
+          "type": "number"
+        },
+        "error_type": {
+          "type": "string"
         },
         "task_id": {
           "type": "string"

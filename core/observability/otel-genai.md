@@ -42,6 +42,7 @@ Use only spec-defined `gen_ai.*` attributes for vendor-neutral compatibility. **
 | `gen_ai.usage.output_tokens` | int | Output tokens generated (renamed from `completion_tokens` in v1.27.0) |
 | `gen_ai.usage.reasoning.output_tokens` | int | Reasoning/thinking tokens (reasoning models); included in `output_tokens` |
 | `gen_ai.usage.cache_read.input_tokens` | int | Input tokens served from a provider-managed cache |
+| `gen_ai.usage.cache_creation.input_tokens` | int | Input tokens written to provider cache (e.g. Anthropic prompt caching) |
 | `gen_ai.response.finish_reasons` | string[] | Array of stop reasons (**plural** — e.g. `["stop"]`, `["stop","length"]`) |
 | `gen_ai.conversation.id` | string | Session/thread id for correlating messages in a conversation |
 
@@ -67,14 +68,19 @@ Use only spec-defined `gen_ai.*` attributes for vendor-neutral compatibility. **
 | `gen_ai.tool.call.result` | any | Opt-in, sensitive — result returned by the tool |
 | `error.type` | string | On error — error class. Tool outcome is expressed via **span status + `error.type`**, not a custom `gen_ai.tool.result.status` |
 
-### MCP Tool Spans
-MCP has its own conventions (`docs/gen-ai/mcp.md` in the GenAI repo); an `execute_tool` span for an MCP tool MAY be complemented by dedicated MCP instrumentation that traces `initialize`, `tools/list`, and `tools/call`. Verify exact attribute names against `mcp.md` before instrumenting — the following are illustrative:
+### MCP Semantic Conventions (`docs/gen-ai/mcp.md`)
+Model Context Protocol has dedicated semantic conventions under `open-telemetry/semantic-conventions-genai`:
 
 | Attribute | Type | Description |
 |---|---|---|
-| `mcp.method.name` | string | MCP method (e.g. `tools/call`, `tools/list`) |
-| `mcp.tool.name` | string | Tool name as declared in the server card |
+| `mcp.method.name` | string | MCP method name (`initialize`, `tools/list`, `tools/call`, `resources/read`, `prompts/get`) |
+| `mcp.tool.name` | string | Tool name as declared in the MCP server card |
+| `mcp.session.id` | string | Unique transport connection session ID |
+| `mcp.protocol.version` | string | Protocol version negotiated (e.g. `2024-11-05`) |
 | `mcp.request.id` | string | Request ID from the MCP JSON-RPC envelope |
+| `mcp.server.name` | string | Server name declared during `initialize` |
+| `mcp.server.version` | string | Server version declared during `initialize` |
+| `mcp.client.name` | string | Client implementation identifier |
 
 ### Pack Extensions (not part of OTel semconv)
 
@@ -173,19 +179,52 @@ processors:
         latency: { threshold_ms: 5000 }
       - name: genai-sample-success
         type: probabilistic
-        probabilistic: { sampling_percentage: 10 }
+        probabilistic: { sampling_percentage: 5 }
 ```
+
+A complete, production-grade collector configuration is provided in [`core/observability/otel-collector-config.template.yaml`](otel-collector-config.template.yaml).
 
 ---
 
-## Recommended Tooling (2026)
+## A2A Distributed Trace Propagation (W3C Trace Context)
+
+In multi-agent architectures governed by the A2A 1.0 protocol, causal trace context propagates across agent boundaries using standard **W3C Trace Context** headers:
+
+- **`traceparent`**: `00-{trace_id}-{span_id}-{trace_flags}` (e.g. `00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01`)
+- **`tracestate`**: `agentskills=role:backend-developer,task:task-123`
+
+When an orchestrator or delegating agent issues an `a2a-task.json`:
+1. The dispatching agent starts an `invoke_agent` span.
+2. The `traceparent` string is injected into the task envelope metadata (`task.metadata.traceparent`).
+3. The receiving sub-agent extracts the `traceparent`, establishing its root session span with `parent_span_id` set to the dispatching `span_id`.
+4. Returned deliverables (`a2a-artifact.json`) and progress events (`a2a-task-progress.json`) correlate back to the root `trace_id`.
+
+---
+
+## OTel GenAI Metrics (2026/2027)
+
+In addition to spans, instrumentations emit standardized OpenTelemetry metrics:
+
+| Metric | Type | Unit | Description |
+|---|---|---|---|
+| `gen_ai.client.token.usage` | Histogram | `{token}` | Distribution of token usage broken down by `gen_ai.token.type` (`input`, `output`, `reasoning`, `cache_read`, `cache_creation`) |
+| `gen_ai.client.operation.duration` | Histogram | `s` | Latency distribution per operation (`chat`, `generate_content`, `execute_tool`, `invoke_agent`) |
+| `gen_ai.server.request.duration` | Histogram | `s` | Server-side execution duration of LLM inference calls |
+| `gen_ai.agent.turns` | Counter | `{turn}` | Number of interaction turns completed within an agent session |
+| `gen_ai.agent.tool_calls` | Counter | `{call}` | Number of tool calls executed by active roles |
+
+---
+
+## Recommended Tooling (2026/2027)
 
 | Use case | Tool |
 |---|---|
-| Local dev tracing | [OpenLIT](https://openlit.io) — zero-config OTel collector for LLM apps |
+| OpenTelemetry Collector | [`core/observability/otel-collector-config.template.yaml`](otel-collector-config.template.yaml) (tail sampling + automated redaction) |
+| Local dev tracing | [OpenLIT](https://openlit.io) — zero-config OTel collector for LLM applications |
+| Open-source tracing | [Langfuse](https://langfuse.com), [Arize Phoenix](https://phoenix.arize.com) |
 | Cloud observability | Datadog LLM Observability, Honeycomb Agent Timeline |
-| Schema validation | `npx ajv validate -s contracts/schemas/agent-trace-span.json -d my-span.json` |
-| Cursor hook logging | `core/scripts/hooks/log-trace-span.py` |
+| Schema validation | `core/contracts/schemas/agent-trace-span.json` via `python3 core/scripts/validate-contracts.py` |
+| IDE hook logging | `core/scripts/hooks/log-trace-span.py` |
 
 ---
 
@@ -203,7 +242,7 @@ The `agent-observability` skill (`core/skills/agent/agent-observability/`) opera
 - Data classification: `core/policies/data-classification.yaml`
 - MCP tool mapping: `core/policies/mcp-tool-map.yaml`
 
-*Last updated: 2026-07-27 | Aligned with the OTel GenAI semantic conventions (Development status; `open-telemetry/semantic-conventions-genai`, mid-2026)*
+*Last updated: 2026-09-10 | Aligned with the OTel GenAI semantic conventions (Development status; `open-telemetry/semantic-conventions-genai`, 2026/2027)*
 
 ## Standard 2026 Alignment
 
@@ -225,4 +264,4 @@ consistent Standard 2026 pointer.
   follow the META-RULE in `core/rules/code.md` — no commit, no push, no
   publish without explicit user confirmation.
 
-Last updated: 2026-09-02
+Last updated: 2026-09-10

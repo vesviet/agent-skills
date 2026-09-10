@@ -58,8 +58,10 @@ Use OpenTelemetry GenAI semantic conventions (`open-telemetry/semantic-conventio
 - `gen_ai.usage.input_tokens` / `gen_ai.usage.output_tokens`: gross token volume
 - `gen_ai.usage.reasoning.output_tokens`: thinking tokens (o1, o3, Sonnet 3.7)
 - `gen_ai.usage.cache_read.input_tokens`: cached prompt tokens (discounted pricing)
+- `gen_ai.usage.cache_creation.input_tokens`: prompt cache write tokens
 - `gen_ai.response.finish_reasons`: array of strings (`["stop"]`, `["tool_calls"]`)
 - `gen_ai.conversation.id`: session correlation ID
+- OTel Collector template: `core/observability/otel-collector-config.template.yaml` (tail sampling & redaction)
 
 ### FinOps Cost Attribution
 

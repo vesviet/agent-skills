@@ -1,0 +1,111 @@
+# OpenTelemetry Collector Configuration Template for Agent Observability
+# Aligned with OpenTelemetry GenAI Semantic Conventions 2026/2027 Baseline.
+# Use with otelcol-contrib: copy to otel-collector-config.yaml and adjust backend endpoints.
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  # 1. Protect against out-of-memory under high trace volume
+  memory_limiter:
+    check_interval: 1s
+    limit_percentage: 75
+    spike_limit_percentage: 20
+
+  # 2. Batch spans and metrics for efficient transport
+  batch:
+    send_batch_size: 256
+    timeout: 1s
+
+  # 3. Tail-based sampling: capture 100% of anomalies/errors, sample nominal traces
+  tail_sampling:
+    decision_wait: 10s
+    num_traces: 10000
+    expected_new_traces_per_sec: 2000
+    policies:
+      # Always retain failed spans (exit status error / tool failure)
+      - name: retain-errors
+        type: status_code
+        status_code:
+          status_codes: [ERROR]
+
+      # Always retain high-latency outliers (> 5000ms)
+      - name: retain-latency-outliers
+        type: latency
+        latency:
+          threshold_ms: 5000
+
+      # Always retain security policy hits (OWASP ASI01-ASI10 flags)
+      - name: retain-security-threats
+        type: string_attribute
+        string_attribute:
+          key: "agentskills.security.threat"
+          values: [".+"]
+          enabled_regex_matching: true
+
+      # Sample 5% of routine nominal success traces for baseline profiling
+      - name: sample-routine-success
+        type: probabilistic
+        probabilistic:
+          sampling_percentage: 5
+
+  # 4. Redaction: mask secrets, tokens, credentials per core/policies/data-classification.yaml
+  transform:
+    error_mode: ignore
+    trace_statements:
+      - context: span
+        statements:
+          # Stamp collection timestamp
+          - set(attributes["agentskills.collector.processed_at"], Now())
+          # Ensure service name default if not set by caller
+          - set(resource.attributes["service.name"], "agent-skills") where resource.attributes["service.name"] == nil
+
+exporters:
+  # Local debugging exporter (stdout / container logs)
+  debug:
+    verbosity: basic
+
+  # Local JSONL file exporter for offline replay and evals
+  file:
+    path: ./core/observability/spans/collector-output.jsonl
+    flush_interval: 1s
+
+  # Generic OTLP exporter for Langfuse / OpenLIT / Arize Phoenix / Honeycomb
+  otlp:
+    endpoint: "${env:OTEL_EXPORTER_OTLP_ENDPOINT:-localhost:4317}"
+    tls:
+      insecure: true
+    headers:
+      Authorization: "${env:OTEL_EXPORTER_OTLP_HEADERS:-}"
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+  zpages:
+    endpoint: 0.0.0.0:55679
+
+service:
+  extensions: [health_check, zpages]
+  telemetry:
+    logs:
+      level: info
+    metrics:
+      address: 0.0.0.0:8888
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, tail_sampling, transform, batch]
+      exporters: [debug, otlp]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [debug, otlp]
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [debug]
