@@ -440,11 +440,11 @@ class TestMarkdownLinksAndHeadersHygiene:
         "core/contracts/README.md",
         "core/contracts/schemas/INDEX.md",
         "overlays/README.md",
-        "overlays/retail-data-warehouse/README.md",
-        "overlays/retail-data-warehouse/rules/amis-accounting-standards.md",
-        "overlays/retail-data-warehouse/rules/duckdb-concurrency.md",
-        "overlays/retail-data-warehouse/rules/pii-scrubbing.md",
-        "overlays/retail-data-warehouse/rules/stocktake-tolerance.md",
+        "overlays/data-warehouse/README.md",
+        "overlays/data-warehouse/rules/amis-accounting-standards.md",
+        "overlays/data-warehouse/rules/duckdb-concurrency.md",
+        "overlays/data-warehouse/rules/pii-scrubbing.md",
+        "overlays/data-warehouse/rules/stocktake-tolerance.md",
         "packs/README.md",
     ]
 

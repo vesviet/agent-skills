@@ -34,7 +34,7 @@ data-warehouse overlay since both share the same DuckDB/Lakehouse toolchain.
 
 ```
 Role: data-engineer
-Overlay: overlays/retail-data-warehouse (learning/ subtree)
+Overlay: overlays/data-warehouse (learning/ subtree)
 ```
 
 Last updated: 2026-09-08

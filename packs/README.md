@@ -19,7 +19,7 @@ Packs describe how to assemble the portable core with zero or more overlays for 
 | `data-analyst-team` | [manifest.yaml](data-analyst-team/manifest.yaml) | `core` + `overlays/data-analyst-stack` | DuckDB, dbt 1.9, Iceberg, Metabase |
 | `content-sprint-team` | [manifest.yaml](content-sprint-team/manifest.yaml) | `core` + `overlays/seo-publishing` | GEO/AEO, AI Overviews, publishing cadence |
 | `donthan-team` | [manifest.yaml](donthan-team/manifest.yaml) | `core` + `overlays/donthan-web` | Frontend, UX, livestream, PWA |
-| `retail-warehouse-team` | [manifest.yaml](retail-warehouse-team/manifest.yaml) | `core` + `overlays/retail-data-warehouse` (incl. `learning/` track) | DuckDB Single-Writer, MISA AMIS ERP, Blind Recount, PII Masking, dbt 1.9/Iceberg/Kafka learning roadmap |
+| `data-warehouse` | [manifest.yaml](data-warehouse/manifest.yaml) | `core` + `overlays/data-warehouse` (incl. `learning/` track) | Fullstack data warehouse, FastAPI microservices, DuckDB single-writer, Medallion Parquet, MISA AMIS VAS 14, blind recount, PII masking, 4-layer testing, dbt 1.9/Iceberg/Kafka learning track |
 
 ## 2026 Manifest Schema (v2)
 

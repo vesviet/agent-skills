@@ -47,7 +47,7 @@ Current overlays:
 - `astro-cloudflare`: Astro v5 on Cloudflare Pages/Workers conventions
 - `data-analyst-stack`: DuckDB + Metabase + Excel/BI workflow conventions
 - `go-microservices`: Go service and gRPC conventions
-- `retail-data-warehouse`: omnichannel retail conventions (DuckDB Single-Writer, MISA AMIS, VAS 14, PWA stocktake) with the `learning/` data-engineering track
+- `data-warehouse`: omnichannel retail conventions (DuckDB Single-Writer, MISA AMIS, VAS 14, PWA stocktake) with the `learning/` data-engineering track
 - `donthan-web`: web content/SEO helpers for Don Than site
 - `golf-icm`: Golf catalog conventions for the ICM Cloudflare site
 - `icm-main`: ICM Factory main site conventions

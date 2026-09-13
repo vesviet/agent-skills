@@ -42,7 +42,7 @@ Use an overlay when:
 | [seo-publishing](seo-publishing/README.md) | Dual-site SEO sprint | 7-day topic boards, 2026 GEO/AI visibility tracking, cannibalization rules, cadence runbook |
 | [ui-design-system](ui-design-system/README.md) | UI design systems | Flow/component handoff conventions |
 | [data-analyst-stack](data-analyst-stack/README.md) | DuckDB + Metabase BI + dbt 1.9 + Iceberg | BI metric templates, Metabase spec template, dbt microbatch, Iceberg REST Catalog patterns |
-| [retail-data-warehouse](retail-data-warehouse/README.md) | Omnichannel retail platform (DuckDB 1.5+, MISA AMIS, VAS 14, PWA) | DuckDB Single-Writer, MISA AMIS VAS 14 voucher splitting, blind recount physical stocktaking, Decree 13/2023/ND-CP PII masking, plus `learning/` data-engineering track (merged from `data-engineer-rabity`: Iceberg, dbt 1.9, Kafka, Spark) |
+| [data-warehouse](data-warehouse/README.md) | Omnichannel retail platform (DuckDB 1.5+, MISA AMIS, VAS 14, PWA) | DuckDB Single-Writer, MISA AMIS VAS 14 voucher splitting, blind recount physical stocktaking, Decree 13/2023/ND-CP PII masking, plus `learning/` data-engineering track (merged from `data-engineer-rabity`: Iceberg, dbt 1.9, Kafka, Spark) |
 
 ## 2026 Critical Migration Notes
 

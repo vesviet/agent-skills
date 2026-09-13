@@ -1,0 +1,143 @@
+schema_version: "2"
+
+name: data-warehouse
+display_name: Data Warehouse Platform & Engineering Team
+description: Comprehensive engineering pack for teams building, scaling, and maintaining the Omnichannel Retail Data Warehouse & Reconciliation Platform. Composes core engineering standards with the unified data warehouse overlay. Covers FastAPI microservices (auth-service, data-platform, stock-audit-svc), DuckDB 1.5+ single-writer OLAP with AsyncCrossProcessLock, SQLite WAL state buffers, Medallion Parquet lakehouse, React 18 Refine.dev admin dashboard, offline Vanilla JS PWA barcode scanner, Haravan OMS API ingestion (SCD2, keyset pagination, resumable cursor), MISA AMIS statutory accounting (VAS 14 / Circular 200, 63-column Excel export), physical stocktake tolerance (7-state engine, blind recount), and the Rabity data-engineering learning track.
+version: 5.0.0
+
+tags:
+  - core
+  - data-warehouse
+  - fastapi
+  - duckdb
+  - microservices
+  - python
+  - react
+  - pwa
+  - medallion-lakehouse
+  - haravan
+  - amis-accounting
+  - reconciliation
+  - stocktake
+  - four-layer-testing
+  - learning
+author: user
+maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
+includes:
+  - core
+  - overlays/data-warehouse
+
+capabilities:
+  - data-warehouse
+  - duckdb-single-writer
+  - medallion-lakehouse
+  - fastapi-microservices
+  - accounting-automation
+  - amis-accounting
+  - reconciliation-engine
+  - stocktake-audit
+  - pwa-offline-scanner
+  - pii-scrubbing
+  - pipeline-development
+  - react-refine-admin
+  - backend
+  - frontend
+  - testing
+  - four-layer-testing
+  - data-engineering
+  - etl-elt
+  - sql
+  - data-architecture
+  - security-audit
+  - streaming
+
+team_composition:
+  primary_roles:
+    - technical-lead
+    - solution-architect
+    - technical-architect
+    - data-engineer
+    - backend-developer
+    - frontend-developer
+    - data-analyst
+    - business-analyst
+    - qa-engineer
+    - security-engineer
+    - devops-engineer
+    - vietnam-accounting-specialist
+  learning_track:
+    persona: rabity
+    subtree: overlays/data-warehouse/learning/
+    roadmap: 10-phase (SQL -> Python -> DuckDB/Polars -> ETL -> Airflow -> dbt 1.9 -> Kafka -> Iceberg Lakehouse -> Observability -> Portfolio)
+    toolchain: ["DuckDB", "dbt Core 1.9", "Apache Iceberg REST Catalog", "Kafka", "Spark 3.5", "Airflow 2.9+", "Great Expectations v1"]
+  platform_index:
+    - data-warehouse/DATA_WAREHOUSE_INDEX.md
+    - data-warehouse/CODEBASE_INDEX.md
+    - data-warehouse/docs/PLATFORM_INDEX.md
+    - data-warehouse/docs/INDEX.md
+    - data-warehouse/docs/roles-index.md
+
+data_classification: confidential
+
+activation:
+  strategy: marker_first
+  markers:
+    - data-warehouse/DATA_WAREHOUSE_INDEX.md
+    - store/warehouse.duckdb
+    - libs/core/locks.py
+    - apps/data-platform/
+    - apps/stock-audit-svc/
+    - apps/auth-service/
+    - apps/frontend-admin/
+    - apps/frontend-audit/
+    - docker-compose.yml
+    - dbt_project.yml
+    - airflow/
+    - progress.md
+  glob_patterns:
+    - "apps/**/*.py"
+    - "apps/**/*.tsx"
+    - "apps/**/*.ts"
+    - "apps/**/*.js"
+    - "libs/**/*.py"
+    - "pipeline/**/*.py"
+    - "store/**/*.duckdb"
+    - "store/**/*.sqlite"
+    - "sql/**/*.sql"
+    - "tests/**/*.py"
+    - "phase-*/**/*.py"
+    - "phase-*/**/*.sql"
+    - "dags/**/*.py"
+    - "**/*.ipynb"
+  exclude_patterns:
+    - "store/archive/**"
+    - "raw_data/pii/**"
+    - "apps/frontend-admin/node_modules/**"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - modify_production_data
+      - export_pii_data
+      - run_migration
+      - push_to_production
+      - approve_stocktake_variance
+      - sync_amis_accounting
+      - deploy_pipeline
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

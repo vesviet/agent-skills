@@ -1,4 +1,4 @@
-# Retail Data Warehouse Overlay
+# Data Warehouse Overlay
 
 Omnichannel retail data warehouse overlay extending `core/roles/data-engineer.md`, `core/roles/data-analyst.md`, `core/roles/vietnam-accounting-specialist.md`, and `core/roles/backend-developer.md`. Establishes the architectural standards, concurrency controls, Vietnamese statutory accounting compliance (VAS 14 / MISA AMIS ERP), physical store stocktake tolerance engine, and PII sanitization (Decree 13/2023/ND-CP) for multi-channel retail operations (physical POS, Shopee, TikTok Shop). Also hosts the Rabity data-engineering learning track (`learning/`).
 
@@ -92,7 +92,7 @@ The overlay targets the `data-warehouse` repo (5-container microservices, ~26k L
 
 ```
 Role: data-engineer (or vietnam-accounting-specialist, data-analyst, backend-developer)
-Overlay: overlays/retail-data-warehouse
+Overlay: overlays/data-warehouse
 ```
 
 ## Environment Variables

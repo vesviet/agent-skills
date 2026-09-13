@@ -157,7 +157,7 @@ class LockConfig:
     redis_lease_ms: int = 30000
 
 class AsyncCrossProcessLock:
-    """Implementation conforming to overlays/retail-data-warehouse/rules/duckdb-concurrency.md."""
+    """Implementation conforming to overlays/data-warehouse/rules/duckdb-concurrency.md."""
 
     _coro_locks: dict[str, asyncio.Lock] = {}
 
@@ -297,7 +297,7 @@ def _os_process_writer(db_path_str: str, worker_id: int, records_count: int, bar
 
 VN_PHONE_REGEX = re.compile(r"^(?:\+?84|0)(3[2-9]|5[25689]|7[06-9]|8[1-9]|9[0-9])([0-9]{7})$")
 
-# Verbatim regex from overlays/retail-data-warehouse/rules/pii-scrubbing.md line 183
+# Verbatim regex from overlays/data-warehouse/rules/pii-scrubbing.md line 183
 VERBATIM_PHONE_LEAK_REGEX = re.compile(r"(?:0|\+?84)(?:3|5|7|8|9)[0-9]{7}\b")
 
 # Corrected regex matching full 10-digit Vietnamese mobile numbers
