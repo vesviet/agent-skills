@@ -37,7 +37,7 @@ There are 10 core hubs that anchor the site (all under `content/`):
 
 ## Orphan Elimination
 - The SEO Analyst must run crawler verifications before publishing to ensure **0 orphan pages** remain in the repository.
-- Use `vesviet/reports/check_posts.py` as the in-repo verification entry point; refresh `vesviet/content-audit-report.json` after every batch (last full scan predates the Batch 4–5 growth: 275 files scanned vs 367 current).
+- Use `vesviet/reports/check_posts.py` as the in-repo verification entry point; refresh `vesviet/content-audit-report.json` after every batch (last full scan predates the Batch 4–5 growth: 275 files scanned vs 374 current).
 
 ## Standard 2026 Alignment
 
@@ -59,7 +59,8 @@ overlay rule file in the pack.
 - **Output Contracts**: when a rule in this file produces a structured
   artifact (brief, plan, config, content handoff, audit event), the artifact
   must conform to the corresponding schema in `core/contracts/schemas/`.
-  See `See `core/skills/content/optimize-seo/SKILL.md` and the `seo-metadata.json` schema.` for the related skill output contract reference.
+  See `core/skills/content/optimize-seo/SKILL.md` and the `seo-metadata.json` schema
+  for the related skill output contract reference.
 - **Skill Toolbox Lock**: a rule in this file is enforced by the role whose
   Skill Toolbox lists the related skill as Primary. Roles that hold the
   skill as Supporting must delegate rather than execute directly (per
@@ -67,7 +68,5 @@ overlay rule file in the pack.
 - **Commit / publish gate**: rule changes that affect user-visible behavior
   must follow the META-RULE in `core/rules/code.md` — no commit, no push,
   no publish without explicit user confirmation.
-
-See `core/skills/content/optimize-seo/SKILL.md` and the `seo-metadata.json` schema.
 
 Last updated: 2026-09-08

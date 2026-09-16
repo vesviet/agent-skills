@@ -111,7 +111,8 @@ overlay rule file in the pack.
 - **Output Contracts**: when a rule in this file produces a structured
   artifact (brief, plan, config, content handoff, audit event), the artifact
   must conform to the corresponding schema in `core/contracts/schemas/`.
-  See `See `core/skills/content/write-article/SKILL.md` and the `content-handoff.json` schema.` for the related skill output contract reference.
+  See `core/skills/content/write-article/SKILL.md` and the `content-handoff.json` schema
+  for the related skill output contract reference.
 - **Skill Toolbox Lock**: a rule in this file is enforced by the role whose
   Skill Toolbox lists the related skill as Primary. Roles that hold the
   skill as Supporting must delegate rather than execute directly (per
@@ -119,7 +120,5 @@ overlay rule file in the pack.
 - **Commit / publish gate**: rule changes that affect user-visible behavior
   must follow the META-RULE in `core/rules/code.md` — no commit, no push,
   no publish without explicit user confirmation.
-
-See `core/skills/content/write-article/SKILL.md` and the `content-handoff.json` schema.
 
 Last updated: 2026-09-08

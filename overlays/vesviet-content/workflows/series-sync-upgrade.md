@@ -77,8 +77,9 @@ user explicitly requests parallel fan-out.
 - The English chapter must add information gain beyond translation (2026-2027 spam-policy
   duplication rules): deeper benchmark framing, additional production failure story, or
   expanded comparison matrix — dossier-backed.
-- Reciprocal navigation badges: VI chapter → `Bản tiếng Anh` link up; EN chapter →
-  `Bản tiếng Việt` link back. Badges are navigation, not authority transfer.
+- One-way navigation badge: VI chapter on `learn` links up to the English twin
+  (`> 🇬🇧 Read the English version...`); EN chapter on `vesviet` MUST NOT link back
+  to `learn.tanhdev.com` (strictly enforcing the One-Way Authority Rule).
 - `canonicalURL` stays on `tanhdev.com`; twins never cross-canonicalize.
 
 ### Phase 5 — Documentation Hygiene (`technical-writer`)
@@ -107,7 +108,7 @@ user explicitly requests parallel fan-out.
 ## Campaign Close (after final chapter)
 
 1. Restructure both `_index.md` files to the completed TOC (chapter count, tracks,
-   reciprocal series links, weight normalization).
+   series navigation links, weight normalization).
 2. Hugo build both repos (`--minify`, 0 errors); Mermaid AST audit across the series.
 3. Rerun `vesviet/reports/check_posts.py`; refresh `vesviet/reports/CONTENT_INDEX.md`
    and `learn/plan/CONTENT_INDEX.md` (series row counts, compliance snapshot, known gaps).
@@ -121,7 +122,7 @@ user explicitly requests parallel fan-out.
 - **AI citation**: the dossier cites an AI summary as a source. **Mitigation:** AI SOURCE LOCK; strip and replace with the primary document.
 - **Translation-only twin**: the English chapter mirrors the Vietnamese without information gain. **Mitigation:** Phase 4 gate; reject the sync until differential value is added.
 - **Twin drift**: EN/VI chapters diverge in chapter count, weights, or TOC claims. **Mitigation:** Phase 2 index tracking; campaign close restructures both `_index.md` files.
-- **Badge missing after upgrade**: an upgraded chapter loses its reciprocal navigation badge. **Mitigation:** Phase 4 verification; reject the diff.
+- **Reverse authority link introduced**: an upgraded English chapter links back to `learn.tanhdev.com` or VI chapter loses its up-link. **Mitigation:** Phase 4 verification enforces 0 `learn.tanhdev.com` links on `vesviet` and verifies VI up-link; reject the diff if violated.
 - **Cross-canonicalization**: either twin points `canonicalURL` at the other host. **Mitigation:** Phase 3/4 gates; reject the diff.
 - **Index staleness**: series or corpus indexes not refreshed after the campaign. **Mitigation:** campaign close step 3 is mandatory; reject close when stale.
 - **Phase skip**: chapters jump to drafting without a dossier, or to publish without review. **Mitigation:** role pipeline gates are serial; the chapter loop restarts at Phase 1.

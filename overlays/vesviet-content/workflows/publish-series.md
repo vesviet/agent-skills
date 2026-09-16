@@ -16,7 +16,8 @@ Use this workflow when creating a new series or adding parts to an existing seri
 | Translate to English | `content-writer` |
 | Code linting review | `reviewer` |
 | AI Governance & Conformance | `reviewer` |
-| Commit and push | `content-writer` or `backend-developer` |
+| Prepare, commit, and push | `content-writer` or `backend-developer` |
+| Go live | `content-manager` or `backend-developer` |
 
 ## Steps
 
@@ -61,17 +62,35 @@ Role: `reviewer`
 1. Run `reviewer` role on the English translation for consistency with existing Vesviet series.
 2. Verify no unused imports, no placeholder content, no broken internal links, and strict adherence to English terminology.
 
-### Step 7 — Commit and Push
+### Step 7 — Prepare and Stage Commit
 
-1. Commit the Learn repo: `git add && git commit -m "feat(content): add <series-name> series" && git push`
-2. Commit the Vesviet repo: same pattern.
-3. Verify both repos show clean `git status`.
+Role: `backend-developer` or `content-writer` (via `commit-code`)
+
+1. Review changes across both repos:
+   - Learn repo: inspect `git status` and `git diff`
+   - Vesviet repo: inspect `git status` and `git diff`
+2. Run pre-commit checks (Hugo build test, code snippet linting, frontmatter schema validation).
+3. **Explicit User Approval Gate (Commit)**:
+   - Present the staged diff and proposed commit messages to the user:
+     - Learn: `feat(content): add <series-name> series`
+     - Vesviet: `feat(content): add <series-name> series (EN translation)`
+   - Do NOT run `git commit` without explicit in-session user confirmation.
+4. **Explicit User Approval Gate (Push)**:
+   - Once committed, request separate explicit user confirmation before executing `git push`.
+   - Never push automatically; treat push as an independent user-gated action per `core/rules/code.md`.
+5. Verify both repos show clean `git status`.
 
 ### Step 8 — Go Live
 
-1. Toggle `draft: false` on all parts when ready to publish.
-2. Commit the draft flag changes separately: `fix(content): publish <series-name> series`.
-3. Verify pages render correctly on both live sites.
+Role: `content-manager` or `backend-developer`
+
+1. When ready to publish live and approved by the user, toggle `draft: false` on all parts across both repos.
+2. Run `hugo --gc --minify` on both sites to verify zero build warnings, zero broken internal links, and valid rendered HTML.
+3. **Explicit User Approval Gate (Go-Live Commit & Push)**:
+   - Present the draft toggle diff to the user with proposed commit message: `fix(content): publish <series-name> series`.
+   - Require explicit user confirmation before committing.
+   - Require separate explicit user confirmation before pushing to production branches.
+4. Verify pages render correctly on both live sites.
 
 ## Checklist
 
@@ -83,8 +102,8 @@ Role: `reviewer`
 - [ ] English translation parallelized and completed for Vesviet site
 - [ ] Cross-site links use absolute URLs
 - [ ] Reviewer approved both Vietnamese and English versions
-- [ ] Both repos committed and pushed
-- [ ] Draft flags toggled for go-live
+- [ ] Explicit user confirmation obtained for staging, commit, and push on both repos
+- [ ] Draft flags toggled and committed/pushed under explicit user confirmation for go-live
 
 ### Failure Modes
 
@@ -95,6 +114,8 @@ Role: `reviewer`
 - **Translation parallelization loses semantic consistency**: parallel subagent translations drift in terminology or formatting. **Mitigation:** Step 6 enforces a reviewer pass for terminology consistency; reject the English translation when the drift is unresolved.
 - **Draft flag toggled before review**: a part is set to `draft: false` before the AI Governance gate and the reviewer pass complete. **Mitigation:** Step 8 requires the draft flag to be toggled only after both gates pass; reject the change when the order is reversed.
 - **Cross-site link drift**: a Vietnamese URL on Learn does not have the matching English URL on Vesviet. **Mitigation:** Step 5 requires absolute URLs for cross-site links; reject the build when the links are relative.
+- **Unconfirmed commit or push executed**: an agent runs `git commit` or `git push` without explicit user confirmation. **Mitigation:** Steps 7 and 8 enforce explicit user approval gates per `core/rules/code.md` (META-RULE); halt execution and await approval before modifying git history or pushing remotes.
+- **Push assumed from commit confirmation**: an agent pushes changes immediately following commit approval. **Mitigation:** treat commit and push as two distinct, independently gated user approvals.
 
 ### Output Contracts
 

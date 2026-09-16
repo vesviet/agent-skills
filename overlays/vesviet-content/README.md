@@ -15,13 +15,14 @@ Content + SEO overlay for the `vesviet` (English flagship, tanhdev.com) and `lea
 - `workflows/affiliate-publishing.md`: affiliate/hybrid SEO content production for `learn`.
 - `workflows/masterclass-batch-upgrade.md`: deep-research batch upgrades (100 rounds → 20 posts) that produced Batches 1–5.
 - `workflows/publish-series.md`: bilingual series production across both sites.
+- `workflows/series-sync-upgrade.md`: per-post 100-round deep research and synchronized twin upgrade of a full series (researcher → content-writer → technical-writer → seo-analyst → reviewer pipeline).
 
 ### Skills
 - `skills/write-vesviet-learn-content` (`content-writer`): drafting skill implementing the 2027 gates, twin model, and affiliate trust requirements.
 - `skills/audit-technical-article` (`seo-analyst`): per-gate audit of technical articles against `rules/technical-article-2027.md`, emitting `seo-audit-report.json`.
 
 ### Config
-- `config/sites.md`: site roots, corpus inventory (vesviet 367 / learn 440 files as of 2026-09-08), twin model, cross-site authority rules.
+- `config/sites.md`: site roots, corpus inventory (vesviet 374 / learn 433 files as of 2026-09-13), twin model, cross-site authority rules.
 
 ## Corpus Indexes
 

@@ -42,6 +42,14 @@ Produce `contracts/schemas/seo-audit-report.json` with per-gate scores, projecte
 - **Twin coverage assumed**: the English twin is assumed upgraded without opening the file. **Mitigation:** Step 3 requires opening the twin; verify, do not assume.
 - **Blocking finding downgraded**: a Gate failure is logged as a warning to ship faster. **Mitigation:** Gates 2, 6, 7 failures are always Blocking.
 
+## Output Contracts
+
+When completing an article audit or batch review, emit:
+
+- **`contracts/schemas/seo-audit-report.json`** — capture the 7 Technical Content Gate scores, compliance percentage, blocking findings (Gate 2/6/7 failures), and projected post-fix score.
+
+Skip emission for interactive read-only checks that do not cross a role boundary or gate a publish action.
+
 ## Checklist
 
 - [ ] Gate 1: answer-first + per-section BLUF present
