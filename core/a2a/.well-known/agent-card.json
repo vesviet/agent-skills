@@ -118,7 +118,7 @@
     {
       "id": "qa-engineer",
       "name": "Qa Engineer",
-      "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escap"
+      "description": "protect release quality by validating real behavior (including stateful side effects), surfacing risk early, and elimina"
     },
     {
       "id": "researcher",

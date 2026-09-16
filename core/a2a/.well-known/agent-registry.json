@@ -122,7 +122,7 @@
       "role": "qa-engineer",
       "agent_card": "core/a2a/registry/qa-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/qa-engineer.md",
-      "description": "protect release quality by validating real behavior (including side effects), surfacing risk early, and preventing escap"
+      "description": "protect release quality by validating real behavior (including stateful side effects), surfacing risk early, and elimina"
     },
     {
       "role": "researcher",

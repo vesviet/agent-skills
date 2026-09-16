@@ -10,127 +10,149 @@ Use this skill when adding or updating tests for frontend components, pages, rou
 
 ## When to Use
 
-- frontend behavior needs regression coverage
-- adding UI release confidence before ship
-- validating rendering, interaction, or a11y states
-- covering network-driven component states
+- frontend behavior needs regression coverage or UI release confidence
+- adding modern Playwright v1.48+ E2E, HAR network replay, or component tests
+- enforcing automated WCAG 2.2 AA accessibility gates and keyboard focus management
+- implementing font-stabilized visual regression snapshots across viewports
+- intercepting client network requests via MSW v2 transport-level handlers
+- validating complex state transitions, optimistic UI updates, or form error flows
 
 ## Core Rules
 
-- follow the repo's existing frontend test stack before adding a new one
-- test behavior and user-facing outcomes over internal implementation details — never assert on internal React component state or private methods
-- use accessibility-first query priority: `getByRole` > `getByLabelText` > `getByText` > `getByTestId` — querying by CSS classes or DOM IDs is prohibited
-- make async and network-driven states deterministic — use `findBy*` queries or `expect(locator).toBeVisible()` auto-waiting; `sleep()` / `waitForTimeout()` are banned
-- mock network APIs using MSW v2 handlers (`http.get`, `HttpResponse.json`) — do not mock `global.fetch` or internal Axios instances directly
-- use Vitest Browser Mode (Playwright provider) for components that depend on real browser rendering, CSS visibility, or DOM events
-- keep the test scope as small as possible while still proving the risk is covered
-- do not commit or push test changes unless explicitly allowed
-- establish Chromatic or Percy visual regression baseline before merging AI-generated components — AI tools frequently ship components with missing interactive states
-- run `axe-core` as a CI gate for any AI-generated component — AI-generated ARIA attributes are often syntactically correct but semantically wrong
-- for components displaying LLM output: test empty, truncated, and malformed LLM response handling explicitly — do not assume the model always returns well-formed output
+- **User-facing behavior over internal implementation**:
+  - test observable user outcomes; never assert on internal component state, private methods, or CSS classes.
+  - use accessibility-first query priority: `getByRole` > `getByLabelText` > `getByText` > `getByTestId`.
+  - ban querying by raw CSS selectors or DOM IDs unless targeting third-party uninstrumented embeds.
+- **Modern Playwright v1.48+ web-first automation**:
+  - make async assertions deterministic with auto-waiting locators (`expect(locator).toBeVisible()`, `expect(locator).toBeEnabled()`).
+  - strictly ban arbitrary delays (`sleep()`, `page.waitForTimeout()`); wait for explicit UI state or network idle predicates.
+  - configure Trace Viewer to capture diagnostics on failure (`trace: 'retain-on-failure'`) along with console logs and network traffic.
+  - record and replay deterministic network interactions via HAR (`page.routeFromHAR()`) for external third-party API stability.
+  - leverage Playwright Component Testing (`@playwright/experimental-ct-*`) or Vitest Browser Mode for real DOM rendering without full browser stack overhead.
+- **MSW v2 transport-level network interception**:
+  - intercept network requests via MSW v2 (`setupServer` for Node/Vitest, `setupWorker` for browser dev/Playwright).
+  - author handlers with standard fetch `http.*` methods and typed `HttpResponse.json()`.
+  - enforce `onUnhandledRequest: 'error'` to catch unmocked requests and prevent silent leakage to live backends.
+  - simulate realistic network variations: latency injection, HTTP 4xx/5xx errors, network disconnection, and malformed payloads.
+- **Automated WCAG 2.2 AA accessibility gates**:
+  - run `@axe-core/playwright` (`AxeBuilder.withTags(['wcag2a', 'wcag2aa', 'wcag22aa']).analyze()`) in CI with zero violations.
+  - verify keyboard focus containment: Tab cycling must be trapped within modal dialogs, flyouts, and drawers while open.
+  - verify focus restoration: pressing Escape must dismiss the overlay and restore keyboard focus to the triggering element.
+  - validate accessibility trees and semantic landmarks using Playwright ARIA snapshots (`expect(locator).toMatchAriaSnapshot()`).
+- **Font-stabilized visual regression snapshots**:
+  - await web font readiness before capturing screenshots (`await page.evaluate(() => document.fonts.ready)`).
+  - suppress CSS animations, transitions, and blinking text carets (`animations: 'disabled'`).
+  - mask volatile or dynamic elements (timestamps, random avatars, counters) using `mask: [locator]`.
+  - execute snapshot suites inside containerized headless Linux environments (Docker) to eliminate cross-OS rasterization diffs.
+  - configure tight pixel difference tolerances (`maxDiffPixelRatio: 0.002`) to catch genuine visual defects while ignoring subpixel jitter.
+- **AI & LLM-generated UI component resilience**:
+  - test empty, truncated, streaming, and malformed LLM responses explicitly; never assume well-formed model output.
+  - establish visual regression baselines before merging AI-generated components to catch missing active/hover/focus states.
+  - mandate automated axe-core scans on AI-generated UI to catch syntactically valid but semantically broken ARIA attributes.
+- **Scope discipline & change governance**:
+  - keep test scope minimal while proving risk coverage; never commit or push test changes without explicit confirmation.
 
 ## Choose The Right Test Scope
 
 ### Component Tests
 
 Best for:
-
-- rendering variants
-- interaction behavior
-- disabled, loading, or error states
-- accessibility-sensitive markup
+- isolated rendering variants, props validation, and interactive state changes
+- Playwright Component Testing (`@playwright/experimental-ct-*`) or Vitest Browser Mode
+- disabled, loading, and error states; a11y-sensitive markup and focus traps
+- validating ARIA states, role attributes, and keyboard focus handling at the unit level
+- rapid feedback during component development without full app bundling
 
 ### Page Or Route Tests
 
 Best for:
-
-- route-level data loading
-- guards and auth behavior
-- layout integration
-- navigation-driven state changes
+- route data loading, navigation guards, and auth session state
+- layout integration, responsive breakpoints, and client-side URL routing transitions
+- mock API contract integration with MSW v2 handlers or recorded HAR replays
+- validating page-level metadata, canonical tags, and breadcrumb hierarchy
 
 ### End-To-End Or Journey Tests
 
 Best for:
-
-- high-risk user flows
-- cross-page flows
-- release confidence for critical paths
-
-Use them sparingly when smaller tests already cover the logic well.
+- high-risk end-to-end user journeys spanning multiple page boundaries
+- cross-browser verification (Chromium, Firefox, WebKit) with Playwright Trace Viewer enabled
+- multi-role interactions (e.g. buyer checkout and admin order review in parallel contexts)
+- critical path release confidence (use sparingly when smaller tests provide sufficient proof)
 
 ## Suggested Process
 
 ### 1. Inspect Existing Frontend Tests
 
-Match the local pattern for:
+Match local patterns for:
+- test runner and browser provider (Playwright v1.48+, Vitest browser mode)
+- render helpers, wrapper providers, router mocks, and test fixtures
+- network mocking setup (MSW v2 server/worker handlers and request schemas)
+- assertion libraries, custom matchers, and accessibility assertions
+- visual snapshot configurations and containerized execution parameters
 
-- render helpers
-- providers and test wrappers
-- mocking strategy
-- interaction helpers
-- accessibility assertions
+### 2. Identify Risky Behaviors & Accessibility Invariants
 
-### 2. Identify The Risky Behaviors
-
-At minimum, consider:
-
-- primary render path
-- key interaction path
-- loading and error states
-- empty or no-permission states
-- network or mutation side effects
+At minimum, evaluate:
+- primary rendering paths and interactive state transitions
+- error, empty, loading, timeout, and degraded network states
+- optimistic UI updates, local cache invalidations, and form validation boundaries
+- WCAG 2.2 AA compliance: color contrast, keyboard focus traps, Escape key restoration
+- visual regression sensitivity (custom web fonts, transitions, dynamic date/avatar content)
+- internationalization and bidirectional text (RTL/LTR) layout reflows
 
 ### 3. Choose A Stable Dependency Strategy
 
 Use the lightest valid approach:
+- MSW v2 transport-level handlers with `onUnhandledRequest: 'error'` for deterministic API mocking
+- HAR recording and replay (`page.routeFromHAR()`) for external third-party API stability
+- isolated browser contexts per test worker to prevent cookie, session, or local storage leakage
+- minimal deterministic fixture data for component and route state
+- containerized headless browser environment (Docker Linux) for reproducible visual snapshots
 
-- real rendering with mocked network boundary
-- fake router or app shell
-- fixture data for deterministic state
-- end-to-end environment only when route or browser integration truly matters
-
-### 4. Write Deterministic UI Tests
+### 4. Write Deterministic UI & Accessibility Tests
 
 Keep tests stable by:
+- relying on web-first auto-waiting locators (`toBeVisible()`) instead of arbitrary delays
+- validating modal keyboard focus containment (Tab cycling) and trigger restoration on Escape
+- asserting zero axe-core violations with `@axe-core/playwright` (`AxeBuilder.analyze()`)
+- stabilizing visual snapshots with `document.fonts.ready`, `animations: 'disabled'`, and element masking
+- verifying ARIA structure with Playwright snapshot assertions (`toMatchAriaSnapshot()`)
 
-- avoiding fragile timing assumptions
-- waiting on visible UI state, not arbitrary delays
-- using realistic but minimal fixtures
-- asserting what the user can perceive or trigger
+### 5. Run Validation & Capture Diagnostic Artifacts
 
-### 5. Run The Right Validation
-
-Run:
-
-- targeted frontend tests first
-- broader suite if shared UI or route infrastructure changed
-- accessibility or visual checks if the repo uses them
-- visual regression snapshots if the repo uses them (Chromatic, Percy, Playwright visual)
+Execute:
+- targeted component and route tests first for fast feedback loops
+- full browser suite with Playwright Trace Viewer capturing failure traces (`trace: 'retain-on-failure'`)
+- inspect Playwright Trace Viewer timeline, network panel, and DOM snapshots on failure
+- automated WCAG 2.2 AA accessibility audit and containerized visual snapshot comparisons
+- linter and typecheck before finalizing test deliverables
 
 ## Checklist
 
-- [ ] existing test pattern reviewed
-- [ ] right test scope chosen
-- [ ] primary render path covered
-- [ ] key interaction or failure state covered
-- [ ] async behavior made deterministic
-- [ ] tests run successfully
+- [ ] existing frontend test stack and scope reviewed
+- [ ] MSW v2 transport interception configured with `onUnhandledRequest: 'error'`
+- [ ] Playwright v1.48+ auto-waiting assertions used with `sleep()` / `waitForTimeout()` eliminated
+- [ ] Playwright Trace Viewer enabled with `trace: 'retain-on-failure'` and HAR replay for network paths
+- [ ] automated WCAG 2.2 AA scan passes with zero violations via `@axe-core/playwright`
+- [ ] keyboard focus management verified (Tab contained in modals, Escape restores focus to trigger)
+- [ ] accessibility tree structure verified via Playwright ARIA snapshots (`toMatchAriaSnapshot()`)
+- [ ] visual regression snapshots font-stabilized via `document.fonts.ready`, animations disabled, dynamic elements masked
+- [ ] tests executed and passing cleanly in containerized headless environment
 
 ## Failure Modes
 
-- **Coverage theater**: a high line-coverage score is achieved without exercising the risky path. **Mitigation:** enforce the Testing Trophy and a mutation score ≥ 75-80% via Stryker for critical libraries.
-- **Brittle E2E for unit logic**: a unit-level decision is covered only by an E2E test. **Mitigation:** drop the E2E and add a focused unit test; reserve E2E for cross-service flows.
-- **Live LLM in CI**: a test calls a live LLM provider. **Mitigation:** stub LLM calls with `vcr`-style fixtures in CI; never call live providers in CI.
-- **Skipped tests reported as full coverage**: a test run skips a category and reports the line coverage as full. **Mitigation:** surface skipped tests in the test report; reject reports where skipped > 0% without a documented rationale.
+- **Coverage theater**: achieving high line coverage without exercising critical failure paths. **Mitigation:** enforce the Testing Trophy and verify mutation score ≥ 75-80% via Stryker for critical UI logic.
+- **Font anti-aliasing snapshot flakiness**: cross-platform OS rasterization causes false-positive 1px visual diffs. **Mitigation:** await `document.fonts.ready`, disable animations, execute in containerized Linux, and set `maxDiffPixelRatio: 0.002`.
+- **Inaccessible modal focus trap & focus loss**: keyboard focus escapes modal into background DOM or is lost on close. **Mitigation:** run `@axe-core/playwright` CI gate, assert Tab cycling containment, and verify Escape key focus restoration.
+- **Unhandled network leakage**: tests leak unmocked network requests causing flaky timeouts. **Mitigation:** enforce MSW v2 with `onUnhandledRequest: 'error'` and use HAR replay for stable external responses.
+- **Flaky sleep-based waits**: arbitrary `waitForTimeout()` creates race conditions in CI. **Mitigation:** replace with Playwright web-first locators and auto-waiting assertions.
 
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/implementation-result.json** — Required fields: change_summary, 
-iles_touched[], and 
-alidation_run. Set produced_by_role to the emitting developer role.
+- **contracts/schemas/test-report.json** — Comprehensive frontend test report documenting test suite results (unit, component, e2e, accessibility, visual), failure traces, mutation scores, and WCAG compliance.
+- **contracts/schemas/implementation-result.json** — Emitted when frontend tests accompany feature delivery, capturing `change_summary`, `files_touched[]`, and `validation_run`. Set `produced_by_role` to the emitting role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
