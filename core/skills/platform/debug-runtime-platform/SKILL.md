@@ -37,6 +37,13 @@ helm diff upgrade checkout ./charts/checkout   # detect git vs live drift
 - **HELM-DIFF-FIRST**: Use `helm diff upgrade` (helm-diff plugin) to preview changes before applying — never apply without seeing the diff; use `helm get values` vs git values file to detect config drift.
 - **AI-LOG-ANALYSIS-ADVISORY**: Pipe logs to LLM-powered analysis tools (Datadog Bits AI, Grafana Sift) to surface anomaly patterns — treat AI-generated diagnosis as a starting hypothesis requiring human validation before any remediation.
 - **CF-WORKERS-DEBUG**: For Cloudflare Workers, use `wrangler tail --format json | jq` for structured log filtering; use `wrangler deployments list` to identify the exact deployed revision in production.
+- **K8S-DEV-DEBUG-STANDARDS**: When debugging in development clusters per Team Lead standards:
+  1. Always verify and enforce `kubectl` context is set to `dev` (`kubectl config set-context --current --namespace=dev`).
+  2. Port-forwarding must use collision detection (`lsof -i :<port>`) and track PIDs with signal trap cleanup (`trap 'kill $(cat /tmp/k8s-pf.pid)' EXIT INT TERM`) to avoid zombie listeners.
+  3. Stream and verify structured JSON logs containing OpenTelemetry `trace_id` and `span_id` (e.g., `kubectl logs -l app=<svc> -f | jq -R 'fromjson? | select(.trace_id != null)'`).
+  4. Use non-invasive ephemeral debug containers (`kubectl debug -it <pod> --image=nicolaka/netshoot:v0.13 --target=<container>`) with shared process namespaces to inspect live sockets, DNS, and traffic.
+  5. Diagnose latency or memory bottlenecks using Go `net/http/pprof` endpoints (CPU profiles, heap dumps, goroutine leaks, mutex contention).
+- **EBPF-KERNEL-DIAGNOSTICS**: Harness Cilium Hubble (`hubble observe --namespace <ns> --protocol l7`) and Tetragon (`tetra getevents -o compact --namespace <ns>`) to trace network dropped packets, DNS resolution failures, and unexpected process executions at the kernel level without application restarts.
 
 ## Suggested Process
 
@@ -95,6 +102,10 @@ Confirm:
 
 - [ ] runtime symptom captured
 - [ ] desired and running state compared
+- [ ] active `kubectl` context confirmed as `dev` (if K8s dev debugging)
+- [ ] port-forward collisions checked via `lsof` and PID trap configured
+- [ ] structured JSON logs inspected for OpenTelemetry `trace_id` correlation
+- [ ] ephemeral debug container or pprof profile attached (if in-depth diagnosis needed)
 - [ ] failing layer isolated
 - [ ] smallest safe repair applied
 - [ ] rollout and health verified

@@ -12,7 +12,9 @@ This role must follow [role-standard](role-standard.md) first.
 - enforce **Red-Green TDD**: author independent failing tests asserting contract specifications before writing implementation code; verify the expected failure reason (Red), implement minimal logic (Green), and refactor under test coverage
 - enforce **Execution Sandbox Isolation (OWASP ASI05)**: execute all test runs, database migrations, seed scripts, and dynamic code evaluations inside ephemeral, hardened execution sandboxes with restricted network egress and limited filesystem access
 - defeat **Anti Vibe-Slop**: actively scrutinize code for superficial, plausible-looking implementations that pass trivial tests but contain hidden null pointer assumptions, unhandled boundary transitions, transaction leaks, or swallowed errors
-- ensure **Invariant Preservation & Deterministic Error Handling**: validate domain invariants at entity construction/mutation boundaries; model all errors as closed algebraic types or structured error envelopes (no untyped nulls or unhandled 500s)
+- enforce **Compile-Time Invariance & Clean Architecture (Go 1.25+, PHP 8.4+, Python 3.13+)**: strictly isolate business logic from transport (HTTP/gRPC) and database drivers; in Go, use Kratos 4-layer layout with Wire compile-time DI and zero `gorm.io/gorm` in `internal/biz`; in PHP, enforce DDD Invokable Actions with Spatie Data DTOs and FrankenPHP worker memory isolation; in Python, enforce FastAPI/Litestar with Dishka scoped IoC and SQLAlchemy 2.0 Async Unit of Work (zero web-framework leaks into use cases)
+- enforce **Atomic InTx & Transactional Outbox**: eliminate dual-write consistency failures between databases and message brokers (Kafka, RabbitMQ, Dapr); write outbox records atomically with domain state in a single transaction, and dispatch asynchronously via non-blocking `SELECT ... FOR UPDATE SKIP LOCKED` daemons; decouple DB commit from broker network I/O
+- enforce **Mathematical Resilience & Fault Tolerance**: wrap downstream calls with token-bucket rate limiting, circuit breaker finite state machines with single-canary probe locks in `HALF-OPEN` (preventing thundering herd crashes), AWS full jitter exponential backoff ($Sleep = \text{random}(0, \min(M, B \times 2^{\text{attempt}}))$), and client-side UUID v4 idempotency keys
 - verify business logic, data transitions, and side effects instead of treating a passing endpoint call as proof
 - anticipate second-order effects across APIs, persistence, events, caching, retries, jobs, and rollout behavior
 - think through bug-fix blast radius: what clients, queries, workers, events, and downstream services could break
@@ -71,6 +73,26 @@ This role must follow [role-standard](role-standard.md) first.
 - verify side effects intentionally: DB writes, cache invalidation, events, async jobs, external calls, and audit/logging behavior
 - write and update tests for main behavior, risky logic, and regression-prone cases
 - identify when an issue is caused by config, deployment, data quality, or another service and escalate with evidence
+
+### Clean Architecture & Multi-Language Standards
+
+- **Go Ecosystem**: build canonical dual-protocol (gRPC + HTTP) microservices using Protobuf contracts (`go-kratos/kratos`); declare dependency injection using compile-time AST code generation (`google/wire`); enforce zero database driver leakage in domain packages (`internal/biz`); wrap multi-write mutations in atomic `InTx` transactions
+- **PHP Ecosystem (Modern PHP 8.4+)**: structure business domains into single-responsibility Invokable Actions; validate boundary inputs with strongly-typed, immutable DTOs (`spatie/laravel-data`); run high-throughput services on in-memory worker runtimes (`dunglas/frankenphp` or `laravel/octane`); enforce container reset listeners to prevent multi-tenant memory/session bleeding; automate architectural boundaries with Pest `arch()` tests
+- **Python Ecosystem (Python 3.13+)**: implement async ASGI endpoints (FastAPI, Litestar) backed by framework-agnostic scoped IoC containers (`reagento/dishka`); decouple business use cases from `fastapi.Depends`; persist state via SQLAlchemy 2.0 Async Session using Repository and Unit of Work patterns; prohibit synchronous blocking I/O inside async event loops
+
+### Transactional Outbox & Data Consistency
+
+- eliminate dual-writes across databases and external message brokers; persist domain mutations and outbox event payloads atomically in a single local database transaction
+- implement background outbox relay daemons using `SELECT ... FOR UPDATE SKIP LOCKED` to achieve lockless concurrent consumption across multiple worker replicas
+- strictly decouple database transactions from network I/O: never invoke message broker APIs (Kafka, Dapr, RabbitMQ) inside an open database transaction; commit the DB transaction first, and update outbox state only after broker acknowledgment
+- configure exponential backoff retries with dead-letter queue (DLQ) isolation for permanently failing outbox events
+
+### Mathematical Resilience & Distributed Fault Tolerance
+
+- wrap all external HTTP, gRPC, and third-party integrations with token-bucket rate limiting (`x/time/rate`, Redis token bucket)
+- configure circuit breaker state machines (`CLOSED` -> `OPEN` -> `HALF-OPEN`); mandate a **single-canary probe lock** during the `HALF-OPEN` state to prevent thundering herd crashes when downstream services recover
+- apply AWS full jitter exponential backoff on transient errors: calculate sleep as $\text{random}(0, \min(\text{max\_backoff}, \text{base} \times 2^{\text{attempt}}))$ to desynchronize retry spikes
+- enforce client-side UUID v4 `Idempotency-Key` headers on all state-mutating requests (`POST`, `PUT`, `PATCH`, `DELETE`) with transactional TTL deduplication
 
 ### AI-Assisted Development Governance
 
@@ -231,9 +253,12 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - **LLM-INTEGRATION LOCK**: do not call LLMs directly from business logic; route through centralized service layer
 - **PROMPT-INJECTION LOCK**: do not interpolate external content directly into LLM prompts; enforce structural separation
 - **MCP-TOOL-CONTRACT LOCK**: do not rename or remove MCP tools without SemVer major bump and deprecation window
-- **STRUCTURED-OUTPUT LOCK**: do not parse LLM responses with regex; use provider-level constrained decoding + runtime schema validation
 - **A2A-RECEIVER LOCK**: do not accept incoming A2A tasks without Agent Card verification, formal contract validation, and PDP checks
-- **DURABLE-WORKFLOW LOCK**: do not implement long-running AI agent tasks (>30s) as stateless HTTP request chains
+- **DURABLE-WORKFLOW LOCK**: do not implement long-running business processes or AI agent tasks (>30s) as stateless HTTP request chains; mandate Temporal SDK or Cloudflare Workflows with deterministic state machines.
+- **TRANSACTIONAL-OUTBOX LOCK**: dual-writes across a database and an external message broker must use the Transactional Outbox pattern with `SELECT ... FOR UPDATE SKIP LOCKED`; never execute network broker calls inside open database transactions.
+- **ASYNC-EVENT-LOOP LOCK**: forbids synchronous blocking calls (`requests.get`, `urllib.request`, `time.sleep`, blocking disk I/O, synchronous DB drivers) inside Python `async def` route handlers or coroutines.
+- **WORKER-STATE-ISOLATION LOCK**: forbids binding request-scoped, auth, or tenant data into global singletons in in-memory worker runtimes (FrankenPHP, Octane); must register container flush listeners on every request.
+- **CIRCUIT-BREAKER-CANARY LOCK**: when transitioning a circuit breaker from `OPEN` to `HALF-OPEN`, must enforce a single-canary probe lock to prevent thundering herd overload.
 
 ## Skill Toolbox
 
@@ -319,6 +344,10 @@ Emit `contracts/schemas/implementation-result.json` when machine handoff is requ
 - [ ] **Invariant Preservation & Deterministic Errors**: domain invariants enforced at construction; structured error envelopes used.
 - [ ] **Service Integrity & Observability**: architecture boundaries preserved; OTel spans with intent-driven names and attributes configured.
 - [ ] **AI-Generated Code & Contracts**: risk tier validated; MCP tool SemVer and LLM structured outputs verified.
+- [ ] **Clean Architecture Layer Isolation**: domain business logic is free of transport protocols and database ORM leaks (Go `internal/biz` free of `gorm.DB`, PHP controllers free of raw queries, Python use cases decoupled from `Depends`).
+- [ ] **Transactional Outbox & InTx**: dual-writes use atomic `InTx` outbox records with `SELECT ... FOR UPDATE SKIP LOCKED` relay; zero network I/O inside DB transactions.
+- [ ] **Mathematical Resilience**: downstream calls protected by token bucket, single-canary probe circuit breaker, and AWS full jitter exponential backoff.
+- [ ] **Async Loop & Worker Safety**: zero blocking synchronous calls in Python async routes; zero request state bleed in PHP worker runtimes.
 - [ ] **Handoff Artifacts**: `implementation-result.json` emitted with complete test run evidence.
 
 See [`references/backend-developer-review-checklist.md`](references/backend-developer-review-checklist.md) for the full per-area checklist (Service Integrity, Red-Green TDD, Sandbox Isolation, Anti Vibe-Slop, Invariants, AI Code Validation, MCP Tool Contracts, LLM Structured Outputs, Observability).
@@ -339,6 +368,13 @@ See [`references/backend-developer-review-checklist.md`](references/backend-deve
 - accepting plausible-looking code that contains dummy return values, swallowed exceptions, or fake assertions
 - constructing domain models without validating invariants, allowing invalid system states
 - returning untyped nulls, generic 500s, or leaking raw database stack traces to clients
+- dual-writing to database and message broker without a Transactional Outbox pattern
+- publishing messages to external brokers inside an open database transaction
+- running blocking synchronous I/O (`requests.get`, `time.sleep`) inside async Python event loops
+- leaking request-scoped authentication or tenant state into global singletons in PHP worker runtimes (FrankenPHP/Octane)
+- circuit breaker recovery allowing concurrent requests in `HALF-OPEN` state causing thundering herd crashes
+- leaking ORM entities or database queries into HTTP controllers or presentation layers
+- importing database drivers (`gorm.io/gorm`, `sqlalchemy.orm`) into domain business logic layers
 - putting new business logic in transport or controller code
 - bypassing established repositories, services, or state transitions
 - fixing a reported bug without checking shared logic or impacted consumers
@@ -374,6 +410,10 @@ See [`references/backend-developer-review-checklist.md`](references/backend-deve
 - **Execution sandbox isolation verified (OWASP ASI05)**: tests and migrations executed in isolated ephemeral container sandboxes
 - **Anti vibe-slop verification passed**: boundary cases handled, invariants enforced, genuine assertions validated
 - **Deterministic error handling implemented**: domain invariants preserved at construction; structured error envelopes returned
+- **Clean Architecture verified**: business logic decoupled from transport and persistence across Go, PHP, or Python
+- **Transactional Outbox implemented**: dual-writes use atomic InTx with `SKIP LOCKED` background relay
+- **Resilience configured**: circuit breakers enforce single-canary probe locks with full jitter backoff
+- **Async loop and worker isolation verified**: zero blocking calls in async routes; zero state-bleed in worker mode
 - business logic and original bug fix are verified without regression in affected paths
 - `contracts/schemas/implementation-result.json` emitted with full test run evidence
 - `contracts/schemas/api-contract-spec.json` emitted when contracts change
@@ -385,4 +425,4 @@ See [`references/backend-developer-review-checklist.md`](references/backend-deve
 - A2A receiver verified with Agent Card validation and PDP checks
 - Durable workflows configured for long-running tasks (>30s)
 
-Last updated: 2026-09-05
+Last updated: 2026-09-16

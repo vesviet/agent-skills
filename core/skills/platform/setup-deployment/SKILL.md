@@ -27,6 +27,9 @@ Use this skill when code changes need matching deployment or runtime configurati
 - **AI-ROLLBACK-COMPLETENESS**: Confirm AI-generated deployment configs include a defined rollback path (`maxSurge`/`maxUnavailable`, traffic split controls) — AI tools often omit rollback flags entirely.
 - **AI-AGENT-DEPLOYMENT-HITL**: For deployments including AI inference workers, model serving configs, or LLM proxy bindings, require explicit HITL review of resource limits (CPU, memory, GPU quota) and rate limit configs before production deploy.
 - **VERSION-THEN-DEPLOY**: Use Wrangler's Version-then-Deploy model (`wrangler versions upload` → `wrangler deployments create`) for gradual canary rollouts rather than direct deploys to production.
+- **GITOPS-APPLICATIONSET-RECONCILE**: When defining multi-environment or multi-service deployments via GitOps, use ArgoCD `ApplicationSet` with matrix/list generators and explicit `ignoreDifferences` for dynamically mutated fields (e.g. replica count managed by HPA, webhook-injected annotations) to prevent reconciliation loops.
+- **ROLLOUTS-ANALYSIS-GATE**: For critical user-facing services, prefer Argo Rollouts or Flagger with automated Prometheus `MetricAnalysis` (P99 latency, 5xx error thresholds) over naive rolling updates; include empty vector coalescing (`or on() vector(0)`) to guard against false rollbacks during low-traffic windows.
+- **EXTERNAL-SECRETS-DECLARATIVE**: Never commit raw secrets or base64-encoded credentials to deployment repositories; use External Secrets Operator (`ExternalSecret` manifests referencing `ClusterSecretStore`) to synchronize credentials from HashiCorp Vault or AWS Secrets Manager into native Kubernetes secrets at runtime.
 
 ## Suggested Process
 
@@ -92,8 +95,10 @@ For machine-to-machine handoff, output a structured JSON plan (e.g., `deployment
 
 - [ ] deployment source of truth located
 - [ ] required config added or updated
-- [ ] environment variables and secrets validated (no hardcoded secrets)
+- [ ] environment variables and secrets validated via ExternalSecrets (no hardcoded secrets)
 - [ ] rollout ordering and dependencies checked
+- [ ] GitOps ApplicationSet matrix and drift controls configured (if multi-cluster/env)
+- [ ] Progressive delivery MetricAnalysis gates and rollback triggers verified (if Canary)
 - [ ] rollback and smoke test requirements defined
 - [ ] validation commands run
 - [ ] health and rollback behavior reviewed

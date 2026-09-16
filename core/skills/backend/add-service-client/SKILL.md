@@ -20,8 +20,8 @@ Use this skill when a service must call another internal service, external API, 
 - reuse the repo's existing client abstraction pattern; define a **narrow interface** — expose only the request/response fields the local service actually needs
 - keep transport details out of business logic; never let gRPC status codes, HTTP 4xx/5xx, or SDK error types leak past the client boundary — normalize to local domain errors
 - make **timeouts explicit per call** (connect timeout ≤ 2 s, read timeout per SLA); never inherit infinite-wait defaults
-- mandate **circuit breakers** for all external dependency calls — an unhealthy dependency must not cascade to callers; use half-open probe periods to detect recovery
-- implement **exponential backoff with full jitter** for transient errors; never retry non-idempotent mutations (POST, DELETE) without explicit idempotency keys
+- mandate **circuit breakers** for all external dependency calls — an unhealthy dependency must not cascade to callers; use half-open probe periods to detect recovery; mandate a **single-canary probe lock** during the `HALF-OPEN` state to prevent thundering herd crashes when downstream services recover
+- implement **exponential backoff with full jitter** for transient errors ($Sleep = \text{random}(0, \min(M, B \times 2^{\text{attempt}}))$); never retry non-idempotent mutations (POST, DELETE) without explicit client-side UUID v4 idempotency keys
 - authenticate outbound calls per the 2026 zero-trust model: **SPIFFE/SPIRE mTLS** for internal service-to-service, **OIDC workload identity** for cross-cloud, **JWT bearer** for user-delegated context
 - emit an **OTel span** for every outbound call with `peer.service`, `http.method`, `http.status_code`, and error attributes; propagate W3C `traceparent` headers
 - never log request/response bodies containing PII, secrets, or card data in outbound call tracing

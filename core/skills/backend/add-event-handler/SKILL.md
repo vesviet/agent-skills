@@ -22,6 +22,7 @@ Use this skill when a change involves publishing an event, consuming one, or ext
 - make idempotency explicit for every event consumer using the event `id` field (not a content hash) — this protects against agentic retry floods producing duplicate side effects
 - keep transport concerns separate from business decisions; route events through a dead-letter queue (DLQ) for all unhandled errors — observable failures are mandatory
 - enforce **exactly-once delivery** semantics at the consumer layer via idempotency keys stored in a transactional store (Redis, Postgres) with TTL deduplication
+- **Transactional Outbox for dual-writes**: when a state-mutating operation must persist database records and publish events to an external broker (Kafka, RabbitMQ, Dapr), mandate the **Transactional Outbox pattern**; write the event payload to an outbox table atomically in the same local database transaction (`InTx`), and dispatch asynchronously via non-blocking `SELECT ... FOR UPDATE SKIP LOCKED` daemons; strictly decouple database commits from broker network I/O
 - validate AI-generated event schemas against the repo's event contract before merging — LLMs frequently produce plausible but type-incompatible field names
 - when an agent orchestrates event chains, validate that every chain has a **defined termination condition** and does not create unbounded producer-consumer feedback loops
 - document ordering guarantees, retry policy, and DLQ behavior explicitly in the event contract
@@ -90,6 +91,8 @@ Cover:
 - [ ] publisher or consumer logic implemented
 - [ ] idempotency considered
 - [ ] failure and retry behavior checked
+- [ ] Transactional Outbox implemented for database + broker dual-writes (no network I/O inside DB transactions)
+- [ ] Outbox daemon utilizes `SELECT ... FOR UPDATE SKIP LOCKED` for lockless concurrent worker dispatch
 - [ ] observability instrumented (OTel span on publish/consume)
 - [ ] tests added or updated
 
@@ -98,15 +101,14 @@ Cover:
 - **Event emitted without schema validation**: a handler emits an event with a shape that does not validate against the event schema. **Mitigation:** validate the event at the producer boundary; reject the event on schema mismatch.
 - **Dead-letter queue missing**: a handler fails silently without a DLQ for retry. **Mitigation:** require a DLQ binding on every event handler; surface the missing binding at review.
 - **Idempotency key missing on retry**: a handler retries without an idempotency key, producing duplicate side effects. **Mitigation:** require an explicit idempotency key on every non-idempotent handler; reject handlers without the key.
+- **Dual-write inconsistency & network I/O in DB transaction**: a service writes to the database and directly publishes to a broker within an open database transaction, causing connection exhaustion and state drift on broker timeout. **Mitigation:** mandate Transactional Outbox with `SELECT ... FOR UPDATE SKIP LOCKED`; commit the local DB transaction first before background dispatch.
 - **Consumer lag undetected**: the consumer is lagging but no alert fires. **Mitigation:** wire a consumer-lag alert at the 80th percentile; surface the lag in the SRE dashboard.
 
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/implementation-result.json** — Required fields: change_summary, 
-iles_touched[], and 
-alidation_run. Set produced_by_role to the emitting developer role.
+- **contracts/schemas/implementation-result.json** — Required fields: change_summary, files_touched[], and validation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
