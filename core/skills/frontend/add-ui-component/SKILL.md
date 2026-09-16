@@ -109,6 +109,13 @@ Cover:
 - Ensure that properties, events, and lifecycle hooks are mapped correctly to React props and callbacks.
 - Verify component cleanup and event listener detachment are executed correctly when components unmount.
 
+### 2026: Anti-Slop Component Mechanics (Taste Skill)
+- For full-height hero or banner components, ALWAYS enforce `min-h-[100dvh]` to avoid viewport jumping on mobile browsers.
+- NEVER use React `useState` to track continuous values (pointer physics, scroll progress, mouse movement); bind continuous motion to `motion/react` values (`useMotionValue`, `useTransform`).
+- Provide physical feedback on interactive elements via `:active` transform (`scale-[0.98]` or `-translate-y-[1px]`).
+- Ensure primary CTA labels never wrap to multiple lines on desktop viewports.
+- Restrict icon usage to approved libraries (@phosphor-icons/react, hugeicons-react, @radix-ui/react-icons); never hand-roll SVG icons in components.
+
 ## Checklist
 
 - [ ] similar component pattern reviewed
@@ -116,6 +123,7 @@ Cover:
 - [ ] accessibility and semantics checked
 - [ ] state boundaries kept clear
 - [ ] styling follows local system
+- [ ] anti-slop mechanics verified (min-h-[100dvh], continuous motion isolated from useState, tactile :active feedback, no CTA wrapping)
 - [ ] performance impact considered (bundle size, lazy loading, CLS)
 - [ ] tests added or updated
 - [ ] `implementation-result.json` emitted for the change slice (see Output Contracts)

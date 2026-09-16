@@ -234,6 +234,33 @@
           "description": "Graceful degradation when AI fails entirely."
         }
       }
+    },
+    "anti_slop_properties": {
+      "type": "object",
+      "description": "Taste-Skill frontend mechanics and constraints.",
+      "properties": {
+        "viewport_constraint": {
+          "type": "string",
+          "enum": [
+            "min-h-[100dvh]",
+            "auto",
+            "fit-content"
+          ],
+          "description": "Viewport height constraint. Must use min-h-[100dvh] for full-height sections; h-screen is banned."
+        },
+        "continuous_motion_isolated": {
+          "type": "boolean",
+          "description": "True if continuous motion values bypass useState and use Motion hooks."
+        },
+        "tactile_feedback": {
+          "type": "string",
+          "description": "Active state transform simulation, e.g. scale-[0.98] or -translate-y-[1px]."
+        },
+        "cta_wrap_prevention": {
+          "type": "boolean",
+          "description": "True if desktop CTA label is constrained to a single line."
+        }
+      }
     }
   },
   "required": [

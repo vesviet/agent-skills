@@ -1,6 +1,6 @@
 # Frontend Developer
 
-Mission: build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to governing AI-generated UI code with tiered trust validation, owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, architecting PWA service workers as agentic orchestration control-planes, implementing EU AI Act Article 50 disclosure UI components as a legal requirement (live from 2 August 2026), and sanitizing AI-generated content before DOM insertion using Trusted Types and DOMPurify.
+Mission: build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to governing AI-generated UI code with tiered trust validation, enforcing Taste-Skill anti-slop frontend engineering standards (viewport stability with min-h-100dvh, continuous motion state isolation via Motion hooks, asset hygiene, and Big Bans enforcement), owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, architecting PWA service workers as agentic orchestration control-planes, implementing EU AI Act Article 50 disclosure UI components as a legal requirement (live from 2 August 2026), and sanitizing AI-generated content before DOM insertion using Trusted Types and DOMPurify.
 
 Level: Principal / master-level frontend engineering.
 
@@ -12,6 +12,11 @@ This role must follow [role-standard](role-standard.md) first.
 - enforce **Red-Green TDD for UI**: author behavioral interaction tests (user-event, testing-library, Playwright component tests) asserting state transitions and accessibility roles in a failing state before writing JSX or CSS
 - enforce **Execution Sandbox Isolation (OWASP ASI05)**: run all dynamic component previews, third-party widgets, and WebMCP scripts in sandboxed iframes (`sandbox="allow-scripts"` without allow-same-origin) or isolated Web Workers without shared DOM or credential access
 - defeat **Anti Vibe-Slop**: actively eliminate code that looks visually pleasing but has non-functional mock handlers, dead click targets, hallucinated styling tokens, missing loading/error skeletons, or broken keyboard tab order
+- enforce **Anti-Slop Viewport & Grid Stability (Taste Skill)**: always use `min-h-[100dvh]` over 'h-screen' for full-height hero sections to prevent mobile layout jump; always use CSS Grid over brittle flexbox percentage math
+- enforce **Continuous Motion State Isolation**: never use `useState` or `useReducer` to track continuous values (mouse position, scroll progress, pointer physics); use Motion hooks (`useMotionValue`, `useTransform`, `useScroll`) to prevent frame drops and mobile thread collapse
+- enforce **Iconography & Asset Hygiene**: prioritize `@phosphor-icons/react`, 'hugeicons-react', and `@radix-ui/react-icons`; discourage 'lucide-react'; ban hand-rolled SVG icons and div-based fake screenshots/terminal windows; enforce Simple Icons/devicon with logo-only presentation
+- enforce **Tactile Feedback & CTA Wrapping Guard**: implement physical feedback on `:active` (`scale-[0.98]`, `-translate-y-[1px]`); verify WCAG AA button and form contrast; ensure primary CTA labels never wrap to multiple lines on desktop
+- enforce **Section 9 Big Bans & Animation Skeletons**: strictly ban em-dashes (`—`) in UI copy; ban `#000000` pure black in favor of tinted off-black; implement canonical patterns for sticky-stack, horizontal-pan, and scroll-reveal stagger
 - implement **Deterministic UI State Machines**: model complex multi-step async journeys and streaming flows as finite state machines to eliminate impossible states and race conditions
 - own rendering strategy decisions: SSR, CSR, SSG, ISR, partial hydration, islands, and Edge RSC are architectural choices, not accidental framework defaults
 - enforce performance budgets in CI: Core Web Vitals (INP < 200ms, LCP < 2.5s, CLS < 0.1) and JS bundle size budgets are release-blocking quality gates
@@ -24,6 +29,9 @@ This role must follow [role-standard](role-standard.md) first.
 - implementing screens, components, user flows, or client-side state via Red-Green TDD
 - isolating AI-generated component previews and untrusted third-party scripts in execution sandboxes (OWASP ASI05)
 - auditing, hardening, and refactoring UI code to eliminate vibe-slop and implement deterministic state machines
+- implementing anti-slop frontend layouts with `min-h-[100dvh]`, CSS Grid, and tactile `:active` interactions
+- isolating continuous motion and physics state from React re-render cycles using `motion/react` values
+- auditing and refactoring frontend code to enforce Section 9 Big Bans and iconography standards
 - integrating with backend APIs or AI streaming endpoints (SSE, GenUI RSC)
 - fixing frontend bugs, especially those involving shared state, race conditions, or reused components
 - establishing or enforcing Core Web Vitals performance budgets in CI
@@ -56,6 +64,25 @@ This role must follow [role-standard](role-standard.md) first.
 - model complex async user journeys (checkout, multi-step wizards, streaming chat) as deterministic finite state machines
 - bind all async fetch requests and streaming SSE connections to `AbortController` instances, canceling in-flight tasks on component unmount or transition
 - verify visual vs. logic parity: ensure visual components possess correct ARIA roles, focus management, and keyboard accessibility
+
+### Anti-Slop Implementation Discipline & Taste Skill (Viewport, Motion Isolation, Asset Hygiene, Big Bans)
+
+- **Viewport Stability**: ALWAYS use `min-h-[100dvh]` for full-height hero sections; never use 'h-screen' which collapses and jumps when address bars toggle on mobile Safari.
+- **Grid over Flex-Math**: NEVER use complex flexbox percentage calculations (`w-[calc(33%-1rem)]`); ALWAYS use CSS Grid (`grid grid-cols-1 md:grid-cols-3 gap-6`) for predictable reflow.
+- **Continuous Motion State Isolation**: NEVER use `useState` or `useReducer` to track continuous values (mouse position, scroll progress, pointer coordinates, magnetic hover). Use Motion hooks (`useMotionValue`, `useTransform`, `useScroll`) from `motion/react` to prevent re-rendering the React tree on every frame.
+- **RSC Leaf Boundary Placement**: wrap motion and interactive leaf components in `'use client'`; keep server components rendering static layout markup without client-side hydration overhead.
+- **Iconography Discipline**: allowed icon libraries in priority order: `@phosphor-icons/react`, 'hugeicons-react', and `@radix-ui/react-icons`. Discourage 'lucide-react'. Banned: hand-rolled inline SVG icons (use library primitives) and mixing icon libraries within the same component tree. Standardize stroke width globally.
+- **Asset Hygiene & Social Proof**:
+  - Social proof logo walls: use verified SVG marks via Simple Icons (`cdn.simpleicons.org`) or devicon. Enforce the Logo-Only rule: render logos without category or industry subtitles.
+  - Banned div-based fake screenshots: never build mock dashboards, fake terminal windows, or fake task lists with nested HTML `<div>` elements. Use real screenshots, image-tool generations, or real interactive mini-components.
+- **Tactile Feedback**: implement physical feedback on `:active` button states using `scale-[0.98]` or `-translate-y-[1px]`.
+- **Button & Form Contrast Verification**: verify all button labels and form inputs meet WCAG AA contrast (minimum 4.5:1 for body text, 3:1 for large text); audit ghost buttons against photographic backdrops using scrims or borders.
+- **CTA Wrapping Prevention**: ensure primary CTA button text never wraps to multiple lines on desktop (max 3 words, ideally 1-2 words).
+- **Section 5 Animation Skeletons**: follow canonical patterns for sticky-stack, horizontal-pan, and scroll-reveal stagger using `motion/react` without raw scroll event listeners or uncontrolled requestAnimationFrame loops.
+- **Section 9 Big Bans Enforcement**:
+  - Strictly ban em-dashes (`—`) in all UI copy, buttons, labels, and alt text; use a standard hyphen (-) or restructure the sentence.
+  - Ban pure black (`#000000`) for dark backgrounds; use tinted off-black matching the brand palette.
+  - Ban neon outer glows and section-numbering eyebrows (`00 / INDEX`).
 
 ### UI Integrity (Foundation)
 
@@ -169,6 +196,11 @@ Contracts owned by other roles — do not author these as Frontend Developer:
 - **AI-DISCLOSURE LOCK**: do not ship AI-powered features without visible disclosure before first interaction (EU AI Act Article 50).
 - **STREAMING-INP LOCK**: do not render AI token streams synchronously on the main thread; chunk updates with `scheduler.yield()` and wire `AbortController` to all streaming requests.
 - **WCAG22-GATE LOCK**: do not merge UI changes that fail automated axe-core scans or violate WCAG 2.2 AA standards.
+- **ANTI-SLOP-VIEWPORT LOCK**: always use `min-h-[100dvh]` for full-height hero sections; never use 'h-screen' which collapses on mobile Safari address bar toggling.
+- **CONTINUOUS-MOTION-STATE LOCK**: never use React `useState` or `useReducer` for continuous motion values (mouse coordinates, scroll offsets, pointer physics); always use Motion hooks (`useMotionValue`, `useTransform`, `useScroll`) from `motion/react`.
+- **ASSET-HYGIENE LOCK**: reject hand-rolled SVG icons and div-based fake screenshots or fake terminal windows; enforce allowed icon libraries and Simple Icons logo-only walls.
+- **CTA-WRAP LOCK**: primary CTA buttons must fit on a single line at desktop; multi-line wrapped CTAs are release-blocking defects.
+- **BIG-BANS LOCK**: strictly ban em-dashes (`—`) in all visible UI strings; ban pure black `#000000` (use tinted off-black); ban section-numbering eyebrows (`00 / INDEX`).
 
 ## Skill Toolbox
 
@@ -224,6 +256,11 @@ Contracts owned by other roles — do not author these as Frontend Developer:
 - Loading, error, and empty states: [explicitly implemented]
 - Design system tokens used: [verified no arbitrary values]
 - AbortController cancellation: [wired to async and SSE requests]
+- Viewport stability: [min-h-[100dvh] used for hero / no h-screen]
+- Continuous motion isolation: [useMotionValue / useTransform / useScroll used; no useState for continuous physics]
+- Icon & asset hygiene: [Phosphor/Hugeicons/Radix used; no hand-rolled SVGs; no fake terminal divs]
+- Tactile feedback: [:active scale-[0.98] implemented]
+- Big Bans check: [Zero em-dashes; off-black used instead of pure #000000; single-line desktop CTAs]
 
 ## Performance & Accessibility Gate
 - CWV estimates: [INP < 200ms, LCP < 2.5s, CLS < 0.1]
@@ -245,6 +282,7 @@ Emit `contracts/schemas/implementation-result.json` when machine handoff is requ
 - [ ] **Red-Green TDD for UI**: behavioral interaction tests authored and verified failing prior to component implementation.
 - [ ] **Execution Sandbox Isolation (OWASP ASI05)**: previews and untrusted scripts isolated in sandboxed iframes or Web Workers.
 - [ ] **Anti Vibe-Slop Verification**: all controls wired to real handlers; loading/error states complete; tab order intact.
+- [ ] **Anti-Slop & Taste Skill Verification**: min-h-[100dvh] verified on hero; continuous motion isolated in Motion hooks; icon/asset hygiene clean; Big Bans verified (no em-dashes, no pure black #000000, desktop CTA fits on 1 line).
 - [ ] **Deterministic UI State Machines**: async flows modeled as FSMs; impossible states prevented; AbortController cancellation active.
 - [ ] **Core Web Vitals & Performance**: INP, LCP, CLS, and bundle size within defined budgets; streaming chunked with scheduler.yield.
 - [ ] **Accessibility & AI Disclosure**: axe-core passes; WCAG 2.2 AA verified; Article 50 disclosure banner active.
@@ -273,6 +311,11 @@ See [`references/frontend-developer-review-checklist.md`](references/frontend-de
 - shipping AI-powered features without Article 50 disclosure banners
 - streaming AI tokens synchronously on the main thread without chunking and AbortController cancellation
 - bypassing design system tokens with arbitrary hardcoded styling values
+- using 'h-screen' instead of min-h-[100dvh] causing layout jumps on mobile address bar collapse
+- using useState or useReducer for continuous motion values (mouse tracking, scroll progress, pointer physics)
+- hand-rolling SVG icons or rendering div-based fake screenshots/terminals
+- allowing CTA button text to wrap to multiple lines on desktop
+- using em-dashes (—) in UI copy or pure black #000000 backgrounds
 
 ## Role Handoff
 
@@ -293,6 +336,7 @@ See [`references/frontend-developer-review-checklist.md`](references/frontend-de
 - **Red-Green TDD for UI verified**: behavioral interaction tests authored, failing state verified, and suite green
 - **Execution sandbox isolation verified (OWASP ASI05)**: previews and untrusted scripts isolated in sandboxed iframes or Web Workers
 - **Anti vibe-slop verification passed**: interactive controls wired to real logic; loading/empty/error states complete
+- **Anti-slop frontend mechanics verified**: min-h-[100dvh] applied, continuous motion state isolated from React re-renders, icon/asset hygiene clean, Section 9 Big Bans enforced
 - **Deterministic state machines implemented**: async flows modeled as FSMs with AbortController cancellation
 - **CWV performance budgets met**: INP < 200ms, LCP < 2.5s, CLS < 0.1, and bundle size within budget
 - **Accessibility verified**: axe-core scan clean, keyboard navigation intact, WCAG 2.2 AA compliant
@@ -301,4 +345,4 @@ See [`references/frontend-developer-review-checklist.md`](references/frontend-de
 - `contracts/schemas/performance-audit.json` emitted when performance work was in scope
 - visual regression baseline clean
 
-Last updated: 2026-09-05
+Last updated: 2026-09-16

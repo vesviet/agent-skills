@@ -88,6 +88,14 @@ Publish UX handoff manifest (flow path + component paths) for Frontend and QA.
 - Disclose advanced options, settings, and complex configuration contextually after the primary action is selected.
 - Avoid cognitive overload by grouping advanced settings into collapsible panels or secondary screens.
 
+### 2026: Brief Inference & Anti-Slop Flow Governance (Taste Skill)
+
+- Infer user and brand signals (page kind, audience, vibe words, quiet constraints) to output a 1-line Design Read before drafting screens.
+- Calibrate the Three Dials (`DESIGN_VARIANCE`, `MOTION_INTENSITY`, `VISUAL_DENSITY`) to configure layout risk, animation depth, and information density.
+- Enforce hero viewport containment: headline max 2 lines, subtext max 20 words, CTAs visible above the fold, top padding <= 6rem (pt-24).
+- Restrict uppercase tracking eyebrows to at most 1 per 3 sections; prohibit repeating section layout families.
+- Unify CTA labels per user intent across all screens in the flow.
+
 ## Output Format
 
 Markdown brief (see `core/roles/ui-ux-designer.md` template) **plus** JSON contracts when machine handoff is required.
@@ -101,6 +109,7 @@ Markdown brief (see `core/roles/ui-ux-designer.md` template) **plus** JSON contr
 - [ ] api_needs and open_questions captured
 - [ ] design system overlay rules respected
 - [ ] handoff manifest complete
+- [ ] brief inference executed (1-line Design Read stated, Three Dials declared, anti-slop rules checked)
 - [ ] agent UX flow patterns (delegation confirmations, progress indicators, cancelability) specified
 - [ ] Figma variables used to prototype dynamic data states (empty states, errors, long values)
 - [ ] progressive disclosure applied to separate primary actions from advanced configuration options

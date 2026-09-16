@@ -83,11 +83,20 @@ Note spec gaps (missing state, missing api_field, ambiguous transition).
 - Review transitions, timing animations, and edge-case state responses (such as validation errors and loading loops) inside the interactive prototype.
 - Verify that touch targets and hover states behave as expected across various screen dimensions.
 
+### 2026: Anti-Slop & Taste Skill Audit Checklist
+- Check for Brief Inference: verify the spec provides a 1-line Design Read and defines the Three Dials (`DESIGN_VARIANCE`, `MOTION_INTENSITY`, `VISUAL_DENSITY`).
+- Audit Hero Viewport Discipline: verify headline <= 2 lines, subtext <= 20 words, CTAs visible without scrolling, and top padding <= 6rem (pt-24).
+- Audit Eyebrow Restraint: verify no more than 1 eyebrow per 3 sections (blocking defect if exceeded).
+- Audit Typography & Color: verify no default Fraunces/Instrument_Serif; verify word emphasis uses the same font family; verify no AI-purple glow gradients; verify single accent hue.
+- Audit Section Variety & Bento Grids: verify at least 4 layout families across 8 sections; verify no more than 2 consecutive alternating zigzag sections; verify bento grids have no blank filler tiles.
+- Audit CTA & Copy Discipline: verify unified CTA labels per intent; verify primary desktop CTAs do not wrap; verify zero em-dashes in UI copy.
+
 ## Checklist
 
 - [ ] user goal and preserved/changed behavior understood
 - [ ] ux-flow-spec covers screens, transitions, and component_spec_refs
 - [ ] each component spec lists states, events, and copy_per_state
+- [ ] anti-slop checks passed (Design Read stated, Three Dials declared, eyebrow frequency <= 1/3 sections, hero subtext <= 20 words, zero em-dashes)
 - [ ] loading, empty, error, and permission paths reviewed
 - [ ] design-system or overlay tokens applied consistently
 - [ ] findings classified with severity and owner (design vs engineering)
