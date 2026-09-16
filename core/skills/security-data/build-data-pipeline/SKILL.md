@@ -1,117 +1,114 @@
 ---
 name: build-data-pipeline
-description: Design and implement transactional lakehouse pipelines (Iceberg/Delta), enforce ODCS v3.1.0 data contracts at producer boundaries, integrate Great Expectations/dbt-expectations quality gates, and isolate invalid records in DLQ quarantine with deterministic replayability. Use when the work requires an owned, repeatable data pipeline.
+description: Design and implement transactional lakehouse pipelines (Iceberg v3/Delta 4.0), enforce ODCS v3.1.0 data contracts, execute Write-Audit-Publish (WAP) on isolated snapshot branches, route malformed records to DLQ with circuit breaker, and enforce S3 prefix hashing. Use when building or maintaining reliable, contract-governed lakehouse data pipelines.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, query_db, read_database, run_tests]
 ---
 
 # Build Data Pipeline
 
-Use this skill when building or maintaining repeatable data infrastructure: ingestion pipelines, lakehouses, transformation models, quality gates, dead-letter quarantine, or orchestration. For one-off analytical queries, use `analyze-data` instead.
+Use this skill when building or maintaining transactional lakehouse infrastructure: ingestion pipelines, table formats, schema contracts, Write-Audit-Publish (WAP) validation, dead-letter quarantine (DLQ), and orchestration. For one-off exploratory queries, use `analyze-data` instead.
 
 ## When to Use
 
-- implementing transactional lakehouse pipelines with Apache Iceberg or Delta Lake
-- enforcing Open Data Contract Standard (ODCS v3.1.0) at producer perimeters
-- establishing automated data quality gates using Great Expectations or dbt-expectations
-- routing poisoned or non-conformant records into Dead-Letter Queue (DLQ) quarantine stores
-- authoring idempotent transformations, dbt microbatch models, or deterministic replay runbooks
-- building streaming or microbatch pipelines with Kafka and Airflow DAGs
+- implementing transactional lakehouse pipelines with Apache Iceberg v3 or Delta Lake 4.0 UniForm
+- enforcing Open Data Contract Standard (ODCS v3.1.0) at producer boundaries before ingestion
+- staging writes to isolated snapshot branches (`wap_audit_<run_id>`) for atomic Write-Audit-Publish (WAP)
+- auditing branch data in-process via DuckDB zero-copy Arrow memory before publishing to `main`
+- routing poisoned or non-conforming records into Dead-Letter Queue (DLQ) quarantine with circuit breaker
+- enforcing deterministic upsert `MERGE INTO` with composite SHA-256 cryptographic natural keys
+- configuring S3 object storage prefix hashing (`write.object-storage.enabled = true`) to prevent 503 throttling
+- executing automated table maintenance: 256MB bin-pack compaction, 7-day snapshot expiration, 72h vacuum
 
 ## Core Rules
 
-- treat all source inputs as **read-only** — never modify upstream files or producer sources
-- enforce **ODCS v3.1.0 data contracts** at producer boundaries before persisting into storage
-- implement the **Medallion architecture**: immutable Bronze landing, conformed Silver, aggregated Gold
-- cast columns to explicit types; never allow untyped string states as the final schema
-- pipelines must be **idempotent**: running twice must produce identical results via `MERGE INTO` natural keys
-- isolate poisoned records in **DLQ quarantine** with metadata; trip circuit-breaker if error rate exceeds 1.0%
-- enforce **EU AI Act lineage tracking**: retain dbt DAG provenance for 10+ years; audit for toxic or biased attributes
-- deploy **DuckDB** embedded for <100 GB analytical workloads with explicit memory limits (`SET max_memory = '4GB'`); for DuckDB v2.0 (October 2026) targets, treat the **storage format v2.0.0 as breaking** — plan re-export of persisted datasets, and prefer the Quack/`CONNECT` server mode only for governed multi-tenant deployments
-- **Catalog as control plane (2027)**: coordinate transactions, policies, and credentials at the catalog layer — Iceberg REST catalog protocol (server-side scan planning, ETag freshness, `Idempotency-Key` retried commits, credential vending), Polaris/Unity Catalog/Snowflake Horizon federation; the table format is no longer the governance locus
-- **Iceberg v4 readiness**: spec v4 is a metadata restructuring (relative paths, adaptive metadata tree) with foundations already in 1.11.0 — prepare low-risk upgrade runbooks, never data rewrites; use Variant type + shredding as the canonical semi-structured ingestion path; Spark floor is 4.1+ (3.4 deprecated); Flink 2.3 sinks support deletion vectors and Variant
-- **Native table encryption**: use Iceberg 1.11 table encryption (KMS integration, automatic key rotation, manifest-list encryption) as the zero-trust enforcement layer instead of storage-only controls
-- mask or aggregate PII before emitting any output or logging; classify with `data-classification.yaml`
-- log row counts and drift before and after every transformation step
-- wire DLQ quarantine triggers to contract SLA fields (freshness/latency thresholds) instead of ad-hoc thresholds; publish OpenLineage events with explicit lineage facets for impact analysis
-- detailed specifications, schemas, and runbooks are maintained in [`references/producer-contracts-and-lakehouse.md`](references/producer-contracts-and-lakehouse.md) and [`references/quality-gates-dlq-and-replayability.md`](references/quality-gates-dlq-and-replayability.md)
+- **Read-Only Sources**: treat all source inputs as read-only; never mutate upstream source files or CDC logs.
+- **ODCS v3.1.0 Contract Verification**: validate raw payloads against version-controlled ODCS v3.1.0 schemas at producer boundaries before ingestion; reject uncontracted schema drift.
+- **Modern Lakehouse Table Formats**:
+  - standardize on **Apache Iceberg v3** with Puffin RoaringBitmap Deletion Vectors (DVs) and integer `spec-id` partition evolution; avoid legacy position deletes.
+  - support **Delta Lake 4.0 UniForm** for universal Iceberg metadata compatibility and Liquid Clustering.
+  - coordinate catalog metadata through REST Catalogs (Polaris, Unity Catalog OSS) with short-lived STS tokens.
+- **S3 Object Storage Prefix Hashing**: set table property `write.object-storage.enabled = true` on high-throughput Iceberg tables to distribute Parquet files across hashed S3 prefixes, preventing AWS S3 503 Slow Down errors.
+- **Write-Audit-Publish (WAP) Protocol**:
+  1. *Write*: validate contracts and quarantine non-compliant records to DLQ; stage only compliant, deduplicated Parquet batches to an isolated Iceberg snapshot branch (`wap_audit_<run_id>`).
+  2. *Audit*: execute automated contract assertions in-process via DuckDB over zero-copy Apache Arrow memory (`SET max_memory = '4GB';`). If circuit breaker $Q_r > 2.0\%$ ($N \ge 50$) trips or audits fail, abort without publishing.
+  3. *Publish*: atomically fast-forward the `main` branch pointer to the audited snapshot; prune temporary branches.
+- **DLQ Envelopes & Mathematical Circuit Breaker**:
+  - quarantine non-conforming rows into a structured DLQ table with diagnostic JSON envelopes (`quarantine_id`, `source_system`, `batch_id`, `trace_id`, `payload_raw`, `error_code`, `violated_rule`, `diagnostic_context`).
+  - calculate quarantine ratio: $Q_r = (N_{\text{quarantined}} / N_{\text{total}}) \times 100%$.
+  - trip circuit breaker and halt pipeline if $Q_r > 2.0%$ with minimum sample size floor $N \ge 50$.
+- **Deterministic Upsert MERGE**:
+  - generate composite SHA-256 cryptographic natural keys: `SHA256(col1 || '|' || col2 || '|' || col3)`.
+  - apply intra-batch window deduplication (`ROW_NUMBER() OVER (PARTITION BY natural_key ORDER BY event_ts DESC) = 1`).
+  - execute atomic `MERGE INTO` with watermark check (`source.event_ts >= target.event_ts`); never use non-idempotent appends.
+- **Lakehouse Maintenance Lifecycle**:
+  - bin-pack compaction (`rewrite_data_files`) merging Deletion Vectors to target 256MB Parquet blocks.
+  - manifest rewriting (`rewrite_manifests`), 7-day TTL snapshot expiration with 50-snapshot floor, 72-hour orphan vacuuming.
+- **Zero-Trust & PII Governance**: mask or hash PII per `data-classification.yaml`; enforce Column-Level Security (CLS) and Row-Level Security (RLS); sanitize RAG vector inputs per OWASP ASI06.
+- detailed specifications are maintained in [`references/producer-contracts-and-lakehouse.md`](references/producer-contracts-and-lakehouse.md) and [`references/quality-gates-dlq-and-replayability.md`](references/quality-gates-dlq-and-replayability.md).
 
 ## Suggested Process
 
-### 1. Ingest & Validate Producer Contract
-Ingest source events and evaluate raw payloads against the ODCS v3.1.0 contract schema. Reject unannounced breaking schema shifts at the boundary.
+### 1. Ingest & Verify Producer Contract
+Validate incoming batch or streaming event schemas against the ODCS v3.1.0 contract in producer CI/CD before persisting to storage.
 
-### 2. Lakehouse Bronze Staging & Schema Verification
-Stage raw inputs into Bronze Iceberg/Parquet tables with immutable audit trails (`_ingested_at`, `_source_file`, `trace_id`).
+### 2. Contract Validation, DLQ Quarantine & WAP Branch Staging
+Validate incoming batch records against the ODCS contract. Route non-compliant records to the DLQ with structured envelopes. Calculate quarantine ratio $Q_r = (N_{\text{quarantined}} / N_{\text{total}}) \times 100\%$. Write and stage only compliant, deduplicated records to an isolated Iceberg snapshot branch (`wap_audit_<run_id>`) with `write.object-storage.enabled = true`.
 
-### 3. Silver Layer Transformation & Automated DQ Gates
-Apply cleaning, deduplication, and type casting. Run Great Expectations and dbt-expectations assertion suites (nullability, uniqueness, foreign keys).
+### 3. Zero-Copy In-Process Arrow Audit
+Run in-process DuckDB zero-copy Arrow memory audits (`SET max_memory = '4GB';`) against the staged data on the isolated branch. Execute assertion queries checking nullability, value ranges, distribution drift, and foreign keys.
 
-### 4. DLQ Quarantine & Error Routing
-Route contract-failing or malformed records into structured DLQ quarantine. Halt ingestion and notify on-call if error rate exceeds 1.0%.
+### 4. Circuit Breaker & Audit Verification Gate
+Evaluate audit query results and quarantine rate. If circuit breaker $Q_r > 2.0\%$ ($N \ge 50$) tripped, or if any DuckDB audit query fails, abort the transaction without publishing, drop the temporary audit branch, and alert.
 
-### 5. Gold Layer Modeling & Metric Publishing
-Build business aggregates and dimensional models. Configure dbt 1.9 microbatch strategies and publish clean tables to the semantic layer.
+### 5. Atomic Upsert MERGE & Fast-Forward Publish
+Execute atomic `MERGE INTO` using composite SHA-256 natural keys. Fast-forward the `main` branch pointer to the validated branch snapshot knowing that uncontracted and defective data was already isolated in DLQ, then prune temporary audit branch metadata.
 
-### 6. Emit Pipeline Spec & Monitor
-Validate output against contract specifications. Record lineage, execution benchmarks, and verify deterministic replayability.
-
-## Inputs
-
-- Producer schema contracts ODCS v3.1.0 YAML or JSON Schema)
-- Raw source data (Kafka streams, object storage Parquet/CSV, REST APIs, database CDC)
-- Business transformation requirements and SLA parameters
-
-## Role Boundaries
-
-| Role | Owns |
-| ---- | ---- |
-| Data Engineer | Pipeline topology, ODCS enforcement, Iceberg storage, DLQ quarantine, replayability |
-| Solution Architect | System architecture, storage technology selection, cross-system boundaries |
-| Data Analyst | Semantic layer metrics, business queries, ad-hoc exploratory reports |
-| QA Engineer | Test automation, failure injection testing, mutation validation |
+### 6. Emit Pipeline Spec & FinOps Tags
+Validate outputs against `contracts/schemas/data-pipeline-spec.json`. Tag maintenance metadata with `CostCenter`, `Environment`, and `TableOwner`.
 
 ## Checklist
 
-- [ ] source files and upstream databases treated as strictly read-only
-- [ ] ODCS v3.1.0 producer contracts validated and enforced at ingestion perimeter
-- [ ] Medallion architecture (Bronze → Silver → Gold) implemented on Apache Iceberg or Delta Lake
-- [ ] column types explicitly cast after cleaning; no unvalidated string schemas retained
-- [ ] automated quality gates (Great Expectations/dbt-expectations) configured for critical assertions
-- [ ] non-conformant records routed to DLQ quarantine without silent drops
-- [ ] circuit-breaker trips and halts pipeline when DLQ error rate exceeds 1.0%
-- [ ] deterministic replayability verified using idempotent `MERGE INTO` on natural keys
-- [ ] EU AI Act 10-year lineage metadata recorded across the dbt DAG
-- [ ] PII masked and classified per `data-classification.yaml` before handoff
-- [ ] pipeline outputs match `contracts/schemas/data-pipeline-spec.json` and `contracts/schemas/data-analysis-report.json`
+- [ ] upstream source files and streaming CDC logs treated as strictly read-only
+- [ ] ODCS v3.1.0 producer contracts validated at perimeter before storage persistence
+- [ ] Iceberg v3 / Delta 4.0 UniForm configured with Puffin RoaringBitmap DVs and `spec-id` partition evolution
+- [ ] table property `write.object-storage.enabled = true` active to prevent AWS S3 503 Slow Down throttling
+- [ ] Write-Audit-Publish (WAP) staged on isolated branch (`wap_audit_<run_id>`) with in-process DuckDB Arrow audit
+- [ ] non-conforming rows routed to DLQ quarantine with structured diagnostic JSON payload envelopes
+- [ ] circuit breaker halts pipeline if quarantine ratio $Q_r > 2.0%$ with sample floor $N \ge 50$
+- [ ] deterministic upsert `MERGE INTO` enforced using composite SHA-256 natural keys and window deduplication
+- [ ] lakehouse maintenance scheduled: 256MB bin-pack compaction, manifest rewriting, 7-day expiration (50-snapshot floor), 72h vacuum
+- [ ] customer PII masked or hashed per `data-classification.yaml`; CLS/RLS policies active
+- [ ] pipeline specifications emitted and validated against `contracts/schemas/data-pipeline-spec.json`
 
 ## Related Skills
 
-- **analyze-data**: Query and explore data without owning production pipeline infrastructure
-- **database-maintenance**: Operational storage maintenance, Iceberg compaction, and index tuning
-- **create-migration**: Manage relational database schema migrations
-- **security-audit**: Audit pipeline data flow for PII exposure and access control
-- **write-documentation**: Document pipeline runbooks, schemas, and data dictionaries
-- **review-code**: Review transformation logic, concurrency, and SQL performance
-- **commit-code**: Safely commit pipeline definitions to version control
+- **analyze-data**: Query and explore conformed datasets without owning production pipeline infrastructure
+- **database-maintenance**: Operational lakehouse maintenance, 256MB bin-pack compaction, and snapshot expiration
+- **create-migration**: Manage relational database DDL schema migrations and rollback scripts
+- **security-audit**: Audit pipeline data flow for PII leakage, zero-trust controls, and access boundaries
+- **write-documentation**: Document pipeline runbooks, ODCS contracts, and data dictionaries
+- **commit-code**: Safely commit pipeline definitions and transformation models to version control
 
 ## Output Contracts
 
-When emitting pipeline specifications for downstream consumers, orchestrators, or data analyst roles, emit:
+When emitting pipeline specifications for downstream consumers, orchestrators, or cross-role handoffs, emit:
 
-- `contracts/schemas/data-pipeline-spec.json` — complete pipeline definition, ODCS contract version, freshness SLA, quality gates, and quarantine policy.
-- `contracts/schemas/data-analysis-report.json` — summary of ingested row counts, validation results, and quality metrics when cross-role handoff is required.
+- `contracts/schemas/data-pipeline-spec.json` — complete pipeline definition, ODCS contract version, table format properties, WAP configuration, circuit breaker thresholds, and FinOps metadata.
+- `contracts/schemas/data-analysis-report.json` — summary of ingested row counts, validation metrics, and data quality results when cross-role handoff to Data Analyst is required.
 
 ## Failure Modes
 
-- **Contract violation crash**: unannounced upstream schema changes crash the pipeline. Mitigation: enforce ODCS v3.1.0 pre-ingestion validation; route non-conforming payloads to DLQ quarantine.
-- **Silent data corruption**: untracked transformation defects propagate downstream. Mitigation: run automated Great Expectations suites with critical gate thresholds.
-- **DLQ overflow**: unbounded poison records exhaust storage without remediation. Mitigation: enforce circuit-breaker halting at 1.0% error rate and alert engineers.
-- **Non-idempotent replay**: re-running a pipeline creates duplicate records. Mitigation: require idempotent `MERGE INTO` operations on immutable natural keys.
+- **Silent schema poisoning**: unannounced upstream schema changes corrupt lakehouse tables. Mitigation: enforce ODCS v3.1.0 pre-ingestion validation; route non-conforming payloads to DLQ quarantine.
+- **S3 partition throttling storm**: high-volume writes hit single S3 prefix limits causing 503 Slow Down errors. Mitigation: set table property `write.object-storage.enabled = true` for prefix hashing.
+- **Direct write corruption**: unvalidated rows written directly to `main`. Mitigation: mandate Write-Audit-Publish (WAP) isolated snapshot branches (`wap_audit_<run_id>`).
+- **DLQ poison overflow**: high-volume bad data floods quarantine silently. Mitigation: enforce circuit breaker halting ingestion when $Q_r > 2.0%$ ($N \ge 50$).
+- **Non-idempotent replay duplication**: retrying a pipeline run creates duplicate records. Mitigation: require idempotent `MERGE INTO` operations on composite SHA-256 natural keys.
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI03 Identity & Privilege Abuse**: classify PII with `data-classification.yaml`; restrict database credentials to least-privilege roles; mask sensitive fields.
-- **ASI04 Supply Chain**: validate versions of connectors, dbt packages, and ingestion libraries against approved dependency manifests.
-- **ASI05 RCE Guard**: parameterize all dynamic SQL and file paths; never format queries directly from raw external payloads.
-- **ASI07 Inter-Agent Communication**: emit structured contracts (`data-pipeline-spec.json`) so consuming analyst and ML roles share identical definitions.
-- **ASI09 Human-Agent Trust Exploitation**: disclose residual ingestion risks, data lineage provenance, and quality validation metrics truthfully.
+- **ASI03 Identity & Privilege Abuse**: classify PII with `data-classification.yaml`; enforce short-lived STS tokens via REST Catalog.
+- **ASI04 Supply Chain**: validate connectors, dbt packages, and Iceberg catalog drivers against approved manifests.
+- **ASI05 RCE Guard**: parameterize all dynamic SQL and partition paths; prohibit raw string interpolation.
+- **ASI06 Context & Memory Poisoning**: sanitize and provenance-tag document chunks before RAG vector ingestion.
+- **ASI07 Inter-Agent Communication**: emit structured `data-pipeline-spec.json` contracts for downstream agents.
+- **ASI09 Human-Agent Trust Exploitation**: disclose residual ingestion risks, SLA deviations, and quality validation metrics truthfully.

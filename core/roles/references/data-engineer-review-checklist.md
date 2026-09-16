@@ -12,7 +12,7 @@ This reference checklist provides detailed engineering, lakehouse architecture, 
 
 ### 2. Modern Lakehouse Architecture (Iceberg v3 & Delta Lake)
 - **Table Format Standardization**: Lakehouse tables adopt Apache Iceberg v3 or Delta Lake formats, eliminating proprietary storage lock-in and unversioned file directories.
-- **Row-Level Delete Optimization**: Iceberg v3 position deletes and equality deletes are managed and compacted to prevent read-path performance degradation during high-churn CDC workloads.
+- **Row-Level Delete Optimization**: Iceberg v3 hardware-accelerated Deletion Vectors (DVs) encoded in Puffin RoaringBitmap format are deployed for all row-level mutations (<3% read amplification), deprecating legacy positional and equality deletes.
 - **Partition Evolution Without Rewrites**: Partition schemes evolve dynamically (e.g., migrating from daily to hourly partitioning) using Iceberg metadata evolution without requiring multi-terabyte historical data rewrites.
 - **REST Catalog Federation**: Catalog access is standardized via REST Catalog specifications (Polaris, Unity Catalog) ensuring consistent ACID transactions across heterogeneous compute engines (Spark, Trino, DuckDB).
 - **Automated Table Lifecycle Maintenance**: Scheduled maintenance procedures automate small-file compaction (`rewrite_data_files`), historical snapshot expiration, and orphan file vacuuming to maintain query performance and prune obsolete storage.
@@ -26,7 +26,7 @@ This reference checklist provides detailed engineering, lakehouse architecture, 
 - **Zero-State Invariance on Retry**: Re-executing any pipeline DAG, historical backfill, or recovery slice against the same source data produces identical lakehouse state without row-count inflation or duplicate side effects.
 
 ### 4. Circuit Breakers & Dead-Letter Queue (DLQ) Quarantine
-- **Automated Anomaly Circuit Breakers**: Pipelines deploy automated circuit breakers that immediately halt downstream data promotion when record-level error rates exceed defined safety thresholds (>2%).
+- **Automated Anomaly Circuit Breakers**: Pipelines deploy automated circuit breakers that immediately halt downstream data promotion when record-level quarantine rates exceed defined safety thresholds (Q_r > 2.0% with sample floor N >= 50).
 - **Isolated DLQ Quarantine Routing**: Malformed, schema-mismatched, or unparsable records are automatically routed to isolated Dead-Letter Queues (DLQ) or quarantine tables, preventing corrupt records from polluting Silver and Gold layers.
 - **Comprehensive Diagnostic Metadata**: Every quarantined record is enriched with ingestion timestamp, pipeline execution ID, source identifier, raw unparsed payload, and machine-readable validation error code.
 - **Replayability & Self-Healing Utilities**: Dedicated backfill and replay scripts exist to reprocess remediated DLQ records post-schema fix without duplicating valid records or requiring manual database surgery.

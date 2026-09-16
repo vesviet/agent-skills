@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/data-engineer",
   "contract_type": "agent-card",
   "name": "data-engineer",
-  "description": "design, build, and maintain deterministic, high-throughput data pipelines, lakehouse storage layers, and unified semantic layers so analysts, applications, and autonomous AI agents can consume reliable, timely, and governable data products. In 2026–2027, this extends to enforcing Open Data Contract Standard (ODCS v3.1.0) specifications at producer boundaries, architecting Modern Lakehouses with Apache Iceberg v3 and Delta Lake, ensuring strict idempotency and deterministic upsert MERGE semantics, deploying automated circuit-breakers with Dead-Letter Queue (DLQ) quarantine, practicing Data FinOps resource governance, and maintaining Zero-Trust data security under OWASP ASI03/ASI06.",
+  "description": "design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, and unified semantic metrics so analysts, applications, and autonomous AI agents consume reliable, timely, and governable data products — eliminating uncontracted data slop and cloud warehouse FinOps runaway traps. In 2025–2027, this embodies The Second Data Convergence: enforcing Open Data Contract Standard (ODCS v3.1.0) specifications at producer boundaries, architecting Modern Lakehouses with Apache Iceberg v3 (hardware-accelerated Puffin RoaringBitmap Deletion Vectors, integer spec-id partition evolution) and Delta Lake 4.0 UniForm with open REST Catalogs (Apache Polaris, Unity Catalog OSS), mandating S3 object storage prefix hashing (write.object-storage.enabled = true), orchestrating with Dagster Software-Defined Assets and real-time streaming CDC (Apache Flink CDC 3.0, Debezium, Redpanda), guaranteeing atomic Write-Audit-Publish (WAP) on isolated snapshot branches, deploying structured Dead-Letter Queue (DLQ) quarantine envelopes with mathematical circuit breakers (Q_r > 2.0%, N >= 50), and enforcing 7 immutable Data Guardrail Locks under OWASP ASI03/ASI06.",
   "url": "pack://agent-skills/core/roles/data-engineer.md",
   "version": "5.0.0",
   "protocol_version": "1.0",
@@ -30,7 +30,7 @@
     {
       "id": "build-data-pipeline",
       "name": "Build Data Pipeline",
-      "description": "Design and implement transactional lakehouse pipelines (Iceberg/Delta), enforce ODCS v3.1.0 data contracts at producer boundaries, integrate Great Expectations/dbt-expectations quality gates, and isolate invalid records in DLQ quarantine with deterministic replayability. Use when the work requires an owned, repeatable data pipeline.",
+      "description": "Design and implement transactional lakehouse pipelines (Iceberg v3/Delta 4.0), enforce ODCS v3.1.0 data contracts, execute Write-Audit-Publish (WAP) on isolated snapshot branches, route malformed records to DLQ with circuit breaker, and enforce S3 prefix hashing. Use when building or maintaining reliable, contract-governed lakehouse data pipelines.",
       "tags": [
         "security",
         "pack"
@@ -52,7 +52,7 @@
     {
       "id": "database-maintenance",
       "name": "Database Maintenance",
-      "description": "Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/Delta compaction, snapshot expiration, orphan vacuuming, clustering optimization, query cost monitoring/FinOps, and relational/vector DB index tuning. Use for cleanup, compaction, repair, and operational performance tasks.",
+      "description": "Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/Delta 256MB bin-pack compaction merging Deletion Vectors, manifest rewriting, 7-day/50-snapshot expiration, 72h orphan vacuuming, and FinOps cost attribution. Use for cleanup, compaction, repair, and operational performance tasks.",
       "tags": [
         "security",
         "pack"

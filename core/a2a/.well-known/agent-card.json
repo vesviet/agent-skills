@@ -73,12 +73,12 @@
     {
       "id": "data-analyst",
       "name": "Data Analyst",
-      "description": "answer critical business and product questions with reproducible, statistically grounded, and well-documented analysis f"
+      "description": "answer critical business and product questions with reproducible, statistically grounded, and well-documented decision s"
     },
     {
       "id": "data-engineer",
       "name": "Data Engineer",
-      "description": "design, build, and maintain deterministic, high-throughput data pipelines, lakehouse storage layers, and unified semanti"
+      "description": "design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, and unified "
     },
     {
       "id": "devops-engineer",

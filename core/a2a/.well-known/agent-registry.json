@@ -68,13 +68,13 @@
       "role": "data-analyst",
       "agent_card": "core/a2a/registry/data-analyst.agent-card.json",
       "url": "pack://agent-skills/core/roles/data-analyst.md",
-      "description": "answer critical business and product questions with reproducible, statistically grounded, and well-documented analysis f"
+      "description": "answer critical business and product questions with reproducible, statistically grounded, and well-documented decision s"
     },
     {
       "role": "data-engineer",
       "agent_card": "core/a2a/registry/data-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/data-engineer.md",
-      "description": "design, build, and maintain deterministic, high-throughput data pipelines, lakehouse storage layers, and unified semanti"
+      "description": "design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, and unified "
     },
     {
       "role": "devops-engineer",

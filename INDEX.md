@@ -284,7 +284,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
-| **`@build-data-pipeline`** | Design and implement transactional lakehouse pipelines (Iceberg/Delta), enforce ODCS v3.1.0 data con... | [`core/skills/security-data/build-data-pipeline/SKILL.md`](./core/skills/security-data/build-data-pipeline/SKILL.md) |
+| **`@build-data-pipeline`** | Design and implement transactional lakehouse pipelines (Iceberg v3/Delta 4.0), enforce ODCS v3.1.0 d... | [`core/skills/security-data/build-data-pipeline/SKILL.md`](./core/skills/security-data/build-data-pipeline/SKILL.md) |
 | **`@database-maintenance`** | Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/D... | [`core/skills/security-data/database-maintenance/SKILL.md`](./core/skills/security-data/database-maintenance/SKILL.md) |
 | **`@manage-secrets`** | Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-contr... | [`core/skills/security-data/manage-secrets/SKILL.md`](./core/skills/security-data/manage-secrets/SKILL.md) |
 | **`@manage-vietnam-accounting`** | Prepare and review Vietnam accounting controls, accounting-regime evidence, reconciliations, invoice... | [`core/skills/security-data/manage-vietnam-accounting/SKILL.md`](./core/skills/security-data/manage-vietnam-accounting/SKILL.md) |

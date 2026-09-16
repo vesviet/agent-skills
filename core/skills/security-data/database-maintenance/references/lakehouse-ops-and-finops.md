@@ -1,6 +1,6 @@
 # Lakehouse Storage Operations & Data FinOps — Reference
 
-This reference details procedures, SQL runbooks, and policies for maintaining Apache Iceberg and Delta Lake storage layers, expiring historical metadata snapshots, and enforcing Data FinOps query cost guardrails.
+This reference details procedures, SQL runbooks, and policies for maintaining Apache Iceberg and Delta Lake storage layers, expiring historical metadata snapshots, merging Deletion Vectors, and enforcing Data FinOps query cost guardrails.
 
 ---
 
@@ -8,8 +8,8 @@ This reference details procedures, SQL runbooks, and policies for maintaining Ap
 
 High-frequency streaming microbatches and frequent write operations inevitably cause the "small files problem," where thousands of sub-10 MB Parquet files degrade query planning speed and inflate cloud object storage GET/LIST costs.
 
-### 1.1 Bin-Pack Compaction Procedure
-Target file sizes must be maintained between **128 MB and 512 MB** (default standard: 256 MB) using bin-pack rewriting:
+### 1.1 Bin-Pack Compaction Procedure & Deletion Vector Resolution
+Target file sizes must be maintained between **128 MB and 512 MB** (default standard: **256 MB**) using bin-pack rewriting. In Apache Iceberg v3, bin-pack compaction automatically resolves and merges active **Deletion Vectors** (Puffin RoaringBitmaps) into newly rewritten base Parquet data blocks, eliminating read amplification:
 
 ```sql
 -- Iceberg SQL Compaction via Spark/Trino/DuckDB Iceberg Catalog
@@ -25,13 +25,13 @@ CALL system.rewrite_data_files(
 ```
 
 ### 1.2 Orphan File Vacuuming
-Failed writes, aborted transactions, and dangling commits leave unreferenced Parquet and metadata files in object storage. Purge orphaned files safely using a 3-day or 7-day safety threshold:
+Failed writes, aborted transactions, and dangling commits leave unreferenced Parquet and metadata files in object storage. Purge orphaned files safely using a strict **72-hour safety grace window** (`INTERVAL '72' HOUR`) to safeguard in-flight concurrent writes:
 
 ```sql
--- Remove unreferenced files older than 3 days
+-- Remove unreferenced files older than 72 hours
 CALL system.remove_orphan_files(
     table => 'lakehouse.silver.orders',
-    older_than => CURRENT_TIMESTAMP() - INTERVAL '3' DAY
+    older_than => CURRENT_TIMESTAMP() - INTERVAL '72' HOUR
 );
 ```
 
@@ -43,19 +43,19 @@ Unmanaged Iceberg snapshots cause metadata tree explosion, increasing query plan
 
 ### 2.1 7-Day TTL Snapshot Retention Policy
 - Maintain time-travel capability for a maximum of 7 days in production.
-- Retain a minimum of 10 recent snapshots regardless of age to protect rollback capability.
+- Retain a minimum safety floor of **50 recent snapshots** (`retain_last => 50`) regardless of age to protect rollback capability and ongoing downstream batch pipelines.
 
 ```sql
--- Expire stale snapshots past 7-day retention window
+-- Expire stale snapshots past 7-day retention window while preserving 50-snapshot floor
 CALL system.expire_snapshots(
     table => 'lakehouse.silver.orders',
     older_than => CURRENT_TIMESTAMP() - INTERVAL '7' DAY,
-    retain_last => 10
+    retain_last => 50
 );
 ```
 
 ### 2.2 Manifest List Rewriting
-Rewrite manifest files to eliminate small manifests and consolidate partition bounds:
+Rewrite manifest files to eliminate micro-batch manifests and consolidate partition bounds:
 
 ```sql
 CALL system.rewrite_manifests('lakehouse.silver.orders');
@@ -76,8 +76,16 @@ CALL system.rewrite_data_files(
 );
 ```
 
-### 3.2 Partition Evolution
-Apache Iceberg supports metadata-only partition evolution (e.g. transitioning from daily to hourly partitioning, or changing partition columns) without rewriting historical Parquet data. Historical files maintain old partition specs, while new writes adopt the evolved spec.
+### 3.2 Partition Evolution & S3 Object Storage Prefix Hashing
+Apache Iceberg supports metadata-only partition evolution (tracked by integer `spec-id`) without rewriting historical Parquet data. 
+
+To eliminate AWS S3 `503 Slow Down` request throttling caused by high-throughput streaming writes to single directory prefixes, activate S3 prefix hashing:
+```sql
+ALTER TABLE lakehouse.silver.orders SET TBLPROPERTIES (
+    'write.object-storage.enabled' = 'true',
+    'write.data.path' = 's3://data-lake-bucket/tables/orders/data'
+);
+```
 
 ---
 
@@ -100,3 +108,18 @@ Automate cloud object storage transitions based on access frequency:
 1. **Hot Tier**: Active Bronze, Silver, and Gold tables accessed within 30 days.
 2. **Infrequent Access (IA)**: Historical snapshots and partitions between 30 and 180 days.
 3. **Archive / Glacier Deep**: Cold compliance archives (e.g. EU AI Act 10-year lineage data) older than 180 days.
+
+### 4.4 FinOps ROI Attribution & Resource Tagging
+Quantify the return on investment of lakehouse table maintenance using standard FinOps equations:
+1. **File Reduction Ratio**:
+   $$\text{Reduction Ratio} = \frac{\text{Files}_{\text{before}} - \text{Files}_{\text{after}}}{\text{Files}_{\text{before}}}$$
+2. **Storage Reclaimed (GB)**:
+   $$\text{Storage Reclaimed (GB)} = \frac{\text{Bytes Reclaimed from Compaction and Vacuum}}{1024^3}$$
+3. **Projected Monthly S3 API GET Request Savings**:
+   $$\text{Monthly Requests Saved} = (\text{Files}_{\text{before}} - \text{Files}_{\text{after}}) \times \text{Estimated Monthly Queries}$$
+   $$\text{Savings (USD)} = \left(\frac{\text{Monthly Requests Saved}}{1,000}\right) \times $0.0004$$
+4. **Mandatory Tagging**:
+   Tag all maintenance runs, runbooks, and audit events with metadata:
+   - `CostCenter`: e.g. `data-platform-engineering`
+   - `Environment`: `production` | `staging` | `development`
+   - `TableOwner`: e.g. `analytics-engineering`

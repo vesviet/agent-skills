@@ -66,9 +66,11 @@ Invalid, malformed, or contract-violating records must never be discarded silent
 ```
 
 ### 2.2 Quarantine Circuit-Breaker
-- **Threshold Limit**: Ingestion workers calculate the quarantine ratio:
-  $$\text{Quarantine Rate} = \frac{\text{Quarantined Rows}}{\text{Total Batch Rows}} \times 100\%$$
-- **Circuit Trip**: If the quarantine rate exceeds **1.0%** of total batch volume, the pipeline halts immediately, rolls back the uncommitted transaction, and triggers high-severity incident notifications.
+- **Threshold Limit**: Ingestion workers calculate the quarantine ratio for batches where total rows $N > 0$:
+  $$Q_r = \left( \frac{N_{\text{quarantined}}}{N_{\text{total}}} \right) \times 100\%$$
+- **Circuit Trip**: Enforce critical threshold $\theta = 2.0\%$ with sample size floor $N \ge 50$:
+  - If $N \ge 50$ and $Q_r > 2.0\%$, trip the circuit breaker immediately, halt the pipeline, discard the uncommitted WAP branch transaction, and trigger high-severity incident notifications.
+  - If $N < 50$ and $Q_r > 2.0\%$, route non-conforming records to the DLQ quarantine store with diagnostic warnings without tripping the breaker.
 
 ---
 
