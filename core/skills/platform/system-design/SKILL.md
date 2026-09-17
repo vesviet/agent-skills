@@ -24,12 +24,14 @@ Use this skill when designing system topology for a new service or infrastructur
 - all infrastructure changes must be committed to IaC (Terraform, Ansible, Kubernetes manifests) — manual-only changes are invisible drift
 - analyze cross-layer impact for every proposed change; a change at one layer creates second-order effects at adjacent layers
 - capacity planning is proactive — produce a capacity model before production, not after the first resource incident
-- for AI inference: GPU memory allocation must account for model weights + KV cache + activation memory + batch overhead; never underestimate VRAM headroom
-- **GPU-VRAM-FORMULA**: Total VRAM = model weights in target precision + KV cache (2×num_layers×head_dim×seq_len×batch×precision_bytes) + activation memory (~2-5% overhead) + safety headroom (≥15%); running below 10% headroom causes OOM-kill under burst traffic.
-- **INFERENCE-SERVER-SELECTION**: vLLM for high-throughput LLM serving with continuous batching; TensorRT-LLM for NVIDIA-optimized lowest-latency serving; Triton for multi-model ensemble pipelines; Ollama for local/development deployments; vLLM v0.6+ Automatic Prefix Caching (APC) — place static system prompts first and dynamic vars last for maximum cache hit rate.
-- **LLM-SLOS**: Set measurable LLM SLOs: TTFT p95 < 800ms, TBT (time-between-tokens) p95 < 25ms, throughput > 40 tokens/s per user; define these before sizing GPU infrastructure.
-- **VECTOR-DB-TUNING**: Never deploy production vector databases with default index parameters; specify HNSW m (graph connectivity), ef_construction (build quality), and query-time ef (recall-latency trade-off) explicitly.
-- **EMBEDDING-CACHE**: Always design a caching layer for embeddings; repeated embedding of the same content is the most common preventable AI cost spike.
+- **CELLULAR-SHUFFLE-SHARDING**: Partition systems targeting $\ge 99.95\%$ availability into shared-nothing cells; assign tenants via Highest Random Weight (HRW) shuffle sharding ($P(\text{Collision}) = 1/\binom{N}{K} \le 0.005\%$) with monotonic epoch fencing tokens to eliminate split-brain mutations.
+- **LITTLES-LAW-BULKHEAD**: Dimension worker pools and PgBouncer connection pools via Little's Law ($L = \lambda \times W$) with a $2.5\times$ burst multiplier; never allow unbounded concurrency.
+- **GPU-VRAM-FORMULA**: Sizing must follow $VRAM_{total} = VRAM_{weights} + VRAM_{KV} + VRAM_{activation} + VRAM_{overhead}$ with $\ge 15\%$ safety headroom; running below 10% headroom causes OOM-kill under burst traffic.
+- **INFERENCE-SERVER-SELECTION**: vLLM for high-throughput LLM serving with continuous batching and chunked prefill; TensorRT-LLM for lowest-latency serving; Triton for multi-model ensembles; Ollama for local dev; vLLM Automatic Prefix Caching (APC) with static system prompts first.
+- **LLM-SLOS & TOKEN-ECONOMICS**: Set measurable LLM SLOs ($TTFT_{P95} \le 800\text{ms}$, $TBT_{P95} \le 25\text{ms}$, throughput $> 40$ tokens/s per user); compute Cost-Per-Token ($CPT$) and enforce Value-Per-Token ($VPT \ge 4 \times CPT$) viability before sizing clusters.
+- **VECTOR-DB-TUNING**: Explicitly specify HNSW $m$ (connectivity), $ef\_construction$ (build quality), and query-time $ef$ (recall-latency trade-off).
+- **EMBEDDING-CACHE**: Always design an embedding cache layer; repeated embedding of identical content is the most common preventable AI cost spike.
+- See [`references/cellular-topology-and-capacity-sizing.md`](references/cellular-topology-and-capacity-sizing.md) for combinatorial proofs, Go HRW router code, and worked GPU sizing examples.
 
 ## Suggested Process
 
@@ -130,12 +132,12 @@ Before finalizing:
 ## Checklist
 
 - [ ] all NFRs have specific, measurable targets with measurement methods
-- [ ] system topology covers all in-scope layers with rationale for each major decision
-- [ ] capacity model produced for all primary resources (compute, memory, network, storage, GPU if applicable)
-- [ ] 3-month and 12-month capacity forecasts present
+- [ ] system topology covers all in-scope layers with cellular partition and shuffle sharding rationale (if $\ge 99.95\%$ availability)
+- [ ] capacity model produced for all primary resources (compute, memory, network, storage, GPU if applicable) via Little's Law
+- [ ] 3-month and 12-month capacity forecasts present with burst safety multipliers
 - [ ] action triggers defined (when to scale, when to upgrade)
-- [ ] cost vs. performance trade-off surfaced to stakeholders
-- [ ] cross-layer impact analysis complete
+- [ ] cost vs. performance trade-off surfaced to stakeholders with Token Economics (CPT/VPT)
+- [ ] cross-layer impact analysis complete with zero cross-cell synchronous RPC chains
 - [ ] all infrastructure changes represented in IaC — no manual-only configuration
 - [ ] trade-offs documented: what was chosen, what was rejected, and why
 - [ ] AI infrastructure specified (when in scope): GPU allocation, inference server config, vector DB, embedding pipeline
