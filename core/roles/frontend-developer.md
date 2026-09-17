@@ -23,6 +23,10 @@ This role must follow [role-standard](role-standard.md) first.
 - treat LLM and agent outputs as untrusted data: never inject AI-generated content directly into the DOM; sanitize with DOMPurify and Trusted Types before any DOM write
 - own Article 50 disclosure UI: ensure visible, accessible disclosure before first meaningful interaction and verify machine-readable C2PA marking for AI-generated media
 - enforce WCAG 2.2 AA as a legal baseline: `aria-live="polite"` regions on streaming AI content, focus management after agent actions, and new WCAG 2.2 criteria are non-negotiable
+- enforce **Three Dials calibration (Taste Skill)**: every UI scope consumes `DESIGN_VARIANCE` (1–10), `MOTION_INTENSITY` (1–10), and `VISUAL_DENSITY` (1–10) from the UX flow spec — never invent dial values locally; defaults are `8 / 6 / 4`. Use them as global variables throughout the component tree; cross-references must use these exact names, never aliases like `LAYOUT_VARIANCE`.
+- enforce **Design System Selection Map**: when the brief names an aesthetic family, reach for the official package (Fluent UI, Material 3, Carbon, Polaris, Atlassian, Primer, govuk-frontend, uswds, shadcn/ui, or Tailwind v4) — do not recreate its CSS by hand, do not import its tokens then override 90% of them, and never mix two systems in the same tree. When the brief is an aesthetic only (glassmorphism, bento, brutalism, editorial, dark tech, aurora, kinetic typography), build with native CSS + Tailwind and be honest in code comments about borrowed inspiration vs. official material.
+- enforce **Premium-Consumer Palette Ban**: for premium-consumer briefs (cookware, wellness, artisan, luxury, DTC home goods), the warm-beige/brass/clay/espresso default (`#f5f1ea`, `#b08947`, `#b6553a`, `#1a1714` and their hex families) is banned as the default reach. Rotate to cold luxury, forest green, terracotta+slate, cobalt+cream, sharp monochrome, or a single saturated pop. The same palette must not be shipped twice in a row across projects.
+- enforce **Copy Self-Audit before ship**: re-read every visible string on the page (headlines, subheads, eyebrows, button labels, body copy, captions, alt text, footer text, error messages). Reject grammatically broken phrases, cute-but-wrong AI wordplay, fake craftsman claims, mock-poetic copy, and fake-precision numbers (`92%`, `4.1×`, `5.8 mm`) that do not originate from verified business metrics. When in doubt, replace with a plain functional sentence.
 
 ## Use This Role When
 
@@ -75,14 +79,24 @@ This role must follow [role-standard](role-standard.md) first.
 - **Asset Hygiene & Social Proof**:
   - Social proof logo walls: use verified SVG marks via Simple Icons (`cdn.simpleicons.org`) or devicon. Enforce the Logo-Only rule: render logos without category or industry subtitles.
   - Banned div-based fake screenshots: never build mock dashboards, fake terminal windows, or fake task lists with nested HTML `<div>` elements. Use real screenshots, image-tool generations, or real interactive mini-components.
+  - **Image & Visual Asset Strategy**: landing pages and portfolios are visual products — text-only pages with fake-screenshot divs are slop. Priority order: (1) image-generation tool first — generate section-specific assets at the right aspect ratio; (2) real web images second — `https://picsum.photos/seed/{descriptive-seed}/{w}/{h}` for placeholder photography (seed should describe the section); (3) last resort: leave clearly-labelled placeholder slots (`<!-- TODO: hero product photo, 1600x1200 -->`) and report which placements need real images. Even minimalist sites need real images — a pure-text page is not minimalism, it is incomplete work. Even an editorial Linear-style site needs at least 2–3 real images (hero, one product/lifestyle shot, one supporting image). Generate B&W minimalist photography if the brief is restrained; do not skip images entirely because the dial is low.
+  - Make-up brand names must get a make-up SVG mark (monogram, two-letter ligature, abstract glyph) — plain text wordmarks for invented brands look generic. Ensure logos render in both light and dark mode.
 - **Tactile Feedback**: implement physical feedback on `:active` button states using `scale-[0.98]` or `-translate-y-[1px]`.
 - **Button & Form Contrast Verification**: verify all button labels and form inputs meet WCAG AA contrast (minimum 4.5:1 for body text, 3:1 for large text); audit ghost buttons against photographic backdrops using scrims or borders.
 - **CTA Wrapping Prevention**: ensure primary CTA button text never wraps to multiple lines on desktop (max 3 words, ideally 1-2 words).
+- **Copy Self-Audit before ship**: re-read every visible string on the page (headlines, subheads, eyebrows, button labels, body copy, captions, alt text, footer text, error messages). Reject grammatically broken phrases, cute-but-wrong AI wordplay, fake craftsman claims, mock-poetic copy, and fake-precision numbers (`92%`, `4.1×`, `5.8 mm`) that do not originate from verified business metrics or are not explicitly labeled as mock. When in doubt, replace with a plain functional sentence — AI-generated cute copy is worse than boring copy.
 - **Section 5 Animation Skeletons**: follow canonical patterns for sticky-stack, horizontal-pan, and scroll-reveal stagger using `motion/react` without raw scroll event listeners or uncontrolled requestAnimationFrame loops.
+  - **Sticky-Stack**: `start: "top top"`, `pin: true`, `pinSpacing: false`; every card except the last is pinned; the previous card's `scale: 0.92` / `opacity: 0.55` is driven by the *next* card's scroll trigger. Common failure: trigger fires halfway through scroll instead of pinning at viewport top.
+  - **Horizontal-Pan**: `start: "top top"`, `pin: true`, `end: "+=${distance}"` where distance = track width minus viewport; `scrub: 1`, `invalidateOnRefresh: true`. Wrapper pinned, inner track slides horizontally as the user scrolls vertically.
+  - **Reveal-Stagger** (lighter alternative, no pinning): Motion's `whileInView` with `viewport={{ once: true, amount: 0.3 }}`, stagger via `delay: i * 0.06`. Use for feature lists, testimonial grids, logo walls. Save GSAP for actual pin/scrub work.
+  - **Forbidden animation patterns**: `window.addEventListener("scroll", ...)` is banned — it runs on every scroll frame, jank-prone, no batching. Also banned: custom `window.scrollY` calculations in React state, and `requestAnimationFrame` loops that touch React state. Use Motion's `useScroll()`, GSAP's `ScrollTrigger`, IntersectionObserver, or CSS `scroll-driven animations` (`animation-timeline: view()`).
+  - **Motion must be motivated**: before adding any animation, articulate in one sentence what it communicates — hierarchy, storytelling, feedback, or state transition. "It looked cool" is not a valid answer. Each ScrollTrigger, marquee, and pinned section needs a reason. If motion cannot be shipped in working form within the available scope, drop the dial and ship a clean static page; never half-build motion that breaks (cut-off ScrollTriggers, jumpy enters, missing cleanups).
+  - **Marquee max-one-per-page**: horizontal scrolling text marquees are appropriate at most once per page. Two or more on the same page reads as lazy filler.
 - **Section 9 Big Bans Enforcement**:
   - Strictly ban em-dashes (`—`) in all UI copy, buttons, labels, and alt text; use a standard hyphen (-) or restructure the sentence.
   - Ban pure black (`#000000`) for dark backgrounds; use tinted off-black matching the brand palette.
   - Ban neon outer glows and section-numbering eyebrows (`00 / INDEX`).
+  - **Premium-Consumer Palette Ban**: for premium-consumer briefs (cookware, wellness, artisan, luxury, DTC home goods), the warm-beige/brass/clay/espresso default (`#f5f1ea`, `#b08947`, `#b6553a`, `#1a1714` and their hex families) is banned as the default reach. Rotate to cold luxury, forest green, terracotta+slate, cobalt+cream, sharp monochrome, or a single saturated pop. The same palette must not be shipped twice in a row across projects.
 
 ### UI Integrity (Foundation)
 
@@ -261,6 +275,10 @@ Contracts owned by other roles — do not author these as Frontend Developer:
 - Icon & asset hygiene: [Phosphor/Hugeicons/Radix used; no hand-rolled SVGs; no fake terminal divs]
 - Tactile feedback: [:active scale-[0.98] implemented]
 - Big Bans check: [Zero em-dashes; off-black used instead of pure #000000; single-line desktop CTAs]
+  - Three Dials check: [DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY consumed from UX flow spec, not invented locally]
+  - Design System Map: [official package used per brief; no two systems mixed; no hand-recreated CSS]
+  - Premium-Consumer Palette Ban: [no warm-beige/brass/clay/espresso default; palette rotated per project]
+  - Copy Self-Audit: [all visible strings re-read; no fake precision; no cute-but-wrong wordplay]
 
 ## Performance & Accessibility Gate
 - CWV estimates: [INP < 200ms, LCP < 2.5s, CLS < 0.1]
@@ -345,4 +363,4 @@ See [`references/frontend-developer-review-checklist.md`](references/frontend-de
 - `contracts/schemas/performance-audit.json` emitted when performance work was in scope
 - visual regression baseline clean
 
-Last updated: 2026-09-16
+Last updated: 2026-09-17

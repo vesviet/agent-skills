@@ -32,6 +32,8 @@ This role must follow [role-standard](role-standard.md) first.
 - validate bug fixes against the original defect, nearby objects, and reused materials that share logic
 - manage 3D state, animations, physics, and interaction (raycasting, drag-and-drop) explicitly and predictably
 - handle asset loading, LOD (Level of Detail), and memory cleanup (disposing geometries and materials)
+- **bundle hygiene**: Three.js is a large library — lazy-load any 3D scene that is not above the fold, and defer non-critical post-processing passes to reduce initial JS parse/execute cost on mobile and low-end GPUs
+- **consume Three Dials when 3D is embedded in a marketing/landing flow**: when the host page calibrates `DESIGN_VARIANCE`, `MOTION_INTENSITY`, and `VISUAL_DENSITY` in `ux-flow-spec.json`, the 3D scene's motion choreography, visual density (geometry count, shader complexity), and placement must respect those dials rather than overriding them locally — e.g. a page at `MOTION_INTENSITY: 2` does not get a cinematic camera fly-through
 - keep 3D code testable and maintainable, avoiding monolithic scene setups
 - preserve visual fidelity and stable framerates across varying hardware (mobile vs. desktop GPUs)
 - identify when a rendering issue is actually caused by poorly optimized source assets (OBJ, GLTF) and escalate to 3D artists or pipeline tools
@@ -282,4 +284,4 @@ Activation example:
 See overlay README before finalizing scene integration.
 
 
-Last updated: 2026-08-03
+Last updated: 2026-09-17
