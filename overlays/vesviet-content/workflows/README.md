@@ -2,7 +2,7 @@
 
 Overlay-specific content publishing or maintenance workflows:
 
-- `content-audit-refresh.md` — 4-sprint remediation for `vesviet`
+- `article-creation-and-upgrade-lifecycle.md` — end-to-end 100-round research and 4-role swarm publishing/upgrade pipeline\n- `content-audit-refresh.md` — 4-sprint remediation for `vesviet`
 - `affiliate-publishing.md` — affiliate/hybrid SEO production for `learn`
 - `masterclass-batch-upgrade.md` — deep-research batch upgrades (100 rounds → 20 posts)
 - `publish-series.md` — bilingual series production across both sites

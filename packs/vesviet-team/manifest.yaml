@@ -1,8 +1,8 @@
 schema_version: "2"
 
 name: vesviet-team
-description: Content + SEO team pack for the vesviet/learn twin Hugo sites. Composes the global core with the vesviet-content overlay to enforce the Technical Article Standard 2027 (7 gates - production-grade code, quantitative depth, Mermaid, Production Failure, trade-off framing, verifiable claims), twin SEO authority 2027 (one-way learn-to-vesviet flow, AI citation readiness, entity consistency, 2026-2027 spam-policy duplication rules), Hub-and-Spoke topology with 10 Anchor Pillar Hubs, GEO/AEO Answer-First formatting, Masterclass batch publishing (100 deep-research rounds per 20-post batch), and Affiliate Marketing Compliance on tanhdev.com and learn.tanhdev.com.
-version: 4.2.0
+description: Content + SEO swarm pack for the vesviet/learn twin Hugo sites. Enforces mandatory 100-round deep research before any article creation or upgrade, orchestrates a 4-role pipeline (@content-writer drafting, @content-manager & @technical-writer auditing editorial and technical depth, @seo-analyst auditing SEO/AEO/GEO authority), satisfies the Technical Article Standard 2027 (7 gates), maintains the 10 Anchor Pillar Hubs, and enforces the one-way learn-to-vesviet authority flow.
+version: 5.0.0
 
 tags:
   - core
@@ -14,6 +14,8 @@ tags:
   - hugo
   - masterclass
   - deep-research
+  - multi-agent-swarm
+  - technical-article-2027
 author: user
 maintained_by: platform-team
 license: MIT
@@ -41,26 +43,34 @@ capabilities:
   - ai-search-optimization
   - masterclass-batch-upgrade
   - bilingual-twin-publishing
+  - deep-research-protocol
+  - multi-agent-content-swarm
+  - dual-audit-pipeline
 
 content_focus:
   primary_roles:
     - content-writer
-    - seo-analyst
     - content-manager
-    - task-planner
+    - technical-writer
+    - seo-analyst
   secondary_roles:
     - reviewer
+    - task-planner
     - agent-coordinator
   drafting_skills:
     - write-vesviet-learn-content
     - write-article
     - write-tech-radar
+    - write-documentation
   audit_skills:
     - audit-technical-article
     - optimize-seo
     - audit-content
-  standards: ["vesviet-content rules: content-brand, technical-article-2027, seo-authority, link-topology"]
+    - review-code
+  standards:
+    - "vesviet-content rules: content-brand, technical-article-2027, seo-authority, link-topology"
   workflows:
+    - article-creation-and-upgrade-lifecycle
     - masterclass-batch-upgrade
     - series-sync-upgrade
     - content-audit-refresh
@@ -69,21 +79,52 @@ content_focus:
     - seo-content-lifecycle
     - content-publishing
 
+deep_research_protocol:
+  rounds: 100
+  mandatory_before_action: true
+  clusters: 5
+  rounds_per_cluster: 20
+  cluster_breakdown:
+    cluster_1: "Architecture Roots, Whitepapers & Historical Context (Rounds 01-20)"
+    cluster_2: "Core Algorithms, Distributed Models & Complexity Analysis (Rounds 21-40)"
+    cluster_3: "Quantitative Benchmarks, Hardware Conditions & Latency P95/P99 (Rounds 41-60)"
+    cluster_4: "Production Outages, Edge Cases & Failure Mode Retrospectives (Rounds 61-80)"
+    cluster_5: "Trade-off Matrices, Alternatives Rejected & SOTA 2026-2027 Standards (Rounds 81-100)"
+  output_dossier:
+    json: "reports/research/{slug}-dossier.json"
+    markdown: "reports/research/{slug}-research-notes.md"
+
+swarm_pipeline:
+  phase_1: "Deep Research (100 rounds across 5 clusters) -> research dossier"
+  phase_2: "Drafting / Upgrading (@content-writer) -> 7 Technical Content Gates"
+  phase_3: "Dual Audit: Editorial (@content-manager) + Technical Validity & Code (@technical-writer)"
+  phase_4: "SEO & Authority Audit (@seo-analyst) -> Answer-First, One-Way links, Schema"
+  phase_5: "Reviewer sign-off & Index synchronization"
+
 corpus:
-  snapshot: "2026-09-08"
+  snapshot: "2026-09-18"
   vesviet:
-    total_files: 367
+    total_files: 7144
+    content_files: 374
     posts: 66
-    series: 246
-    radar_editions: 26
+    series: 251
+    radar_editions: 27
+    categories: 16
+    reports: 296
     pillar_hubs: 10
+    total_words: 889823
   learn:
-    total_files: 440
+    total_files: 6703
+    content_files: 433
     posts: 86
-    series: 259
+    series: 251
+    radar_editions: 63
     docs: 3
+    categories: 15
+    reports: 276
     masterclass_batches_completed: 5
     posts_upgraded: 70
+    total_words: 1264044
   indexes:
     - learn/plan/CONTENT_INDEX.md
     - vesviet/reports/CONTENT_INDEX.md

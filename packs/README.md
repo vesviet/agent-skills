@@ -7,7 +7,7 @@ Packs describe how to assemble the portable core with zero or more overlays for 
 | Pack | Manifest | Composition | Capabilities |
 |------|----------|-------------|-------------|
 | `global-engineering` | [manifest.yaml](global-engineering/manifest.yaml) | `core` only | All general engineering |
-| `vesviet-team` | [manifest.yaml](vesviet-team/manifest.yaml) | `core` + `overlays/vesviet-content` | Content, GEO/AEO, Hugo |
+| `vesviet-team` | [manifest.yaml](vesviet-team/manifest.yaml) | `core` + `overlays/vesviet-content` | Content, GEO/AEO, Hugo, 100-Round Research, 4-Role Swarm |
 | `lease-team` | [manifest.yaml](lease-team/manifest.yaml) | `core` + `overlays/lease-content` + `overlays/seo-publishing` | Content, GEO/AEO, 5-Pillar |
 | `maylanhtreotuong-team` | [manifest.yaml](maylanhtreotuong-team/manifest.yaml) | `core` + `overlays/astro-cloudflare` + `overlays/maylanhtreotuong-content` + `overlays/seo-publishing` | Content, SEO, HVAC, Cloudflare |
 | `mdg-team` | [manifest.yaml](mdg-team/manifest.yaml) | `core` + `overlays/laravel-filament` + `overlays/maydiengiaisaigon` | Laravel 13, Filament v4, PHP 8.4 |
