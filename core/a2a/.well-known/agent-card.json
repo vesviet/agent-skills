@@ -78,7 +78,7 @@
     {
       "id": "data-engineer",
       "name": "Data Engineer",
-      "description": "design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, and unified "
+      "description": "design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, high-perform"
     },
     {
       "id": "devops-engineer",

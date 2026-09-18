@@ -1,0 +1,4 @@
+interface:
+  display_name: "Query Analytical Engine"
+  short_description: "Execute in-process analytical SQL with chDB/DuckDB and cross-source queries"
+  default_prompt: "Use $query-analytical-engine to run fast in-process analytical SQL, orchestrate stateful session queries, or federate queries across S3, Postgres, and Iceberg."

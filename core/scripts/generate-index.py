@@ -232,6 +232,21 @@ SKILL_ALIASES = {
     "rls": ["optimize-postgres"],
     "connection_pooling": ["optimize-postgres"],
     
+    # OLAP Database Optimization
+    "optimize-olap-database": ["optimize-olap-database"],
+    "optimize_olap_database": ["optimize-olap-database"],
+    "olap_optimization": ["optimize-olap-database"],
+    "clickhouse_tuning": ["optimize-olap-database"],
+    "columnar_database_optimization": ["optimize-olap-database"],
+    "olap_tuning": ["optimize-olap-database"],
+    # Analytical Engine Querying
+    "query-analytical-engine": ["query-analytical-engine"],
+    "query_analytical_engine": ["query-analytical-engine"],
+    "analytical_sql": ["query-analytical-engine"],
+    "chdb_query": ["query-analytical-engine"],
+    "embedded_sql": ["query-analytical-engine"],
+    "cross_source_query": ["query-analytical-engine"],
+    
     # Authentication & Authorization
     "auth": ["implement-auth"],
     "authentication": ["implement-auth"],

@@ -4,7 +4,7 @@
   "root": ".",
   "stats": {
     "roles": 34,
-    "skills": 123,
+    "skills": 125,
     "workflows": 24,
     "schemas": 50
   },
@@ -318,6 +318,42 @@
     ],
     "connection_pooling": [
       "optimize-postgres"
+    ],
+    "optimize-olap-database": [
+      "optimize-olap-database"
+    ],
+    "optimize_olap_database": [
+      "optimize-olap-database"
+    ],
+    "olap_optimization": [
+      "optimize-olap-database"
+    ],
+    "clickhouse_tuning": [
+      "optimize-olap-database"
+    ],
+    "columnar_database_optimization": [
+      "optimize-olap-database"
+    ],
+    "olap_tuning": [
+      "optimize-olap-database"
+    ],
+    "query-analytical-engine": [
+      "query-analytical-engine"
+    ],
+    "query_analytical_engine": [
+      "query-analytical-engine"
+    ],
+    "analytical_sql": [
+      "query-analytical-engine"
+    ],
+    "chdb_query": [
+      "query-analytical-engine"
+    ],
+    "embedded_sql": [
+      "query-analytical-engine"
+    ],
+    "cross_source_query": [
+      "query-analytical-engine"
     ],
     "auth": [
       "implement-auth"
@@ -845,10 +881,11 @@
     "data-analyst": {
       "name": "data-analyst",
       "title": "Data Analyst",
-      "description": "answer critical business and product questions with reproducible, statistically grounded, and well-documented decision science from lakehouse and tabular data — defining metrics rigorously through canonical semantic layers, eliminating Text-to-SQL hallucination, separating verifiable empirical evidence from narrative interpretation, and delivering stakeholder-ready insights without owning production pipeline infrastructure. In 2025–2027, this embodies modern Decision Science: conducting Semantic Metric Querying via FastMCP gateways with sqlglot AST validation (read-only SELECT, join depth <= 3, row limit <= 1000), leveraging DuckDB v1.1+ and Polars 1.x+ for lightning-fast in-process analysis under strict 4GB RAM ceilings, executing statistical distribution drift detection (PSI, Two-Sample KS-test, Tukey's IQR), enforcing Pearson's Chi-squared Sample Ratio Mismatch (SRM) pre-checks (p < 0.001), modeling Judea Pearl's Causal Hierarchy through Causal DAGs and DoWhy 4-step robustness refutations, and delivering quantitative reports with cryptographic source hashes.",
+      "description": "answer critical business and product questions with reproducible, statistically grounded, and well-documented decision science from lakehouse and tabular data — defining metrics rigorously through canonical semantic layers, executing in-process analytical SQL engines (chDB DataStore/SQL, DuckDB) and cross-source federation, eliminating Text-to-SQL hallucination, separating verifiable empirical evidence from narrative interpretation, and delivering stakeholder-ready insights without owning production pipeline infrastructure. In 2025–2027, this embodies modern Decision Science: conducting Semantic Metric Querying via FastMCP gateways with sqlglot AST validation (read-only SELECT, join depth <= 3, row limit <= 1000), executing in-process analytical SQL via chDB DataStore/SQL and DuckDB v1.1+ with zero-copy Apache Arrow interchange and cross-source federation (S3, PostgreSQL, MySQL, Iceberg), conducting lightning-fast exploratory analysis under strict 4GB RAM ceilings, executing statistical distribution drift detection (PSI, Two-Sample KS-test, Tukey's IQR), enforcing Pearson's Chi-squared Sample Ratio Mismatch (SRM) pre-checks (p < 0.001), modeling Judea Pearl's Causal Hierarchy through Causal DAGs and DoWhy 4-step robustness refutations, and delivering quantitative reports with cryptographic source hashes.",
       "file": "core/roles/data-analyst.md",
       "skills": [
         "analyze-data",
+        "query-analytical-engine",
         "analyze-business-requirements",
         "build-data-pipeline",
         "database-maintenance",
@@ -862,12 +899,13 @@
     "data-engineer": {
       "name": "data-engineer",
       "title": "Data Engineer",
-      "description": "design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, and unified semantic metrics so analysts, applications, and autonomous AI agents consume reliable, timely, and governable data products — eliminating uncontracted data slop and cloud warehouse FinOps runaway traps. In 2025–2027, this embodies The Second Data Convergence: enforcing Open Data Contract Standard (ODCS v3.1.0) specifications at producer boundaries, architecting Modern Lakehouses with Apache Iceberg v3 (hardware-accelerated Puffin RoaringBitmap Deletion Vectors, integer spec-id partition evolution) and Delta Lake 4.0 UniForm with open REST Catalogs (Apache Polaris, Unity Catalog OSS), mandating S3 object storage prefix hashing (write.object-storage.enabled = true), orchestrating with Dagster Software-Defined Assets and real-time streaming CDC (Apache Flink CDC 3.0, Debezium, Redpanda), guaranteeing atomic Write-Audit-Publish (WAP) on isolated snapshot branches, deploying structured Dead-Letter Queue (DLQ) quarantine envelopes with mathematical circuit breakers (Q_r > 2.0%, N >= 50), and enforcing 7 immutable Data Guardrail Locks under OWASP ASI03/ASI06.",
+      "description": "design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, high-performance OLAP columnar engines (ClickHouse, DuckDB), and unified semantic metrics so analysts, applications, and autonomous AI agents consume reliable, timely, and governable data products — eliminating uncontracted data slop and cloud warehouse FinOps runaway traps. In 2025–2027, this embodies The Second Data Convergence: enforcing Open Data Contract Standard (ODCS v3.1.0) specifications at producer boundaries, architecting Modern Lakehouses with Apache Iceberg v3 (hardware-accelerated Puffin RoaringBitmap Deletion Vectors, integer spec-id partition evolution) and Delta Lake 4.0 UniForm with open REST Catalogs (Apache Polaris, Unity Catalog OSS), optimizing OLAP database engines (ClickHouse/DuckDB sparse primary index granules, partition pruning, dictionary joins, streaming micro-batch buffering), mandating S3 object storage prefix hashing (write.object-storage.enabled = true), orchestrating with Dagster Software-Defined Assets and real-time streaming CDC (Apache Flink CDC 3.0, Debezium, Redpanda), guaranteeing atomic Write-Audit-Publish (WAP) on isolated snapshot branches, deploying structured Dead-Letter Queue (DLQ) quarantine envelopes with mathematical circuit breakers (Q_r > 2.0%, N >= 50), and enforcing 8 immutable Data Guardrail Locks under OWASP ASI03/ASI06.",
       "file": "core/roles/data-engineer.md",
       "skills": [
         "build-data-pipeline",
         "database-maintenance",
         "create-migration",
+        "optimize-olap-database",
         "analyze-data",
         "review-code",
         "write-documentation",
@@ -2122,6 +2160,20 @@
       "type": "core",
       "file": "core/skills/security-data/manage-vietnam-accounting/SKILL.md",
       "description": "Prepare and review Vietnam accounting controls, accounting-regime evidence, reconciliations, invoice data, period-close workpapers, and retention records without executing filings or external accounting actions. Use when a Vietnamese entity needs an accounting-domain handoff, control review, or implementation-ready accounting rule clarification."
+    },
+    "optimize-olap-database": {
+      "name": "optimize-olap-database",
+      "category": "security-data",
+      "type": "core",
+      "file": "core/skills/security-data/optimize-olap-database/SKILL.md",
+      "description": "Design high-throughput OLAP schemas, tune ClickHouse/DuckDB/Iceberg columnar engines, configure 8192-row sparse index granules, govern partition key cardinality, enable MinMax data skipping, implement streaming micro-batch buffering, and profile query execution plans. Use when designing, tuning, or troubleshooting high-throughput columnar databases and analytical storage engines."
+    },
+    "query-analytical-engine": {
+      "name": "query-analytical-engine",
+      "category": "security-data",
+      "type": "core",
+      "file": "core/skills/security-data/query-analytical-engine/SKILL.md",
+      "description": "Execute in-process analytical SQL with chDB and DuckDB v1.1+, orchestrate multi-step stateful pipelines via chdb.session, federate queries across S3 Parquet, PostgreSQL, MySQL, and Iceberg without heavy ETL, leverage Apache Arrow C Data Interface, and enforce safe read-only AST validation. Use when conducting fast in-process analytical queries, cross-source federation, or ad-hoc OLAP exploration."
     },
     "security-audit": {
       "name": "security-audit",

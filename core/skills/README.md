@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 111 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **123 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 113 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **125 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -165,13 +165,15 @@ E-commerce catalog, checkout, payment, and fulfillment:
 - `manage-product-catalog`
 - `manage-order-fulfillment`
 
-### Security And Data (5)
+### Security And Data (7)
 
 - `manage-secrets`
 - `database-maintenance`
 - `manage-vietnam-accounting`
 - `security-audit`
 - `build-data-pipeline`
+- `optimize-olap-database`
+- `query-analytical-engine`
 
 ### Documentation (3)
 
@@ -220,6 +222,8 @@ Overlay-specific skills (site stacks, ICM, content data, R3F) live under `overla
 | Connected Schema.org @graph JSON-LD, E-E-A-T credentials | `implement-schema-markup` | SEO Analyst role |
 | Enterprise MCP server architecture, tool contract design, stateless HTTP transport | `architect-mcp-server` | Technical Architect |
 | Recursive system & task decomposition, DAG dependencies, disk-backed persistent planning | `decompose-agentic-system` | Technical Architect |
+| Columnar database architecture, sparse indexing, ClickHouse / DuckDB tuning | `optimize-olap-database` | Data Engineer role |
+| In-process embedded analytical SQL (chDB, DuckDB), cross-source joins | `query-analytical-engine` | Data Analyst role |
 
 ## Backlog (not yet skills)
 

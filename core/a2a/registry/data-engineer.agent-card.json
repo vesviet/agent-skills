@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/data-engineer",
   "contract_type": "agent-card",
   "name": "data-engineer",
-  "description": "design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, and unified semantic metrics so analysts, applications, and autonomous AI agents consume reliable, timely, and governable data products — eliminating uncontracted data slop and cloud warehouse FinOps runaway traps. In 2025–2027, this embodies The Second Data Convergence: enforcing Open Data Contract Standard (ODCS v3.1.0) specifications at producer boundaries, architecting Modern Lakehouses with Apache Iceberg v3 (hardware-accelerated Puffin RoaringBitmap Deletion Vectors, integer spec-id partition evolution) and Delta Lake 4.0 UniForm with open REST Catalogs (Apache Polaris, Unity Catalog OSS), mandating S3 object storage prefix hashing (write.object-storage.enabled = true), orchestrating with Dagster Software-Defined Assets and real-time streaming CDC (Apache Flink CDC 3.0, Debezium, Redpanda), guaranteeing atomic Write-Audit-Publish (WAP) on isolated snapshot branches, deploying structured Dead-Letter Queue (DLQ) quarantine envelopes with mathematical circuit breakers (Q_r > 2.0%, N >= 50), and enforcing 7 immutable Data Guardrail Locks under OWASP ASI03/ASI06.",
+  "description": "design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, high-performance OLAP columnar engines (ClickHouse, DuckDB), and unified semantic metrics so analysts, applications, and autonomous AI agents consume reliable, timely, and governable data products — eliminating uncontracted data slop and cloud warehouse FinOps runaway traps. In 2025–2027, this embodies The Second Data Convergence: enforcing Open Data Contract Standard (ODCS v3.1.0) specifications at producer boundaries, architecting Modern Lakehouses with Apache Iceberg v3 (hardware-accelerated Puffin RoaringBitmap Deletion Vectors, integer spec-id partition evolution) and Delta Lake 4.0 UniForm with open REST Catalogs (Apache Polaris, Unity Catalog OSS), optimizing OLAP database engines (ClickHouse/DuckDB sparse primary index granules, partition pruning, dictionary joins, streaming micro-batch buffering), mandating S3 object storage prefix hashing (write.object-storage.enabled = true), orchestrating with Dagster Software-Defined Assets and real-time streaming CDC (Apache Flink CDC 3.0, Debezium, Redpanda), guaranteeing atomic Write-Audit-Publish (WAP) on isolated snapshot branches, deploying structured Dead-Letter Queue (DLQ) quarantine envelopes with mathematical circuit breakers (Q_r > 2.0%, N >= 50), and enforcing 8 immutable Data Guardrail Locks under OWASP ASI03/ASI06.",
   "url": "pack://agent-skills/core/roles/data-engineer.md",
   "version": "5.0.0",
   "protocol_version": "1.0",
@@ -77,6 +77,28 @@
       "description": "Create safe schema or data migrations by following the repo's local migration tool, naming rules, rollout constraints, and rollback expectations. Use when adding, changing, backfilling, cleaning, or repairing persisted data structures.",
       "tags": [
         "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "data-pipeline-spec.json",
+        "schema-migration.json"
+      ]
+    },
+    {
+      "id": "optimize-olap-database",
+      "name": "Optimize Olap Database",
+      "description": "Design high-throughput OLAP schemas, tune ClickHouse/DuckDB/Iceberg columnar engines, configure 8192-row sparse index granules, govern partition key cardinality, enable MinMax data skipping, implement streaming micro-batch buffering, and profile query execution plans. Use when designing, tuning, or troubleshooting high-throughput columnar databases and analytical storage engines.",
+      "tags": [
+        "security",
         "pack"
       ],
       "inputModes": [

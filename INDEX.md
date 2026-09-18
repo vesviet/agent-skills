@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `5.0.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **34 Roles** | **123 Skills** (111 Core + 12 Overlays) | **24 Workflows** | **50 Data Contracts**
+> **Total Catalog:** **34 Roles** | **125 Skills** (113 Core + 12 Overlays) | **24 Workflows** | **50 Data Contracts**
 
 ---
 
@@ -42,8 +42,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@cloudflare-engineer`** | Cloudflare Engineer | `@cloudflare`, `@cf`, `@workers` | `wrangler`, `durable-objects`, `turnstile-spin` *(+18 more)* | [`core/roles/cloudflare-engineer.md`](./core/roles/cloudflare-engineer.md) |
 | **`@content-manager`** | Content Manager | — | `design-content-strategy`, `audit-content`, `write-copy` *(+11 more)* | [`core/roles/content-manager.md`](./core/roles/content-manager.md) |
 | **`@content-writer`** | Content Writer | `@writer`, `@copywriter`, `@author`, `@article-writer`, `@blog-writer` | `write-article`, `write-copy`, `repurpose-content` *(+9 more)* | [`core/roles/content-writer.md`](./core/roles/content-writer.md) |
-| **`@data-analyst`** | Data Analyst | `@da`, `@data-analytics` | `analyze-data`, `analyze-business-requirements`, `build-data-pipeline` *(+5 more)* | [`core/roles/data-analyst.md`](./core/roles/data-analyst.md) |
-| **`@data-engineer`** | Data Engineer | `@de`, `@data-eng` | `build-data-pipeline`, `database-maintenance`, `create-migration` *(+9 more)* | [`core/roles/data-engineer.md`](./core/roles/data-engineer.md) |
+| **`@data-analyst`** | Data Analyst | `@da`, `@data-analytics` | `analyze-data`, `query-analytical-engine`, `analyze-business-requirements` *(+6 more)* | [`core/roles/data-analyst.md`](./core/roles/data-analyst.md) |
+| **`@data-engineer`** | Data Engineer | `@de`, `@data-eng` | `build-data-pipeline`, `database-maintenance`, `create-migration` *(+10 more)* | [`core/roles/data-engineer.md`](./core/roles/data-engineer.md) |
 | **`@devops-engineer`** | DevOps Engineer | `@devops`, `@infra`, `@infrastructure` | `setup-deployment`, `debug-runtime-platform`, `add-telemetry-instrumentation` *(+13 more)* | [`core/roles/devops-engineer.md`](./core/roles/devops-engineer.md) |
 | **`@ecommerce-engineer`** | Ecommerce Engineer | `@ecommerce`, `@ecom` | `integrate-payment-gateway`, `handle-checkout-flow`, `manage-product-catalog` *(+13 more)* | [`core/roles/ecommerce-engineer.md`](./core/roles/ecommerce-engineer.md) |
 | **`@frontend-developer`** | Frontend Developer | `@frontend`, `@fe`, `@frontend-dev`, `@ui-developer` | `accessibility-review`, `add-page-route`, `add-ui-component` *(+17 more)* | [`core/roles/frontend-developer.md`](./core/roles/frontend-developer.md) |
@@ -69,7 +69,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🛠️ Skill Directory (123 Skills)
+## 🛠️ Skill Directory (125 Skills)
 
 ### Category: `agent` (24 skills)
 
@@ -297,7 +297,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@review-service`** | Review an entire service for release readiness. Use for full-service audits, production-readiness ch... | [`core/skills/repo-ops/review-service/SKILL.md`](./core/skills/repo-ops/review-service/SKILL.md) |
 | **`@troubleshoot-service`** | Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the failing ... | [`core/skills/repo-ops/troubleshoot-service/SKILL.md`](./core/skills/repo-ops/troubleshoot-service/SKILL.md) |
 
-### Category: `security-data` (5 skills)
+### Category: `security-data` (7 skills)
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
@@ -305,6 +305,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@database-maintenance`** | Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/D... | [`core/skills/security-data/database-maintenance/SKILL.md`](./core/skills/security-data/database-maintenance/SKILL.md) |
 | **`@manage-secrets`** | Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-contr... | [`core/skills/security-data/manage-secrets/SKILL.md`](./core/skills/security-data/manage-secrets/SKILL.md) |
 | **`@manage-vietnam-accounting`** | Prepare and review Vietnam accounting controls, accounting-regime evidence, reconciliations, invoice... | [`core/skills/security-data/manage-vietnam-accounting/SKILL.md`](./core/skills/security-data/manage-vietnam-accounting/SKILL.md) |
+| **`@optimize-olap-database`** | Design high-throughput OLAP schemas, tune ClickHouse/DuckDB/Iceberg columnar engines, configure 8192... | [`core/skills/security-data/optimize-olap-database/SKILL.md`](./core/skills/security-data/optimize-olap-database/SKILL.md) |
+| **`@query-analytical-engine`** | Execute in-process analytical SQL with chDB and DuckDB v1.1+, orchestrate multi-step stateful pipeli... | [`core/skills/security-data/query-analytical-engine/SKILL.md`](./core/skills/security-data/query-analytical-engine/SKILL.md) |
 | **`@security-audit`** | Review code, configuration, and service behavior for security risks by checking trust boundaries, se... | [`core/skills/security-data/security-audit/SKILL.md`](./core/skills/security-data/security-audit/SKILL.md) |
 
 ### Category: `seo` (2 skills)
@@ -331,6 +333,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@agent_delegation`** | `agent-delegation` | Active `@role` |
 | **`@agentic_decomposition`** | `decompose-agentic-system` | Active `@role` |
 | **`@agentic_task_decomposition`** | `decompose-agentic-system` | Active `@role` |
+| **`@analytical_sql`** | `query-analytical-engine` | Active `@role` |
 | **`@analyze_business_requirements`** | `analyze-business-requirements` | Active `@role` |
 | **`@analyze_data`** | `analyze-data` | Active `@role` |
 | **`@api`** | `add-api-endpoint` | Active `@role` |
@@ -347,6 +350,9 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@build_data_pipeline`** | `build-data-pipeline` | Active `@role` |
 | **`@build_mcp_server`** | `build-mcp-server` | Active `@role` |
 | **`@business_requirements`** | `analyze-business-requirements` | Active `@role` |
+| **`@chdb_query`** | `query-analytical-engine` | Active `@role` |
+| **`@clickhouse_tuning`** | `optimize-olap-database` | Active `@role` |
+| **`@columnar_database_optimization`** | `optimize-olap-database` | Active `@role` |
 | **`@combinatorial_testing`** | `combinatorial-testing` | Active `@role` |
 | **`@component-composition`** | `component-composition` | Active `@role` |
 | **`@component_composition`** | `component-composition` | Active `@role` |
@@ -361,6 +367,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@crawlability`** | `audit-technical-seo` | Active `@role` |
 | **`@create_api`** | `add-api-endpoint` | Active `@role` |
 | **`@create_migration`** | `create-migration` | Active `@role` |
+| **`@cross_source_query`** | `query-analytical-engine` | Active `@role` |
 | **`@data_pipeline`** | `build-data-pipeline` | Active `@role` |
 | **`@database`** | `database-maintenance` | Active `@role` |
 | **`@db_maintenance`** | `database-maintenance` | Active `@role` |
@@ -387,6 +394,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@eas_deploy`** | `deploy-mobile-app` | Active `@role` |
 | **`@eas_update`** | `deploy-mobile-app` | Active `@role` |
 | **`@editorial_calendar`** | `design-content-strategy` | Active `@role` |
+| **`@embedded_sql`** | `query-analytical-engine` | Active `@role` |
 | **`@event_handler`** | `add-event-handler` | Active `@role` |
 | **`@expo`** | `develop-mobile-app` | Active `@role` |
 | **`@flashlist`** | `develop-mobile-app` | Active `@role` |
@@ -415,6 +423,10 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@model_routing`** | `agent-model-routing` | Active `@role` |
 | **`@new_endpoint`** | `add-api-endpoint` | Active `@role` |
 | **`@oauth`** | `implement-auth` | Active `@role` |
+| **`@olap_optimization`** | `optimize-olap-database` | Active `@role` |
+| **`@olap_tuning`** | `optimize-olap-database` | Active `@role` |
+| **`@optimize-olap-database`** | `optimize-olap-database` | Active `@role` |
+| **`@optimize_olap_database`** | `optimize-olap-database` | Active `@role` |
 | **`@optimize_postgres`** | `optimize-postgres` | Active `@role` |
 | **`@optimize_seo`** | `optimize-seo` | Active `@role` |
 | **`@orchestration`** | `agent-graph-orchestration` | Active `@role` |
@@ -430,6 +442,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@postgresql`** | `optimize-postgres` | Active `@role` |
 | **`@product_brief`** | `write-product-brief` | Active `@role` |
 | **`@quality_gate`** | `agent-quality-gate` | Active `@role` |
+| **`@query-analytical-engine`** | `query-analytical-engine` | Active `@role` |
+| **`@query_analytical_engine`** | `query-analytical-engine` | Active `@role` |
 | **`@rca`** | `systematic-debugging` | Active `@role` |
 | **`@react_native`** | `develop-mobile-app` | Active `@role` |
 | **`@recursive_decomposition`** | `decompose-agentic-system` | Active `@role` |

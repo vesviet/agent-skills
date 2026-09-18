@@ -1,0 +1,4 @@
+interface:
+  display_name: "Optimize OLAP Database"
+  short_description: "Design high-throughput OLAP schemas, sparse indexing, and query tuning"
+  default_prompt: "Use $optimize-olap-database to design, tune, or optimize columnar database schemas, indexing granules, partition keys, or micro-batch ingestion."

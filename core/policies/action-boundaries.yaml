@@ -488,6 +488,7 @@ roles:
         - delegate_task
         - delete_file
         - export_data
+        - run_build
         - run_migration
         - write_database
       denied:
@@ -509,7 +510,6 @@ roles:
         - shipping_label_generation
         - apply_iac
         - drop_storage_volume
-        - run_build
     devops-engineer:
       allowed:
         - create_file

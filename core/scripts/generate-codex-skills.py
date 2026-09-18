@@ -25,6 +25,8 @@ ACRONYMS = {
     "hvac": "HVAC",
     "db": "DB",
     "sql": "SQL",
+    "olap": "OLAP",
+    "chdb": "chDB",
     "ci": "CI",
     "cd": "CD",
     "iac": "IaC",

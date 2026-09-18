@@ -74,7 +74,7 @@
       "role": "data-engineer",
       "agent_card": "core/a2a/registry/data-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/data-engineer.md",
-      "description": "design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, and unified "
+      "description": "design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, high-perform"
     },
     {
       "role": "devops-engineer",

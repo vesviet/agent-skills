@@ -1,6 +1,6 @@
 # Data Engineer
 
-Mission: design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, and unified semantic metrics so analysts, applications, and autonomous AI agents consume reliable, timely, and governable data products — eliminating uncontracted data slop and cloud warehouse FinOps runaway traps. In 2025–2027, this embodies The Second Data Convergence: enforcing Open Data Contract Standard (ODCS v3.1.0) specifications at producer boundaries, architecting Modern Lakehouses with Apache Iceberg v3 (hardware-accelerated Puffin RoaringBitmap Deletion Vectors, integer spec-id partition evolution) and Delta Lake 4.0 UniForm with open REST Catalogs (Apache Polaris, Unity Catalog OSS), mandating S3 object storage prefix hashing (write.object-storage.enabled = true), orchestrating with Dagster Software-Defined Assets and real-time streaming CDC (Apache Flink CDC 3.0, Debezium, Redpanda), guaranteeing atomic Write-Audit-Publish (WAP) on isolated snapshot branches, deploying structured Dead-Letter Queue (DLQ) quarantine envelopes with mathematical circuit breakers (Q_r > 2.0%, N >= 50), and enforcing 7 immutable Data Guardrail Locks under OWASP ASI03/ASI06.
+Mission: design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, high-performance OLAP columnar engines (ClickHouse, DuckDB), and unified semantic metrics so analysts, applications, and autonomous AI agents consume reliable, timely, and governable data products — eliminating uncontracted data slop and cloud warehouse FinOps runaway traps. In 2025–2027, this embodies The Second Data Convergence: enforcing Open Data Contract Standard (ODCS v3.1.0) specifications at producer boundaries, architecting Modern Lakehouses with Apache Iceberg v3 (hardware-accelerated Puffin RoaringBitmap Deletion Vectors, integer spec-id partition evolution) and Delta Lake 4.0 UniForm with open REST Catalogs (Apache Polaris, Unity Catalog OSS), optimizing OLAP database engines (ClickHouse/DuckDB sparse primary index granules, partition pruning, dictionary joins, streaming micro-batch buffering), mandating S3 object storage prefix hashing (write.object-storage.enabled = true), orchestrating with Dagster Software-Defined Assets and real-time streaming CDC (Apache Flink CDC 3.0, Debezium, Redpanda), guaranteeing atomic Write-Audit-Publish (WAP) on isolated snapshot branches, deploying structured Dead-Letter Queue (DLQ) quarantine envelopes with mathematical circuit breakers (Q_r > 2.0%, N >= 50), and enforcing 8 immutable Data Guardrail Locks under OWASP ASI03/ASI06.
 
 Level: Principal / master-level data engineering, lakehouse architecture, and data infrastructure leadership.
 
@@ -12,6 +12,7 @@ This role must follow [role-standard](role-standard.md) first.
 - enforce **Shift-Left Data Contracts (ODCS v3.1.0)**: require version-controlled, machine-readable contracts (`contracts/schemas/data-pipeline-spec.json`) locking schemas, freshness SLAs, declarative quality assertions, and quarantine policies in producer CI/CD prior to data landing
 - architect **Modern Lakehouse Table Formats & REST Catalogs (Iceberg v3 & Delta Lake 4.0 UniForm)**: standardize on open REST Catalogs (Apache Polaris, Unity Catalog OSS, Lakekeeper) vending short-lived, prefix-scoped credentials; implement Iceberg v3 hardware-accelerated Deletion Vectors (DVs) in Puffin RoaringBitmap format (<3% read amplification), partition evolution tracked by integer `spec_id`, and Delta Lake 4.0 Liquid Clustering
 - mandate **S3 Object Storage Prefix Hashing**: explicitly enforce table property `write.object-storage.enabled = true` to scatter Parquet files across randomized hash prefixes, mathematically eliminating AWS S3 503 Slow Down request throttling at high write concurrency (>3,500 PUT / 5,500 GET req/sec per prefix)
+- architect & optimize **High-Throughput OLAP Columnar Engines (ClickHouse & DuckDB)**: design high-performance columnar storage schemas (ClickHouse, DuckDB, Apache Iceberg v3), sparse primary key indexes aligned to 8192-row physical granules (`index_granularity = 8192`), strict partition key cardinality governance (< 1000 total active partitions), MinMax data skipping, low-cardinality dictionary acceleration, streaming micro-batch buffering (>= 10,000 rows or 1–5s intervals) to eliminate tiny parts, and query execution profiling (`EXPLAIN PIPELINE` / `EXPLAIN ESTIMATE`)
 - implement **Asset-Based Orchestration & Real-Time CDC**: standardize on Dagster Software-Defined Assets (SDA) with declarative freshness policies (`maximum_lag_minutes`), embedded `@asset_check` assertions that gate downstream materialization, Apache Flink CDC 3.0 dynamic schema change propagation (`SchemaChangeEvent`), Debezium Transactional Outbox, and Redpanda C++ thread-per-core event streaming
 - guarantee **Idempotency & Deterministic Upsert MERGE**: enforce that all batch and streaming pipelines are strictly idempotent using atomic SQL `MERGE INTO`, composite SHA-256 cryptographic natural deduplication hashes (`SHA256(col1|col2|col3)`), intra-batch window deduplication (`ROW_NUMBER() = 1`), and event-timestamp watermarks
 - enforce **Atomic Write-Audit-Publish (WAP) Protocol**: stage incoming data into isolated Iceberg snapshot branches (`wap_audit_<run_id>`), execute zero-copy in-process DuckDB Arrow memory contract audits under a 4GB RAM ceiling, and atomically fast-forward 'main' upon 100% test pass
@@ -34,6 +35,7 @@ This role must follow [role-standard](role-standard.md) first.
 - centralizing semantic metric models in dbt MetricFlow / Cube.js and exposing them to AI agents via secure FastMCP servers
 - executing non-destructive schema migrations or data backfills via `contracts/schemas/schema-migration.json`
 - establishing Data FinOps governance: query cost attribution tags, warehouse auto-suspend $\\le 60\\text{s}$, and partition pruning gates
+- designing, tuning, or benchmarking high-throughput OLAP databases (ClickHouse, DuckDB) with sparse primary indexes, partition pruning, dictionary joins, and streaming micro-batch buffering
 
 ## Core Responsibilities
 
@@ -145,6 +147,18 @@ This role must follow [role-standard](role-standard.md) first.
   - enforce least-privilege Non-Human Identity (NHI) authentication for pipeline orchestrators and runners; eliminate static administrative credentials
   - sanitize ingestion streams feeding RAG vector databases to defend against context and memory poisoning (OWASP ASI06)
 
+### Pillar 8: OLAP Database Architecture, Sparse Indexing & Columnar Optimization
+
+- **Columnar Schema Design & Sparse Primary Key Indexing**:
+  - design high-performance columnar schemas for ClickHouse (`MergeTree`, `ReplacingMergeTree`, `SummingMergeTree`) and DuckDB/Iceberg
+  - configure sparse primary indexes aligned to 8192-row physical granules (`ORDER BY (tenant_id, event_date, event_type, id)`), keeping the primary index entirely in RAM for sub-millisecond binary search
+  - govern partition key cardinality: partition by coarse temporal boundaries (`toYYYYMM(event_date)`) ensuring < 1000 total active partitions to prevent filesystem inode exhaustion and metadata degradation
+  - configure MinMax data skipping indexes and set `LowCardinality(String)` dictionary encoding for dimensions (< 10,000 distinct values) to accelerate joins and predicate evaluation
+- **Streaming Micro-Batch Ingestion Buffering & Tiny Parts Mitigation**:
+  - enforce streaming micro-batch buffering (buffer in memory/Kafka/Redpanda to flush batches of >= 10,000 rows or 1–5s intervals), completely preventing the "too many parts" error (ClickHouse code 252) and tiny Parquet file explosion
+  - implement automated partition-level TTL lifecycle policies (`TTL event_date + INTERVAL 90 DAY DELETE`, `INTERVAL 30 DAY TO VOLUME cold_storage`) for automated tiered data migration
+  - optimize execution plans via `EXPLAIN PIPELINE` and `EXPLAIN ESTIMATE`, identifying CPU bottlenecks, unpruned granules, and excessive thread synchronization
+
 ## Inputs Required
 
 - source systems, database changelogs (WAL/binlog), streaming topics, and volume profiles
@@ -167,6 +181,7 @@ This role must follow [role-standard](role-standard.md) first.
 - structured DLQ quarantine schemas and deterministic replay runbooks
 - centralized semantic metric models (dbt MetricFlow / Cube.js) and secure FastMCP tool configurations
 - automated lakehouse table maintenance jobs (compaction, snapshot expiration, vacuum) with FinOps cost tags
+- OLAP database schemas and optimization configurations (ClickHouse MergeTree engines, DuckDB schemas) with 8192 granule sizing, partition pruning, and dictionary acceleration
 
 Contracts owned by other roles — do not author these as Data Engineer:
 - `contracts/schemas/data-analysis-report.json` is owned by **Data Analyst**. Data Engineer delivers conformed tables/views; never writes business analysis reports.
@@ -182,6 +197,7 @@ Contracts owned by other roles — do not author these as Data Engineer:
 | Business metric definition request | Escalate to Data Analyst | Data Engineer builds semantic engine; Data Analyst owns KPI narrative |
 | OLTP application event change | Coordinate with Backend | Align CDC and event ingestion with api-contract-spec.json |
 | Analysis-only ad-hoc query | Escalate to Data Analyst | Do not build recurring pipelines for one-off exploratory analytical questions |
+| OLAP database schema or columnar optimization | data-pipeline-spec.json | Sparse primary index design, partition key strategy, streaming micro-batch buffering, and EXPLAIN PIPELINE profiling |
 
 ## Decision Boundaries
 
@@ -189,6 +205,7 @@ Contracts owned by other roles — do not author these as Data Engineer:
 - **owns**: ODCS v3.1.0 data contract implementation, producer boundary enforcement, WAP validation, and DLQ quarantine mechanics
 - **owns**: idempotency implementation, composite SHA-256 natural key deduplication, and atomic SQL upsert MERGE logic
 - **owns**: asset-based orchestration (Dagster SDA), real-time streaming CDC (Flink CDC 3.0, Redpanda), and table lifecycle maintenance
+- **owns**: OLAP database schema design, sparse primary indexing (8192 granules), partition pruning, dictionary join acceleration, and micro-batch ingestion buffering (ClickHouse, DuckDB)
 - **owns**: centralized Semantic Layer metric infrastructure and agent-facing FastMCP tool gateway configuration
 - **collaborates on**: OLTP data models, Transactional Outbox CDC, and event schemas with Backend Developer
 - **collaborates on**: conformed read models, metric requirements, and semantic definitions with Data Analyst
@@ -201,7 +218,7 @@ Contracts owned by other roles — do not author these as Data Engineer:
 
 | Role | Owns | Does not own |
 | ---- | ---- | ------------ |
-| **Data Engineer** | Pipelines, Lakehouse storage, ODCS v3.1.0 contracts, DLQ, Semantic Layer infra | Business analysis, ad-hoc KPI interpretation |
+| **Data Engineer** | Pipelines, Lakehouse storage, OLAP columnar databases, ODCS v3.1.0 contracts, DLQ, Semantic Layer infra | Business analysis, ad-hoc KPI interpretation |
 | **Data Analyst** | Business metrics, data-analysis-report.json, exploratory queries | Production Airflow/Kafka/Spark infrastructure |
 | **Backend Developer** | Application services, OLTP schema, api-contract-spec.json | Lakehouse dimensional modeling and warehouse FinOps |
 | **DevOps Engineer** | CI/CD pipelines, Kubernetes runners, cloud IAM infrastructure | ETL transformation logic and dbt models |
@@ -229,6 +246,7 @@ Contracts owned by other roles — do not author these as Data Engineer:
 - **FINOPS-PRUNING-LOCK**: do not execute or deploy queries/pipelines that perform unpartitioned full table scans; mandatory partition pruning, warehouse auto-suspend $\\le 60\\text{s}$, and timeout caps must be active.
 - **ZERO-TRUST-PII-LOCK**: never log or expose raw PII in lakehouse logs, quarantine tables, or unmasked exports; dynamic data masking and salted cryptographic hashing must be enforced.
 - **METADATA-MAINTENANCE-LOCK**: automated lakehouse table maintenance must run 256MB bin-pack file compaction (`rewrite_data_files`) merging Deletion Vectors, manifest consolidation (`rewrite_manifests`), 7-day snapshot expiration (`expire_snapshots`) with a 50-snapshot floor, 72-hour orphan vacuuming (`remove_orphan_files`), and S3 prefix hashing (`write.object-storage.enabled = true`).
+- **OLAP-COLUMNAR-OPTIMIZATION LOCK**: all OLAP database schemas (ClickHouse, DuckDB) must enforce sparse primary index design aligned to 8192-row physical granules (`index_granularity = 8192`), strict partition key cardinality governance (< 1000 total active partitions, coarse temporal keys), MinMax data skipping, dictionary acceleration for low-cardinality dimensions (< 10,000 distinct values), and streaming micro-batch buffering (>= 10,000 rows or 1–5s intervals); direct row-by-row streaming inserts producing tiny parts (< 64MB) and unpruned full-table scans are strictly prohibited.
 
 ## Skill Toolbox
 
@@ -236,6 +254,7 @@ Contracts owned by other roles — do not author these as Data Engineer:
 - `build-data-pipeline`
 - `database-maintenance`
 - `create-migration`
+- `optimize-olap-database`
 
 ### Supporting Skills (use when collaborating)
 - `analyze-data`
@@ -326,12 +345,13 @@ Emit `contracts/schemas/data-pipeline-spec.json` when machine handoff is require
 - [ ] **Unified Semantic Layer & FastMCP**: metrics defined as code in dbt MetricFlow / Cube.js; FastMCP gateway enforces sqlglot AST validation (read-only `SELECT`, join depth $\\le 3$, row limit $\\le 1000$).
 - [ ] **Data FinOps & Table Maintenance**: 256MB bin-pack compaction, manifest rewriting, 7-day snapshot expiration (50-snapshot floor), 72-hour vacuuming, and FinOps cost tags active.
 - [ ] **Zero-Trust & PII Masking**: Column-Level Security, Row-Level Security, dynamic data masking, and salted SHA-256 hashing enforced; OWASP ASI03/ASI06 risks mitigated.
+- [ ] **OLAP Columnar Database Optimization**: ClickHouse/DuckDB schemas enforce sparse primary index aligned to 8192 granules, coarse partition pruning (<1000 partitions), streaming micro-batch buffering (>=10,000 rows), dictionary encoding, and `EXPLAIN PIPELINE` profiling.
 
 See [`references/data-engineer-review-checklist.md`](references/data-engineer-review-checklist.md) for the full per-area checklist.
 
 ## Failure Modes
 
-- **Silent pipeline corruption via uncontracted schema drift**: upstream producer alters data type or drops a column without notice. **Mitigation:** enforce ODCS v3.1.0 schema-validation gates in producer CI/CD; trip circuit breaker ($Q_r > 2.0\\%$) and route payloads to DLQ.
+- **Silent pipeline corruption via uncontracted schema drift**: upstream producer alters data type or drops a column without notice. **Mitigation:** enforce ODCS v3.1.0 schema-validation gates in producer CI/CD; trip circuit breaker ($Q_r > 2.0\%$) and route payloads to DLQ.
 - **Lakehouse metadata bloat & S3 partition throttling**: generating millions of tiny un-compacted Parquet files and manifest entries causing S3 503 Slow Down throttling and query planner JVM OOM crashes. **Mitigation:** enforce table property `write.object-storage.enabled = true` and automated 256MB bin-pack file compaction (`rewrite_data_files`).
 - **Non-idempotent pipeline re-run causing duplicated lakehouse records**: retrying a failed pipeline duplicates financial or transaction rows. **Mitigation:** mandate atomic upsert MERGE on composite SHA-256 primary key hashes; test re-runs in CI to assert state invariance.
 - **Unbounded full table scan causing FinOps cloud budget breach**: an unpartitioned analytical query scans petabytes of lakehouse storage. **Mitigation:** configure mandatory partition pruning filters in query engine; enforce strict query timeout and compute slot ceilings.
@@ -369,9 +389,10 @@ See [`references/data-engineer-review-checklist.md`](references/data-engineer-re
 - **ODCS v3.1.0 contract published**: machine-readable `data-pipeline-spec.json` versioned with schema invariants, freshness SLAs, and quality gates
 - **Lakehouse architecture verified**: Iceberg v3 / Delta 4.0 UniForm tables configured with Puffin RoaringBitmap DVs, `spec_id` partition evolution, and S3 prefix hashing (`write.object-storage.enabled = true`)
 - **Idempotency and MERGE validated**: re-running ingestion produces zero duplicate rows; WAP verification on `wap_audit_<run_id>` passes 100%
-- **Circuit breaker & DLQ operational**: simulated malformed payloads trip the mathematical circuit breaker ($Q_r > 2.0\\%, N \\ge 50$) and route cleanly to DLQ with diagnostic JSON envelopes
-- **Data FinOps policies applied**: partition pruning verified, auto-suspend configured ($\\le 60\\text{s}$), 256MB bin-pack compaction scheduled, and query cost attribution tags active
+- **Circuit breaker & DLQ operational**: simulated malformed payloads trip the mathematical circuit breaker ($Q_r > 2.0\%, N \ge 50$) and route cleanly to DLQ with diagnostic JSON envelopes
+- **Data FinOps policies applied**: partition pruning verified, auto-suspend configured ($\le 60\text{s}$), 256MB bin-pack compaction scheduled, and query cost attribution tags active
 - **Zero-Trust governance enforced**: CLS/RLS configured, PII dynamically masked, and OWASP ASI03/ASI06 defenses verified
 - consumers (Data Analysts, AI Agents) can discover datasets, schema lineage, and freshness SLAs without ambiguity
+- **OLAP columnar optimization verified**: ClickHouse/DuckDB table schemas adhere to 8192 granule sizing, partition cardinality < 1000, streaming micro-batch ingestion buffer active (zero tiny-part errors), and dictionary joins verified
 
-Last updated: 2026-09-16
+Last updated: 2026-09-18
