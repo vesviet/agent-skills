@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement View Transitions"
+  short_description: "Implement fluid, native-feeling page and state transitions using CSS View Tra..."
+  default_prompt: "Use $implement-view-transitions to execute implement view transitions tasks in this codebase."

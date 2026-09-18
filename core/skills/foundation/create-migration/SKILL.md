@@ -115,6 +115,7 @@ Use this for rapid migration creation:
 
 ## Related Skills
 
+- **optimize-postgres**: Optimize connection pooling, EXPLAIN ANALYZE query plans, and zero-downtime DDL safeguards
 - **troubleshoot-service**: Debug migration failures and rollout issues
 - **commit-code**: Prepare migration changes for delivery
 - **review-code**: Review safety, compatibility, and rollback risk

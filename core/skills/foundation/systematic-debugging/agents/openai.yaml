@@ -1,0 +1,4 @@
+interface:
+  display_name: "Systematic Debugging"
+  short_description: "Apply 4-phase systematic root cause analysis (Observe, Hypothesize, Test, Fix..."
+  default_prompt: "Use $systematic-debugging to execute systematic debugging tasks in this codebase."

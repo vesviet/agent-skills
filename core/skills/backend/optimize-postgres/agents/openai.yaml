@@ -1,0 +1,4 @@
+interface:
+  display_name: "Optimize Postgres"
+  short_description: "Optimize PostgreSQL connection pooling and performance"
+  default_prompt: "Use $optimize-postgres to tune PostgreSQL queries, configure connection pooling, and manage zero-downtime migrations."

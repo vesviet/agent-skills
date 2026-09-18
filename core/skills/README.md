@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 97 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **109 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 103 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **115 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -38,12 +38,13 @@ Configuration and compliance skills for agentic-ready web presence (MCP, RFC 972
 - `manage-api-catalog`
 - `manage-auth-md`
 
-### Foundation (12)
+### Foundation (14)
 
 Cross-cutting portable skills:
 
 - `accessibility-review`
 - `ai-risk-assessment`
+- `combinatorial-testing`
 - `conduct-research`
 - `create-migration`
 - `design-review`
@@ -52,6 +53,7 @@ Cross-cutting portable skills:
 - `performance-profiling`
 - `plan-technical-delivery`
 - `release-notes`
+- `systematic-debugging`
 - `write-product-brief`
 - `write-tests`
 
@@ -88,20 +90,24 @@ MMO/growth-ops skills with compliance notices; each maps to `REVIEW-SYSTEM LOCK`
 - `manage-mmo-assets`
 - `setup-tracking-system`
 
-### Backend (6)
+### Backend (8)
 
 - `add-api-endpoint`
 - `add-event-handler`
 - `add-service-client`
 - `build-mcp-server`
+- `implement-auth`
 - `implement-structured-outputs`
+- `optimize-postgres`
 - `scaffold-new-service`
 
-### Frontend (7)
+### Frontend (9)
 
-- `add-ui-component`
 - `add-page-route`
+- `add-ui-component`
+- `component-composition`
 - `frontend-testing`
+- `implement-view-transitions`
 - `implement-webmcp`
 - `integrate-api-client`
 - `setup-design-system`
@@ -182,6 +188,12 @@ Overlay-specific skills (site stacks, ICM, content data, R3F) live under `overla
 | Agentic commerce flows | `configure-agent-commerce` | Backend Developer |
 | Vietnam accounting controls, reconciliations, or close evidence | `manage-vietnam-accounting` | Vietnam Accounting Specialist; tax position/legal interpretation -> qualified human reviewer |
 | Agent-ready web discovery | `configure-agent-headers` + `manage-api-catalog` | Agent Discovery Engineer |
+| Root-cause analysis & defect reproduction | `systematic-debugging` | QA Engineer |
+| Combinatorial test matrix reduction | `combinatorial-testing` | QA Engineer |
+| Modern auth, OAuth2 PKCE, session revocation, or tenant isolation | `implement-auth` | Backend Developer |
+| PostgreSQL query optimization, connection pooling, or RLS policies | `optimize-postgres` | Backend Developer |
+| Advanced component composition, slot delegation, headless decomposition | `component-composition` | Frontend Developer |
+| Native CSS View Transitions, shared element morphing, route transitions | `implement-view-transitions` | Frontend Developer |
 
 ## Backlog (not yet skills)
 

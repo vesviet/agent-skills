@@ -27,6 +27,7 @@ Use this skill when a frontend change needs a new page, screen, or route-level f
 - hoist route data loading to loader functions — do not trigger primary data fetches in `useEffect` after mount (causes layout shift waterfalls)
 - use type-safe navigation primitives (`<Link to="..." />`, `navigate({ to: '...' })`); never use untyped URL string concatenation (`navigate('/users/' + userId)`)
 - for AI-generated routes: verify auth guard completeness (AI frequently omits auth wrappers), data loading pattern match, cache invalidation on mutations, and URL parameter validation before merging
+- for route animations and page morphs, leverage skill: `implement-view-transitions` using native CSS View Transitions or React 19 ViewTransition; ensure navigation transitions do not block the main thread or degrade INP (< 200ms)
 
 ## Suggested Process
 
@@ -109,9 +110,7 @@ Cover:
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/implementation-result.json** — Required fields: change_summary, 
-iles_touched[], and 
-alidation_run. Set produced_by_role to the emitting developer role.
+- **`contracts/schemas/implementation-result.json`** — Required fields: change_summary, files_touched[], and validation_run. Set produced_by_role to the emitting developer role.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
@@ -124,6 +123,8 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 
 ## Related Skills
 
+- **implement-view-transitions**: Native CSS and React 19 View Transitions for route navigation morphing
+- **component-composition**: Compose page-level layout components using compound slots
 - **add-ui-component**: Build reusable UI used by the page
 - **integrate-api-client**: Load or mutate backend data from the route
 - **frontend-testing**: Add route and screen coverage

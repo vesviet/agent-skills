@@ -40,6 +40,20 @@ This reference checklist provides detailed engineering, validation, and security
 - **Deterministic Action Transitions**: Every user event or API response deterministically transitions the UI from one valid state to another with explicit error and retry states.
 - **Cancellation & Backpressure**: Asynchronous requests and streaming token updates are bound to `AbortController` instances to cancel in-flight operations when transitions occur.
 
+### Scalable Component Composition
+- **Anti-Boolean Prop Sprawl**: components do not proliferate boolean flags (`isLarge`, `hasBadge`, `isHeader`, `withFooter`, `isCompact`); multi-variant components decompose into compound components.
+- **Compound Component Architecture**: multi-part components share contextual state via React Context or headless hooks with exported subcomponents (`Dialog.Root`, `Dialog.Trigger`, `Dialog.Portal`, `Dialog.Content`, `Dialog.Close`).
+- **Slot & Polymorphic Delegation**: components support Radix-style `asChild` slot delegation to pass behavior and accessibility attributes to custom consumer elements without wrapping extra DOM nodes.
+- **Headless Hook Separation**: complex interactive logic and state transitions are decoupled into reusable headless hooks (`useDialog`, `useDropdown`) independent of presentation markup.
+- **Type-Safe Prop Invariants**: discriminated unions used instead of optional mutually-exclusive props.
+
+### Native View Transitions & Motion Optimization
+- **CSS View Transitions API**: route transitions and element morphing leverage native `document.startViewTransition()` or CSS `@view-transition` rules.
+- **React 19 / Modern Framework Integration**: view transitions wrap state updates via React 19 `ViewTransition` or Next.js / Astro router transition hooks.
+- **Shared Element Transition Identifiers**: unique `view-transition-name` applied to morphing elements; names isolated and cleared on unmount to avoid collisions.
+- **INP Budget Preservation**: transition DOM update callbacks remain non-blocking; interactions respond within 200ms (INP < 200ms); long tasks chunked with `scheduler.yield()`.
+- **Graceful Degradation & Reduced Motion**: `@media (prefers-reduced-motion: reduce)` respected; fallback instant state transitions provided when View Transitions API is unsupported.
+
 ### AI-Generated UI Code Validation (when AI tools contributed to this change — mark N/A if code is entirely human-authored)
 - risk tier classified: [high / medium / low]
 - behavior correctness: all UI states handled including edge cases not in the prompt

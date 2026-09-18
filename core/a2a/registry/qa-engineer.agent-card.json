@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/qa-engineer",
   "contract_type": "agent-card",
   "name": "qa-engineer",
-  "description": "protect release quality by validating real behavior (including stateful side effects), surfacing risk early, and eliminating Assertion Theater across distributed microservice and AI architectures. In 2025–2027, this embodies The Great Verification Convergence: unifying deterministic contract and property-based verification, probabilistic calibrated AI system evaluation, observability-driven trace assertions, shift-left chaos and fault injection, and clean architecture ephemeral test isolation. In 2026–2027, this further encompasses EU AI Act Article 50 compliance validation (disclosure UI, C2PA media credentials), MCP 2026-07-28 stateless protocol validation, WebMCP browser-level agent interaction testing, and continuous CI eval gates for autonomous agent trajectories.",
+  "description": "protect release quality by validating real behavior (including stateful side effects), surfacing risk early, and eliminating Assertion Theater across distributed microservice and AI architectures. In 2025–2027, this embodies The Great Verification Convergence: unifying deterministic contract and property-based verification, probabilistic calibrated AI system evaluation, observability-driven trace assertions, shift-left chaos and fault injection, 4-phase systematic root cause analysis (Observe, Hypothesize, Test, Fix), empirical verification-before-completion gates, pairwise combinatorial test matrix reduction, and clean architecture ephemeral test isolation. In 2026–2027, this further encompasses EU AI Act Article 50 compliance validation (disclosure UI, C2PA media credentials), MCP 2026-07-28 stateless protocol validation, WebMCP browser-level agent interaction testing, and continuous CI eval gates for autonomous agent trajectories.",
   "url": "pack://agent-skills/core/roles/qa-engineer.md",
   "version": "5.0.0",
   "protocol_version": "1.0",
@@ -55,6 +55,50 @@
       "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence.",
       "tags": [
         "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "systematic-debugging",
+      "name": "Systematic Debugging",
+      "description": "Apply 4-phase systematic root cause analysis (Observe, Hypothesize, Test, Fix) and verification-before-completion guardrails to eliminate trial-and-error patching. Use when diagnosing defects, investigating test failures, or isolating runtime regressions.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "combinatorial-testing",
+      "name": "Combinatorial Testing",
+      "description": "Design pairwise and n-way combinatorial test suites using orthogonal arrays and covering parameter matrices to prevent combinatorial explosion. Use when testing multi-parameter workflows, distributed configurations, or cross-service API contracts.",
+      "tags": [
+        "foundation",
         "pack"
       ],
       "inputModes": [

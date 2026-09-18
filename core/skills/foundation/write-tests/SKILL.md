@@ -20,6 +20,8 @@ Use this skill to author independent, property-verified, contract-driven, and fa
 - enforcing mutation test kill score thresholds (≥75–80%) on critical packages
 - verifying concurrent thread safety, data race freedom (`-race`), and goroutine leak absence
 - validating consumer-provider compatibility matrices using Pact Broker `can-i-deploy` prior to release
+- generating pairwise combinatorial test matrices to prevent test explosion across multi-parameter services
+- authoring deterministic failing reproduction tests during 4-phase systematic root cause analysis
 
 ## Core Rules
 
@@ -54,6 +56,9 @@ Use this skill to author independent, property-verified, contract-driven, and fa
 - **Edge case synthesis & boundary testing**:
   - systematically cover boundary cases across numeric extremes (min/max integers, floating-point precision, overflow).
   - test Unicode edge cases (RTL markers, zero-width characters, multibyte strings) and temporal/timezone transitions.
+- **Combinatorial test reduction & systematic RCA**:
+  - apply pairwise combinatorial testing (`combinatorial-testing`) to compress multi-factor parameter matrices into minimal 2-way covering arrays.
+  - follow 4-phase systematic debugging (`systematic-debugging`) to reproduce defects deterministically before authoring fixes.
 - **Mutation testing quality gate**:
   - enforce mutation score ≥75–80% using Stryker, mutmut, or cargo-mutants on core domain packages.
   - reject raw line coverage that fails to kill mutants; eliminate surviving non-equivalent mutants by tightening assertions.
@@ -164,3 +169,5 @@ Skip emission for rapid local test iterations during interactive development.
 - **troubleshoot-service**: Debug failing or flaky tests
 - **review-code**: Review whether tests match the change risk
 - **navigate-service**: Understand the target flow before adding tests
+- **systematic-debugging**: Formulate root-cause hypotheses and author deterministic reproduction tests
+- **combinatorial-testing**: Generate pairwise covering arrays to optimize multi-parameter test matrices

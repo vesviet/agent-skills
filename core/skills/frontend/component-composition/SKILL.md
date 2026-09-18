@@ -1,0 +1,94 @@
+---
+name: component-composition
+description: Architect scalable UI components using compound components, Radix-style asChild slot delegation, headless hook separation, and anti-boolean prop sprawl patterns. Use when designing reusable component libraries, refactoring prop-heavy components, or decoupling interaction state from presentation.
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, run_dev_server, execute_command]
+---
+
+# Component Composition
+
+Use this skill to design, refactor, and review modular frontend components using compound component architectures, headless state hooks, slot delegation (`asChild`), and explicit variant patterns.
+
+## When to Use
+
+- refactoring components suffering from boolean prop explosion (>2 boolean customizer flags)
+- designing reusable UI design system primitives (Dialogs, Dropdowns, Cards, Drawers, Comboboxes)
+- decoupling interaction state machines and accessibility logic from visual markup
+- enabling polymorphic trigger elements via Radix-style `asChild` / `Slot` delegation
+- lifting UI state into dedicated provider components for decoupled sibling and action access
+- transitioning legacy React component code (`forwardRef`, `useContext`) to modern React 19 idioms (`ref` prop, `use()`)
+
+## Core Rules
+
+- **Enforce Anti-Boolean Prop Sprawl**: strictly ban components that use boolean flags to toggle internal layout structures (e.g. `isThread`, `hasBadge`, `isHeader`, `withIcon`, `isLoadingModal`); replace with compound components or explicit variants
+- **Mandate Compound Component Architecture**: complex components with multiple visual sub-regions must expose subcomponents sharing a typed context interface (`Component.Root`, `Component.Trigger`, `Component.Content`, `Component.Close`)
+- **Decouple State Implementation from UI**: UI compound components must consume a generic context interface (`{ state, actions, meta }`); never hardcode global stores directly inside leaf UI subcomponents; inject state through provider boundaries
+- **Provide Polymorphic Slot Delegation (`asChild`)**: trigger and interactive wrapper components must support `asChild` via Radix-style `Slot` to delegate props, event handlers (`composeEventHandlers`), and refs (`composeRefs`) without rendering redundant DOM wrappers
+- **Decompose Headless Hooks**: extract complex interactive state (focus traps, keyboard navigation, open/close state, ARIA contracts) into reusable headless hooks (`useDialog`, `useDropdown`) returning `{ state, actions, triggerProps, contentProps }`
+- **Prefer Children Over Render Props**: compose static and semi-static layouts using nested `children`; reserve render props strictly for dynamic data projection callbacks (`renderItem={({ item, index }) => ...}`)
+- **Enforce React 19 Idioms**: do not use `forwardRef` in React 19 codebases (pass `ref` as a standard prop); use `use(Context)` instead of `useContext()`; use `<Context value={...}>` instead of `<Context.Provider>`
+- detailed architecture guide and templates: [`references/composition-architecture-and-headless-specs.md`](references/composition-architecture-and-headless-specs.md)
+
+## Suggested Process
+
+### 1. Audit Prop Surface & Identify Pathologies
+Scan the component interface. Count boolean customization props (`is*`, `has*`, `show*`, `with*`). If more than 2 boolean flags alter layout or render branches, declare boolean prop explosion and plan a compound refactor.
+
+### 2. Define Context & Injected Contract
+Create the component's context interface with three distinct facets:
+- `state`: read-only data values required by subcomponents
+- `actions`: callbacks and mutation functions
+- `meta`: references (DOM refs, unique IDs, active indices)
+
+### 3. Extract Headless State Machine Hook
+Author the headless hook managing state transitions, keyboard bindings (Escape, Enter, Arrows), and ARIA attributes (`aria-expanded`, `aria-controls`, `aria-labelledby`).
+
+### 4. Implement Compound Primitives & Slot Delegation
+Author the compound subcomponents. Ensure triggers support `asChild` using the `Slot` primitive, cleanly merging consumer class names, refs, and event listeners.
+
+### 5. Compose Explicit Variants
+Author pre-composed, ergonomic variants for frequent use cases (`ThreadComposer`, `ChannelComposer`). Consumers with standard requirements use the variant; consumers with novel layouts compose the primitives directly.
+
+### 6. Verify via Behavioral UI Tests
+Use skill: `frontend-testing`. Assert subcomponents render correctly across arbitrary compositions, `asChild` delegates props to custom tags, keyboard accessibility functions, and external action buttons can trigger provider actions.
+
+## Checklist
+
+- [ ] component avoids boolean prop proliferation; maximum <= 2 booleans for purely stylistic states
+- [ ] complex multi-region layout structured as compound component (`Root`, `Trigger`, `Content`, etc.)
+- [ ] state management decoupled from UI via context provider interface (`state`, `actions`, `meta`)
+- [ ] interactive triggers support `asChild` slot delegation without generating illegal DOM wrapper nesting
+- [ ] event handlers and refs merged safely via `composeEventHandlers` and `composeRefs`
+- [ ] keyboard navigation and WAI-ARIA roles handled deterministically via headless hook or primitive
+- [ ] React 19 idioms used (direct `ref` prop, `use()` hook, `<Context value={...}>`)
+- [ ] explicit pre-composed variants provided for common high-frequency use cases
+- [ ] behavioral interaction tests verify compound composition and accessibility contracts
+- [ ] `ui-component-spec.json` and `implementation-result.json` emitted and validated
+
+## Output Contracts
+
+When this skill is invoked as part of a coordinated frontend slice, emit:
+
+- **`contracts/schemas/ui-component-spec.json`** — Declares compound component hierarchy, subcomponent contracts, prop interfaces, and slot capabilities.
+- **`contracts/schemas/implementation-result.json`** — Records files modified, components created/refactored, test coverage, and public prop surface changes.
+
+## Failure Modes
+
+- **Boolean Sprawl Regression**: an engineer adds `isSecondaryHeader` or `withActionButton` to an existing component instead of a compound slot. Mitigation: code review gate rejects PRs adding layout-altering booleans; requires compound refactor.
+- **Event Handler Collision in Slot**: child `onClick` overwrites trigger `onClick`. Mitigation: always use `composeEventHandlers` to ensure both internal logic and consumer callbacks execute.
+- **Broken Ref Forwarding**: custom child passed to `asChild` loses ref binding. Mitigation: merge refs using `composeRefs` supporting both callback refs and object refs.
+- **Context Null Pointer Exception**: subcomponent rendered outside Provider crashes. Mitigation: context consumer hook throws helpful diagnostic error (`useComposerContext must be used within Composer.Provider`).
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: ensure consumer-provided action callbacks cannot override core permission guards inside the component provider.
+- **ASI04 Supply Chain**: avoid unvetted heavy component utility bundles; implement lightweight `Slot` and composition primitives locally under `src/components/ui/` or vetted packages (`@radix-ui/react-slot`).
+- **ASI05 RCE Guard**: never render dynamic component types from untrusted user input; validate variant names against compile-time string literal unions.
+- **ASI07 Inter-Agent Communication**: emit structured `ui-component-spec.json` documenting the compound component hierarchy for downstream UI and QA agents.
+
+## Related Skills
+
+- **add-ui-component**: Author and style the presentation elements of the composed component
+- **frontend-testing**: Author behavioral interaction and accessibility test suites
+- **setup-design-system**: Align compound component tokens and styling with design system rules
+- **review-code**: Audit components for boolean prop sprawl and composition anti-patterns
+- **implement-view-transitions**: Animate layout state changes and morphs across composed elements

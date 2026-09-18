@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/frontend-developer",
   "contract_type": "agent-card",
   "name": "frontend-developer",
-  "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to governing AI-generated UI code with tiered trust validation, enforcing Taste-Skill anti-slop frontend engineering standards (viewport stability with min-h-100dvh, continuous motion state isolation via Motion hooks, asset hygiene, and Big Bans enforcement), owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, architecting PWA service workers as agentic orchestration control-planes, implementing EU AI Act Article 50 disclosure UI components as a legal requirement (live from 2 August 2026), and sanitizing AI-generated content before DOM insertion using Trusted Types and DOMPurify.",
+  "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to architecting scalable component systems via compound components and Radix-style slot delegation to eliminate boolean prop explosion, engineering fluid, native-feeling page and state transitions using the CSS View Transitions API and React 19 ViewTransition while strictly safeguarding Core Web Vitals (INP < 200ms) with off-thread composited motion, governing AI-generated UI code with tiered trust validation, enforcing Taste-Skill anti-slop frontend engineering standards (viewport stability with min-h-100dvh, continuous motion state isolation via Motion hooks, asset hygiene, and Big Bans enforcement), owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, architecting PWA service workers as agentic orchestration control-planes, implementing EU AI Act Article 50 disclosure UI components as a legal requirement (live from 2 August 2026), and sanitizing AI-generated content before DOM insertion using Trusted Types and DOMPurify.",
   "url": "pack://agent-skills/core/roles/frontend-developer.md",
   "version": "5.0.0",
   "protocol_version": "1.0",
@@ -28,11 +28,11 @@
   ],
   "skills": [
     {
-      "id": "add-ui-component",
-      "name": "Add Ui Component",
-      "description": "Add or evolve a reusable UI component by following the repo's design system, composition patterns, accessibility rules, and state boundaries. Use when building frontend components or shared presentation elements.",
+      "id": "accessibility-review",
+      "name": "Accessibility Review",
+      "description": "Audit UI for keyboard navigation, focus order, screen-reader labels, color contrast, motion preferences, and ARIA correctness against WCAG 2.2 criteria (including Focus Not Obscured 2.4.11, Target Size 2.5.8, Accessible Authentication 3.3.8, Dragging Movements 2.5.7, Redundant Entry 3.3.7). Use automated CI gates via @axe-core/playwright for regression detection alongside manual screen-reader testing. Use when validating user-facing flows before release, after design specs land, or when fixing reported a11y defects.",
       "tags": [
-        "frontend",
+        "foundation",
         "pack"
       ],
       "inputModes": [
@@ -72,31 +72,9 @@
       ]
     },
     {
-      "id": "integrate-api-client",
-      "name": "Integrate Api Client",
-      "description": "Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handling, and state-management patterns. Use when a UI needs to read or mutate backend data.",
-      "tags": [
-        "frontend",
-        "pack"
-      ],
-      "inputModes": [
-        "text",
-        "json",
-        "data"
-      ],
-      "outputModes": [
-        "json",
-        "text"
-      ],
-      "output_schema_refs": [
-        "implementation-result.json",
-        "performance-audit.json"
-      ]
-    },
-    {
-      "id": "frontend-testing",
-      "name": "Frontend Testing",
-      "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence.",
+      "id": "add-ui-component",
+      "name": "Add Ui Component",
+      "description": "Add or evolve a reusable UI component by following the repo's design system, composition patterns, accessibility rules, and state boundaries. Use when building frontend components or shared presentation elements.",
       "tags": [
         "frontend",
         "pack"
@@ -138,9 +116,97 @@
       ]
     },
     {
-      "id": "setup-design-system",
-      "name": "Setup Design System",
-      "description": "Configure a scalable design system, styling framework, and component architecture for a frontend project. Use when initializing a new project, migrating to a unified CSS strategy, or setting up a component library (e.g., Tailwind, Storybook, Radix).",
+      "id": "component-composition",
+      "name": "Component Composition",
+      "description": "Architect scalable UI components using compound components, Radix-style asChild slot delegation, headless hook separation, and anti-boolean prop sprawl patterns. Use when designing reusable component libraries, refactoring prop-heavy components, or decoupling interaction state from presentation.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "frontend-testing",
+      "name": "Frontend Testing",
+      "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "implement-view-transitions",
+      "name": "Implement View Transitions",
+      "description": "Implement fluid, native-feeling page and state transitions using CSS View Transitions API, React 19 ViewTransition, Next.js App Router transitions, and shared element morphing without degrading Core Web Vitals. Use when adding route animations, shared element transitions, or layout morphs.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "implement-webmcp",
+      "name": "Implement Webmcp",
+      "description": "Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when enabling in-browser AI agent interactions, DOM context sharing, or client-side action execution.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "integrate-api-client",
+      "name": "Integrate Api Client",
+      "description": "Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handling, and state-management patterns. Use when a UI needs to read or mutate backend data.",
       "tags": [
         "frontend",
         "pack"
@@ -182,9 +248,9 @@
       ]
     },
     {
-      "id": "implement-webmcp",
-      "name": "Implement Webmcp",
-      "description": "Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when enabling in-browser AI agent interactions, DOM context sharing, or client-side action execution.",
+      "id": "setup-design-system",
+      "name": "Setup Design System",
+      "description": "Configure a scalable design system, styling framework, and component architecture for a frontend project. Use when initializing a new project, migrating to a unified CSS strategy, or setting up a component library (e.g., Tailwind, Storybook, Radix).",
       "tags": [
         "frontend",
         "pack"
@@ -209,28 +275,6 @@
       "description": "Configure automated visual diffing for UI components and pages. Use when establishing pixel-level regression testing, cross-browser snapshot baselines, or CI visual gates.",
       "tags": [
         "frontend",
-        "pack"
-      ],
-      "inputModes": [
-        "text",
-        "json",
-        "data"
-      ],
-      "outputModes": [
-        "json",
-        "text"
-      ],
-      "output_schema_refs": [
-        "implementation-result.json",
-        "performance-audit.json"
-      ]
-    },
-    {
-      "id": "accessibility-review",
-      "name": "Accessibility Review",
-      "description": "Audit UI for keyboard navigation, focus order, screen-reader labels, color contrast, motion preferences, and ARIA correctness against WCAG 2.2 criteria (including Focus Not Obscured 2.4.11, Target Size 2.5.8, Accessible Authentication 3.3.8, Dragging Movements 2.5.7, Redundant Entry 3.3.7). Use automated CI gates via @axe-core/playwright for regression detection alongside manual screen-reader testing. Use when validating user-facing flows before release, after design specs land, or when fixing reported a11y defects.",
-      "tags": [
-        "foundation",
         "pack"
       ],
       "inputModes": [

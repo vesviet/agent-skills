@@ -4,7 +4,7 @@
   "root": ".",
   "stats": {
     "roles": 34,
-    "skills": 109,
+    "skills": 115,
     "workflows": 24,
     "schemas": 50
   },
@@ -238,6 +238,36 @@
     "build_data_pipeline": [
       "build-data-pipeline"
     ],
+    "postgres": [
+      "optimize-postgres"
+    ],
+    "postgresql": [
+      "optimize-postgres"
+    ],
+    "optimize_postgres": [
+      "optimize-postgres"
+    ],
+    "rls": [
+      "optimize-postgres"
+    ],
+    "connection_pooling": [
+      "optimize-postgres"
+    ],
+    "auth": [
+      "implement-auth"
+    ],
+    "authentication": [
+      "implement-auth"
+    ],
+    "implement_auth": [
+      "implement-auth"
+    ],
+    "oauth": [
+      "implement-auth"
+    ],
+    "session_management": [
+      "implement-auth"
+    ],
     "ui_component": [
       "add-ui-component"
     ],
@@ -265,6 +295,33 @@
     "frontend_testing": [
       "frontend-testing"
     ],
+    "composition": [
+      "component-composition"
+    ],
+    "component_composition": [
+      "component-composition"
+    ],
+    "component-composition": [
+      "component-composition"
+    ],
+    "compound_components": [
+      "component-composition"
+    ],
+    "compound-components": [
+      "component-composition"
+    ],
+    "view_transitions": [
+      "implement-view-transitions"
+    ],
+    "view-transitions": [
+      "implement-view-transitions"
+    ],
+    "implement_view_transitions": [
+      "implement-view-transitions"
+    ],
+    "implement-view-transitions": [
+      "implement-view-transitions"
+    ],
     "tests": [
       "write-tests"
     ],
@@ -279,6 +336,24 @@
     ],
     "test_report": [
       "write-tests"
+    ],
+    "systematic_debugging": [
+      "systematic-debugging"
+    ],
+    "debugging": [
+      "systematic-debugging"
+    ],
+    "rca": [
+      "systematic-debugging"
+    ],
+    "combinatorial_testing": [
+      "combinatorial-testing"
+    ],
+    "pairwise_testing": [
+      "combinatorial-testing"
+    ],
+    "pict": [
+      "combinatorial-testing"
     ],
     "security": [
       "security-audit"
@@ -511,6 +586,8 @@
         "add-event-handler",
         "add-service-client",
         "create-migration",
+        "implement-auth",
+        "optimize-postgres",
         "write-tests",
         "commit-code",
         "scaffold-new-service",
@@ -705,19 +782,21 @@
     "frontend-developer": {
       "name": "frontend-developer",
       "title": "Frontend Developer",
-      "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to governing AI-generated UI code with tiered trust validation, enforcing Taste-Skill anti-slop frontend engineering standards (viewport stability with min-h-100dvh, continuous motion state isolation via Motion hooks, asset hygiene, and Big Bans enforcement), owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, architecting PWA service workers as agentic orchestration control-planes, implementing EU AI Act Article 50 disclosure UI components as a legal requirement (live from 2 August 2026), and sanitizing AI-generated content before DOM insertion using Trusted Types and DOMPurify.",
+      "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to architecting scalable component systems via compound components and Radix-style slot delegation to eliminate boolean prop explosion, engineering fluid, native-feeling page and state transitions using the CSS View Transitions API and React 19 ViewTransition while strictly safeguarding Core Web Vitals (INP < 200ms) with off-thread composited motion, governing AI-generated UI code with tiered trust validation, enforcing Taste-Skill anti-slop frontend engineering standards (viewport stability with min-h-100dvh, continuous motion state isolation via Motion hooks, asset hygiene, and Big Bans enforcement), owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, architecting PWA service workers as agentic orchestration control-planes, implementing EU AI Act Article 50 disclosure UI components as a legal requirement (live from 2 August 2026), and sanitizing AI-generated content before DOM insertion using Trusted Types and DOMPurify.",
       "file": "core/roles/frontend-developer.md",
       "skills": [
-        "add-ui-component",
-        "add-page-route",
-        "integrate-api-client",
-        "frontend-testing",
-        "commit-code",
-        "setup-design-system",
-        "navigate-service",
-        "implement-webmcp",
-        "setup-visual-regression",
         "accessibility-review",
+        "add-page-route",
+        "add-ui-component",
+        "commit-code",
+        "component-composition",
+        "frontend-testing",
+        "implement-view-transitions",
+        "implement-webmcp",
+        "integrate-api-client",
+        "navigate-service",
+        "setup-design-system",
+        "setup-visual-regression",
         "performance-profiling",
         "write-tests",
         "troubleshoot-service",
@@ -814,11 +893,13 @@
     "qa-engineer": {
       "name": "qa-engineer",
       "title": "QA Engineer",
-      "description": "protect release quality by validating real behavior (including stateful side effects), surfacing risk early, and eliminating Assertion Theater across distributed microservice and AI architectures. In 2025–2027, this embodies The Great Verification Convergence: unifying deterministic contract and property-based verification, probabilistic calibrated AI system evaluation, observability-driven trace assertions, shift-left chaos and fault injection, and clean architecture ephemeral test isolation. In 2026–2027, this further encompasses EU AI Act Article 50 compliance validation (disclosure UI, C2PA media credentials), MCP 2026-07-28 stateless protocol validation, WebMCP browser-level agent interaction testing, and continuous CI eval gates for autonomous agent trajectories.",
+      "description": "protect release quality by validating real behavior (including stateful side effects), surfacing risk early, and eliminating Assertion Theater across distributed microservice and AI architectures. In 2025–2027, this embodies The Great Verification Convergence: unifying deterministic contract and property-based verification, probabilistic calibrated AI system evaluation, observability-driven trace assertions, shift-left chaos and fault injection, 4-phase systematic root cause analysis (Observe, Hypothesize, Test, Fix), empirical verification-before-completion gates, pairwise combinatorial test matrix reduction, and clean architecture ephemeral test isolation. In 2026–2027, this further encompasses EU AI Act Article 50 compliance validation (disclosure UI, C2PA media credentials), MCP 2026-07-28 stateless protocol validation, WebMCP browser-level agent interaction testing, and continuous CI eval gates for autonomous agent trajectories.",
       "file": "core/roles/qa-engineer.md",
       "skills": [
         "write-tests",
         "frontend-testing",
+        "systematic-debugging",
+        "combinatorial-testing",
         "agent-quality-gate",
         "accessibility-review",
         "configure-mcp",
@@ -1311,12 +1392,26 @@
       "file": "core/skills/backend/build-mcp-server/SKILL.md",
       "description": "Scaffolds and implements a new Model Context Protocol (MCP) server. Use when exposing new backend tools or resources to AI agents."
     },
+    "implement-auth": {
+      "name": "implement-auth",
+      "category": "backend",
+      "type": "core",
+      "file": "core/skills/backend/implement-auth/SKILL.md",
+      "description": "Implement secure authentication, OAuth2 PKCE flows, session lifecycles, JWT rotation with Redis revocation, Row-Level Security, and worker runtime state isolation. Use when adding or hardening auth, tokens, sessions, or multi-tenant boundaries."
+    },
     "implement-structured-outputs": {
       "name": "implement-structured-outputs",
       "category": "backend",
       "type": "core",
       "file": "core/skills/backend/implement-structured-outputs/SKILL.md",
       "description": "Implements strict constrained decoding and validation for LLM responses. Use when enforcing JSON Schema guarantees on model generations, eliminating regex parsing, or integrating structured LLM outputs into backend services."
+    },
+    "optimize-postgres": {
+      "name": "optimize-postgres",
+      "category": "backend",
+      "type": "core",
+      "file": "core/skills/backend/optimize-postgres/SKILL.md",
+      "description": "Optimize PostgreSQL performance, serverless connection pooling, ephemeral database branching, EXPLAIN ANALYZE execution plan tuning, and zero-downtime migrations. Use when tuning queries, configuring poolers, branching databases, or rolling out DDL."
     },
     "scaffold-new-service": {
       "name": "scaffold-new-service",
@@ -1437,6 +1532,13 @@
       "file": "core/skills/foundation/ai-risk-assessment/SKILL.md",
       "description": "Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure/Manage) and NIST AI 600-1 GenAI Profile (12 risk categories), classify EU AI Act risk tiers, and produce an AI risk register covering hallucination thresholds, model degradation signals, bias exposure, and compliance drift. Use when onboarding a new AI feature, scoping an AI system for delivery, or conducting a periodic AI governance audit."
     },
+    "combinatorial-testing": {
+      "name": "combinatorial-testing",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/combinatorial-testing/SKILL.md",
+      "description": "Design pairwise and n-way combinatorial test suites using orthogonal arrays and covering parameter matrices to prevent combinatorial explosion. Use when testing multi-parameter workflows, distributed configurations, or cross-service API contracts."
+    },
     "conduct-research": {
       "name": "conduct-research",
       "category": "foundation",
@@ -1493,6 +1595,13 @@
       "file": "core/skills/foundation/release-notes/SKILL.md",
       "description": "Draft, structure, and review release notes for a software change so that users, operators, and downstream consumers understand what changed, what broke compatibility, and what action they must take. Use when shipping a feature, fix, or breaking change that requires external communication."
     },
+    "systematic-debugging": {
+      "name": "systematic-debugging",
+      "category": "foundation",
+      "type": "core",
+      "file": "core/skills/foundation/systematic-debugging/SKILL.md",
+      "description": "Apply 4-phase systematic root cause analysis (Observe, Hypothesize, Test, Fix) and verification-before-completion guardrails to eliminate trial-and-error patching. Use when diagnosing defects, investigating test failures, or isolating runtime regressions."
+    },
     "write-product-brief": {
       "name": "write-product-brief",
       "category": "foundation",
@@ -1521,12 +1630,26 @@
       "file": "core/skills/frontend/add-ui-component/SKILL.md",
       "description": "Add or evolve a reusable UI component by following the repo's design system, composition patterns, accessibility rules, and state boundaries. Use when building frontend components or shared presentation elements."
     },
+    "component-composition": {
+      "name": "component-composition",
+      "category": "frontend",
+      "type": "core",
+      "file": "core/skills/frontend/component-composition/SKILL.md",
+      "description": "Architect scalable UI components using compound components, Radix-style asChild slot delegation, headless hook separation, and anti-boolean prop sprawl patterns. Use when designing reusable component libraries, refactoring prop-heavy components, or decoupling interaction state from presentation."
+    },
     "frontend-testing": {
       "name": "frontend-testing",
       "category": "frontend",
       "type": "core",
       "file": "core/skills/frontend/frontend-testing/SKILL.md",
       "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence."
+    },
+    "implement-view-transitions": {
+      "name": "implement-view-transitions",
+      "category": "frontend",
+      "type": "core",
+      "file": "core/skills/frontend/implement-view-transitions/SKILL.md",
+      "description": "Implement fluid, native-feeling page and state transitions using CSS View Transitions API, React 19 ViewTransition, Next.js App Router transitions, and shared element morphing without degrading Core Web Vitals. Use when adding route animations, shared element transitions, or layout morphs."
     },
     "implement-webmcp": {
       "name": "implement-webmcp",

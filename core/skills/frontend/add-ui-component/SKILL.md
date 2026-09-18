@@ -18,7 +18,7 @@ Use this skill when a frontend change needs a new reusable component or a meanin
 ## Core Rules
 
 - follow the repo's existing design system before inventing a new pattern
-- prefer composition over one-off duplication — use compound component patterns (`Dialog.Root`, `Dialog.Content`) over prop-soup mega-components with dozens of boolean flags
+- prefer composition over one-off duplication — use skill: `component-composition` to eliminate boolean prop explosion (e.g. `isLarge`, `hasBadge`, `withFooter`) using compound components (`Dialog.Root`, `Dialog.Content`) and Radix-style `asChild` slot delegation
 - base interactive components on headless accessibility primitives (Radix UI, Base UI, Ark UI) for WAI-ARIA roles, keyboard focus management, and escape key handling — do not reinvent focus trap logic
 - own component source under `src/components/ui/` (shadcn/ui v2 model); avoid black-box NPM UI bundles that cannot be customized or tree-shaken
 - apply `cn()` utility (clsx + tailwind-merge) to all component root elements for safe Tailwind class merging without specificity conflicts
@@ -153,6 +153,8 @@ Skip emission for solo exploratory UI work with no planned handoff.
 
 ## Related Skills
 
+- **component-composition**: Compound components, slot delegation, and anti-boolean prop sprawl
+- **implement-view-transitions**: Native CSS and React 19 View Transitions for fluid UI morphing
 - **add-page-route**: Place the new component into a page or route flow
 - **integrate-api-client**: Connect UI state to backend data safely
 - **frontend-testing**: Add UI and interaction coverage

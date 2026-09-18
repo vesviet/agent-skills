@@ -87,3 +87,19 @@ This reference checklist provides detailed engineering, validation, and security
 - trace context propagated across service boundaries
 - tail-based sampling strategy applied: errors and slow traces always kept
 - GenAI calls traced with model name, token counts, latency, and prompt template version (if applicable)
+
+### Modern Authentication & Session Security (implement-auth)
+- **OAuth2 PKCE Enforcement**: Authorization Code flows mandate `code_challenge_method=S256` with high-entropy verifier (43–128 characters); `plain` method is strictly rejected.
+- **Refresh Token Rotation (RTR) & Reuse Detection**: Refresh tokens are single-use; presenting an expired or consumed token triggers immediate family revocation and terminates the active session.
+- **Dual-Timeout Session Architecture**: Sessions enforce both sliding inactivity timeouts (15–30m) and immutable absolute ceilings (8–24h) calculated from session creation.
+- **Bounded Redis Revocation**: Revoked JWT `jti` entries in Redis carry a TTL equal to remaining token lifetime; bulk revocation uses user-level epoch timestamps (`user:revoked_epoch:{user_id}`).
+- **Row-Level Security Defense-in-Depth**: Multi-tenant tables declare `ENABLE ROW LEVEL SECURITY` and `FORCE ROW LEVEL SECURITY`; connection context is set via transactional `set_config('app.current_tenant_id', ..., true)` under non-bypass database roles.
+- **Worker Runtime State Isolation**: Persistent workers (FrankenPHP, Octane, ASGI) register container flush hooks on request termination; zero auth or tenant state stored in singletons or globals.
+
+### Serverless PostgreSQL & Database Optimization (optimize-postgres)
+- **Zero-Downtime DDL Safeguards**: `SET lock_timeout = '2s';` declared at the head of every DDL migration script to prevent connection pool lock queue stalls.
+- **Concurrent Index Operations**: Live table indexes built using `CREATE INDEX CONCURRENTLY` and dropped via `DROP INDEX CONCURRENTLY` outside transaction blocks; failed `indisvalid=false` indexes detected and cleaned.
+- **Connection Pooling Discipline**: Transaction mode poolers (port 6543) configured with driver prepared statement caching disabled (`statement_cache_size=0`); backend pool size mathematically aligned with CPU cores and I/O capacity.
+- **Ephemeral Database Branching**: Migrations and test suites verified against isolated copy-on-write database branches (Neon) before merging; branches torn down upon CI completion.
+- **Buffer-Verified Execution Plans**: Queries profiled with `EXPLAIN (ANALYZE, BUFFERS)`; sequential scans, estimation errors, and `work_mem` disk spills (`external merge Disk`) eliminated.
+- **Two-Phase Constraint Rollouts**: Foreign keys and check constraints on large tables added as `NOT VALID` and validated asynchronously via `VALIDATE CONSTRAINT`.

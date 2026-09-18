@@ -14,6 +14,51 @@ This reference checklist provides detailed test engineering, quality gates, and 
 - skipped checks and residual risk are explicit and justified
 - release confidence is supported by evidence, not confidence language
 
+### Systematic Root Cause Analysis (4-Phase Debugging)
+- **Phase 1: Observation & Deterministic Reproduction**:
+  - exact symptoms, error logs, stack traces, and environmental preconditions captured without alteration.
+  - defect isolated to a minimal, deterministic reproduction script or automated reproduction test case.
+  - reproduction consistency verified across repeated executions to eliminate timing or flaky environmental factors.
+- **Phase 2: Architectural Hypothesis Formulation**:
+  - code paths, component boundaries, and state transitions mapped to relevant architectural invariants.
+  - explicit, testable, and falsifiable hypotheses formulated explaining the underlying causal mechanism.
+  - surface-level symptoms strictly distinguished from fundamental root causes; superficial causes eliminated.
+- **Phase 3: Targeted Experimentation & Falsification Testing**:
+  - targeted instrumentation or assertions designed to prove or disprove each candidate hypothesis.
+  - automated reproduction test authored and verified failing (Red phase) on the unfixed codebase.
+  - failure mode verified to match the specific hypothesized defect rather than secondary compilation or runtime errors.
+- **Phase 4: Root-Cause Correction & Recurrence Prevention**:
+  - minimal, targeted fix applied directly to the root mechanism; speculative workarounds rejected.
+  - fix verified passing the reproduction test (Green phase) and full regression suite without side-effect regressions.
+  - architectural guards (invariants, schema validation, type constraints, lint rules) added to prevent recurrence.
+
+### Verification Before Completion (VBC) & Empirical Evidence Gates
+- **Empirical Execution Proof**:
+  - fresh, un-cached test execution completed on the final codebase; reliance on stale or prior-turn passes strictly prohibited.
+  - explicit exit code 0, complete command logs, and passing assertion traces captured and verified.
+  - test environment verified for parity with production configuration, flags, and data dependencies.
+- **Epistemic Doubt Enforcement**:
+  - absence of visible errors treated as insufficient evidence of correctness; active boundary probing required.
+  - code execution verified: confirmed that modified logic was actually traversed during the test run.
+  - confirmation bias eliminated: verified that negative test assertions fail when defect conditions are present.
+- **Zero False-Green Sign-Off**:
+  - stateful side effects verified: persistence mutations, outbox messages, and cache updates explicitly asserted.
+  - assertions audited to eliminate assertion theater (e.g. replacing trivial `toBeDefined()` checks with invariant evaluations).
+  - all executed checks, commands, logs, and residual risks documented in `contracts/schemas/validation-result.json`.
+
+### Pairwise Combinatorial Testing & Matrix Optimization
+- **Factor Space & Boundary Level Modeling**:
+  - input variables, configuration switches, environmental dimensions, and feature flags cataloged.
+  - factor values partitioned into discrete equivalence classes and boundary values.
+  - constraint rules specified to prune impossible, invalid, or mutually exclusive combinations.
+- **Pairwise Covering Array Generation**:
+  - combinatorial reduction algorithms (PyPICT, IPO) applied to generate optimal 2-way test matrices.
+  - 100% pairwise interaction coverage across all factor pairs verified with minimal execution footprint.
+  - higher-order N-way combinations (3-way/4-way) evaluated and applied for mission-critical or financial workflows.
+- **Execution & Combinatorial Defect Isolation**:
+  - generated test vectors mapped directly to table-driven automated test fixtures.
+  - failing combinations analyzed to isolate interacting parameter pairs causing the defect.
+
 ### Mutation Testing Infrastructure
 - **Mutation Testing Execution**: Stryker (JS/TS), Mutmut (Python), or cargo-mutants (Rust) is configured and executed against core modules.
 - **Score Thresholds**: Core domain logic, authentication/authorization, and financial/invariant routines must achieve a mutation score ≥ 75–80%.

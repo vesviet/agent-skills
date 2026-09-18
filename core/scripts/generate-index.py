@@ -200,6 +200,18 @@ SKILL_ALIASES = {
     "db_maintenance": ["database-maintenance"],
     "data_pipeline": ["build-data-pipeline"],
     "build_data_pipeline": ["build-data-pipeline"],
+    "postgres": ["optimize-postgres"],
+    "postgresql": ["optimize-postgres"],
+    "optimize_postgres": ["optimize-postgres"],
+    "rls": ["optimize-postgres"],
+    "connection_pooling": ["optimize-postgres"],
+    
+    # Authentication & Authorization
+    "auth": ["implement-auth"],
+    "authentication": ["implement-auth"],
+    "implement_auth": ["implement-auth"],
+    "oauth": ["implement-auth"],
+    "session_management": ["implement-auth"],
     
     # Frontend & UI
     "ui_component": ["add-ui-component"],
@@ -211,6 +223,15 @@ SKILL_ALIASES = {
     "visual_regression": ["setup-visual-regression"],
     "setup_visual_regression": ["setup-visual-regression"],
     "frontend_testing": ["frontend-testing"],
+    "composition": ["component-composition"],
+    "component_composition": ["component-composition"],
+    "component-composition": ["component-composition"],
+    "compound_components": ["component-composition"],
+    "compound-components": ["component-composition"],
+    "view_transitions": ["implement-view-transitions"],
+    "view-transitions": ["implement-view-transitions"],
+    "implement_view_transitions": ["implement-view-transitions"],
+    "implement-view-transitions": ["implement-view-transitions"],
     
     # Testing & QA
     "tests": ["write-tests"],
@@ -218,6 +239,12 @@ SKILL_ALIASES = {
     "unit_tests": ["write-tests"],
     "e2e_tests": ["write-tests"],
     "test_report": ["write-tests"],
+    "systematic_debugging": ["systematic-debugging"],
+    "debugging": ["systematic-debugging"],
+    "rca": ["systematic-debugging"],
+    "combinatorial_testing": ["combinatorial-testing"],
+    "pairwise_testing": ["combinatorial-testing"],
+    "pict": ["combinatorial-testing"],
     
     # Security & Policy
     "security": ["security-audit"],

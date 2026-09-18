@@ -16,6 +16,8 @@ Use this skill when adding or updating tests for frontend components, pages, rou
 - implementing font-stabilized visual regression snapshots across viewports
 - intercepting client network requests via MSW v2 transport-level handlers
 - validating complex state transitions, optimistic UI updates, or form error flows
+- optimizing multi-viewport, theme, and localization UI permutation matrices via pairwise combinatorial testing
+- diagnosing and isolating flaky frontend interactions or race conditions using 4-phase systematic debugging
 
 ## Core Rules
 
@@ -49,6 +51,9 @@ Use this skill when adding or updating tests for frontend components, pages, rou
   - test empty, truncated, streaming, and malformed LLM responses explicitly; never assume well-formed model output.
   - establish visual regression baselines before merging AI-generated components to catch missing active/hover/focus states.
   - mandate automated axe-core scans on AI-generated UI to catch syntactically valid but semantically broken ARIA attributes.
+- **Pairwise UI matrix & systematic defect isolation**:
+  - use `combinatorial-testing` to generate pairwise covering arrays across viewports, user permissions, and component states.
+  - use `systematic-debugging` to isolate non-deterministic UI flakiness, race conditions, and state transition errors.
 - **Scope discipline & change governance**:
   - keep test scope minimal while proving risk coverage; never commit or push test changes without explicit confirmation.
 
@@ -170,3 +175,5 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **integrate-api-client**: Cover network-driven UI state
 - **review-code**: Check whether coverage matches UI risk
 - **commit-code**: Prepare frontend test changes for delivery
+- **combinatorial-testing**: Generate pairwise matrices for viewport, device, and UI state combinations
+- **systematic-debugging**: Isolate and debug flaky browser interactions and rendering race conditions

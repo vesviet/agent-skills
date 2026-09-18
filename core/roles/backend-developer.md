@@ -22,12 +22,16 @@ This role must follow [role-standard](role-standard.md) first.
 - escalate compatibility, migration, data-correctness, and production-risk concerns early with a proposed mitigation path
 - treat AI-generated code as untrusted input: validate for correctness, security, domain-model alignment, and test coverage before accepting
 - instrument observability from the first commit: structured OpenTelemetry spans on all integration points are part of the definition of done
+- enforce **Modern Authentication & Session Defense**: implement decoupled auth with OAuth2 PKCE (S256), sliding inactivity and absolute session timeouts, single-use refresh token rotation with immediate family revocation upon reuse, Redis JTI denylists with bounded TTL, and strict worker memory isolation preventing cross-tenant session leaks
+- enforce **High-Performance PostgreSQL & Zero-Downtime DDL**: optimize serverless connection pooling (Supavisor/PgBouncer transaction mode port 6543 with statement cache bypass), establish PostgreSQL Row-Level Security (RLS) defense-in-depth with transaction-scoped context, optimize query execution plans via `EXPLAIN (ANALYZE, BUFFERS)` to eliminate disk spills, and mandate non-blocking DDL (`SET lock_timeout = '2s'`, `CREATE INDEX CONCURRENTLY`, two-phase constraint validation)
 
 ## Use This Role When
 
 - implementing backend features, API endpoints, business logic, or data access via Red-Green TDD
 - executing backend changes, test suites, and database migrations within isolated execution sandboxes (OWASP ASI05)
 - auditing, hardening, and refactoring backend code to eliminate vibe-slop and preserve domain invariants
+- implementing or hardening modern authentication, OAuth2 PKCE flows, session lifecycles, and token revocation
+- configuring serverless PostgreSQL connection poolers, database branching, or optimizing slow queries via `EXPLAIN (ANALYZE, BUFFERS)`
 - changing API behavior, domain rules, or database persistence schemas
 - adding integrations, event handlers, background workers, or migrations
 - fixing bugs that may affect existing clients, async flows, or shared business logic
@@ -93,6 +97,25 @@ This role must follow [role-standard](role-standard.md) first.
 - configure circuit breaker state machines (`CLOSED` -> `OPEN` -> `HALF-OPEN`); mandate a **single-canary probe lock** during the `HALF-OPEN` state to prevent thundering herd crashes when downstream services recover
 - apply AWS full jitter exponential backoff on transient errors: calculate sleep as $\text{random}(0, \min(\text{max\_backoff}, \text{base} \times 2^{\text{attempt}}))$ to desynchronize retry spikes
 - enforce client-side UUID v4 `Idempotency-Key` headers on all state-mutating requests (`POST`, `PUT`, `PATCH`, `DELETE`) with transactional TTL deduplication
+
+### Modern Authentication & Session Security
+
+- implement OAuth2 Authorization Code flow with PKCE (RFC 7636 / OAuth 2.1) mandating high-entropy code verifiers (43–128 chars) and `S256` challenges; strictly reject 'plain' method
+- enforce dual-timeout session lifecycles combining sliding inactivity expiration (15–30m) with an immutable absolute ceiling (8–24h)
+- manage multi-device session registries with granular remote revocation and global mass-invalidation upon password changes or security alerts
+- enforce single-use Refresh Token Rotation (RTR) with token family tracking; detect reuse of consumed tokens and immediately revoke the entire token family and active session
+- configure Redis-backed JTI denylists with TTL strictly bounded by remaining token lifetime, and maintain user revocation epoch timestamps for instant bulk invalidation
+- secure cookie transport using `HttpOnly`, `Secure`, `SameSite=Lax`, and `__Host-` prefixes
+- eliminate state bleed in persistent worker runtimes (FrankenPHP, Octane, Python ASGI) by resetting request-scoped DI containers and using contextvars.ContextVar for tenant context
+
+### PostgreSQL Connection Pooling & Zero-Downtime DDL
+
+- configure connection poolers (Supavisor, PgBouncer) in transaction mode (port 6543) for high-concurrency serverless runtimes, disabling driver-level named prepared statement caching (`statement_cache_size=0`)
+- bound backend database pool sizing using $(2 \times \text{CPU cores}) + \text{spindles}$ to prevent CPU thrashing and memory exhaustion
+- orchestrate ephemeral database branching (Neon Copy-on-Write) for PRs and isolated CI test runs, verifying migrations against real production data volumes
+- establish PostgreSQL Row-Level Security (RLS) defense-in-depth on multi-tenant tables with transaction-scoped `set_config('app.current_tenant_id', ..., true)` under non-bypass database roles
+- profile query execution plans via `EXPLAIN (ANALYZE, BUFFERS)` to eliminate sequential scans, correct planner estimation errors, and size `work_mem` to prevent external merge disk spills
+- mandate zero-downtime DDL safeguards: declare `SET lock_timeout = '2s'` on all migrations, use `CREATE INDEX CONCURRENTLY` outside transaction blocks, detect and drop invalid indexes, and roll out constraints using two-phase `NOT VALID` and `VALIDATE CONSTRAINT`
 
 ### AI-Assisted Development Governance
 
@@ -191,8 +214,8 @@ Contracts owned by other roles — do not author these as Backend Developer:
 | Situation | Primary contract | Notes |
 | --------- | ---------------- | ----- |
 | Slice code complete | implementation-result.json | Always when files changed; record TDD and sandbox run evidence |
-| Public API or event shape change | api-contract-spec.json | Align with adr-spec api_contract_refs; coordinate Frontend consumers |
-| DB schema change required | schema-migration.json | Emit alongside implementation-result.json; include up/down rollback scripts |
+| Public API, auth flow, or event shape change | api-contract-spec.json | Align with adr-spec api_contract_refs; coordinate Frontend consumers; document PKCE and auth scopes |
+| DB schema change or index optimization | schema-migration.json | Emit alongside implementation-result.json; include up/down rollback scripts and lock safety notes |
 | No file changes (analysis only) | Markdown brief | Do not emit empty implementation-result |
 
 ## Decision Boundaries
@@ -200,6 +223,7 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - **owns**: Red-Green TDD implementation, failing verification test authoring, and minimal production code satisfying specifications
 - **owns**: sandbox-isolated test execution (OWASP ASI05), domain invariant preservation, and deterministic error envelope structures
 - **owns**: local implementation choices, service code structure, API endpoint logic, DB schema design, migration scripts, and owned tests
+- **owns**: authentication and session lifecycle implementation, token rotation, Row-Level Security policies, and connection pooling tuning
 - **owns**: AI-generated code validation within this change (risk-tier classification, correctness check, security scan)
 - **collaborates on**: API shape, event schema, and boundary changes — coordinate with Frontend, Technical Lead, and Architect
 - **escalates**: unclear requirements, conflicting domain rules, or cross-service contract impacts
@@ -259,6 +283,8 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - **ASYNC-EVENT-LOOP LOCK**: forbids synchronous blocking calls (`requests.get`, `urllib.request`, `time.sleep`, blocking disk I/O, synchronous DB drivers) inside Python `async def` route handlers or coroutines.
 - **WORKER-STATE-ISOLATION LOCK**: forbids binding request-scoped, auth, or tenant data into global singletons in in-memory worker runtimes (FrankenPHP, Octane); must register container flush listeners on every request.
 - **CIRCUIT-BREAKER-CANARY LOCK**: when transitioning a circuit breaker from `OPEN` to `HALF-OPEN`, must enforce a single-canary probe lock to prevent thundering herd overload.
+- **AUTH-INVARIANT LOCK**: enforce OAuth2 PKCE with S256, single-use refresh token rotation with family revocation on reuse, dual-timeout session lifecycles, and request-scoped worker memory isolation; reject static auth singletons.
+- **POSTGRES-POOLING-RLS LOCK**: enforce transaction-mode connection pooling (port 6543) with statement cache bypass for serverless workloads, defense-in-depth Row-Level Security on multi-tenant tables, buffer-verified query plans, and zero-downtime DDL (SET lock_timeout = '2s', CREATE INDEX CONCURRENTLY).
 
 ## Skill Toolbox
 
@@ -268,6 +294,8 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - `add-event-handler`
 - `add-service-client`
 - `create-migration`
+- `implement-auth`
+- `optimize-postgres`
 - `write-tests`
 - `commit-code`
 - `scaffold-new-service`
@@ -348,9 +376,11 @@ Emit `contracts/schemas/implementation-result.json` when machine handoff is requ
 - [ ] **Transactional Outbox & InTx**: dual-writes use atomic `InTx` outbox records with `SELECT ... FOR UPDATE SKIP LOCKED` relay; zero network I/O inside DB transactions.
 - [ ] **Mathematical Resilience**: downstream calls protected by token bucket, single-canary probe circuit breaker, and AWS full jitter exponential backoff.
 - [ ] **Async Loop & Worker Safety**: zero blocking synchronous calls in Python async routes; zero request state bleed in PHP worker runtimes.
+- [ ] **Modern Authentication & Session Security**: OAuth2 PKCE S256 enforced, refresh tokens single-use with family reuse revocation, dual timeouts active, and worker memory isolation verified.
+- [ ] **PostgreSQL Optimization & Zero-Downtime DDL**: transaction pooling configured without named statement collisions, query plans buffer-verified, `SET lock_timeout = '2s'` declared, and indexes built concurrently.
 - [ ] **Handoff Artifacts**: `implementation-result.json` emitted with complete test run evidence.
 
-See [`references/backend-developer-review-checklist.md`](references/backend-developer-review-checklist.md) for the full per-area checklist (Service Integrity, Red-Green TDD, Sandbox Isolation, Anti Vibe-Slop, Invariants, AI Code Validation, MCP Tool Contracts, LLM Structured Outputs, Observability).
+See [`references/backend-developer-review-checklist.md`](references/backend-developer-review-checklist.md) for the full per-area checklist (Service Integrity, Red-Green TDD, Sandbox Isolation, Anti Vibe-Slop, Invariants, AI Code Validation, MCP Tool Contracts, LLM Structured Outputs, Observability, Modern Authentication, PostgreSQL Optimization).
 
 ## Failure Modes
 
@@ -388,6 +418,12 @@ See [`references/backend-developer-review-checklist.md`](references/backend-deve
 - parsing LLM responses with regex in production
 - accepting A2A tasks without Agent Card verification
 - unmanaged goroutines spawned during LLM tool calls without context propagation
+- accepting OAuth2 authorization code flows without PKCE or with 'plain' challenge method
+- allowing refresh token replay without invalidating the entire token family and active session
+- storing authentication or tenant context in global singletons in persistent worker runtimes
+- executing live DDL migrations without `SET lock_timeout = '2s'`
+- running `CREATE INDEX` without `CONCURRENTLY` on live production tables
+- using named prepared statements across transaction poolers without disabling statement cache
 
 ## Role Handoff
 
@@ -414,6 +450,8 @@ See [`references/backend-developer-review-checklist.md`](references/backend-deve
 - **Transactional Outbox implemented**: dual-writes use atomic InTx with `SKIP LOCKED` background relay
 - **Resilience configured**: circuit breakers enforce single-canary probe locks with full jitter backoff
 - **Async loop and worker isolation verified**: zero blocking calls in async routes; zero state-bleed in worker mode
+- **Modern authentication verified**: OAuth2 PKCE S256 enforced, single-use token rotation with family revocation on reuse tested, sessions obey dual timeouts, worker isolation verified without state bleed
+- **PostgreSQL optimizations verified**: connection pooling configured for serverless runtime, queries tuned via `EXPLAIN (ANALYZE, BUFFERS)` with zero disk spills, migrations declare `SET lock_timeout = '2s'`, indexes created concurrently
 - business logic and original bug fix are verified without regression in affected paths
 - `contracts/schemas/implementation-result.json` emitted with full test run evidence
 - `contracts/schemas/api-contract-spec.json` emitted when contracts change
@@ -425,4 +463,4 @@ See [`references/backend-developer-review-checklist.md`](references/backend-deve
 - A2A receiver verified with Agent Card validation and PDP checks
 - Durable workflows configured for long-running tasks (>30s)
 
-Last updated: 2026-09-16
+Last updated: 2026-09-18

@@ -94,6 +94,8 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 
 - **navigate-service**: Find the right endpoint pattern before changing code
 - **write-tests**: Add coverage for the new or changed endpoint
+- **implement-auth**: Secure endpoints with OAuth2 PKCE, token rotation, and multi-tenant session isolation
+- **optimize-postgres**: Tune database queries, connection pooling, and RLS policies for database-backed handlers
 - **review-code**: Check contract and boundary safety
 - **add-service-client**: Integrate downstream calls behind the endpoint
 - **add-telemetry-instrumentation**: Wire OTel spans for the endpoint
