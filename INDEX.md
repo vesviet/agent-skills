@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `5.0.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **34 Roles** | **125 Skills** (113 Core + 12 Overlays) | **24 Workflows** | **50 Data Contracts**
+> **Total Catalog:** **34 Roles** | **132 Skills** (120 Core + 12 Overlays) | **24 Workflows** | **50 Data Contracts**
 
 ---
 
@@ -38,7 +38,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@ai-systems-engineer`** | AI Systems Engineer | `@ai`, `@ml`, `@llm` | `setup-llm-gateway`, `setup-gpu-finops`, `implement-structured-outputs` *(+12 more)* | [`core/roles/ai-systems-engineer.md`](./core/roles/ai-systems-engineer.md) |
 | **`@aws-engineer`** | AWS Engineer | `@aws`, `@cloud` | `aws-infrastructure`, `setup-deployment`, `add-telemetry-instrumentation` *(+9 more)* | [`core/roles/aws-engineer.md`](./core/roles/aws-engineer.md) |
 | **`@backend-developer`** | Backend Developer | `@backend`, `@be`, `@backend-dev` | `add-api-endpoint`, `add-event-handler`, `add-service-client` *(+16 more)* | [`core/roles/backend-developer.md`](./core/roles/backend-developer.md) |
-| **`@business-analyst`** | Business Analyst | `@ba`, `@business` | `analyze-business-requirements`, `ai-risk-assessment`, `agent-delegation` *(+5 more)* | [`core/roles/business-analyst.md`](./core/roles/business-analyst.md) |
+| **`@business-analyst`** | Business Analyst | `@ba`, `@business` | `analyze-business-requirements`, `elicit-requirements`, `write-use-cases` *(+8 more)* | [`core/roles/business-analyst.md`](./core/roles/business-analyst.md) |
 | **`@cloudflare-engineer`** | Cloudflare Engineer | `@cloudflare`, `@cf`, `@workers` | `wrangler`, `durable-objects`, `turnstile-spin` *(+18 more)* | [`core/roles/cloudflare-engineer.md`](./core/roles/cloudflare-engineer.md) |
 | **`@content-manager`** | Content Manager | — | `design-content-strategy`, `audit-content`, `write-copy` *(+11 more)* | [`core/roles/content-manager.md`](./core/roles/content-manager.md) |
 | **`@content-writer`** | Content Writer | `@writer`, `@copywriter`, `@author`, `@article-writer`, `@blog-writer` | `write-article`, `write-copy`, `repurpose-content` *(+9 more)* | [`core/roles/content-writer.md`](./core/roles/content-writer.md) |
@@ -49,7 +49,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@frontend-developer`** | Frontend Developer | `@frontend`, `@fe`, `@frontend-dev`, `@ui-developer` | `accessibility-review`, `add-page-route`, `add-ui-component` *(+17 more)* | [`core/roles/frontend-developer.md`](./core/roles/frontend-developer.md) |
 | **`@mmo-engineer`** | MMO Engineer | `@mmo`, `@affiliate`, `@growth` | `deploy-mmo-infrastructure`, `setup-tracking-system`, `create-automation-script` *(+7 more)* | [`core/roles/mmo-engineer.md`](./core/roles/mmo-engineer.md) |
 | **`@mobile-engineer`** | Mobile Engineer | `@mobile`, `@flutter`, `@react-native` | `develop-mobile-app`, `deploy-mobile-app`, `add-ui-component` *(+11 more)* | [`core/roles/mobile-engineer.md`](./core/roles/mobile-engineer.md) |
-| **`@product-manager`** | Product Manager | `@pm`, `@prod-mgr`, `@product-owner`, `@po` | `write-product-brief`, `meeting-review`, `analyze-business-requirements` *(+10 more)* | [`core/roles/product-manager.md`](./core/roles/product-manager.md) |
+| **`@product-manager`** | Product Manager | `@pm`, `@prod-mgr`, `@product-owner`, `@po` | `define-product-strategy`, `prioritize-roadmap`, `model-saas-metrics` *(+14 more)* | [`core/roles/product-manager.md`](./core/roles/product-manager.md) |
 | **`@project-manager`** | Project Manager | `@pjm`, `@proj-mgr`, `@scrum-master` | `meeting-review`, `agent-delegation`, `agent-graph-orchestration` *(+8 more)* | [`core/roles/project-manager.md`](./core/roles/project-manager.md) |
 | **`@qa-engineer`** | QA Engineer | `@qa`, `@tester`, `@test-engineer` | `write-tests`, `frontend-testing`, `systematic-debugging` *(+11 more)* | [`core/roles/qa-engineer.md`](./core/roles/qa-engineer.md) |
 | **`@researcher`** | Researcher | `@research`, `@deep-research` | `conduct-research`, `analyze-business-requirements`, `agent-delegation` *(+7 more)* | [`core/roles/researcher.md`](./core/roles/researcher.md) |
@@ -69,7 +69,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🛠️ Skill Directory (125 Skills)
+## 🛠️ Skill Directory (132 Skills)
 
 ### Category: `agent` (24 skills)
 
@@ -112,6 +112,14 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@implement-structured-outputs`** | Implements strict constrained decoding and validation for LLM responses. Use when enforcing JSON Sch... | [`core/skills/backend/implement-structured-outputs/SKILL.md`](./core/skills/backend/implement-structured-outputs/SKILL.md) |
 | **`@optimize-postgres`** | Optimize PostgreSQL performance, serverless connection pooling, ephemeral database branching, EXPLAI... | [`core/skills/backend/optimize-postgres/SKILL.md`](./core/skills/backend/optimize-postgres/SKILL.md) |
 | **`@scaffold-new-service`** | Bootstrap a new service or bounded component from repo-local templates and conventions. Use when cre... | [`core/skills/backend/scaffold-new-service/SKILL.md`](./core/skills/backend/scaffold-new-service/SKILL.md) |
+
+### Category: `business` (3 skills)
+
+| Skill Slug | Description | File |
+|:---|:---|:---|
+| **`@elicit-requirements`** | Elicit business requirements from stakeholders using Funnel Questioning (Open, Probing, Closed), the... | [`core/skills/business/elicit-requirements/SKILL.md`](./core/skills/business/elicit-requirements/SKILL.md) |
+| **`@trace-requirements-impact`** | Build Requirements Traceability Matrices (RTM), run BFS change-request impact analysis across requir... | [`core/skills/business/trace-requirements-impact/SKILL.md`](./core/skills/business/trace-requirements-impact/SKILL.md) |
+| **`@write-use-cases`** | Scope, structure, and document production-grade Use Cases using Karl Wiegers 13-field template, Alis... | [`core/skills/business/write-use-cases/SKILL.md`](./core/skills/business/write-use-cases/SKILL.md) |
 
 ### Category: `commerce` (4 skills)
 
@@ -287,6 +295,15 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@workers-best-practices`** | Reviews and authors Cloudflare Workers code against production best practices — covering async patte... | [`core/skills/platform/workers-best-practices/SKILL.md`](./core/skills/platform/workers-best-practices/SKILL.md) |
 | **`@wrangler`** | Deploys, develops, and manages Cloudflare Workers and their bindings — KV, R2, D1, Vectorize, Hyperd... | [`core/skills/platform/wrangler/SKILL.md`](./core/skills/platform/wrangler/SKILL.md) |
 
+### Category: `product` (4 skills)
+
+| Skill Slug | Description | File |
+|:---|:---|:---|
+| **`@build-story-map`** | Structure and visualize product backlogs using Jeff Patton User Story Mapping, MoSCoW release swimla... | [`core/skills/product/build-story-map/SKILL.md`](./core/skills/product/build-story-map/SKILL.md) |
+| **`@define-product-strategy`** | Formulate, stress-test, and document product strategy using Amazon Working Backwards (PR/FAQ), Hamil... | [`core/skills/product/define-product-strategy/SKILL.md`](./core/skills/product/define-product-strategy/SKILL.md) |
+| **`@model-saas-metrics`** | Model SaaS unit economics, deterministic financial metrics, Van Westendorp price sensitivity, and AI... | [`core/skills/product/model-saas-metrics/SKILL.md`](./core/skills/product/model-saas-metrics/SKILL.md) |
+| **`@prioritize-roadmap`** | Score, sequence, and balance product roadmaps using calibrated quantitative RICE, WSJF, Kano classif... | [`core/skills/product/prioritize-roadmap/SKILL.md`](./core/skills/product/prioritize-roadmap/SKILL.md) |
+
 ### Category: `repo-ops` (5 skills)
 
 | Skill Slug | Description | File |
@@ -322,6 +339,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 | Mention / Shortcut | Resolves To Core Skills | Typical Role |
 |:---|:---|:---|
+| **`@7_powers`** | `define-product-strategy` | Active `@role` |
+| **`@7powers`** | `define-product-strategy` | Active `@role` |
 | **`@a2a`** | `agent-a2a-protocol` | Active `@role` |
 | **`@a2a_protocol`** | `agent-a2a-protocol` | Active `@role` |
 | **`@accounting`** | `manage-vietnam-accounting` | Active `@role` |
@@ -349,6 +368,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@authentication`** | `implement-auth` | Active `@role` |
 | **`@aws_infra`** | `aws-infrastructure` | Active `@role` |
 | **`@aws_infrastructure`** | `aws-infrastructure` | Active `@role` |
+| **`@ba`** | `analyze-business-requirements`, `elicit-requirements` | Active `@role` |
+| **`@babok`** | `elicit-requirements`, `trace-requirements-impact` | Active `@role` |
 | **`@build_data_pipeline`** | `build-data-pipeline` | Active `@role` |
 | **`@build_mcp_server`** | `build-mcp-server` | Active `@role` |
 | **`@business_requirements`** | `analyze-business-requirements` | Active `@role` |
@@ -366,9 +387,11 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@content_audit`** | `audit-content` | Active `@role` |
 | **`@content_strategy`** | `design-content-strategy` | Active `@role` |
 | **`@copywriting`** | `write-copy` | Active `@role` |
+| **`@cpm`** | `build-story-map` | Active `@role` |
 | **`@crawlability`** | `audit-technical-seo` | Active `@role` |
 | **`@create_api`** | `add-api-endpoint` | Active `@role` |
 | **`@create_migration`** | `create-migration` | Active `@role` |
+| **`@critical_path`** | `build-story-map` | Active `@role` |
 | **`@cross_source_query`** | `query-analytical-engine` | Active `@role` |
 | **`@data_pipeline`** | `build-data-pipeline` | Active `@role` |
 | **`@database`** | `database-maintenance` | Active `@role` |
@@ -414,6 +437,9 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@implement_view_transitions`** | `implement-view-transitions` | Active `@role` |
 | **`@instrumentation`** | `add-telemetry-instrumentation` | Active `@role` |
 | **`@json_ld`** | `implement-schema-markup` | Active `@role` |
+| **`@kano`** | `prioritize-roadmap` | Active `@role` |
+| **`@kano_model`** | `prioritize-roadmap` | Active `@role` |
+| **`@kill_early`** | `prioritize-roadmap` | Active `@role` |
 | **`@manage_secrets`** | `manage-secrets` | Active `@role` |
 | **`@marketing_copy`** | `write-copy` | Active `@role` |
 | **`@mcp_architecture`** | `architect-mcp-server` | Active `@role` |
@@ -423,6 +449,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@migration`** | `create-migration` | Active `@role` |
 | **`@mobile_app`** | `develop-mobile-app` | Active `@role` |
 | **`@model_routing`** | `agent-model-routing` | Active `@role` |
+| **`@mom-test`** | `define-product-strategy` | Active `@role` |
+| **`@mom_test`** | `define-product-strategy` | Active `@role` |
 | **`@motion-physics`** | `implement-view-transitions` | Active `@role` |
 | **`@motion_physics`** | `implement-view-transitions` | Active `@role` |
 | **`@new_endpoint`** | `add-api-endpoint` | Active `@role` |
@@ -434,6 +462,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@optimize_postgres`** | `optimize-postgres` | Active `@role` |
 | **`@optimize_seo`** | `optimize-seo` | Active `@role` |
 | **`@orchestration`** | `agent-graph-orchestration` | Active `@role` |
+| **`@ost`** | `define-product-strategy` | Active `@role` |
 | **`@page_route`** | `add-page-route` | Active `@role` |
 | **`@pairwise_testing`** | `combinatorial-testing` | Active `@role` |
 | **`@perf`** | `performance-profiling` | Active `@role` |
@@ -442,9 +471,20 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@pict`** | `combinatorial-testing` | Active `@role` |
 | **`@pillar_cluster`** | `design-content-strategy` | Active `@role` |
 | **`@planning_with_files`** | `decompose-agentic-system` | Active `@role` |
+| **`@pm`** | `define-product-strategy`, `prioritize-roadmap` | Active `@role` |
 | **`@postgres`** | `optimize-postgres` | Active `@role` |
 | **`@postgresql`** | `optimize-postgres` | Active `@role` |
+| **`@pr-faq`** | `define-product-strategy` | Active `@role` |
+| **`@pr_faq`** | `define-product-strategy` | Active `@role` |
+| **`@pricing`** | `model-saas-metrics` | Active `@role` |
+| **`@pricing-strategy`** | `model-saas-metrics` | Active `@role` |
+| **`@pricing_strategy`** | `model-saas-metrics` | Active `@role` |
+| **`@prioritization`** | `prioritize-roadmap` | Active `@role` |
+| **`@prioritize-roadmap`** | `prioritize-roadmap` | Active `@role` |
+| **`@prioritize_roadmap`** | `prioritize-roadmap` | Active `@role` |
+| **`@product-strategy`** | `define-product-strategy` | Active `@role` |
 | **`@product_brief`** | `write-product-brief` | Active `@role` |
+| **`@product_strategy`** | `define-product-strategy` | Active `@role` |
 | **`@quality_gate`** | `agent-quality-gate` | Active `@role` |
 | **`@query-analytical-engine`** | `query-analytical-engine` | Active `@role` |
 | **`@query_analytical_engine`** | `query-analytical-engine` | Active `@role` |
@@ -452,11 +492,18 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@react_native`** | `develop-mobile-app` | Active `@role` |
 | **`@recursive_decomposition`** | `decompose-agentic-system` | Active `@role` |
 | **`@repurpose_content`** | `repurpose-content` | Active `@role` |
+| **`@requirements`** | `analyze-business-requirements`, `elicit-requirements` | Active `@role` |
 | **`@research`** | `conduct-research` | Active `@role` |
 | **`@research-and-writing`** | `conduct-research`, `write-article` | Active `@role` |
 | **`@research_and_writing`** | `conduct-research`, `write-article` | Active `@role` |
 | **`@research_writing`** | `conduct-research`, `write-article` | Active `@role` |
+| **`@rice`** | `prioritize-roadmap` | Active `@role` |
+| **`@rice_scoring`** | `prioritize-roadmap` | Active `@role` |
 | **`@rls`** | `optimize-postgres` | Active `@role` |
+| **`@roadmap`** | `prioritize-roadmap` | Active `@role` |
+| **`@rtm`** | `trace-requirements-impact` | Active `@role` |
+| **`@saas-metrics`** | `model-saas-metrics` | Active `@role` |
+| **`@saas_metrics`** | `model-saas-metrics` | Active `@role` |
 | **`@scaffold_new_service`** | `scaffold-new-service` | Active `@role` |
 | **`@scaffold_service`** | `scaffold-new-service` | Active `@role` |
 | **`@schema_graph`** | `implement-schema-markup` | Active `@role` |
@@ -474,6 +521,11 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@setup_visual_regression`** | `setup-visual-regression` | Active `@role` |
 | **`@shadcn`** | `component-composition` | Active `@role` |
 | **`@store_compliance`** | `deploy-mobile-app` | Active `@role` |
+| **`@story-map`** | `build-story-map` | Active `@role` |
+| **`@story-mapping`** | `build-story-map` | Active `@role` |
+| **`@story_map`** | `build-story-map` | Active `@role` |
+| **`@story_mapping`** | `build-story-map` | Active `@role` |
+| **`@strategy`** | `define-product-strategy` | Active `@role` |
 | **`@structured_data`** | `implement-schema-markup` | Active `@role` |
 | **`@structured_outputs`** | `implement-structured-outputs` | Active `@role` |
 | **`@supply_chain`** | `supply-chain-security` | Active `@role` |
@@ -487,12 +539,20 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@tests`** | `write-tests` | Active `@role` |
 | **`@tool_orchestration`** | `agent-tool-orchestration` | Active `@role` |
 | **`@ui_component`** | `add-ui-component` | Active `@role` |
+| **`@unit-economics`** | `model-saas-metrics` | Active `@role` |
+| **`@unit_economics`** | `model-saas-metrics` | Active `@role` |
 | **`@unit_tests`** | `write-tests` | Active `@role` |
+| **`@use-case`** | `write-use-cases` | Active `@role` |
+| **`@use_case`** | `write-use-cases` | Active `@role` |
+| **`@van_westendorp`** | `model-saas-metrics` | Active `@role` |
 | **`@vietnam_accounting`** | `manage-vietnam-accounting` | Active `@role` |
 | **`@view-transitions`** | `implement-view-transitions` | Active `@role` |
 | **`@view_transitions`** | `implement-view-transitions` | Active `@role` |
 | **`@visual_regression`** | `setup-visual-regression` | Active `@role` |
+| **`@walking_skeleton`** | `build-story-map` | Active `@role` |
 | **`@workers_best_practices`** | `workers-best-practices` | Active `@role` |
+| **`@working-backwards`** | `define-product-strategy` | Active `@role` |
+| **`@working_backwards`** | `define-product-strategy` | Active `@role` |
 | **`@wrangler`** | `wrangler` | Active `@role` |
 | **`@write-copy`** | `write-copy` | Active `@role` |
 | **`@write_article`** | `write-article` | Active `@role` |

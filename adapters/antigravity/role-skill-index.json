@@ -4,7 +4,7 @@
   "root": ".",
   "stats": {
     "roles": 34,
-    "skills": 125,
+    "skills": 132,
     "workflows": 24,
     "schemas": 50
   },
@@ -444,6 +444,139 @@
     "motion-physics": [
       "implement-view-transitions"
     ],
+    "ba": [
+      "analyze-business-requirements",
+      "elicit-requirements"
+    ],
+    "use_case": [
+      "write-use-cases"
+    ],
+    "use-case": [
+      "write-use-cases"
+    ],
+    "babok": [
+      "elicit-requirements",
+      "trace-requirements-impact"
+    ],
+    "requirements": [
+      "analyze-business-requirements",
+      "elicit-requirements"
+    ],
+    "rtm": [
+      "trace-requirements-impact"
+    ],
+    "pm": [
+      "define-product-strategy",
+      "prioritize-roadmap"
+    ],
+    "product_strategy": [
+      "define-product-strategy"
+    ],
+    "product-strategy": [
+      "define-product-strategy"
+    ],
+    "strategy": [
+      "define-product-strategy"
+    ],
+    "pr_faq": [
+      "define-product-strategy"
+    ],
+    "pr-faq": [
+      "define-product-strategy"
+    ],
+    "working_backwards": [
+      "define-product-strategy"
+    ],
+    "working-backwards": [
+      "define-product-strategy"
+    ],
+    "7powers": [
+      "define-product-strategy"
+    ],
+    "7_powers": [
+      "define-product-strategy"
+    ],
+    "mom_test": [
+      "define-product-strategy"
+    ],
+    "mom-test": [
+      "define-product-strategy"
+    ],
+    "ost": [
+      "define-product-strategy"
+    ],
+    "roadmap": [
+      "prioritize-roadmap"
+    ],
+    "prioritize_roadmap": [
+      "prioritize-roadmap"
+    ],
+    "prioritize-roadmap": [
+      "prioritize-roadmap"
+    ],
+    "prioritization": [
+      "prioritize-roadmap"
+    ],
+    "rice": [
+      "prioritize-roadmap"
+    ],
+    "rice_scoring": [
+      "prioritize-roadmap"
+    ],
+    "kano": [
+      "prioritize-roadmap"
+    ],
+    "kano_model": [
+      "prioritize-roadmap"
+    ],
+    "kill_early": [
+      "prioritize-roadmap"
+    ],
+    "saas_metrics": [
+      "model-saas-metrics"
+    ],
+    "saas-metrics": [
+      "model-saas-metrics"
+    ],
+    "unit_economics": [
+      "model-saas-metrics"
+    ],
+    "unit-economics": [
+      "model-saas-metrics"
+    ],
+    "pricing_strategy": [
+      "model-saas-metrics"
+    ],
+    "pricing-strategy": [
+      "model-saas-metrics"
+    ],
+    "pricing": [
+      "model-saas-metrics"
+    ],
+    "van_westendorp": [
+      "model-saas-metrics"
+    ],
+    "story_map": [
+      "build-story-map"
+    ],
+    "story-map": [
+      "build-story-map"
+    ],
+    "story_mapping": [
+      "build-story-map"
+    ],
+    "story-mapping": [
+      "build-story-map"
+    ],
+    "cpm": [
+      "build-story-map"
+    ],
+    "critical_path": [
+      "build-story-map"
+    ],
+    "walking_skeleton": [
+      "build-story-map"
+    ],
     "tests": [
       "write-tests"
     ],
@@ -814,6 +947,9 @@
       "file": "core/roles/business-analyst.md",
       "skills": [
         "analyze-business-requirements",
+        "elicit-requirements",
+        "write-use-cases",
+        "trace-requirements-impact",
         "ai-risk-assessment",
         "agent-delegation",
         "meeting-review",
@@ -1065,6 +1201,10 @@
       "description": "maximize user and business value through clear prioritization, scope control, and outcome-driven delivery without hiding impact, trade-offs, or regression risk inside vague scope decisions. In 2025–2026, this extends to orchestrating autonomous agents and human judgment — defining goal and constraint envelopes rather than rigid deterministic PRDs, specifying probabilistic acceptance criteria, curating Golden Evaluation Datasets as a first-class product surface, modeling Total Cost of Ownership (TCO) per verified outcome, and governing ethical compliance under EU AI Act Article 50 transparency mandates.",
       "file": "core/roles/product-manager.md",
       "skills": [
+        "define-product-strategy",
+        "prioritize-roadmap",
+        "model-saas-metrics",
+        "build-story-map",
         "write-product-brief",
         "meeting-review",
         "analyze-business-requirements",
@@ -1649,6 +1789,27 @@
       "file": "core/skills/backend/scaffold-new-service/SKILL.md",
       "description": "Bootstrap a new service or bounded component from repo-local templates and conventions. Use when creating a new service, worker, or deployable unit without assuming a fixed framework or folder layout."
     },
+    "elicit-requirements": {
+      "name": "elicit-requirements",
+      "category": "business",
+      "type": "core",
+      "file": "core/skills/business/elicit-requirements/SKILL.md",
+      "description": "Elicit business requirements from stakeholders using Funnel Questioning (Open, Probing, Closed), the Colombo Method, and the 9 BABOK v3 requirement quality criteria. Use when scoping ambiguous business needs, conducting stakeholder interviews, uncovering tacit domain knowledge, or validating requirement quality before architecture handoff."
+    },
+    "trace-requirements-impact": {
+      "name": "trace-requirements-impact",
+      "category": "business",
+      "type": "core",
+      "file": "core/skills/business/trace-requirements-impact/SKILL.md",
+      "description": "Build Requirements Traceability Matrices (RTM), run BFS change-request impact analysis across requirements to test cases, and prioritize backlogs using BABOK v3 models (MoSCoW, WSJF, Impact/Effort, Timeboxing). Use when assessing change requests, evaluating regression blast radiuses, prioritizing sprint scope, or maintaining end-to-end compliance audit trails."
+    },
+    "write-use-cases": {
+      "name": "write-use-cases",
+      "category": "business",
+      "type": "core",
+      "file": "core/skills/business/write-use-cases/SKILL.md",
+      "description": "Scope, structure, and document production-grade Use Cases using Karl Wiegers 13-field template, Alistair Cockburn goal levels and scoping tests, and 20-point quality validation. Use when detailing user interactions, specifying normal and alternative courses, defining system boundaries, or converting high-level business goals into engineering specifications."
+    },
     "handle-checkout-flow": {
       "name": "handle-checkout-flow",
       "category": "commerce",
@@ -2117,6 +2278,34 @@
       "type": "core",
       "file": "core/skills/platform/wrangler/SKILL.md",
       "description": "Deploys, develops, and manages Cloudflare Workers and their bindings — KV, R2, D1, Vectorize, Hyperdrive, Workers AI, Containers, Queues, Workflows, Pipelines, and Secrets — via the Wrangler CLI. Use when setting up a new Worker project, deploying to staging or production, managing secrets, generating TypeScript types, or configuring environment-specific settings."
+    },
+    "build-story-map": {
+      "name": "build-story-map",
+      "category": "product",
+      "type": "core",
+      "file": "core/skills/product/build-story-map/SKILL.md",
+      "description": "Structure and visualize product backlogs using Jeff Patton User Story Mapping, MoSCoW release swimlanes, and Critical Path Method (CPM) dependency scheduling. Use when organizing features into Epic-to-Story hierarchies, defining MVP walking skeletons, slicing releases, calculating float time on critical path tasks, or handing off scoped initiatives to engineering."
+    },
+    "define-product-strategy": {
+      "name": "define-product-strategy",
+      "category": "product",
+      "type": "core",
+      "file": "core/skills/product/define-product-strategy/SKILL.md",
+      "description": "Formulate, stress-test, and document product strategy using Amazon Working Backwards (PR/FAQ), Hamilton Helmer 7 Powers moat analysis, Teresa Torres Opportunity Solution Trees (OST), and Rob Fitzpatrick The Mom Test problem validation. Use when shaping new product initiatives, framing strategic bets, analyzing competitive defensibility, validating customer demand without leading bias, or activating the Framing Gate to push back on underspecified requirements."
+    },
+    "model-saas-metrics": {
+      "name": "model-saas-metrics",
+      "category": "product",
+      "type": "core",
+      "file": "core/skills/product/model-saas-metrics/SKILL.md",
+      "description": "Model SaaS unit economics, deterministic financial metrics, Van Westendorp price sensitivity, and AI Total Cost of Ownership (TCO). Use when calculating CAC, LTV, Magic Number, Rule of 40, Burn Multiple, Net Revenue Retention, analyzing pricing tiers and willingness-to-pay, or budgeting AI inference and orchestration costs per verified outcome."
+    },
+    "prioritize-roadmap": {
+      "name": "prioritize-roadmap",
+      "category": "product",
+      "type": "core",
+      "file": "core/skills/product/prioritize-roadmap/SKILL.md",
+      "description": "Score, sequence, and balance product roadmaps using calibrated quantitative RICE, WSJF, Kano classification, weighted scoring decision matrices, and capacity timeboxing. Use when resolving competing feature requests, evaluating build vs. buy decisions, prioritizing quarterly roadmaps, conducting vendor evaluations, or enforcing the Kill-Early protocol on underperforming bets."
     },
     "commit-code": {
       "name": "commit-code",

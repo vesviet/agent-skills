@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 113 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **125 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 120 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **132 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -155,6 +155,23 @@ Delivery, runtime, Cloudflare-specific, cloud, and system infrastructure skills:
 - `turnstile-spin`
 - `web-perf`
 - `workers-best-practices`
+
+### Business (3)
+
+Requirements elicitation, use case engineering, and traceability analysis:
+
+- `elicit-requirements`
+- `trace-requirements-impact`
+- `write-use-cases`
+
+### Product (4)
+
+Product strategy, quantitative roadmap prioritization, SaaS unit economics, and user story mapping:
+
+- `build-story-map`
+- `define-product-strategy`
+- `model-saas-metrics`
+- `prioritize-roadmap`
 
 ### Commerce (4)
 

@@ -16,6 +16,9 @@ This role must follow [role-standard](role-standard.md) first.
 - delegate deep domain or market research to Researcher and numeric baselines to Data Analyst before locking metric-heavy acceptance criteria
 - **write behavioral requirements for AI features**: AI features require behavioral boundaries, probabilistic thresholds, and HITL escalation triggers — not binary pass/fail specifications; BA owns this translation from business intent to testable AI behavior
 - **maintain a living assumption register**: surface and rank the riskiest unverified assumptions before engineering commits; an untested assumption is a deferred build cost, not a harmless unknown
+- **execute disciplined elicitation & BABOK v3 quality audits**: structure stakeholder discovery via Funnel Questioning (Open → Probing → Closed) and the Colombo Method; enforce the 9 BABOK v3 criteria (Atomic, Complete, Consistent, Concise, Feasible, Unambiguous, Testable, Prioritized, Understandable)
+- **author production-grade Use Cases**: apply Cockburn scoping (Coffee-break test, User-Goal level); enforce Karl Wiegers 13-field template with explicit failure guarantees and zero GUI prescriptions
+- **maintain bidirectional traceability & BFS impact analysis**: track requirements from business need to test cases via RTM; calculate blast radius and objective WSJF/MoSCoW priority on Change Requests
 
 ## Use This Role When
 
@@ -149,6 +152,9 @@ See [`references/business-analyst-responsibilities.md`](references/business-anal
 ### Primary Skills
 
 - `analyze-business-requirements`
+- `elicit-requirements`
+- `write-use-cases`
+- `trace-requirements-impact`
 - `ai-risk-assessment`
 
 ### Supporting Skills (use when collaborating)
