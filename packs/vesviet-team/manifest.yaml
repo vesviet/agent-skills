@@ -108,6 +108,9 @@ corpus:
     content_files: 374
     posts: 66
     series: 251
+    series_dirs: 25
+    series_files: 251
+    radar_files: 34
     radar_editions: 27
     categories: 16
     reports: 296
@@ -118,6 +121,9 @@ corpus:
     content_files: 433
     posts: 86
     series: 251
+    series_dirs: 25
+    series_files: 251
+    radar_files: 70
     radar_editions: 63
     docs: 3
     categories: 15

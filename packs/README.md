@@ -7,7 +7,7 @@ Packs describe how to assemble the portable core with zero or more overlays for 
 | Pack | Manifest | Composition | Capabilities |
 |------|----------|-------------|-------------|
 | `global-engineering` | [manifest.yaml](global-engineering/manifest.yaml) | `core` only | All general engineering |
-| `vesviet-team` | [manifest.yaml](vesviet-team/manifest.yaml) | `core` + `overlays/vesviet-content` | Content, GEO/AEO, Hugo, 100-Round Research, 4-Role Swarm |
+| `vesviet-team` | [manifest.yaml](vesviet-team/manifest.yaml) | `core` + `overlays/vesviet-content` | v5.0.0 · Twin Hugo architecture (tanhdev.com & learn.tanhdev.com), 100-Round Deep Research Protocol, 4-Role Swarm pipeline (@content-writer, @content-manager, @technical-writer, @seo-analyst), 10 Anchor Pillar Hubs, one-way authority flow |
 | `lease-team` | [manifest.yaml](lease-team/manifest.yaml) | `core` + `overlays/lease-content` + `overlays/seo-publishing` | Content, GEO/AEO, 5-Pillar |
 | `maylanhtreotuong-team` | [manifest.yaml](maylanhtreotuong-team/manifest.yaml) | `core` + `overlays/astro-cloudflare` + `overlays/maylanhtreotuong-content` + `overlays/seo-publishing` | Content, SEO, HVAC, Cloudflare |
 | `mdg-team` | [manifest.yaml](mdg-team/manifest.yaml) | `core` + `overlays/laravel-filament` + `overlays/maydiengiaisaigon` | Laravel 13, Filament v4, PHP 8.4 |
@@ -20,6 +20,21 @@ Packs describe how to assemble the portable core with zero or more overlays for 
 | `content-sprint-team` | [manifest.yaml](content-sprint-team/manifest.yaml) | `core` + `overlays/seo-publishing` | GEO/AEO, AI Overviews, publishing cadence |
 | `donthan-team` | [manifest.yaml](donthan-team/manifest.yaml) | `core` + `overlays/donthan-web` | Frontend, UX, livestream, PWA |
 | `data-warehouse` | [manifest.yaml](data-warehouse/manifest.yaml) | `core` + `overlays/data-warehouse` (incl. `learning/` track) | Fullstack data warehouse, FastAPI microservices, DuckDB single-writer, Medallion Parquet, MISA AMIS VAS 14, blind recount, PII masking, 4-layer testing, dbt 1.9/Iceberg/Kafka learning track |
+
+### Pack Spotlight: vesviet-team (v5.0.0)
+
+The `vesviet-team` pack orchestrates high-authority content engineering and technical publishing across the twin Hugo sites:
+
+- **Twin Hugo Architecture**: Dual-site publishing model pairing `tanhdev.com` (flagship English evergreen engineering authority) with `learn.tanhdev.com` (Vietnamese research and deep-dive laboratory).
+- **One-Way Authority Flow**: Strict `learn` &rarr; `vesviet` linking topology with zero reverse links, independent self-referential canonical URLs, and mandatory &ge;25% Information Gain over top-ranking SERP results.
+- **100-Round Deep Research Protocol**: Strict 5 clusters &times; 20 rounds of primary-source investigation required before drafting or upgrading any article, producing structured research dossiers (`reports/research/{slug}-dossier.json` and markdown notes).
+- **4-Role Swarm Pipeline**: End-to-end multi-agent workflow:
+  - `@content-writer`: Technical drafting satisfying the 7 Technical Content Gates (Answer-First BLUF &le;60w, runnable code, quantitative density &ge;3 data points/500w, valid Mermaid diagrams, post-mortems, trade-off framing, verifiable citations).
+  - `@content-manager`: Editorial audit evaluating narrative structure, brand voice, Information Gain (&ge;75/100), and E-E-A-T credibility.
+  - `@technical-writer`: Technical validity audit verifying version-pinned runnable code, benchmark testbed reproducibility, and configuration artifacts.
+  - `@seo-analyst`: SEO, GEO/AEO, and topology audit enforcing Answer-First blocks, one-way link rules, 10 Anchor Pillar Hub connectivity, and Schema.org JSON-LD graph metadata.
+- **10 Anchor Pillar Hubs**: Structural backbone (Raft consensus, Kubernetes platform engineering, Go concurrency, eBPF Linux observability, Kafka event streaming, LSM-tree storage, zero-trust service mesh, database internals, SRE chaos engineering, AI agent infrastructure) enforcing a zero-orphan content policy.
+
 
 ## 2026 Manifest Schema (v2)
 
@@ -145,4 +160,4 @@ Skip structured emission for read-only pack selection that does not cross a role
 - **ASI07 Inter-Agent Communication**: the pack registry is a cross-agent surface; treat it as a public contract and review all changes before publish.
 - **ASI09 Human-Agent Trust Exploitation**: do not present a pack as "production-ready" without a smoke test and a recent validator pass; surface the actual verification status.
 
-Last updated: 2026-09-01
+Last updated: 2026-09-18
