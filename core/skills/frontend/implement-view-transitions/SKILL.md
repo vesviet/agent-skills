@@ -20,13 +20,16 @@ Use this skill to implement, optimize, and audit native view transitions, route-
 ## Core Rules
 
 - **Composited Motion Only**: animations attached to `::view-transition-old` and `::view-transition-new` must strictly animate `transform` and `opacity`; never animate layout geometry (`width`, `height`, `top`, `left`, `margin`, `padding`)
+- **Frequency-Based Animation Budget**: high-frequency actions (hotkeys `Cmd+K`, combobox search) must be instantaneous (0ms); micro-interactions 100–150ms; overlays and drawers strictly bounded to 150–250ms; route transitions capped at 400ms
+- **Harmonic Spring Physics Presets**: UI springs must use mass $m=1.0$ and near-critical damping ($\zeta \approx 0.75 - 0.85$); underdamped cartoonish bouncing ($\zeta < 0.6$) is strictly forbidden
+- **Single Smooth-Scroll Engine Exclusivity**: strictly prohibit installing both Lenis and Locomotive Scroll simultaneously; use exactly one coordinator (`lenis/react` or native CSS) to prevent compositor race conditions
 - **Enforce INP Performance Budget (< 200ms)**: the DOM mutation callback inside `startViewTransition` must execute in under 50ms without synchronous long tasks; wrap non-urgent transitions in `React.startTransition` and chunk streaming work with `scheduler.yield()`
 - **Apply `default="none"` Discipline**: all named and type-keyed `<ViewTransition>` boundaries must specify `default="none"`, explicitly opting into only the transitions they are intended to handle
 - **Precede DOM Nodes**: in React, `<ViewTransition>` must wrap content *before any DOM nodes* to activate enter/exit transitions; never wrap `<ViewTransition>` inside an un-animated host `<div>`
 - **Enforce Global Uniqueness for Transition Names**: `view-transition-name` (or the `name` prop on `<ViewTransition>`) must be globally unique across active elements; suffix list and entity elements with dynamic IDs (`hero-image-${item.id}`)
 - **Isolate Persistent Elements**: persistent headers, sidebars, and sticky controls must be pulled out of the `root` transition group by assigning unique `viewTransitionName` identifiers and suppressing their animations
 - **Mandate Reduced Motion Fallback**: every view transition stylesheet must declare an `@media (prefers-reduced-motion: reduce)` block disabling or instant-fading animations
-- detailed recipes and Next.js/Astro patterns: [`references/view-transitions-and-motion-specs.md`](references/view-transitions-and-motion-specs.md)
+- detailed recipes, motion tables, and physics specifications: [`references/view-transitions-and-motion-specs.md`](references/view-transitions-and-motion-specs.md) and [`../ui-ux-designer-anti-slop-standards.md`](../ui-ux-designer-anti-slop-standards.md)
 
 ## Suggested Process
 

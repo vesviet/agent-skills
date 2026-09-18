@@ -1,8 +1,8 @@
-# Master Design Standard: UI/UX Anti-Slop Specification & Reference
+# Master Design Standard: UI/UX Anti-Slop Specification
 
 This document establishes the unified **Master Design Standard** for all UI/UX design, frontend architecture, and component engineering across `agent-skills`. It consolidates and codifies the 9 S-Rank Design & UI/UX skills into an authoritative, enforceable design governance specification.
 
-This reference is linked from [`ui-ux-designer.md`](../ui-ux-designer.md) and mirrored at `core/skills/frontend/ui-ux-designer-anti-slop-standards.md`. Every agent assuming the `@designer` (`ui-ux-designer`) or `@frontend` (`frontend-developer`) role MUST strictly comply with these rules.
+Every agent assuming the `@designer` (`ui-ux-designer`) or `@frontend` (`frontend-developer`) role MUST strictly comply with these rules.
 
 ---
 
@@ -688,7 +688,7 @@ export function BadPalette({ isOpen }: { isOpen: boolean }) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.35 }}
+          transition={{ duration: 0.35 }} // ❌ Sluggish 350ms delay on hotkey!
           className="fixed top-24 left-1/2 -translate-x-1/2 w-[500px] bg-card p-4"
         >
           <input placeholder="Search..." autoFocus />
@@ -874,10 +874,12 @@ AI-generated interfaces frequently suffer from recognizable "vibe-slop" visual a
 export function BadAssets() {
   return (
     <div>
+      {/* Fake SVG swirl */}
       <svg className="h-8 w-8 text-indigo-500" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="40" stroke="url(#g)" strokeWidth="8" fill="none" />
         <defs><linearGradient id="g"><stop stopColor="#6366f1"/><stop offset="1" stopColor="#a855f7"/></linearGradient></defs>
       </svg>
+      {/* Fake testimonial */}
       <blockquote>
         "NovaPulse doubled our engineering velocity by 340% in 14 days!"
         <footer>Sarah Miller, VP of Cloud at HyperScale</footer>
@@ -893,6 +895,7 @@ export function BadAssets() {
 export function GoodAssets() {
   return (
     <div className="space-y-8">
+      {/* Authentic wordmark */}
       <div className="flex items-center gap-2.5">
         <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground font-mono text-xs font-semibold">
           NP
@@ -902,6 +905,7 @@ export function GoodAssets() {
         </span>
       </div>
 
+      {/* Verifiable Technical Benchmark */}
       <div className="rounded-xl border border-border bg-card p-6">
         <div className="flex items-center justify-between pb-4 border-b border-border">
           <h4 className="text-xs font-mono font-semibold uppercase text-muted-foreground">

@@ -21,12 +21,14 @@ Use this skill to design, refactor, and review modular frontend components using
 
 - **Enforce Anti-Boolean Prop Sprawl**: strictly ban components that use boolean flags to toggle internal layout structures (e.g. `isThread`, `hasBadge`, `isHeader`, `withIcon`, `isLoadingModal`); replace with compound components or explicit variants
 - **Mandate Compound Component Architecture**: complex components with multiple visual sub-regions must expose subcomponents sharing a typed context interface (`Component.Root`, `Component.Trigger`, `Component.Content`, `Component.Close`)
+- **Modernize Form Layouts (`FieldGroup` + `Field`)**: replace legacy v3 nested `FormItem`/`FormControl` boilerplate with shadcn v4 `FieldGroup` and `Field`; use React 19 `useId()` for deterministic label, description, and error linking compatible with Server Actions
+- **Compound Inputs (`InputGroup`)**: wrap inputs with prefix/suffix addons, action buttons, or dropdowns using `InputGroup`; eliminate absolute positioning padding hacks in favor of unified flex containers with container `:focus-within` rings
+- **Base UI `render` Prop vs Radix `asChild`**: use Base UI `render` prop (`render={(props, state) => ...}`) when children require internal headless state injection or polymorphic tags; use Radix `asChild` (`Slot`) for single-child prop delegation without state projection
 - **Decouple State Implementation from UI**: UI compound components must consume a generic context interface (`{ state, actions, meta }`); never hardcode global stores directly inside leaf UI subcomponents; inject state through provider boundaries
-- **Provide Polymorphic Slot Delegation (`asChild`)**: trigger and interactive wrapper components must support `asChild` via Radix-style `Slot` to delegate props, event handlers (`composeEventHandlers`), and refs (`composeRefs`) without rendering redundant DOM wrappers
 - **Decompose Headless Hooks**: extract complex interactive state (focus traps, keyboard navigation, open/close state, ARIA contracts) into reusable headless hooks (`useDialog`, `useDropdown`) returning `{ state, actions, triggerProps, contentProps }`
 - **Prefer Children Over Render Props**: compose static and semi-static layouts using nested `children`; reserve render props strictly for dynamic data projection callbacks (`renderItem={({ item, index }) => ...}`)
 - **Enforce React 19 Idioms**: do not use `forwardRef` in React 19 codebases (pass `ref` as a standard prop); use `use(Context)` instead of `useContext()`; use `<Context value={...}>` instead of `<Context.Provider>`
-- detailed architecture guide and templates: [`references/composition-architecture-and-headless-specs.md`](references/composition-architecture-and-headless-specs.md)
+- detailed architecture guide and templates: [`references/composition-architecture-and-headless-specs.md`](references/composition-architecture-and-headless-specs.md) and [`../ui-ux-designer-anti-slop-standards.md`](../ui-ux-designer-anti-slop-standards.md)
 
 ## Suggested Process
 

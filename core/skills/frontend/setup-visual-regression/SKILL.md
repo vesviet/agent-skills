@@ -11,6 +11,8 @@ Use this skill to integrate Playwright or Chromatic into the CI pipeline to enfo
 ## Core Rules
 
 - **Containerized Baselines Only**: Baselines must be generated and compared within the official Playwright Docker container (`mcr.microsoft.com/playwright`) matching the CI environment — comparing local macOS/Windows snapshots against Linux CI runners guarantees false failures
+- **Bounded 2-Pass Self-QA**: Limit agent self-QA to a hard maximum of 2 passes post-authoring, inspecting Desktop (`>= 1280px`) and Mobile (`375px - 430px`) viewports simultaneously; edits must be triggered strictly by deterministic defects (horizontal overflow, fold clipping, broken markup, `< 44x44px` touch targets, contrast failures) to prevent infinite refinement loops
+- **Negative Asset Constraints**: Strictly prohibit generating fabricated inline SVG logos ("NovaCorp") and synthetic customer testimonials with unverified metrics; mandate authentic typography, system monograms, verified Simple Icons marks, or honest structural placeholders
 - **Animation Suppression**: All CSS animations, transitions, and cursor blinks must be disabled before snapshotting (`animations: 'disabled'`)
 - **Dynamic Content Masking**: Mask or stub dynamic content (dates, user avatars, random IDs, ads) before capturing snapshots using `mask: [page.locator('...')]`
 - **Explicit Tolerance Thresholds**: Set `maxDiffPixelRatio: 0.01` and `threshold: 0.2` to absorb sub-pixel text rendering while catching real layout regressions — unconfigured default thresholds are too loose
@@ -18,6 +20,7 @@ Use this skill to integrate Playwright or Chromatic into the CI pipeline to enfo
 - **Cross-Browser Coverage**: Configure the matrix across Chromium, WebKit, and Firefox at mobile and desktop viewports
 - **Hard CI Gate**: Visual regression failures must block merges unless explicitly approved by a `ui-ux-designer` or `frontend-developer`
 - **Network Mocking**: Mock network responses using MSW to guarantee consistent visual fixtures — live external API snapshots are non-deterministic
+- detailed verification protocols and anti-slop standards: [`../ui-ux-designer-anti-slop-standards.md`](../ui-ux-designer-anti-slop-standards.md)
 
 ## Suggested Process
 

@@ -273,6 +273,12 @@ SKILL_ALIASES = {
     "view-transitions": ["implement-view-transitions"],
     "implement_view_transitions": ["implement-view-transitions"],
     "implement-view-transitions": ["implement-view-transitions"],
+    "taste": ["setup-design-system"],
+    "shadcn": ["component-composition"],
+    "anti_slop": ["setup-design-system", "component-composition"],
+    "anti-slop": ["setup-design-system", "component-composition"],
+    "motion_physics": ["implement-view-transitions"],
+    "motion-physics": ["implement-view-transitions"],
     
     # Testing & QA
     "tests": ["write-tests"],

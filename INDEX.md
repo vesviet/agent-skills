@@ -336,6 +336,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@analytical_sql`** | `query-analytical-engine` | Active `@role` |
 | **`@analyze_business_requirements`** | `analyze-business-requirements` | Active `@role` |
 | **`@analyze_data`** | `analyze-data` | Active `@role` |
+| **`@anti-slop`** | `setup-design-system`, `component-composition` | Active `@role` |
+| **`@anti_slop`** | `setup-design-system`, `component-composition` | Active `@role` |
 | **`@api`** | `add-api-endpoint` | Active `@role` |
 | **`@app_store`** | `deploy-mobile-app` | Active `@role` |
 | **`@architect-mcp-server`** | `architect-mcp-server` | Active `@role` |
@@ -421,6 +423,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@migration`** | `create-migration` | Active `@role` |
 | **`@mobile_app`** | `develop-mobile-app` | Active `@role` |
 | **`@model_routing`** | `agent-model-routing` | Active `@role` |
+| **`@motion-physics`** | `implement-view-transitions` | Active `@role` |
+| **`@motion_physics`** | `implement-view-transitions` | Active `@role` |
 | **`@new_endpoint`** | `add-api-endpoint` | Active `@role` |
 | **`@oauth`** | `implement-auth` | Active `@role` |
 | **`@olap_optimization`** | `optimize-olap-database` | Active `@role` |
@@ -468,11 +472,13 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@setup_deployment`** | `setup-deployment` | Active `@role` |
 | **`@setup_design_system`** | `setup-design-system` | Active `@role` |
 | **`@setup_visual_regression`** | `setup-visual-regression` | Active `@role` |
+| **`@shadcn`** | `component-composition` | Active `@role` |
 | **`@store_compliance`** | `deploy-mobile-app` | Active `@role` |
 | **`@structured_data`** | `implement-schema-markup` | Active `@role` |
 | **`@structured_outputs`** | `implement-structured-outputs` | Active `@role` |
 | **`@supply_chain`** | `supply-chain-security` | Active `@role` |
 | **`@systematic_debugging`** | `systematic-debugging` | Active `@role` |
+| **`@taste`** | `setup-design-system` | Active `@role` |
 | **`@tech_radar`** | `write-tech-radar` | Active `@role` |
 | **`@technical_seo`** | `audit-technical-seo` | Active `@role` |
 | **`@technical_seo_audit`** | `audit-technical-seo` | Active `@role` |

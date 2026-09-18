@@ -18,8 +18,10 @@ Use this skill when configuring the foundational styling architecture, design to
 ## Core Rules
 
 - **Source of Truth:** define all design tokens inside `@theme` in CSS entrypoints (Tailwind v4 CSS-first config) or DTCG `{ "$value": ..., "$type": ... }` JSON format — do not maintain `tailwind.config.js` in Tailwind v4 projects
-- **Consistency:** enforce a unified styling approach and reject mixed paradigms; use OKLCH perceptual color space for palette tokens to ensure uniform contrast and predictable color transitions
-- **Semantic Token Layering:** components must consume semantic aliases (`--color-surface-primary`, `--color-text-body`) rather than raw primitive color names (`--color-blue-500`); use `:root` for CSS variables not needing utility mapping
+- **Consistency & Perceptual Uniformity:** enforce a unified styling approach and reject mixed paradigms; use OKLCH perceptual color space for palette tokens to ensure uniform contrast and predictable lightness across light/dark modes
+- **Semantic Token Layering:** components must consume semantic aliases (`--color-surface-primary`, `bg-background`, `text-foreground`, `border-border`) rather than raw primitive color names (`--color-blue-500`); strictly ban raw hex values (`#...`) in component JSX
+- **Eliminate Manual `dark:` Overrides:** forbid manual `dark:bg-*` and `dark:text-*` overrides on core component surfaces; dark mode switching must occur exclusively through CSS variable mapping in `:root` and `.dark`
+- **Master Anti-Slop Reference:** enforce the complete design system standards documented in [`../ui-ux-designer-anti-slop-standards.md`](../ui-ux-designer-anti-slop-standards.md)
 - **Accessibility Integration:** design system primitives must support accessibility (ARIA attributes, semantic HTML, high contrast tokens) by default; run WCAG AA contrast check (4.5:1 text, 3:1 UI controls) before finalizing any token palette
 - **Maintainability:** provide clear documentation on how to consume design tokens and base components; Storybook 8+ with `a11y` and `chromatic` addons as mandatory CI gates
 - **Token Portability:** use W3C DTCG format for interoperability with Figma Variables, Style Dictionary, and AI-driven design tools
@@ -120,6 +122,7 @@ Documentation: [Storybook / none]
 ## Anti-Patterns To Reject
 
 - hardcoding hex values in components instead of consuming design tokens
+- polluting component markup with manual `dark:` utility overrides instead of semantic CSS variable mapping
 - mixing utility-first and CSS-in-JS styling without explicit boundary rules
 - accepting AI-generated components without verifying token conformance and accessibility
 - skipping visual regression baseline — AI-generated components frequently have missing states
