@@ -142,6 +142,9 @@ Skip emission for trivial single-channel variants that do not cross a role bound
 
 ## Related Skills
 
+- **design-content-strategy**: Upfront multi-channel distribution loop planning and semantic drift guardrail governance.
+- **write-copy**: Direct-response copywriting and short-form conversion hooks for social and email variants.
+- **audit-content**: Content refresh cycles and entity-fidelity audits across republished assets.
 - **write-article**: Use when drafting the core content from scratch before repurposing.
 - **optimize-seo**: Use when ensuring the core content is GEO/AEO-optimized before repurposing for AI-cited surfaces.
 - **conduct-research**: Use when source material lacks sufficient factual depth to repurpose credibly.

@@ -22,7 +22,7 @@ Use this skill for **search and content-structure** work — not for writing lon
 - track **Share of Model (SoM)** alongside traditional CTR — measure how often and how accurately the brand/content is cited in Google AI Overviews, Perplexity, and ChatGPT Search using AI visibility tooling (Otterly, RankScale, or manual spot-checks)
 - mandate a **30–60 day rolling freshness review** for core commercial and informational pillar pages — AI search engines heavily weight recently-updated content when retrieving citations; queue pages by decay signal first: rankings dropped >3 positions, statistics older than 2 years, or declining high-traffic URLs. On refresh, update modified/publish dates in schema, replace outdated stats and examples, and re-check internal links pointing at changed sections
 - do not guarantee rankings or AI citation placement; recommend changes tied to observable gaps
-- escalate **technical SEO** (canonical, schema markup, redirects, Core Web Vitals fixes) with a clear engineering brief
+- perform deep crawlability diagnostics via **audit-technical-seo** and author connected Schema.org @graph JSON-LD via **implement-schema-markup**; escalate web server redirects and CDN edge routing to Frontend or DevOps with clear engineering briefs
 - use repo overlays under overlays/lease-content and overlays/vesviet-content when site-specific slug or frontmatter rules apply
 - use overlays/seo-publishing for dual-site Lease + May lanh sprint boards under plan/baiviet
 
@@ -169,6 +169,8 @@ Skip emission for quick ad-hoc keyword checks that do not feed downstream editor
 
 ## Related Skills
 
+- **audit-technical-seo**: Comprehensive technical crawl budget diagnostics, robots.txt bot access, XML sitemaps, and Core Web Vitals
+- **implement-schema-markup**: Connected Schema.org @graph JSON-LD architecture, Wikidata entity grounding, and rich results validation
 - **conduct-research**: deeper domain or competitor context when SERP scan is insufficient
 - **analyze-business-requirements**: align SEO goals with business rules and actors
 - **analyze-data**: formal GSC/CTR tables and AI citation tracking when SEO Analyst needs verified baselines

@@ -114,6 +114,50 @@
         "adr-spec.json",
         "architecture-options.json"
       ]
+    },
+    {
+      "id": "architect-mcp-server",
+      "name": "Architect Mcp Server",
+      "description": "Architect enterprise-grade Model Context Protocol (MCP) servers, tool surfaces, schemas, transport protocols, and security perimeters. Use when designing MCP server contracts, selecting streamable HTTP or stdio transports, standardizing Zod/Pydantic schemas, externalizing state handles (SEP-2567), configuring OAuth 2.1 RFC 8707 Resource Indicators, or establishing Shadow MCP governance.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    },
+    {
+      "id": "decompose-agentic-system",
+      "name": "Decompose Agentic System",
+      "description": "Architect recursive system and task decomposition for large-scale multi-agent architectures (100+ files, 50K+ tokens), DAG dependency trees, disk-backed persistent planning (planning-with-files), anti-context-rot mechanisms, NHI autonomy-tier classification, and policy-as-code fitness functions. Use when scoping complex multi-agent workflows, establishing durable markdown planning, isolating agent blast radiuses, or preventing LLM context rot.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
     }
   ],
   "defaultOutputSchemas": [

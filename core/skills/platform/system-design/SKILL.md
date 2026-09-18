@@ -180,3 +180,5 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **conduct-research**: Technology selection research when infrastructure decisions require vendor evaluation
 - **security-audit**: Security review of the infrastructure design before production apply
 - **database-maintenance**: Database-level investigation when storage design choices are being validated
+- **architect-mcp-server**: Architect enterprise MCP tool surfaces, streamable HTTP transport, and externalized state
+- **decompose-agentic-system**: Decompose massive multi-file systems into hierarchical DAG sub-agent execution scopes

@@ -105,6 +105,7 @@ Skip emission for casual development-mode micro-benchmarks with no gate dependen
 - **write-tests**: Add regression or benchmark coverage
 - **navigate-service**: Map the hot path before optimizing
 - **meeting-review**: Review performance trade-offs across roles
+- **develop-mobile-app**: Profile React Native frame rates, Hermes bytecode, and JS thread starvation
 
 ## Failure Modes
 

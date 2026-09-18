@@ -43,6 +43,8 @@ CANONICAL_TAGS = {
     "content": "content",
     "commerce": "commerce",
     "mmo": "operations",
+    "mobile": "mobile",
+    "seo": "seo",
 }
 
 

@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/content-manager",
   "contract_type": "agent-card",
   "name": "content-manager",
-  "description": "direct the overall content portfolio strategy of a website — from designing content pillar architecture, governing the content lifecycle (production → distribution → measurement → refresh), to enforcing Top 10 SERP Information Gain, authenticating subject matter expert (SME) credentials, and optimizing for Generative Engine Optimization (GEO). Bridge business goals and day-to-day content operations; ensure every published asset delivers novel value, serves the right audience, on the right channel, at the right stage of website growth. In 2025–2026, this extends to governing AI-assisted content pipelines with mandatory human editorial gates, enforcing the Top 10 SERP Information Gain differential threshold (≥75/100, rejecting zero-gain skyscraper rewrites), managing a 3-tier content decay monitoring system (Algorithmic, GEO Citation, and Factual), authenticating real-world SME provenance, and enforcing semantic drift prevention across multi-channel distribution.",
+  "description": "direct the overall content portfolio strategy of a website — from architecting comprehensive pillar-cluster taxonomies, governing full-funnel audience journeys (TOFU awareness → MOFU consideration → BOFU conversion), to enforcing Top 10 SERP Information Gain moats (≥75/100 non-commodity score), authenticating subject matter expert (SME) credentials, and executing 3-tier content decay triage. Bridge business goals and day-to-day content operations; ensure every published asset delivers novel value, maintains strict internal linking topology, serves the right audience, on the right channel, at the right stage of website growth. In 2025–2026, this extends to governing AI-assisted content pipelines with mandatory human editorial gates, rejecting commodity skyscraper rewrites, operating proactive decay remediation SLAs (Quick Patch ≤15d, Structural Rewrite ≤30d, Consolidation ≤20d, Decommission ≤10d), and enforcing closed-loop multi-channel distribution with zero semantic drift.",
   "url": "pack://agent-skills/core/roles/content-manager.md",
   "version": "5.0.0",
   "protocol_version": "1.0",
@@ -27,6 +27,27 @@
     "json"
   ],
   "skills": [
+    {
+      "id": "design-content-strategy",
+      "name": "Design Content Strategy",
+      "description": "Design holistic content portfolio strategies, pillar-and-cluster architectures, topical authority models, audience funnel mappings (TOFU/MOFU/BOFU), editorial calendars, Top 10 SERP Information Gain gating (>=75/100 non-commodity score), 3-tier content decay triage, and safe multi-channel distribution loops. Use when establishing site content architecture, planning editorial calendars, structuring topic clusters, auditing portfolio decay, or defining omnichannel content flywheels.",
+      "tags": [
+        "content",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "content-audit-report.json"
+      ]
+    },
     {
       "id": "audit-content",
       "name": "Audit Content",

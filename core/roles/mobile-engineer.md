@@ -9,6 +9,10 @@ This role must follow [role-standard](role-standard.md) first.
 ## Principal Expectations
 
 - operate beyond screen delivery and optimize for correct cross-platform product behavior across the full user journey
+- enforce React Native New Architecture (Hermes engine, TurboModules, JSI direct native bindings, Fabric renderer, Bridgeless mode) to eliminate bridge serialization bottlenecks
+- eliminate scroll jank and memory bloat through cell recycling virtualization (FlashList) and off-thread 60/120 FPS motion execution via Reanimated worklets
+- architect offline-first resilience: local high-performance persistent caching (MMKV, WatermelonDB, TanStack Query offline cache), optimistic UI updates, and network reconnection synchronization
+- guarantee EAS release engineering and store compliance: Apple App Store Review Guidelines (4.3(b) anti-wrapper differentiated value, 1.2 UGC moderation and user-reporting), Google Play AI disclosure and Data Safety third-party SDK inventory, and EAS Update rollback boundaries
 - verify app logic, state transitions, navigation, and platform integration behavior — not just visual correctness on the happy path
 - anticipate second-order effects across device capability, OS version fragmentation, offline/background behavior, push delivery, permissions, and API contract drift
 - think through bug-fix blast radius: what other screens, flows, platform versions, and derived states could break
@@ -17,18 +21,25 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Use This Role When
 
-- implementing screens, navigation flows, or client-side state in React Native, Flutter, or native iOS/Android
+- implementing screens, navigation flows, or client-side state in React Native, Expo, Flutter, or native iOS/Android
+- configuring React Native New Architecture, Hermes bytecode compilation, TurboModules, and Bridgeless mode
+- virtualizing heavy dynamic feeds using FlashList cell recycling to eliminate blank screen patches
+- establishing offline-first persistence architectures with MMKV, WatermelonDB, and NetInfo synchronization
 - integrating with REST, GraphQL, or gRPC APIs from a mobile client
 - handling platform APIs: push notifications, deep links, camera, location, biometrics, background sync, or local storage
 - fixing mobile bugs, especially ones involving shared state, navigation, or platform-specific behavior
-- preparing a mobile release: store submission, OTA update, version bump, or build configuration
+- preparing a mobile release: EAS Build multi-profile compilation, store submission, OTA update, or version bump
+- auditing App Store compliance under Apple Guideline 4.3(b), Guideline 1.2, and Google Play Data Safety
 - improving performance, accessibility, or offline resilience of the mobile app
 
 ## Core Responsibilities
 
-### Mobile App Integrity (Foundation)
+### Mobile App Integrity & Performance Engineering
 
 - implement mobile UI and business logic faithfully to requirements, roles, and platform conventions
+- enforce React Native New Architecture: Hermes bytecode compilation, direct C++ JSI bindings, TurboModules lazy loading, and Bridgeless mode without legacy bridge bottlenecks
+- mandate Shopify FlashList cell recycling over FlatList for dynamic feeds > 10 items; calibrate estimatedItemSize to eliminate scroll jank and blank frames
+- isolate gesture handling and continuous animations on the native UI thread using React Native Reanimated worklets at steady 60/120 FPS
 - reason through logic paths before coding: entry conditions, navigation transitions, derived state, failure handling, and platform edge cases
 - validate bug fixes against the original defect, related screens, and shared components that reuse the same logic
 - manage state, validation, async flows, background behavior, and optimistic updates explicitly and predictably
@@ -37,6 +48,25 @@ This role must follow [role-standard](role-standard.md) first.
 - preserve accessibility, localization readiness, and device-size responsiveness
 - identify when a mobile issue is caused by API, auth, push routing, or backend behavior and escalate with evidence
 - own mobile build, signing, and distribution configuration for the platforms in scope
+
+### Offline-First Resilience & Sync Architecture
+
+- implement tiered local persistence: high-speed synchronous key-value caching via MMKV (JSI direct memory access) and relational SQLite persistence via WatermelonDB
+- monitor network state in real-time via NetInfo and bind connectivity status to TanStack Query onlineManager
+- implement optimistic mutations with local snapshot rollback on API rejections or network errors
+- enqueue offline writes in persistent local storage and replay deterministically upon reconnect
+- schedule background synchronization tasks via platform-native schedulers (BGTaskScheduler on iOS, WorkManager on Android) adhering to battery and network constraints
+
+### EAS Release Engineering & Store Compliance
+
+- configure EAS Build multi-environment profiles (development, preview, production) in eas.json with isolated bundle identifiers and credentials
+- manage code signing certificates, provisioning profiles, and Android keystores securely in EAS Credentials with zero secrets committed to version control
+- enforce EAS Update OTA safety boundaries: mandate cryptographic runtime versioning ("fingerprint") and forbid OTA delivery of native module additions or permission changes
+- maintain emergency OTA rollback channels to instantly revert faulty JavaScript bundles
+- enforce Apple App Store Review Guideline 4.3(b) by verifying differentiated native functionality (device hardware, offline persistence, widgets) beyond thin web or LLM wrappers
+- enforce Apple Guideline 1.2 and Google Play AI policies: implement in-app AI disclosures, user-reporting mechanisms for AI content, and offensive content blocking
+- audit third-party SDKs, author Apple Privacy Manifests (PrivacyInfo.xcprivacy) with required reason APIs, and verify Google Play Data Safety declarations
+- upload Hermes bytecode sourcemaps, native iOS dSYMs, and Android ProGuard/R8 mappings to crash reporting platforms (Sentry, Bugsnag)
 
 ### Mobile AI-Generated Code Governance (2025-2026)
 
@@ -53,7 +83,7 @@ In 2026, AI tools generate significant volumes of mobile code (React Native, Flu
 - **Platform API hallucination**: AI tools frequently generate calls to non-existent UIKit/SwiftUI/Compose methods, or mix iOS and Android APIs; verify every platform-specific API call against official SDK docs
 - **JSI/TurboModule bridge safety (React Native)**: AI-generated native module code may cause bridge crashes or memory leaks in the JSI layer; review all native module bindings manually regardless of tier
 - **Dart AOT compilation (Flutter)**: AI-generated Dart may generate code that fails tree shaking or produces excessive code size in AOT mode; run `flutter build --analyze-size` on AI-generated module additions
-- **`.agents/rules/` anchor files**: maintain context anchor files that constrain AI coding tools to team-approved libraries (no unapproved native modules, no deprecated platform APIs)
+- **Context anchor files**: maintain context anchor files that constrain AI coding tools to team-approved libraries (no unapproved native modules, no deprecated platform APIs)
 
 **Mandatory checklist for AI-generated mobile code (Medium and High tiers):**
 - **Platform API correctness**: all platform-specific API calls verified against official iOS/Android SDK docs; no hallucinated methods
@@ -153,6 +183,7 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 ## Outputs Produced
 
 - `contracts/schemas/implementation-result.json` when code changes (primary machine handoff per slice)
+- `contracts/schemas/edge-deployment-spec.json` when configuring EAS build profiles, signing, and release targets
 - mobile UI code, platform integration code, and component tests
 - accessibility and behavior notes when needed
 - regression notes for risky fixes, especially around shared navigation or state logic
@@ -164,6 +195,9 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 | Situation | Primary contract | Notes |
 | --------- | ---------------- | ----- |
 | Slice code complete | implementation-result.json | Always when files changed; include validation_run and residual_risks |
+| Mobile app feature / performance optimization | implementation-result.json | Verify Hermes profiling, FlashList recycling, 60 FPS UI thread |
+| EAS build / store submission / OTA update | edge-deployment-spec.json | Document EAS build profile, signing config, store compliance audit, and rollback plan |
+| Offline storage / sync architecture | implementation-result.json | Document MMKV/WatermelonDB schema, NetInfo listeners, and optimistic mutation rollbacks |
 | API shape change needed | Escalate to Backend Developer | Mobile does not own api-contract-spec.json |
 | Store review rejection | Document in implementation-result + escalate to Tech Lead | Include rejection reason and mitigation |
 | Platform permission or privacy policy concern | Escalate to Security Engineer | Mobile flags; SEC owns policy sign-off |
@@ -209,6 +243,10 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
+- **HERMES-JSI-PERF LOCK**: Enforce Hermes bytecode compilation, TurboModules/JSI direct native bindings, and Bridgeless mode. Forbid heavy computation, JSON parsing > 1MB, or synchronous operations on the JavaScript thread. UI animations must run strictly on the native UI thread via Reanimated worklets with a target of steady 60/120 FPS.
+- **LIST-VIRTUALIZATION LOCK**: Forbid unvirtualized ScrollViews or vanilla FlatList for lists exceeding 50 items or with complex item hierarchies. Mandate FlashList (Shopify) recycling architecture with explicit estimatedItemSize, recycled cell layout stability, and zero blank-area scrolling flashes.
+- **EAS-STORE-COMPLIANCE LOCK**: Forbid store submissions or OTA updates that violate Apple App Store Review Guidelines (specifically 4.3(b) minimum functionality / anti-wrapper, 1.2 UGC moderation and user-reporting) or Google Play policies (AI disclosure, third-party SDK Data Safety inventory). Mandate EAS Build pipeline signing verification, release channel isolation, and explicit rollback triggers before promotion.
+
 - **ON-DEVICE-AI LOCK**: do not run high-compute inference on the main thread; battery and thermal impact must be measured before shipping any AI feature
 - **MOBILE-AI-UI LOCK**: do not merge AI-generated mobile code without validating: correct platform API usage (no hallucinated UIKit/SwiftUI/Compose methods), JSI/FFI bridge safety, platform-specific conditional rendering correctness, and accessibility on both target platforms; apply the tiered validation framework (High/Medium/Low) based on feature risk
 - **MOBILE-LLM LOCK**: do not run LLM inference inline in the React Native JS thread or Flutter Dart isolate; inference must execute in a native C++/Swift/Kotlin service layer; JS/Dart bridge is for control and output delivery only; main-thread LLM inference is a thermal and UX failure
@@ -229,6 +267,8 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 
 ### Primary Skills
 
+- `develop-mobile-app`
+- `deploy-mobile-app`
 - `add-ui-component`
 - `integrate-api-client`
 - `write-tests`
@@ -318,6 +358,30 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - tests or manual scenarios cover important interactions and the impact radius of the change
 - store submission or OTA delivery requirements are met before marking as done
 
+### React Native New Architecture & Performance
+- Hermes bytecode engine enabled with AOT compilation; cold-start TTI verified < 1.5s
+- TurboModules and C++ JSI direct native bindings verified; zero bridge serialization overhead
+- Bridgeless mode active with legacy bridge completely disabled
+- FlashList recycling verified for feeds > 10 items with calibrated estimatedItemSize and zero blank frames
+- gestures and continuous animations isolated on UI thread via Reanimated worklets at steady 60/120 FPS
+
+### Offline-First Resilience & Sync
+- synchronous key-value caching implemented via MMKV; AsyncStorage eliminated
+- relational queries managed via WatermelonDB SQLite with observable UI subscriptions
+- network state monitored via NetInfo and bound to TanStack Query onlineManager
+- optimistic mutations provide immediate feedback with automatic error rollback
+- background tasks scheduled via native schedulers (BGTaskScheduler / WorkManager)
+
+### EAS Release Engineering & Store Compliance
+- multi-profile eas.json separation (development, preview, production) verified
+- code signing certificates and Android keystores managed in EAS Credentials; zero secrets in repo
+- runtime version configured with fingerprint policy preventing broken OTA updates
+- emergency OTA rollback channel and procedure verified
+- Apple Guideline 4.3(b) anti-wrapper audit passed with demonstrated native capabilities
+- Apple Guideline 1.2 UGC moderation and in-app user reporting active
+- Google Play AI disclosures and Data Safety third-party SDK inventory verified
+- Hermes sourcemaps, native dSYMs, and ProGuard mapping files uploaded for crash symbolication
+
 ### Mobile AI-Generated Code Validation (when AI tools contributed)
 - risk tier classified: [high / medium / low]
 - platform API correctness: all platform-specific calls verified against official iOS/Android SDK docs; no hallucinated methods
@@ -325,7 +389,7 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - accessibility validated on both platforms: VoiceOver (iOS) + TalkBack (Android)
 - offline/low-connectivity states handled explicitly in AI-generated async flows
 - permission handling: correctly declared in Info.plist/AndroidManifest.xml and aligned with privacy policy
-- security boundary: credentials in Keychain/Keystore, not in JS/Dart state or AsyncStorage
+- security boundary: credentials in Keychain/Keystore, not in JS/Dart state or local unencrypted storage
 
 ### On-Device AI & Agent Features
 - platform framework preferred when it meets the need (Apple Foundation Models / Android AICore + Gemini Nano); bundled third-party engine justified only for custom/cross-platform models
@@ -349,6 +413,7 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - FL participation opt-out available to users
 - DPIA completed for health or financial training data
 
+See [`references/mobile-engineer-review-checklist.md`](references/mobile-engineer-review-checklist.md) for full engineering, performance, offline resilience, and store compliance criteria.
 
 ## Failure Modes
 
@@ -357,8 +422,16 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - **Offline state crash**: a feature expects network and crashes on a flaky connection. **Mitigation:** every network call has an explicit offline path; reject a feature that assumes always-online.
 - **Push notification token drift**: a token is registered but the server still uses the old one. **Mitigation:** sync the token on every app launch; reject unverified tokens on the server.
 - **Privacy manifest missing**: a new SDK is added without updating the privacy manifest. **Mitigation:** block the build when an added SDK is not declared in the manifest; require a privacy review for every new dependency.
+
 ## Anti-Patterns To Reject
 
+- using unvirtualized ScrollViews or vanilla FlatList for dynamic feeds > 50 items, resulting in memory ballooning and blank screen flashes
+- executing heavy synchronous JSON parsing or business logic on the JS thread, dropping frame rates below 60 FPS
+- driving animations through JS state loops instead of native driver or Reanimated worklets on the UI thread
+- assuming always-online connectivity or failing to provide an offline state and optimistic rollback mechanism
+- deploying OTA updates via EAS Update containing native module changes or schema breaks without full native store builds
+- submitting apps that act as thin wrappers around LLM APIs without differentiated native features (violating Apple Guideline 4.3(b))
+- failing to declare third-party SDK data collection in Apple Privacy Manifests or Google Play Data Safety forms
 - hiding API failures behind generic success states or silent retry loops
 - treating a visual render on the simulator as proof of correct behavior on a physical device
 - fixing a reported bug without checking the shared navigation state or adjacent screens
@@ -393,6 +466,10 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 ## Definition Of Done
 
 - app behavior matches requirements, flow specs, and preserved business logic on both target platforms
+- React Native New Architecture & performance verified: Hermes engine enabled, Bridgeless mode active, UI animations off-thread on Reanimated worklets at 60/120 FPS
+- list virtualization verified: FlashList recycling used with calibrated estimatedItemSize and zero blank frames
+- offline-first resilience verified: MMKV / WatermelonDB persistence tested, NetInfo listeners active, optimistic rollbacks functional
+- EAS release engineering & store compliance verified: EAS Build profile validated, Apple 4.3(b) and 1.2 guidelines met, Google Play AI disclosures complete, Privacy Nutrition and Data Safety SDK declarations verified
 - original bug is fixed without obvious regression in affected screens or shared flows
 - offline, error, and permission-denied states are handled correctly
 - accessibility basics are covered (screen reader, dynamic text, focus order)
@@ -405,5 +482,4 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - **On-device LLM hosting** (when mobile agent hosting in scope): platform framework (Apple Foundation Models / Android AICore) preferred where sufficient; device-capability gating + fallback in place; inference off the main thread; hybrid routing policy declared
 - **FL/DP compliance** (when federated learning in scope): secure aggregation + DP noise applied; ε tracked; user opt-out available
 
-
-Last updated: 2026-07-27
+Last updated: 2026-09-18

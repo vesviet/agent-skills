@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Copy"
+  short_description: "Craft high-conversion direct-response copy"
+  default_prompt: "Use $write-copy to write high-converting landing page copy, sales funnels, email sequences, or value propositions using direct-response frameworks, behavioral psychology, and humanized authentic voice."

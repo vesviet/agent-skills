@@ -133,3 +133,4 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **review-service**: Review deployment and release readiness
 - **debug-runtime-platform**: Investigate rollout failures after config changes
 - **commit-code**: Prepare deployment changes for delivery
+- **deploy-mobile-app**: Deploy mobile applications via EAS Build, EAS Update (OTA), and App Store / Google Play submissions

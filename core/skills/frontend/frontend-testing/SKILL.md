@@ -177,3 +177,4 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **commit-code**: Prepare frontend test changes for delivery
 - **combinatorial-testing**: Generate pairwise matrices for viewport, device, and UI state combinations
 - **systematic-debugging**: Isolate and debug flaky browser interactions and rendering race conditions
+- **develop-mobile-app**: Test mobile components, navigation flows, and offline states using React Native Testing Library

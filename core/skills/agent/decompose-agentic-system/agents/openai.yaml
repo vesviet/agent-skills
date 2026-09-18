@@ -1,0 +1,4 @@
+interface:
+  display_name: "Decompose Agentic System"
+  short_description: "Architect recursive system and task decomposition for large-scale multi-agent..."
+  default_prompt: "Use $decompose-agentic-system to execute decompose agentic system tasks in this codebase."

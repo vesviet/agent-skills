@@ -161,3 +161,4 @@ Skip emission for solo exploratory UI work with no planned handoff.
 - **review-code**: Review accessibility and maintainability risk
 - **design-ux-flow**: Upstream ux-flow-spec and ui-component-spec from UI/UX Designer
 - **commit-code**: Prepare the component change for delivery
+- **develop-mobile-app**: Build high-performance React Native / Expo UI components with FlashList virtualization and Reanimated motion

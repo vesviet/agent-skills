@@ -111,6 +111,8 @@ Capture the observable health of the piece before any edit:
 
 ## Related Skills
 
+- **design-content-strategy**: Portfolio-level 3-tier decay triage governance, pillar-cluster taxonomy, and ROT pruning.
+- **write-copy**: Direct-response copywriting and conversion-oriented updates when refreshing commercial or BOFU assets.
 - **optimize-seo**: Produce the formal pre/post SEO brief and on-page/GEO-AEO audit for the updated piece.
 - **conduct-research**: Deeper source verification and competitor analysis when a lightweight fact-check pass is insufficient.
 - **write-article**: Draft net-new content or major expansions from scratch when a refresh is not enough.

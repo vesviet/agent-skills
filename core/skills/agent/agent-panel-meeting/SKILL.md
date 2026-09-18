@@ -141,6 +141,8 @@ Select 3-4 roles categorized into Builder (Dev/Architect), Defender (Security/QA
 - **agent-delegation**: Used to dispatch sub-tasks to panel members via A2A
 - **review-service**: Context-gathering skill for Phase 0 repo reviews
 - **navigate-service**: Codebase entry-point mapping for Phase 0 context
+- **decompose-agentic-system**: Recursive task and system decomposition for multi-agent architectures debated in panel sessions
+- **architect-mcp-server**: Tool contract and transport architecture review for MCP integrations under debate
 
 ## Guardrails
 - **Token Lock**: Do not allow the meeting to run into infinite loops. Halt strictly after Round 5 and synthesize in Round 6.

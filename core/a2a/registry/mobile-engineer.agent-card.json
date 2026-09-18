@@ -28,6 +28,50 @@
   ],
   "skills": [
     {
+      "id": "develop-mobile-app",
+      "name": "Develop Mobile App",
+      "description": "Architect high-performance mobile applications using React Native New Architecture, Hermes bytecode engine, TurboModules/JSI, Bridgeless mode, FlashList recycling, Reanimated worklets, and offline-first state persistence with MMKV and WatermelonDB. Use when building or optimizing React Native apps, virtualizing heavy lists, creating 60/120 FPS UI animations, or designing offline-first mobile sync architectures.",
+      "tags": [
+        "mobile",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "deploy-mobile-app",
+      "name": "Deploy Mobile App",
+      "description": "Configure and execute mobile deployment pipelines using EAS Build, native code signing credentials, OTA updates via EAS Update, App Store and Google Play compliance, AI content disclosures, and crash symbolication. Use when configuring EAS build profiles, publishing OTA updates, preparing store releases, or validating Apple 4.3(b) and Google Play AI compliance.",
+      "tags": [
+        "mobile",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
       "id": "add-ui-component",
       "name": "Add Ui Component",
       "description": "Add or evolve a reusable UI component by following the repo's design system, composition patterns, accessibility rules, and state boundaries. Use when building frontend components or shared presentation elements.",
@@ -45,6 +89,7 @@
         "text"
       ],
       "output_schema_refs": [
+        "edge-deployment-spec.json",
         "implementation-result.json"
       ]
     },
@@ -66,6 +111,7 @@
         "text"
       ],
       "output_schema_refs": [
+        "edge-deployment-spec.json",
         "implementation-result.json"
       ]
     },
@@ -87,6 +133,7 @@
         "text"
       ],
       "output_schema_refs": [
+        "edge-deployment-spec.json",
         "implementation-result.json"
       ]
     },
@@ -108,6 +155,7 @@
         "text"
       ],
       "output_schema_refs": [
+        "edge-deployment-spec.json",
         "implementation-result.json"
       ]
     },
@@ -129,6 +177,7 @@
         "text"
       ],
       "output_schema_refs": [
+        "edge-deployment-spec.json",
         "implementation-result.json"
       ]
     },
@@ -150,11 +199,13 @@
         "text"
       ],
       "output_schema_refs": [
+        "edge-deployment-spec.json",
         "implementation-result.json"
       ]
     }
   ],
   "defaultOutputSchemas": [
+    "edge-deployment-spec.json",
     "implementation-result.json"
   ],
   "role_file": "core/roles/mobile-engineer.md",

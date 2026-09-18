@@ -2,11 +2,11 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 103 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **115 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 111 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **123 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
-### Agent (22)
+### Agent (24)
 
 Agent operating discipline, orchestration, and agentic web standards:
 
@@ -23,6 +23,8 @@ Agent operating discipline, orchestration, and agentic web standards:
 - `agent-semantic-memory`
 - `agent-tool-orchestration`
 - `agent-quality-gate`
+- `architect-mcp-server`
+- `decompose-agentic-system`
 - `manage-agent-identity`
 
 #### Agent Infrastructure & Agentic Web Standards (8)
@@ -71,12 +73,21 @@ Cross-cutting portable skills:
 - `review-service`
 - `commit-code`
 
-### Content (4)
+### Content (6)
 
-- `write-article`
-- `repurpose-content`
 - `audit-content`
+- `design-content-strategy`
 - `optimize-seo`
+- `repurpose-content`
+- `write-article`
+- `write-copy`
+
+### SEO (2)
+
+Technical SEO audits, crawl budget diagnostics, and connected Schema.org graph engineering:
+
+- `audit-technical-seo`
+- `implement-schema-markup`
 
 ### MMO (7)
 
@@ -116,6 +127,13 @@ MMO/growth-ops skills with compliance notices; each maps to `REVIEW-SYSTEM LOCK`
 > R3F/Three.js cluster (`debug-3d-scene`, `integrate-r3f-three-legacy`, `optimize-3d-assets`) migrated to `overlays/r3f-stack/skills/` in v4.0.0 per the stack-overlay naming rules.
 
 > Note: `create-automation-script` is classified under MMO (`core/skills/mmo/`) — its stealth/CDP automation scripts serve growth-ops workflows, even though the underlying techniques are platform-level. See Domain Cluster Notes below.
+
+### Mobile (2)
+
+React Native, Expo, mobile performance, and store delivery:
+
+- `deploy-mobile-app`
+- `develop-mobile-app`
 
 ### Platform (16)
 
@@ -194,6 +212,14 @@ Overlay-specific skills (site stacks, ICM, content data, R3F) live under `overla
 | PostgreSQL query optimization, connection pooling, or RLS policies | `optimize-postgres` | Backend Developer |
 | Advanced component composition, slot delegation, headless decomposition | `component-composition` | Frontend Developer |
 | Native CSS View Transitions, shared element morphing, route transitions | `implement-view-transitions` | Frontend Developer |
+| React Native / Expo New Architecture, Hermes, FlashList recycling, offline sync | `develop-mobile-app` | Mobile Engineer |
+| Mobile EAS Build, signing credentials, OTA updates, App Store compliance | `deploy-mobile-app` | Mobile Engineer |
+| Direct-response copywriting, conversion copy, behavioral psychology | `write-copy` | Content Writer |
+| Content strategy, pillar-cluster taxonomy, funnel mapping, decay triage | `design-content-strategy` | Content Manager |
+| Technical SEO audit, crawl budgets, AI bot governance | `audit-technical-seo` | SEO Analyst role |
+| Connected Schema.org @graph JSON-LD, E-E-A-T credentials | `implement-schema-markup` | SEO Analyst role |
+| Enterprise MCP server architecture, tool contract design, stateless HTTP transport | `architect-mcp-server` | Technical Architect |
+| Recursive system & task decomposition, DAG dependencies, disk-backed persistent planning | `decompose-agentic-system` | Technical Architect |
 
 ## Backlog (not yet skills)
 

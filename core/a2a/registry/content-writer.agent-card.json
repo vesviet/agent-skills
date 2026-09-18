@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/content-writer",
   "contract_type": "agent-card",
   "name": "content-writer",
-  "description": "produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Write for humans first and for machine extractability second: answer-first (BLUF) structure, high fact density, quantitative burstiness (20/60/20), and strict active voice (≥85%) so content is authoritative to human readers and citable by AI answer engines (Google AI Overviews, Perplexity, SearchGPT). In 2025–2026, this extends to rigorous late-2026 Anti-AI Clichés elimination (zero tolerance for banned AI vocabulary), mandatory first-hand empirical proof (minimum 2 verified proof types), operating within AI-governed pipelines with human editorial gates, structuring every section for answer-engine extractability, and preventing semantic drift when content is repurposed into multi-channel formats.",
+  "description": "produce new articles, landing pages, and direct-response conversion copy that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Master direct-response copywriting frameworks (AIDA, PAS, BAB, FAB, Hook-Story-Offer), value proposition engineering, and ethical behavioral marketing psychology (social proof, authority, scarcity, reciprocity, loss aversion, risk reversal) alongside long-form narrative execution. Write for humans first and for machine extractability second: answer-first (BLUF) structure, high fact density, quantitative burstiness (20/60/20), and strict active voice (≥85%) so content is authoritative to human readers, persuasive to prospects, and citable by AI answer engines (Google AI Overviews, Perplexity, SearchGPT). Enforce late-2026 Anti-AI Clichés elimination, humanizer authentic voice standards, mandatory first-hand empirical proof (minimum 2 verified proof types), operating within AI-governed pipelines with human editorial gates, structuring every section for answer-engine extractability, and preventing semantic drift when content is repurposed into multi-channel formats.",
   "url": "pack://agent-skills/core/roles/content-writer.md",
   "version": "5.0.0",
   "protocol_version": "1.0",
@@ -31,6 +31,27 @@
       "id": "write-article",
       "name": "Write Article",
       "description": "Plan, research, outline, and draft long-form articles and blog posts with explicit evidence discipline, answer-first structure, GEO/AEO execution, non-commodity (unique POV/first-hand evidence) quality gates, E-E-A-T experience signals, and SEO-brief alignment. Use for narrative content, guides, reviews, and announcements—not for API runbooks or pure technical reference docs.",
+      "tags": [
+        "content",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "content-handoff.json"
+      ]
+    },
+    {
+      "id": "write-copy",
+      "name": "Write Copy",
+      "description": "Craft high-conversion direct-response marketing copy, landing pages, sales funnels, email sequences, and value propositions using proven persuasion frameworks (AIDA, PAS, BAB, FAB, Hook-Story-Offer), ethical behavioral psychology triggers, and humanized authentic voice. Use when drafting conversion-focused landing page copy, value propositions, email campaigns, objection-handling blocks, or direct-response CTAs without robotic AI cliches or manipulative dark patterns.",
       "tags": [
         "content",
         "pack"

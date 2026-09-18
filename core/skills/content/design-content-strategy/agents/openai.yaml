@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Content Strategy"
+  short_description: "Architect content pillars, funnels, and decay triage"
+  default_prompt: "Use $design-content-strategy to design comprehensive content pillar architectures, audience journey funnels, editorial calendars, Top 10 SERP information gain moats, and 3-tier decay triage systems."

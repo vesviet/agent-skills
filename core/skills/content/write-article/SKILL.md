@@ -157,6 +157,10 @@ Skip emission for quick copy snippets or internal note drafting with no publishi
 
 ## Related Skills
 
+- **write-copy**: Direct-response copywriting, landing page conversion copy, value proposition messaging, and objection handling
+- **design-content-strategy**: Pillar-cluster architecture, topical authority modeling, and full-funnel TOFU/MOFU/BOFU alignment
+- **repurpose-content**: Adapt published articles into social threads, newsletters, and video scripts without semantic drift
+- **audit-content**: Proactive refresh loops, 3-tier decay remediation, and Information Gain upgrades for published articles
 - **write-documentation**: Structure and clarity patterns; technical README/runbooks belong with Technical Writer
 - **write-tech-radar**: Radar-style technology assessments (Vesviet radar subtree)
 - **analyze-business-requirements**: Align copy with business rules when BA supplied a ticket

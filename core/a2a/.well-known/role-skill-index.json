@@ -4,7 +4,7 @@
   "root": ".",
   "stats": {
     "roles": 34,
-    "skills": 115,
+    "skills": 123,
     "workflows": 24,
     "schemas": 50
   },
@@ -177,6 +177,72 @@
     ],
     "repurpose_content": [
       "repurpose-content"
+    ],
+    "technical_seo": [
+      "audit-technical-seo"
+    ],
+    "technical_seo_audit": [
+      "audit-technical-seo"
+    ],
+    "audit_technical_seo": [
+      "audit-technical-seo"
+    ],
+    "audit-technical-seo": [
+      "audit-technical-seo"
+    ],
+    "crawlability": [
+      "audit-technical-seo"
+    ],
+    "schema_markup": [
+      "implement-schema-markup"
+    ],
+    "implement_schema_markup": [
+      "implement-schema-markup"
+    ],
+    "implement-schema-markup": [
+      "implement-schema-markup"
+    ],
+    "schema_graph": [
+      "implement-schema-markup"
+    ],
+    "structured_data": [
+      "implement-schema-markup"
+    ],
+    "json_ld": [
+      "implement-schema-markup"
+    ],
+    "copywriting": [
+      "write-copy"
+    ],
+    "write_copy": [
+      "write-copy"
+    ],
+    "write-copy": [
+      "write-copy"
+    ],
+    "direct_response": [
+      "write-copy"
+    ],
+    "marketing_copy": [
+      "write-copy"
+    ],
+    "humanizer": [
+      "write-copy"
+    ],
+    "content_strategy": [
+      "design-content-strategy"
+    ],
+    "design_content_strategy": [
+      "design-content-strategy"
+    ],
+    "design-content-strategy": [
+      "design-content-strategy"
+    ],
+    "pillar_cluster": [
+      "design-content-strategy"
+    ],
+    "editorial_calendar": [
+      "design-content-strategy"
     ],
     "api": [
       "add-api-endpoint"
@@ -459,6 +525,87 @@
     ],
     "analyze_data": [
       "analyze-data"
+    ],
+    "develop_mobile_app": [
+      "develop-mobile-app"
+    ],
+    "develop-mobile-app": [
+      "develop-mobile-app"
+    ],
+    "mobile_app": [
+      "develop-mobile-app"
+    ],
+    "react_native": [
+      "develop-mobile-app"
+    ],
+    "expo": [
+      "develop-mobile-app"
+    ],
+    "flashlist": [
+      "develop-mobile-app"
+    ],
+    "hermes": [
+      "develop-mobile-app"
+    ],
+    "deploy_mobile_app": [
+      "deploy-mobile-app"
+    ],
+    "deploy-mobile-app": [
+      "deploy-mobile-app"
+    ],
+    "eas_build": [
+      "deploy-mobile-app"
+    ],
+    "eas_deploy": [
+      "deploy-mobile-app"
+    ],
+    "eas_update": [
+      "deploy-mobile-app"
+    ],
+    "app_store": [
+      "deploy-mobile-app"
+    ],
+    "google_play": [
+      "deploy-mobile-app"
+    ],
+    "store_compliance": [
+      "deploy-mobile-app"
+    ],
+    "architect_mcp_server": [
+      "architect-mcp-server"
+    ],
+    "architect-mcp-server": [
+      "architect-mcp-server"
+    ],
+    "mcp_builder": [
+      "architect-mcp-server"
+    ],
+    "design_mcp_server": [
+      "architect-mcp-server"
+    ],
+    "mcp_architecture": [
+      "architect-mcp-server"
+    ],
+    "mcp_server_architecture": [
+      "architect-mcp-server"
+    ],
+    "decompose_agentic_system": [
+      "decompose-agentic-system"
+    ],
+    "decompose-agentic-system": [
+      "decompose-agentic-system"
+    ],
+    "recursive_decomposition": [
+      "decompose-agentic-system"
+    ],
+    "planning_with_files": [
+      "decompose-agentic-system"
+    ],
+    "agentic_decomposition": [
+      "decompose-agentic-system"
+    ],
+    "agentic_task_decomposition": [
+      "decompose-agentic-system"
     ]
   },
   "roles": {
@@ -654,10 +801,12 @@
     "content-manager": {
       "name": "content-manager",
       "title": "Content Manager",
-      "description": "direct the overall content portfolio strategy of a website — from designing content pillar architecture, governing the content lifecycle (production → distribution → measurement → refresh), to enforcing Top 10 SERP Information Gain, authenticating subject matter expert (SME) credentials, and optimizing for Generative Engine Optimization (GEO). Bridge business goals and day-to-day content operations; ensure every published asset delivers novel value, serves the right audience, on the right channel, at the right stage of website growth. In 2025–2026, this extends to governing AI-assisted content pipelines with mandatory human editorial gates, enforcing the Top 10 SERP Information Gain differential threshold (≥75/100, rejecting zero-gain skyscraper rewrites), managing a 3-tier content decay monitoring system (Algorithmic, GEO Citation, and Factual), authenticating real-world SME provenance, and enforcing semantic drift prevention across multi-channel distribution.",
+      "description": "direct the overall content portfolio strategy of a website — from architecting comprehensive pillar-cluster taxonomies, governing full-funnel audience journeys (TOFU awareness → MOFU consideration → BOFU conversion), to enforcing Top 10 SERP Information Gain moats (≥75/100 non-commodity score), authenticating subject matter expert (SME) credentials, and executing 3-tier content decay triage. Bridge business goals and day-to-day content operations; ensure every published asset delivers novel value, maintains strict internal linking topology, serves the right audience, on the right channel, at the right stage of website growth. In 2025–2026, this extends to governing AI-assisted content pipelines with mandatory human editorial gates, rejecting commodity skyscraper rewrites, operating proactive decay remediation SLAs (Quick Patch ≤15d, Structural Rewrite ≤30d, Consolidation ≤20d, Decommission ≤10d), and enforcing closed-loop multi-channel distribution with zero semantic drift.",
       "file": "core/roles/content-manager.md",
       "skills": [
+        "design-content-strategy",
         "audit-content",
+        "write-copy",
         "repurpose-content",
         "optimize-seo",
         "write-article",
@@ -675,11 +824,13 @@
     "content-writer": {
       "name": "content-writer",
       "title": "Content Writer",
-      "description": "produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Write for humans first and for machine extractability second: answer-first (BLUF) structure, high fact density, quantitative burstiness (20/60/20), and strict active voice (≥85%) so content is authoritative to human readers and citable by AI answer engines (Google AI Overviews, Perplexity, SearchGPT). In 2025–2026, this extends to rigorous late-2026 Anti-AI Clichés elimination (zero tolerance for banned AI vocabulary), mandatory first-hand empirical proof (minimum 2 verified proof types), operating within AI-governed pipelines with human editorial gates, structuring every section for answer-engine extractability, and preventing semantic drift when content is repurposed into multi-channel formats.",
+      "description": "produce new articles, landing pages, and direct-response conversion copy that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Master direct-response copywriting frameworks (AIDA, PAS, BAB, FAB, Hook-Story-Offer), value proposition engineering, and ethical behavioral marketing psychology (social proof, authority, scarcity, reciprocity, loss aversion, risk reversal) alongside long-form narrative execution. Write for humans first and for machine extractability second: answer-first (BLUF) structure, high fact density, quantitative burstiness (20/60/20), and strict active voice (≥85%) so content is authoritative to human readers, persuasive to prospects, and citable by AI answer engines (Google AI Overviews, Perplexity, SearchGPT). Enforce late-2026 Anti-AI Clichés elimination, humanizer authentic voice standards, mandatory first-hand empirical proof (minimum 2 verified proof types), operating within AI-governed pipelines with human editorial gates, structuring every section for answer-engine extractability, and preventing semantic drift when content is repurposed into multi-channel formats.",
       "file": "core/roles/content-writer.md",
       "skills": [
         "write-article",
+        "write-copy",
         "repurpose-content",
+        "design-content-strategy",
         "audit-content",
         "optimize-seo",
         "conduct-research",
@@ -833,6 +984,8 @@
       "description": "deliver correct, performant, and accessible mobile experiences on iOS and Android by owning native app logic, platform integration, offline behavior, and release readiness without hiding device, OS version, or distribution risk. In 2025–2026, this extends to governing AI-generated mobile code with tiered trust validation (parallel to Frontend Developer standards), complying with App Store AI policies (Apple 4.3(b), Google Play AI disclosure), designing hybrid on-device/cloud LLM hosting architecture, and applying privacy-preserving ML patterns (federated learning + differential privacy) for on-device personalization.",
       "file": "core/roles/mobile-engineer.md",
       "skills": [
+        "develop-mobile-app",
+        "deploy-mobile-app",
         "add-ui-component",
         "integrate-api-client",
         "write-tests",
@@ -976,10 +1129,12 @@
     "seo-analyst": {
       "name": "seo-analyst",
       "title": "SEO Analyst",
-      "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third-party answer engines — with defensible keyword strategy, Entity-First SEO, Answer-First (BLUF) structure, connected Schema.org `@graph` specifications, and metadata. Produce briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation. Optimize for discoverability in Google, AI answer engines (Perplexity, SearchGPT, Bing AI), and generative search surfaces. In 2025–2026, this extends to Generative Engine Optimization (GEO), Entity-First SEO (Wikidata QID mapping, semantic triples, and entity salience), strict Answer-First (BLUF) formulation (≤30-word answer + ≤30-word metric proof), connected Schema.org `@graph` architecture (`TechArticle`, `Person` E-E-A-T, `FAQPage`), authoring and auditing `/llms.txt` and `/llms-full.txt` agentic discovery manifests, MCP 2026-07-28 stateless protocol audits, EU AI Act Article 50 disclosure audits, and C2PA marking verification.",
+      "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third-party answer engines — with defensible keyword strategy, technical SEO crawlability diagnostics, Entity-First SEO, Answer-First (BLUF) structure, connected Schema.org @graph specifications, and metadata. Produce briefs, technical audits, and connected Schema.org @graph JSON-LD structures that Content Writer, Frontend, and DevOps can execute without owning long-form drafting or server infrastructure deployment. Optimize for discoverability in Google, AI answer engines (Perplexity, SearchGPT, Bing AI), and generative search surfaces. In 2025–2026, this extends to Generative Engine Optimization (GEO), Entity-First SEO (Wikidata QID mapping, semantic triples, and entity salience), strict Answer-First (BLUF) formulation (≤30-word answer + ≤30-word metric proof), connected Schema.org @graph architecture (TechArticle, Person E-E-A-T, FAQPage), authoring and auditing /llms.txt and /llms-full.txt agentic discovery manifests, MCP 2026-07-28 stateless protocol audits, EU AI Act Article 50 disclosure audits, and C2PA marking verification.",
       "file": "core/roles/seo-analyst.md",
       "skills": [
         "optimize-seo",
+        "audit-technical-seo",
+        "implement-schema-markup",
         "configure-agent-headers",
         "configure-mcp",
         "conduct-research",
@@ -1108,6 +1263,8 @@
         "agent-panel-meeting",
         "meeting-review",
         "write-tech-radar",
+        "architect-mcp-server",
+        "decompose-agentic-system",
         "ai-risk-assessment",
         "review-service",
         "navigate-service",
@@ -1301,6 +1458,13 @@
       "file": "core/skills/agent/agent-tool-orchestration/SKILL.md",
       "description": "Plan and sequence agent tool use by choosing the smallest reliable tool, controlling work phase by phase, parallelizing independent reads, avoiding unsafe shell operations, and validating results. Use when a task requires multiple searches, file edits, commands, or external checks across a bug, feature, review, or debugging flow."
     },
+    "architect-mcp-server": {
+      "name": "architect-mcp-server",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/architect-mcp-server/SKILL.md",
+      "description": "Architect enterprise-grade Model Context Protocol (MCP) servers, tool surfaces, schemas, transport protocols, and security perimeters. Use when designing MCP server contracts, selecting streamable HTTP or stdio transports, standardizing Zod/Pydantic schemas, externalizing state handles (SEP-2567), configuring OAuth 2.1 RFC 8707 Resource Indicators, or establishing Shadow MCP governance."
+    },
     "configure-agent-commerce": {
       "name": "configure-agent-commerce",
       "category": "agent",
@@ -1342,6 +1506,13 @@
       "type": "core",
       "file": "core/skills/agent/debug-identity-provider/SKILL.md",
       "description": "Diagnoses and resolves failures reported by WorkOS Agentic Registration scanners, `isitagentready.com`, and SSO/Directory Sync validators — including DNS errors, malformed `agent_auth` schemas, incorrect `auth.md` markers, and non-resolving endpoint URLs. Use when a WorkOS or agentic readiness scanner rejects metadata, returns a 530 error, or reports specific rule violations in OAuth or auth.md configuration."
+    },
+    "decompose-agentic-system": {
+      "name": "decompose-agentic-system",
+      "category": "agent",
+      "type": "core",
+      "file": "core/skills/agent/decompose-agentic-system/SKILL.md",
+      "description": "Architect recursive system and task decomposition for large-scale multi-agent architectures (100+ files, 50K+ tokens), DAG dependency trees, disk-backed persistent planning (planning-with-files), anti-context-rot mechanisms, NHI autonomy-tier classification, and policy-as-code fitness functions. Use when scoping complex multi-agent workflows, establishing durable markdown planning, isolating agent blast radiuses, or preventing LLM context rot."
     },
     "manage-agent-identity": {
       "name": "manage-agent-identity",
@@ -1455,6 +1626,13 @@
       "file": "core/skills/content/audit-content/SKILL.md",
       "description": "Run a structured content refresh cycle on an existing published piece — audit current performance and health, read the full content, research the latest standards and facts, update the content, then re-audit for SEO/GEO/AEO readiness. Use when refreshing stale or declining content, correcting outdated facts, closing information-gain gaps against newer competitors, or bringing a legacy article up to current E-E-A-T and AI-search standards without rewriting from scratch."
     },
+    "design-content-strategy": {
+      "name": "design-content-strategy",
+      "category": "content",
+      "type": "core",
+      "file": "core/skills/content/design-content-strategy/SKILL.md",
+      "description": "Design holistic content portfolio strategies, pillar-and-cluster architectures, topical authority models, audience funnel mappings (TOFU/MOFU/BOFU), editorial calendars, Top 10 SERP Information Gain gating (>=75/100 non-commodity score), 3-tier content decay triage, and safe multi-channel distribution loops. Use when establishing site content architecture, planning editorial calendars, structuring topic clusters, auditing portfolio decay, or defining omnichannel content flywheels."
+    },
     "optimize-seo": {
       "name": "optimize-seo",
       "category": "content",
@@ -1475,6 +1653,13 @@
       "type": "core",
       "file": "core/skills/content/write-article/SKILL.md",
       "description": "Plan, research, outline, and draft long-form articles and blog posts with explicit evidence discipline, answer-first structure, GEO/AEO execution, non-commodity (unique POV/first-hand evidence) quality gates, E-E-A-T experience signals, and SEO-brief alignment. Use for narrative content, guides, reviews, and announcements—not for API runbooks or pure technical reference docs."
+    },
+    "write-copy": {
+      "name": "write-copy",
+      "category": "content",
+      "type": "core",
+      "file": "core/skills/content/write-copy/SKILL.md",
+      "description": "Craft high-conversion direct-response marketing copy, landing pages, sales funnels, email sequences, and value propositions using proven persuasion frameworks (AIDA, PAS, BAB, FAB, Hook-Story-Offer), ethical behavioral psychology triggers, and humanized authentic voice. Use when drafting conversion-focused landing page copy, value propositions, email campaigns, objection-handling blocks, or direct-response CTAs without robotic AI cliches or manipulative dark patterns."
     },
     "configure-llms-txt": {
       "name": "configure-llms-txt",
@@ -1749,6 +1934,20 @@
       "file": "core/skills/mmo/setup-tracking-system/SKILL.md",
       "description": "Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta Conversion API (CAPI), and tracker setups (Voluum/Binom) without relying solely on client-side cookies. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps."
     },
+    "deploy-mobile-app": {
+      "name": "deploy-mobile-app",
+      "category": "mobile",
+      "type": "core",
+      "file": "core/skills/mobile/deploy-mobile-app/SKILL.md",
+      "description": "Configure and execute mobile deployment pipelines using EAS Build, native code signing credentials, OTA updates via EAS Update, App Store and Google Play compliance, AI content disclosures, and crash symbolication. Use when configuring EAS build profiles, publishing OTA updates, preparing store releases, or validating Apple 4.3(b) and Google Play AI compliance."
+    },
+    "develop-mobile-app": {
+      "name": "develop-mobile-app",
+      "category": "mobile",
+      "type": "core",
+      "file": "core/skills/mobile/develop-mobile-app/SKILL.md",
+      "description": "Architect high-performance mobile applications using React Native New Architecture, Hermes bytecode engine, TurboModules/JSI, Bridgeless mode, FlashList recycling, Reanimated worklets, and offline-first state persistence with MMKV and WatermelonDB. Use when building or optimizing React Native apps, virtualizing heavy lists, creating 60/120 FPS UI animations, or designing offline-first mobile sync architectures."
+    },
     "add-telemetry-instrumentation": {
       "name": "add-telemetry-instrumentation",
       "category": "platform",
@@ -1930,6 +2129,20 @@
       "type": "core",
       "file": "core/skills/security-data/security-audit/SKILL.md",
       "description": "Review code, configuration, and service behavior for security risks by checking trust boundaries, secret handling, auth, validation, and operational exposure. For AI/ML systems, apply OWASP ASI Top 10 2026 (ASI01–ASI10), NIST AI RMF Measure function, and ISO/IEC 42001:2023 controls assessment. Use for focused security review of changes or full-service risk assessment."
+    },
+    "audit-technical-seo": {
+      "name": "audit-technical-seo",
+      "category": "seo",
+      "type": "core",
+      "file": "core/skills/seo/audit-technical-seo/SKILL.md",
+      "description": "Audit crawl budgets, search and AI bot access in robots.txt (Googlebot, OAI-SearchBot, PerplexityBot, Bingbot, and AI search crawlers), XML sitemaps, canonical tags, HTTP status codes, redirect chains (301/404/410), and Core Web Vitals (LCP, INP, CLS) emitting structured audit reports. Use when diagnosing crawlability issues, auditing staging or production sites for technical health, resolving redirect loops or canonical errors, or preparing engineering escalation tickets for frontend and infrastructure teams."
+    },
+    "implement-schema-markup": {
+      "name": "implement-schema-markup",
+      "category": "seo",
+      "type": "core",
+      "file": "core/skills/seo/implement-schema-markup/SKILL.md",
+      "description": "Architect, generate, and validate connected Schema.org @graph JSON-LD structured data linking WebSite, Organization, Person E-E-A-T credentials, TechArticle with Wikidata QIDs, BreadcrumbList, and FAQPage rich snippets. Use when implementing structured data, resolving disconnected schema islands, grounding technical content in Knowledge Graph entities, validating rich results eligibility, or eliminating schema drift across site templates."
     },
     "develop-golf-feature": {
       "name": "develop-golf-feature",

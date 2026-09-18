@@ -176,6 +176,32 @@ SKILL_ALIASES = {
     "audit_content": ["audit-content"],
     "content_audit": ["audit-content"],
     "repurpose_content": ["repurpose-content"],
+
+    # Technical SEO & Schema Markup
+    "technical_seo": ["audit-technical-seo"],
+    "technical_seo_audit": ["audit-technical-seo"],
+    "audit_technical_seo": ["audit-technical-seo"],
+    "audit-technical-seo": ["audit-technical-seo"],
+    "crawlability": ["audit-technical-seo"],
+    "schema_markup": ["implement-schema-markup"],
+    "implement_schema_markup": ["implement-schema-markup"],
+    "implement-schema-markup": ["implement-schema-markup"],
+    "schema_graph": ["implement-schema-markup"],
+    "structured_data": ["implement-schema-markup"],
+    "json_ld": ["implement-schema-markup"],
+
+    # Content Strategy & Copywriting
+    "copywriting": ["write-copy"],
+    "write_copy": ["write-copy"],
+    "write-copy": ["write-copy"],
+    "direct_response": ["write-copy"],
+    "marketing_copy": ["write-copy"],
+    "humanizer": ["write-copy"],
+    "content_strategy": ["design-content-strategy"],
+    "design_content_strategy": ["design-content-strategy"],
+    "design-content-strategy": ["design-content-strategy"],
+    "pillar_cluster": ["design-content-strategy"],
+    "editorial_calendar": ["design-content-strategy"],
     
     # Backend & API
     "api": ["add-api-endpoint"],
@@ -287,7 +313,38 @@ SKILL_ALIASES = {
     "write_product_brief": ["write-product-brief"],
     "business_requirements": ["analyze-business-requirements"],
     "analyze_business_requirements": ["analyze-business-requirements"],
-    "analyze_data": ["analyze-data"]
+    "analyze_data": ["analyze-data"],
+
+    # Mobile Development
+    "develop_mobile_app": ["develop-mobile-app"],
+    "develop-mobile-app": ["develop-mobile-app"],
+    "mobile_app": ["develop-mobile-app"],
+    "react_native": ["develop-mobile-app"],
+    "expo": ["develop-mobile-app"],
+    "flashlist": ["develop-mobile-app"],
+    "hermes": ["develop-mobile-app"],
+    "deploy_mobile_app": ["deploy-mobile-app"],
+    "deploy-mobile-app": ["deploy-mobile-app"],
+    "eas_build": ["deploy-mobile-app"],
+    "eas_deploy": ["deploy-mobile-app"],
+    "eas_update": ["deploy-mobile-app"],
+    "app_store": ["deploy-mobile-app"],
+    "google_play": ["deploy-mobile-app"],
+    "store_compliance": ["deploy-mobile-app"],
+
+    # MCP Server Architecture & Agentic Decomposition
+    "architect_mcp_server": ["architect-mcp-server"],
+    "architect-mcp-server": ["architect-mcp-server"],
+    "mcp_builder": ["architect-mcp-server"],
+    "design_mcp_server": ["architect-mcp-server"],
+    "mcp_architecture": ["architect-mcp-server"],
+    "mcp_server_architecture": ["architect-mcp-server"],
+    "decompose_agentic_system": ["decompose-agentic-system"],
+    "decompose-agentic-system": ["decompose-agentic-system"],
+    "recursive_decomposition": ["decompose-agentic-system"],
+    "planning_with_files": ["decompose-agentic-system"],
+    "agentic_decomposition": ["decompose-agentic-system"],
+    "agentic_task_decomposition": ["decompose-agentic-system"],
 }
 
 

@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/seo-analyst",
   "contract_type": "agent-card",
   "name": "seo-analyst",
-  "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third-party answer engines — with defensible keyword strategy, Entity-First SEO, Answer-First (BLUF) structure, connected Schema.org `@graph` specifications, and metadata. Produce briefs and audits that Content Writer and publishers can execute without owning long-form drafting or production technical SEO implementation. Optimize for discoverability in Google, AI answer engines (Perplexity, SearchGPT, Bing AI), and generative search surfaces. In 2025–2026, this extends to Generative Engine Optimization (GEO), Entity-First SEO (Wikidata QID mapping, semantic triples, and entity salience), strict Answer-First (BLUF) formulation (≤30-word answer + ≤30-word metric proof), connected Schema.org `@graph` architecture (`TechArticle`, `Person` E-E-A-T, `FAQPage`), authoring and auditing `/llms.txt` and `/llms-full.txt` agentic discovery manifests, MCP 2026-07-28 stateless protocol audits, EU AI Act Article 50 disclosure audits, and C2PA marking verification.",
+  "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third-party answer engines — with defensible keyword strategy, technical SEO crawlability diagnostics, Entity-First SEO, Answer-First (BLUF) structure, connected Schema.org @graph specifications, and metadata. Produce briefs, technical audits, and connected Schema.org @graph JSON-LD structures that Content Writer, Frontend, and DevOps can execute without owning long-form drafting or server infrastructure deployment. Optimize for discoverability in Google, AI answer engines (Perplexity, SearchGPT, Bing AI), and generative search surfaces. In 2025–2026, this extends to Generative Engine Optimization (GEO), Entity-First SEO (Wikidata QID mapping, semantic triples, and entity salience), strict Answer-First (BLUF) formulation (≤30-word answer + ≤30-word metric proof), connected Schema.org @graph architecture (TechArticle, Person E-E-A-T, FAQPage), authoring and auditing /llms.txt and /llms-full.txt agentic discovery manifests, MCP 2026-07-28 stateless protocol audits, EU AI Act Article 50 disclosure audits, and C2PA marking verification.",
   "url": "pack://agent-skills/core/roles/seo-analyst.md",
   "version": "5.0.0",
   "protocol_version": "1.0",
@@ -33,6 +33,52 @@
       "description": "Research search intent, define keywords, produce SEO content briefs, audit on-page elements, optimize for AI search visibility (GEO/AEO), specify structured data, enforce E-E-A-T quality gates, and deliver metadata and recommendations without owning full article drafting or technical deployment. Use when planning publishable content, reviewing drafts before release, mapping internal links, interpreting Search Console signals, or ensuring AI citation readiness.",
       "tags": [
         "content",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "seo-audit-report.json",
+        "seo-content-brief.json",
+        "seo-metadata.json"
+      ]
+    },
+    {
+      "id": "audit-technical-seo",
+      "name": "Audit Technical Seo",
+      "description": "Audit crawl budgets, search and AI bot access in robots.txt (Googlebot, OAI-SearchBot, PerplexityBot, Bingbot, and AI search crawlers), XML sitemaps, canonical tags, HTTP status codes, redirect chains (301/404/410), and Core Web Vitals (LCP, INP, CLS) emitting structured audit reports. Use when diagnosing crawlability issues, auditing staging or production sites for technical health, resolving redirect loops or canonical errors, or preparing engineering escalation tickets for frontend and infrastructure teams.",
+      "tags": [
+        "seo",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "seo-audit-report.json",
+        "seo-content-brief.json",
+        "seo-metadata.json"
+      ]
+    },
+    {
+      "id": "implement-schema-markup",
+      "name": "Implement Schema Markup",
+      "description": "Architect, generate, and validate connected Schema.org @graph JSON-LD structured data linking WebSite, Organization, Person E-E-A-T credentials, TechArticle with Wikidata QIDs, BreadcrumbList, and FAQPage rich snippets. Use when implementing structured data, resolving disconnected schema islands, grounding technical content in Knowledge Graph entities, validating rich results eligibility, or eliminating schema drift across site templates.",
+      "tags": [
+        "seo",
         "pack"
       ],
       "inputModes": [

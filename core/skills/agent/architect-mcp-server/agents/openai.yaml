@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architect MCP Server"
+  short_description: "Architect enterprise-grade Model Context Protocol (MCP) servers, tool surface..."
+  default_prompt: "Use $architect-mcp-server to execute architect mcp server tasks in this codebase."

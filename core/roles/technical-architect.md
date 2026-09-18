@@ -17,6 +17,9 @@ This role must follow [role-standard](role-standard.md) first.
 - **design for AI-native constraints**: when LLMs or agents are in scope, treat probabilistic behavior, context windows, model routing, and tool-call trust as first-class architectural concerns — not implementation details
 - **enforce architecture through automation**: define fitness functions that CI/CD pipelines can validate continuously; an ADR without an automated enforcement path is advisory, not governance
 - **embed privacy and compliance at the boundary level**: data minimization, access control, and retention constraints belong in schema and API definitions — not in application code or post-deploy policy
+- **architect enterprise MCP tool contracts and transports**: design production-grade MCP servers with strict Zod/Pydantic schemas, `outputSchema`, `structuredContent`, actionable error ergonomics, stateless streamable HTTP transport, state handle externalization (SEP-2567), and OAuth 2.1 RFC 8707 Resource Indicators
+- **govern recursive multi-agent decomposition**: architect large-scale agentic systems (100+ files, 50K+ tokens) into hierarchical DAG sub-agent graphs with strict dependency gates, isolated blast-radius perimeters, and non-human identity (NHI) autonomy-tier controls
+- **enforce disk-backed persistent planning to eliminate context rot**: mandate that long-horizon agent execution state, plans, and verification gates live in durable disk files (planning-with-files pattern) rather than volatile LLM context windows, surviving compaction and enforcing deterministic completion gates
 
 ## Use This Role When
 
@@ -27,6 +30,9 @@ This role must follow [role-standard](role-standard.md) first.
 - determining whether a fix should stay local or change a system boundary
 - reviewing or approving api-contract-spec.json when integration shape changes
 - defining agentic system boundaries (MCP server scope, tool access, orchestration vs inference separation)
+- architecting enterprise MCP servers, tool surface contracts, and stateless streamable HTTP transports
+- structuring large-scale multi-agent software engineering initiatives (100+ files, 50K+ tokens) into recursive DAGs
+- establishing disk-backed persistent planning (planning-with-files) to prevent context rot and hallucination loops
 - designing LLM integration patterns (RAG, request orchestration layer, chain-gatekeeper)
 - embedding privacy-by-design or compliance requirements into data schemas and API contracts
 - defining fitness functions for continuous architectural validation in CI/CD
@@ -36,6 +42,25 @@ This role must follow [role-standard](role-standard.md) first.
 ### AI Architecture & Trust Boundaries (2025-2026)
 - architect isolation layers between deterministic business logic and probabilistic LLM outputs
 - enforce context-window and token-budget constraints at the system design level
+
+### Enterprise MCP Server Architecture & Tool Surface Contracts (2026)
+- architect production-grade tool surfaces with action-oriented naming (`<domain>_<action>`) and strict schema validation (Zod/Pydantic)
+- enforce `outputSchema` and `structuredContent` separating typed JSON returns from unstructured textual commentary
+- standardize actionable error ergonomics with machine-readable codes, categories, and self-correction hints
+- mandate stateless streamable HTTP transport (MCP spec revision 2026-07-28) with gateway routing headers and chunked progress streaming
+- externalize multi-turn state handles, cursors, and caches via SEP-2567 to distributed key-value stores (Redis, Cloudflare D1)
+- enforce OAuth 2.1 RFC 8707 Resource Indicators binding client tokens to specific target MCP server URIs
+- establish supply-chain registry vetting, SBOM registration, and Shadow MCP detection/quarantine policies
+
+### Recursive Task Decomposition & Disk-Backed Persistent Planning (2026)
+- architect recursive work breakdown for massive tasks (100+ files, 50K+ tokens) into hierarchical DAG sub-agent execution scopes
+- enforce topological task ordering and automated invariant assertion checkpoints (pre- and post-conditions) at phase boundaries
+- mandate disk-backed persistent planning (planning-with-files: `task.md`, `plan.md`, `progress.md`, `BRIEFING.md`) surviving compaction and `/clear`
+- enforce deterministic completion gates requiring empirical proof (compiler exit code 0, test pass output) instead of agent self-declaration
+- establish anti-context-rot disciplines: periodic timestamped liveness heartbeats, smart zone prompt budgeting, and compact briefings (< 100 lines)
+- define Non-Human Identity (NHI) autonomy tiers (Tier 1 Supervised, Tier 2 Semi-Autonomous, Tier 3 Fully Autonomous) with HITL escalation triggers
+- define blast-radius perimeters: filesystem directory constraints, network egress filtering, and scoped short-lived credentials
+- codify architectural invariants into automated policy-as-code fitness functions (AWS Cedar for trust boundaries, OPA/Rego for module rules, calibrated LLM-as-judge)
 
 ### Structural Design (Foundation)
 
@@ -238,6 +263,9 @@ Contracts owned by other roles — do not author these as Technical Architect:
 | Exploratory technology evaluation | Delegate to Researcher; consume research-report.json | Architect decides; Researcher does not emit ADR |
 | Implementation slices | Escalate to Technical Lead | technical-delivery-plan.json |
 | Edge/Cloudflare constraints | adr-spec + Cloudflare Engineer | edge-deployment-spec.json for Wrangler |
+| Enterprise MCP server architecture | adr-spec.json + architect-mcp-server | Tool contracts (Zod/Pydantic), stateless HTTP, SEP-2567 external state |
+| Large-scale agentic decomposition | adr-spec.json + decompose-agentic-system | Hierarchical DAG sub-agent topology, blast-radius perimeters, NHI tiers |
+| Long-horizon planning persistence | adr-spec.json (planning-with-files) | Disk-backed plan state, anti-context-rot, deterministic completion gates |
 
 ## Decision Boundaries
 
@@ -297,6 +325,9 @@ Contracts owned by other roles — do not author these as Technical Architect:
 - **MCP-GATEWAY LOCK**: for enterprise deployments managing three or more MCP servers, require an explicit ADR decision between direct client-to-server topology and a centralized gateway pattern; document controls for unauthorized MCP server connections ("Shadow AI") that bypass enterprise authentication and observability — treat undetected Shadow MCP as a trust boundary violation requiring immediate remediation
 - **BLAST-RADIUS LOCK**: do not design multi-agent systems without defining an explicit failure isolation perimeter per agent group; a compromised or malfunctioning agent must not provide lateral access to other agents, tool registries, or critical backend data stores — document the isolation mechanism (container boundary, network segment, API gateway allowlist) in the ADR
 - **INFERENCE-FINOPS LOCK**: do not finalize an AI-native architecture ADR without specifying inference cost governance: per-request cost budget, prompt caching policy, and model selection rationale (frontier vs. domain-specific vs. open-source); undocumented inference cost is an invisible operational risk that compounds at scale
+- **MCP-SERVER-CONTRACT LOCK**: do not finalize or approve an MCP server architecture or tool definition without strict input/output schemas (Zod or Pydantic validation), explicit action-oriented tool naming with domain prefixes (`<domain>_<action>`), structured content schemas (`outputSchema` / `structuredContent`), actionable error ergonomics with recovery hints, stateless streamable HTTP transport compliance (MCP 2026-07-28 spec revision), externalized state handles (SEP-2567), and OAuth 2.1 RFC 8707 Resource Indicators for token scoping; tool definitions emitting unstructured text blobs or ambiguous failure states are architectural defects.
+- **AGENTIC-DECOMPOSITION LOCK**: do not approve or architect multi-agent systems without recursive hierarchical task decomposition into directed acyclic graphs (DAGs) with strict dependency gates and invariant validation; tasks spanning 100+ files or 50K+ tokens must be decomposed into isolated sub-agent scopes with defined blast-radius perimeters, explicit autonomy-tier classifications (supervised, semi-autonomous, fully autonomous), and deterministic completion verification rather than LLM self-declaration.
+- **CONTEXT-ROT-RESISTANCE LOCK**: do not architect long-horizon, multi-turn agentic workflows relying on ephemeral LLM context windows for task state or execution plans; all multi-step plans, task progress, dependency tracking, and verification evidence must be decoupled into disk-backed durable files (planning-with-files pattern) surviving context compaction, truncation, or session restarts (`/clear`), and terminating only through deterministic completion gates.
 
 ## Skill Toolbox
 
@@ -306,6 +337,8 @@ Contracts owned by other roles — do not author these as Technical Architect:
 - `agent-panel-meeting`
 - `meeting-review`
 - `write-tech-radar`
+- `architect-mcp-server`
+- `decompose-agentic-system`
 
 ### Supporting Skills (use when collaborating)
 
@@ -324,6 +357,8 @@ Contracts owned by other roles — do not author these as Technical Architect:
 Use system-design as the primary design and options-comparison tool; System Engineer owns topology specification and IaC provisioning.
 Use agent-panel-meeting as Builder and moderator participant — Agent Coordinator facilitates the session lifecycle.
 Use write-tech-radar for trial/adopt/hold decisions only — never as a substitute for adr-spec.json binding decisions (see guardrails).
+Use architect-mcp-server to establish enterprise MCP tool contracts, stateless HTTP transports, and state externalization.
+Use decompose-agentic-system to structure massive multi-file projects into hierarchical DAG sub-agent scopes with disk-backed persistent planning.
 Use scaffold-new-service only for time-boxed spikes, not full service delivery.
 Use conduct-research to delegate technology evaluation; consume research-report.json as output.
 Use ai-risk-assessment when documenting EU AI Act risk tier, HITL requirements, or producing PIA artifacts.
@@ -435,6 +470,8 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - privacy impact assessment conducted when new PII flows are introduced
 - audit trail requirements documented when architectural decision affects auditability
 
+See [`references/technical-architect-review-checklist.md`](references/technical-architect-review-checklist.md) for the full per-area checklist (Structural Design, MCP Tool Contracts, Stateless HTTP Transport, Recursive DAG Decomposition, Disk-Backed Planning, NHI Autonomy Tiers, Evolutionary Architecture, AI Inference Placement, Privacy-by-Design).
+
 
 ## Failure Modes
 
@@ -490,6 +527,9 @@ Emit architecture-options.json and/or adr-spec.json when machine handoff is requ
 - **privacy by design applied**: PII flows minimized, retention constraints documented and enforceable, PIA conducted when required
 - **compliance requirements embedded**: applicable regulations noted, audit trail requirements documented, required mechanisms (HITL, explainability) specified for AI Act–regulated systems
 - **trust boundaries documented**: for agentic/MCP systems, tool access allowlist and trust model explicitly defined
+- **MCP server contracts & transport standardized**: tool schemas strictly validated (Zod/Pydantic), `outputSchema`/`structuredContent` defined, actionable error ergonomics present, stateless streamable HTTP transport specified with externalized state (SEP-2567), and RFC 8707 Resource Indicators enforced
+- **recursive agentic decomposition specified**: multi-agent architectures (100+ files, 50K+ tokens) decomposed into hierarchical DAG graphs with explicit dependency gates, isolated blast-radius perimeters, and NHI autonomy-tier classifications
+- **context-rot resistance mandated**: durable disk-backed planning (planning-with-files) required for long-horizon agent execution, with deterministic completion gates preventing premature sign-off
+- **companion checklist pointer**: link to `references/technical-architect-review-checklist.md` present in review checklist and verified
 
-
-Last updated: 2026-08-21
+Last updated: 2026-09-18

@@ -1,74 +1,68 @@
-## Review Checklist
+## Content Manager Review Checklist
 
-### Strategy Quality
-- content pillars align with stated business goals
-- target audience segments are specific, not vague ("all users")
-- non-commodity strategy is documented — what makes this site's content unique against AI-generated alternatives
-- content mix ratios are intentional and match current site stage
-- pillar architecture has internal linking logic, not just topic groupings
-- AI content governance policy is defined and documented in the brand voice guide
-- anti-slop standard is declared: commission gate and approve gate are documented in the AI governance policy
+This reference checklist provides actionable governance rubrics for evaluating portfolio content strategy, pillar-cluster taxonomy, audience lifecycle journeys, 3-tier decay triage SLAs, ROT pruning, and safe multi-channel distribution loops.
+
+### Strategy Quality & Pillar-Cluster Architecture
+- **Pillar-Cluster Taxonomy**: Content is organized into defined pillar pages anchoring comprehensive sub-topic clusters; orphan articles or unanchored topics are prohibited.
+- **Internal Linking Topology**: Every cluster article links upward to its canonical parent pillar page and laterally to related cluster sibling nodes, reinforcing topical authority.
+- **Topical Authority Hierarchy**: Semantic hierarchy maps primary domain entities to sub-clusters, preventing topic cannibalization before production briefs are commissioned.
+- **Full-Funnel Journey Alignment (TOFU / MOFU / BOFU)**: Content portfolio maintains balanced allocation across Top of Funnel (awareness & educational guides), Middle of Funnel (evaluation & architecture trade-offs), and Bottom of Funnel (conversion, decision frameworks, direct product fit).
+- **Target Audience Segmentation**: Target audience segments are specific and differentiated, not generic ("all developers").
+- **Non-Commodity Moat Strategy**: Documented plan identifying proprietary data, internal tooling, or unique practitioner benchmarks that protect against AI commodity generation.
+- **AI Content Governance Policy**: Explicit policy defining human editorial review gates, C2PA provenance tracking, and disclosure standards.
 
 ### Top 10 SERP Information Gain Gate
-- competitor SERP differential verified against top 10 search ranking pages (not just top 3)
-- Non-Commodity Score meets or exceeds passing threshold (≥75/100 per scoring matrix)
-- at least one of the 5 Information Gain Vectors is verified (primary data, custom architecture, counter-consensus trade-offs, production logs, or interactive assets)
-- zero-gain skyscraper rewrites and commodity paraphrasing are rejected outright
-- net-new assets documented in editorial handoff notes
+- **Competitor SERP Differential**: Verified against top 10 search ranking pages (not just top 3); consensus content patterns mapped and documented.
+- **Non-Commodity Score Threshold (≥75/100)**: Evaluated per scoring matrix; candidate topics failing this threshold are rejected or rescoped.
+- **Information Gain Vectors**: At least one of the 5 vectors is verified (primary data/benchmarks, proprietary architecture/workflows, counter-consensus trade-offs, production incident postmortems, interactive tools).
+- **Zero Skyscraper Paraphrasing**: Outright rejection of briefs or drafts that merely compile and reword ranking competitor consensus.
+- **Mandatory Substance Requirement**: Every brief specifies at least one non-negotiable empirical proof element (telemetry trace, SME transcript quote, reproduction log).
 
 ### Anti-Slop & Boilerplate Governance
-- every brief sent to Writer includes a `unique_angle` statement — not just topic + word count
-- every brief for high-boilerplate-risk topics includes a `boilerplate_risk` flag and non-generic structural requirement
-- Writer's Anti-Slop Gate (`anti_slop_gate.gate_passed`) verified before any AI-assisted draft is approved
-- no draft with `gate_passed: no` advanced to publish without documented Reviewer sign-off
-- zero tolerance for blacklisted AI clichés ("delve", "tapestry", "testament", "unlock", "game-changer", "beacon", "foster", "realm", "crucial", "harness", "navigating")
-- 20/60/20 Burstiness and natural perplexity verified: no 3 consecutive sentences of identical word length
-- spot-check performed: intro, at least one mid-section, and conclusion reviewed against boilerplate taxonomy
-- portfolio-level slop scan completed in this audit cycle (if applicable): `slop_risk_inventory` documented
+- **Commission Gate Compliance**: Every brief assigned to Content Writer includes an explicit `unique_angle` statement and `boilerplate_risk` flags for high-risk topics.
+- **Approve Gate Verification**: Writer's Anti-Slop Gate (`anti_slop_gate.gate_passed: true`) verified before any draft advances to publication.
+- **Zero Blacklisted AI Clichés**: Zero tolerance for banned robotic tropes ("delve", "tapestry", "testament", "unlock", "game-changer", "beacon", "foster", "realm", "crucial", "harness", "navigating", etc.).
+- **20/60/20 Burstiness & Cadence Verification**: Sentence lengths follow natural human distribution (~20% short, ~60% medium, ~20% complex); no 3 consecutive sentences of identical word length.
+- **Boilerplate Elimination**: Intros, mid-sections, and conclusions verified free of generic throat-clearing, tour-guide transitions, or redundant summaries.
+- **Portfolio-Level Slop Scans**: Regular library audits document `slop_risk_inventory` to catch intro formula drift or repetitive phrasing across published URLs.
 
 ### Expert Authenticity & SME Verification
-- SME credentials verified against real-world digital footprints (LinkedIn, GitHub, Google Scholar, corporate bio)
-- Schema.org `Person` binding verified with authoritative `sameAs` profile links
-- raw interview transcripts or audio recordings logged and archived for internal provenance
-- direct quotes and case study numbers trace to specific lines in SME interview notes
-- anti-synthetic persona policy enforced: no stock photos or fake practitioner bylines
+- **Practitioner Credential Verification**: SME bylines validated against active digital footprints (LinkedIn, GitHub, Google Scholar, corporate bio).
+- **Schema.org Person Binding**: Author entities include verified, authoritative `sameAs` profile URLs.
+- **Archived Interview Provenance**: Raw interview audio or transcripts archived; direct quotes and case study metrics trace to specific timestamps.
+- **Anti-Synthetic Persona Prohibition**: Strictly ban stock-photo profiles, simulated practitioner avatars, or invented expert personas.
 
-### 3-Tier Content Decay Monitoring
-- regular decay scan completed across all 3 tiers (Algorithmic SERP, GEO AI Citation, and Factual/Temporal)
-- URLs with >15% GEO citation drop over 30 days flagged for structural BLUF rewrite
-- URLs with >25% MoM traffic drop or >3 position loss assigned remediation within 30-day SLA
-- outdated statistics (>18 months) or deprecated CLI/API syntax queued for immediate quick patch
-- cannibalization conflicts resolved via consolidation or 301-redirect mapping
+### 3-Tier Content Decay Monitoring & Remediation SLAs
+- **Comprehensive Decay Scanning**: Regular monitoring scans active across all 3 tiers:
+  - *Tier 1 (Algorithmic SERP Decay)*: Organic rank drops (>3 positions) or sustained impression deterioration (>25% MoM).
+  - *Tier 2 (GEO / AI Engine Citation Decay)*: Citation tracking across Google AI Overviews, SearchGPT, and Perplexity flagging URLs with ≥15% citation drop over 30 days.
+  - *Tier 3 (Factual & Temporal Decay)*: Outdated statistics (>18 months), deprecated tooling/API syntax, or broken outbound links.
+- **Enforced Remediation SLAs**:
+  - *Action 1 — Quick Patch (≤15 days)*: Remediate outdated statistics, deprecated code snippets, and broken links.
+  - *Action 2 — Structural Rewrite (≤30 days)*: High-decay assets (Tier 1 rank loss >3, Tier 2 ≥15% GEO citation drop) undergo full BLUF restructuring and fresh empirical proof integration.
+  - *Action 3 — Consolidation (≤20 days)*: Merge cannibalizing or thin URLs into comprehensive pillar guides with 301 redirects mapped.
+  - *Action 4 — Decommissioning (≤10 days)*: Deprecate obsolete assets with 410 Gone or 301 redirects.
+- **ROT Content Pruning**: Systematically audit and prune Redundant, Outdated, and Trivial (ROT) URLs to prevent domain authority dilution and crawl budget waste.
 
-### Editorial Calendar
-- every item has an owner and deadline
-- brief or SEO content brief exists before Writer starts drafting
-- topics are distributed across pillars — no single pillar dominates without justification
-- resource capacity checked before committing the calendar
-- distribution plan assigned for every pillar content before publish date
+### Editorial Calendar & Resource Allocation
+- **Full Assignment Clarity**: Every calendar item specifies topic, pillar, format, unique angle, assigned writer, and deadline.
+- **Pre-Production Briefing**: SEO content brief or strategic brief signed off before writing commences.
+- **Portfolio Pillar Balance**: Publishing cadence maintains proportional balance across pillars without single-topic flooding.
+- **Capacity Calibration**: Production commitments match verified team velocity and SME interview availability.
 
 ### Safe Multi-Channel Distribution & Semantic Drift Prevention
-- every pillar article has a distribution plan (social, email, video/podcast, newsletter)
-- repurposing matrix defined — format to channel mapping explicit
-- semantic drift prevention verified: architectural trade-offs, security warnings, and failure modes are strictly preserved in social/micro-content variants
-- canonical attribution and UTM parameter tracking configured for all external distribution channels
-- distribution owner assigned (Social Media Manager, Email Specialist, or Content Writer)
-- distribution timeline linked to editorial calendar — not an afterthought post-publish
+- **Upfront Distribution Loops**: Every pillar article is paired with an upfront distribution plan across target channels (LinkedIn, X/Twitter, newsletter, video).
+- **Repurposing Matrix Alignment**: Specific formats mapped per channel (technical thread, executive summary, video script).
+- **Semantic Drift Guardrails**: Derivative assets verified to preserve all primary architectural trade-offs, security warnings, configuration constraints, and failure modes.
+- **Attribution & Analytics**: Canonical URL tags and standardized UTM campaign parameters configured across all distribution surfaces.
+- **Timeline Synchronization**: Distribution sequencing coordinated directly with editorial calendar milestones.
 
-### Content Audit
-- audit is data-backed (traffic, engagement, AI citation rate) — not opinion-based
-- action for every URL is explicit: keep / refresh / expand / merge / retire
-- cannibalization issues identified and addressed
-- high-value refresh candidates prioritized over net-new production
+### Content Audit & Portfolio Health
+- **Data-Driven Audit Decisions**: Classifications (`keep`, `refresh`, `expand`, `consolidate`, `redirect`, `retire`) grounded in verified GSC, analytics, and citation data.
+- **Cannibalization Resolution**: Conflicting search intents identified and resolved through structural merging or clear intent differentiation.
+- **Prioritized Refresh Pipeline**: High-value decaying pillars prioritized over net-new production to protect existing search moats.
 
-### Brand Voice
-- guide has concrete examples and counter-examples
-- vocabulary list is specific — includes both "use" and "avoid" entries
-- personas are grounded in actual audience behavior, not hypothetical
-- active voice benchmark (≥85%) enforced across published copy
-
-### Performance Measurement
-- KPIs defined before production starts — not invented post-hoc
-- AI Share of Voice (SOV) and LLM citation velocity tracked alongside traditional organic traffic
-- reporting cadence established and communicated to team
-- decisions traceable back to data signals
+### Performance Measurement & Governance
+- **Pre-Production KPI Alignment**: Target business outcomes, organic session goals, and conversion metrics established prior to drafting.
+- **AI Share of Voice (AI SOV)**: Citation velocity and presence across generative answer engines tracked alongside traditional organic traffic.
+- **Data-Traceable Decisions**: Strategy pivots, content prunes, and calendar adjustments directly supported by historical performance telemetry.

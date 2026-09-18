@@ -56,13 +56,13 @@
       "role": "content-manager",
       "agent_card": "core/a2a/registry/content-manager.agent-card.json",
       "url": "pack://agent-skills/core/roles/content-manager.md",
-      "description": "direct the overall content portfolio strategy of a website — from designing content pillar architecture, governing the c"
+      "description": "direct the overall content portfolio strategy of a website — from architecting comprehensive pillar-cluster taxonomies, "
     },
     {
       "role": "content-writer",
       "agent_card": "core/a2a/registry/content-writer.agent-card.json",
       "url": "pack://agent-skills/core/roles/content-writer.md",
-      "description": "produce new articles that match the intended audience, voice, and evidence bar — using deep research when facts are not "
+      "description": "produce new articles, landing pages, and direct-response conversion copy that match the intended audience, voice, and ev"
     },
     {
       "role": "data-analyst",
