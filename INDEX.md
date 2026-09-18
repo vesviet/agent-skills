@@ -80,7 +80,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@agent-delegation`** | Delegate scoped sub-tasks from a supervisor agent to specialist worker agents using structured A2A t... | [`core/skills/agent/agent-delegation/SKILL.md`](./core/skills/agent/agent-delegation/SKILL.md) |
 | **`@agent-graph-orchestration`** | Model multi-phase delivery as a directed graph with parallel branches, phase gates, and A2A delegati... | [`core/skills/agent/agent-graph-orchestration/SKILL.md`](./core/skills/agent/agent-graph-orchestration/SKILL.md) |
 | **`@agent-handoff`** | Produce concise agent handoffs, status updates, and completion summaries that preserve phase state, ... | [`core/skills/agent/agent-handoff/SKILL.md`](./core/skills/agent/agent-handoff/SKILL.md) |
-| **`@agent-memory-compaction`** | Compact long-running agent conversation context into a minimal working state by preserving goals, co... | [`core/skills/agent/agent-memory-compaction/SKILL.md`](./core/skills/agent/agent-memory-compaction/SKILL.md) |
+| **`@agent-memory-compaction`** | Compact long-running agent conversation context into an anchored 10-slot working state by preserving... | [`core/skills/agent/agent-memory-compaction/SKILL.md`](./core/skills/agent/agent-memory-compaction/SKILL.md) |
 | **`@agent-model-routing`** | Select the most cost-effective model for each task or sub-task based on complexity, risk tier, and b... | [`core/skills/agent/agent-model-routing/SKILL.md`](./core/skills/agent/agent-model-routing/SKILL.md) |
 | **`@agent-observability`** | Trace agent reasoning chains, tool call sequences, context injections, and token costs to enable deb... | [`core/skills/agent/agent-observability/SKILL.md`](./core/skills/agent/agent-observability/SKILL.md) |
 | **`@agent-panel-meeting`** | Orchestrate a 6-round, multi-role cross-examination panel meeting to debate architecture, code, or f... | [`core/skills/agent/agent-panel-meeting/SKILL.md`](./core/skills/agent/agent-panel-meeting/SKILL.md) |
@@ -349,7 +349,9 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@add_page_route`** | `add-page-route` | Active `@role` |
 | **`@add_service_client`** | `add-service-client` | Active `@role` |
 | **`@add_ui_component`** | `add-ui-component` | Active `@role` |
+| **`@agent-memory-compaction`** | `agent-memory-compaction` | Active `@role` |
 | **`@agent_delegation`** | `agent-delegation` | Active `@role` |
+| **`@agent_memory_compaction`** | `agent-memory-compaction` | Active `@role` |
 | **`@agentic_decomposition`** | `decompose-agentic-system` | Active `@role` |
 | **`@agentic_task_decomposition`** | `decompose-agentic-system` | Active `@role` |
 | **`@analytical_sql`** | `query-analytical-engine` | Active `@role` |
@@ -377,6 +379,10 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@clickhouse_tuning`** | `optimize-olap-database` | Active `@role` |
 | **`@columnar_database_optimization`** | `optimize-olap-database` | Active `@role` |
 | **`@combinatorial_testing`** | `combinatorial-testing` | Active `@role` |
+| **`@compact`** | `agent-memory-compaction` | Active `@role` |
+| **`@compact-memory`** | `agent-memory-compaction` | Active `@role` |
+| **`@compact_memory`** | `agent-memory-compaction` | Active `@role` |
+| **`@compaction`** | `agent-memory-compaction` | Active `@role` |
 | **`@component-composition`** | `component-composition` | Active `@role` |
 | **`@component_composition`** | `component-composition` | Active `@role` |
 | **`@composition`** | `component-composition` | Active `@role` |
@@ -446,6 +452,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@mcp_builder`** | `architect-mcp-server` | Active `@role` |
 | **`@mcp_server`** | `build-mcp-server` | Active `@role` |
 | **`@mcp_server_architecture`** | `architect-mcp-server` | Active `@role` |
+| **`@memory-compaction`** | `agent-memory-compaction` | Active `@role` |
+| **`@memory_compaction`** | `agent-memory-compaction` | Active `@role` |
 | **`@migration`** | `create-migration` | Active `@role` |
 | **`@mobile_app`** | `develop-mobile-app` | Active `@role` |
 | **`@model_routing`** | `agent-model-routing` | Active `@role` |

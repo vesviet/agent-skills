@@ -373,6 +373,14 @@ SKILL_ALIASES = {
     "quality_gate": ["agent-quality-gate"],
     "semantic_memory": ["agent-semantic-memory"],
     "tool_orchestration": ["agent-tool-orchestration"],
+    "compact": ["agent-memory-compaction"],
+    "compact_memory": ["agent-memory-compaction"],
+    "compact-memory": ["agent-memory-compaction"],
+    "memory_compaction": ["agent-memory-compaction"],
+    "memory-compaction": ["agent-memory-compaction"],
+    "compaction": ["agent-memory-compaction"],
+    "agent_memory_compaction": ["agent-memory-compaction"],
+    "agent-memory-compaction": ["agent-memory-compaction"],
     
     # Business & Vietnam Domain
     "accounting": ["manage-vietnam-accounting"],
