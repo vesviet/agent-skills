@@ -8,8 +8,8 @@ Packs describe how to assemble the portable core with zero or more overlays for 
 |------|----------|-------------|-------------|
 | `global-engineering` | [manifest.yaml](global-engineering/manifest.yaml) | `core` only | All general engineering |
 | `vesviet-team` | [manifest.yaml](vesviet-team/manifest.yaml) | `core` + `overlays/vesviet-content` | v5.0.0 · Twin Hugo architecture (tanhdev.com & learn.tanhdev.com), 100-Round Deep Research Protocol, 4-Role Swarm pipeline (@content-writer, @content-manager, @technical-writer, @seo-analyst), 10 Anchor Pillar Hubs, one-way authority flow |
-| `lease-team` | [manifest.yaml](lease-team/manifest.yaml) | `core` + `overlays/lease-content` + `overlays/seo-publishing` | Content, GEO/AEO, 5-Pillar |
-| `maylanhtreotuong-team` | [manifest.yaml](maylanhtreotuong-team/manifest.yaml) | `core` + `overlays/astro-cloudflare` + `overlays/maylanhtreotuong-content` + `overlays/seo-publishing` | Content, SEO, HVAC, Cloudflare |
+| `lease-team` | [manifest.yaml](lease-team/manifest.yaml) | `core` + `overlays/lease-content` + `overlays/seo-publishing` | v5.0.0 · Expat housing & rental legal authority (leaseinvietnam.com), 5-Pillar Content Framework, <AnswerFirst> component (100% coverage across 463 posts), 61 luxury property portfolios, 98 E-E-A-T author personas, 8 empirical AEO upgrade batches |
+| `maylanhtreotuong-team` | [manifest.yaml](maylanhtreotuong-team/manifest.yaml) | `core` + `overlays/astro-cloudflare` + `overlays/maylanhtreotuong-content` + `overlays/seo-publishing` | v5.0.0 · Vietnam HVAC engineering knowledge & empirical review portal (maylanhtreotuong.com), TCVN 7830:2021 CSPF & ASHRAE 55-2023 comfort metrics, Hioki 3334 / RION NL-52 empirical testbeds, 7-category strict Silo link topology, 72 HVAC product entities |
 | `mdg-team` | [manifest.yaml](mdg-team/manifest.yaml) | `core` + `overlays/laravel-filament` + `overlays/maydiengiaisaigon` | Laravel 13, Filament v4, PHP 8.4 |
 | `icm-team` | [manifest.yaml](icm-team/manifest.yaml) | `core` + `overlays/astro-cloudflare` + `overlays/icm-main` | Astro v6+, Cloudflare Workers |
 | `obj-team` | [manifest.yaml](obj-team/manifest.yaml) | `core` + `overlays/astro-cloudflare` + `overlays/obj-configurator` | Astro, R3F v9, WebGPU |
@@ -35,6 +35,25 @@ The `vesviet-team` pack orchestrates high-authority content engineering and tech
   - `@seo-analyst`: SEO, GEO/AEO, and topology audit enforcing Answer-First blocks, one-way link rules, 10 Anchor Pillar Hub connectivity, and Schema.org JSON-LD graph metadata.
 - **10 Anchor Pillar Hubs**: Structural backbone (Raft consensus, Kubernetes platform engineering, Go concurrency, eBPF Linux observability, Kafka event streaming, LSM-tree storage, zero-trust service mesh, database internals, SRE chaos engineering, AI agent infrastructure) enforcing a zero-orphan content policy.
 
+### Pack Spotlight: lease-team (v5.0.0)
+
+The `lease-team` pack governs content engineering, legal compliance, and AI search visibility for **Lease in Vietnam** (`leaseinvietnam.com`):
+
+- **5-Pillar Content Framework**: Systematic partition into Intelligence (market data & yield curves), Information (Housing Law 2023 & bilingual lease compliance), Insights (unbiased compound reviews), Neighborhoods (micro-district livability audits), and Integration (cultural & utility onboarding).
+- **2026/2027 GEO/AEO Standards**: Mandatory `<AnswerFirst>` callout component (&le;60 words, &ge;3 numerical data points) implemented across 100% of the 463-post corpus; anti-slop gating eliminating generic marketing prose.
+- **Property-Post Entity Link Equity**: Bidirectional interconnectivity weaving 61 luxury property portfolios (`src/data/property/`) with 463 editorial guides, enforcing a zero-orphan structural policy.
+- **98-Persona E-E-A-T Registry**: Author verification across 5 professional disciplines (Senior Property Attorneys, Tax CPAs, Expat Relocation Directors, Civil Engineers, and Market Analysts).
+- **8-Batch Empirical AEO Upgrade Discipline**: Continuous lifecycle refactoring existing content into Masterclass grade with structured comparison tables, bilingual landlord scripts, and validated legal citations.
+
+### Pack Spotlight: maylanhtreotuong-team (v5.0.0)
+
+The `maylanhtreotuong-team` pack orchestrates empirical HVAC technical publishing and edge product evaluation for **Máy Lạnh Treo Tường** (`maylanhtreotuong.com`):
+
+- **HVAC Engineering Standards**: Grounded in thermodynamic physics: **TCVN 7830:2021** CSPF seasonal cooling efficiency metrics and **ASHRAE Standard 55-2023** thermal comfort zones (PMV/PPD metrics, occupied air velocity $0.15 - 0.25\text{ m/s}$, humidity control $45\% - 60\% RH$).
+- **Hardware-Verified Empirical Instrumentation**: All product evaluations cite testbed measurements from the Ho Chi Minh City lab using **Hioki 3334** AC/DC Power Analyzers (power curve & inverter modulation) and **RION NL-52** Sound Level Meters (1-meter calibrated dBA acoustic readings).
+- **7-Category Strict Silo Link Topology**: Strict silo isolation across 300 articles (`gia-ca`, `huong-dan`, `kien-thuc`, `kinh-nghiem`, `mua-sam`, `review`, `so-sanh`) eliminating topical dilution; cross-silo linkage allowed only via 72 HVAC Product Entities (`src/data/product/`).
+- **Rich Schema & AI Overview Snippets**: Comprehensive Schema.org graphs (`Product`, `Review`, `HowTo`, `FAQPage`) paired with `<AnswerFirst>` blocks tailored for Google AI Overviews, Perplexity, and ChatGPT Search.
+- **Astro v5 + Cloudflare Pages Edge Engine**: Microsecond edge delivery with 100/100 Core Web Vitals, automated vacuum pump verification checklists, and PCB diagnostic guides.
 
 ## 2026 Manifest Schema (v2)
 

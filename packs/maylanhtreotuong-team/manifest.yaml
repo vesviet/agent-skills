@@ -2,7 +2,7 @@ schema_version: "2"
 
 name: maylanhtreotuong-team
 display_name: Máy Lạnh Treo Tường Content & Engineering Team
-description: Content, SEO, and Cloudflare Pages engineering pack for Máy Lạnh Treo Tường (Vietnam air conditioning knowledge & review portal). Composes portable core with astro-cloudflare, maylanhtreotuong-content, and seo-publishing overlays. Enforces TCVN 7830:2021 CSPF standards, ASHRAE 55-2023 comfort metrics, empirical power/acoustic testing (Hioki & RION), 7-category Silo link topology, and 2026/2027 GEO/AEO Answer-First rigor.
+description: High-authority content, SEO engineering, and Cloudflare Pages pack for Máy Lạnh Treo Tường (https://maylanhtreotuong.com - Vietnam HVAC knowledge & empirical review portal). Composes portable core with overlays/astro-cloudflare, overlays/maylanhtreotuong-content, and overlays/seo-publishing. Enforces TCVN 7830:2021 CSPF standards, ASHRAE 55-2023 comfort metrics, empirical hardware power/acoustic testing (Hioki 3334 & RION NL-52), 7-category strict Silo link topology, 100% AnswerFirst GEO/AEO rigor, and a 4-role multi-agent delivery swarm.
 version: 5.0.0
 
 tags:
@@ -14,6 +14,7 @@ tags:
   - cloudflare
   - geo-aeo
   - vietnam
+  - engineering
 author: user
 maintained_by: platform-team
 license: MIT
@@ -48,6 +49,7 @@ content_focus:
     - task-planner
     - content-manager
   secondary_roles:
+    - technical-writer
     - cloudflare-engineer
     - frontend-developer
     - reviewer
@@ -57,24 +59,32 @@ content_focus:
   audit_skills:
     - optimize-seo
     - audit-content
+    - audit-technical-seo
+    - implement-schema-markup
   standards:
     - "maylanhtreotuong-content rules: content-schema, hvac-engineering-standards, silo-linking"
-    - "seo-publishing overlay: 7-day boards, GEO/AI visibility tracking"
+    - "seo-publishing overlay: 7-day sprint boards, GEO/AEO AI citation tracking"
   workflows:
     - publish-maylanhtreotuong-content
+    - empirical-hvac-upgrade-lifecycle
     - seo-content-lifecycle
     - content-publishing
     - seo-keyword-brief
 
 corpus:
-  snapshot: "2026-09-10"
+  snapshot: "2026-09-19"
   maylanhtreotuong:
     posts: 300
     products: 72
     categories: 7
+    words: 1492749
+    author_personas: 14
     answerfirst_coverage: "300/300"
     anti_slop_coverage: "300/300"
     indexes:
+      - maylanhtreotuong/content_audit_master_index_2026.md
+      - maylanhtreotuong/MASTER_AUDIT_REPORT.md
+      - maylanhtreotuong/seo_audit_report.md
       - maylanhtreotuong/plan/content-inventory-index-2027.md
 
 data_classification: internal
@@ -88,6 +98,8 @@ activation:
   glob_patterns:
     - "maylanhtreotuong/src/data/**/*.md"
     - "maylanhtreotuong/src/data/**/*.mdx"
+    - "src/data/product/**/*.md"
+    - "src/data/post/**/*.md"
 
 governance:
   eu_ai_act_tier: minimal_risk
