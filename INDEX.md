@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `5.0.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **34 Roles** | **132 Skills** (120 Core + 12 Overlays) | **24 Workflows** | **50 Data Contracts**
+> **Total Catalog:** **34 Roles** | **132 Skills** (120 Core + 12 Overlays) | **25 Workflows** | **52 Data Contracts**
 
 ---
 
@@ -47,7 +47,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@devops-engineer`** | DevOps Engineer | `@devops`, `@infra`, `@infrastructure` | `setup-deployment`, `debug-runtime-platform`, `add-telemetry-instrumentation` *(+13 more)* | [`core/roles/devops-engineer.md`](./core/roles/devops-engineer.md) |
 | **`@ecommerce-engineer`** | Ecommerce Engineer | `@ecommerce`, `@ecom` | `integrate-payment-gateway`, `handle-checkout-flow`, `manage-product-catalog` *(+13 more)* | [`core/roles/ecommerce-engineer.md`](./core/roles/ecommerce-engineer.md) |
 | **`@frontend-developer`** | Frontend Developer | `@frontend`, `@fe`, `@frontend-dev`, `@ui-developer` | `accessibility-review`, `add-page-route`, `add-ui-component` *(+17 more)* | [`core/roles/frontend-developer.md`](./core/roles/frontend-developer.md) |
-| **`@mmo-engineer`** | MMO Engineer | `@mmo`, `@affiliate`, `@growth` | `deploy-mmo-infrastructure`, `setup-tracking-system`, `create-automation-script` *(+7 more)* | [`core/roles/mmo-engineer.md`](./core/roles/mmo-engineer.md) |
+| **`@mmo-engineer`** | MMO Engineer | `@mmo`, `@affiliate`, `@growth`, `@growth-lead`, `@growth-engineer`, `@media-buyer`, `@affiliate-marketer` | `deploy-mmo-infrastructure`, `setup-tracking-system`, `create-automation-script` *(+7 more)* | [`core/roles/mmo-engineer.md`](./core/roles/mmo-engineer.md) |
 | **`@mobile-engineer`** | Mobile Engineer | `@mobile`, `@flutter`, `@react-native` | `develop-mobile-app`, `deploy-mobile-app`, `add-ui-component` *(+11 more)* | [`core/roles/mobile-engineer.md`](./core/roles/mobile-engineer.md) |
 | **`@product-manager`** | Product Manager | `@pm`, `@prod-mgr`, `@product-owner`, `@po` | `define-product-strategy`, `prioritize-roadmap`, `model-saas-metrics` *(+14 more)* | [`core/roles/product-manager.md`](./core/roles/product-manager.md) |
 | **`@project-manager`** | Project Manager | `@pjm`, `@proj-mgr`, `@scrum-master` | `meeting-review`, `agent-delegation`, `agent-graph-orchestration` *(+8 more)* | [`core/roles/project-manager.md`](./core/roles/project-manager.md) |
@@ -202,13 +202,13 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
-| **`@analyze-campaign-roi`** | Analyze S2S conversion data, monitor ad account die-rates, and calculate campaign ROI based on proxy... | [`core/skills/mmo/analyze-campaign-roi/SKILL.md`](./core/skills/mmo/analyze-campaign-roi/SKILL.md) |
+| **`@analyze-campaign-roi`** | Analyze S2S conversion data, customer lifetime value (LTV) cohort curves, Blended ROAS/MER, multi-ti... | [`core/skills/mmo/analyze-campaign-roi/SKILL.md`](./core/skills/mmo/analyze-campaign-roi/SKILL.md) |
 | **`@create-automation-script`** | Build Playwright/Puppeteer automation scripts that connect via CDP to Anti-Detect browsers or use C+... | [`core/skills/mmo/create-automation-script/SKILL.md`](./core/skills/mmo/create-automation-script/SKILL.md) |
-| **`@deploy-mmo-infrastructure`** | Deploy and manage proxy pools (Residential/4G) and Anti-Detect Browser orchestration environments (v... | [`core/skills/mmo/deploy-mmo-infrastructure/SKILL.md`](./core/skills/mmo/deploy-mmo-infrastructure/SKILL.md) |
-| **`@deploy-proxyware-fleet`** | Containerize and orchestrate massive fleets of passive income nodes (Honeygain, EarnApp, Pawns.app) ... | [`core/skills/mmo/deploy-proxyware-fleet/SKILL.md`](./core/skills/mmo/deploy-proxyware-fleet/SKILL.md) |
-| **`@generate-mmo-content`** | Use AI APIs to procedurally generate landing pages, creatives, and spin content for large-scale camp... | [`core/skills/mmo/generate-mmo-content/SKILL.md`](./core/skills/mmo/generate-mmo-content/SKILL.md) |
+| **`@deploy-mmo-infrastructure`** | Deploy and manage proxy pools (Residential/4G) with dynamic health probes and Anti-Detect Browser or... | [`core/skills/mmo/deploy-mmo-infrastructure/SKILL.md`](./core/skills/mmo/deploy-mmo-infrastructure/SKILL.md) |
+| **`@deploy-proxyware-fleet`** | Containerize and orchestrate modern DePIN bandwidth monetization light nodes (Grass, Dawn, Nodepay) ... | [`core/skills/mmo/deploy-proxyware-fleet/SKILL.md`](./core/skills/mmo/deploy-proxyware-fleet/SKILL.md) |
+| **`@generate-mmo-content`** | Generate Programmatic SEO (pSEO) Answer-First landing pages with JSON-LD schemas and multimodal shor... | [`core/skills/mmo/generate-mmo-content/SKILL.md`](./core/skills/mmo/generate-mmo-content/SKILL.md) |
 | **`@manage-mmo-assets`** | Manage and share MMO assets (Business Managers, Via, Pixels/Datasets, Anti-Detect profiles) using Ro... | [`core/skills/mmo/manage-mmo-assets/SKILL.md`](./core/skills/mmo/manage-mmo-assets/SKILL.md) |
-| **`@setup-tracking-system`** | Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta Conversio... | [`core/skills/mmo/setup-tracking-system/SKILL.md`](./core/skills/mmo/setup-tracking-system/SKILL.md) |
+| **`@setup-tracking-system`** | Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta CAPI v20+... | [`core/skills/mmo/setup-tracking-system/SKILL.md`](./core/skills/mmo/setup-tracking-system/SKILL.md) |
 
 ### Category: `mobile` (2 skills)
 
@@ -355,9 +355,12 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@agentic_decomposition`** | `decompose-agentic-system` | Active `@role` |
 | **`@agentic_task_decomposition`** | `decompose-agentic-system` | Active `@role` |
 | **`@analytical_sql`** | `query-analytical-engine` | Active `@role` |
+| **`@analyze-campaign-roi`** | `analyze-campaign-roi` | Active `@role` |
 | **`@analyze_business_requirements`** | `analyze-business-requirements` | Active `@role` |
+| **`@analyze_campaign_roi`** | `analyze-campaign-roi` | Active `@role` |
 | **`@analyze_data`** | `analyze-data` | Active `@role` |
 | **`@anti-slop`** | `setup-design-system`, `component-composition` | Active `@role` |
+| **`@anti_detect`** | `create-automation-script` | Active `@role` |
 | **`@anti_slop`** | `setup-design-system`, `component-composition` | Active `@role` |
 | **`@api`** | `add-api-endpoint` | Active `@role` |
 | **`@app_store`** | `deploy-mobile-app` | Active `@role` |
@@ -372,9 +375,14 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@aws_infrastructure`** | `aws-infrastructure` | Active `@role` |
 | **`@ba`** | `analyze-business-requirements`, `elicit-requirements` | Active `@role` |
 | **`@babok`** | `elicit-requirements`, `trace-requirements-impact` | Active `@role` |
+| **`@bandwidth_monetization`** | `deploy-proxyware-fleet` | Active `@role` |
+| **`@blended_roas`** | `analyze-campaign-roi` | Active `@role` |
 | **`@build_data_pipeline`** | `build-data-pipeline` | Active `@role` |
 | **`@build_mcp_server`** | `build-mcp-server` | Active `@role` |
 | **`@business_requirements`** | `analyze-business-requirements` | Active `@role` |
+| **`@campaign_roi`** | `analyze-campaign-roi` | Active `@role` |
+| **`@capi`** | `setup-tracking-system` | Active `@role` |
+| **`@cdp_automation`** | `create-automation-script` | Active `@role` |
 | **`@chdb_query`** | `query-analytical-engine` | Active `@role` |
 | **`@clickhouse_tuning`** | `optimize-olap-database` | Active `@role` |
 | **`@columnar_database_optimization`** | `optimize-olap-database` | Active `@role` |
@@ -392,10 +400,13 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@connection_pooling`** | `optimize-postgres` | Active `@role` |
 | **`@content_audit`** | `audit-content` | Active `@role` |
 | **`@content_strategy`** | `design-content-strategy` | Active `@role` |
+| **`@conversion_api`** | `setup-tracking-system` | Active `@role` |
 | **`@copywriting`** | `write-copy` | Active `@role` |
 | **`@cpm`** | `build-story-map` | Active `@role` |
 | **`@crawlability`** | `audit-technical-seo` | Active `@role` |
+| **`@create-automation-script`** | `create-automation-script` | Active `@role` |
 | **`@create_api`** | `add-api-endpoint` | Active `@role` |
+| **`@create_automation_script`** | `create-automation-script` | Active `@role` |
 | **`@create_migration`** | `create-migration` | Active `@role` |
 | **`@critical_path`** | `build-story-map` | Active `@role` |
 | **`@cross_source_query`** | `query-analytical-engine` | Active `@role` |
@@ -407,9 +418,14 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@decompose_agentic_system`** | `decompose-agentic-system` | Active `@role` |
 | **`@deep_research`** | `conduct-research` | Active `@role` |
 | **`@delegation`** | `agent-delegation` | Active `@role` |
+| **`@depin_bandwidth`** | `deploy-proxyware-fleet` | Active `@role` |
 | **`@deploy`** | `setup-deployment` | Active `@role` |
+| **`@deploy-mmo-infrastructure`** | `deploy-mmo-infrastructure` | Active `@role` |
 | **`@deploy-mobile-app`** | `deploy-mobile-app` | Active `@role` |
+| **`@deploy-proxyware-fleet`** | `deploy-proxyware-fleet` | Active `@role` |
+| **`@deploy_mmo_infrastructure`** | `deploy-mmo-infrastructure` | Active `@role` |
 | **`@deploy_mobile_app`** | `deploy-mobile-app` | Active `@role` |
+| **`@deploy_proxyware_fleet`** | `deploy-proxyware-fleet` | Active `@role` |
 | **`@deployment`** | `setup-deployment` | Active `@role` |
 | **`@design-content-strategy`** | `design-content-strategy` | Active `@role` |
 | **`@design_content_strategy`** | `design-content-strategy` | Active `@role` |
@@ -428,10 +444,14 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@embedded_sql`** | `query-analytical-engine` | Active `@role` |
 | **`@event_handler`** | `add-event-handler` | Active `@role` |
 | **`@expo`** | `develop-mobile-app` | Active `@role` |
+| **`@faceless_video`** | `generate-mmo-content` | Active `@role` |
 | **`@flashlist`** | `develop-mobile-app` | Active `@role` |
 | **`@frontend_testing`** | `frontend-testing` | Active `@role` |
+| **`@generate-mmo-content`** | `generate-mmo-content` | Active `@role` |
+| **`@generate_mmo_content`** | `generate-mmo-content` | Active `@role` |
 | **`@google_play`** | `deploy-mobile-app` | Active `@role` |
 | **`@graph_orchestration`** | `agent-graph-orchestration` | Active `@role` |
+| **`@growth_stack`** | `setup-tracking-system`, `analyze-campaign-roi` | Active `@role` |
 | **`@handoff`** | `agent-handoff` | Active `@role` |
 | **`@hermes`** | `develop-mobile-app` | Active `@role` |
 | **`@humanizer`** | `write-copy` | Active `@role` |
@@ -446,6 +466,9 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@kano`** | `prioritize-roadmap` | Active `@role` |
 | **`@kano_model`** | `prioritize-roadmap` | Active `@role` |
 | **`@kill_early`** | `prioritize-roadmap` | Active `@role` |
+| **`@ltv_roas`** | `analyze-campaign-roi` | Active `@role` |
+| **`@manage-mmo-assets`** | `manage-mmo-assets` | Active `@role` |
+| **`@manage_mmo_assets`** | `manage-mmo-assets` | Active `@role` |
 | **`@manage_secrets`** | `manage-secrets` | Active `@role` |
 | **`@marketing_copy`** | `write-copy` | Active `@role` |
 | **`@mcp_architecture`** | `architect-mcp-server` | Active `@role` |
@@ -455,6 +478,14 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@memory-compaction`** | `agent-memory-compaction` | Active `@role` |
 | **`@memory_compaction`** | `agent-memory-compaction` | Active `@role` |
 | **`@migration`** | `create-migration` | Active `@role` |
+| **`@mmo-assets`** | `manage-mmo-assets` | Active `@role` |
+| **`@mmo-content`** | `generate-mmo-content` | Active `@role` |
+| **`@mmo-infra`** | `deploy-mmo-infrastructure` | Active `@role` |
+| **`@mmo_assets`** | `manage-mmo-assets` | Active `@role` |
+| **`@mmo_campaign`** | `setup-tracking-system`, `generate-mmo-content`, `analyze-campaign-roi` | Active `@role` |
+| **`@mmo_content`** | `generate-mmo-content` | Active `@role` |
+| **`@mmo_growth`** | `deploy-mmo-infrastructure`, `create-automation-script`, `setup-tracking-system` | Active `@role` |
+| **`@mmo_infra`** | `deploy-mmo-infrastructure` | Active `@role` |
 | **`@mobile_app`** | `develop-mobile-app` | Active `@role` |
 | **`@model_routing`** | `agent-model-routing` | Active `@role` |
 | **`@mom-test`** | `define-product-strategy` | Active `@role` |
@@ -493,6 +524,10 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@product-strategy`** | `define-product-strategy` | Active `@role` |
 | **`@product_brief`** | `write-product-brief` | Active `@role` |
 | **`@product_strategy`** | `define-product-strategy` | Active `@role` |
+| **`@proxy-fleet`** | `deploy-proxyware-fleet` | Active `@role` |
+| **`@proxy_fleet`** | `deploy-proxyware-fleet` | Active `@role` |
+| **`@proxyware`** | `deploy-proxyware-fleet` | Active `@role` |
+| **`@pseo_landing`** | `generate-mmo-content` | Active `@role` |
 | **`@quality_gate`** | `agent-quality-gate` | Active `@role` |
 | **`@query-analytical-engine`** | `query-analytical-engine` | Active `@role` |
 | **`@query_analytical_engine`** | `query-analytical-engine` | Active `@role` |
@@ -505,11 +540,15 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@research-and-writing`** | `conduct-research`, `write-article` | Active `@role` |
 | **`@research_and_writing`** | `conduct-research`, `write-article` | Active `@role` |
 | **`@research_writing`** | `conduct-research`, `write-article` | Active `@role` |
+| **`@residential_proxy`** | `deploy-mmo-infrastructure` | Active `@role` |
 | **`@rice`** | `prioritize-roadmap` | Active `@role` |
 | **`@rice_scoring`** | `prioritize-roadmap` | Active `@role` |
 | **`@rls`** | `optimize-postgres` | Active `@role` |
 | **`@roadmap`** | `prioritize-roadmap` | Active `@role` |
+| **`@roi`** | `analyze-campaign-roi` | Active `@role` |
 | **`@rtm`** | `trace-requirements-impact` | Active `@role` |
+| **`@s2s`** | `setup-tracking-system` | Active `@role` |
+| **`@s2s_tracking`** | `setup-tracking-system` | Active `@role` |
 | **`@saas-metrics`** | `model-saas-metrics` | Active `@role` |
 | **`@saas_metrics`** | `model-saas-metrics` | Active `@role` |
 | **`@scaffold_new_service`** | `scaffold-new-service` | Active `@role` |
@@ -524,10 +563,15 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@seo_optimization`** | `optimize-seo` | Active `@role` |
 | **`@service_client`** | `add-service-client` | Active `@role` |
 | **`@session_management`** | `implement-auth` | Active `@role` |
+| **`@setup-tracking-system`** | `setup-tracking-system` | Active `@role` |
 | **`@setup_deployment`** | `setup-deployment` | Active `@role` |
 | **`@setup_design_system`** | `setup-design-system` | Active `@role` |
+| **`@setup_tracking`** | `setup-tracking-system` | Active `@role` |
+| **`@setup_tracking_system`** | `setup-tracking-system` | Active `@role` |
 | **`@setup_visual_regression`** | `setup-visual-regression` | Active `@role` |
 | **`@shadcn`** | `component-composition` | Active `@role` |
+| **`@stealth-automation`** | `create-automation-script` | Active `@role` |
+| **`@stealth_automation`** | `create-automation-script` | Active `@role` |
 | **`@store_compliance`** | `deploy-mobile-app` | Active `@role` |
 | **`@story-map`** | `build-story-map` | Active `@role` |
 | **`@story-mapping`** | `build-story-map` | Active `@role` |
@@ -546,6 +590,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@test_report`** | `write-tests` | Active `@role` |
 | **`@tests`** | `write-tests` | Active `@role` |
 | **`@tool_orchestration`** | `agent-tool-orchestration` | Active `@role` |
+| **`@totp_verification`** | `manage-mmo-assets` | Active `@role` |
+| **`@tracking`** | `setup-tracking-system` | Active `@role` |
 | **`@ui_component`** | `add-ui-component` | Active `@role` |
 | **`@unit-economics`** | `model-saas-metrics` | Active `@role` |
 | **`@unit_economics`** | `model-saas-metrics` | Active `@role` |
@@ -553,6 +599,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@use-case`** | `write-use-cases` | Active `@role` |
 | **`@use_case`** | `write-use-cases` | Active `@role` |
 | **`@van_westendorp`** | `model-saas-metrics` | Active `@role` |
+| **`@vcc_isolation`** | `manage-mmo-assets` | Active `@role` |
 | **`@vietnam_accounting`** | `manage-vietnam-accounting` | Active `@role` |
 | **`@view-transitions`** | `implement-view-transitions` | Active `@role` |
 | **`@view_transitions`** | `implement-view-transitions` | Active `@role` |
@@ -576,7 +623,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🔄 Workflows (24 Workflows)
+## 🔄 Workflows (25 Workflows)
 
 | Workflow | Title | File |
 |:---|:---|:---|
@@ -593,6 +640,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`/dependency-upgrade`** | dependency-upgrade | [`core/workflows/dependency-upgrade.md`](./core/workflows/dependency-upgrade.md) |
 | **`/feature-delivery`** | feature-delivery | [`core/workflows/feature-delivery.md`](./core/workflows/feature-delivery.md) |
 | **`/hotfix-production`** | hotfix-production | [`core/workflows/hotfix-production.md`](./core/workflows/hotfix-production.md) |
+| **`/mmo-campaign-lifecycle`** | mmo-campaign-lifecycle | [`core/workflows/mmo-campaign-lifecycle.md`](./core/workflows/mmo-campaign-lifecycle.md) |
 | **`/period-end-closing`** | period-end-closing | [`core/workflows/period-end-closing.md`](./core/workflows/period-end-closing.md) |
 | **`/qa-validation`** | qa-validation | [`core/workflows/qa-validation.md`](./core/workflows/qa-validation.md) |
 | **`/refactoring`** | refactoring | [`core/workflows/refactoring.md`](./core/workflows/refactoring.md) |
@@ -607,7 +655,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 📑 Data Contracts & Schemas (50 Schemas)
+## 📑 Data Contracts & Schemas (52 Schemas)
 
 | Schema File | Schema Title | Path |
 |:---|:---|:---|
@@ -642,6 +690,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | `incident-report.json` | Incident Report | [`core/contracts/schemas/incident-report.json`](./core/contracts/schemas/incident-report.json) |
 | `learning-assessment-report.json` | Learning Assessment Report | [`core/contracts/schemas/learning-assessment-report.json`](./core/contracts/schemas/learning-assessment-report.json) |
 | `learning-handoff.json` | Learning Handoff | [`core/contracts/schemas/learning-handoff.json`](./core/contracts/schemas/learning-handoff.json) |
+| `mmo-campaign-spec.json` | MMO Campaign Specification | [`core/contracts/schemas/mmo-campaign-spec.json`](./core/contracts/schemas/mmo-campaign-spec.json) |
+| `mmo-roi-report.json` | MMO Campaign ROI Report | [`core/contracts/schemas/mmo-roi-report.json`](./core/contracts/schemas/mmo-roi-report.json) |
 | `performance-audit.json` | Performance Audit Result | [`core/contracts/schemas/performance-audit.json`](./core/contracts/schemas/performance-audit.json) |
 | `period-end-closing-report.json` | Period-End Closing Report | [`core/contracts/schemas/period-end-closing-report.json`](./core/contracts/schemas/period-end-closing-report.json) |
 | `pull-request-spec.json` | Pull Request Specification | [`core/contracts/schemas/pull-request-spec.json`](./core/contracts/schemas/pull-request-spec.json) |

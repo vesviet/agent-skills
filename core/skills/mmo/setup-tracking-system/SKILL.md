@@ -1,6 +1,6 @@
 ---
 name: setup-tracking-system
-description: Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta Conversion API (CAPI), and tracker setups (Voluum/Binom) without relying solely on client-side cookies. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps.
+description: Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta CAPI v20+, TikTok Events API, Google Enhanced Conversions, and affiliate webhooks. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
@@ -10,90 +10,139 @@ Use this skill to deploy highly accurate, privacy-first tracking systems necessa
 
 ## When to Use
 
-- launching a new campaign and wiring conversion postbacks
-- migrating from pixel-only to Server-to-Server (S2S) tracking
-- integrating Meta Conversion API (CAPI) for higher match quality
-- diagnosing attribution gaps or low postback fire rates
-- configuring cloaking / bot-traffic filtering rules in a tracker
+- launching a new performance marketing or affiliate campaign requiring multi-channel attribution
+- migrating from client-side pixels to Server-to-Server (S2S) tracking, Meta CAPI, and TikTok Events API
+- implementing Google Enhanced Conversions with gclid, wbraid, and gbraid click parameter handling
+- wiring affiliate network webhooks for conversions, rebills, cancellations, and chargebacks
+- diagnosing attribution discrepancies, postback drop-offs, or low Event Match Quality (EMQ) scores
 
-## Example (S2S postback with click ID + payout)
+## Example (S2S Postback, TikTok Events API & Google Enhanced Conversions)
 
+```bash
+# Affiliate network conversion postback with transaction ID, click ID, and payout
+https://tracker.example.com/postback?cid={clickid}&payout={payout}&txid={txid}&status={status}
 ```
-# Voluum/Binom postback URL fired by the affiliate network on conversion
-https://tracker.example.com/postback?cid={clickid}&payout={payout}&txid={txid}
 
-# Meta CAPI server-side event (Node)
-await fetch(`https://graph.facebook.com/v19.0/${PIXEL_ID}/events?access_token=${CAPI_TOKEN}`, {
-  method: "POST",
-  body: JSON.stringify({
-    data: [{ event_name: "Purchase", event_time: Math.floor(Date.now()/1000),
-             user_data: { em: [hash(email)] }, custom_data: { value: payout, currency: "USD" } }]
-  })
+```json
+// TikTok Events API payload specification (POST https://business-api.tiktok.com/open_api/v1.3/event/track/)
+{
+  "pixel_code": "C1234567890TIKTOK",
+  "event": "CompletePayment",
+  "event_id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+  "timestamp": "2027-01-15T10:30:00Z",
+  "context": {
+    "user": {
+      "email": "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae",
+      "phone_number": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+      "ttclid": "E.0.123456789.abcdef",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "ip": "198.51.100.42"
+    },
+    "page": { "url": "https://offer.example.com/checkout/success" }
+  },
+  "properties": { "currency": "USD", "value": 49.99 }
+}
+```
+
+```json
+// Affiliate lifecycle webhook specification (POST https://tracker.example.com/api/v2/affiliate-webhook)
+{
+  "event_type": "rebill",
+  "transaction_id": "aff-tx-8839210",
+  "click_id": "clk-us-east-99214",
+  "payout": 37.50,
+  "currency": "USD",
+  "affiliate_network": "MaxBounty",
+  "offer_id": "saas-trial-sub-101",
+  "status": "approved",
+  "signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
+```
+
+```typescript
+// Google Ads Enhanced Conversions API upload snippet
+await googleAdsClient.conversionUploads.uploadClickConversions({
+  customerId: "1234567890",
+  conversions: [{
+    conversionAction: "customers/1234567890/conversionActions/987654321",
+    conversionDateTime: "2027-01-15 10:30:00+00:00",
+    conversionValue: 49.99,
+    currencyCode: "USD",
+    gbraid: gbraid || undefined,
+    wbraid: wbraid || undefined,
+    gclid: gclid || undefined,
+    userIdentifiers: [
+      { hashedEmail: hashSha256(email) },
+      { hashedPhoneNumber: hashSha256(phoneE164) }
+    ]
+  }]
 });
 ```
 
 ## Core Rules
 
-- **TRACKING-LOCK**: Never rely solely on client-side JavaScript pixels. Always implement and verify a Server-to-Server (S2S) fallback. Pixel-only tracking suffers > 35% signal loss from Safari ITP, Brave, uBlock Origin, and iOS restrictions.
-- **DATA-VALIDATION**: Always run a test conversion to verify that the S2S postback fires with the correct click ID (e.g., `cid`, `subid`) and payout value before launching a campaign.
-- **META-CAPI-EMQ**: Target Event Match Quality (EMQ) ≥ 8.0/10 for lower-funnel events. Send server-side `fbp` (browser cookie), `fbc` (click ID from `fbclid`), `em` (SHA-256 lowercase email), `ph` (E.164 SHA-256 phone), `client_ip_address`, and `client_user_agent`. Capture `fbclid` from landing page URL and persist in an HTTP-only first-party cookie for 90 days.
-- **PII-NORMALIZATION**: Before SHA-256 hashing, all strings MUST be lowercased, stripped of leading/trailing whitespace, and phone numbers must use E.164 format (`+14155552671`) — no dashes, spaces, or parentheses.
-- **EVENT-DEDUPLICATION**: Share the same UUID v4 `event_id` between the client-side pixel event and the CAPI server-side event. The 48-hour deduplication window requires exact matching — never use separate IDs per channel.
-- **CTIT-FRAUD-FILTER**: Reject S2S postbacks where Click-To-Conversion-Time < 2.5 seconds (programmatic injection). Flag conversions > 7 days on performance offers as potential organic hijacking.
-- **IDEMPOTENT-POSTBACK-QUEUE**: S2S postback receivers MUST use durable, idempotent queues (SQS/Kafka/RabbitMQ) with unique constraint on `(transaction_id, event_type)` to prevent double attribution from network retries.
-- **IOS18-AAK**: For iOS app campaigns, migrate from SKAdNetwork (SKAN 4.0) to Apple AdAttributionKit (AAK); support re-engagement attribution and 4-tier crowd anonymity coarse/fine conversion values.
+- **TRACKING-LOCK**: Never rely solely on client-side JavaScript pixels. Always implement and verify Server-to-Server (S2S) fallbacks. Pixel-only tracking suffers > 35% signal loss from Safari ITP, Brave, ad blockers, and iOS restrictions.
+- **META-CAPI-EMQ**: Target Event Match Quality (EMQ) >= 8.0/10 for lower-funnel events (`Purchase`, `Lead`). Transmit server-side `fbp`, `fbc`, `em` (SHA-256 lowercase email), `ph` (E.164 SHA-256 phone), `client_ip_address`, and `client_user_agent`. Persist `fbclid` in HTTP-only first-party cookies for 90 days.
+- **TIKTOK-EVENTS-API**: Send server-side events using standardized payload structures containing `pixel_code`, `event`, `event_id`, ISO-8601 `timestamp`, and hashed `context.user` fields (`email`, `phone_number`, `ttclid`). Match `event_id` identically with web pixel events for 48-hour deduplication.
+- **GOOGLE-ENHANCED-CONVERSIONS**: Capture and forward Google click identifiers: standard `gclid` on web and modeled privacy click identifiers (`wbraid` for web-to-app / iOS cross-device, `gbraid` for app-to-web conversions). Pass SHA-256 normalized user identifiers (`user_identifiers.hashed_email`, `user_identifiers.hashed_phone_number`) via the Google Ads Conversion API.
+- **AFFILIATE-WEBHOOK-SPEC**: Process incoming affiliate network webhooks through a standardized schema supporting events: `conversion`, `rebill`, `refund`, and `chargeback`. Validate signature tokens and enforce idempotency on `(txid, status)` pairs.
+- **PII-NORMALIZATION**: Before SHA-256 hashing, lowercase all strings, strip leading/trailing whitespace, and normalize phone numbers to E.164 format (`+14155552671`) without punctuation.
+- **EVENT-DEDUPLICATION**: Share identical UUID v4 `event_id` across client-side pixel triggers and server-side CAPI/Events API requests to prevent double-counting conversions within ad network attribution windows.
+- **CTIT-FRAUD-FILTER**: Reject S2S postbacks where Click-To-Conversion-Time (CTIT) < 2.5 seconds (automated script injection / IVT). Flag conversions > 7 days on impulse performance offers for manual click hijack review.
+- **IDEMPOTENT-POSTBACK-QUEUE**: Ingestion endpoints MUST push postbacks into durable message queues (SQS/Kafka) with unique database constraints on `(transaction_id, event_type)` to eliminate duplicate payouts from retry storms.
+- **IOS18-AAK-COMPLIANCE**: Support Apple AdAttributionKit (AAK) schemas alongside SKAN; handle crowd anonymity tiers (0-3) and coarse/fine conversion value mapping.
 
 ## Suggested Process
 
-1. **Server-to-Server (S2S) Configuration**: Set up postback URLs in your tracker (e.g., Voluum, Binom) to transmit conversion data directly between servers (Affiliate Network → Tracker → Ad Network).
-2. **Click ID Capture at Edge**: On landing, capture `fbclid`, `gclid`, `ttclid`, and affiliate click IDs at the edge/gateway and write to first-party HTTP-only cookies (`_fbc`, `_gcl_aw`) on the apex domain.
-3. **Meta CAPI / Datasets Integration**: Implement CAPI v20+ with normalized, SHA-256 hashed PII. Verify EMQ ≥ 8.0 in Events Manager. Set `event_id` to match pixel `event_id` exactly.
-4. **CTIT Fraud Filtering**: Add conversion time validation layer; reject sub-2.5s postbacks and flag anomalous tail distributions.
-5. **Traffic Filtering Rules**: Configure tracker rules to filter bot traffic or cloak destination URLs from ad network reviewers based on IP, ASN, or behavioral patterns.
-6. **End-to-End Testing**: Trigger a manual conversion and verify data flow across all hops including CAPI deduplication in Events Manager.
+1. **Parameter Capture at Edge**: Configure edge proxy/CDN workers (Cloudflare Workers/Fastly) to parse `fbclid`, `gclid`, `wbraid`, `gbraid`, `ttclid`, and tracker `clickid` from incoming request query parameters. Write them into HTTP-only, Secure, SameSite=Lax first-party cookies on the apex domain.
+2. **Affiliate Tracker Integration**: Deploy S2S postback endpoints on tracking servers (Voluum, Binom, Keitaro). Wire affiliate network conversion postback URLs passing `clickid`, `payout`, `txid`, and conversion status flags.
+3. **Multi-Platform S2S Dispatch**: Build unified server-side conversion dispatcher that fans out events to Meta CAPI v20+, TikTok Events API v1.3, and Google Ads Enhanced Conversions API with normalized SHA-256 hashed identity vectors.
+4. **Affiliate Lifecycle Webhook Handlers**: Implement webhook listeners for post-conversion events (`rebill`, `refund`, `chargeback`). Update tracker revenue balances and push value adjustments to ad networks.
+5. **Anti-Fraud & Quality Validation**: Apply CTIT threshold filtering (< 2.5s rejection) and verify Meta EMQ >= 8.0, TikTok Match Quality >= 7.5, and Google upload success in platform event monitoring consoles.
+6. **End-to-End Dry Run**: Trigger end-to-end sandbox conversions across all channels; verify zero duplicate attribution and correct payload receipt in ad platform event managers.
 
 ## Checklist
 
-- [ ] S2S postback URLs configured and verified with correct click ID parameters.
-- [ ] Meta CAPI v20+ integrated with `fbp`, `fbc`, `em`, `ph`, `client_ip_address`, and `event_id`.
-- [ ] EMQ score verified ≥ 8.0/10 in Events Manager for key conversion events.
-- [ ] PII SHA-256 hashed after lowercasing and normalization (E.164 phones).
-- [ ] `event_id` matches exactly between pixel and CAPI for deduplication.
-- [ ] Landing page edge captures `fbclid`/`gclid` to first-party HTTP-only cookies.
-- [ ] CTIT fraud filter active: sub-2.5s conversions rejected.
-- [ ] Idempotent postback queue with unique `(transaction_id, event_type)` constraint active.
-- [ ] Traffic filtering rules (cloaking/bot blocking) are active.
-- [ ] Test conversion successfully registered in both tracker and ad network.
-- [ ] Postback firing rate above 80% (flag if below for attribution investigation).
-- [ ] iOS 18+ AdAttributionKit migration plan documented for app campaigns.
+- [ ] Edge router captures `fbclid`, `gclid`, `wbraid`, `gbraid`, and `ttclid` into first-party cookies.
+- [ ] S2S postback URLs configured with `{clickid}`, `{payout}`, and `{txid}` parameters.
+- [ ] Meta CAPI v20+ configured with server-side `fbp`, `fbc`, `em`, `ph`, IP, and user-agent.
+- [ ] Meta EMQ verified >= 8.0/10 in Events Manager for core conversion events.
+- [ ] TikTok Events API v1.3 integrated with `pixel_code`, `event_id`, `ttclid`, and hashed user data.
+- [ ] Google Enhanced Conversions configured with `gclid`, `wbraid`, `gbraid`, and hashed identifiers.
+- [ ] Affiliate webhook handlers implemented for `conversion`, `rebill`, `refund`, and `chargeback`.
+- [ ] PII normalized (lowercased, whitespace trimmed, E.164 phones) prior to SHA-256 hashing.
+- [ ] UUID v4 `event_id` shared across browser pixels and S2S payloads for deduplication.
+- [ ] CTIT fraud filter rejects sub-2.5s conversions as programmatic injection.
+- [ ] Idempotent queue (Kafka/SQS) with unique `(transaction_id, event_type)` constraint active.
+- [ ] Test conversion verified end-to-end across tracker, affiliate network, and ad platforms.
 
 ## Output Contracts
 
-When the tracking system is consumed by a campaign operator, a data
-analyst, or a cross-role handoff, emit:
+When the tracking system is configured or updated for a campaign handoff, emit:
 
-- **`contracts/schemas/deployment-plan.json`** capturing the S2S endpoints, the postback handlers, the event dedup keys, the consent capture, and the rollback path.
-- For human-readable reports, a markdown summary of the tracking topology, the data classification, and the compliance boundaries.
+- **`contracts/schemas/mmo-campaign-spec.json`** defining the tracking topology, click parameter mapping (`gclid`, `fbclid`, `ttclid`), postback endpoints, webhook schemas, and platform dataset bindings.
+- **`contracts/schemas/deployment-plan.json`** capturing S2S endpoints, postback handlers, event dedup keys, consent capture parameters, and rollback procedures.
+- Markdown tracking architecture summary detailing data flow, EMQ targets, and compliance boundaries.
 
-Skip emission for local tracking experiments that do not cross a role boundary.
+Skip emission for local tracking experiments that do not cross role boundaries.
 
 ## Failure Modes
 
-- **Event dedup missing**: a pixel event and a CAPI/S2S postback use different `event_id` values, inflating conversion counts. Mitigation: enforce the same UUID v4 `event_id` across pixel and S2S; reject mismatched IDs.
-- **First-party cookie not set**: `_fbc` and `_gcl_aw` are missing on landing, breaking attribution. Mitigation: capture `fbclid`, `gclid`, `ttclid` at the edge; persist 90-day first-party cookies.
-- **CTIT fraud filter bypass**: sub-2.5s conversions are included in the conversion count. Mitigation: filter CTIT < 2.5s as SIVT; surface the excluded count.
-- **Consent capture skipped**: a user event is tracked without a recorded consent. Mitigation: capture consent before any tracking event; reject unconsented events.
-- **Compliance boundary crossed**: a tracking pattern violates the documented Legal & Compliance Notice. Mitigation: keep the compliance boundary visible; reject any pattern outside the boundary.
+- **Event deduplication failure**: Browser pixel and server-side CAPI/Events API use different `event_id` values, causing 2x conversion inflation in ad algorithms. Mitigation: generate UUID v4 at edge landing and persist across client and server dispatch.
+- **Lost iOS click attribution**: Failure to capture `wbraid`/`gbraid` on iOS devices leads to 0% attribution on Google Ads web campaigns. Mitigation: ensure edge gateway preserves and passes `wbraid`/`gbraid` to Google Conversion APIs.
+- **Affiliate rebill desynchronization**: Recurring subscription rebills or refunds are not reported back to ad platforms, skewing ROAS. Mitigation: connect affiliate network webhooks to server-side offline conversion adjusters.
+- **PII hashing non-compliance**: Sending raw email/phone or improperly formatted hashes triggers platform rejection and privacy violations. Mitigation: enforce strict E.164 normalization and SHA-256 hashing pipeline before payload construction.
+- **CTIT fraud injection**: Sub-second conversion bots inflate tracker conversions without generating real revenue. Mitigation: enforce hard 2.5s CTIT minimum gate and quarantine suspicious conversions.
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI03 Identity & Privilege Abuse**: customer identifiers and PII used for matching must be hashed before transmission; never store unhashed PII in tracking systems.
-- **ASI04 Supply Chain**: tracking SDKs and S2S postback libraries must be schema-validated against the expected manifest; treat unknown versions as untrusted.
-- **ASI05 RCE Guard**: never construct S2S postback payloads, pixel events, or consent prompts from external content without strict schema validation.
-- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by data and marketing roles; emit a structured contract so each role can validate.
-- **ASI09 Human-Agent Trust Exploitation**: do not present the tracking system as "compliant" without naming the Legal & Compliance boundary; surface the residual risk honestly.
+- **ASI03 Identity & Privilege Abuse**: Customer identifiers and PII used for attribution must be SHA-256 hashed before transmission; never log or persist unhashed PII in tracking databases.
+- **ASI04 Supply Chain**: Tracking SDKs, webhook dispatchers, and S2S postback libraries must be schema-validated against approved package manifests; treat unknown packages as untrusted.
+- **ASI05 RCE Guard**: Never construct S2S postback payloads, database queries, or webhook handlers directly from unsanitized query string parameters.
+- **ASI07 Inter-Agent Communication**: Tracking topology and campaign parameters must be emitted via `contracts/schemas/mmo-campaign-spec.json` so downstream analytics and automation agents can consume structured configs.
+- **ASI09 Human-Agent Trust Exploitation**: Never represent tracking coverage as 100% compliant without documenting residual signal loss from ad blockers and private browsing modes.
 
 ## Related Skills
 
-- **analyze-campaign-roi**: Analyze the data collected by this tracking system for ROI optimization.
-- **integrate-api-client**: Write frontend integration code if client-side component is required.
+- **analyze-campaign-roi**: Ingest and evaluate conversion and attribution data collected by this tracking system.
+- **integrate-api-client**: Implement client-side click-capture and event dispatch snippets on custom landing pages.

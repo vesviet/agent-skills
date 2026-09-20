@@ -1,0 +1,131 @@
+schema_version: "2"
+
+name: mmo-growth-team
+description: Full-spectrum MMO growth engineering and traffic arbitrage swarm pack. Enforces 2027 SOTA standards across AI-native affiliate engines, multi-channel S2S attribution (Meta CAPI v20+, TikTok Events API, Google Enhanced Conversions), stealth CDP automation with WebGPU/Canvas fingerprint consistency, programmatic SEO & faceless video hooks, DePIN bandwidth monetization, and financial engineering (True ROI, LTV, Blended ROAS).
+version: 5.0.0
+
+tags:
+  - core
+  - mmo
+  - growth-engineering
+  - affiliate
+  - s2s-tracking
+  - stealth-automation
+  - anti-detect-browsers
+  - programmatic-seo
+  - traffic-arbitrage
+  - roi-optimization
+  - depin
+  - multi-agent-swarm
+author: user
+maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
+includes:
+  - core
+
+capabilities:
+  - traffic-acquisition
+  - s2s-attribution
+  - stealth-automation
+  - anti-detect-browsers
+  - programmatic-seo
+  - campaign-economics
+  - traffic-arbitrage
+  - depin-bandwidth-monetization
+  - asset-isolation
+  - multi-agent-growth-swarm
+
+mmo_focus:
+  primary_roles:
+    - mmo-engineer
+    - seo-analyst
+    - content-writer
+    - data-analyst
+    - security-engineer
+  secondary_roles:
+    - reviewer
+    - task-planner
+    - agent-coordinator
+  core_skills:
+    - setup-tracking-system
+    - create-automation-script
+    - deploy-mmo-infrastructure
+    - manage-mmo-assets
+    - deploy-proxyware-fleet
+    - generate-mmo-content
+    - analyze-campaign-roi
+  supporting_skills:
+    - conduct-research
+    - write-article
+    - optimize-seo
+    - analyze-data
+    - security-audit
+  standards:
+    - "mmo-guardrails: anonymity-lock, isolation-lock, tracking-lock, behavioral-lock, budget-lock, review-system-lock"
+  workflows:
+    - mmo-campaign-lifecycle
+    - seo-content-lifecycle
+    - content-publishing
+    - qa-validation
+    - security-incident-response
+
+deep_research_protocol:
+  rounds: 100
+  mandatory_before_action: true
+  clusters: 5
+  rounds_per_cluster: 20
+  cluster_breakdown:
+    cluster_1: "AI-Native Affiliate & Product Feed Integration (Rounds 01-20)"
+    cluster_2: "Advanced S2S Tracking, Attribution & Fraud Filtering (Rounds 21-40)"
+    cluster_3: "2027 Stealth CDP Automation & Fingerprint Evasion (Rounds 41-60)"
+    cluster_4: "Campaign Economics, Financial Engineering & LTV Modeling (Rounds 61-80)"
+    cluster_5: "Programmatic SEO, Faceless Media & CRO Conversion Engineering (Rounds 81-100)"
+  output_dossier:
+    json: "reports/research/mmo-2027-sota-dossier.json"
+    markdown: "reports/research/mmo-2027-sota-research-notes.md"
+
+swarm_pipeline:
+  phase_1: "Offer Research & Intelligence (100 rounds across 5 clusters) -> campaign spec"
+  phase_2: "Landing Page & Content Engineering (@content-writer + @mmo-engineer) -> pSEO & direct-response copy"
+  phase_3: "Cookieless S2S Tracking Setup (@mmo-engineer) -> Meta CAPI, TikTok Events, Google Enhanced Conversions"
+  phase_4: "Traffic Acquisition & Stealth Ad Launch (@mmo-engineer + @security-engineer) -> CDP over ADB, proxy warmup"
+  phase_5: "ROI Optimization, Attribution & Scaling (@mmo-engineer + @data-analyst) -> True ROI & Blended ROAS"
+
+data_classification: internal
+
+activation:
+  strategy: marker_first
+  markers:
+    - .mmo-config.json
+    - mmo.yaml
+    - trackers.json
+    - campaigns/
+  glob_patterns:
+    - "campaigns/**/*.yaml"
+    - "campaigns/**/*.json"
+    - "tracking/**/*.json"
+    - "mmo/**/*.py"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - publish_to_production
+      - modify_secrets
+      - scale_budget_over_threshold
+      - deploy_unreviewed_cloaking
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

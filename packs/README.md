@@ -2,7 +2,7 @@
 
 Packs describe how to assemble the portable core with zero or more overlays for a target team. Each pack has a `manifest.yaml` that declares which `core` and `overlays/` to include, along with 2026 governance metadata.
 
-## Available Packs (14)
+## Available Packs (15)
 
 | Pack | Manifest | Composition | Capabilities |
 |------|----------|-------------|-------------|
@@ -20,6 +20,7 @@ Packs describe how to assemble the portable core with zero or more overlays for 
 | `content-sprint-team` | [manifest.yaml](content-sprint-team/manifest.yaml) | `core` + `overlays/seo-publishing` | GEO/AEO, AI Overviews, publishing cadence |
 | `donthan-team` | [manifest.yaml](donthan-team/manifest.yaml) | `core` + `overlays/donthan-web` | Frontend, UX, livestream, PWA |
 | `data-warehouse` | [manifest.yaml](data-warehouse/manifest.yaml) | `core` + `overlays/data-warehouse` (incl. `learning/` track) | Fullstack data warehouse, FastAPI microservices, DuckDB single-writer, Medallion Parquet, MISA AMIS VAS 14, blind recount, PII masking, 4-layer testing, dbt 1.9/Iceberg/Kafka learning track |
+| `mmo-growth-team` | [manifest.yaml](mmo-growth-team/manifest.yaml) | `core` only | v5.0.0 · Full-spectrum MMO growth engineering (AI Affiliate, multi-channel S2S tracking, stealth CDP automation, 5-phase campaign lifecycle, LTV & Blended ROAS economics) |
 
 ### Pack Spotlight: vesviet-team (v5.0.0)
 
@@ -54,6 +55,16 @@ The `maylanhtreotuong-team` pack orchestrates empirical HVAC technical publishin
 - **7-Category Strict Silo Link Topology**: Strict silo isolation across 300 articles (`gia-ca`, `huong-dan`, `kien-thuc`, `kinh-nghiem`, `mua-sam`, `review`, `so-sanh`) eliminating topical dilution; cross-silo linkage allowed only via 72 HVAC Product Entities (`src/data/product/`).
 - **Rich Schema & AI Overview Snippets**: Comprehensive Schema.org graphs (`Product`, `Review`, `HowTo`, `FAQPage`) paired with `<AnswerFirst>` blocks tailored for Google AI Overviews, Perplexity, and ChatGPT Search.
 - **Astro v5 + Cloudflare Pages Edge Engine**: Microsecond edge delivery with 100/100 Core Web Vitals, automated vacuum pump verification checklists, and PCB diagnostic guides.
+
+### Pack Spotlight: mmo-growth-team (v5.0.0)
+
+The `mmo-growth-team` pack orchestrates full-spectrum growth engineering, programmatic traffic arbitrage, and privacy-first server-side attribution for Make Money Online (MMO) operations:
+
+- **Full-Spectrum Growth Engineering**: Pivots from legacy proxyware/farming to advanced AI-native affiliate engines, programmatic SEO (pSEO), dynamic product feeds, and multimodal video hooks.
+- **Multi-Channel Cookieless S2S Tracking**: Direct server-to-server integration with Meta Conversions API (CAPI v20+), TikTok Events API, Google Enhanced Conversions, and iOS 18+ AdAttributionKit with cryptographic UUID v4 deduplication and CTIT fraud filtering.
+- **2026/2027 Stealth CDP Automation**: Next-generation anti-detect browser orchestration over Chrome DevTools Protocol (CDP), Camoufox C++ patched runtime engines, WebGPU / Canvas noise consistency, and Cloudflare Turnstile handling.
+- **5-Phase Swarm Delivery Pipeline**: End-to-end multi-agent execution pipeline formalizing Offer Research → Landing/Content → S2S Tracking → Traffic/Ads → ROI Optimization & Scaling with strict A2A contract gates (`mmo-campaign-spec.json`, `mmo-roi-report.json`).
+- **Financial Engineering & Campaign Economics**: True ROI accounting incorporating blended ad spend, proxy consumption, API token overhead, and account die-rate depreciation alongside Customer Lifetime Value (LTV) and Blended ROAS modeling.
 
 ## 2026 Manifest Schema (v2)
 

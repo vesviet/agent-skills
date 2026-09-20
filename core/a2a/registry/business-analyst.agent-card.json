@@ -49,6 +49,69 @@
       ]
     },
     {
+      "id": "elicit-requirements",
+      "name": "Elicit Requirements",
+      "description": "Elicit business requirements from stakeholders using Funnel Questioning (Open, Probing, Closed), the Colombo Method, and the 9 BABOK v3 requirement quality criteria. Use when scoping ambiguous business needs, conducting stakeholder interviews, uncovering tacit domain knowledge, or validating requirement quality before architecture handoff.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    },
+    {
+      "id": "write-use-cases",
+      "name": "Write Use Cases",
+      "description": "Scope, structure, and document production-grade Use Cases using Karl Wiegers 13-field template, Alistair Cockburn goal levels and scoping tests, and 20-point quality validation. Use when detailing user interactions, specifying normal and alternative courses, defining system boundaries, or converting high-level business goals into engineering specifications.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    },
+    {
+      "id": "trace-requirements-impact",
+      "name": "Trace Requirements Impact",
+      "description": "Build Requirements Traceability Matrices (RTM), run BFS change-request impact analysis across requirements to test cases, and prioritize backlogs using BABOK v3 models (MoSCoW, WSJF, Impact/Effort, Timeboxing). Use when assessing change requests, evaluating regression blast radiuses, prioritizing sprint scope, or maintaining end-to-end compliance audit trails.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    },
+    {
       "id": "ai-risk-assessment",
       "name": "Ai Risk Assessment",
       "description": "Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure/Manage) and NIST AI 600-1 GenAI Profile (12 risk categories), classify EU AI Act risk tiers, and produce an AI risk register covering hallucination thresholds, model degradation signals, bias exposure, and compliance drift. Use when onboarding a new AI feature, scoping an AI system for delivery, or conducting a periodic AI governance audit.",

@@ -30,6 +30,7 @@ This directory contains reusable, longer-form workflows that sit above the indiv
 | [qa-validation](qa-validation.md) | QA: coverage audit → risk-based test plan → execute → release confidence verdict |
 | [period-end-closing](period-end-closing.md) | Vietnam accounting: subledger cut-off, 3-way match, FX revaluation, Account 911 closing, Decree 132 EBITDA cap, B01-B09, and dual HITL gate |
 | [curriculum-delivery](curriculum-delivery.md) | Adaptive education: diagnostic intake, ZPD scaffolding, AI-resistant practice, formative grading with line citations, and debrief |
+| [mmo-campaign-lifecycle](mmo-campaign-lifecycle.md) | Full-spectrum 5-phase MMO growth campaign lifecycle — Offer Research, Landing/Content Engineering, Cookieless S2S Tracking, Traffic Acquisition, and ROI Optimization |
 
 ## How To Use These
 

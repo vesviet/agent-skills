@@ -28,6 +28,90 @@
   ],
   "skills": [
     {
+      "id": "define-product-strategy",
+      "name": "Define Product Strategy",
+      "description": "Formulate, stress-test, and document product strategy using Amazon Working Backwards (PR/FAQ), Hamilton Helmer 7 Powers moat analysis, Teresa Torres Opportunity Solution Trees (OST), and Rob Fitzpatrick The Mom Test problem validation. Use when shaping new product initiatives, framing strategic bets, analyzing competitive defensibility, validating customer demand without leading bias, or activating the Framing Gate to push back on underspecified requirements.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    },
+    {
+      "id": "prioritize-roadmap",
+      "name": "Prioritize Roadmap",
+      "description": "Score, sequence, and balance product roadmaps using calibrated quantitative RICE, WSJF, Kano classification, weighted scoring decision matrices, and capacity timeboxing. Use when resolving competing feature requests, evaluating build vs. buy decisions, prioritizing quarterly roadmaps, conducting vendor evaluations, or enforcing the Kill-Early protocol on underperforming bets.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    },
+    {
+      "id": "model-saas-metrics",
+      "name": "Model Saas Metrics",
+      "description": "Model SaaS unit economics, deterministic financial metrics, Van Westendorp price sensitivity, and AI Total Cost of Ownership (TCO). Use when calculating CAC, LTV, Magic Number, Rule of 40, Burn Multiple, Net Revenue Retention, analyzing pricing tiers and willingness-to-pay, or budgeting AI inference and orchestration costs per verified outcome.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    },
+    {
+      "id": "build-story-map",
+      "name": "Build Story Map",
+      "description": "Structure and visualize product backlogs using Jeff Patton User Story Mapping, MoSCoW release swimlanes, and Critical Path Method (CPM) dependency scheduling. Use when organizing features into Epic-to-Story hierarchies, defining MVP walking skeletons, slicing releases, calculating float time on critical path tasks, or handing off scoped initiatives to engineering.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    },
+    {
       "id": "write-product-brief",
       "name": "Write Product Brief",
       "description": "Write or refine a product brief that makes user value, business outcome, preserved behavior, affected users, acceptance boundaries, and trade-offs explicit. Use when a feature, bug fix, workaround, rollback, or scope decision needs a product-facing decision artifact before implementation or release.",

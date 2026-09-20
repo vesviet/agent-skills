@@ -1,99 +1,133 @@
 ---
 name: deploy-proxyware-fleet
-description: Containerize and orchestrate massive fleets of passive income nodes (Honeygain, EarnApp, Pawns.app) with proxy routing and resource limits. Use when scaling bandwidth monetization nodes, migrating from datacenter to residential routing, or expanding an existing fleet.
+description: Containerize and orchestrate modern DePIN bandwidth monetization light nodes (Grass, Dawn, Nodepay) with Solana/EVM wallet authentication, WebSocket telemetry, and uptime scoring. Use when scaling decentralized bandwidth monetization fleets, orchestrating residential DePIN nodes, or configuring proof-of-bandwidth telemetry.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Deploy Proxyware Fleet
 
-Use this skill to handle the large-scale deployment of bandwidth monetization applications (Proxyware) using containerization, ensuring the fleet remains profitable and resilient to platform-side node cleanup.
+Use this skill to containerize, orchestrate, and monitor modern Decentralized Physical Infrastructure Network (DePIN) bandwidth monetization nodes (Grass, Dawn, Nodepay), ensuring cryptographic security, strict resource limits, and high uptime yield.
 
 ## Legal & Compliance Notice
 
-Bandwidth-sharing apps (Honeygain, EarnApp, Pawns.app) prohibit multi-accounting, VM/container deployment, and IP misrepresentation in their Terms of Service — running a containerized fleet at scale is very likely a ToS violation even when technically functional, and can result in account termination or forfeited earnings with no recourse. This skill documents the technical mechanics only; it does not establish that a given deployment is authorized by the target platform. Confirm the user has read and accepts the specific platform's ToS before implementing, and treat any "spoofing" or "evasion" step as in scope for `REVIEW-SYSTEM LOCK` in the `mmo-engineer` role (explicit written authorization + Security Engineer review) rather than default-approved automation.
+Decentralized bandwidth-sharing protocols (Grass, Dawn, Nodepay) allow residential internet users to monetize unused bandwidth. Deploying nodes on third-party networks, enterprise infrastructure, or commercial datacenters without explicit network authorization violates Acceptable Use Policies (AUP) and terms of service. This skill documents containerized node orchestration, telemetry monitoring, and wallet authentication mechanics only. Confirm you possess legitimate authorization for the residential network endpoints used. Any deployment intended to bypass platform geographical or network classification controls falls under `REVIEW-SYSTEM LOCK` in the `mmo-engineer` role and requires explicit written authorization before execution.
 
 ## When to Use
 
-- scaling Honeygain / EarnApp / Pawns.app nodes beyond a single host
-- migrating nodes from datacenter IPs to residential routing
-- adding a new proxyware app to an existing fleet
-- capping resource consumption to protect the host from node bloat
-- recording an earnings baseline before/after a fleet change for ROI
+- containerizing modern DePIN bandwidth monetization nodes (Grass / Wynd Network, Dawn, Nodepay, Gradient)
+- authenticating DePIN light nodes via Solana (Ed25519) or EVM (Secp256k1) cryptographic wallet signatures
+- orchestrating multi-node residential fleets with WebSocket telemetry and uptime monitoring (> 98%)
+- enforcing strict cgroup CPU/memory caps and read-only container root filesystems to prevent host degradation
+- tracking epoch rewards, points accrual, and node connection scoring across decentralized networks
 
-## Example (docker-compose with residential routing + resource caps)
+## Example (DePIN Light Node Compose & Cryptographic Wallet Auth)
 
 ```yaml
+# Docker Compose orchestrating DePIN light nodes with residential gateway routing
+version: "3.8"
 services:
-  earnapp:
-    image: proxyware/earnapp:latest
-    network_mode: "container:vpn-gateway" # exit via residential VPN, never DC IP
+  depin-grass-node:
+    image: depin/grass-light-node:v2.4.0
+    network_mode: "service:residential-gateway"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,size=512M
+      - /dev/shm:rw,size=512M
+    environment:
+      - WALLET_PUBLIC_KEY=7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+      - NODE_SIGNATURE=3N8vKjW...Ed25519Signature...
+      - TELEMETRY_WS_URL=wss://telemetry.wynd.network/v1
     deploy:
       resources:
         limits:
-          cpus: "0.50"
+          cpus: "0.25"
           memory: 256M
-  honeygain:
-    image: proxyware/honeygain:latest
-    network_mode: "container:vpn-gateway"
-    deploy:
-      resources:
-        limits:
-          cpus: "0.50"
-          memory: 256M
+```
+
+```typescript
+// Solana Ed25519 message signing for DePIN proof-of-bandwidth authentication
+import { Keypair } from "@solana/web3.js";
+import nacl from "tweetnacl";
+
+export function generateNodeAuthSignature(keypair: Keypair, challengeNonce: string): string {
+  const timestamp = Math.floor(Date.now() / 1000);
+  const message = new TextEncoder().encode(`DePIN-Auth:${challengeNonce}:${timestamp}`);
+  const signature = nacl.sign.detached(message, keypair.secretKey);
+  return Buffer.from(signature).toString("base64");
+}
+```
+
+```python
+# Prometheus uptime exporter & WebSocket heartbeat monitor
+import asyncio, websockets, json, time
+
+async def monitor_depin_heartbeat(ws_url: str, auth_token: str):
+    async with websockets.connect(ws_url) as ws:
+        await ws.send(json.dumps({"action": "authenticate", "token": auth_token}))
+        while True:
+            msg = await ws.recv()
+            data = json.loads(msg)
+            if data.get("type") == "ping":
+                await ws.send(json.dumps({"type": "pong", "timestamp": time.time()}))
 ```
 
 ## Core Rules
 
-- **PROXYWARE-LOCK**: Never deploy EarnApp/Honeygain directly on a Datacenter IP without residential proxy routing; this results in instant bans or zero earnings.
-- **RESOURCE-LOCK**: Always enforce strict CPU (`cpus`) and memory (`mem_limit`) limits in Docker configurations to prevent node bloat from crashing the host machine.
-- **CONTAINER-EPHEMERAL-DISKS**: Container root filesystems MUST be mounted read-only (`readOnlyRootFilesystem: true`) with volatile browser cache placed on `tmpfs` mounts (`/tmp` and `/dev/shm`, minimum 2 GiB for Chromium/browser stability). Sync only required cookie/storage data to persistent encrypted stores.
-- **REMOTE-DNS-LOCK**: All DNS resolution MUST occur on the proxy exit node via SOCKS5 remote DNS or HTTP CONNECT. Never resolve DNS through the host's local resolver — this leaks the datacenter identity behind the residential proxy.
+- **DEPIN-PROTOCOL-LOCK**: Deploy exclusively modern Decentralized Physical Infrastructure Network (DePIN) protocols (Grass, Dawn, Nodepay, Gradient). Deprecate legacy centralized proxyware (Honeygain, EarnApp) due to pervasive datacenter blacklisting and negligible yield.
+- **CRYPTOGRAPHIC-WALLET-AUTH**: Node authentication MUST utilize asymmetric cryptographic signatures (Ed25519 for Solana, Secp256k1 for EVM). Never store or inject raw private keys into container environments; pass public addresses and delegated session-scoped signatures.
+- **UPTIME-AND-TELEMETRY**: Maintain persistent WebSocket/gRPC telemetry connections with ping/pong heartbeats to preserve uptime scores > 98%. Drops below 95% trigger score penalties and reduced epoch reward allocations.
+- **RESIDENTIAL-IP-ROUTING**: DePIN nodes MUST route outbound traffic through verified residential or mobile ISP connections. Datacenter IP blocks (AWS, Hetzner, OVH) are automatically flagged and blacklisted by DePIN scorekeepers.
+- **CONTAINER-EPHEMERAL-DISKS**: Container root filesystems MUST be mounted read-only (`readOnlyRootFilesystem: true`) with volatile caches placed on `tmpfs` mounts (`/tmp` and `/dev/shm`, minimum 512 MiB) to prevent disk space exhaustion.
+- **RESOURCE-LOCK**: Enforce strict cgroup limits (CPU <= 0.25 cores, memory <= 256 MiB per container) to protect the host machine from resource starvation when scaling fleets.
+- **REMOTE-DNS-LOCK**: Remote DNS resolution MUST be enforced on the residential proxy gateway via SOCKS5 or WireGuard tunnel. Never resolve DNS queries using local datacenter host nameservers.
 
 ## Suggested Process
 
-1. **Containerization**: Use Docker to define lightweight headless nodes for apps like Honeygain, EarnApp, or Pawns.app with read-only root filesystems and tmpfs volumes.
-2. **Network Routing**: Configure network routing via WireGuard, VPNs, or Proxy-chains to ensure container traffic exits through legitimate Residential IPs. Verify remote DNS is enforced.
-3. **Hardware/OS Fingerprint Normalization**: If the target platform's ToS permits container deployment but flags a config purely for looking virtualized, normalize the hardware/OS fingerprint reported by the container. If the platform's ToS or anti-abuse system explicitly targets and bans this technique, treat it as a `REVIEW-SYSTEM LOCK` case — escalate to the user and Security Engineer before implementing rather than deploying it as default behavior.
-4. **Resource Capping**: Apply hard limits to the orchestration file (`docker-compose.yml` or Kubernetes manifests). Set cgroup CPU and memory quotas to prevent Chromium rendering memory leaks triggering oom-killer.
+1. **Cryptographic Keypair & Sign-In Setup**: Generate dedicated operational wallet keypairs (Solana Ed25519). Generate session authorization signatures off-chain using the challenge nonces provided by the DePIN network gateway.
+2. **Container Image Hardening**: Build minimal Docker containers wrapping DePIN light node clients. Enforce non-root execution (`USER 1001`), read-only root filesystems, and tmpfs mounts.
+3. **Network Gateway Binding**: Wire container network namespaces to residential VPN/proxy gateways (WireGuard or SOCKS5 sidecars). Verify zero IP leaks and confirm the public IP is classified as Residential ISP.
+4. **Telemetry & Uptime Monitoring**: Deploy a Prometheus/Grafana exporter scraping WebSocket connection status, ping latency, and epoch score metrics. Configure alert thresholds for uptime dips below 98%.
+5. **Epoch Reward Tracking**: Integrate automated tracking scripts that query DePIN REST/GraphQL APIs daily to record accumulated points, tier rankings, and token claims.
 
 ## Checklist
 
-- [ ] Containers routed through Residential IPs (not Datacenter IPs).
-- [ ] CPU and memory limits explicitly defined for every proxyware service.
-- [ ] Container root filesystem mounted read-only (`readOnlyRootFilesystem: true`).
-- [ ] `tmpfs` mounts configured for `/tmp` and `/dev/shm` (minimum 2 GiB).
-- [ ] Remote DNS enforced via proxy exit node — no host resolver leaks.
-- [ ] Hardware/OS spoofing applied where required by platform detection.
-- [ ] Orchestration files (`docker-compose.yml`) validated.
-- [ ] Network routing (WireGuard/VPN/proxy-chains) tested end-to-end before scaling.
-- [ ] Fleet earnings baseline recorded before and after deployment for ROI validation.
+- [ ] Node configuration uses modern DePIN protocols (Grass, Dawn, Nodepay).
+- [ ] Wallet authentication uses Ed25519/Secp256k1 cryptographic signatures (no private keys in containers).
+- [ ] Nodes route strictly through residential or mobile IP connections (zero datacenter IP routing).
+- [ ] Read-only root filesystem (`readOnlyRootFilesystem: true`) configured on all containers.
+- [ ] `tmpfs` volumes configured for `/tmp` and `/dev/shm` (minimum 512 MiB).
+- [ ] CPU (<= 0.25) and memory (<= 256 MiB) limits explicitly enforced in Compose/Kubernetes.
+- [ ] Remote DNS resolution verified on residential gateway (no host DNS leak).
+- [ ] WebSocket telemetry active with connection uptime score verified > 98%.
+- [ ] Epoch reward accrual and point balance monitoring operational.
+- [ ] Host disk space and cgroup memory consumption validated under full load.
 
 ## Output Contracts
 
-When the proxyware fleet is consumed by an infra agent, a release
-pipeline, or a cross-role handoff, emit:
+When the DePIN fleet deployment is finalized or updated for handoff, emit:
 
-- **`contracts/schemas/deployment-plan.json`** capturing the fleet size, the node distribution, the credential handling, the network posture, and the rollback path.
-- For human-readable reports, a markdown summary of the fleet topology, the operational caveats, and the compliance boundaries.
+- **`contracts/schemas/deployment-plan.json`** capturing the DePIN fleet size, node wallet public keys, residential network topology, resource limits, and rollback path.
+- Markdown summary of fleet performance, uptime metrics, epoch reward accrual, and compliance boundaries.
 
-Skip emission for local sandbox experiments that do not cross a role boundary.
+Skip emission for local single-node test runs that do not cross role boundaries.
 
 ## Failure Modes
 
-- **Credential in fleet config**: a token or API key is committed to the fleet config. Mitigation: load credentials at runtime from a secret store; never commit credentials.
-- **Fleet size exceeds threat model**: more nodes are deployed than the threat model requires. Mitigation: size the fleet to the documented workload; reject over-broad defaults.
-- **Node cleanup not verified**: the fleet leaves orphan nodes or containers. Mitigation: implement and verify cleanup paths; assert the post-deploy state.
-- **Compliance boundary crossed**: a deployment pattern violates the documented Legal & Compliance Notice. Mitigation: keep the compliance boundary visible; reject any pattern outside the boundary.
+- **DePIN node disconnect & uptime slash**: WebSocket connection drops unnoticed, slashing epoch point multipliers. Mitigation: implement automated watchdog daemon that restarts container upon 3 consecutive missed heartbeats.
+- **Datacenter IP disqualification**: Node routes through unverified datacenter IP; DePIN network zeroes points. Mitigation: run IP fraud score probe pre-flight; verify residential classification before node connects.
+- **Container memory leak**: Headless Chromium engine or Node process inside container leaks memory until host crashes. Mitigation: enforce strict 256MB cgroup hard limits with auto-restart policy.
+- **Cryptographic signature expiration**: Ephemeral session signature expires, causing unauthorized 401 responses. Mitigation: automate periodic signature renewal using a sealed key manager.
+- **Host disk bloat**: Accumulated temporary socket files fill disk. Mitigation: enforce read-only container rootfs with ephemeral `tmpfs` mounts.
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI03 Identity & Privilege Abuse**: node credentials are scoped to the fleet runtime; never embed them in committed files.
-- **ASI04 Supply Chain**: proxyware images and orchestration tools must be schema-validated against the expected manifest; treat unknown versions as untrusted.
-- **ASI05 RCE Guard**: never construct fleet config, network policies, or node distributions from external content without strict schema validation.
-- **ASI07 Inter-Agent Communication**: the deployment plan is consumed by infra and security roles; emit a structured contract so each role can validate.
-- **ASI09 Human-Agent Trust Exploitation**: do not present the fleet as "compliant" without naming the Legal & Compliance boundary; surface the residual risk honestly.
+- **ASI03 Identity & Privilege Abuse**: Wallet private keys must never be exposed or stored in container environment variables; use public keys and delegated cryptographic signatures only.
+- **ASI04 Supply Chain**: DePIN node images and packages must be verified against official protocol repositories and SHA-256 digests; avoid untrusted community node images.
+- **ASI05 RCE Guard**: Never construct node launch arguments, WebSocket URLs, or environment variables from unauthenticated network messages.
+- **ASI07 Inter-Agent Communication**: DePIN node configurations and telemetry statistics must be emitted via `contracts/schemas/deployment-plan.json` for infrastructure monitoring.
+- **ASI09 Human-Agent Trust Exploitation**: Clearly articulate DePIN token volatility, network slashing risks, and residential bandwidth usage; do not promise guaranteed passive yields.
 
 ## Related Skills
 
-- **deploy-mmo-infrastructure**: Set up the core proxy networks the fleet will route through.
-- **setup-deployment**: Generic deployments for non-MMO infrastructure.
+- **deploy-mmo-infrastructure**: Provision the core residential proxy gateways and network tunnels powering the DePIN fleet.
+- **setup-deployment**: Generic cloud container orchestration and service lifecycle management.

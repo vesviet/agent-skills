@@ -25,7 +25,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
             → validation-result.json ← Agent Coordinator (phase gate)
 ```
 
-## All Schemas (50 total)
+## All Schemas (52 total)
 
 ### Solution & Governance
 - `solution-brief.json` — Solution Architect scoping handoff (build-vs-buy, capability gaps, AI feasibility, compliance)
@@ -77,6 +77,10 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
 - `seo-metadata.json` — Page metadata (title, description, OG)
 - `seo-weekly-board.json` — Weekly content sprint board
 - `series-article.json` — Article series navigation
+
+### MMO & Growth Engineering
+- `mmo-campaign-spec.json` — Structured MMO growth campaign specification (offer parameters, pSEO lander parameters, S2S tracking endpoints, stealth ADB/proxy config, budget caps)
+- `mmo-roi-report.json` — Comprehensive campaign financial profitability audit (True ROI, Blended ROAS, LTV cohorts, CTIT fraud rejection, die-rate amortized depreciation)
 
 ### A2A Protocol
 - `coordination-plan.json` — Multi-agent phase graph

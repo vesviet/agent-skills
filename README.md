@@ -162,6 +162,7 @@ Core workflows live in [core/workflows/README.md](core/workflows/README.md).
 - `/tech-repo-review`
 - `/period-end-closing`
 - `/curriculum-delivery`
+- `/mmo-campaign-lifecycle`
 
 ## Quality Gates
 

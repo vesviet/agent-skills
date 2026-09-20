@@ -1,12 +1,12 @@
 ---
 name: analyze-campaign-roi
-description: Analyze S2S conversion data, monitor ad account die-rates, and calculate campaign ROI based on proxy and API costs. Use when evaluating campaign profitability, diagnosing tracking attribution gaps, comparing offer performance, or deciding to pause or scale ad spend.
+description: Analyze S2S conversion data, customer lifetime value (LTV) cohort curves, Blended ROAS/MER, multi-tier payouts, and operational die-rates to calculate True ROI. Use when evaluating campaign profitability, diagnosing attribution gaps, comparing offer performance, or deciding to pause or scale ad spend.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # Analyze Campaign ROI
 
-Use this skill to perform financial and risk analysis of MMO campaigns, combining revenue metrics with operational costs (proxies, AI APIs, account replacements) to determine true profitability.
+Use this skill to perform financial engineering and risk analysis of MMO campaigns, combining revenue streams, recurring LTV cohort projections, Blended ROAS, multi-tier affiliate structures, and amortized operational overhead to determine True ROI.
 
 ## Legal & Compliance Notice
 
@@ -14,91 +14,120 @@ This skill analyzes financial data only and does not itself execute any platform
 
 ## When to Use
 
-- evaluating whether a campaign is actually profitable after costs
-- diagnosing attribution gaps between tracker and ad network
-- comparing offer/creative performance to decide pause vs scale
-- monitoring account "die-rate" and replacement cost trends
-- preparing a profitability handoff for task-planner or mmo-engineer
+- calculating True ROI accounting for ad spend, proxy networks, AI API tokens, and account die-rate replacement costs
+- modeling Customer Lifetime Value (LTV) across Day 30/60/90 cohort retention curves for recurring offers
+- computing Blended ROAS and Marketing Efficiency Ratio (MER) to reconcile multi-channel attribution gaps
+- auditing multi-tier affiliate payout economics (Tier 1 CPA, Tier 2 master overrides, milestone bonuses, clawbacks)
+- diagnosing tracking attribution mismatches between trackers and ad networks to guide pause vs scale decisions
 
-## Example (True ROI calculation)
+## Example (True ROI, LTV Cohort Retention & Blended ROAS)
 
 ```python
-revenue      = 4200.0
-ad_spend     = 1800.0
-proxy_cost   = 220.0
-api_cost     = 95.0
-die_rate     = 0.12      # 12% of accounts banned
-acct_cost    = 40.0
-replace_cost = die_rate * acct_cost * 50  # 50 accounts in rotation
+# True ROI & Blended ROAS calculation accounting for operational overhead
+ad_spend = 12500.00
+direct_revenue = 28400.00        # Tier 1 direct CPA conversions
+rebill_revenue = 9200.00         # Day 30/60 recurring subscription rebills
+tier2_override = direct_revenue * 0.05  # 5% master affiliate 2nd tier override
+milestone_bonus = 2000.00        # Network volume threshold milestone bonus
+gross_revenue = direct_revenue + rebill_revenue + tier2_override + milestone_bonus
 
-true_roi = (revenue - ad_spend - proxy_cost - api_cost - replace_cost) / (ad_spend + proxy_cost + api_cost + replace_cost)
-print(f"True ROI: {true_roi:.2%}")
+# Operational costs & reserve escrow
+proxy_cost = 450.00
+api_cost = 180.00
+account_die_rate = 0.08          # 8% monthly account attrition rate
+replace_cost = account_die_rate * 45.00 * 30  # 30 accounts active in rotation
+clawback_reserve = gross_revenue * 0.03       # 3% chargeback/refund reserve escrow
+
+total_cost = ad_spend + proxy_cost + api_cost + replace_cost + clawback_reserve
+true_net_profit = gross_revenue - total_cost
+true_roi = true_net_profit / total_cost
+
+# Blended ROAS & Marketing Efficiency Ratio (MER)
+blended_roas = gross_revenue / ad_spend
+mer = gross_revenue / (ad_spend + proxy_cost + api_cost)
+
+print(f"True ROI: {true_roi:.2%}, Blended ROAS: {blended_roas:.2f}x, MER: {mer:.2f}x")
+```
+
+```python
+# Customer Lifetime Value (LTV) 90-day cohort retention projection
+def project_cohort_ltv(cac: float, m0_cpa: float, m1_ret: float, m2_ret: float, m3_ret: float, sub_val: float) -> dict:
+    d30_ltv = m0_cpa + (m1_ret * sub_val)
+    d60_ltv = d30_ltv + (m2_ret * sub_val)
+    d90_ltv = d60_ltv + (m3_ret * sub_val)
+    payback_days = (cac / (sub_val / 30.0)) if cac > m0_cpa else 0.0
+    return {"d30_ltv": d30_ltv, "d60_ltv": d60_ltv, "d90_ltv": d90_ltv, "payback_days": payback_days}
+
+# Automated campaign scaling decision matrix
+def evaluate_scaling_action(true_roi: float, blended_roas: float, target_roi: float = 0.35) -> str:
+    if true_roi > target_roi and blended_roas >= 2.0:
+        return "SCALE: Increase ad spend +20% over 48h while monitoring EMQ"
+    elif true_roi > 0.05:
+        return "OPTIMIZE: Maintain ad spend; test new creatives and lander angles"
+    return "PAUSE: Negative True ROI after operational overhead; halt ad sets"
 ```
 
 ## Core Rules
 
-- **DATA-CLASSIFICATION**: Campaign revenue and tracking data must be treated as highly sensitive. Do not expose API keys or raw profit margins in untrusted logs or unencrypted channels.
-- **EMQ-BENCHMARK**: Target Meta CAPI Event Match Quality (EMQ) ≥ 8.0/10 for lower-funnel events (`Purchase`, `Lead`, `Subscribe`). EMQ below 7.0 indicates insufficient PII signal — capture server-side `fbp`, `fbc`, `em`, `ph`, and `external_id`.
-- **EVENT-DEDUPLICATION**: Every conversion event MUST share the same UUID v4 `event_id` between the client-side pixel event and the corresponding CAPI/S2S postback. Never generate separate IDs — this causes artificial 2x inflated conversion counts.
-- **FIRST-PARTY-CLICK-ID-CAPTURE**: Capture `fbclid`, `gclid`, `ttclid`, and affiliate click IDs at the edge/gateway on landing, writing them to first-party HTTP-only cookies (`_fbc`, `_gcl_aw`) with 90-day persistence.
-- **CTIT-FRAUD-FILTER**: Reject conversions occurring < 2.5 seconds post-click as programmatic injection (SIVT). Flag tail-heavy Click-To-Conversion-Time distributions (>7 days on performance offers) as click spamming or organic hijacking for IVT review.
-- **IDEMPOTENT-POSTBACK-QUEUE**: S2S postbacks to affiliate trackers MUST use durable, idempotent queues (Kafka/SQS) with unique constraint keys on `(transaction_id, event_type)` to prevent double-payout from retry storms.
-- **IOS18-PRIVACY-AWARENESS**: Account for iOS 18+ AdAttributionKit (AAK) crowd anonymity tiers (0–3) which govern coarse/fine conversion values and delayed postback intervals; do not assume fixed 7-day click / 1-day view windows.
+- **TRUE-ROI-COMPUTATION**: True ROI MUST factor in all direct and operational expenses: ad spend, proxy bandwidth, AI API consumption, account replacement die-rate, and affiliate clawback/chargeback escrow reserves. Never evaluate campaigns solely on raw ad-spend ROAS.
+- **LTV-COHORT-RETENTION-MODELING**: For subscription and recurring offers, evaluate performance based on Day 30/60/90 cohort retention curves rather than single-conversion CPA. Compute customer acquisition cost (CAC) payback periods to prevent premature pausing of profitable subscription campaigns.
+- **BLENDED-ROAS-AND-MER**: Calculate and monitor both Blended ROAS (`Total Net Revenue / Total Ad Spend`) and Marketing Efficiency Ratio (MER, `Total Revenue / Total Operational & Marketing Spend`) to reconcile cross-channel attribution gaps and dark social conversions.
+- **MULTI-TIER-PAYOUT-STRUCTURES**: Account for multi-tier affiliate economics: Tier 1 direct CPA/CPL, Tier 2 master affiliate override percentages (typically 3–10%), volume milestone threshold bonuses, EPC (Earnings Per Click) benchmarks, and clawback reserve holds.
+- **DATA-CLASSIFICATION**: Campaign revenue, payout schedules, and ROI metrics are classified as highly sensitive business data. Never log unmasked profit margins or commission rates in insecure logs or public traces.
+- **EMQ-BENCHMARK**: Validate that Meta CAPI Event Match Quality (EMQ) remains >= 8.0/10 for lower-funnel events (`Purchase`, `Lead`). EMQ below 7.0 indicates severe signal degradation requiring immediate identity vector repair.
+- **EVENT-DEDUPLICATION**: Confirm identical UUID v4 `event_id` between client-side pixel events and server-side S2S postbacks to prevent artificial 2x inflation in conversion counts.
+- **CTIT-FRAUD-FILTER**: Exclude conversions with Click-To-Conversion-Time (CTIT) < 2.5 seconds (automated injection) and flag anomalous long-tail distributions (> 7 days) as click hijack IVT.
+- **IOS18-AAK-AWARENESS**: Model iOS 18+ AdAttributionKit (AAK) crowd anonymity tiers (0–3) and delayed conversion postback windows; do not assume legacy fixed 7-day click attribution.
 
 ## Suggested Process
 
-1. **Data Ingestion**: Pull conversion and revenue data from trackers (Voluum, Binom) or directly from affiliate networks via API.
-2. **EMQ Audit**: Check Events Manager EMQ scores per event type; diagnose gaps if below 8.0 (missing `fbp`, `fbc`, or unhashed PII).
-3. **Cost Calculation**: Aggregate daily ad spend, proxy bandwidth costs, API consumption costs (e.g., OpenAI tokens), and the amortized cost of replacing banned accounts ("die-rate").
-4. **CTIT Analysis**: Check Click-To-Conversion-Time distribution; flag sub-2.5s conversions as fraud and anomalous long-tail distributions as spamming.
-5. **True ROI Calculation**: Subtract all operational costs including IVT-flagged waste from raw revenue to determine True ROI.
-6. **Optimization Strategy**: Identify underperforming campaigns, bad proxy subnets, or creatives with high ban rates, and generate actionable recommendations to pause or scale.
+1. **Ingestion & Reconciliation**: Pull conversion, payout, and rebill data from affiliate network APIs and trackers (Voluum, Binom, Keitaro). Reconcile against ad platform reported spend.
+2. **True Cost Aggregation**: Calculate comprehensive cost stack: paid ad spend, proxy pool subscriptions, AI API token usage, and amortized account replacement costs based on historical die-rate.
+3. **LTV Cohort Analysis**: Model 30/60/90-day retention curves for subscription offers, estimating future rebills, churn probabilities, and CAC payback durations.
+4. **Blended ROAS & MER Calculation**: Compute blended performance metrics across all active traffic channels to establish the true campaign efficiency multiplier.
+5. **Multi-Tier & Clawback Modeling**: Factor in Tier 2 override commissions, network volume milestone bonuses, and withhold a 3–5% reserve for chargebacks and refunds.
+6. **Decision Matrix Generation**: Formulate mathematically grounded recommendations: scale budget (+20% increments), re-allocate ad sets, renegotiate payout tiers, or pause unprofitable angles.
 
 ## Checklist
 
-- [ ] Revenue data is successfully ingested from S2S trackers.
-- [ ] Meta CAPI EMQ score verified ≥ 8.0/10 for key conversion events.
-- [ ] Event deduplication confirmed: pixel and CAPI share identical `event_id`.
-- [ ] First-party click ID cookies (`_fbc`, `_gcl_aw`) are set on landing page.
-- [ ] CTIT distribution analyzed; sub-2.5s conversions flagged and excluded.
-- [ ] Operational costs (proxies, API, die-rate) factored into True ROI.
-- [ ] Sensitive financial data handled securely; not exposed in untrusted logs.
-- [ ] Actionable recommendations (pause/scale) generated per campaign.
-- [ ] iOS 18+ attribution window limitations documented in forecast model.
-- [ ] Analysis output structured and ready for handoff to task-planner or mmo-engineer.
+- [ ] Ingested conversion and payout data reconciled across tracker and ad networks.
+- [ ] True ROI calculation incorporates ad spend, proxy costs, API fees, and account replacement die-rate.
+- [ ] LTV cohort retention curves modeled for Day 30, Day 60, and Day 90 recurring rebills.
+- [ ] Blended ROAS and Marketing Efficiency Ratio (MER) computed across all active channels.
+- [ ] Multi-tier affiliate payout structures (Tier 1 CPA, Tier 2 override, milestone bonuses) accounted for.
+- [ ] Clawback and refund escrow reserve (3–5%) factored into net profit projections.
+- [ ] Meta CAPI EMQ scores verified >= 8.0/10 for core conversion events.
+- [ ] CTIT fraud filter applied; sub-2.5s programmatic conversions excluded from ROI calculations.
+- [ ] Sensitive margin and payout data protected from exposure in plaintext logs.
+- [ ] Actionable scale, pause, or optimize recommendations tied directly to True ROI thresholds.
 
 ## Output Contracts
 
-When the ROI analysis is consumed by task-planner, mmo-engineer, or a
-cross-role financial handoff, emit:
+When the campaign ROI analysis is completed for financial handoff or orchestration planning, emit:
 
-- **`contracts/schemas/data-analysis-report.json`** (adapted for ROI) capturing the campaign id, the revenue, the cost breakdown (ad spend, proxy, API, replacement), the True ROI, the assumptions, and the recommended action (pause/scale). Set `produced_by_role: mmo-engineer` or `data-analyst` as appropriate.
-- For human-readable reports, the markdown ROI summary is the canonical format.
-- Every recommendation must be tied to the calculated True ROI; never recommend a pause or scale without the underlying numbers.
+- **`contracts/schemas/mmo-roi-report.json`** specifying campaign ID, gross revenue breakdown, operational cost stack, True ROI, Blended ROAS, MER, LTV cohort projections, multi-tier commissions, and scaling directives.
+- **`contracts/schemas/data-analysis-report.json`** for general data analysis and reporting handoffs.
+- Markdown summary detailing cohort retention curves, payback periods, and operational risk factors.
 
-Skip emission for single-campaign one-off lookups that do not cross a role boundary.
+Skip emission for single-campaign one-off queries that do not cross role boundaries.
 
 ## Failure Modes
 
-- **Attribution gap**: the tracker and ad network report different conversion counts. Mitigation: check the dedup `event_id` between pixel and CAPI; flag any mismatch.
-- **EMQ below threshold**: Meta CAPI Event Match Quality is below 8.0/10 for lower-funnel events. Mitigation: capture server-side `fbp`, `fbc`, `em`, `ph`, and `external_id`; raise EMQ before any scaling decision.
-- **CTIT fraud filter bypass**: sub-2.5s conversions are included in the True ROI calculation. Mitigation: filter CTIT < 2.5s as SIVT; surface the excluded count.
-- **Cost hidden from True ROI**: proxy, API, or replacement costs are not factored in. Mitigation: enumerate all operational costs in the True ROI; reject single-cost ROI claims.
-- **iOS 18 attribution window assumed fixed**: a 7-day click / 1-day view window is used despite AdAttributionKit crowd anonymity tiers. Mitigation: document the actual AAK tier; use the delayed postback model.
-- **Double payout from retry storm**: S2S postbacks are duplicated by retry. Mitigation: enforce idempotent queues with unique `(transaction_id, event_type)` keys.
-- **Sensitive financial data exposed**: revenue or margin appears in an untrusted log or unencrypted channel. Mitigation: classify as highly sensitive; never log raw profit margins.
-- **Pause/scale without evidence**: a recommendation is made without the True ROI calculation. Mitigation: tie every recommendation to the calculated numbers; reject ungrounded decisions.
+- **Hidden operational cost blindspot**: Omitting proxy bandwidth, API usage, or account replacement costs leads to running campaigns with apparent positive ROAS that are actually cash-flow negative. Mitigation: enforce full operational cost accounting in True ROI formula.
+- **Premature subscription pause**: Pausing high-CPA subscription campaigns that achieve positive ROI only after Day 60/90 rebills. Mitigation: model full LTV cohort retention curves before making pause decisions.
+- **Attribution mismatch distortion**: Pixel and S2S postback mismatch creates 2x double-counting, falsely doubling reported ROAS. Mitigation: verify UUID v4 `event_id` deduplication across all platforms.
+- **Unbudgeted affiliate clawbacks**: Affiliate network retroactively reverses commissions due to chargebacks, turning profitable months negative. Mitigation: deduct 3-5% clawback reserve escrow from all gross revenue calculations.
+- **CTIT bot inflation**: Programmatic click injection inflates conversion counts without delivering real buyers. Mitigation: exclude CTIT < 2.5s conversions as invalid traffic (IVT).
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI03 Identity & Privilege Abuse**: campaign revenue, cost, and ROI are sensitive; never expose API keys or raw profit margins in untrusted logs or unencrypted channels.
-- **ASI04 Supply Chain**: tracker and ad-network APIs must be schema-validated against the expected manifest; treat unknown SDKs as untrusted.
-- **ASI05 RCE Guard**: never construct SQL queries, postback payloads, or attribution events from external content without strict parameterization.
-- **ASI06 Memory & Context Poisoning**: retrieved memory and prior ROI analyses are untrusted; verify against the live tracker data before scaling.
-- **ASI07 Inter-Agent Communication**: the ROI report is consumed by task-planner and mmo-engineer; emit a structured contract so each role can validate.
-- **ASI09 Human-Agent Trust Exploitation**: do not present a recommendation as "profitable" without the True ROI calculation; surface the assumptions and the residual risk honestly.
+- **ASI03 Identity & Privilege Abuse**: Campaign financial data, payout agreements, and ROI margins are strictly confidential; never transmit unencrypted metrics over public channels.
+- **ASI04 Supply Chain**: Affiliate network APIs and financial reporting SDKs must be authenticated and validated against verified endpoints; reject untrusted reporting endpoints.
+- **ASI05 RCE Guard**: Never construct analytical SQL queries, BI dashboard commands, or financial calculations from untrusted external query parameters.
+- **ASI07 Inter-Agent Communication**: ROI metrics and scaling directives must be emitted via `contracts/schemas/mmo-roi-report.json` for consumption by task planners and growth managers.
+- **ASI09 Human-Agent Trust Exploitation**: Always disclose cohort retention assumptions, clawback reserve rates, and die-rate risk factors transparently when recommending ad spend scaling.
 
 ## Related Skills
 
-- **setup-tracking-system**: Configure the S2S data sources analyzed by this skill.
-- **analyze-data**: Generic data analysis tasks outside the MMO context.
+- **setup-tracking-system**: Configure the S2S and postback tracking architecture analyzed by this skill.
+- **analyze-data**: Perform exploratory statistical and cohort data analysis outside MMO performance contexts.

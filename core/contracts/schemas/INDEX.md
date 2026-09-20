@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**50 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 49/50
+**52 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 51/52
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 
@@ -55,6 +55,9 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | `seo-metadata.json` | SEO Metadata | ✅ | ✅ |
 | `seo-weekly-board.json` | SEO Weekly Board | ✅ | ✅ |
 | `series-article.json` | Series Article | ✅ | ✅ |
+| **MMO & Growth Engineering** | | | |
+| `mmo-campaign-spec.json` | MMO Campaign Specification | ✅ | ✅ |
+| `mmo-roi-report.json` | MMO Campaign ROI Report | ✅ | ✅ |
 | **A2A Protocol (Agent-to-Agent)** | | | |
 | `a2a-task.json` | A2A Task Delegation | ✅ | — |
 | `a2a-task-status.json` | A2A Task Status | ✅ | — |
@@ -190,6 +193,8 @@ stock-audit-session.json
 | `seo-metadata.json` | SEO Analyst | Content Writer, Frontend Developer |
 | `seo-weekly-board.json` | Task Planner, SEO Analyst | Content Writer, Project Manager |
 | `series-article.json` | Content Writer, SEO Analyst | Publisher, Frontend Developer |
+| `mmo-campaign-spec.json` | MMO Engineer | Technical Lead, DevOps Engineer, Reviewer, Agent Coordinator, Data Analyst |
+| `mmo-roi-report.json` | MMO Engineer, Data Analyst | Product Manager, Agent Coordinator, Technical Lead, Business Analyst |
 | `coordination-plan.json` | Agent Coordinator | All execution roles, Project Manager |
 | `a2a-task.json` | Agent Coordinator | All agent roles |
 | `a2a-task-status.json` | Any agent role | Agent Coordinator |

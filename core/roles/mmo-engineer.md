@@ -64,6 +64,8 @@ This role's mission spans techniques that range from routine (isolating ad accou
 ## Outputs Produced
 
 - `contracts/schemas/implementation-result.json` for code and infrastructure changes.
+- `contracts/schemas/mmo-campaign-spec.json` for structured campaign specifications and tracking topology.
+- `contracts/schemas/mmo-roi-report.json` for true ROI accounting, blended ROAS, and financial audits.
 - Automation scripts (Playwright/Puppeteer + CDP integration).
 - Terraform/Docker configurations for infrastructure and proxyware farming.
 - Tracking URLs, S2S postbacks, and tracker configurations.
@@ -77,9 +79,9 @@ This role's mission spans techniques that range from routine (isolating ad accou
 | --------- | ------------------- | ----- |
 | Automation script | implementation-result.json + code | Must include behavioral mimicry |
 | Infra/Proxy deployment | implementation-result.json + config | Includes Docker/Terraform files |
-| Tracking setup | Tracking URLs & API docs | Must verify S2S postback firing |
+| Tracking setup | Tracking URLs & mmo-campaign-spec.json | Must verify S2S postback firing |
 | Asset sharing setup | RBAC config & isolation plan | Focus on preventing cascading bans |
-| Campaign launch | ROI / Die-rate report | Self-managed execution |
+| Campaign launch | mmo-roi-report.json | Full true ROI & blended ROAS audit |
 
 ## Decision Boundaries
 
@@ -208,5 +210,7 @@ This role's mission spans techniques that range from routine (isolating ad accou
 - Infrastructure (Cloaking/Proxyware) is deployed, stable, and respecting resource limits.
 - Assets (BMs/Profiles) are securely shared without triggering cascading bans.
 - `contracts/schemas/implementation-result.json`
+- `contracts/schemas/mmo-campaign-spec.json`
+- `contracts/schemas/mmo-roi-report.json`
 
 Last updated: 2026-07-01
