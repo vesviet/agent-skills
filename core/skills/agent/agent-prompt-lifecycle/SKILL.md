@@ -2,6 +2,7 @@
 name: agent-prompt-lifecycle
 description: Manage prompt assets through their full lifecycle including versioning, evaluation against golden datasets, drift detection, and controlled promotion across environments. Use when creating, updating, reviewing, or auditing prompt definitions in roles, skills, workflows, or system instructions to ensure measurable quality and safe deployment.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
+version: "1.0.0"
 ---
 
 # Agent Prompt Lifecycle

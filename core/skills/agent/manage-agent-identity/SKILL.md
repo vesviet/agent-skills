@@ -2,6 +2,7 @@
 name: manage-agent-identity
 description: Manages the full lifecycle of Non-Human Identities (NHI) for AI agent sessions — including provisioning scoped credentials, enforcing just-in-time access, behavioral baseline monitoring, and secure offboarding. Use when onboarding a new agent role to production, rotating agent credentials, auditing active agent sessions, or responding to anomalous agent behavior.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
+version: "1.0.0"
 ---
 
 # Manage Agent Identity

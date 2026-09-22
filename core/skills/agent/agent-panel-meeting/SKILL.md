@@ -2,6 +2,7 @@
 name: agent-panel-meeting
 description: Orchestrate a 6-round, multi-role cross-examination panel meeting to debate architecture, code, or features and produce a final decision-ready JSON contract with trade-offs and residual risks. Use when rigorous cross-functional alignment is required before deciding, building, or shipping.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
+version: "1.0.0"
 ---
 
 # Agent Panel Meeting

@@ -2,6 +2,7 @@
 name: architect-mcp-server
 description: Architect enterprise-grade Model Context Protocol (MCP) servers, tool surfaces, schemas, transport protocols, and security perimeters. Use when designing MCP server contracts, selecting streamable HTTP or stdio transports, standardizing Zod/Pydantic schemas, externalizing state handles (SEP-2567), configuring OAuth 2.1 RFC 8707 Resource Indicators, or establishing Shadow MCP governance.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_build, run_tests]
+version: "1.0.0"
 ---
 
 # Architect MCP Server

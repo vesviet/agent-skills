@@ -2,6 +2,7 @@
 name: agent-memory-compaction
 description: Compact long-running agent conversation context into an anchored 10-slot working state by preserving goals, phase control, active constraints, modified file paths, decisions, verbatim test evidence, and next actions while pruning ephemeral tool logs and intermediate reasoning. Use when context utilization exceeds 60%, chat turns reach 15-20, transitioning between phases, encountering error loops, or preparing clean A2A task handoffs.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, delegate_task, a2a_send_task, run_tests, execute_command]
+version: "1.0.0"
 ---
 
 # Agent Memory Compaction

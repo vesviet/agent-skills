@@ -2,6 +2,7 @@
 name: agent-tool-orchestration
 description: Plan and sequence agent tool use by choosing the smallest reliable tool, controlling work phase by phase, parallelizing independent reads, avoiding unsafe shell operations, and validating results. Use when a task requires multiple searches, file edits, commands, or external checks across a bug, feature, review, or debugging flow.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, delegate_task, a2a_send_task, run_tests, execute_command]
+version: "1.0.0"
 ---
 
 # Agent Tool Orchestration

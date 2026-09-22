@@ -2,6 +2,7 @@
 name: agent-semantic-memory
 description: Read from and write to persistent memory stores so agents retain codebase patterns, past fixes, and architectural facts across conversations. Use when starting work in a known repo, after fixing a non-obvious bug, after discovering a codebase convention, or when the same mistake has occurred more than once.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, delegate_task, a2a_send_task, run_tests, execute_command]
+version: "1.0.0"
 ---
 
 # Agent Semantic Memory

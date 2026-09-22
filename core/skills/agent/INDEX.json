@@ -1,0 +1,396 @@
+{
+  "version": "1.0.0",
+  "type": "skill-index",
+  "root": ".",
+  "generated": "2026-09-22T14:16:00Z",
+  "skills": [
+    {
+      "name": "agent-panel-meeting",
+      "description": "Orchestrate a 6-round, multi-role cross-examination panel meeting to debate architecture, code, or features and produce a final decision-ready JSON contract with trade-offs and residual risks. Use when rigorous cross-functional alignment is required before deciding, building, or shipping.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-context-management",
+      "description": "Manage and maintain agent context across conversations and sessions. Provides tools for storing, retrieving, and organizing contextual information that agents need to maintain state and coherence.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-graph-orchestration",
+      "description": "Orchestrate complex workflows using graph-based execution models. Enables agents to define, visualize, and execute workflows as directed graphs with dependencies and conditional logic.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-model-routing",
+      "description": "Route requests to appropriate language models based on task requirements, capabilities, and performance characteristics. Provides intelligent model selection for optimal performance and cost efficiency.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "configure-oauth-metadata",
+      "description": "Configure and manage OAuth metadata for secure authentication and authorization flows. Handles client registration, token endpoints, and identity provider configurations.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "manage-agent-identity",
+      "description": "Manage agent identities, credentials, and authentication profiles. Provides secure storage and retrieval of agent authentication information for various services and platforms.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-handoff",
+      "description": "Facilitate smooth handoffs between agents and between agents and humans. Manages context transfer, state synchronization, and communication protocols for seamless transitions.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-tool-orchestration",
+      "description": "Orchestrate and manage tool usage across agent workflows. Provides tools for tool selection, chaining, and execution monitoring in multi-agent systems.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-delegation",
+      "description": "Delegate tasks and subtasks to other agents or agent systems. Manages task distribution, result aggregation, and inter-agent communication for collaborative problem-solving.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-semantic-memory",
+      "description": "Manage semantic memory for agents, enabling storage and retrieval of conceptual knowledge, relationships, and learned experiences. Supports contextual understanding and knowledge synthesis.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-memory-compaction",
+      "description": "Optimize agent memory usage by compacting and summarizing historical interactions. Reduces memory footprint while preserving essential information and context.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-a2a-protocol",
+      "description": "Implement Agent-to-Agent (A2A) communication protocols for inter-agent messaging and coordination. Supports message passing, task delegation, and result sharing between agents.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-quality-gate",
+      "description": "Implement quality gates and validation checkpoints for agent outputs. Ensures that agent-generated content meets predefined quality standards before proceeding.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-observability",
+      "description": "Provide observability and monitoring capabilities for agent systems. Includes logging, metrics collection, tracing, and debugging tools for agent behavior analysis.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "agent-prompt-lifecycle",
+      "description": "Manage the complete lifecycle of agent prompts from creation to optimization. Includes prompt templating, versioning, A/B testing, and performance tracking.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "configure-mcp",
+      "description": "Configure Model Context Protocol (MCP) servers and clients for standardized context sharing between AI models and external tools and data sources.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "configure-agent-commerce",
+      "description": "Configure agent capabilities for commerce-related tasks including payment processing, inventory management, and transaction handling in e-commerce contexts.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "configure-agent-skills",
+      "description": "Configure and manage agent skill installations, updates, and dependencies. Provides tools for skill discovery, installation, and version management.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "configure-agent-headers",
+      "description": "Configure HTTP headers and request metadata for agent communications. Manages header propagation, security headers, and custom metadata for agent-to-agent and agent-to-service communications.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "architect-mcp-server",
+      "description": "Design and architect Model Context Protocol (MCP) servers for specific use cases and integration patterns. Provides guidelines for MCP server design, security, and scalability.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "decompose-agentic-system",
+      "description": "Decompose complex agentic systems into manageable components and subsystems. Provides methodologies for breaking down agent architectures into modular, maintainable pieces.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "debug-identity-provider",
+      "description": "Debug and troubleshoot identity provider configurations and authentication flows. Provides tools for diagnosing OAuth, SAML, and other identity provider issues.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "manage-api-catalog",
+      "description": "Manage catalogs of APIs and API endpoints for agent consumption. Provides tools for API discovery, documentation, and version tracking.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "manage-auth-md",
+      "description": "Manage authentication markdown documentation and guides. Provides tools for creating, updating, and maintaining authentication-related documentation in markdown format.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    }
+  ],
+  "stats": {
+    "totalSkills": 24,
+    "latestVersion": "1.0.0"
+  }
+}

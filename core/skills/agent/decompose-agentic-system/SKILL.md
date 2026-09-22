@@ -2,6 +2,7 @@
 name: decompose-agentic-system
 description: Architect recursive system and task decomposition for large-scale multi-agent architectures (100+ files, 50K+ tokens), DAG dependency trees, disk-backed persistent planning (planning-with-files), anti-context-rot mechanisms, NHI autonomy-tier classification, and policy-as-code fitness functions. Use when scoping complex multi-agent workflows, establishing durable markdown planning, isolating agent blast radiuses, or preventing LLM context rot.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_build, run_tests]
+version: "1.0.0"
 ---
 
 # Decompose Agentic System
