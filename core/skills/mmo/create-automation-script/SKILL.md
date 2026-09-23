@@ -1,7 +1,8 @@
 ---
 name: create-automation-script
-description: Build Playwright/Puppeteer automation scripts that connect via CDP to Anti-Detect browsers or use C++ patched engines with WebGPU/Canvas consistency and automated Turnstile challenge handling. Use when building multi-account automation, login flows, ad account warm-up sequences, or scraping high-trust platforms.
+description: Generate stealth automation scripts using Playwright/Puppeteer over CDP, C++ patched browsers (Camoufox), and behavioral mimicry techniques. Use when deploying new MMO operations, expanding to new ad accounts, or replacing legacy spin-based automation.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
+version: "1.0.0"
 ---
 
 # Create Automation Script

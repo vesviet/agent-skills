@@ -1,7 +1,8 @@
 ---
 name: setup-tracking-system
 description: Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta CAPI v20+, TikTok Events API, Google Enhanced Conversions, and affiliate webhooks. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps.
-allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
+allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, run_database]
+version: "1.0.0"
 ---
 
 # Setup Tracking System

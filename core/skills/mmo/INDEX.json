@@ -1,0 +1,126 @@
+{
+  "version": "1.0.0",
+  "type": "skill-index",
+  "root": ".",
+  "generated": "2026-09-23T13:18:00Z",
+  "skills": [
+    {
+      "name": "deploy-mmo-infrastructure",
+      "description": "Deploy and manage proxy pools (Residential/4G) with dynamic health probes and Anti-Detect Browser orchestration enforcing automated warmup state machines. Use when deploying a new MMO operation, expanding to new ad accounts, or migrating proxy infrastructure.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "3.8"
+    },
+    {
+      "name": "deploy-proxyware-fleet",
+      "description": "Orchestrate decentralized bandwidth monetization nodes on provisioned network infrastructure. Use when deploying bandwidth sharing applications (Honeygain, EarnApp, Pawns.app) at scale, implementing complex network routing (WireGuard, proxy-chains), and configuring hardware/OS fingerprint normalization.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "3.8"
+    },
+    {
+      "name": "manage-mmo-assets",
+      "description": "Manage and share MMO assets (Business Managers, Via, Pixels/Datasets, Anti-Detect profiles) using Role-Based Access Control (RBAC), RFC 6238 2FA/TOTP programmatic generation, Vault secret storage, and VCC isolation with BIN diversity. Use when onboarding new ad accounts, sharing BMs with team members, auditing asset health, or recovering from a cascading ban incident.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "analyze-campaign-roi",
+      "description": "Measure conversion rates, organic search traffic, and CPA of generated content. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "generate-mmo-content",
+      "description": "Generate Programmatic SEO (pSEO) Answer-First landing pages with JSON-LD schemas and multimodal short-form social video hooks (TikTok/Reels/Shorts) with AIDA/PAS scripts. Use when launching programmatic landing page campaigns, scaling SEO content volume, or producing high-converting social video hooks.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "create-automation-script",
+      "description": "Generate stealth automation scripts using Playwright/Puppeteer over CDP, C++ patched browsers (Camoufox), and behavioral mimicry techniques. Use when deploying new MMO operations, expanding to new ad accounts, or replacing legacy spin-based automation.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "setup-tracking-system",
+      "description": "Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta CAPI v20+, TikTok Events API, Google Enhanced Conversions, and affiliate webhooks. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "run_database"
+      ],
+      "version": "1.0.0"
+    }
+  ],
+  "stats": {
+    "totalSkills": 7,
+    "skillsWithVersion1": 5,
+    "skillsWithVersion38": 2,
+    "latestVersion": "3.8"
+  }
+}

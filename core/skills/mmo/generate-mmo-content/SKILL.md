@@ -2,6 +2,7 @@
 name: generate-mmo-content
 description: Generate Programmatic SEO (pSEO) Answer-First landing pages with JSON-LD schemas and multimodal short-form social video hooks (TikTok/Reels/Shorts) with AIDA/PAS scripts. Use when launching programmatic landing page campaigns, scaling SEO content volume, or producing high-converting social video hooks.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
+version: "1.0.0"
 ---
 
 # Generate MMO Content

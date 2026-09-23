@@ -1,7 +1,8 @@
 ---
 name: analyze-campaign-roi
-description: Analyze S2S conversion data, customer lifetime value (LTV) cohort curves, Blended ROAS/MER, multi-tier payouts, and operational die-rates to calculate True ROI. Use when evaluating campaign profitability, diagnosing attribution gaps, comparing offer performance, or deciding to pause or scale ad spend.
+description: Measure conversion rates, organic search traffic, and CPA of generated content. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
+version: "1.0.0"
 ---
 
 # Analyze Campaign ROI
