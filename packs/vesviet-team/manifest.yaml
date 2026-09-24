@@ -113,7 +113,7 @@ corpus:
     radar_files: 35
     radar_editions: 28
     categories: 16
-    reports: 351
+    reports: 353
     pillar_hubs: 10
     total_words: 935387
   learn:
@@ -127,7 +127,7 @@ corpus:
     radar_editions: 64
     docs: 3
     categories: 15
-    reports: 328
+    reports: 331
     masterclass_batches_completed: 5
     posts_upgraded: 70
     total_words: 1321747
