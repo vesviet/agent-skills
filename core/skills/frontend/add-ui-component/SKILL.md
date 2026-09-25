@@ -14,6 +14,9 @@ Use this skill when a frontend change needs a new reusable component or a meanin
 - evolving a shared presentation element
 - following the design system + a11y rules
 - defining component state boundaries
+- **RSC/Client Component boundary classification**
+- **React 19 form actions and `useActionState`/`useOptimistic`**
+- **Anti-slop component mechanics enforcement**
 
 ## Core Rules
 
@@ -28,6 +31,10 @@ Use this skill when a frontend change needs a new reusable component or a meanin
 - prefer React 19 form actions and `useActionState` for standard form mutations over heavy client-side form wrappers
 - update visual or interaction tests when the component contract changes
 - if any code in this change was AI-generated, validate it per the risk tier defined in the frontend-developer role before accepting
+- **RSC leaf pattern**: push `"use client"` as deep as possible to maximize SSR benefits; RSC at top, client components as children/props
+- **AI-generated component governance**: token conformance, axe-devtools scan, CSS pollution strip, peer review, visual baseline
+- **Anti-slop mechanics**: `min-h-[100dvh]` for hero, `motion/react` for continuous values, `:active` transform, CTA no-wrap, approved icons only
+- **Lit v3 Web Components**: wrap with `@lit/react` for properties/events/lifecycle mapping; verify unmount cleanup
 
 ## Suggested Process
 
@@ -50,6 +57,7 @@ Require or construct a **UI Component Spec** (via `contracts/schemas/ui-componen
 - what events or callbacks it emits
 - what states it must support
 - whether it is presentational, stateful, or compositional
+- **RSC/client classification**: Server Component or Client Component (`"use client"`)
 
 ### 3. Build The Smallest Useful Version
 
@@ -71,6 +79,7 @@ Check:
 - keyboard support
 - aria labels or relationships where needed
 - responsive behavior in the repo's style system
+- **axe-devtools scan passes** (color contrast, screen reader labels, keyboard navigation)
 
 ### 5. Connect State Carefully
 
@@ -79,6 +88,7 @@ If the component needs state:
 - keep transient UI state local when possible
 - avoid reaching directly into global state unless the repo expects it
 - separate data fetching from pure presentation when the repo uses that pattern
+- **continuous motion on `motion/react`** (`useMotionValue`, `useTransform`) — never `useState` for scroll/pointer
 
 ### 6. Add Tests
 
@@ -91,40 +101,19 @@ Cover:
 - accessibility-sensitive states
 - prop or slot/children variations that are easy to break
 
-## 2026 Component Architecture
-
-### 2026: RSC Boundary Placement Leaf Pattern
-- Push the "use client" directive as deep down the React component tree as possible (the leaf pattern) to maximize Server-side rendering (SSR) benefits.
-- Keep React Server Components (RSC) at the top of the tree, and pass Interactive Client Components down as children or props into those Server Components.
-- Minimize the amount of client-side state managed high up in the component tree to avoid unnecessary re-renders.
-
-### 2026: AI-Generated Component Governance Checklist
-- Verify that AI-generated UI components conform strictly to existing design tokens and color scales.
-- Run an automated axe-devtools scan to catch color contrast, screen reader labels, and keyboard navigation issues.
-- Strip any custom, inline, or non-repository CSS files and rules to prevent style pollution.
-- Conduct a peer code review on all generated components to ensure they meet project code style and safety standards.
-
-### 2026: Lit v3 Web Components Bridging
-- Wrap Lit v3 Web Components in a React wrapper using the `@lit/react` library to expose them cleanly as React components.
-- Ensure that properties, events, and lifecycle hooks are mapped correctly to React props and callbacks.
-- Verify component cleanup and event listener detachment are executed correctly when components unmount.
-
-### 2026: Anti-Slop Component Mechanics (Taste Skill)
-- For full-height hero or banner components, ALWAYS enforce `min-h-[100dvh]` to avoid viewport jumping on mobile browsers.
-- NEVER use React `useState` to track continuous values (pointer physics, scroll progress, mouse movement); bind continuous motion to `motion/react` values (`useMotionValue`, `useTransform`).
-- Provide physical feedback on interactive elements via `:active` transform (`scale-[0.98]` or `-translate-y-[1px]`).
-- Ensure primary CTA labels never wrap to multiple lines on desktop viewports.
-- Restrict icon usage to approved libraries (@phosphor-icons/react, hugeicons-react, @radix-ui/react-icons); never hand-roll SVG icons in components.
-
 ## Checklist
 
 - [ ] similar component pattern reviewed
-- [ ] component contract defined
-- [ ] accessibility and semantics checked
-- [ ] state boundaries kept clear
-- [ ] styling follows local system
-- [ ] anti-slop mechanics verified (min-h-[100dvh], continuous motion isolated from useState, tactile :active feedback, no CTA wrapping)
-- [ ] performance impact considered (bundle size, lazy loading, CLS)
+- [ ] component contract defined with RSC/client classification
+- [ ] accessibility and semantics checked (axe-devtools scan passes)
+- [ ] state boundaries kept clear (client state only in `"use client"` components)
+- [ ] styling follows local system (design tokens, no hardcoded values)
+- [ ] anti-slop mechanics verified: `min-h-[100dvh]`, continuous motion on motion/react, tactile `:active`, no CTA wrapping, approved icons only
+- [ ] performance impact considered (bundle size, lazy loading, CLS, RSC streaming)
+- [ ] AI-generated component governance: token conformance, axe-devtools scan, CSS pollution stripped, peer review completed, visual baseline captured
+- [ ] Lit v3 Web Components wrapped with `@lit/react` if used
+- [ ] shadcn v4 `FieldGroup` + `Field` with `useId()` for forms
+- [ ] `InputGroup` for compound inputs with `:focus-within` rings
 - [ ] tests added or updated
 - [ ] `implementation-result.json` emitted for the change slice (see Output Contracts)
 
@@ -134,12 +123,19 @@ Cover:
 - **AI component without conformance check**: an AI-generated component is merged without the GenUI review. **Mitigation:** require the review checklist; reject components without the review.
 - **Visual regression baseline missing**: a UI change ships without a visual baseline. **Mitigation:** require a Chromatic or Percy baseline; reject merges without a passing baseline.
 - **Critical state missing**: a component omits one of the required UI states. **Mitigation:** enforce the state checklist; reject specs that skip a state.
+- **RSC boundary leak**: Client component imported in Server Component without `"use client"`. **Mitigation:** lint rule enforcing `"use client"` at boundary; type-check import graph.
+- **AI component token violation**: hardcoded colors/spacing in AI-generated component. **Mitigation:** automated token conformance check in CI; reject non-conforming.
+- **Continuous motion on useState**: `useState` for scroll/pointer causing re-render storms. **Mitigation:** lint rule banning `useState` for continuous values; require `motion/react`.
+- **CSS pollution from AI**: inline styles or custom CSS files in AI output. **Mitigation:** automated strip of non-repo CSS; reject components with style leakage.
+- **Lit v3 cleanup failure**: event listeners not detached on unmount. **Mitigation:** `@lit/react` wrapper verification; test unmount cleanup.
+- **CTA label wrapping**: primary CTA wraps on desktop. **Mitigation:** lint rule for `whitespace-nowrap` on primary CTA; visual regression test.
+- **Hand-rolled SVG icons**: custom SVG icons bypassing design system. **Mitigation:** lint rule restricting to approved icon libraries (@phosphor-icons/react, hugeicons-react, @radix-ui/react-icons).
 
 ## Output Contracts
 
 When this skill runs inside a coordinated slice planned by Technical Lead or gated by Reviewer, emit:
 
-- **`contracts/schemas/implementation-result.json`** — one artifact per change slice. Include `change_summary`, `files_touched[]`, `components_added[]` with props/events summary, `tests_added[]`, `preserved_behavior[]` (call out a11y semantics, layout shifts, or public prop surface kept unchanged), `validation_run` (commands + result). Reference any `ui-component-spec.json` consumed from UI/UX Designer so downstream roles can trace spec-to-code fidelity.
+- **`contracts/schemas/implementation-result.json`** — one artifact per change slice. Include `change_summary`, `files_touched[]`, `components_added[]` with props/events summary, `tests_added[]`, `preserved_behavior[]` (call out a11y semantics, layout shifts, or public prop surface kept unchanged), `validation_run` (commands + result). Reference any `ui-component-spec.json` consumed from UI/UX Designer so downstream roles can trace spec-to-code fidelity. Include: RSC/client classification, AI governance checks passed, anti-slop verification, icon library compliance.
 
 Skip emission for solo exploratory UI work with no planned handoff.
 
@@ -162,3 +158,5 @@ Skip emission for solo exploratory UI work with no planned handoff.
 - **design-ux-flow**: Upstream ux-flow-spec and ui-component-spec from UI/UX Designer
 - **commit-code**: Prepare the component change for delivery
 - **develop-mobile-app**: Build high-performance React Native / Expo UI components with FlashList virtualization and Reanimated motion
+
+Last updated: 2026-09-25

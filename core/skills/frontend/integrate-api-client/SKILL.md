@@ -14,6 +14,10 @@ Use this skill when frontend code needs to call a backend API or when an existin
 - a UI needs to mutate backend state
 - wiring auth, caching, or error handling for API calls
 - following the repo's client/state patterns
+- **Orval OpenAPI codegen pipeline**
+- **React 19 `use()` for RSC streaming + TanStack Query for client**
+- **React 19 `useActionState` for forms + `useMutation` for complex**
+- **Streaming AI responses with `ReadableStream` + `useReducer`**
 
 ## Core Rules
 
@@ -28,6 +32,11 @@ Use this skill when frontend code needs to call a backend API or when an existin
 - use functional updater syntax in `setQueryData((old) => ...)` to prevent stale state captures
 - server state must stay in the query cache; do not duplicate server responses in local `useState`
 - if any code in this change was AI-generated, validate it per the risk tier defined in the frontend-developer role before accepting
+- **Orval pipeline mandatory**: OpenAPI → TanStack Query v5 + MSW v2 + TS types; `queryOptions` factories
+- **React 19 `use()` for RSC**: read promises in Server Components; TanStack Query for client interactivity
+- **React 19 `useActionState` for forms**: pending state, error handling, progressive enhancement
+- **`useMutation` only for complex**: cache manipulation, pagination, optimistic UI; simple forms → `useActionState`
+- **Streaming AI responses**: `ReadableStream` + `TextDecoderStream` + `useReducer` + cancellation hooks
 
 ## Suggested Process
 
@@ -92,22 +101,26 @@ Cover:
 
 ## 2026 API Integration Standards
 
-### 2026: OpenAPI Codegen Pipeline Orval
+### Orval OpenAPI Codegen Pipeline
+
 - Configure Orval as the code generation pipeline to automatically convert OpenAPI specifications into TanStack Query v5 queries, MSW (Mock Service Worker) mocks, and TypeScript types.
 - Leverage the queryOptions pattern to write reusable, type-safe query configurations across components.
 - Ensure that MSW mocks are updated and run in test and development environments when schemas change.
 
-### 2026: React 19 use() vs TanStack Query
+### React 19 use() vs TanStack Query
+
 - Use React 19's `use()` hook to read promises directly in Server-rendered components, facilitating React Server Component (RSC) streaming and lazy data resolution.
 - Keep TanStack Query for interactive client-side operations that require cache invalidation, background refetching, or request deduplication.
 - Avoid nesting client-side query hooks when RSC-based streaming can resolve initial page load data.
 
-### 2026: React 19 useActionState for Mutations
+### React 19 useActionState for Mutations
+
 - Utilize React 19's `useActionState` hook for handling straightforward form actions and state updates.
 - Keep `useMutation` from TanStack Query for complex mutations that require advanced cache manipulation, pagination updates, or optimistic UI responses.
 - Ensure validation errors returned from actions are correctly bound back to the UI inputs.
 
-### 2026: Streaming AI Responses
+### Streaming AI Responses
+
 - Handle streaming responses using `ReadableStream` and `TextDecoderStream` to parse chunked responses.
 - Implement token-by-token UI updates via a `useReducer` pattern to avoid unnecessary re-renders during rapid stream updates.
 - Provide clear cancellation hooks to allow users to abort active stream requests.
@@ -115,26 +128,42 @@ Cover:
 ## Checklist
 
 - [ ] local data-fetching pattern reviewed
-- [ ] request and response contract defined (types preserved)
-- [ ] client or hook updated
-- [ ] UI wiring added
-- [ ] loading and error states handled
+- [ ] Orval configured for OpenAPI → TanStack Query v5 + MSW v2 + TS types
+- [ ] `queryOptions` factories used for all query configurations (no magic string keys)
+- [ ] React 19 `use()` used in Server Components for initial data fetching
+- [ ] TanStack Query v5 used for client-side interactivity (cache invalidation, refetching, deduplication)
+- [ ] Simple form mutations use `useActionState` with `<form action={submitAction}>`
+- [ ] Complex mutations use `useMutation` with full optimistic lifecycle (`onMutate`/`onError`/`onSettled`)
+- [ ] Functional updater syntax: `setQueryData((old) => ...)` — no stale captures
+- [ ] Server state stays in query cache; no `useState` duplication
+- [ ] Streaming AI responses: `ReadableStream` + `TextDecoderStream` + `useReducer`
+- [ ] Cancellation hooks for active streams (`AbortController`)
+- [ ] Validation errors from actions bound to UI inputs
+- [ ] MSW v2 mocks auto-generated and updated with Orval pipeline
+- [ ] Idempotency keys on every non-idempotent mutation (POST/DELETE)
+- [ ] Explicit error code handling (4xx vs 5xx differentiated)
 - [ ] tests added or updated
+- [ ] `implementation-result.json` emitted
 
 ## Failure Modes
 
-- **API client widens auth scope**: the client requests a token scope broader than the feature needs. **Mitigation:** validate every client against the feature's declared auth scope; reject clients that request broader scopes.
-- **AI-suggested client widens dependency surface**: an AI-suggested client pattern imports libraries outside the feature's interface. **Mitigation:** validate AI-generated code against the feature's narrow interface; reject patterns that deviate.
-- **Client retries non-idempotent mutations**: a POST or DELETE is retried without an idempotency key. **Mitigation:** require an explicit idempotency key on every non-idempotent mutation; reject retries without the key.
-- **Client ignores error codes**: the client treats 4xx and 5xx identically. **Mitigation:** require explicit handling for every documented error code; reject clients that lump error codes together.
+- **API client widens auth scope**: the client requests a token scope broader than the feature needs. Mitigation: validate every client against the feature's declared auth scope; reject clients that request broader scopes.
+- **AI-suggested client widens dependency surface**: an AI-suggested client pattern imports libraries outside the feature's interface. Mitigation: validate AI-generated code against the feature's narrow interface; reject patterns that deviate.
+- **Client retries non-idempotent mutations**: a POST or DELETE is retried without an idempotency key. Mitigation: require an explicit idempotency key on every non-idempotent mutation; reject retries without the key.
+- **Client ignores error codes**: the client treats 4xx and 5xx identically. Mitigation: require explicit handling for every documented error code; reject clients that lump error codes together.
+- **Orval spec drift**: OpenAPI spec changes but generated code not updated. Mitigation: CI step running Orval; fail if generated code differs from committed.
+- **RSC/TanStack Query boundary confusion**: client query hooks nested in Server Components. Mitigation: lint rule banning `useQuery` in `"use client"` components that are RSC children; use `use()` in RSC.
+- **`useActionState` for complex mutations**: simple form hook used for paginated cache updates. Mitigation: lint rule: `useActionState` only for forms; `useMutation` for cache manipulation.
+- **Streaming re-render storm**: `useState` updated per token. Mitigation: `useReducer` pattern; batch updates; `React.startTransition` for non-urgent.
+- **Missing cancellation**: user cannot abort slow AI stream. Mitigation: `AbortController` wired to cancel button; cleanup on unmount.
+- **Stale state capture**: `setQueryData(newData)` captures stale closure. Mitigation: functional updater `setQueryData((old) => ...)` mandatory.
+- **MSW mock divergence**: mocks not updated with schema changes. Mitigation: Orval generates MSW handlers; CI verifies mocks match spec.
 
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/implementation-result.json** — Required fields: change_summary, 
-iles_touched[], and 
-alidation_run. Set produced_by_role to the emitting developer role.
+- **`contracts/schemas/implementation-result.json`** — Required fields: change_summary, files_touched[], and validation_run. Set produced_by_role to the emitting developer role. Include: Orval config, `queryOptions` factories, RSC/Client boundary, streaming handler, cancellation infrastructure.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
@@ -153,3 +182,5 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **review-code**: Review data flow, auth, and error handling risk
 - **commit-code**: Prepare the integration for delivery
 - **develop-mobile-app**: Connect mobile clients with offline-first persistence (MMKV, WatermelonDB) and NetInfo synchronization
+
+Last updated: 2026-09-25

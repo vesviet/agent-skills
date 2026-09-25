@@ -34,27 +34,33 @@ Use this skill to implement, optimize, and audit native view transitions, route-
 ## Suggested Process
 
 ### 1. Audit Navigation Map & Candidate Surfaces
+
 Scan the route graph. Identify navigation triggers (`<Link>`, `router.push`), navigation directions (forward, back), Suspense boundaries, shared visual elements (thumbnails -> hero headers), and persistent app shell elements (header, sidebar, sticky dock).
 
 ### 2. Add Global CSS Recipes & Reduced Motion Overrides
+
 Incorporate standardized view transition keyframes and classes into the global stylesheet. Ensure `@media (prefers-reduced-motion: reduce)` is active before authoring custom animations.
 
 ### 3. Isolate App Shell & Persistent Elements
+
 Assign explicit `viewTransitionName` styles to header, navigation, and persistent containers. Apply persistent isolation CSS to prevent shell flickering during page transitions.
 
 ### 4. Implement Directional Route Transitions
+
 Tag navigation events with `addTransitionType` (`nav-forward`, `nav-back`) inside `startTransition`. Wrap page components in reusable type-keyed `<DirectionalTransition>` components.
 
 ### 5. Wire Shared Element Morphs
+
 Assign matching `name={`entity-hero-${id}`}` props to source and destination elements. Set `share="morph"` and configure appropriate fallback `enter`/`exit` classes for routes where no pair forms.
 
 ### 6. Verify Core Web Vitals & Interaction Responsiveness
+
 Measure Interaction to Next Paint (INP) and Cumulative Layout Shift (CLS) under simulated 4x CPU throttling. Verify animations run at 60/120fps on compositor thread with zero layout thrashing.
 
 ## Checklist
 
 - [ ] view transitions animate exclusively composited properties (`transform`, `opacity`)
-- [ ] Interaction to Next Paint verified under budget (INP < 200ms)
+- [ ] Interaction to Next Paint verified under budget (INP < 200ms under 4x CPU throttling)
 - [ ] all targeted `<ViewTransition>` boundaries declare `default="none"`
 - [ ] `<ViewTransition>` components placed before any host DOM nodes
 - [ ] `name` attributes for shared elements are dynamically scoped and globally unique
@@ -62,7 +68,21 @@ Measure Interaction to Next Paint (INP) and Cumulative Layout Shift (CLS) under 
 - [ ] `@media (prefers-reduced-motion: reduce)` overrides verified in browser
 - [ ] hierarchical navigations mapped with typed directional transitions (`nav-forward` / `nav-back`)
 - [ ] fallback animations defined for shared elements when matching target is absent
+- [ ] frequency-based animation budget enforced (hotkeys 0ms, micro 100-150ms, overlays 150-250ms, routes ≤400ms)
+- [ ] harmonic spring physics: mass 1.0, damping 0.75-0.85
+- [ ] single smooth-scroll engine (Lenis or native CSS) — not both
+- [ ] security: `view-transition-name` sanitized; transition types allowlisted
 - [ ] `performance-audit.json` and `implementation-result.json` emitted and validated
+
+## Failure Modes
+
+- **Layout Thrashing & Frame Drops**: CSS animates `height` or `width` during transition, dropping frames below 30fps. Mitigation: code review rejects layout property animations; replace with scale/translate transforms.
+- **Duplicate Name Collision**: two active items render `name="hero-image"`, breaking transitions. Mitigation: require dynamic ID parameterization (`name={`hero-${id}`}`).
+- **Unintended Global Crossfade**: an unconfigured `<ViewTransition>` fades every time a background revalidation occurs. Mitigation: enforce `default="none"`.
+- **Persistent Header Jump**: sticky navigation header stretches and slides during page change. Mitigation: pull header into independent transition group via `viewTransitionName: "header"`.
+- **Spring Physics Violation**: underdamped cartoonish bouncing ($\zeta < 0.6$). Mitigation: design system enforces $\zeta \approx 0.75-0.85$; lint rule for spring config.
+- **INP Budget Breach**: DOM mutation > 50ms inside `startViewTransition`. Mitigation: `React.startTransition` + `scheduler.yield()` chunking; profile with 4x CPU throttling.
+- **CSS Injection via `view-transition-name`**: unescaped string interpolation. Mitigation: sanitize dynamic names against pattern; reject unsafe characters.
 
 ## Output Contracts
 
@@ -71,13 +91,6 @@ When this skill is invoked as part of a coordinated frontend slice, emit:
 - **`contracts/schemas/ui-component-spec.json`** — Documents transition boundaries, names, triggers, and type maps.
 - **`contracts/schemas/performance-audit.json`** — Records INP, LCP, CLS, and compositor frame-rate measurements.
 - **`contracts/schemas/implementation-result.json`** — Records files modified, CSS recipes installed, and behavioral test evidence.
-
-## Failure Modes
-
-- **Layout Thrashing & Frame Drops**: CSS animates `height` or `width` during transition, dropping frames below 30fps. Mitigation: code review rejects layout property animations; replace with scale/translate transforms.
-- **Duplicate Name Collision**: two active items render `name="hero-image"`, breaking transitions. Mitigation: require dynamic ID parameterization (`name={`hero-${id}`}`).
-- **Unintended Global Crossfade**: an unconfigured `<ViewTransition>` fades every time a background revalidation occurs. Mitigation: enforce `default="none"`.
-- **Persistent Header Jump**: sticky navigation header stretches and slides during page change. Mitigation: pull header into independent transition group via `viewTransitionName: "header"`.
 
 ## Security Guardrails (OWASP ASI)
 
@@ -92,3 +105,5 @@ When this skill is invoked as part of a coordinated frontend slice, emit:
 - **component-composition**: Structure compound slots and shared visual elements for transition pairing
 - **frontend-testing**: Assert route navigation, snapshot stability, and DOM state integrity
 - **setup-design-system**: Define design tokens, easing curves, and duration variables
+
+Last updated: 2026-09-25

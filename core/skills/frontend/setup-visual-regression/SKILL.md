@@ -67,10 +67,10 @@ Document snapshot maintenance procedures:
 
 ## Failure Modes
 
-- **Baseline not captured for new component**: a new component ships without a visual baseline. **Mitigation:** require a Chromatic or Percy baseline at component registration; reject components without the baseline.
-- **Baseline drift undetected**: a visual baseline changes without a corresponding PR. **Mitigation:** lock the baseline to the component version; surface drift in the diff report.
-- **Driver version drift**: the visual driver (Chromatic, Percy) is updated without re-baselining. **Mitigation:** re-baseline every component on driver upgrades; surface the missing re-baseline in CI.
-- **Threshold too loose**: a visual regression below the threshold is allowed. **Mitigation:** set the threshold per component category; reject thresholds looser than 0.1% pixel delta.
+- **Baseline not captured for new component**: a new component ships without a visual baseline. Mitigation: require a Chromatic or Percy baseline at component registration; reject components without the baseline.
+- **Baseline drift undetected**: a visual baseline changes without a corresponding PR. Mitigation: lock the baseline to the component version; surface drift in the diff report.
+- **Driver version drift**: the visual driver (Chromatic, Percy) is updated without re-baselining. Mitigation: re-baseline every component on driver upgrades; surface the missing re-baseline in CI.
+- **Threshold too loose**: a visual regression below the threshold is allowed. Mitigation: set the threshold per component category; reject thresholds looser than 0.1% pixel delta.
 
 ## Output Contracts
 
@@ -87,6 +87,15 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 - [ ] Baseline snapshots generated in containerized environment.
 - [ ] CI pipeline step configured as a hard quality gate blocking visual regressions.
 - [ ] `implementation-result.json` emitted.
+- [ ] **Official Playwright Docker container** (`mcr.microsoft.com/playwright`) for baseline generation
+- [ ] **Bounded self-QA**: max 2 passes, dual viewport (Desktop + Mobile), defect-driven edits only
+- [ ] **Negative asset constraints**: no fabricated SVGs, no synthetic testimonials
+- [ ] **Explicit tolerance thresholds**: `maxDiffPixelRatio: 0.01`, `threshold: 0.2`
+- [ ] **Component isolation**: Storybook + Chromatic TurboSnap + Playwright full-page
+- [ ] **Cross-browser matrix**: Chromium, WebKit, Firefox at mobile/desktop
+- [ ] **Hard CI gate**: visual failures block merges unless `ui-ux-designer`/`frontend-developer` approves
+- [ ] **Network mocking**: MSW for deterministic visual fixtures
+- [ ] **TurboSnap integration**: Chromatic only re-tests changed component stories
 
 ## Security Guardrails (OWASP ASI)
 
@@ -102,3 +111,5 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 - **add-ui-component**: Validate new or modified UI components against visual snapshot baselines
 - **design-review**: Review visual snapshot diffs against design specifications and design tokens
 - **review-code**: Audit visual test coverage and snapshot approval evidence during code review
+
+Last updated: 2026-09-25

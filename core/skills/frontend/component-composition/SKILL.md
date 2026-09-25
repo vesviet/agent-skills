@@ -16,10 +16,12 @@ Use this skill to design, refactor, and review modular frontend components using
 - enabling polymorphic trigger elements via Radix-style `asChild` / `Slot` delegation
 - lifting UI state into dedicated provider components for decoupled sibling and action access
 - transitioning legacy React component code (`forwardRef`, `useContext`) to modern React 19 idioms (`ref` prop, `use()`)
+- **React 19 idioms mandatory migration**
+- **shadcn v4 form architecture migration**
 
 ## Core Rules
 
-- **Enforce Anti-Boolean Prop Sprawl**: strictly ban components that use boolean flags to toggle internal layout structures (e.g. `isThread`, `hasBadge`, `isHeader`, `withIcon`, `isLoadingModal`); replace with compound components or explicit variants
+- **Enforce Anti-Boolean Prop Sprawl**: strictly ban components that use boolean flags to toggle internal layout structures (e.g. `isThread`, `hasBadge`, `isHeader`, `withIcon`, `isLoadingModal`); replace with compound components or explicit variants; **max 2 booleans for purely stylistic states**
 - **Mandate Compound Component Architecture**: complex components with multiple visual sub-regions must expose subcomponents sharing a typed context interface (`Component.Root`, `Component.Trigger`, `Component.Content`, `Component.Close`)
 - **Modernize Form Layouts (`FieldGroup` + `Field`)**: replace legacy v3 nested `FormItem`/`FormControl` boilerplate with shadcn v4 `FieldGroup` and `Field`; use React 19 `useId()` for deterministic label, description, and error linking compatible with Server Actions
 - **Compound Inputs (`InputGroup`)**: wrap inputs with prefix/suffix addons, action buttons, or dropdowns using `InputGroup`; eliminate absolute positioning padding hacks in favor of unified flex containers with container `:focus-within` rings
@@ -33,24 +35,31 @@ Use this skill to design, refactor, and review modular frontend components using
 ## Suggested Process
 
 ### 1. Audit Prop Surface & Identify Pathologies
+
 Scan the component interface. Count boolean customization props (`is*`, `has*`, `show*`, `with*`). If more than 2 boolean flags alter layout or render branches, declare boolean prop explosion and plan a compound refactor.
 
 ### 2. Define Context & Injected Contract
+
 Create the component's context interface with three distinct facets:
+
 - `state`: read-only data values required by subcomponents
 - `actions`: callbacks and mutation functions
 - `meta`: references (DOM refs, unique IDs, active indices)
 
 ### 3. Extract Headless State Machine Hook
+
 Author the headless hook managing state transitions, keyboard bindings (Escape, Enter, Arrows), and ARIA attributes (`aria-expanded`, `aria-controls`, `aria-labelledby`).
 
 ### 4. Implement Compound Primitives & Slot Delegation
+
 Author the compound subcomponents. Ensure triggers support `asChild` using the `Slot` primitive, cleanly merging consumer class names, refs, and event listeners.
 
 ### 5. Compose Explicit Variants
+
 Author pre-composed, ergonomic variants for frequent use cases (`ThreadComposer`, `ChannelComposer`). Consumers with standard requirements use the variant; consumers with novel layouts compose the primitives directly.
 
 ### 6. Verify via Behavioral UI Tests
+
 Use skill: `frontend-testing`. Assert subcomponents render correctly across arbitrary compositions, `asChild` delegates props to custom tags, keyboard accessibility functions, and external action buttons can trigger provider actions.
 
 ## Checklist
@@ -61,17 +70,14 @@ Use skill: `frontend-testing`. Assert subcomponents render correctly across arbi
 - [ ] interactive triggers support `asChild` slot delegation without generating illegal DOM wrapper nesting
 - [ ] event handlers and refs merged safely via `composeEventHandlers` and `composeRefs`
 - [ ] keyboard navigation and WAI-ARIA roles handled deterministically via headless hook or primitive
-- [ ] React 19 idioms used (direct `ref` prop, `use()` hook, `<Context value={...}>`)
+- [ ] **React 19 idioms used**: direct `ref` prop, `use(Context)` hook, `<Context value={...}>`, `useId()` for forms
+- [ ] shadcn v4 `FieldGroup` + `Field` with `useId()` for form layouts
+- [ ] `InputGroup` for compound inputs with `:focus-within` rings
+- [ ] Base UI `render` prop used for state injection/polymorphic tags; Radix `asChild` for single-child delegation
+- [ ] headless hooks extracted: `useDialog`, `useDropdown` returning `{ state, actions, triggerProps, contentProps }`
 - [ ] explicit pre-composed variants provided for common high-frequency use cases
 - [ ] behavioral interaction tests verify compound composition and accessibility contracts
 - [ ] `ui-component-spec.json` and `implementation-result.json` emitted and validated
-
-## Output Contracts
-
-When this skill is invoked as part of a coordinated frontend slice, emit:
-
-- **`contracts/schemas/ui-component-spec.json`** — Declares compound component hierarchy, subcomponent contracts, prop interfaces, and slot capabilities.
-- **`contracts/schemas/implementation-result.json`** — Records files modified, components created/refactored, test coverage, and public prop surface changes.
 
 ## Failure Modes
 
@@ -79,6 +85,18 @@ When this skill is invoked as part of a coordinated frontend slice, emit:
 - **Event Handler Collision in Slot**: child `onClick` overwrites trigger `onClick`. Mitigation: always use `composeEventHandlers` to ensure both internal logic and consumer callbacks execute.
 - **Broken Ref Forwarding**: custom child passed to `asChild` loses ref binding. Mitigation: merge refs using `composeRefs` supporting both callback refs and object refs.
 - **Context Null Pointer Exception**: subcomponent rendered outside Provider crashes. Mitigation: context consumer hook throws helpful diagnostic error (`useComposerContext must be used within Composer.Provider`).
+- **React 19 Migration Incomplete**: `forwardRef` or `useContext()` remains in codebase. Mitigation: codemod for `forwardRef` removal; lint rule for `use(Context)` vs `useContext()`.
+- **shadcn v3 Form Legacy**: `FormItem`/`FormControl` boilerplate persists. Mitigation: codemod for `FieldGroup`/`Field` migration; lint rule banning legacy form components.
+- **Base UI/Radix Misuse**: `render` prop used for simple delegation; `asChild` used when state injection needed. Mitigation: decision tree in code review; documented pattern examples.
+- **Headless Hook State Leakage**: internal state exposed in hook return. Mitigation: strict return type `{ state, actions, triggerProps, contentProps }`; no internal state exposure.
+- **Ref Forwarding Broken in `asChild`**: custom child loses ref binding. Mitigation: `composeRefs` supporting callback and object refs; test with `forwardRef` components.
+
+## Output Contracts
+
+When this skill is invoked as part of a coordinated frontend slice, emit:
+
+- **`contracts/schemas/ui-component-spec.json`** — Declares compound component hierarchy, subcomponent contracts, prop interfaces, and slot capabilities.
+- **`contracts/schemas/implementation-result.json`** — Records files modified, components created/refactored, test coverage, and public prop surface changes.
 
 ## Security Guardrails (OWASP ASI)
 
@@ -94,3 +112,5 @@ When this skill is invoked as part of a coordinated frontend slice, emit:
 - **setup-design-system**: Align compound component tokens and styling with design system rules
 - **review-code**: Audit components for boolean prop sprawl and composition anti-patterns
 - **implement-view-transitions**: Animate layout state changes and morphs across composed elements
+
+Last updated: 2026-09-25

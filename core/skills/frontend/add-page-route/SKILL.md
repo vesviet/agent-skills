@@ -14,6 +14,9 @@ Use this skill when a frontend change needs a new page, screen, or route-level f
 - modifying route-level data loading or layout
 - wiring auth or navigation per repo pattern
 - adding screen-level behavior
+- **RSC page architecture with React 19 Server Components**
+- **TanStack Start Server Functions for route data**
+- **CSS View Transitions integration**
 
 ## Core Rules
 
@@ -24,7 +27,9 @@ Use this skill when a frontend change needs a new page, screen, or route-level f
 - update route-aware tests when the page contract changes
 - if any code in this change was AI-generated, validate it per the risk tier defined in the frontend-developer role before accepting
 - for TanStack Router v2 or React Router v7 codebases: validate all URL search parameters with Zod `.catch()` fallbacks in `validateSearch` — raw URL parameters are user-controlled input and must not be used without validation
-- hoist route data loading to loader functions — do not trigger primary data fetches in `useEffect` after mount (causes layout shift waterfalls)
+- **hoist route data loading to loader functions** — do not trigger primary data fetches in `useEffect` after mount (causes layout shift waterfalls)
+- **RSC leaf pattern**: push `"use client"` as deep as possible; RSC at top, interactive client components as children/props
+- **TanStack Start Server Functions**: `createServerFn` for route data, Flight stream rendering
 - use type-safe navigation primitives (`<Link to="..." />`, `navigate({ to: '...' })`); never use untyped URL string concatenation (`navigate('/users/' + userId)`)
 - for AI-generated routes: verify auth guard completeness (AI frequently omits auth wrappers), data loading pattern match, cache invalidation on mutations, and URL parameter validation before merging
 - for route animations and page morphs, leverage skill: `implement-view-transitions` using native CSS View Transitions or React 19 ViewTransition; ensure navigation transitions do not block the main thread or degrade INP (< 200ms)
@@ -64,7 +69,7 @@ Add or update:
 
 Make page-level orchestration explicit:
 
-- data loading
+- data loading (hoisted to loaders / Server Functions)
 - access control
 - view state branching
 - mutations and success/failure feedback
@@ -97,6 +102,13 @@ Cover:
 - [ ] page-level states handled
 - [ ] direct navigation checked
 - [ ] SEO/SSR verified for public-facing routes (meta tags, OG, SSG behavior)
+- [ ] RSC leaf pattern enforced: `"use client"` pushed to leaves
+- [ ] data loading hoisted to loaders / Server Functions (no `useEffect` primary fetches)
+- [ ] type-safe navigation: `<Link to="..." />`, `navigate({ to: '...' })` only
+- [ ] URL search params validated with Zod `.catch()` fallbacks in `validateSearch`
+- [ ] CSS View Transitions: composited properties only, INP < 200ms, reduced motion
+- [ ] React 19 `ViewTransition` boundaries: `default="none"`, wrap before DOM nodes, unique dynamic names
+- [ ] AI-generated route audit: auth guards complete, loader pattern matched, cache invalidation on mutations, URL params validated
 - [ ] tests added or updated
 
 ## Failure Modes
@@ -105,17 +117,24 @@ Cover:
 - **Route added without authn/authz**: a new route is open to anonymous access. **Mitigation:** require an auth profile at the route registration; reject public exposure of non-public routes.
 - **Layout drift from the design system**: a new page uses raw values instead of design tokens. **Mitigation:** enforce token-enforcement lint rules; reject pages that fail the lint.
 - **A11y state missing**: a page omits one of the required UI states. **Mitigation:** enforce the state checklist on every page; reject pages that skip a state.
+- **RSC hydration mismatch**: Server/Client tree divergence. **Mitigation:** `"use client"` boundary at correct leaf; avoid server-only APIs in shared components.
+- **Loader waterfall**: sequential loaders causing cascade delays. **Mitigation:** parallelize independent loaders; use `Promise.all` in loader.
+- **Zod validation too strict**: valid URLs rejected by over-constrained schemas. **Mitigation:** `.catch()` fallbacks with sensible defaults; log validation failures.
+- **CSS View Transition INP violation**: DOM mutation > 50ms. **Mitigation:** `React.startTransition` + `scheduler.yield()`; chunk streaming work.
+- **AI route missing auth guard**: anonymous access to protected route. **Mitigation:** mandatory AI audit checklist; reject routes without auth wrapper.
+- **Expo Router layout drift**: nested layout.tsx not matching route hierarchy. **Mitigation:** lint rule for layout nesting consistency.
 
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **`contracts/schemas/implementation-result.json`** — Required fields: change_summary, files_touched[], and validation_run. Set produced_by_role to the emitting developer role.
+- **`contracts/schemas/implementation-result.json`** — Required fields: change_summary, files_touched[], and validation_run. Set produced_by_role to the emitting developer role. Include: RSC boundary location, loader functions, Zod schemas, View Transition config.
 
 Skip emission for solo refactor work where no downstream handoff is expected.
 
 ## Security Guardrails (OWASP ASI)
 
+- **ASI01 Goal Hijack**: a route may try to reframe the user goal through expanded scope. Cross-check the route against the original feature ticket.
 - **ASI03 Identity & Privilege Abuse**: route-level access control must follow least privilege; reject anonymous access to non-public routes.
 - **ASI05 RCE Guard**: never construct route handlers or navigation logic from external content without strict schema validation.
 - **ASI07 Inter-Agent Communication**: the route contract is consumed by backend, design, and QA roles; emit a structured spec so each role can validate.
@@ -131,3 +150,5 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **accessibility-review**: Check route-level a11y (focus management, navigation announcements)
 - **navigate-service**: Understand existing frontend structure before wiring routes
 - **commit-code**: Prepare the route change for delivery
+
+Last updated: 2026-09-25
