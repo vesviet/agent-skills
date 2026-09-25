@@ -43,7 +43,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@content-manager`** | Content Manager | — | `design-content-strategy`, `audit-content`, `write-copy` *(+11 more)* | [`core/roles/content-manager.md`](./core/roles/content-manager.md) |
 | **`@content-writer`** | Content Writer | `@writer`, `@copywriter`, `@author`, `@article-writer`, `@blog-writer` | `write-article`, `write-copy`, `repurpose-content` *(+9 more)* | [`core/roles/content-writer.md`](./core/roles/content-writer.md) |
 | **`@data-analyst`** | Data Analyst | `@da`, `@data-analytics` | `analyze-data`, `query-analytical-engine`, `analyze-business-requirements` *(+6 more)* | [`core/roles/data-analyst.md`](./core/roles/data-analyst.md) |
-| **`@data-engineer`** | Data Engineer | `@de`, `@data-eng` | `build-data-pipeline`, `database-maintenance`, `create-migration` *(+10 more)* | [`core/roles/data-engineer.md`](./core/roles/data-engineer.md) |
+| **`@data-engineer`** | Data Engineer | `@de`, `@data-eng` | `build-data-pipeline`, `database-maintenance`, `create-migration` *(+11 more)* | [`core/roles/data-engineer.md`](./core/roles/data-engineer.md) |
 | **`@devops-engineer`** | DevOps Engineer | `@devops`, `@infra`, `@infrastructure` | `setup-deployment`, `debug-runtime-platform`, `add-telemetry-instrumentation` *(+13 more)* | [`core/roles/devops-engineer.md`](./core/roles/devops-engineer.md) |
 | **`@ecommerce-engineer`** | Ecommerce Engineer | `@ecommerce`, `@ecom` | `integrate-payment-gateway`, `handle-checkout-flow`, `manage-product-catalog` *(+13 more)* | [`core/roles/ecommerce-engineer.md`](./core/roles/ecommerce-engineer.md) |
 | **`@frontend-developer`** | Frontend Developer | `@frontend`, `@fe`, `@frontend-dev`, `@ui-developer` | `accessibility-review`, `add-page-route`, `add-ui-component` *(+17 more)* | [`core/roles/frontend-developer.md`](./core/roles/frontend-developer.md) |
@@ -195,15 +195,15 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | Skill Slug | Description | File |
 |:---|:---|:---|
 | **`@analyze-business-requirements`** | Analyze and write business requirements by making actors, business rules, state transitions, excepti... | [`core/skills/meetings-analysis/analyze-business-requirements/SKILL.md`](./core/skills/meetings-analysis/analyze-business-requirements/SKILL.md) |
-| **`@analyze-data`** | Explore analytical datasets using DuckDB/Polars, query canonical Semantic Metric Catalogs to elimina... | [`core/skills/meetings-analysis/analyze-data/SKILL.md`](./core/skills/meetings-analysis/analyze-data/SKILL.md) |
+| **`@analyze-data`** | Explore analytical datasets using DuckDB/Polars, query canonical Semantic Metric Catalogs (dbt Metri... | [`core/skills/meetings-analysis/analyze-data/SKILL.md`](./core/skills/meetings-analysis/analyze-data/SKILL.md) |
 | **`@meeting-review`** | Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky ch... | [`core/skills/meetings-analysis/meeting-review/SKILL.md`](./core/skills/meetings-analysis/meeting-review/SKILL.md) |
 
 ### Category: `mmo` (7 skills)
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
-| **`@analyze-campaign-roi`** | Analyze S2S conversion data, customer lifetime value (LTV) cohort curves, Blended ROAS/MER, multi-ti... | [`core/skills/mmo/analyze-campaign-roi/SKILL.md`](./core/skills/mmo/analyze-campaign-roi/SKILL.md) |
-| **`@create-automation-script`** | Build Playwright/Puppeteer automation scripts that connect via CDP to Anti-Detect browsers or use C+... | [`core/skills/mmo/create-automation-script/SKILL.md`](./core/skills/mmo/create-automation-script/SKILL.md) |
+| **`@analyze-campaign-roi`** | Measure conversion rates, organic search traffic, and CPA of generated content. Use when launching a... | [`core/skills/mmo/analyze-campaign-roi/SKILL.md`](./core/skills/mmo/analyze-campaign-roi/SKILL.md) |
+| **`@create-automation-script`** | Generate stealth automation scripts using Playwright/Puppeteer over CDP, C++ patched browsers (Camou... | [`core/skills/mmo/create-automation-script/SKILL.md`](./core/skills/mmo/create-automation-script/SKILL.md) |
 | **`@deploy-mmo-infrastructure`** | Deploy and manage proxy pools (Residential/4G) with dynamic health probes and Anti-Detect Browser or... | [`core/skills/mmo/deploy-mmo-infrastructure/SKILL.md`](./core/skills/mmo/deploy-mmo-infrastructure/SKILL.md) |
 | **`@deploy-proxyware-fleet`** | Containerize and orchestrate modern DePIN bandwidth monetization light nodes (Grass, Dawn, Nodepay) ... | [`core/skills/mmo/deploy-proxyware-fleet/SKILL.md`](./core/skills/mmo/deploy-proxyware-fleet/SKILL.md) |
 | **`@generate-mmo-content`** | Generate Programmatic SEO (pSEO) Answer-First landing pages with JSON-LD schemas and multimodal shor... | [`core/skills/mmo/generate-mmo-content/SKILL.md`](./core/skills/mmo/generate-mmo-content/SKILL.md) |
@@ -318,11 +318,11 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
-| **`@build-data-pipeline`** | Design and implement transactional lakehouse pipelines (Iceberg v3/Delta 4.0), enforce ODCS v3.1.0 d... | [`core/skills/security-data/build-data-pipeline/SKILL.md`](./core/skills/security-data/build-data-pipeline/SKILL.md) |
+| **`@build-data-pipeline`** | Design and implement transactional lakehouse pipelines (Iceberg v4/v3/Delta 4.0), enforce ODCS v3.1.... | [`core/skills/security-data/build-data-pipeline/SKILL.md`](./core/skills/security-data/build-data-pipeline/SKILL.md) |
 | **`@database-maintenance`** | Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/D... | [`core/skills/security-data/database-maintenance/SKILL.md`](./core/skills/security-data/database-maintenance/SKILL.md) |
 | **`@manage-secrets`** | Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-contr... | [`core/skills/security-data/manage-secrets/SKILL.md`](./core/skills/security-data/manage-secrets/SKILL.md) |
 | **`@manage-vietnam-accounting`** | Prepare and review Vietnam accounting controls, accounting-regime evidence, reconciliations, invoice... | [`core/skills/security-data/manage-vietnam-accounting/SKILL.md`](./core/skills/security-data/manage-vietnam-accounting/SKILL.md) |
-| **`@optimize-olap-database`** | Design high-throughput OLAP schemas, tune ClickHouse/DuckDB/Iceberg columnar engines, configure 8192... | [`core/skills/security-data/optimize-olap-database/SKILL.md`](./core/skills/security-data/optimize-olap-database/SKILL.md) |
+| **`@optimize-olap-database`** | Design high-throughput OLAP schemas for Iceberg v4/v3, tune ClickHouse/DuckDB columnar engines, conf... | [`core/skills/security-data/optimize-olap-database/SKILL.md`](./core/skills/security-data/optimize-olap-database/SKILL.md) |
 | **`@query-analytical-engine`** | Execute in-process analytical SQL with chDB and DuckDB v1.1+, orchestrate multi-step stateful pipeli... | [`core/skills/security-data/query-analytical-engine/SKILL.md`](./core/skills/security-data/query-analytical-engine/SKILL.md) |
 | **`@security-audit`** | Review code, configuration, and service behavior for security risks by checking trust boundaries, se... | [`core/skills/security-data/security-audit/SKILL.md`](./core/skills/security-data/security-audit/SKILL.md) |
 

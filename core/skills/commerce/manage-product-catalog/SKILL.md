@@ -14,6 +14,11 @@ Use this skill when the task involves designing the data model or implementing t
 - variant management (size, color, SKU)
 - pricing or inventory sync across channels
 - structuring catalog data
+- **semantic vector search layer (pgvector/Pinecone + RRF)**
+- **AI content governance pipeline (review gate + audit metadata)**
+- **event-sourced inventory (Kafka/Cloudflare Queues)**
+- **knowledge graph + GraphRAG (Neo4j/Neptune/TigerGraph)**
+- **Vietnam seller verification (Decree 248/2026)**
 
 ## Core Rules
 
@@ -28,14 +33,24 @@ Use this skill when the task involves designing the data model or implementing t
 - treat inventory counts as confidential data; never expose raw warehouse stock levels to unauthenticated clients; classify with `data-classification.yaml` (OWASP ASI03)
 - every catalog write must be schema-validated against the active product schema; reject schema-drifted entries to prevent downstream agent desync (OWASP ASI04)
 - when AI tools generate product descriptions, track `generated_by`, `reviewed_by`, `generated_at`, and `generation_model`; treat unreviewed AI output as drafts (OWASP ASI09)
+- **Semantic Vector Search Layer (Production Standard 2026)**: generate embeddings on write/update using `text-embedding-3-large` or Cohere `embed-v4`; store in `pgvector` (PostgreSQL) or Pinecone; hybrid search via BM25 + dense vector with Reciprocal Rank Fusion (RRF)
+- **AI Content Governance Pipeline (Mandatory)**: generation → brand voice validation (banned words, claim accuracy, brand guidelines) → human review gate → publish; unreviewed AI output = `draft` status (never `published`)
+- **Event-Sourced Inventory**: publish all inventory adjustments/reservations to Kafka/Cloudflare Queues immediately; consumers: search indexes, fulfillment dispatchers, AI shopping agents; no DB locking — eventual consistency via event stream
+- **Knowledge Graph + GraphRAG**: Neo4j/Neptune/TigerGraph for recommendations, compatibility, bundles; GraphCypherQAChain for NL → Cypher → structured results + Qdrant vectors → cited reasoning; Pydantic schema enforcement for all entities/relations/LLM outputs
+- **Vietnam Decree 248/2026/ND-CP Compliance**: seller verification gate before product publish; platform obligations for service standards, pricing, promotions, complaints; accurate product information required
 
 ## Output Contracts
 
-When the catalog change is consumed by a storefront, a marketplace sync, or a
-downstream analytics system, emit:
+When the catalog change is consumed by a storefront, a marketplace sync, or a downstream analytics system, emit:
 
-- **`contracts/schemas/api-contract-spec.json`** describing the catalog entity shape, the variant structure, and the inventory model. The consuming agent can then validate before publishing.
-- **`contracts/schemas/deployment-plan.json`** when the catalog change is part of a coordinated multi-role rollout (e.g., a price update tied to a checkout flow change).
+- **`contracts/schemas/api-contract-spec.json`** describing the catalog entity shape, the variant structure, and the inventory model.
+- **`contracts/schemas/deployment-plan.json`** when the catalog change is part of a coordinated multi-role rollout.
+- **`contracts/schemas/vector-search-spec.json`** for embedding pipeline and RRF fusion config.
+- **`contracts/schemas/ai-content-governance-spec.json`** for generation → review → publish workflow.
+- **`contracts/schemas/event-sourced-inventory-spec.json`** for Kafka event schema and consumer contracts.
+- **`contracts/schemas/product-knowledge-graph-spec.json`** for GraphRAG entities, relations, retrieval.
+- **`contracts/schemas/vn-seller-verification-spec.json`** for verification gate integration.
+- **`contracts/schemas/pydantic-catalog-schema.json`** for enforced entity/relation schemas.
 - For human-readable reports, a markdown diff of the affected SKUs and the rationale.
 
 Skip emission for read-only catalog queries that do not cross a role boundary.
@@ -50,6 +65,13 @@ Skip emission for read-only catalog queries that do not cross a role boundary.
 - **AI content published unreviewed**: an AI-generated product description is set to `published` without a human review gate. Mitigation: enforce the review gate; track `reviewed_by` and `reviewed_at`; treat unreviewed AI output as drafts.
 - **Inventory leaked**: raw warehouse stock levels are exposed to unauthenticated clients. Mitigation: classify inventory as confidential; expose `is_in_stock` (a computed boolean) rather than raw counts.
 - **Sync duplicate**: an idempotent upsert is missing, causing duplicates on re-run. Mitigation: implement upsert by SKU; log sync run counts (created, updated, failed).
+- **Vector search hallucination**: semantic search returns irrelevant products. Mitigation: RRF fusion with BM25, relevance threshold tuning, human-in-the-loop evaluation.
+- **AI content brand violation**: AI generates off-brand or inaccurate claims. Mitigation: automated pre-review validation, banned words list, claim accuracy checks.
+- **Inventory event loss**: Kafka message lost, search index stale. Mitigation: idempotent consumers, event replay capability, CDC backup (Debezium).
+- **Knowledge graph entity resolution error**: wrong product relationships. Mitigation: validated against labels, human review of graph changes, Pydantic schema enforcement.
+- **GraphRAG citation failure**: LLM generates uncited recommendations. Mitigation: GraphCypherQAChain with mandatory citation, structured output validation.
+- **Vietnam compliance gap**: unverified seller lists products. Mitigation: verification gate in publish workflow, platform audit trail.
+- **Schema drift**: catalog write with new/changed fields breaks downstream. Mitigation: Pydantic validation in CI, schema registry, contract testing.
 
 ## Security Guardrails (OWASP ASI)
 
@@ -98,31 +120,34 @@ Clarify before building:
 
 ## 2026 Catalog Architecture Patterns
 
-### 2026: Semantic Vector Search Layer
+### Semantic Vector Search Layer (Production Standard)
+- **Embeddings**: `text-embedding-3-large` or Cohere `embed-v4` on write/update
+- **Storage**: `pgvector` (PostgreSQL) or Pinecone
+- **Hybrid Fusion**: BM25 + dense vector via Reciprocal Rank Fusion (RRF)
 
-Modern catalogs utilize a semantic vector search layer alongside traditional keyword search to improve product discovery:
-- **Embedding Generation**: Generate high-dimensional vector embeddings for product titles and descriptions on write/update operations using models like `text-embedding-3-large` or Cohere `embed-v4`.
-- **Vector Storage**: Store and index these embeddings in vector databases or extensions such as `pgvector` or Pinecone.
-- **Hybrid Search Fusion**: Combine keyword-based search (BM25) and dense vector search results using Reciprocal Rank Fusion (RRF) to provide highly accurate, contextual search results.
+### AI Content Governance Pipeline (Mandatory)
+- **Review Gate**: Human review REQUIRED before `published` status
+- **Audit Metadata**: `generated_by`, `reviewed_by`, `generated_at`, `generation_model`
+- **Brand Voice Validation**: Automated banned words, claim accuracy, brand guidelines checks
+- **Draft Status**: Unreviewed AI output = `draft` (never `published`)
 
-### 2026: AI-Generated Product Content Governance
+### Event-Sourced Inventory
+- **Publish Mutations**: Inventory adjustments/reservations → Kafka/Cloudflare Queues immediately
+- **Consumers**: Search indexes, fulfillment dispatchers, AI shopping agents
+- **No DB Locking**: Eventual consistency via event stream
+- **CDC Alternative**: Debezium for database → Kafka
 
-Automated generation of product copy and metadata requires strict quality gates to preserve brand integrity and accuracy:
-- **Review Gate**: Impose a mandatory human-review gate before setting the status of any AI-generated product description to published.
-- **Audit Metadata**: Track content generation lineage by saving audit fields: `generated_by`, `reviewed_by`, `generated_at`, and `generation_model`.
-- **Brand Voice Validation**: Run automated checks for compliance with brand guidelines, banned words, and product claim accuracy prior to review.
+### Knowledge Graph + GraphRAG
+- **Graph DBs**: Neo4j, Neptune, TigerGraph, Memgraph for recommendations, compatibility, bundles
+- **GraphRAG Pattern**: Structured subgraphs → LLM chains for grounded recommendations
+- **Entity Resolution**: Validated against labels, CDC from Salesforce/Jira/GitHub/ServiceNow/SQL via Kafka/Airbyte
+- **Pydantic Schema Enforcement**: All entities/relations/LLM outputs validated — drift fails in CI
+- **Cited Reasoning**: GraphCypherQAChain for NL → Cypher → structured results + Qdrant vectors → cited output
 
-### 2026: Event Sourcing for Real-Time Inventory
-
-Decouple inventory updates from catalog writes using asynchronous event-driven state mutation:
-- **Publish Mutations**: Publish all inventory adjustments and reservations immediately to messaging systems like Apache Kafka or Cloudflare Queues.
-- **Consumer Processing**: Let downstream catalog search indexes, fulfillment dispatchers, and external AI shopping agents consume these updates to ensure eventual consistency without database locking.
-
-### 2026: Knowledge Graph for Product Relationships
-
-Utilize graphical data models to capture and traverse complex product relationships and user behaviors:
-- **Graph Databases**: Model recommendations, compatibility matrices, and bundles using graph databases such as Neo4j or Amazon Neptune.
-- **GraphRAG Pattern**: Feed structured subgraphs into LLM retrieval chains (GraphRAG) to ground automated customer recommendations in verifiable catalog relationships.
+### Vietnam Seller Verification (Decree 248/2026)
+- Seller verification gate before product publish (effective July 1, 2026)
+- Platform obligations: service standards, pricing, promotions, complaints
+- Electronic ID verification for sellers/livestreamers from Jan 1, 2027
 
 ## Checklist
 
@@ -134,11 +159,24 @@ Utilize graphical data models to capture and traverse complex product relationsh
 - [ ] product publish/unpublish guarded by review or approval step
 - [ ] catalog sync is idempotent by SKU if external source is used
 - [ ] low-stock alerting threshold configured for ops team
-- [ ] semantic vector embeddings generated and stored on product write
-- [ ] hybrid search (BM25 and dense vectors) combined using RRF fusion
-- [ ] AI-generated product content audited and verified by human-review gate
-- [ ] inventory updates published via Kafka or Cloudflare Queues
-- [ ] product knowledge graph structured to drive Recommendations/GraphRAG
+- [ ] **semantic vector embeddings generated on product write/update** (`text-embedding-3-large` or Cohere `embed-v4`)
+- [ ] **vector embeddings stored in pgvector or Pinecone** with proper indexing
+- [ ] **hybrid search: BM25 + dense vector combined via Reciprocal Rank Fusion (RRF)**
+- [ ] **AI-generated product content: mandatory human review gate before `published` status**
+- [ ] **AI content audit metadata: `generated_by`, `reviewed_by`, `generated_at`, `generation_model` tracked**
+- [ ] **brand voice validation: automated banned words, claim accuracy, brand guidelines checks**
+- [ ] **unreviewed AI output status = `draft` (never `published`)**
+- [ ] **inventory adjustments published to Kafka/Cloudflare Queues immediately**
+- [ ] **downstream consumers: search indexes, fulfillment, AI agents consume inventory events**
+- [ ] **product knowledge graph in Neo4j/Neptune/TigerGraph for relationships**
+- [ ] **GraphRAG retrieval: structured subgraphs → LLM chains for grounded recommendations**
+- [ ] **entity resolution with CDC from Salesforce/Jira/GitHub/ServiceNow/SQL via Kafka/Airbyte**
+- [ ] **Pydantic models for all entity types, relations, LLM outputs — schema drift fails in CI**
+- [ ] **LangChain GraphCypherQAChain for NL → Cypher → cited reasoning**
+- [ ] **Vietnam seller verification gate before product publish**
+- [ ] **platform obligations: service standards, pricing, promotions disclosed**
+- [ ] channel safety buffers: dynamic virtual safety stock (5% or min 3 units) before marketplace publish
+- [ ] CDC event streaming (Debezium) for real-time stock changes to downstream channels
 
 ## Related Skills
 
@@ -147,3 +185,5 @@ Utilize graphical data models to capture and traverse complex product relationsh
 - **build-data-pipeline**: Synchronize product data from ERP, supplier feeds, or PIM systems
 - **add-api-endpoint**: Expose catalog CRUD endpoints for admin and storefront consumers
 - **database-maintenance**: Maintain catalog indexes and handle bulk data operations
+
+Last updated: 2026-09-25

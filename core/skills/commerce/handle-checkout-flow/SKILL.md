@@ -14,17 +14,24 @@ Use this skill when the task involves building, extending, or debugging the step
 - cart, tax/shipping, discount/coupon logic
 - order confirmation step
 - end-to-end checkout from cart to payment
+- **agentic checkout under ACP/UCP protocols**
+- **Vietnam Decree 248/2026/ND-CP compliance**
 
 ## Core Rules
 
 - **Zero Client-Trust Pricing**: recalculate all line items, discounts, taxes, and shipping server-side immediately before creating the payment intent — discard any client-submitted monetary amounts
-- **PCI DSS v4.1.0 Script Integrity** (req 6.4.3): all JavaScript executing on payment pages must be inventoried, justified, and loaded with **Subresource Integrity (SRI) hashes** and a strict **CSP nonce** (`script-src 'nonce-...'`)
-- **Tamper Detection** (req 11.6.1): an automated mechanism must monitor payment page HTTP headers and client-side scripts at least weekly (or continuously) to detect unauthorized modifications (Magecart/formjacking)
+- **PCI DSS v4.0.1 Script Integrity** (req 6.4.3): all JavaScript executing on payment pages must be inventoried, justified, and loaded with **Subresource Integrity (SRI) hashes** and a strict **CSP nonce** (`script-src 'nonce-...'`); 3DS scripts in iframes exempt due to trust relationship
+- **Tamper Detection** (req 11.6.1): an automated mechanism must monitor payment page HTTP headers and client-side scripts at least weekly (or continuously) to detect unauthorized modifications (Magecart/formjacking); SAQ A eligibility updated Jan 2025
 - validate inventory availability at checkout submission time, not only at add-to-cart time; use **two-phase atomic hold** (soft reserve with TTL → hard commit on payment success / release on failure)
 - apply discounts and promotions server-side only; wrap coupon validation and usage increment in an **atomic transaction with row-level lock** (`SELECT ... FOR UPDATE`) to prevent TOCTOU race conditions under concurrent requests
 - ensure checkout submission is idempotent: use idempotency keys on payment intent creation; submitting an order twice must not produce two charges
 - protect guest checkout with **cryptographically signed HMAC tokens** — not plain session IDs; enforce strict BOLA checks so each cart/order is accessible only to its owning session or user
-- support **EMV 3DS 2.3.1** with 100+ context attributes for frictionless risk-based authentication (\> 85% challenge-free); integrate SCA exemption engine (Low-Value, TRA, Trusted Beneficiary)
+- support **EMV 3DS 2.3.1** with 100+ context attributes for frictionless risk-based authentication (> 85% challenge-free); integrate SCA exemption engine (Low-Value, TRA, Trusted Beneficiary)
+- **Agentic Checkout (ACP/UCP)**: implement pre-authorization gates and spending limits per agent session/customer ID; define Merchant of Record (MoR) for agentic transactions; support programmatic headless checkout via ACP/UCP structured responses
+- **Mandatory Address Validation Lifecycle**: validate shipping address via Google Maps Address Validation, Loqate, or Smarty Streets BEFORE tax calculation or shipping carrier requests; catch errors (missing apartment, invalid ZIP) with precise subcodes
+- **Tax Engine Decision Tree**: Stripe Tax (startups/mid-market in Stripe ecosystem), TaxJar (multi-channel, moderate volume, standard ERP), Avalara AvaTax (enterprise, high volume, complex Nexus, custom ERP)
+- **Economic Nexus Threshold Monitoring**: track US state-by-state transaction count and sales volume; alert at 80% of threshold (e.g., 160 transactions or $80K sales); auto-registration workflow
+- **Vietnam Decree 248/2026/ND-CP Compliance** (effective July 1, 2026): seller identity verification required before platform transactions; platform obligations for rights disclosure, service standards, pricing transparency, affiliate marketing transparency; electronic ID verification for sellers/livestreamers from Jan 1, 2027
 
 ## Suggested Process
 
@@ -32,9 +39,10 @@ Use this skill when the task involves building, extending, or debugging the step
 
 Define the full funnel before building:
 
-- cart review → shipping address → shipping method selection → discount/coupon → payment → order confirmation
+- cart review → shipping address → **address validation (MANDATORY)** → shipping method selection → discount/coupon → payment → order confirmation
 - identify which steps are required vs skippable (e.g., digital goods skip shipping)
 - confirm whether guest checkout is supported alongside authenticated checkout
+- **agentic checkout path**: headless execution via ACP/UCP, pre-authorization gates, MoR assignment
 
 ### 2. Implement Cart State Management
 
@@ -42,52 +50,80 @@ Define the full funnel before building:
 - calculate line-item totals, subtotal, and item weight server-side
 - handle out-of-stock and quantity changes gracefully with clear user messaging
 
-### 3. Implement Tax and Shipping Calculation
+### 3. Implement Address Validation (Mandatory Before Tax/Shipping)
 
-- integrate a tax engine (TaxJar, Avalara, or manual rules) to calculate jurisdiction-based tax on the final shipping address
-- call shipping carrier APIs (or flat-rate rules) to present shipping options and costs
+- integrate Google Maps Address Validation, Loqate, or Smarty Streets APIs
+- standardize raw user inputs into verified, carrier-compliant address structures
+- catch validation errors with precise subcodes (missing apartment, invalid ZIP)
+- reject tax/shipping calculation if address validation fails
+
+### 4. Implement Tax and Shipping Calculation
+
+- select tax engine per decision tree: Stripe Tax / TaxJar / Avalara based on scale, volume, ERP
+- calculate jurisdiction-based tax on final validated shipping address
+- call shipping carrier APIs (or flat-rate rules) for options and costs
 - recalculate totals whenever address or shipping method changes
+- **economic nexus monitoring**: track thresholds per state, alert at 80%, auto-registration workflow
 
-### 4. Implement Discount and Coupon Logic
+### 5. Implement Discount and Coupon Logic
 
-- validate coupons server-side: check code existence, validity window, usage limits, minimum order value, and applicable SKUs
-- apply discounts in a defined precedence order (e.g., item discount → coupon → loyalty points)
+- validate coupons server-side: check code existence, validity window, usage limits, minimum order value, applicable SKUs
+- apply discounts in defined precedence order (item discount → coupon → loyalty points)
 - display applied discount breakdown clearly before final payment
 
-### 5. Finalize Order and Confirm Payment
+### 6. Finalize Order and Confirm Payment
 
 - lock inventory at order-creation time (before charging)
 - call `integrate-payment-gateway` to process payment
-- on success: persist the confirmed order, release inventory lock, send confirmation email, and redirect to confirmation page
+- on success: persist confirmed order, release inventory lock, send confirmation email, redirect to confirmation page
 - on failure: release inventory lock, surface payment error, allow retry without re-entering non-payment data
+- **agentic checkout**: headless execution, structured responses, spending limit enforcement
 
 ## 2026 Agentic Checkout Patterns
 
-### 2026: Agentic Checkout Architecture
+### 2026: Agentic Checkout Architecture (ACP/UCP)
 
-Agentic Checkout enables AI agents to autonomously execute purchase transactions under the Agentic Commerce Protocol (ACP) and User Context Protocol (UCP):
-- **Authorization & Limits**: Implement pre-authorization gates and spending limits per agent session or customer ID to control transactional risk.
-- **Merchant of Record (MoR)**: Define clear MoR assignments to handle fraud liability, chargeback handling, and regional taxes for agentic transactions.
-- **Programmatic Checkout**: Ensure the end-to-end checkout pipeline supports headless execution without interactive browser sessions, relying on standardized structured responses.
+Agentic Checkout enables AI agents to autonomously execute purchase transactions under the Agentic Commerce Protocol (ACP) and Universal Commerce Protocol (UCP):
 
-### 2026: Address Validation Lifecycle
+- **ACP** (OpenAI + Stripe, Sep 2025): Agentic Commerce Protocol, Instant Checkout in ChatGPT, cart/feed/orders/auth/MCP support
+- **UCP** (Google + partners, Jan 2026): Universal Commerce Protocol, Apache 2.0, compatible with A2A/AP2/MCP, v2026-08-25 multi-vertical/grocery/3DS2/payment schedules/split payments/loyalty
+- **Authorization & Limits**: Pre-authorization gates and spending limits per agent session or customer ID
+- **Merchant of Record (MoR)**: Clear MoR assignments for fraud liability, chargebacks, regional taxes
+- **Programmatic Checkout**: Headless execution without interactive browser sessions, standardized structured responses
 
-Validating the shipping address is a mandatory, isolated step that must occur before tax calculation or shipping carrier requests:
-- **API Standards**: Integrate Google Maps Address Validation, Loqate, or Smarty Streets APIs to standardize raw user inputs into verified, carrier-compliant address structures.
-- **Error Handling**: Promptly catch validation errors (e.g., missing apartment number, invalid zip codes) and resolve them programmatically or reject with precise error subcodes.
+### 2026: Address Validation Lifecycle (Mandatory)
+
+Validating the shipping address is a mandatory, isolated step that must occur BEFORE tax calculation or shipping carrier requests:
+
+- **API Standards**: Google Maps Address Validation, Loqate, Smarty Streets
+- **Error Handling**: Precise subcodes for missing apartment number, invalid zip codes
+- **Gate**: Reject tax/shipping calls if validation fails
 
 ### 2026: Stripe Tax Integration and Decision Tree
 
 Selecting the correct tax calculation service depends on the merchant's scale, transaction volume, and operational context:
-- **Stripe Tax**: Recommended for startups and mid-market merchants operating within the Stripe payment ecosystem who require quick integration.
-- **TaxJar**: Ideal for multi-channel merchants (e.g., Shopify + Custom Web App) with moderate transaction volumes and standard ERP requirements.
-- **Avalara AvaTax**: Designed for enterprise organizations with high transaction volumes, complex Nexus rules, custom ERP systems, and localized tax needs.
+
+- **Stripe Tax**: Startups/mid-market within Stripe ecosystem, quick integration
+- **TaxJar**: Multi-channel merchants (Shopify + Custom Web App), moderate volume, standard ERP
+- **Avalara AvaTax**: Enterprise, high volume, complex Nexus, custom ERP, localized tax
 
 ### 2026: Economic Nexus Threshold Monitoring
 
 Merchants must actively track regional sales thresholds to ensure compliance with local tax registration laws:
-- **Nexus Monitoring**: Track US state-by-state transaction count and sales volume thresholds programmatically.
-- **Alerting**: Alert internal operations teams when approaching 80% of any state's economic nexus threshold (e.g., 200 transactions or $100,000 in sales) to trigger timely registration.
+
+- **Nexus Monitoring**: Track US state-by-state transaction count and sales volume programmatically
+- **Alerting**: Alert at 80% of any state's economic nexus threshold (e.g., 200 transactions or $100,000 sales)
+- **Most states**: $100K sales OR 200 transactions (many dropped transaction count)
+- **Auto-registration**: Stripe Tax / TaxJar offer automated registration workflows
+
+### 2026: Vietnam Decree 248/2026/ND-CP Compliance
+
+Effective July 1, 2026 (electronic ID verification from Jan 1, 2027):
+
+- **Seller Verification**: Platform must verify seller identity before allowing transactions
+- **Platform Obligations**: Disclose rights/obligations, service standards, pricing, promotions, security, complaints
+- **Affiliate Transparency**: All parties disclose roles, links, referral codes, responsibilities
+- **Electronic ID Verification**: Sellers and livestream sellers from Jan 1, 2027
 
 ## Checklist
 
@@ -100,9 +136,18 @@ Merchants must actively track regional sales thresholds to ensure compliance wit
 - [ ] order confirmation and email sent after successful payment
 - [ ] guest and authenticated paths tested independently
 - [ ] agentic checkout spending limits and pre-authorization gates enforced
-- [ ] address validation performed via verified API before tax/shipping calculations
-- [ ] Stripe Tax, TaxJar, or Avalara chosen based on transaction volume and ERP needs
-- [ ] economic nexus threshold monitoring and low-nexus alerts configured
+- [ ] Merchant of Record (MoR) assigned for agentic transactions
+- [ ] ACP/UCP programmatic checkout supported (headless, structured responses)
+- [ ] address validation performed via verified API (Google Maps/Loqate/Smarty) BEFORE tax/shipping
+- [ ] address validation errors caught with precise subcodes (missing apartment, invalid ZIP)
+- [ ] tax engine selected per decision tree (Stripe Tax / TaxJar / Avalara)
+- [ ] economic nexus threshold monitoring at 80% with alerts configured
+- [ ] economic nexus auto-registration workflow implemented
+- [ ] PCI DSS v4.0.1 req 6.4.3: SRI hashes + CSP nonce on all payment page scripts
+- [ ] PCI DSS v4.0.1 req 11.6.1: automated tamper detection (weekly/continuous)
+- [ ] Vietnam Decree 248/2026: seller verification gate before transactions
+- [ ] Vietnam Decree 248/2026: platform obligations disclosed (rights, standards, pricing, affiliate transparency)
+- [ ] Vietnam electronic ID verification for sellers/livestreamers (from Jan 1, 2027)
 
 ## Failure Modes
 
@@ -110,13 +155,20 @@ Merchants must actively track regional sales thresholds to ensure compliance wit
 - **Inventory oversell under concurrency**: two channels decrement the same stock in parallel and oversell. **Mitigation:** use atomic SQL or Redis Lua with TTL; reject naive read-then-write sequences.
 - **Silent price overwrite**: a price change overwrites historical prices without a version or timestamp. **Mitigation:** store `price`, `compare_at_price`, `effective_from`, and `effective_until`; never silently overwrite.
 - **PCI scope drift**: a new endpoint touches card data without being in the PCI scope. **Mitigation:** review the data flow before merge; require a security review for any new card-handling code.
+- **Agentic checkout fraud**: unauthorized agent spending beyond limits. **Mitigation:** pre-authorization gates, spending limits per agent session, MoR assignment.
+- **Address validation bypass**: tax/shipping calculated on invalid address. **Mitigation:** mandatory validation gate before calculation; reject calls if validation fails.
+- **Nexus threshold breach**: unregistered tax collection. **Mitigation:** 80% alerting, auto-registration workflow, compliance monitoring.
+- **PCI script injection**: Magecart via unverified third-party scripts. **Mitigation:** SRI + CSP nonce + weekly automated scanning.
+- **Vietnam compliance gap**: unverified seller completes transaction. **Mitigation:** seller verification gate enforced before checkout, platform audit trail.
 
 ## Output Contracts
 
-When the checkout flow is consumed by storefront, payment, or fulfillment
-agents, emit:
+When the checkout flow is consumed by storefront, payment, or fulfillment agents, emit:
 
 - **`contracts/schemas/api-contract-spec.json`** describing the checkout endpoints, the request/response shapes, and the auth requirements.
+- **`contracts/schemas/agentic-commerce-spec.json`** for ACP/UCP endpoints, pre-auth gates, MoR assignment.
+- **`contracts/schemas/address-validation-spec.json`** for validation API contract.
+- **`contracts/schemas/tax-engine-spec.json`** for selected tax engine integration.
 - For human-readable reports, a markdown summary of the flow, the failure modes, and the rollback path.
 
 Skip emission for single-checkout experiments that do not cross a role boundary.
@@ -136,3 +188,5 @@ Skip emission for single-checkout experiments that do not cross a role boundary.
 - **manage-order-fulfillment**: Hand off the confirmed order for packing and shipping
 - **add-ui-component**: Build the cart and checkout UI components
 - **write-tests**: Write integration tests for the purchase funnel
+
+Last updated: 2026-09-25
