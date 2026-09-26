@@ -11,7 +11,7 @@ Before ANY action, you MUST read and follow the rules in `core/rules/code.md`. K
 - Do NOT push, tag, or publish unless the user explicitly confirms.
 - NEVER commit `.dev.vars`, `.env`, or other local environment files; verify `git status` and keep them in `.gitignore`.
 - Repo-local rules override these defaults when they are explicitly present.
-- Ensure all code changes pass local linters, tests, and build checks before committing.
+- **MANDATORY LOCAL TEST PASS BEFORE DONE**: BẮT BUỘC phải chạy thực tế toàn bộ linters, unit tests, integration tests, và build checks liên quan tại local đạt 100% PASS (exit code 0) trước khi báo "done", kết luận hoàn thành, hoặc đề xuất commit/push. Không để test case phụ thuộc vào thư mục unversioned/gitignored (`tmp/`).
 - Do NOT expose secrets, credentials, or sensitive values in any user-visible artifact.
 - Do NOT mention agents, AI workflow, or internal process metadata in commits, changelogs, or release notes.
 - Prefer repo-local standards over defaults when they exist.

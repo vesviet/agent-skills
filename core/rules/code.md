@@ -11,7 +11,7 @@ description: "Minimal global rules for commit and publish approval, user-visible
 - Do not push commits, create tags, or publish releases unless the user explicitly confirms that specific action.
 - Repo-local rules override these defaults when they are explicitly present.
 - **POLICY-AS-CODE**: Obey `core/policies/action-boundaries.yaml` and `core/policies/data-classification.yaml` before executing any state-changing actions.
-- Ensure all code changes pass local linters, unit tests, and build checks before creating a commit.
+- **VERIFICATION-BEFORE-DONE**: BẮT BUỘC phải thực thi toàn bộ linters, unit tests, integration tests, và build checks liên quan ở môi trường local đạt 100% PASS (exit code 0, không có test failed) trước khi báo hoàn thành ("done"), kết luận bàn giao, hoặc yêu cầu user duyệt commit/push. Tuyệt đối không được báo done dựa trên phỏng đoán hoặc khi chưa chạy test thực tế. Test cases không được phụ thuộc vào các file unversioned/gitignored (như thư mục `tmp/`) làm gãy CI môi trường chuẩn.
 - Prefer repo-local standards, templates, and workflows when they exist.
 - Do not invent repository conventions, paths, branching models, or release rules that are not present in the active codebase.
 - Do not mention agents, AI workflow, review labels, severity labels, task trackers, or other internal process metadata in commit messages, changelog text, release notes, or other user-visible change notes.
