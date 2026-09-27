@@ -56,6 +56,7 @@ All roles in this pack are expected to:
 ### Finance, Accounting & Compliance
 
 - [vietnam-accounting-specialist](vietnam-accounting-specialist.md)
+- [vietnam-legal-counsel](vietnam-legal-counsel.md)
 
 ### Architecture And Engineering
 
@@ -210,6 +211,7 @@ All roles in this pack are expected to:
 | Task Planner | `/add-new-feature`, `/refactoring`, `/troubleshooting` |
 | Business Analyst | `/add-new-feature` |
 | Vietnam Accounting Specialist | `/period-end-closing`, `/add-new-feature`, `/service-review-release`, `/qa-validation` |
+| Vietnam Legal Counsel | `/add-new-feature`, `/service-review-release`, `/qa-validation` |
 | Researcher | `/add-new-feature`, `/troubleshooting` |
 | UI/UX Designer | `/add-new-feature` |
 | Solution Architect | `/add-new-feature`, `/setup-new-service` |

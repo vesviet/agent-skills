@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-skills.dev/contracts/schemas/legal-compliance-review.json",
+  "title": "Vietnam Legal Compliance Review",
+  "description": "Structured machine-readable legal and regulatory compliance assessment covering Vietnamese corporate governance, commercial contracts, labor relations, intellectual property, cybersecurity, and Decree 13/2023/ND-CP personal data protection.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "legal-compliance-review"
+    },
+    "produced_by_role": {
+      "type": "string",
+      "default": "vietnam-legal-counsel"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "review_id": {
+          "type": "string",
+          "description": "Unique legal compliance review identifier"
+        },
+        "entity": {
+          "type": "string",
+          "description": "Legal entity name under Vietnamese law"
+        },
+        "review_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of compliance review"
+        },
+        "reviewer": {
+          "type": "string",
+          "description": "Reviewer name, role, or counsel title"
+        },
+        "jurisdiction": {
+          "type": "string",
+          "const": "VN",
+          "description": "Applicable jurisdiction code"
+        },
+        "scope": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Scope of legal assessment areas"
+        }
+      },
+      "required": ["entity", "review_date", "reviewer", "jurisdiction", "scope"]
+    },
+    "compliance_status": {
+      "type": "string",
+      "enum": ["COMPLIANT", "CONDITIONALLY_COMPLIANT", "NON_COMPLIANT"],
+      "description": "Overall statutory compliance status determination"
+    },
+    "risk_matrix": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Risk item identifier"
+          },
+          "pillar": {
+            "type": "string",
+            "description": "Legal domain pillar"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFORMATIONAL", "critical", "high", "medium", "low"],
+            "description": "Assessed legal severity level"
+          },
+          "statutory_basis": {
+            "type": "string",
+            "description": "Governing statutory provisions, laws, or decrees"
+          },
+          "finding": {
+            "type": "string",
+            "description": "Factual non-compliance or contractual ambiguity finding"
+          },
+          "impact": {
+            "type": "string",
+            "description": "Legal, operational, or financial liability impact"
+          },
+          "mitigation": {
+            "type": "string",
+            "description": "Recommended legal mitigation or contractual redline"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["OPEN", "IN_PROGRESS", "MITIGATED", "ACCEPTED", "CLOSED", "open", "in_progress", "mitigated", "closed"],
+            "description": "Resolution status of the risk item"
+          }
+        },
+        "required": ["id", "pillar", "severity", "statutory_basis", "finding", "impact", "mitigation", "status"]
+      },
+      "description": "Array of evaluated statutory risk findings"
+    },
+    "statutory_citations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "law": {
+            "type": "string",
+            "description": "Name and official code of the governing law or decree"
+          },
+          "article": {
+            "type": "string",
+            "description": "Article reference"
+          },
+          "clause": {
+            "type": "string",
+            "description": "Specific clause or sub-clause"
+          },
+          "relevance": {
+            "type": "string",
+            "description": "Relevance summary to the matter under review"
+          }
+        },
+        "required": ["law", "article", "relevance"]
+      },
+      "description": "Official legal authorities and gazette citations"
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          { "type": "string" },
+          {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "action": { "type": "string" },
+              "priority": { "type": "string" },
+              "owner": { "type": "string" },
+              "timeline": { "type": "string" }
+            },
+            "required": ["action"]
+          }
+        ]
+      },
+      "description": "Actionable legal recommendations and remedial steps"
+    },
+    "human_approval_gate": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean",
+          "description": "Whether human approval is mandatory prior to execution"
+        },
+        "approved": {
+          "type": "boolean",
+          "description": "Whether approval has been formally granted"
+        },
+        "approver": {
+          "type": "string",
+          "description": "Designated human approver role or name"
+        },
+        "approver_role": {
+          "type": "string",
+          "description": "Title of designated corporate or legal authority"
+        },
+        "approval_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of formal approval sign-off"
+        },
+        "comments": {
+          "type": "string",
+          "description": "Approver comments or conditional stipulations"
+        }
+      },
+      "required": ["required", "approver"],
+      "description": "Human-in-the-loop governance sign-off gate"
+    },
+    "disclaimer": {
+      "type": "string",
+      "description": "Standard legal advisory disclaimer"
+    },
+    "data_classification": {
+      "type": "string",
+      "default": "restricted-metadata-only"
+    }
+  },
+  "required": [
+    "contract_type",
+    "metadata",
+    "compliance_status",
+    "risk_matrix",
+    "statutory_citations",
+    "recommendations",
+    "human_approval_gate"
+  ],
+  "examples": [
+    {
+      "contract_type": "legal-compliance-review",
+      "metadata": {
+        "review_id": "LCR-2026-VN-001",
+        "entity": "VietTech Commerce Solutions JSC",
+        "review_date": "2026-09-27",
+        "reviewer": "Vietnam Chief Legal Counsel",
+        "jurisdiction": "VN",
+        "scope": [
+          "commercial_contracts",
+          "pdpd_decree_13",
+          "corporate_governance",
+          "labor_and_employment"
+        ]
+      },
+      "compliance_status": "CONDITIONALLY_COMPLIANT",
+      "risk_matrix": [
+        {
+          "id": "RSK-001",
+          "pillar": "commercial_contracts",
+          "severity": "HIGH",
+          "statutory_basis": "Commercial Law 2005 Article 301",
+          "finding": "Master Service Agreement Section 11.2 imposes a 20% contract penalty for delayed milestone delivery",
+          "impact": "Exceeds the statutory ceiling of 8% on the breached obligation portion; clause is void and unenforceable under Vietnamese law",
+          "mitigation": "Redline penalty clause to strictly 8% of the delayed milestone value and stipulate separate actual damages compensation under Article 302",
+          "status": "OPEN"
+        },
+        {
+          "id": "RSK-002",
+          "pillar": "data_privacy_dpia",
+          "severity": "CRITICAL",
+          "statutory_basis": "Decree 13/2023/ND-CP Article 24 and Article 25",
+          "finding": "Customer PII is transmitted to overseas AWS Singapore region without completed DPIA Form 04 and Form 06 notification to A05 MPS",
+          "impact": "Administrative fines up to 5% total revenue under draft PDP sanction decree and risk of operational suspension",
+          "mitigation": "Conduct Data Processing Impact Assessment (DPIA), execute cross-border transfer assessment dossier, and submit notification to A05 MPS within statutory 60-day window",
+          "status": "OPEN"
+        },
+        {
+          "id": "RSK-003",
+          "pillar": "corporate_governance",
+          "severity": "MEDIUM",
+          "statutory_basis": "Law on Enterprises 2020 Article 167",
+          "finding": "Cloud infrastructure procurement contract with affiliated entity exceeds 35% of total asset value without General Meeting of Shareholders resolution",
+          "impact": "Contract may be declared null and void; signatories bear joint personal liability for resulting damages",
+          "mitigation": "Convene Extraordinary General Meeting of Shareholders to pass formal approval resolution with interested shareholder recusal",
+          "status": "IN_PROGRESS"
+        }
+      ],
+      "statutory_citations": [
+        {
+          "law": "Commercial Law 2005 (Law No. 36/2005/QH11)",
+          "article": "Article 301",
+          "clause": "Clause 1",
+          "relevance": "Mandatory 8% ceiling on contractual penalties for breach of commercial obligations"
+        },
+        {
+          "law": "Decree 13/2023/ND-CP on Personal Data Protection",
+          "article": "Article 24",
+          "clause": "Clause 1, 2",
+          "relevance": "Mandatory Data Processing Impact Assessment (DPIA) dossier preparation and retention"
+        },
+        {
+          "law": "Decree 13/2023/ND-CP on Personal Data Protection",
+          "article": "Article 25",
+          "clause": "Clause 1, 3",
+          "relevance": "Outbound cross-border transfer impact assessment and filing with Department of Cybersecurity and Hi-tech Crime Prevention (A05 MPS)"
+        },
+        {
+          "law": "Law on Enterprises 2020 (Law No. 59/2020/QH14 as amended 2022)",
+          "article": "Article 167",
+          "clause": "Clause 1, 3",
+          "relevance": "Approval authority and disclosure requirements for related-party commercial contracts"
+        }
+      ],
+      "recommendations": [
+        "Amend MSA Section 11.2 to cap contractual penalty at 8% of breached obligation value per Article 301 Commercial Law 2005",
+        "Complete and file Decree 13/2023/ND-CP Article 25 cross-border data transfer dossier with A05 MPS prior to production rollout",
+        "Obtain General Meeting of Shareholders approval resolution for affiliated procurement transactions exceeding 35% asset threshold",
+        "Enforce human approval gate before executing commercial agreements or external regulatory filings"
+      ],
+      "human_approval_gate": {
+        "required": true,
+        "approved": false,
+        "approver": "Chief Legal Officer / Legal Representative",
+        "approver_role": "Chief Legal Counsel",
+        "approval_date": "2026-09-27",
+        "comments": "Pending redline acceptance from counterparty on Article 301 penalty cap"
+      },
+      "disclaimer": "This legal compliance review is prepared for internal enterprise governance and risk mitigation purposes. It does not constitute formal representation in judicial proceedings, attorney-client advocacy before courts, or authorized execution of filings."
+    }
+  ]
+}

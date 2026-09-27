@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-skills.dev/contracts/schemas/legal-opinion-contract.json",
+  "title": "Vietnam Legal Opinion Contract",
+  "description": "Structured machine-readable formal legal opinion analyzing specific legal issues, statutory interpretation, factual background, risk assessments, and caveats under Vietnamese law.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "legal-opinion-contract"
+    },
+    "produced_by_role": {
+      "type": "string",
+      "default": "vietnam-legal-counsel"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "opinion_id": {
+          "type": "string",
+          "description": "Unique legal opinion identifier (e.g., VLO-2026-001)"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Subject matter of the legal opinion"
+        },
+        "client_entity": {
+          "type": "string",
+          "description": "Name of requesting entity or client company"
+        },
+        "counsel_name": {
+          "type": "string",
+          "description": "Name or title of authoring legal counsel"
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of opinion issuance"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["DRAFT", "UNDER_REVIEW", "FINAL", "SUPERSEDED", "draft", "under_review", "final", "superseded"],
+          "description": "Issuance lifecycle status"
+        }
+      },
+      "required": ["opinion_id", "subject", "client_entity", "counsel_name", "date", "status"],
+      "description": "Core metadata regarding legal opinion issuance"
+    },
+    "factual_background": {
+      "type": "object",
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Summary of material factual background"
+        },
+        "documents_reviewed": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of contracts, charters, licenses, or evidence examined"
+        },
+        "assumptions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Underlying assumptions taken as true for the opinion"
+        }
+      },
+      "required": ["summary", "documents_reviewed", "assumptions"],
+      "description": "Factual context, documents reviewed, and underlying assumptions"
+    },
+    "legal_issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "issue_id": {
+            "type": "string",
+            "description": "Identifier for the legal issue (e.g. ISSUE-01)"
+          },
+          "question": {
+            "type": "string",
+            "description": "Specific legal question presented"
+          },
+          "statutory_analysis": {
+            "type": "string",
+            "description": "Detailed statutory analysis and reasoning"
+          },
+          "governing_laws": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Applicable statutory codes, decrees, or circulars"
+          }
+        },
+        "required": ["issue_id", "question", "statutory_analysis", "governing_laws"]
+      },
+      "description": "Array of specific legal issues analyzed"
+    },
+    "conclusion_and_opinion": {
+      "type": "object",
+      "properties": {
+        "executive_opinion": {
+          "type": "string",
+          "description": "Formal executive legal opinion and determination"
+        },
+        "conditions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Pre-conditions or qualifications for the opinion"
+        },
+        "risk_assessment": {
+          "type": "string",
+          "description": "Overall legal and regulatory risk assessment level or narrative"
+        }
+      },
+      "required": ["executive_opinion", "conditions", "risk_assessment"],
+      "description": "Substantive legal conclusions, conditions, and risk level"
+    },
+    "action_plan": {
+      "type": "object",
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "type": "string" },
+              {
+                "type": "object",
+                "properties": {
+                  "step_number": { "type": "integer" },
+                  "action": { "type": "string" },
+                  "owner": { "type": "string" },
+                  "deadline": { "type": "string" }
+                },
+                "required": ["action"]
+              }
+            ]
+          },
+          "description": "Recommended implementation steps or remediation actions"
+        }
+      },
+      "required": ["steps"],
+      "description": "Actionable roadmap implementing legal recommendations"
+    },
+    "caveats_and_disclaimers": {
+      "type": "object",
+      "properties": {
+        "non_litigation_notice": {
+          "type": "string",
+          "description": "Explicit statement that this document is internal advisory and not court litigation advocacy"
+        },
+        "hitl_notice": {
+          "type": "string",
+          "description": "Human-in-the-loop qualification notice requiring licensed attorney review before external reliance"
+        }
+      },
+      "required": ["non_litigation_notice", "hitl_notice"],
+      "description": "Mandatory statutory caveats, non-litigation notice, and HITL gate notice"
+    },
+    "data_classification": {
+      "type": "string",
+      "default": "restricted-metadata-only"
+    }
+  },
+  "required": [
+    "contract_type",
+    "metadata",
+    "factual_background",
+    "legal_issues",
+    "conclusion_and_opinion",
+    "caveats_and_disclaimers"
+  ],
+  "examples": [
+    {
+      "contract_type": "legal-opinion-contract",
+      "metadata": {
+        "opinion_id": "VLO-2026-001",
+        "subject": "Enforceability of Automated Cross-Border Cashback Payouts and Personal Data Processing under Decree 13/2023/ND-CP",
+        "client_entity": "Shoppe Affiliate Vietnam Technology LLC",
+        "counsel_name": "Vietnam Legal Counsel (A2A Domain Authority)",
+        "date": "2026-09-27",
+        "status": "FINAL"
+      },
+      "factual_background": {
+        "summary": "Shoppe Affiliate platform operates an automated affiliate cashback engine with multi-tier routing (PayOS automated payouts < 200,000 VND and VietQR human-in-the-loop routing >= 200,000 VND). The platform collects customer banking identifiers, phone numbers, and transaction logs, utilizing Singapore cloud infrastructure for auxiliary data warehousing.",
+        "documents_reviewed": [
+          "Enterprise Registration Certificate No. 0316889988",
+          "PayOS Open Banking API Integration Agreement 2026",
+          "Affiliate Merchant Terms of Service v3.2",
+          "Cross-Border Cloud Service Level Agreement (AWS Singapore)"
+        ],
+        "assumptions": [
+          "All transaction records and bank account bindings are genuine and user-authorized via OTP",
+          "Payment gateway holds legitimate Payment Intermediary License from the State Bank of Vietnam",
+          "No classified state secrets or sensitive biometric data are transmitted or processed"
+        ]
+      },
+      "legal_issues": [
+        {
+          "issue_id": "ISSUE-01",
+          "question": "Does the automated cashback distribution mechanism comply with Vietnamese non-cash payment regulations and Commercial Law 2005?",
+          "statutory_analysis": "Under Decree 52/2024/ND-CP on non-cash payments and Commercial Law 2005 Article 88-92 on commercial promotions, cashback rewards structured as trade promotion discounts or sales incentives are legally permitted provided that total promotional value caps are complied with and payments are routed through licensed payment intermediary institutions or credit institutions.",
+          "governing_laws": [
+            "Commercial Law 2005 (Articles 88-92)",
+            "Decree 52/2024/ND-CP on Non-Cash Payments",
+            "Decree 81/2018/ND-CP on Trade Promotion Activities"
+          ]
+        },
+        {
+          "issue_id": "ISSUE-02",
+          "question": "Is the transfer of customer transaction and payout data to AWS Singapore compliant with Decree 13/2023/ND-CP Article 25?",
+          "statutory_analysis": "Under Article 25 Decree 13/2023/ND-CP, the transfer of personal data of Vietnamese citizens abroad requires: (i) explicit opt-in consent of data subjects, (ii) formulation of an outbound data transfer impact assessment dossier (Form 06), (iii) storage of the dossier for inspection by the Department of Cybersecurity and Hi-tech Crime Prevention (A05 MPS), and (iv) written notification to A05 within 60 days of data transfer.",
+          "governing_laws": [
+            "Decree 13/2023/ND-CP on Personal Data Protection (Articles 24, 25)",
+            "Law on Cybersecurity 2018 (Article 26)"
+          ]
+        }
+      ],
+      "conclusion_and_opinion": {
+        "executive_opinion": "The automated cashback distribution model is legally viable and compliant with Vietnamese commercial law, subject to strict execution of statutory promotional registrations and immediate formalization of the Decree 13 Article 25 cross-border data transfer dossier.",
+        "conditions": [
+          "Mandatory inclusion of explicit cross-border data processing consent checkboxes during user registration",
+          "Completion of Decree 13 Form 06 dossier submission to A05 MPS within 60 days",
+          "Preservation of immutable audit logs for all bank disbursement transactions for a minimum of 5 years"
+        ],
+        "risk_assessment": "MEDIUM (Manageable with execution of recommended compliance action plan)"
+      },
+      "action_plan": {
+        "steps": [
+          {
+            "step_number": 1,
+            "action": "Update PWA Terms of Service to embed granular Decree 13 opt-in consents for personal data processing and outbound transfer",
+            "owner": "Product Operations & Legal Counsel",
+            "deadline": "2026-10-15"
+          },
+          {
+            "step_number": 2,
+            "action": "Finalize and submit outbound data transfer impact assessment dossier to A05 MPS",
+            "owner": "Legal Representative & External Counsel",
+            "deadline": "2026-11-01"
+          }
+        ]
+      },
+      "caveats_and_disclaimers": {
+        "non_litigation_notice": "This legal opinion contract is an internal advisory workpaper prepared for strategic planning and governance. It does not constitute representation in litigation before Vietnamese courts, arbitration before VIAC/SIAC, or external filings without corporate power of attorney.",
+        "hitl_notice": "Pursuant to the Agent Engineering Pack governance standard, all conclusions herein represent legal analysis that must be formally reviewed and counter-signed by a licensed practicing attorney-at-law prior to external reliance or binding transaction closure."
+      }
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `5.0.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **34 Roles** | **132 Skills** (120 Core + 12 Overlays) | **25 Workflows** | **52 Data Contracts**
+> **Total Catalog:** **35 Roles** | **133 Skills** (121 Core + 12 Overlays) | **25 Workflows** | **54 Data Contracts**
 
 ---
 
@@ -28,7 +28,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🎭 Role Directory (34 Roles)
+## 🎭 Role Directory (35 Roles)
 
 | Role Slug | Title | Common Aliases | Primary Skills | Role File |
 |:---|:---|:---|:---|:---|
@@ -66,10 +66,11 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@technical-writer`** | Technical Writer | `@tech-writer`, `@doc-writer`, `@docs`, `@documentation-writer` | `write-documentation`, `release-notes`, `configure-llms-txt` *(+10 more)* | [`core/roles/technical-writer.md`](./core/roles/technical-writer.md) |
 | **`@ui-ux-designer`** | UI/UX Designer | `@designer`, `@ui`, `@ux`, `@ui-ux`, `@uiux` | `design-ux-flow`, `design-review`, `meeting-review` *(+6 more)* | [`core/roles/ui-ux-designer.md`](./core/roles/ui-ux-designer.md) |
 | **`@vietnam-accounting-specialist`** | Vietnam Accounting Specialist | `@accounting`, `@accountant`, `@ke-toan`, `@vietnam-accounting` | `manage-vietnam-accounting`, `analyze-business-requirements`, `analyze-data` *(+4 more)* | [`core/roles/vietnam-accounting-specialist.md`](./core/roles/vietnam-accounting-specialist.md) |
+| **`@vietnam-legal-counsel`** | Vietnam Legal Counsel | `@lawyer`, `@luat-su`, `@legal`, `@legal-counsel` | `manage-vietnam-legal`, `conduct-research`, `analyze-business-requirements` *(+3 more)* | [`core/roles/vietnam-legal-counsel.md`](./core/roles/vietnam-legal-counsel.md) |
 
 ---
 
-## 🛠️ Skill Directory (132 Skills)
+## 🛠️ Skill Directory (133 Skills)
 
 ### Category: `agent` (24 skills)
 
@@ -189,6 +190,12 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@integrate-api-client`** | Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handling... | [`core/skills/frontend/integrate-api-client/SKILL.md`](./core/skills/frontend/integrate-api-client/SKILL.md) |
 | **`@setup-design-system`** | Configure a scalable design system, styling framework, and component architecture for a frontend pro... | [`core/skills/frontend/setup-design-system/SKILL.md`](./core/skills/frontend/setup-design-system/SKILL.md) |
 | **`@setup-visual-regression`** | Configure automated visual diffing for UI components and pages. Use when establishing pixel-level re... | [`core/skills/frontend/setup-visual-regression/SKILL.md`](./core/skills/frontend/setup-visual-regression/SKILL.md) |
+
+### Category: `legal-compliance` (1 skills)
+
+| Skill Slug | Description | File |
+|:---|:---|:---|
+| **`@manage-vietnam-legal`** | Use when assessing Vietnamese statutory compliance, vetting commercial contracts, auditing Decree 13... | [`core/skills/legal-compliance/manage-vietnam-legal/SKILL.md`](./core/skills/legal-compliance/manage-vietnam-legal/SKILL.md) |
 
 ### Category: `meetings-analysis` (3 skills)
 
@@ -466,10 +473,16 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@kano`** | `prioritize-roadmap` | Active `@role` |
 | **`@kano_model`** | `prioritize-roadmap` | Active `@role` |
 | **`@kill_early`** | `prioritize-roadmap` | Active `@role` |
+| **`@legal`** | `manage-vietnam-legal` | Active `@role` |
+| **`@legal_compliance`** | `manage-vietnam-legal` | Active `@role` |
+| **`@legal_opinion`** | `manage-vietnam-legal` | Active `@role` |
 | **`@ltv_roas`** | `analyze-campaign-roi` | Active `@role` |
+| **`@luat`** | `manage-vietnam-legal` | Active `@role` |
 | **`@manage-mmo-assets`** | `manage-mmo-assets` | Active `@role` |
+| **`@manage-vietnam-legal`** | `manage-vietnam-legal` | Active `@role` |
 | **`@manage_mmo_assets`** | `manage-mmo-assets` | Active `@role` |
 | **`@manage_secrets`** | `manage-secrets` | Active `@role` |
+| **`@manage_vietnam_legal`** | `manage-vietnam-legal` | Active `@role` |
 | **`@marketing_copy`** | `write-copy` | Active `@role` |
 | **`@mcp_architecture`** | `architect-mcp-server` | Active `@role` |
 | **`@mcp_builder`** | `architect-mcp-server` | Active `@role` |
@@ -600,7 +613,9 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@use_case`** | `write-use-cases` | Active `@role` |
 | **`@van_westendorp`** | `model-saas-metrics` | Active `@role` |
 | **`@vcc_isolation`** | `manage-mmo-assets` | Active `@role` |
+| **`@vietnam-legal`** | `manage-vietnam-legal` | Active `@role` |
 | **`@vietnam_accounting`** | `manage-vietnam-accounting` | Active `@role` |
+| **`@vietnam_legal`** | `manage-vietnam-legal` | Active `@role` |
 | **`@view-transitions`** | `implement-view-transitions` | Active `@role` |
 | **`@view_transitions`** | `implement-view-transitions` | Active `@role` |
 | **`@visual_regression`** | `setup-visual-regression` | Active `@role` |
@@ -655,7 +670,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 📑 Data Contracts & Schemas (52 Schemas)
+## 📑 Data Contracts & Schemas (54 Schemas)
 
 | Schema File | Schema Title | Path |
 |:---|:---|:---|
@@ -690,6 +705,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | `incident-report.json` | Incident Report | [`core/contracts/schemas/incident-report.json`](./core/contracts/schemas/incident-report.json) |
 | `learning-assessment-report.json` | Learning Assessment Report | [`core/contracts/schemas/learning-assessment-report.json`](./core/contracts/schemas/learning-assessment-report.json) |
 | `learning-handoff.json` | Learning Handoff | [`core/contracts/schemas/learning-handoff.json`](./core/contracts/schemas/learning-handoff.json) |
+| `legal-compliance-review.json` | Vietnam Legal Compliance Review | [`core/contracts/schemas/legal-compliance-review.json`](./core/contracts/schemas/legal-compliance-review.json) |
+| `legal-opinion-contract.json` | Vietnam Legal Opinion Contract | [`core/contracts/schemas/legal-opinion-contract.json`](./core/contracts/schemas/legal-opinion-contract.json) |
 | `mmo-campaign-spec.json` | MMO Campaign Specification | [`core/contracts/schemas/mmo-campaign-spec.json`](./core/contracts/schemas/mmo-campaign-spec.json) |
 | `mmo-roi-report.json` | MMO Campaign ROI Report | [`core/contracts/schemas/mmo-roi-report.json`](./core/contracts/schemas/mmo-roi-report.json) |
 | `performance-audit.json` | Performance Audit Result | [`core/contracts/schemas/performance-audit.json`](./core/contracts/schemas/performance-audit.json) |

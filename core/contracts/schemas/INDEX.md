@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**52 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 51/52
+**54 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 53/54
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 
@@ -38,6 +38,8 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | `period-end-closing-report.json` | Period-End Closing Report | ✅ | ✅ |
 | `amis-voucher-contract.json` | AMIS Accounting Voucher Contract | ✅ | ✅ |
 | `stock-audit-session.json` | Stock Audit Session Contract | ✅ | ✅ |
+| `legal-compliance-review.json` | Vietnam Legal Compliance Review | ✅ | ✅ |
+| `legal-opinion-contract.json` | Vietnam Legal Opinion Contract | ✅ | ✅ |
 | **Design & Content** | | | |
 | `ux-flow-spec.json` | UX Flow Specification | ✅ | ✅ |
 | `ui-component-spec.json` | UI Component Specification | ✅ | ✅ |
@@ -150,6 +152,13 @@ stock-audit-session.json
     → period-end-closing-report.json (financial period cut-off & trial balance)
 ```
 
+The legal compliance & opinion review chain references:
+
+```
+legal-compliance-review.json
+  → legal-opinion-contract.json (formal statutory position & risk qualification)
+```
+
 ---
 
 ## Ownership
@@ -179,6 +188,8 @@ stock-audit-session.json
 | `period-end-closing-report.json` | Vietnam Accounting Specialist | Chief Accountant, CFO, Legal Representative, qualified human reviewers, Tax Authority auditors |
 | `amis-voucher-contract.json` | Vietnam Accounting Specialist, Data Engineer | Chief Accountant, MISA AMIS ERP, Auditor |
 | `stock-audit-session.json` | Store Manager, Inventory Counter | Vietnam Accounting Specialist, Operations Manager, Lakehouse ETL |
+| `legal-compliance-review.json` | Vietnam Legal Counsel | Business Analyst, Solution Architect, Security Engineer, Vietnam Accounting Specialist, Executive Management, qualified human legal counsel |
+| `legal-opinion-contract.json` | Vietnam Legal Counsel | Business Analyst, Technical Architect, Legal Representative, General Counsel, qualified practicing lawyers |
 | `ux-flow-spec.json` | UI/UX Designer | Frontend Developer, Backend Developer, QA Engineer, Technical Lead |
 | `ui-component-spec.json` | UI/UX Designer | Frontend Developer, Mobile Engineer, QA Engineer |
 | `content-handoff.json` | Content Writer | SEO Analyst, Publisher, Editor |

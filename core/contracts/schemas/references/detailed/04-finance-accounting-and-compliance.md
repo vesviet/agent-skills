@@ -35,3 +35,20 @@ Physical inventory stocktake contract governing the entire audit lifecycle (draf
 Required fields: `contract_type`, `session_id`, `store_code`, `store_name`, `audit_type`, `lifecycle_status`, `created_by`, `created_at`, `tolerance_config`, `reconciliation_summary`, `items_variance`, `approvals`
 ✅ Has example
 
+#### `legal-compliance-review.json`
+
+**Vietnam Legal Compliance Review**
+Structured machine-readable legal and regulatory compliance assessment emitted by Vietnam Legal Counsel covering corporate governance, commercial contracts, labor relations, intellectual property, personal data protection (PDPD Decree 13/2023/ND-CP), and cybersecurity. Captures statutory citations, risk matrices, mitigation recommendations, and mandatory HITL approval gates. It provides no external court representation, unauthorized litigation advocacy, or authority to execute binding corporate contracts.
+
+Required fields: `contract_type`, `metadata`, `compliance_status`, `risk_matrix`, `statutory_citations`, `recommendations`, `human_approval_gate`
+✅ Has example
+
+#### `legal-opinion-contract.json`
+
+**Vietnam Legal Opinion Contract**
+Structured machine-readable formal legal opinion emitted by Vietnam Legal Counsel analyzing specific legal issues, statutory interpretation, factual background, risk assessments, and caveats under Vietnamese law. Requires Human-In-The-Loop review and sign-off by a qualified practicing lawyer before external reliance or execution.
+
+Required fields: `contract_type`, `metadata`, `factual_background`, `legal_issues`, `conclusion_and_opinion`, `caveats_and_disclaimers`
+✅ Has example
+
+

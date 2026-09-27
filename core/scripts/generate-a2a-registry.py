@@ -45,6 +45,7 @@ CANONICAL_TAGS = {
     "mmo": "operations",
     "mobile": "mobile",
     "seo": "seo",
+    "legal-compliance": "legal",
 }
 
 

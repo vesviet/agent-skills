@@ -189,6 +189,11 @@
       "id": "vietnam-accounting-specialist",
       "name": "Vietnam Accounting Specialist",
       "description": "govern Vietnam accounting-domain interpretation, evidence review, reconciliations, period-close controls, e-invoice data"
+    },
+    {
+      "id": "vietnam-legal-counsel",
+      "name": "Vietnam Legal Counsel",
+      "description": "govern Vietnam legal-domain interpretation, statutory compliance review, contract vetting and risk allocation, data priv"
     }
   ]
 }

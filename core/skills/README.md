@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 120 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **132 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 121 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **133 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -206,6 +206,12 @@ Teaching and curriculum:
 - `create-exercises`
 - `grade-and-review`
 
+### Legal Compliance (1)
+
+Vietnam legal ecosystem governance, contract review, and Decree 13 PDPD:
+
+- `manage-vietnam-legal`
+
 Overlay-specific skills (site stacks, ICM, content data, R3F) live under `overlays/*/skills/` and are validated together with core.
 
 ## Skill Boundaries (quick reference)
@@ -224,6 +230,7 @@ Overlay-specific skills (site stacks, ICM, content data, R3F) live under `overla
 | MCP server configuration | `configure-mcp` | Cloudflare Engineer |
 | Agentic commerce flows | `configure-agent-commerce` | Backend Developer |
 | Vietnam accounting controls, reconciliations, or close evidence | `manage-vietnam-accounting` | Vietnam Accounting Specialist; tax position/legal interpretation -> qualified human reviewer |
+| Vietnam legal compliance, contract vetting, or Decree 13 DPIA | `manage-vietnam-legal` | Vietnam Legal Counsel role; litigation/court representation -> qualified human legal counsel |
 | Agent-ready web discovery | `configure-agent-headers` + `manage-api-catalog` | Agent Discovery Engineer |
 | Root-cause analysis & defect reproduction | `systematic-debugging` | QA Engineer |
 | Combinatorial test matrix reduction | `combinatorial-testing` | QA Engineer |

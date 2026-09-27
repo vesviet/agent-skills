@@ -1326,4 +1326,56 @@ roles:
         - write_database
         - modify_environment_config
         - export_data
+    vietnam-legal-counsel:
+      allowed:
+        - create_file
+        - read_file
+        - search_code
+        - write_file
+        - legal-compliance review
+        - contract vetting
+        - internal legal opinion drafting
+        - regulatory risk assessment
+        - DPIA compliance auditing
+        - statutory interpretation
+      requires_approval:
+        - delegate_task
+        - delete_file
+        - export_data
+        - read_database
+        - run_build
+        - run_linter
+        - run_query
+        - run_tests
+        - issuing binding legal opinions to third parties
+        - approving significant contract terms with uncapped liabilities
+        - filing regulatory reports to government agencies (e.g. A05 MPS)
+      denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - install_dependency
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_deployment
+        - run_migration
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - direct unauthorized litigation representation in court without power of attorney
+        - executing binding corporate contracts without legal representative authorization
+        - committing commercial transactions
+        - waiving corporate rights or statutory protections unilaterally
 default_policy: requires_approval

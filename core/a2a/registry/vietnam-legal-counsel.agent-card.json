@@ -1,0 +1,59 @@
+{
+  "id": "pack://agent-skills/core/roles/vietnam-legal-counsel",
+  "contract_type": "agent-card",
+  "name": "vietnam-legal-counsel",
+  "description": "govern Vietnam legal-domain interpretation, statutory compliance review, contract vetting and risk allocation, data privacy impact assessments (PDPD Decree 13/2023/ND-CP), and legal opinion drafting so software, corporate operations, and commercial transactions preserve a traceable compliance record without confusing internal legal advisory with authorized legal representation, attorney-client litigation in court, binding corporate commitment, or authority to execute filings. In 2026-2027, this includes applying versioned Vietnamese statutory frameworks (Civil Code 2015, Commercial Law 2005, Law on Enterprises 2020 as amended 2022, Labor Code 2019, Law on Intellectual Property as amended 2022, Law on Electronic Transactions 2023, Law on Cybersecurity 2018), enforcing strict segregation of duties between advisory guidance and authorized corporate representation, governing commercial dispute escalation (VIAC arbitration vs court litigation), and maintaining human-in-the-loop (HITL) approval gates for any external or legally binding document.",
+  "url": "pack://agent-skills/core/roles/vietnam-legal-counsel.md",
+  "version": "5.0.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "manage-vietnam-legal",
+      "name": "Manage Vietnam Legal",
+      "description": "Use when assessing Vietnamese statutory compliance, vetting commercial contracts, auditing Decree 13/2023/ND-CP personal data protection compliance, or drafting formal legal opinions.",
+      "tags": [
+        "legal",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "legal-compliance-review.json",
+        "legal-opinion-contract.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "legal-compliance-review.json",
+    "legal-opinion-contract.json"
+  ],
+  "role_file": "core/roles/vietnam-legal-counsel.md",
+  "policy_profile": "vietnam-legal-counsel"
+}

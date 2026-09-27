@@ -76,7 +76,7 @@
     {
       "id": "create-automation-script",
       "name": "Create Automation Script",
-      "description": "Build Playwright/Puppeteer automation scripts that connect via CDP to Anti-Detect browsers or use C++ patched engines with WebGPU/Canvas consistency and automated Turnstile challenge handling. Use when building multi-account automation, login flows, ad account warm-up sequences, or scraping high-trust platforms.",
+      "description": "Generate stealth automation scripts using Playwright/Puppeteer over CDP, C++ patched browsers (Camoufox), and behavioral mimicry techniques. Use when deploying new MMO operations, expanding to new ad accounts, or replacing legacy spin-based automation.",
       "tags": [
         "operations",
         "pack"
@@ -168,7 +168,7 @@
     {
       "id": "analyze-campaign-roi",
       "name": "Analyze Campaign Roi",
-      "description": "Analyze S2S conversion data, customer lifetime value (LTV) cohort curves, Blended ROAS/MER, multi-tier payouts, and operational die-rates to calculate True ROI. Use when evaluating campaign profitability, diagnosing attribution gaps, comparing offer performance, or deciding to pause or scale ad spend.",
+      "description": "Measure conversion rates, organic search traffic, and CPA of generated content. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps.",
       "tags": [
         "operations",
         "pack"

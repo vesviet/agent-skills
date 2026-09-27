@@ -25,7 +25,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
             → validation-result.json ← Agent Coordinator (phase gate)
 ```
 
-## All Schemas (52 total)
+## All Schemas (54 total)
 
 ### Solution & Governance
 - `solution-brief.json` — Solution Architect scoping handoff (build-vs-buy, capability gaps, AI feasibility, compliance)
@@ -58,6 +58,8 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
 - `period-end-closing-report.json` — Vietnam Accounting Specialist period-end closing report covering subledger reconciliations, closing adjustments, Account 911 zero-balance verification, financial statement package, and immutable HITL sign-off
 - `amis-voucher-contract.json` — Retail sales vouchers, delivery notes, and platform fee journal entries prepared for MISA AMIS ERP per VAS 14
 - `stock-audit-session.json` — Physical stocktake session lifecycle, barcode scan event streams, tolerance thresholds, and TK 1381/3381 discrepancy suspense accounting
+- `legal-compliance-review.json` — Vietnam Legal Counsel compliance review covering corporate governance, contract risks, labor, IP, and Decree 13 PDPD
+- `legal-opinion-contract.json` — Vietnam Legal Counsel formal legal opinion deliverable with statutory reasoning and HITL sign-off
 
 ### Design & Content
 - `ux-flow-spec.json` — Multi-screen UX flow handoff

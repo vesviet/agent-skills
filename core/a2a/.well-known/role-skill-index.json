@@ -3,10 +3,10 @@
   "protocol": "A2A 1.0 + Antigravity",
   "root": ".",
   "stats": {
-    "roles": 34,
-    "skills": 132,
+    "roles": 35,
+    "skills": 133,
     "workflows": 25,
-    "schemas": 52
+    "schemas": 54
   },
   "role_aliases": {
     "writer": "content-writer",
@@ -100,6 +100,11 @@
     "accountant": "vietnam-accounting-specialist",
     "ke-toan": "vietnam-accounting-specialist",
     "vietnam-accounting": "vietnam-accounting-specialist",
+    "vietnam-legal-counsel": "vietnam-legal-counsel",
+    "lawyer": "vietnam-legal-counsel",
+    "luat-su": "vietnam-legal-counsel",
+    "legal": "vietnam-legal-counsel",
+    "legal-counsel": "vietnam-legal-counsel",
     "mmo": "mmo-engineer",
     "affiliate": "mmo-engineer",
     "growth": "mmo-engineer",
@@ -727,6 +732,30 @@
     ],
     "vietnam_accounting": [
       "manage-vietnam-accounting"
+    ],
+    "manage-vietnam-legal": [
+      "manage-vietnam-legal"
+    ],
+    "manage_vietnam_legal": [
+      "manage-vietnam-legal"
+    ],
+    "legal": [
+      "manage-vietnam-legal"
+    ],
+    "luat": [
+      "manage-vietnam-legal"
+    ],
+    "vietnam_legal": [
+      "manage-vietnam-legal"
+    ],
+    "vietnam-legal": [
+      "manage-vietnam-legal"
+    ],
+    "legal_compliance": [
+      "manage-vietnam-legal"
+    ],
+    "legal_opinion": [
+      "manage-vietnam-legal"
     ],
     "product_brief": [
       "write-product-brief"
@@ -1737,6 +1766,21 @@
         "agent-delegation"
       ],
       "irreversible_actions": []
+    },
+    "vietnam-legal-counsel": {
+      "name": "vietnam-legal-counsel",
+      "title": "Vietnam Legal Counsel",
+      "description": "govern Vietnam legal-domain interpretation, statutory compliance review, contract vetting and risk allocation, data privacy impact assessments (PDPD Decree 13/2023/ND-CP), and legal opinion drafting so software, corporate operations, and commercial transactions preserve a traceable compliance record without confusing internal legal advisory with authorized legal representation, attorney-client litigation in court, binding corporate commitment, or authority to execute filings. In 2026-2027, this includes applying versioned Vietnamese statutory frameworks (Civil Code 2015, Commercial Law 2005, Law on Enterprises 2020 as amended 2022, Labor Code 2019, Law on Intellectual Property as amended 2022, Law on Electronic Transactions 2023, Law on Cybersecurity 2018), enforcing strict segregation of duties between advisory guidance and authorized corporate representation, governing commercial dispute escalation (VIAC arbitration vs court litigation), and maintaining human-in-the-loop (HITL) approval gates for any external or legally binding document.",
+      "file": "core/roles/vietnam-legal-counsel.md",
+      "skills": [
+        "manage-vietnam-legal",
+        "conduct-research",
+        "analyze-business-requirements",
+        "security-audit",
+        "write-documentation",
+        "agent-delegation"
+      ],
+      "irreversible_actions": []
     }
   },
   "skills": {
@@ -2257,6 +2301,13 @@
       "type": "core",
       "file": "core/skills/frontend/setup-visual-regression/SKILL.md",
       "description": "Configure automated visual diffing for UI components and pages. Use when establishing pixel-level regression testing, cross-browser snapshot baselines, or CI visual gates."
+    },
+    "manage-vietnam-legal": {
+      "name": "manage-vietnam-legal",
+      "category": "legal-compliance",
+      "type": "core",
+      "file": "core/skills/legal-compliance/manage-vietnam-legal/SKILL.md",
+      "description": "Use when assessing Vietnamese statutory compliance, vetting commercial contracts, auditing Decree 13/2023/ND-CP personal data protection compliance, or drafting formal legal opinions."
     },
     "analyze-business-requirements": {
       "name": "analyze-business-requirements",
@@ -2978,6 +3029,18 @@
       "stem": "learning-handoff",
       "title": "Learning Handoff",
       "file": "core/contracts/schemas/learning-handoff.json"
+    },
+    "legal-compliance-review.json": {
+      "name": "legal-compliance-review.json",
+      "stem": "legal-compliance-review",
+      "title": "Vietnam Legal Compliance Review",
+      "file": "core/contracts/schemas/legal-compliance-review.json"
+    },
+    "legal-opinion-contract.json": {
+      "name": "legal-opinion-contract.json",
+      "stem": "legal-opinion-contract",
+      "title": "Vietnam Legal Opinion Contract",
+      "file": "core/contracts/schemas/legal-opinion-contract.json"
     },
     "mmo-campaign-spec.json": {
       "name": "mmo-campaign-spec.json",
