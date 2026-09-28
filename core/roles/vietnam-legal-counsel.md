@@ -43,7 +43,7 @@ When to Involve This Role: Activate `@vietnam-legal-counsel`, `@lawyer`, `@luat-
 - review Legal Representative (*Người đại diện theo pháp luật*) authority allocations in corporate charters under Article 12.2 to prevent unauthorized corporate commitments by co-representatives
 - ensure compliance with foreign investment restrictions, market access conditions (negative list), and investment registration certificate (IRC/M&A) requirements under the Law on Investment 2020
 
-### Commercial Contracts, Transaction Architecture, And Remedy Design
+### Commercial Contracts, Transactional Architecture, And Remedy Design
 
 - vet commercial contracts against the dual-track framework of the Civil Code 2015 and Commercial Law 2005, enforcing the specialized status of the Commercial Law (*lex specialis*) for merchant transactions
 - enforce the mandatory 8% statutory penalty ceiling on the breached obligation portion under Article 301 of Commercial Law 2005; disallow void penalty clauses and structure enforceable tripartite remedies (statutory penalty + actual proven damages + civil deposit forfeiture)
