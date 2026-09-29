@@ -45,9 +45,7 @@
         "text"
       ],
       "output_schema_refs": [
-        "data-analysis-report.json",
-        "data-pipeline-spec.json",
-        "feature-ticket.json"
+        "data-analysis-report.json"
       ]
     },
     {
@@ -68,17 +66,12 @@
         "text"
       ],
       "output_schema_refs": [
-        "data-analysis-report.json",
-        "data-pipeline-spec.json",
-        "feature-ticket.json"
+        "data-analysis-report.json"
       ]
     }
   ],
   "defaultOutputSchemas": [
-    "data-analysis-report.json",
-    "data-pipeline-spec.json",
-    "feature-ticket.json",
-    "ux-flow-spec.json"
+    "data-analysis-report.json"
   ],
   "role_file": "core/roles/data-analyst.md",
   "policy_profile": "data-analyst"

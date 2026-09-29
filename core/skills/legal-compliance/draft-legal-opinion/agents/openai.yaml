@@ -1,0 +1,4 @@
+interface:
+  display_name: "Draft Legal Opinion"
+  short_description: "Draft formal structured legal opinions under Vietnamese law"
+  default_prompt: "Use $draft-legal-opinion to formulate formal Vietnamese legal opinions."

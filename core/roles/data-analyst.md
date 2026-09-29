@@ -152,7 +152,7 @@ This role must follow [role-standard](role-standard.md) first.
 - **Apache Ossie interchange format** for vendor-neutral semantic model portability
 - **DuckDB v2.0 readiness assessment** (breaking storage format, VARIANT support, Quack server mode)
 
-## Outputs Produed
+## Outputs Produced
 
 - `contracts/schemas/data-analysis-report.json` — primary machine-readable handoff for stakeholders and multi-agent coordination, **including agent query costs as FinOps line item**.
 - executable, reproducible analysis scripts (DuckDB SQL, Polars Python notebooks)

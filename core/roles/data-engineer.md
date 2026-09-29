@@ -60,7 +60,7 @@ This role must follow [role-standard](role-standard.md) first.
   - standardize on Apache Iceberg v4 as the primary open transactional table format with metadata-only restructuring (never data rewrites for schema/partition evolution)
   - mandate Deletion Vectors (DVs) encoded in the Puffin format using RoaringBitmaps for all row-level mutations, deprecating legacy Iceberg v2 positional/equality deletes to eliminate read amplification (<3% overhead) and JVM OOM failures
   - enforce Partition Evolution tracked by integer `spec_id`, enabling partition schema changes without rewriting existing data files
-  - **Variant as the Canonical Semi-Structured Path**: adopt `VARIANT` type (Iceberg v4) for schemaless JSON payloads, eliminating `string` blob anti-patterns and enabling pushdown predicate evaluation on nested fields
+  - **Variant as the Canonical Semi-Structured Path**: adopt `VARIANT` type (Iceberg v4) for schemaless JSON payloads, eliminating string blob anti-patterns and enabling pushdown predicate evaluation on nested fields
 - **Delta Lake 4.0 UniForm & Liquid Clustering**:
   - implement Delta Lake 4.0 Universal Format (UniForm) where Delta is primary, enabling synchronous Apache Iceberg and Hudi metadata generation without duplicating Parquet data blocks
   - deploy Liquid Clustering on high-cardinality keys, replacing brittle static Hive directory partitions with dynamic Hilbert space-filling curves
@@ -80,7 +80,7 @@ This role must follow [role-standard](role-standard.md) first.
 - **Apache Flink 2.3 Sinks & Streaming Ingestion**:
   - deploy Apache Flink 2.3 for sub-second, end-to-end Change Data Capture from transactional OLTP engines (PostgreSQL WAL, MySQL binlog) with **Flink 2.3 sinks** for high-throughput exactly-once delivery to Iceberg tables
   - enable Dynamic Schema Change Propagation (`SchemaChangeEvent`), allowing Flink CDC to evolve Iceberg tables automatically without restarting streaming topologies or losing Chandy-Lamport state checkpoints
-  - implement Flink Iceberg sink connector with `distributed` mode for parallel writes and automatic commit coordination
+  - implement Flink Iceberg sink connector with distributed mode for parallel writes and automatic commit coordination
 - **Transactional Outbox & Thread-per-Core Event Streaming**:
   - enforce the Debezium Transactional Outbox pattern on upstream microservices to eliminate distributed dual-write inconsistency
   - buffer high-throughput event streams in Redpanda C++ Seastar thread-per-core streaming clusters, leveraging S3 Tiered Storage (Shadow Indexing) to decouple retention from local SSD capacity
@@ -405,7 +405,7 @@ See [`references/data-engineer-review-checklist.md`](references/data-engineer-re
 - granting standing superuser permissions to automated pipeline runners
 - relying on legacy Iceberg v2 positional deletes instead of Puffin RoaringBitmap Deletion Vectors
 - omitting S3 object storage prefix hashing on high-throughput streaming ingestion tables
-- **storing semi-structured JSON in `string` blob columns instead of Variant type**
+- **storing semi-structured JSON in string blob columns instead of Variant type**
 - **skipping native table encryption (KMS) for production lakehouse tables**
 - **emitting pipeline specifications without OpenLineage column-level lineage facets**
 - **using legacy Flink CDC 3.0 instead of Flink 2.3 sinks for exactly-once Iceberg writes**

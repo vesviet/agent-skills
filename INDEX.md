@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `5.0.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **35 Roles** | **133 Skills** (121 Core + 12 Overlays) | **25 Workflows** | **54 Data Contracts**
+> **Total Catalog:** **35 Roles** | **135 Skills** (123 Core + 12 Overlays) | **25 Workflows** | **54 Data Contracts**
 
 ---
 
@@ -66,11 +66,11 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@technical-writer`** | Technical Writer | `@tech-writer`, `@doc-writer`, `@docs`, `@documentation-writer` | `write-documentation`, `release-notes`, `configure-llms-txt` *(+10 more)* | [`core/roles/technical-writer.md`](./core/roles/technical-writer.md) |
 | **`@ui-ux-designer`** | UI/UX Designer | `@designer`, `@ui`, `@ux`, `@ui-ux`, `@uiux` | `design-ux-flow`, `design-review`, `meeting-review` *(+6 more)* | [`core/roles/ui-ux-designer.md`](./core/roles/ui-ux-designer.md) |
 | **`@vietnam-accounting-specialist`** | Vietnam Accounting Specialist | `@accounting`, `@accountant`, `@ke-toan`, `@vietnam-accounting` | `manage-vietnam-accounting`, `analyze-business-requirements`, `analyze-data` *(+4 more)* | [`core/roles/vietnam-accounting-specialist.md`](./core/roles/vietnam-accounting-specialist.md) |
-| **`@vietnam-legal-counsel`** | Vietnam Legal Counsel | `@lawyer`, `@luat-su`, `@legal`, `@legal-counsel` | `manage-vietnam-legal`, `conduct-research`, `analyze-business-requirements` *(+3 more)* | [`core/roles/vietnam-legal-counsel.md`](./core/roles/vietnam-legal-counsel.md) |
+| **`@vietnam-legal-counsel`** | Vietnam Legal Counsel | `@lawyer`, `@luat-su`, `@legal`, `@legal-counsel` | `manage-vietnam-legal`, `audit-ai-compliance`, `draft-legal-opinion` *(+5 more)* | [`core/roles/vietnam-legal-counsel.md`](./core/roles/vietnam-legal-counsel.md) |
 
 ---
 
-## 🛠️ Skill Directory (133 Skills)
+## 🛠️ Skill Directory (135 Skills)
 
 ### Category: `agent` (24 skills)
 
@@ -191,11 +191,13 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@setup-design-system`** | Configure a scalable design system, styling framework, and component architecture for a frontend pro... | [`core/skills/frontend/setup-design-system/SKILL.md`](./core/skills/frontend/setup-design-system/SKILL.md) |
 | **`@setup-visual-regression`** | Configure automated visual diffing for UI components and pages. Use when establishing pixel-level re... | [`core/skills/frontend/setup-visual-regression/SKILL.md`](./core/skills/frontend/setup-visual-regression/SKILL.md) |
 
-### Category: `legal-compliance` (1 skills)
+### Category: `legal-compliance` (3 skills)
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
-| **`@manage-vietnam-legal`** | Use when assessing Vietnamese statutory compliance, vetting commercial contracts, auditing Decree 13... | [`core/skills/legal-compliance/manage-vietnam-legal/SKILL.md`](./core/skills/legal-compliance/manage-vietnam-legal/SKILL.md) |
+| **`@audit-ai-compliance`** | Use when auditing AI systems, agentic workflows, or automated decision engines for compliance with V... | [`core/skills/legal-compliance/audit-ai-compliance/SKILL.md`](./core/skills/legal-compliance/audit-ai-compliance/SKILL.md) |
+| **`@draft-legal-opinion`** | Use when drafting a structured formal legal opinion on a Vietnamese legal matter — covering question... | [`core/skills/legal-compliance/draft-legal-opinion/SKILL.md`](./core/skills/legal-compliance/draft-legal-opinion/SKILL.md) |
+| **`@manage-vietnam-legal`** | Use when assessing Vietnamese statutory compliance, vetting commercial contracts, auditing Personal ... | [`core/skills/legal-compliance/manage-vietnam-legal/SKILL.md`](./core/skills/legal-compliance/manage-vietnam-legal/SKILL.md) |
 
 ### Category: `meetings-analysis` (3 skills)
 
@@ -361,6 +363,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@agent_memory_compaction`** | `agent-memory-compaction` | Active `@role` |
 | **`@agentic_decomposition`** | `decompose-agentic-system` | Active `@role` |
 | **`@agentic_task_decomposition`** | `decompose-agentic-system` | Active `@role` |
+| **`@ai_law_audit`** | `audit-ai-compliance` | Active `@role` |
+| **`@ai_risk_classification`** | `audit-ai-compliance` | Active `@role` |
 | **`@analytical_sql`** | `query-analytical-engine` | Active `@role` |
 | **`@analyze-campaign-roi`** | `analyze-campaign-roi` | Active `@role` |
 | **`@analyze_business_requirements`** | `analyze-business-requirements` | Active `@role` |
@@ -373,7 +377,9 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@app_store`** | `deploy-mobile-app` | Active `@role` |
 | **`@architect-mcp-server`** | `architect-mcp-server` | Active `@role` |
 | **`@architect_mcp_server`** | `architect-mcp-server` | Active `@role` |
+| **`@audit-ai-compliance`** | `audit-ai-compliance` | Active `@role` |
 | **`@audit-technical-seo`** | `audit-technical-seo` | Active `@role` |
+| **`@audit_ai_compliance`** | `audit-ai-compliance` | Active `@role` |
 | **`@audit_content`** | `audit-content` | Active `@role` |
 | **`@audit_technical_seo`** | `audit-technical-seo` | Active `@role` |
 | **`@auth`** | `implement-auth` | Active `@role` |
@@ -443,6 +449,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@direct_response`** | `write-copy` | Active `@role` |
 | **`@docs`** | `write-documentation` | Active `@role` |
 | **`@documentation`** | `write-documentation` | Active `@role` |
+| **`@draft-legal-opinion`** | `draft-legal-opinion` | Active `@role` |
+| **`@draft_legal_opinion`** | `draft-legal-opinion` | Active `@role` |
 | **`@e2e_tests`** | `write-tests` | Active `@role` |
 | **`@eas_build`** | `deploy-mobile-app` | Active `@role` |
 | **`@eas_deploy`** | `deploy-mobile-app` | Active `@role` |
@@ -475,7 +483,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@kill_early`** | `prioritize-roadmap` | Active `@role` |
 | **`@legal`** | `manage-vietnam-legal` | Active `@role` |
 | **`@legal_compliance`** | `manage-vietnam-legal` | Active `@role` |
-| **`@legal_opinion`** | `manage-vietnam-legal` | Active `@role` |
+| **`@legal_opinion`** | `draft-legal-opinion` | Active `@role` |
+| **`@legal_opinion_drafting`** | `draft-legal-opinion` | Active `@role` |
 | **`@ltv_roas`** | `analyze-campaign-roi` | Active `@role` |
 | **`@luat`** | `manage-vietnam-legal` | Active `@role` |
 | **`@manage-mmo-assets`** | `manage-mmo-assets` | Active `@role` |
@@ -615,6 +624,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@vcc_isolation`** | `manage-mmo-assets` | Active `@role` |
 | **`@vietnam-legal`** | `manage-vietnam-legal` | Active `@role` |
 | **`@vietnam_accounting`** | `manage-vietnam-accounting` | Active `@role` |
+| **`@vietnam_ai_compliance`** | `audit-ai-compliance` | Active `@role` |
 | **`@vietnam_legal`** | `manage-vietnam-legal` | Active `@role` |
 | **`@view-transitions`** | `implement-view-transitions` | Active `@role` |
 | **`@view_transitions`** | `implement-view-transitions` | Active `@role` |

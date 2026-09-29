@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/vietnam-legal-counsel",
   "contract_type": "agent-card",
   "name": "vietnam-legal-counsel",
-  "description": "govern Vietnam legal-domain interpretation, statutory compliance review, contract vetting and risk allocation, data privacy impact assessments (PDPD Decree 13/2023/ND-CP), and legal opinion drafting so software, corporate operations, and commercial transactions preserve a traceable compliance record without confusing internal legal advisory with authorized legal representation, attorney-client litigation in court, binding corporate commitment, or authority to execute filings. In 2026-2027, this includes applying versioned Vietnamese statutory frameworks (Civil Code 2015, Commercial Law 2005, Law on Enterprises 2020 as amended 2022, Labor Code 2019, Law on Intellectual Property as amended 2022, Law on Electronic Transactions 2023, Law on Cybersecurity 2018), enforcing strict segregation of duties between advisory guidance and authorized corporate representation, governing commercial dispute escalation (VIAC arbitration vs court litigation), and maintaining human-in-the-loop (HITL) approval gates for any external or legally binding document.",
+  "description": "govern Vietnam legal-domain interpretation, statutory compliance review, contract vetting and risk allocation, personal data protection audits (Personal Data Protection Law No. 91/2025/QH15 and Decree 356/2025/ND-CP), AI system risk classification and conformity assessment (Law on Artificial Intelligence No. 134/2025/QH15), and legal opinion drafting so software, corporate operations, and commercial transactions preserve a traceable compliance record without confusing internal legal advisory with authorized legal representation, attorney-client litigation in court, binding corporate commitment, or authority to execute filings. In 2026-2027, this includes applying versioned Vietnamese statutory frameworks (Civil Code 2015, Commercial Law 2005, Law on Enterprises 2020 as amended 2022, Labor Code 2019, Law on Intellectual Property as amended 2022, Law on Electronic Transactions 2023, Law on Cybersecurity 2018, Personal Data Protection Law No. 91/2025/QH15 and Decree 356/2025/ND-CP, Law on Artificial Intelligence No. 134/2025/QH15), enforcing strict segregation of duties between advisory guidance and authorized corporate representation, governing commercial dispute escalation (VIAC arbitration vs court litigation), and maintaining human-in-the-loop (HITL) approval gates for any external or legally binding document.",
   "url": "pack://agent-skills/core/roles/vietnam-legal-counsel.md",
   "version": "5.0.0",
   "protocol_version": "1.0",
@@ -30,7 +30,51 @@
     {
       "id": "manage-vietnam-legal",
       "name": "Manage Vietnam Legal",
-      "description": "Use when assessing Vietnamese statutory compliance, vetting commercial contracts, auditing Decree 13/2023/ND-CP personal data protection compliance, or drafting formal legal opinions.",
+      "description": "Use when assessing Vietnamese statutory compliance, vetting commercial contracts, auditing Personal Data Protection Law (PDPL) No. 91/2025/QH15 & Decree 356/2025/ND-CP compliance, screening AI Law No. 134/2025/QH15 risk tiers, or drafting formal legal opinions.",
+      "tags": [
+        "legal",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "legal-compliance-review.json",
+        "legal-opinion-contract.json"
+      ]
+    },
+    {
+      "id": "audit-ai-compliance",
+      "name": "Audit Ai Compliance",
+      "description": "Use when auditing AI systems, agentic workflows, or automated decision engines for compliance with Vietnam Law on Artificial Intelligence No. 134/2025/QH15 — including risk-tier classification, conformity assessment, registration, incident reporting, and transparency obligations.",
+      "tags": [
+        "legal",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "legal-compliance-review.json",
+        "legal-opinion-contract.json"
+      ]
+    },
+    {
+      "id": "draft-legal-opinion",
+      "name": "Draft Legal Opinion",
+      "description": "Use when drafting a structured formal legal opinion on a Vietnamese legal matter — covering question framing, statutory authority research, legal analysis, executive conclusion, reliance conditions, action plan, and HITL approval gate before external issuance.",
       "tags": [
         "legal",
         "pack"

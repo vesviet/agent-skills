@@ -112,7 +112,7 @@
         "run_tests",
         "run_linter",
         "run_build",
-        "run_database"
+        "execute_command"
       ],
       "version": "1.0.0"
     }

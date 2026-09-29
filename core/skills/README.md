@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 121 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **133 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 123 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **135 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -206,11 +206,13 @@ Teaching and curriculum:
 - `create-exercises`
 - `grade-and-review`
 
-### Legal Compliance (1)
+### Legal Compliance (3)
 
-Vietnam legal ecosystem governance, contract review, and Decree 13 PDPD:
+Vietnam legal ecosystem governance, contract review, AI Law 134/2025 compliance, and legal opinion drafting:
 
 - `manage-vietnam-legal`
+- `audit-ai-compliance`
+- `draft-legal-opinion`
 
 Overlay-specific skills (site stacks, ICM, content data, R3F) live under `overlays/*/skills/` and are validated together with core.
 
@@ -231,6 +233,8 @@ Overlay-specific skills (site stacks, ICM, content data, R3F) live under `overla
 | Agentic commerce flows | `configure-agent-commerce` | Backend Developer |
 | Vietnam accounting controls, reconciliations, or close evidence | `manage-vietnam-accounting` | Vietnam Accounting Specialist; tax position/legal interpretation -> qualified human reviewer |
 | Vietnam legal compliance, contract vetting, or Decree 13 DPIA | `manage-vietnam-legal` | Vietnam Legal Counsel role; litigation/court representation -> qualified human legal counsel |
+| Vietnam AI Law 134/2025 compliance audit, risk classification, or conformity assessment | `audit-ai-compliance` | Vietnam Legal Counsel role; regulatory filings -> qualified human legal counsel |
+| Vietnam formal legal opinion drafting, statutory analysis, or non-litigation caveats | `draft-legal-opinion` | Vietnam Legal Counsel role; external representation/issuance -> qualified human legal counsel |
 | Agent-ready web discovery | `configure-agent-headers` + `manage-api-catalog` | Agent Discovery Engineer |
 | Root-cause analysis & defect reproduction | `systematic-debugging` | QA Engineer |
 | Combinatorial test matrix reduction | `combinatorial-testing` | QA Engineer |
