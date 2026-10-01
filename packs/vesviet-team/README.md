@@ -367,7 +367,7 @@ python core/scripts/validate-indexes.py
 python core/scripts/generate-index.py --check
 
 # 4. Audit Hugo content integrity and zero-orphan enforcement across twin repos
-python D:/myproject/vesviet/reports/check_posts.py
+python D:/myproject/vesviet/tests/check_posts.py
 
 # 5. Verify Knowledge Base SOTA standards and bitwise twin parity (exit code 0)
 python D:/myproject/learn/tests/verify_knowledge_base_sota.py
