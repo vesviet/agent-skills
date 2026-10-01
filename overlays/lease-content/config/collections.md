@@ -1,7 +1,7 @@
 # Lease Content Collections
 
 Astro `src/data` collection trees, schemas, and corpus inventory for the Lease
-in Vietnam and Máy Lạnh Treo Tường sites. Snapshot: 2026-09-08. Canonical
+in Vietnam and Máy Lạnh Treo Tường sites. Snapshot: 2026-10-01. Canonical
 corpus index: `leaseinvietnam/plan/CONTENT_INDEX.md` — regenerate it after every
 batch, then refresh the counts here.
 
