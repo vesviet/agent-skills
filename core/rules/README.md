@@ -8,6 +8,7 @@ This directory defines the **always-on global invariants** and governance standa
 
 The canonical source of truth for all global rules is:
 - **[`code.md`](code.md)** — minimal, language-agnostic global rules covering safety gates, Policy-as-Code, environment protection, and code comment hygiene.
+- **[`knowledge.md`](knowledge.md)** — mandatory pre-execution Knowledge Base retrieval, reports directory cleanliness invariants, twin parity, and 2027 SOTA 7-gate standards.
 
 Every agent adapter at the repository root mirrors this rule set to ensure unified behavior regardless of which IDE or CLI is driving the session:
 - `.cursorrules` (legacy Cursor)

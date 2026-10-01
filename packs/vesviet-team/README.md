@@ -183,6 +183,7 @@ All research findings must be serialized into persistent files before drafting b
 1. **JSON Dossier (`reports/research/{slug}-dossier.json`)**: Machine-readable dossier conforming to [`core/contracts/schemas/research-report.json`](../../core/contracts/schemas/research-report.json) (Draft 2020-12). Contains `execution_metrics` (`depth_mode: "deep"`, `total_rounds: 100`), `raw_data_references`, `cove_log`, and `ai_source_discipline`.
 2. **Markdown Research Notes (`reports/research/{slug}-research-notes.md`)**: Human-readable synthesis containing executive summary, per-cluster round logs (Rounds 01–100), and raw citation links.
 3. **Batch Upgrade Reports on Learn**: When upgrading batches of 20 posts, consolidate into `learn/content/posts/deep-research-batch-N-100-rounds-report.md` with `draft: true` and `noTranslation: true`.
+4. **Agent Knowledge Base (`reports/knowledge/<domain>/<topic>.md` & `reports/KNOWLEDGE_INDEX.md`)**: High-signal, token-efficient (<15 KB) distillation of architectural invariants, data structures, and formulas across 6 core domains (`ecommerce`, `banking-fintech`, `ai-slm-agentic`, `distributed-systems`, `ride-hailing-geospatial`, `cloud-infrastructure`). Historical research dossiers are cleanly preserved in `reports/archive/research-dossiers/`.
 
 ---
 
@@ -367,6 +368,9 @@ python core/scripts/generate-index.py --check
 
 # 4. Audit Hugo content integrity and zero-orphan enforcement across twin repos
 python D:/myproject/vesviet/reports/check_posts.py
+
+# 5. Verify Knowledge Base SOTA standards and bitwise twin parity (exit code 0)
+python D:/myproject/learn/tests/verify_knowledge_base_sota.py
 ```
 
 ### Invalidation Conditions
