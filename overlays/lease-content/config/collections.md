@@ -2,7 +2,8 @@
 
 Astro `src/data` collection trees, schemas, and corpus inventory for the Lease
 in Vietnam and Máy Lạnh Treo Tường sites. Snapshot: 2026-10-02. Canonical
-corpus index: `leaseinvietnam/plan/CONTENT_INDEX.md` — regenerate it after every
+corpus indexes: `leaseinvietnam/plan/CONTENT_INDEX.md` (posts) and
+`leaseinvietnam/plan/PROPERTY_INDEX.md` (61 luxury properties) — regenerate after every
 batch, then refresh the counts here.
 
 ## Site Roots
@@ -41,18 +42,20 @@ Editorial-gate fields (not schema-enforced but workflow-enforced):
 `area`, `location`, `propertyType`, `agentId`, `coordinates {lat,lng}`, `gallery`,
 `amenities`, `status`, `floorPlan`, `videoTour`, `tags`, `metadata`.
 Houzez-extended fields supported via passthrough.
+Enforced via `scripts/tools/validate_property_listings.py`: title <= 60, desc <= 160,
+integer VND price, management fee breakdown, EVN 6-tier rates, water tariffs, and soundproofing decibel rating.
 
 ## 2026 Gate Coverage (leaseinvietnam)
 
 | Gate | Coverage |
 |---|---|
-| `<AnswerFirst>` component | 463/463 |
-| `author` + `publishDate` | 463/463 |
-| `faq` block | 462/463 |
-| `anti_slop_gate` | 452/463 |
-| `unique_angle` | 450/463 |
-| `serp_title` | 81/463 (backfill candidate) |
-| Property cross-links | 457/463 posts link `/property/*` |
+| `<AnswerFirst>` component | 472/472 (100%) |
+| `author` + `publishDate` | 472/472 (100%) |
+| `faq` block | 472/472 (100%) |
+| `anti_slop_gate` | 472/472 (100%) |
+| `unique_angle` | 472/472 (100%) |
+| Property cross-links | 472/472 posts link `/property/*` |
+| Property Listings Quality Gate | 61/61 properties (0 defects) |
 
 ## Author Registry
 
