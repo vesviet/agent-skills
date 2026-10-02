@@ -123,19 +123,19 @@ class TestTier1FeatureCoverage(unittest.TestCase):
         self.assertIn("learn", corpus, "corpus must contain learn entry")
         v = corpus["vesviet"]
         l = corpus["learn"]
-        self.assertEqual(v.get("content_files"), 374, "vesviet content_files must be 374")
+        self.assertEqual(v.get("content_files"), 379, "vesviet content_files must be 379")
         self.assertEqual(v.get("posts"), 66, "vesviet posts must be 66")
         self.assertEqual(v.get("series_dirs"), 25, "vesviet series_dirs must be 25")
         self.assertEqual(v.get("series_files"), 251, "vesviet series_files must be 251")
-        self.assertEqual(v.get("radar_files"), 34, "vesviet radar_files must be 34")
-        self.assertEqual(v.get("reports"), 296, "vesviet reports must be 296")
-        self.assertEqual(l.get("content_files"), 433, "learn content_files must be 433")
+        self.assertEqual(v.get("radar_files"), 39, "vesviet radar_files must be 39")
+        self.assertEqual(v.get("reports"), 358, "vesviet reports must be 358")
+        self.assertEqual(l.get("content_files"), 438, "learn content_files must be 438")
         self.assertEqual(l.get("posts"), 86, "learn posts must be 86")
         self.assertEqual(l.get("series_dirs"), 25, "learn series_dirs must be 25")
         self.assertEqual(l.get("series_files"), 251, "learn series_files must be 251")
-        self.assertEqual(l.get("radar_files"), 70, "learn radar_files must be 70")
+        self.assertEqual(l.get("radar_files"), 75, "learn radar_files must be 75")
         self.assertEqual(l.get("docs"), 3, "learn docs must be 3")
-        self.assertEqual(l.get("reports"), 276, "learn reports must be 276")
+        self.assertEqual(l.get("reports"), 336, "learn reports must be 336")
 
     # --- Feature 3: Role Declarations ---
     def test_feature_03_role_declarations(self):
@@ -339,30 +339,30 @@ class TestTier2BoundaryAndCornerCases(unittest.TestCase):
     def setUpClass(cls):
         cls.manifest = load_manifest()
 
-    # --- Boundary 1: Exact Corpus Count Invariants (18/09/2026 Index) ---
+    # --- Boundary 1: Exact Corpus Count Invariants (02/10/2026 Index) ---
     def test_boundary_01_exact_corpus_counts(self):
         c = self.manifest["corpus"]
         v = c["vesviet"]
         l = c["learn"]
 
-        # Exact authoritative counts from ORIGINAL_REQUEST.md
-        self.assertEqual(v["content_files"], 374, "Invariant failed: vesviet content_files != 374")
+        # Exact authoritative counts from 2026-10-02 snapshot
+        self.assertEqual(v["content_files"], 379, "Invariant failed: vesviet content_files != 379")
         self.assertEqual(v["posts"], 66, "Invariant failed: vesviet posts != 66")
         self.assertEqual(v["series_dirs"], 25, "Invariant failed: vesviet series_dirs != 25")
         self.assertEqual(v["series_files"], 251, "Invariant failed: vesviet series_files != 251")
-        self.assertEqual(v["radar_files"], 34, "Invariant failed: vesviet radar_files != 34")
-        self.assertEqual(v["reports"], 296, "Invariant failed: vesviet reports != 296")
+        self.assertEqual(v["radar_files"], 39, "Invariant failed: vesviet radar_files != 39")
+        self.assertEqual(v["reports"], 358, "Invariant failed: vesviet reports != 358")
 
-        self.assertEqual(l["content_files"], 433, "Invariant failed: learn content_files != 433")
+        self.assertEqual(l["content_files"], 438, "Invariant failed: learn content_files != 438")
         self.assertEqual(l["posts"], 86, "Invariant failed: learn posts != 86")
         self.assertEqual(l["series_dirs"], 25, "Invariant failed: learn series_dirs != 25")
         self.assertEqual(l["series_files"], 251, "Invariant failed: learn series_files != 251")
-        self.assertEqual(l["radar_files"], 70, "Invariant failed: learn radar_files != 70")
+        self.assertEqual(l["radar_files"], 75, "Invariant failed: learn radar_files != 75")
         self.assertEqual(l["docs"], 3, "Invariant failed: learn docs != 3")
-        self.assertEqual(l["reports"], 276, "Invariant failed: learn reports != 276")
+        self.assertEqual(l["reports"], 336, "Invariant failed: learn reports != 336")
 
         # Mathematical relationships and symmetries
-        self.assertEqual(v["content_files"] + l["content_files"], 807, "Combined content files invariant (374 + 433 == 807)")
+        self.assertEqual(v["content_files"] + l["content_files"], 817, "Combined content files invariant (379 + 438 == 817)")
         self.assertEqual(v["series_files"], l["series_files"], "Series files symmetry invariant")
         self.assertEqual(v["series_dirs"], l["series_dirs"], "Series dirs symmetry invariant")
         self.assertGreater(l["content_files"], v["content_files"], "Learn corpus exceeds vesviet corpus in file count")
