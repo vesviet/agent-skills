@@ -1,7 +1,7 @@
 # Lease Content Collections
 
 Astro `src/data` collection trees, schemas, and corpus inventory for the Lease
-in Vietnam and Máy Lạnh Treo Tường sites. Snapshot: 2026-10-01. Canonical
+in Vietnam and Máy Lạnh Treo Tường sites. Snapshot: 2026-10-02. Canonical
 corpus index: `leaseinvietnam/plan/CONTENT_INDEX.md` — regenerate it after every
 batch, then refresh the counts here.
 
@@ -9,7 +9,7 @@ batch, then refresh the counts here.
 
 | Site | Data path (workspace-relative) | Collections | Loader |
 |------|-------------------------------|-------------|--------|
-| Lease in Vietnam | `leaseinvietnam/src/data` | `post` (463 MDX), `property` (61 MD) | `glob('**/*.{md,mdx}')` |
+| Lease in Vietnam | `leaseinvietnam/src/data` | `post` (472 MDX), `property` (61 MD) | `glob('**/*.{md,mdx}')` |
 | Máy Lạnh Treo Tường | `maylanhtreotuong/src/data` | `post`, `product` | same glob loader |
 
 ## Post Layout Convention
@@ -17,8 +17,8 @@ batch, then refresh the counts here.
 - Posts live in **category folders**, not dated folders:
   `src/data/post/<category>/<slug>.mdx`
 - 12 categories: `guides` (112), `neighborhood` (69), `living` (50),
-  `trust-safety` (41), `property-review` (33), `legal` (33), `market-radar` (25),
-  `travel` (24), `market-data` (24), `scam` (20), `neighborhood-comparison` (18),
+  `trust-safety` (41), `property-review` (35), `legal` (34), `market-radar` (27),
+  `travel` (24), `market-data` (24), `scam` (22), `neighborhood-comparison` (20),
   `comparisons` (14)
 - Use `.mdx` — the `<AnswerFirst>` component and layout imports require it.
 
