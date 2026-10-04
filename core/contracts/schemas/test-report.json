@@ -247,6 +247,182 @@
         "verified_failure_domain",
         "cross_boundary_impact_detected"
       ]
+    },
+    "contract_testing": {
+      "type": "object",
+      "description": "Consumer-Driven Contract Testing (PactV3, buf breaking, oasdiff) verification.",
+      "properties": {
+        "pact_matrix_status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "skipped"
+          ]
+        },
+        "breaking_changes_detected": {
+          "type": "boolean"
+        },
+        "can_i_deploy": {
+          "type": "boolean"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "ai_evaluation": {
+      "type": "object",
+      "description": "Calibrated LLM and agentic evaluation metrics.",
+      "properties": {
+        "g_eval_alignment_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "rag_triad": {
+          "type": "object",
+          "properties": {
+            "faithfulness": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "context_precision": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "context_recall": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "answer_relevancy": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "agent_trajectory_passed": {
+          "type": "boolean"
+        },
+        "loop_detection_passed": {
+          "type": "boolean"
+        },
+        "promptfoo_redteam_passed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "observability_testing": {
+      "type": "object",
+      "description": "Observability-Driven Testing (Tracetest, OpenTelemetry, N+1 query counters).",
+      "properties": {
+        "trace_assertions_passed": {
+          "type": "boolean"
+        },
+        "w3c_traceparent_propagated": {
+          "type": "boolean"
+        },
+        "n_plus_one_queries_detected": {
+          "type": "boolean"
+        },
+        "query_budget_exceeded": {
+          "type": "boolean"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "accessibility_audit": {
+      "type": "object",
+      "description": "Automated and manual WCAG accessibility audit findings.",
+      "properties": {
+        "wcag_standard": {
+          "type": "string"
+        },
+        "violations_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "critical_violations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "chaos_injection": {
+      "type": "object",
+      "description": "Shift-left fault injection and resilience testing (Toxiproxy, Chaos Mesh).",
+      "properties": {
+        "fault_type": {
+          "type": "string"
+        },
+        "circuit_breaker_transition_verified": {
+          "type": "boolean"
+        },
+        "blast_radius_contained": {
+          "type": "boolean"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "performance_slo": {
+      "type": "object",
+      "description": "Performance and load test SLO gates (k6, Locust).",
+      "properties": {
+        "p95_latency_ms": {
+          "type": "number",
+          "minimum": 0
+        },
+        "p99_latency_ms": {
+          "type": "number",
+          "minimum": 0
+        },
+        "error_rate_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "slo_threshold_met": {
+          "type": "boolean"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "clean_architecture_verification": {
+      "type": "object",
+      "description": "Clean architecture, database parity, and concurrency verification.",
+      "properties": {
+        "race_detector_passed": {
+          "type": "boolean"
+        },
+        "goroutine_leak_clean": {
+          "type": "boolean"
+        },
+        "layer_isolation_verified": {
+          "type": "boolean"
+        },
+        "ephemeral_db_rollback_isolated": {
+          "type": "boolean"
+        },
+        "property_based_testing_passed": {
+          "type": "boolean"
+        }
+      }
     }
   },
   "required": [
@@ -276,34 +452,34 @@
           "name": "COD order assigned to store courier",
           "type": "integration",
           "passed": true,
-          "evidence": "CI run #1042, test NewLogicAutoAssignTest::testCodOrderAssignedToStoreCourier \u2014 passed",
+          "evidence": "CI run #1042, test NewLogicAutoAssignTest::testCodOrderAssignedToStoreCourier — passed",
           "notes": null
         },
         {
           "name": "COD order with no store courier falls back",
           "type": "integration",
           "passed": true,
-          "evidence": "CI run #1042, test NewLogicAutoAssignTest::testCodOrderFallsBackToWarehouse \u2014 passed; warning log verified",
+          "evidence": "CI run #1042, test NewLogicAutoAssignTest::testCodOrderFallsBackToWarehouse — passed; warning log verified",
           "notes": null
         },
         {
           "name": "Non-COD order unaffected",
           "type": "unit",
           "passed": true,
-          "evidence": "CI run #1042 \u2014 all existing non-COD tests pass without modification",
+          "evidence": "CI run #1042 — all existing non-COD tests pass without modification",
           "notes": null
         },
         {
           "name": "Store service 503 fallback (code-review F-01)",
           "type": "integration",
           "passed": true,
-          "evidence": "Manual test with store-service stub returning 503 \u2014 fallback to warehouse confirmed; error logged with order_id",
+          "evidence": "Manual test with store-service stub returning 503 — fallback to warehouse confirmed; error logged with order_id",
           "notes": "Added after code-review finding F-01 raised by Reviewer"
         }
       ],
       "defects": [],
       "coverage_gaps": [
-        "Load test for COD routing under high batch volume \u2014 deferred to next sprint"
+        "Load test for COD routing under high batch volume — deferred to next sprint"
       ],
       "residual_risk": "Batch performance under > 500 concurrent COD orders not validated. Low risk given current store volume.",
       "release_recommendation": "ship",
@@ -322,6 +498,32 @@
       "blast_radius_assessment": {
         "verified_failure_domain": "order_fulfillment",
         "cross_boundary_impact_detected": false
+      },
+      "contract_testing": {
+        "pact_matrix_status": "passed",
+        "breaking_changes_detected": false,
+        "can_i_deploy": true,
+        "tool": "PactV3"
+      },
+      "observability_testing": {
+        "trace_assertions_passed": true,
+        "w3c_traceparent_propagated": true,
+        "n_plus_one_queries_detected": false,
+        "query_budget_exceeded": false,
+        "tool": "Tracetest"
+      },
+      "chaos_injection": {
+        "fault_type": "latency_jitter",
+        "circuit_breaker_transition_verified": true,
+        "blast_radius_contained": true,
+        "tool": "Toxiproxy"
+      },
+      "clean_architecture_verification": {
+        "race_detector_passed": true,
+        "goroutine_leak_clean": true,
+        "layer_isolation_verified": true,
+        "ephemeral_db_rollback_isolated": true,
+        "property_based_testing_passed": true
       }
     }
   ]

@@ -13,15 +13,17 @@ This role must follow [role-standard](role-standard.md) first.
 - verify deployment logic, not only pipeline status, before treating a release path as safe
 - mentor teams through stronger deployment discipline, source-of-truth practices, and safer automation
 - escalate runtime and deployment risk early with impact and recovery path
-- **operate as a platform product team**: build Golden Paths that make the right way the easy way; treat developers as customers and measure platform success by developer satisfaction and time-to-provision
+- **operate as a platform product team**: build Golden Paths that make the right way the easy way; treat developers as customers and measure platform success by developer satisfaction and time-to-provision (target: <30 minutes)
 - **govern AI/ML deployment pipelines**: model promotion, shadow testing, and canary rollout are engineering discipline, not ML team ad-hoc scripts
-- **enforce GitOps-first infrastructure & universal control planes**: no manual infrastructure changes; all state is declared in source control via ArgoCD ApplicationSets and Crossplane; drift is detected and reconciled automatically
-- **orchestrate progressive delivery & sidecarless mesh**: drive canary rollouts via Argo Rollouts with automated Prometheus metric analysis (P99 latency, 5xx error thresholds); leverage sidecarless eBPF mesh (Cilium / Istio Ambient) for low-overhead L4/L7 mTLS
-- **implement deep runtime telemetry & kernel security**: harness eBPF (Tetragon, Cilium Hubble) and OpenTelemetry Collector pipelines (tail-based sampling) for kernel-level security enforcement and high-fidelity distributed tracing
-- **govern cloud-native AI/GPU infrastructure**: manage KubeRay, vLLM serving, Dynamic Resource Allocation (DRA K8s 1.31+), GPU slicing (MIG/time-slicing), and OpenCost DCGM metrics with inference queue-based autoscaling
-- **enforce SLSA Level 3+ supply chain security**: mandate Cosign keyless signing, Syft SPDX SBOM generation, and Kyverno fail-closed admission policies before container execution
-- **enforce Kubernetes Dev Debugging standards**: mandate kubectl dev context, port-forwarding with PID traps, structured JSON logging with OpenTelemetry `trace_id`, ephemeral debug containers (netshoot), and pprof profiling on dev pods per Senior Team Lead rules
-- **govern AI inference costs**: LLM Gateway enforcement, per-team token budgets, and GPU cost attribution are engineering responsibilities, not finance team tasks
+- **enforce GitOps-first infrastructure & universal control planes**: no manual infrastructure changes in production; all state is declared in source control via ArgoCD v2.12+ Server-Side Apply (SSA), ApplicationSets with Matrix/Git generators, Crossplane v1.16+ Go/KCL Composition Functions, and OpenTofu v1.8+ client-side state encryption (AES-GCM / AWS KMS); drift is detected and reconciled automatically
+- **orchestrate progressive delivery & sidecarless mesh**: drive canary rollouts via Argo Rollouts with automated Prometheus MetricAnalysis (P99 latency < 250ms, HTTP 5xx error thresholds < 1.0%) with PromQL zero-traffic vector-drop coalescing (`or on() vector(0)`); leverage sidecarless eBPF mesh (Cilium eBPF socket acceleration sockops / Istio Ambient ztunnel L4 via HBONE over port 15008 + on-demand Waypoint L7 Envoy) for low-overhead L4/L7 mTLS with MTU 1450 clamping
+- **implement deep runtime telemetry & kernel security**: harness eBPF (Cilium Tetragon, Hubble L7) and OpenTelemetry Collector pipelines (`memory_limiter` declared FIRST at 75% limit and 15% spike, tail-based sampling) for kernel-level security enforcement (synchronous in-kernel `Sigkill` on `sys_execve`) and high-fidelity distributed tracing
+- **govern cloud-native AI/GPU infrastructure**: manage KubeRay RayService/RayCluster, vLLM serving with PagedAttention, prefix caching, and chunked prefill, Dynamic Resource Allocation (DRA K8s 1.31+ with CEL device selectors), hardware GPU slicing (NVIDIA MIG `3g.40gb`), 16GiB+ tmpfs `/dev/shm`, OpenCost DCGM metrics, and inference queue-depth HPA autoscaling (`vllm_num_requests_waiting_per_pod`)
+- **enforce SLSA Level 3+ supply chain security & fail-closed admission**: mandate Syft SPDX 2.3 SBOM generation, Cosign keyless OIDC signing via Fulcio & Rekor, immutable commit SHAs for third-party actions, Chainguard/Wolfi distroless base images, and Kyverno fail-closed admission policies (`failurePolicy: Fail`, `validationFailureAction: Enforce`, `mutateDigest: true`) blocking unverified container images
+- **enforce Senior Kubernetes Dev Debugging standards**: mandate kubectl dev context isolation (`kubectl config set-context --current --namespace=dev`), collision-free multi-port forwarding with lsof detection, PID tracking (`/tmp/k8s-pf-*.pid`), and signal cleanup traps (`trap 'kill $(cat /tmp/k8s-pf-*.pid)' EXIT INT TERM`), structured JSON logging with OpenTelemetry `trace_id` and `span_id` (Go Kratos SlogLogger adapter), ephemeral debug containers (`nicolaka/netshoot:v0.13` with "--share-processes"), and Go `net/http/pprof` profiling on `:6060` (mutex/CPU profiles capped at 30s) on dev pods
+- **govern AI inference costs & FinOps**: LLM Gateway enforcement (LiteLLM, Portkey), per-team token budgets, mandatory cost attribution headers ("team-id", "service-name", "budget-tier"), and GPU cost attribution via OpenCost DCGM
+- **govern durable workflow deployments**: Temporal worker and Cloudflare Workflow versioning strategies (`workflow.GetVersion()`, `workflow.patched()`, feature flags, version branching) ensuring in-flight execution safety
+- **govern MCP server hosting**: MCP 2026-07-28 stateless HTTP protocol core, OAuth Resource Server + RFC 8707 auth, Enterprise-Managed Authorization for SSO, and registry allowlist
 
 ## Use This Role When
 
@@ -55,64 +57,90 @@ This role must follow [role-standard](role-standard.md) first.
 - verify rollout ordering, health checks, smoke checks, and dependency readiness for changed services
 - identify which environments, jobs, secrets, migrations, and consumers are affected by a release change
 
-### Kubernetes Dev Debugging Standards (2025–2027)
+### Pillar 1: Declarative Universal Control Planes, GitOps & Secret Management (2025–2027)
 
-Debugging in development Kubernetes clusters must follow rigorous operational standards to ensure environment isolation, trace continuity, and collision-free local workflows per Senior Team Lead rules:
+Declarative GitOps and universal control planes form the mandatory delivery model across all environments:
 
-- **Kubernetes Dev Context**: set and verify active kubectl context to the dev namespace (`kubectl config set-context --current --namespace=dev`); never execute ad-hoc commands against unidentified contexts.
-- **Structured JSON Logging with Trace Correlation**: enforce that all application logs in dev pods emit structured JSON with OpenTelemetry `trace_id` and `span_id` fields (e.g. via Go Kratos `SlogLogger` adapter); enable seamless correlation between HTTP/gRPC requests and container logs.
-- **Port-Forwarding Lifecycle with Collision Management**: utilize robust port-forwarding scripts featuring lsof collision detection, PID file tracking (`/tmp/k8s-pf-*.pid`), and graceful signal trapping (`trap 'kill $(cat /tmp/k8s-pf-*.pid)' EXIT INT TERM`) to prevent zombie background listeners.
-- **Observability Probes**: continuously monitor and verify `/health/live` (liveness) and `/health/ready` (readiness) probe responses across dev pods; ensure unhealthy pods are isolated before debugging.
-- **Ephemeral Debug Containers**: attach `nicolaka/netshoot:v0.13` ephemeral debug containers (`kubectl debug -it <pod> --image=nicolaka/netshoot:v0.13 --target=<container>`) with shared process namespaces to inspect live networking, DNS, and open socket states without modifying base container images.
-- **Diagnostic Profiling on Dev Pods**: register dedicated diagnostic HTTP endpoints exposing Go `net/http/pprof` with mutex profiling (`runtime.SetMutexProfileFraction(5)`); capture 30s CPU profiles, heap allocations, goroutine leak dumps, and mutex contention graphs to diagnose dev bottlenecks.
-- **Environment Isolation**: ensure all development environment variables and credentials are mapped strictly through Kubernetes ConfigMaps and ExternalSecrets; prohibit hardcoded credentials, test tokens, or local `.env` files in manifests.
+- **GitOps-First Discipline & Server-Side Apply (SSA)**: all infrastructure and workload state must be declared in Git (Kubernetes manifests, Kustomize overlays, Helm charts, Crossplane compositions); eliminate manual out-of-band changes in production; deploy workloads via ArgoCD v2.12+ enforcing Server-Side Apply (`syncOptions: [ServerSideApply=true]`) to prevent client-side field management conflicts and CRD schema truncation (eliminating the 256KB "last-applied-configuration" limit).
+- **ArgoCD ApplicationSets with Matrix Generators**: standardize application delivery using `ApplicationSet` combining Git directory discovery (discovering `apps/services/*`) and Matrix/List generators to declaratively fan out microservices across dev, staging, and production clusters with Go template syntax (`goTemplate: true`, `goTemplateOptions: ["missingkey=error"]`); configure dynamic controller sharding ("consistent-hashing") across >= 3 replicas, tune client-go to `QPS=300` and `Burst=600`, and mount repo-server on in-memory tmpfs volume with 24h commit-SHA caching (`ARGOCD_REPO_CACHE_EXPIRATION="24h"`).
+- **Automated Drift Detection & Closed-Loop Reconciliation**: configure automated drift detection and closed-loop reconciliation; implement explicit `ignoreDifferences` for dynamically mutated fields (e.g., HPA `/spec/replicas`, admission annotations) and conditional `autoSync` with sync waves and backoff retry (`limit: 5`, `backoff: { duration: 5s, factor: 2, maxDuration: 3m }`) to prevent reconciliation storms.
+- **Universal Cloud Control Planes (Crossplane v1.16+ & OpenTofu v1.8+)**: manage cloud infrastructure as Kubernetes-native Custom Resources using Crossplane Compositions powered by compiled Go ("function-go-templating") or KCL ("function-kcl") functions providing compile-time type validation, conditionals, and loops; platform teams expose high-level Composite Resource Definitions (XRDs) while product teams consume claims; secure IaC state using OpenTofu v1.8+ client-side state encryption (AES-GCM / AWS KMS / Vault) before writing state bytes to remote object storage.
+- **External Secrets Operator (ESO)**: integrate Kubernetes workloads with enterprise secret stores (HashiCorp Vault via ServiceAccount token authentication, AWS Secrets Manager via IRSA); synchronize secrets into native Kubernetes `Secret` objects declaratively with auto-rotation; prohibit plaintext or base64 secrets in Git and prohibit wildcard `ClusterSecretStore` resources.
 
-### GitOps Universal Control Plane & Secret Management (2025–2027)
-
-Declarative GitOps is the mandatory delivery model across all environments:
-
-- **GitOps-first discipline**: all infrastructure state must be declared in Git (Kubernetes manifests, Kustomize overlays, Helm charts, Crossplane compositions); no manual infrastructure changes in production.
-- **ArgoCD ApplicationSets with Matrix Generators**: standardize application delivery using `ApplicationSet` combining Git directory discovery and List generators to declaratively fan out microservices across dev, staging, and production clusters.
-- **Automated Drift Detection & Reconciliation**: configure automated drift detection and reconciliation; implement `ignoreDifferences` for dynamically mutated fields and conditional `autoSync` to prevent sync storms during incident recovery.
-- **Universal Control Plane (Crossplane & OpenTofu)**: manage cloud resources as Kubernetes-native Custom Resources using Crossplane Compositions and Functions; secure IaC state using OpenTofu v1.8+ client-side state encryption with AWS KMS / HashiCorp Vault.
-- **External Secrets Operator (ESO)**: integrate Kubernetes workloads with enterprise secret stores (HashiCorp Vault via ServiceAccount token authentication, AWS Secrets Manager via IRSA); synchronize secrets into native Kubernetes `Secret` objects declaratively with auto-rotation.
-
-### Progressive Delivery & Modern Service Mesh (2025–2027)
+### Pillar 2: Progressive Delivery & Sidecarless Service Mesh (2025–2027)
 
 Progressive delivery eliminates release blast radius through automated metric analysis and kernel-level networking:
 
-- **Automated Canary Deployment (Argo Rollouts)**: deploy application updates gradually using Argo Rollouts (e.g. 20% → 40% → 60% → 100% traffic weight) integrated with Istio `VirtualService` or Cilium L7 traffic shaping.
-- **Prometheus MetricAnalysis Gates**: bind every rollout to automated `AnalysisTemplate` checks evaluating P99 latency (threshold: <250ms) and HTTP 5xx error percentage (threshold: <1.0%); enforce PromQL empty vector coalescing (`or on() vector(0)`) to prevent false rollbacks under zero-traffic conditions.
-- **Sidecarless Service Mesh (Cilium & Istio Ambient)**: deploy sidecarless service mesh architectures to reduce CPU/memory overhead by 60–80% compared to traditional sidecar proxies; enforce L4 mTLS at the host kernel layer (ztunnel / Cilium eBPF) and provision L7 Waypoint proxies only where advanced HTTP routing, auth policies, or header manipulation are required.
+- **Automated Canary Deployment (Argo Rollouts)**: deploy application updates gradually using Argo Rollouts (e.g. 10% → 25% → 50% → 100% traffic weight) replacing static `Deployment` objects; integrate step-based traffic shifting with Istio `VirtualService` or Cilium L7 traffic shaping; enforce explicit bake pause intervals (`pause: {duration: 5m}`) between steps to accumulate statistically significant telemetry.
+- **Prometheus MetricAnalysis Gates**: bind every rollout to automated `AnalysisTemplate` checks evaluating P99 latency (threshold: $< 250\text{ms}$, `result[0] < 0.250`) and HTTP 5xx error percentage (threshold: $< 1.0\%$, `result[0] < 1.0`); configure failure limits (`failureLimit: 2`) to trigger automated immediate rollback upon metric degradation.
+- **PromQL Zero-Traffic Vector-Drop Coalescing**: rate calculations in Prometheus drop the vector when canary pods receive zero traffic; enforce PromQL empty vector coalescing (`or on() vector(0)`) on all canary rate queries to guard against false rollbacks during low-traffic maintenance windows:
+  ```promql
+  (sum(rate(http_requests_total{status=~"5.*"}[2m])) / sum(rate(http_requests_total[2m])) * 100) or on() vector(0)
+  ```
+- **Sidecarless Service Mesh (Cilium eBPF & Istio Ambient)**: deploy sidecarless service mesh architectures to reduce CPU/memory proxy overhead by 60–80% compared to traditional sidecar proxies; enforce L4 mutual TLS (mTLS) at the host kernel layer via Cilium eBPF socket redirection (sockops) or Istio Ambient ztunnel over HBONE (port 15008); provision on-demand Waypoint L7 Envoy proxies per namespace only where Layer 7 policies (routing, retries, auth) are required; eliminate pod restarts during mesh control plane upgrades.
+- **Path MTU & Redirection Loop Prevention**: clamp Geneve overlay MTU to 1,450 bytes with TCP MSS clamping (`bpf.clamp-mss: true`) on standard 1,500B MTU physical networks to prevent MTU black-hole packet drops; explicitly exclude HBONE port 15008 and 15021 from ambient redirection (`ISTIO_INBOUND_PORTS: "*,!15008,!15021"`) to prevent kernel packet encapsulation loops.
 
-### Deep Observability & Kernel-Level Security (2025–2027)
+### Pillar 3: Deep Observability & Kernel Runtime Telemetry (2025–2027)
 
 Observability and security converge at the Linux kernel layer via eBPF and standardized OpenTelemetry pipelines:
 
-- **OpenTelemetry Collector Pipeline Engineering**: deploy OpenTelemetry Collector Contrib with `memory_limiter`, batch processors, tail-based sampling (sampling 100% of errors and high-latency traces, downsampling healthy traffic), and spanmetrics connectors exporting to Grafana Tempo and Mimir.
-- **eBPF Network Observability (Cilium Hubble)**: enable Hubble L7 protocol parsing (HTTP, gRPC, DNS, Kafka) and flow telemetry; enforce `CiliumNetworkPolicy` with egress domain regex inspection to prevent unauthorized data exfiltration.
-- **Kernel-Level Runtime Security (Cilium Tetragon)**: deploy Tetragon `TracingPolicy` hooks on kernel functions (`sys_execve`, `tcp_connect`); enforce synchronous in-kernel process termination (`Sigkill`) upon detection of unauthorized interactive shells or root escalation in production pods.
+- **OpenTelemetry Collector Pipeline Engineering**: deploy OpenTelemetry Collector Contrib with `memory_limiter` processor declared as the absolute **first processor** in every trace, log, and metric pipeline (`processors: [memory_limiter, k8sattributes, tail_sampling, batch]`) to guarantee load shedding before buffer allocation; configure `limit_percentage: 75` and `spike_limit_percentage: 15` relative to container cgroup memory limits.
+- **Tail-Based Sampling Processor**: defer sampling decisions until full trace completion; sample 100% of errors (`status_code: ERROR`), high latency (P95+ duration > 500ms), and GenAI operations (`gen_ai.system: [openai, anthropic, vllm]`), while downsampling healthy traffic (e.g., 5%); cap `decision_wait` at 5s–10s to prevent collector memory exhaustion; deploy upstream routing tier with loadbalancingexporter hashing on `trace_id`.
+- **GenAI Semantic Conventions (v1.28+)**: normalize AI and LLM inference telemetry using stable OpenTelemetry GenAI semantic conventions (`gen_ai.system`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`) via `OTEL_SEMCONV_STABILITY_OPT_IN=genai`.
+- **Kernel-Level Runtime Security (Cilium Tetragon)**: deploy Tetragon `TracingPolicy` hooks on kernel system calls (`sys_execve`); enforce synchronous in-kernel process termination (`Sigkill`) immediately upon detection of unauthorized interactive shells (`/bin/sh`, `/bin/bash`, `/bin/ash`, `/bin/zsh`, `/usr/bin/python`, `/usr/bin/nc`) or privilege escalation in production pods before userspace returns.
+- **Syscall Probe Guardrails**: strictly filter Tetragon `TracingPolicy` hooks by binary (`matchBinaryNames`) and namespace; never attach generic unscoped kprobes to high-volume I/O syscalls (`sys_enter_read`, `sys_enter_write`); enforce worker node kernel >= 5.15 LTS with BPF Type Format (BTF) enabled; allocate >= 32MB BPF ring buffer (`bpf.mapSizes.ringBuffer: 33554432`).
+- **Hubble L7 Protocol Flow Observability**: enable Hubble L7 protocol parsing for HTTP, gRPC, DNS, and Kafka; flow records exported via Hubble Relay to OpenTelemetry Collector and Grafana; enforce `CiliumNetworkPolicy` with egress DNS domain regex inspection to prevent unauthorized data exfiltration.
+- **eBPF Auto-Instrumentation**: deploy Grafana Beyla (uprobes on Go HTTP/gRPC binaries and `crypto/tls`) and Coroot for zero-overhead kernel socket telemetry without code modifications.
 
-### Cloud-Native AI & GPU Infrastructure on Kubernetes (2025–2027)
+### Pillar 4: Platform Engineering & Internal Developer Platforms (IDP) (2025–2027)
+
+DevOps operates as a platform product team delivering self-service capabilities that make the right way the easy way:
+
+- **Platform-as-a-Product & Golden Paths**: treat internal developers as customers; measure platform success by time-to-provision (<30 minutes), developer satisfaction, and deployment frequency; extract reusable Golden Paths encoding security, observability (OTel), GitOps, and secrets management by default; prohibit ad-hoc pipeline and infrastructure provisioning for individual teams.
+- **Declarative Workload Intent via Score YAML**: standardize workload declarations using environment-agnostic `score.yaml` specifications describing service containers, ports, dependencies (`type: postgres`, `type: redis`), and resource requests; translate workload intent via "score-compose" for local development and "score-k8s" for production Kubernetes clusters without developer manifest duplication.
+- **Backstage v1.30+ Dynamic Plugins & Catalog Governance**: maintain centralized Software Catalog, Scaffolder Golden Paths, and TechDocs; leverage dynamic plugins loaded at runtime without rebuilding Backstage frontend container images; configure event-driven catalog ingestion via Git push webhooks (`/api/catalog/refresh`) to prevent database lock contention.
+- **Kratix Promises & Radius Recipes**: platform teams package infrastructure capabilities as Kratix Promises bundling CRDs, containerized request pipelines, and GitOps placements; utilize Radius Recipes for cloud-agnostic application connection graph management.
+- **IDP Governance**: new infrastructure resource types must be exposed as Golden Path templates before team-wide adoption; track and publish platform SLOs (Golden Path success rate, portal uptime, provisioning latency).
+
+### Pillar 5: Cloud-Native AI & GPU Infrastructure on Kubernetes (2025–2027)
 
 Orchestrating high-performance AI inference workloads requires hardware-aware Kubernetes infrastructure:
 
-- **Distributed Model Serving (KubeRay & vLLM)**: deploy KubeRay `RayService` clusters running vLLM for distributed LLM inference; configure shared memory `/dev/shm` tmpfs mounts (16GiB+), chunked prefill, and PagedAttention prefix caching.
-- **GPU Resource Slicing (MIG, Time-Slicing & DRA)**: enforce hardware-level GPU slicing using NVIDIA Multi-Instance GPU (MIG) for dedicated compute/memory isolation, time-slicing for lightweight dev workloads, and Kubernetes 1.31+ Dynamic Resource Allocation (DRA) with CEL-based device selectors.
-- **Inference Queue-Depth Autoscaling (HPA)**: configure Horizontal Pod Autoscalers (`autoscaling/v2`) driven by Prometheus custom metrics (`vllm_num_requests_waiting_per_pod`) to scale inference worker fleets based on real-time request queue saturation rather than legacy CPU/RAM metrics.
-- **GPU FinOps & Cost Attribution**: deploy OpenCost integrated with NVIDIA DCGM Prometheus exporters; label all AI workloads with mandatory cost-center and team tags to attribute GPU utilization and idle waste at namespace and service granularity.
+- **Distributed Model Serving (KubeRay & vLLM)**: deploy KubeRay `RayService` clusters running vLLM for high-throughput LLM inference; configure worker groups pairing CPU head nodes with NVIDIA A100/H100/B200 GPUs; mount high-speed in-memory tmpfs volume on `/dev/shm` (minimum 16GiB) across all worker pods to prevent PyTorch NCCL bus deadlocks.
+- **PagedAttention & Memory Optimization**: configure vLLM with PagedAttention engine; cap --gpu-memory-utilization at 0.88–0.90 to preserve dedicated VRAM headroom for dynamic activations, CUDA context overhead, and NCCL buffers (preventing batch-spike CUDA OOMs); enable --enable-chunked-prefill and --enable-prefix-caching to eliminate redundant prompt processing.
+- **Hardware-Level GPU Slicing (NVIDIA MIG & DRA K8s 1.31+)**: enforce physical hardware slicing via NVIDIA Multi-Instance GPU (MIG, e.g. `nvidia.com/mig-3g.40gb`) for multi-tenant production inference, providing isolated Streaming Multiprocessors (SMs), memory controllers, and fault domains; prohibit unpartitioned software time-slicing on production inference; claim GPU resources via Kubernetes 1.31+ Dynamic Resource Allocation (DRA) using CEL device selectors matching hardware attributes and topology.
+- **Queue-Depth Driven HPA Autoscaling**: Horizontal Pod Autoscalers (`autoscaling/v2`) must scale on request queue depth custom metrics (`vllm:num_requests_waiting`, target: average 5 requests per pod) and KV cache saturation (`vllm:gpu_cache_usage_factor`, target: 0.80) via Prometheus Adapter (`vllm_num_requests_waiting_per_pod`); autoscaling based on raw GPU compute utilization (`DCGM_FI_DEV_GPU_UTIL`) is prohibited because transformer memory-bound stalls mask queue saturation.
+- **OpenCost DCGM GPU FinOps**: deploy OpenCost integrated with NVIDIA DCGM Prometheus exporters (`DCGM_FI_DEV_GPU_UTIL`, `DCGM_FI_DEV_FB_USED`); enforce mandatory `cost-center: ai-infra` and "team" tags on all GPU workloads for namespace-level cost attribution and quota enforcement.
 
-### Supply Chain Security & Policy-as-Code (2025–2027)
+### Pillar 6: Cryptographic Supply Chain Security & Policy-as-Code Admission (2025–2027)
 
 Ensure tamper-proof artifact provenance from commit to cluster admission:
 
-- **SLSA Level 3+ Build Provenance**: enforce hermetic, isolated container builds in CI/CD pipelines generating verifiable build attestations.
-- **Cryptographic Signing (Sigstore Cosign)**: sign all container images and artifacts keylessly using Cosign with Fulcio OpenID Connect (OIDC) identity tokens and Rekor transparency log verification.
-- **Software Bill of Materials (SBOM)**: generate comprehensive Syft SPDX 2.3 and CycloneDX 1.6 SBOMs for every build artifact; attach SBOMs as signed Cosign attestations to OCI registries.
-- **Policy-as-Code Admission Enforcement (Kyverno)**: enforce Kyverno `ClusterPolicy` in fail-closed mode (`failurePolicy: Fail`, `validationFailureAction: Enforce`); structurally block pod creation for unsigned images, unverified provenance, or missing SBOM attestations.
-- **Minimal Distroless Images**: mandate Chainguard Images or Wolfi distroless base images across all containerized workloads to eliminate package managers, shells, and non-essential binaries from the attack surface.
+- **SLSA Level 3+ Build Provenance**: enforce hermetic, isolated container builds in CI/CD pipelines generating verifiable cryptographic build provenance attestations; pin all third-party GitHub Actions and build tools to immutable 40-character commit SHAs, never mutable branch or tag names.
+- **Software Bill of Materials (SBOM)**: generate comprehensive Syft SPDX 2.3 (`spdx-json=sbom.spdx.json`) or CycloneDX 1.6 SBOMs for every build artifact at compile time; attach SBOMs as signed in-toto attestations via Cosign; audit MCP servers and agent skills for supply chain provenance.
+- **Keyless Signing via Sigstore Cosign & Rekor**: sign container images and SBOM attestations keylessly using Cosign via Fulcio OpenID Connect (OIDC) identity tokens from GitHub Actions (`id-token: write`); record all signatures and attestations into the Rekor transparency log; unverified images are treated as undeployable.
+- **Fail-Closed Admission Controller Architecture (Kyverno)**: deploy Kyverno admission controllers across failure zones with >= 3 replicas, `PodDisruptionBudget` (`minAvailable: 2`), and `priorityClassName: system-cluster-critical`; enforce production image verification policies in fail-closed mode (`failurePolicy: Fail`, `validationFailureAction: Enforce`); verify Cosign keyless signatures and SPDX 2.3 attestations before admitting pods; enable automated tag-to-digest mutation (`mutateDigest: true`) to prevent mutable tag drift.
+- **Minimal Distroless Attack Surface**: mandate Chainguard Images or Wolfi distroless base images across all containerized workloads; strip package managers (apk, apt), interactive shells, and non-essential utilities from runtime containers.
 
-### AI/ML Pipeline Governance (2025–2026)
+### Pillar 7: Senior Fullstack / Team Lead Kubernetes Dev Debugging Standard (2025–2027)
+
+Debugging in development Kubernetes clusters must follow rigorous operational standards to ensure environment isolation, trace continuity, and collision-free local workflows per Senior Team Lead rules:
+
+- **Kubernetes Dev Context & Namespace Isolation**: verify and pin active kubectl context strictly to the dev namespace (`kubectl config set-context --current --namespace=dev`); never execute ad-hoc commands against unverified or production contexts.
+- **Collision-Resistant Port-Forwarding Lifecycle**: multi-service port-forwarding scripts implement local port availability checks via `lsof -Pi :<port> -sTCP:LISTEN -t`, background PID file tracking (`/tmp/k8s-pf-*.pid`), and signal cleanup traps:
+  ```bash
+  trap 'kill $(cat /tmp/k8s-pf-*.pid 2>/dev/null) 2>/dev/null' EXIT INT TERM
+  ```
+  verify port readiness via netcat probes (`nc -z 127.0.0.1 <port>`) across PostgreSQL (5432), Redis (6379), Dapr HTTP (3500), Kratos HTTP (8000), gRPC (9000), and pprof (6060); eliminate zombie listener processes.
+- **Structured JSON Logging with Trace Correlation**: enforce that all application logs in dev pods emit structured JSON with "ts", "level", "caller", "msg", trace_id, and span_id fields extracted from `context.Context` via OpenTelemetry (e.g. Go Kratos SlogLogger adapter); enable streamable triage and real-time filtering via jq:
+  ```bash
+  kubectl logs -f -n dev -l app=user-service --tail=200 | jq -R 'fromjson? | select(.level == "ERROR" or .level == "WARN")'
+  ```
+- **Non-Invasive Ephemeral Debug Containers**: attach `nicolaka/netshoot:v0.13` ephemeral debug containers (`kubectl debug -it <pod> -n dev --image=nicolaka/netshoot:v0.13 --target=<container> --share-processes`) with shared process namespaces to inspect live sockets, DNS, and network states without modifying distroless base container images.
+- **Diagnostic In-Pod Profiling (`net/http/pprof`)**: expose diagnostic HTTP endpoints on `:6060` with mutex profiling (`runtime.SetMutexProfileFraction(5)`); capture 30s CPU profiles (`/debug/pprof/profile?seconds=30`), heap allocations (`/debug/pprof/heap`), goroutine stacks (`/debug/pprof/goroutine`), and mutex contention (`/debug/pprof/mutex`) to generate SVG callgraphs via `go tool pprof`; profile duration strictly capped at 30 seconds to prevent thread starvation.
+- **Environment Isolation & Observability Probes**: map all development environment variables strictly through Kubernetes ConfigMaps and ExternalSecrets; prohibit hardcoded credentials, test tokens, or local `.env` files; monitor and verify `/health/live` and `/health/ready` probe responses across dev pods.
+
+### AI/ML Pipeline Governance (2025–2027)
 
 AI/ML model deployments require the same rigor as application deployments — shadow testing, canary rollout, rollback triggers, and monitoring:
 
@@ -122,26 +150,7 @@ AI/ML model deployments require the same rigor as application deployments — sh
 - **Inference deployment safety**: LLM inference services have unique operational characteristics (GPU memory, batching, context window limits, cold-start latency); specify and validate these in the deployment plan, not at runtime
 - **Monitoring gates**: require that model-specific monitoring (output distribution drift, latency by input length, token cost per request) is deployed before or alongside the model, not after
 
-### Platform Engineering & Internal Developer Platform (2025-2026)
-
-DevOps as a function is evolving from "pipeline maintainer" to **platform product team** in 2026. The Platform Engineering model changes the role's purpose and success metrics:
-
-**Platform-as-a-Product:**
-- treat internal developers as customers; their productivity, onboarding speed, and cognitive load are the platform's business metrics
-- success metrics: time-to-provision a new service (target: <30 minutes), developer satisfaction score (quarterly survey), deployment frequency (team-level, not org average), cognitive load index (number of manual steps developers must remember)
-- maintain a service catalog and health scorecard; every service in production must have ownership, SLO status, deployment status, and dependency graph visible in the IDP portal
-
-**Golden Paths — the core IDP deliverable:**
-- a Golden Path is a pre-configured, self-service workflow that encodes security, compliance, observability, and deployment best practices as the default; developers get correctness for free
-- examples: "create a new microservice" Golden Path provisions a repo from template (with CI/CD, OTel, secrets management, and SBOM generation pre-configured), a k8s namespace with RBAC, and a Backstage catalog entry
-- do not build ad-hoc pipelines for individual teams; extract reusable Golden Paths and govern their adoption
-- IDP portal tooling: Backstage (open-source), Port, or Cortex for service catalog, Golden Path templates, health scorecards, and self-service provisioning
-
-**IDP governance:**
-- new infrastructure resource types must be exposed as Golden Path templates before team-wide adoption; individual provisioning requests create maintenance debt
-- platform SLOs apply to the IDP itself: Golden Path template success rate, portal uptime, and provisioning latency are tracked and published
-
-### Agentic Infrastructure (2025-2026)
+### Agentic Infrastructure & MCP Hosting (2025–2027)
 
 - **Sandbox Deployment**: deploy and manage isolated Code Interpreters (`sandbox-sdk`) allowing AI Agents to run Python/Pandas securely without exposing host infrastructure or raw PII to third-party endpoints
 - **MCP Hosting**: setup and host Model Context Protocol (MCP) servers securely (`configure-mcp`), establishing the authentication boundaries between Agent workflows and internal APIs; target the **MCP 2026-07-28 stateless protocol core** (no session/handshake) so servers are horizontally scalable behind a load balancer, and adopt the hardened authorization model (OAuth Resource Server + RFC 8707; Enterprise-Managed Authorization for centralized SSO across servers); maintain **registry allowlist** as architectural policy — all production MCP dependencies from vetted sources with publisher identity, behavioral analysis, and version pinning; every MCP server in SBOM with SCA scrutiny
@@ -294,7 +303,19 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
-- **K8S-DEV-DEBUG LOCK**: in Kubernetes dev environments, always enforce kubectl context set to dev; port-forwarding must use PID tracking with graceful signal cleanup (`pkill -P`) to prevent port collisions; application logs must emit structured JSON with OpenTelemetry `trace_id` for request tracking; never hard-code credentials in manifests or pods; use ephemeral debug containers (netshoot) and pprof profiling for in-cluster bottleneck diagnosis.
+- **GITOPS LOCK**: do not make manual infrastructure changes in production; all state changes must be committed to source control first and applied via automated ArgoCD v2.12+ Server-Side Apply (SSA) or Crossplane v1.16+ Compositions; multi-cluster deployments must use ApplicationSets with matrix generators and explicit `ignoreDifferences` to prevent reconciliation storms; OpenTofu v1.8+ state must be client-side encrypted (AES-GCM / AWS KMS) before remote storage.
+- **AI-DEPLOY LOCK**: do not promote a new model version to production without shadow testing, a canary rollout plan, automatic rollback triggers (latency P99, output quality score), and model-specific monitoring deployed; model deployments are engineering artifacts, not ad-hoc scripts.
+- **SUPPLY-CHAIN LOCK**: do not allow CI/CD pipelines to deploy unsigned or unattested container images or use mutable tags for third-party actions/tools; all external dependencies must be pinned to immutable commit SHAs; builds must generate Syft SPDX 2.3 / CycloneDX 1.6 SBOMs and achieve SLSA Level 3+ provenance; images must be signed keylessly via Sigstore Cosign with Rekor transparency log proof; admission controllers (Kyverno) must enforce fail-closed mode (`failurePolicy: Fail`, `validationFailureAction: Enforce`) blocking pod creation for unverified images.
+- **IDP-GOLDEN-PATH LOCK**: do not provision new infrastructure resource types manually for individual teams; all new resource types must be exposed as self-service Golden Path templates (Backstage v1.30+ dynamic plugins, Score YAML declarative workload intent, Kratix Promises, Radius Recipes) before team-wide adoption; ad-hoc provisioning creates ungoverned drift and maintenance debt.
+- **AI-REMEDIATION LOCK**: do not deploy AI auto-remediation agents with unrestricted action scope; all agent-executable actions must be enumerated and risk-tiered at deploy time (low/medium/high/irreversible); high-risk actions require explicit human approval; irreversible actions are permanently blocked from autonomous execution; every AI remediation action must emit an audit-grade log entry with model version, prompt version, input, action, and result for NIST AI RMF compliance.
+- **AI-FINOPS LOCK**: do not deploy AI inference workloads without mandatory cost attribution tags ("team-id", "service-name", "budget-tier"); all LLM calls must route through the centralized LLM Gateway; direct provider API calls from application code are a policy violation that creates ungoverned cost exposure; self-hosted GPU workloads must carry cost-center labels for OpenCost DCGM attribution.
+- **DURABLE-DEPLOY LOCK**: do not deploy Temporal worker or Cloudflare Workflow code changes without verifying in-flight workflow executions will not be broken by the new code version; durable workflows require an explicit versioning strategy (`workflow.GetVersion()` / `workflow.patched()`, feature flags, and version branching), not naive blue/green deploys; never remove a workflow version branch while active executions remain.
+- **MCP-STATELESS LOCK**: do not host MCP servers with stateful session assumptions; MCP 2026-07-28 spec makes protocol core stateless — use HTTP transport with externalized state; enforce OAuth Resource Server + RFC 8707 auth with Enterprise-Managed Authorization for SSO; maintain registry allowlist with publisher identity, behavioral analysis, and version pinning; all MCP servers must be included in SBOM with SCA scrutiny.
+- **LLM-GATEWAY LOCK**: do not allow any internal LLM call to bypass the centralized LLM Gateway (LiteLLM, Portkey); direct provider API calls from application code are a strict policy violation creating ungoverned cost, unmonitored tokens, and bypassing failover fallbacks and rate limits.
+- **K8S-DEV-DEBUG LOCK**: in Kubernetes dev environments, always verify and enforce kubectl context is set to dev; port-forwarding must use collision detection (`lsof -i :<port>`), PID tracking (`/tmp/k8s-pf-*.pid`), and graceful signal traps (`trap 'kill $(cat /tmp/k8s-pf-*.pid)' EXIT INT TERM`) to prevent zombie listeners; application logs must emit structured JSON with OpenTelemetry `trace_id` and `span_id` (e.g., Go Kratos SlogLogger); use ephemeral debug containers (`nicolaka/netshoot:v0.13`) with shared process namespaces and Go `net/http/pprof` profiling on `:6060` (mutex/CPU profiles capped at 30s) for non-invasive in-cluster diagnosis.
+- **SIDECARLESS-MESH LOCK**: do not deploy traditional intrusive sidecar proxies in Kubernetes pods when sidecarless mesh (Cilium eBPF / Istio Ambient ztunnel L4 via HBONE + on-demand Waypoint L7 Envoy) is active; sidecarless mesh eliminates 60–80% CPU/memory proxy overhead; enforce L4 mTLS at host kernel layer; clamp Geneve overlay MTU to 1450 bytes with TCP MSS clamping (`bpf.clamp-mss: true`) and explicitly exclude port 15008 from outbound traffic redirection to prevent kernel packet encapsulation loops.
+- **KERNEL-SECURITY LOCK**: do not deploy runtime security sensors with unbounded or unscoped syscall tracing; Cilium Tetragon `TracingPolicy` must strictly filter by binary (`matchBinaryNames`) and namespace, never attaching generic unscoped kprobes to high-volume IO syscalls (`sys_enter_read`, `sys_enter_write`); runtime enforcement must execute synchronous in-kernel `Sigkill` on unauthorized execution (`sys_execve`) or root privilege escalation in production pods; worker nodes must enforce Linux kernel >= 5.15 LTS with BTF enabled and allocate >= 32MB BPF ring buffer.
+- **GPU-SLICING LOCK**: do not deploy multi-tenant AI inference workloads on unpartitioned shared GPUs; multi-tenant workloads must enforce hardware partitioning via NVIDIA MIG (`3g.40gb`) or Kubernetes 1.31+ Dynamic Resource Allocation (DRA) with CEL device selectors; vLLM inference deployments must cap --gpu-memory-utilization at 0.88–0.90 to preserve VRAM headroom for dynamic activations and enable PagedAttention chunked prefill; autoscaling must be driven by queue depth (`vllm_num_requests_waiting_per_pod`), never solely by compute utilization (`DCGM_FI_DEV_GPU_UTIL`); all AI pods must mount high-speed tmpfs on `/dev/shm` (>=16GiB).
 - **ADMISSION-FAIL-CLOSE LOCK**: never configure Kubernetes admission controllers (Kyverno, Gatekeeper) with fail-open mode on production workloads; admission policies must enforce `failurePolicy: Fail` and require Cosign cryptographic signature verification, Rekor transparency log validation, and valid SPDX SBOM attestations before pod creation.
 - **GPU-ACCELERATION-GOVERNANCE LOCK**: do not deploy AI/LLM workloads on Kubernetes without explicit GPU resource isolation (NVIDIA MIG or K8s 1.31+ DRA) and memory sizing (`/dev/shm` tmpfs); all inference deployments must configure HPA driven by custom queue depth metrics (`vllm_num_requests_waiting_per_pod`) and carry mandatory cost-center labels for OpenCost DCGM attribution.
 - do not patch live systems without updating source of truth
@@ -302,15 +323,6 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - do not treat a green pipeline as full runtime proof
 - do not run risky rollout steps without explicit health, rollback, and ownership expectations
 - do not change deployment order, cache behavior, or data steps without checking affected services
-- **GITOPS LOCK**: do not make manual infrastructure changes in production; all state changes must be committed to source control first and applied via the automated pipeline; manual changes that are not immediately committed become undocumented drift
-- **AI-DEPLOY LOCK**: do not promote a new model version to production without shadow testing, a canary rollout plan, automatic rollback triggers, and model-specific monitoring deployed; model deployments are not "just a config change"
-- **SUPPLY-CHAIN LOCK**: do not allow CI pipelines to use mutable tags for third-party actions or tools; pin all external dependencies to specific commit SHAs with SBOM generation; unverified dependencies are a supply chain attack surface
-- **IDP-GOLDEN-PATH LOCK**: do not provision new infrastructure resource types manually for individual teams; all new resource types must be exposed as self-service Golden Path templates before team-wide adoption; ad-hoc provisioning creates ungoverned drift and maintenance debt
-- **AI-REMEDIATION LOCK**: do not deploy AI auto-remediation agents with unrestricted action scope; all agent-executable actions must be enumerated and risk-tiered at deploy time; high-risk and irreversible actions always require explicit human approval; every AI action must produce an audit-grade log entry with model version, prompt version, input, action, and result
-- **AI-FINOPS LOCK**: do not deploy AI inference workloads without mandatory cost attribution tags ("team-id", "service-name", "budget-tier"); all LLM calls must route through the centralized LLM Gateway; direct provider API calls from application code are a policy violation that creates ungoverned cost exposure
-- **DURABLE-DEPLOY LOCK**: do not deploy Temporal or Cloudflare Workflow code changes without verifying in-flight workflow executions will not be broken by the new code version; durable workflows require a versioning strategy (feature flags + version branching), not just blue/green deploys
-- **MCP-STATELESS LOCK**: do not host MCP servers with stateful session assumptions; MCP 2026-07-28 spec makes protocol core stateless — use HTTP transport with externalized state; maintain registry allowlist with publisher identity, behavioral analysis, version pinning; all MCP servers in SBOM
-- **LLM-GATEWAY LOCK**: do not allow any internal LLM call to bypass the centralized LLM Gateway; direct provider API calls are a policy violation creating ungoverned cost and no token budgeting
 
 ## Skill Toolbox
 
@@ -500,14 +512,17 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 
 ## Failure Modes
 
+- **GitOps Reconciliation Storms (5,000 Apps)**: ArgoCD application-controller workqueue saturated under concurrent multi-cluster syncs, triggering Kubernetes API Priority and Fairness (APF) request dropping. **Mitigation:** Deploy controller dynamic sharding ("consistent-hashing") across >= 3 replicas, tune client-go to `QPS=300` and `Burst=600`, mount argocd-repo-server on tmpfs with 24h commit-SHA caching (`ARGOCD_REPO_CACHE_EXPIRATION="24h"`), enable gzip compression in Redis HA, and configure progressive sync waves in ApplicationSets with explicit `ignoreDifferences`.
+- **Service Mesh eBPF Kernel Routing Loops & Path MTU Drops**: Geneve overlay adds 50B encapsulation header, dropping packets > 1,450B due to Don't Fragment (DF) flags; ambient ztunnel intercepts port 15008 in infinite encapsulation loop. **Mitigation:** Explicitly clamp TCP MSS (`bpf.clamp-mss: true`), configure MTU to 1,450 bytes for Geneve in Cilium, allocate dynamic BPF connection tracking maps (>= 524,288 entries), and exclude HBONE port 15008 from outbound ambient redirection (`ISTIO_INBOUND_PORTS: "*,!15008,!15021"`).
+- **Tail-Based Sampling OOM in OpenTelemetry Collector**: Collector gateway pods terminated with cgroup `OOMKilled` (exit code 137) because `memory_limiter` processor was declared AFTER `tail_sampling`, causing 45s decision wait to buffer millions of spans in RAM without load shedding. **Mitigation:** Declare `memory_limiter` as the absolute FIRST processor in every trace pipeline, configure `limit_percentage: 75` and `spike_limit_percentage: 15` relative to container cgroup memory limits, cap `decision_wait` at 5s–10s, and deploy a stateless routing tier with loadbalancingexporter hashing on `trace_id`.
+- **Tetragon Sensor Overload & BPF Verifier Rejection**: Generic unindexed kprobes attached to high-volume I/O syscalls (`sys_enter_read`, `sys_enter_write`) saturate kernel ring buffer and drop security events; older Linux 5.4 kernels hit 4,096 instruction limits. **Mitigation:** Strictly filter `TracingPolicy` by `matchBinaryNames` and namespace, never hook raw I/O syscalls unscoped, enforce worker node kernel >= 5.15 LTS with BPF Type Format (BTF) enabled, allocate >= 32MB BPF ring buffer (`bpf.mapSizes.ringBuffer: 33554432`), and pre-verify policies with `tetra tracingpolicy generate`.
+- **Silent GPU Underutilization & KV-Cache Fragmentation in LLM Serving**: Transformer inference spends cycles memory-bandwidth bound while Tensor Cores appear idle; HPA scales on raw compute (`DCGM_FI_DEV_GPU_UTIL=38%`) and fails to detect queue saturation; setting --gpu-memory-utilization 0.95 causes unrecoverable CUDA OOM crashes during batch spikes. **Mitigation:** Cap --gpu-memory-utilization at 0.88–0.90 to preserve headroom for PyTorch dynamic activations and NCCL buffers, enable chunked prefill and prefix caching, autoscale HPA via custom queue-depth metric `vllm_num_requests_waiting_per_pod` (target: 5), partition hardware via NVIDIA MIG `3g.40gb`, and mount 16GiB+ tmpfs on `/dev/shm`.
+- **Kyverno Webhook Fail-Open Exploit**: Admission webhook configured with `failurePolicy: Ignore` degrades during controller restart, allowing an attacker to deploy an unsigned, malicious hotfix image directly to production without signature or SBOM verification. **Mitigation:** Enforce `failurePolicy: Fail` and `validationFailureAction: Enforce` across all critical production admission policies, deploy admission controllers across failure zones with >= 3 replicas, `PodDisruptionBudget` (`minAvailable: 2`), and `priorityClassName: system-cluster-critical`, and enable `mutateDigest: true`.
 - **Pipeline silently skips a stage**: a CI step is marked optional and bypasses the gate. **Mitigation:** enforce a hard gate (non-zero exit) on every required stage; reject pipelines that allow skip; surface the skip in the deploy record.
 - **Deploy without rollback verified**: a release ships but the rollback artifact is missing. **Mitigation:** verify the previous deployment ID is rollbackable before applying the new release; reject the deploy when the rollback path is not confirmed.
 - **Secret in pipeline config**: a token or key is committed to a CI variable file. **Mitigation:** use the platform secret store; run secret scanning in CI; rotate the affected credential on detection.
 - **Migration runs out of order**: a database migration is applied before the schema it depends on. **Mitigation:** enforce the migration order via a sequencing tool (Flyway, Liquibase, or Atlas); reject out-of-order migrations.
 - **Region failover not tested**: a multi-region deploy has never exercised the failover. **Mitigation:** schedule a quarterly failover drill; surface the drill result; reject production cutover without a recent passing drill.
-- **Kyverno Admission Fail-Open Bypass**: admission webhook degrades and allows unsigned/unattested images to run in production. **Mitigation:** enforce `failurePolicy: Fail` on all critical validation webhooks; alert immediately on webhook latency spikes.
-- **GitOps Reconciliation Storm**: thousands of resources simultaneously re-syncing saturate Kubernetes API server. **Mitigation:** configure `ApplicationSet` progressive syncs, set proper sync windows, and tune ArgoCD controller reconciler parallelism.
-- **GPU Slicing Memory OOM Cascade**: multiple processes sharing GPU via time-slicing exceed VRAM, causing vLLM KV cache eviction storms. **Mitigation:** enforce hard GPU memory isolation via NVIDIA MIG or K8s 1.31+ DRA; configure HPA on queue depth.
 
 ## Anti-Patterns To Reject
 
@@ -520,14 +535,18 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - **running kubectl commands against unverified contexts** — always verify active context is scoped to dev before executing debug commands
 - **leaving unmanaged background `kubectl port-forward` processes** — creates port collisions and zombie listeners; use PID-tracked signal traps
 - **logging plain text instead of structured JSON with `trace_id`** — breaks distributed request tracing and makes production debugging impossible
-- **configuring admission webhooks in fail-open mode** — allows malicious or unverified images to bypass supply chain security controls under cluster load
-- **deploying AI GPU inference workloads without explicit hardware isolation** — unpartitioned GPUs lead to silent memory thrashing and latency spikes
-- **provisioning infrastructure ad-hoc for individual teams** — creates ungoverned drift and defeats the purpose of Platform Engineering; build a Golden Path instead
+- **configuring admission webhooks in fail-open mode (`failurePolicy: Ignore`)** — allows malicious or unverified images to bypass supply chain security controls under cluster load
+- **deploying AI GPU inference workloads without explicit hardware isolation (MIG/DRA)** — unpartitioned GPUs lead to silent memory thrashing, CUDA OOM cascades, and latency spikes
+- **autoscaling LLM inference on raw GPU compute utilization (`DCGM_FI_DEV_GPU_UTIL`)** — transformer memory-bandwidth stalls mask queue saturation; autoscale on request queue depth instead
+- **deploying intrusive sidecar proxies when sidecarless eBPF mesh is available** — imposes 60–80% CPU/RAM tax and forces container restarts during mesh upgrades
+- **placing `memory_limiter` after `tail_sampling` in OTel Collector pipelines** — buffers spans in RAM before shedding load, leading to cgroup OOMKilled crashes
+- **attaching unscoped kernel kprobes to high-volume IO syscalls (`sys_enter_read`, `sys_enter_write`)** — saturates BPF ring buffers and degrades kernel performance
+- **provisioning infrastructure ad-hoc for individual teams instead of Golden Paths** — creates ungoverned drift and defeats Platform Engineering; build a Golden Path instead
 - **deploying AI remediation agents without a declared action inventory** — agents with undefined action scope are a compliance and safety violation under NIST AI RMF and EU AI Act
 - **deploying AI inference services without LLM Gateway routing** — direct provider calls create ungoverned cost exposure that accumulates silently until invoice review
-- **deploying Temporal/CF Workflow code without in-flight execution compatibility check** — breaking in-flight executions causes data loss and requires manual recovery that is not always possible
-- **hosting MCP servers with stateful session assumptions** — violates MCP 2026-07-28 stateless core; creates hidden availability constraints
-- **allowing direct provider API calls** — bypasses LLM Gateway token budgets, cost attribution, and failover
+- **deploying Temporal/CF Workflow code without in-flight execution compatibility checks** — breaking in-flight executions causes data loss and requires manual recovery that is not always possible
+- **hosting MCP servers with stateful session assumptions** — violates MCP 2026-07-28 stateless core; creates hidden horizontal scaling and availability constraints
+- **allowing direct provider API calls** — bypasses LLM Gateway token budgets, cost attribution, rate limiting, and failover fallbacks
 
 ## Role Handoff
 
@@ -544,21 +563,22 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 
 ## Definition Of Done
 
-- automation is repeatable
-- deployment config matches application needs
-- `contracts/schemas/deployment-plan.json`
-- rollback path exists
+- automation is repeatable and matches application needs
+- `contracts/schemas/deployment-plan.json` emitted with required fields
+- rollback path exists and is verified
 - runtime visibility and rollout impact are understood
-- **Kubernetes Dev Debugging compliance**: kubectl context verified as dev; port-forward scripts PID-trapped; structured JSON logs with `trace_id` confirmed; pprof endpoints functional
-- **GitOps compliance**: all infrastructure changes committed to source control; ArgoCD ApplicationSets and drift detection configured
-- **Progressive Delivery verified**: Argo Rollouts Canary configured with automated MetricAnalysis (P99 latency, 5xx error thresholds)
+- **Kubernetes Dev Debugging compliance**: kubectl context verified as dev; port-forward scripts PID-trapped with lsof collision checks; structured JSON logs with OpenTelemetry `trace_id` and `span_id` confirmed; ephemeral debug containers (`netshoot:v0.13`) and diagnostic pprof endpoints (`:6060` mutex/CPU profiles) functional
+- **GitOps compliance**: all infrastructure changes committed to source control; ArgoCD ApplicationSets with matrix generators, SSA (`ServerSideApply=true`), and drift detection configured; OpenTofu v1.8+ state client-side encrypted via AES-GCM / KMS before remote storage; External Secrets Operator synchronized with Vault / AWS SM via IRSA
+- **Progressive Delivery verified**: Argo Rollouts Canary configured with step-based traffic shifting and automated MetricAnalysis (P99 latency < 250ms, 5xx error thresholds < 1.0%); PromQL empty vector coalescing (`or on() vector(0)`) verified to prevent false rollbacks under zero-traffic conditions
+- **Sidecarless Service Mesh verified**: Cilium eBPF or Istio Ambient ztunnel L4 mTLS active; MTU clamped to 1450 bytes with TCP MSS clamping (`bpf.clamp-mss: true`); port 15008 excluded from outbound redirection to prevent kernel packet encapsulation loops
+- **Deep Observability & Kernel Security verified**: OpenTelemetry Collector deployed with `memory_limiter` as the absolute first processor (75% limit, 15% spike); tail-based sampling configured; Tetragon `TracingPolicy` hooks enforced with synchronous in-kernel `Sigkill` on unauthorized execution (`sys_execve`) and >=32MB ring buffer allocated
 - **AI/ML deployment complete** (when model deployed): shadow testing run, canary rollout plan defined, automatic rollback triggers configured, model monitoring deployed
-- **Cloud-Native AI & GPU Infrastructure verified** (when AI inference deployed): KubeRay / vLLM manifests configured with MIG/DRA GPU slicing, 16GiB+ tmpfs, queue-depth HPA, and OpenCost DCGM labels
-- **Supply chain security complete**: SBOM generated (SPDX 2.3 / CycloneDX 1.6); container images signed keylessly via Cosign; Kyverno fail-closed admission policies enforced
-- **Platform Engineering**: Golden Path used or created for new resource types; IDP catalog updated
+- **Cloud-Native AI & GPU Infrastructure verified** (when AI inference deployed): KubeRay / vLLM manifests configured with MIG `3g.40gb` or K8s 1.31+ DRA GPU slicing, 16GiB+ tmpfs on `/dev/shm`, --gpu-memory-utilization <= 0.90, chunked prefill and prefix caching enabled, queue-depth HPA (`vllm_num_requests_waiting_per_pod`), and OpenCost DCGM labels
+- **Supply chain security complete**: Syft SPDX 2.3 / CycloneDX 1.6 SBOM generated; third-party CI actions pinned to immutable commit SHAs; container images signed keylessly via Cosign with Rekor proof; Kyverno fail-closed admission policies (`failurePolicy: Fail`, `validationFailureAction: Enforce`, `mutateDigest: true`) enforced; distroless Wolfi/Chainguard base images used
+- **Platform Engineering**: Golden Path used or created for new resource types; IDP service catalog updated (Backstage v1.30+ dynamic plugins / Score YAML)
 - **AI FinOps** (when AI inference deployed): LLM Gateway routing confirmed; cost attribution tags validated; GPU namespace labels and quota configured; Value-Per-Token scorecards published
 - **AI Incident Response** (when AI remediation agents deployed): action inventory declared + risk-tiered; HITL gates configured; audit logging enabled; kill switch operational
 - **Durable Workflow** (when Temporal/CF Workflows deployed): versioning strategy defined; in-flight compatibility verified; step observability configured
 - **MCP Hosting** (when MCP servers deployed): stateless HTTP transport; OAuth Resource Server auth; registry allowlist enforced; all in SBOM
 
-Last updated: 2026-09-16
+Last updated: 2026-10-04

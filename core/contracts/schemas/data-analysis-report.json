@@ -157,6 +157,7 @@
             "enum": [
               "duckdb",
               "polars",
+              "chdb",
               "dbt_semantic_layer",
               "lakehouse_engine",
               "sql_database",
@@ -244,6 +245,8 @@
             "difference_in_differences",
             "synthetic_control",
             "propensity_score_matching",
+            "double_machine_learning",
+            "regression_discontinuity",
             "observational_none"
           ]
         },
@@ -291,6 +294,106 @@
     "ai_hallucination_disclaimer": {
       "type": "boolean",
       "description": "True if the data analysis involved AI data extraction and includes a verifiable confidence interval."
+    },
+    "query_finops_cost": {
+      "type": "object",
+      "description": "Agent query cost tracking as FinOps line item.",
+      "properties": {
+        "token_usage": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "compute_time_seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "scanned_bytes_gb": {
+          "type": "number",
+          "minimum": 0
+        },
+        "estimated_cost_usd": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "table_of_evidence": {
+      "type": "array",
+      "description": "Two-column Table of Evidence strictly separating empirical facts from narrative interpretations.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "empirical_observation": {
+            "type": "string"
+          },
+          "analytical_interpretation": {
+            "type": "string"
+          },
+          "confidence_level": {
+            "type": "string",
+            "enum": [
+              "High",
+              "Medium",
+              "Low"
+            ]
+          }
+        },
+        "required": [
+          "empirical_observation",
+          "analytical_interpretation"
+        ]
+      }
+    },
+    "srm_precheck": {
+      "type": "object",
+      "description": "Pearson's Chi-squared Sample Ratio Mismatch (SRM) evaluation.",
+      "properties": {
+        "sample_ratio_mismatch_detected": {
+          "type": "boolean"
+        },
+        "chi_squared_statistic": {
+          "type": "number",
+          "minimum": 0
+        },
+        "p_value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PASSED",
+            "ABORTED"
+          ]
+        }
+      },
+      "required": [
+        "sample_ratio_mismatch_detected",
+        "chi_squared_statistic",
+        "p_value",
+        "status"
+      ]
+    },
+    "dowhy_refutations": {
+      "type": "object",
+      "description": "DoWhy 3-way robustness refutation test outcomes.",
+      "properties": {
+        "placebo_treatment_passed": {
+          "type": "boolean"
+        },
+        "random_common_cause_passed": {
+          "type": "boolean"
+        },
+        "data_subset_passed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "placebo_treatment_passed",
+        "random_common_cause_passed",
+        "data_subset_passed"
+      ]
     }
   },
   "required": [

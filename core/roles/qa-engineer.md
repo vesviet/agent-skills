@@ -564,4 +564,4 @@ See [`references/qa-engineer-review-checklist.md`](references/qa-engineer-review
 - `contracts/schemas/test-report.json` emitted with full execution and trace evidence
 - `contracts/schemas/validation-result.json` emitted for release gating
 
-Last updated: 2026-09-18
+Last updated: 2026-10-04

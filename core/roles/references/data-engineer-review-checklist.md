@@ -10,13 +10,15 @@ This reference checklist provides detailed engineering, lakehouse architecture, 
 - **Executable Quality Assertions**: Data contracts define unambiguous quality assertions (null rate ceilings, uniqueness constraints, value range checks, foreign key referential integrity) executed automatically during pipeline runs.
 - **Contract Ownership & Lineage**: Every dataset declares explicit producer and consumer owners, SLA tier, and upstream/downstream lineage graphs.
 
-### 2. Modern Lakehouse Architecture (Iceberg v3 & Delta Lake)
-- **Table Format Standardization**: Lakehouse tables adopt Apache Iceberg v3 or Delta Lake formats, eliminating proprietary storage lock-in and unversioned file directories.
+### 2. Modern Lakehouse Architecture (Iceberg v4/v3 & Delta Lake UniForm)
+- **Table Format Standardization**: Lakehouse tables adopt Apache Iceberg v4 (metadata-only restructuring; never data rewrites for schema/partition evolution), Iceberg v3, or Delta Lake 4.0 UniForm formats, eliminating proprietary storage lock-in and unversioned file directories.
 - **Row-Level Delete Optimization**: Iceberg v3 hardware-accelerated Deletion Vectors (DVs) encoded in Puffin RoaringBitmap format are deployed for all row-level mutations (<3% read amplification), deprecating legacy positional and equality deletes.
-- **Partition Evolution Without Rewrites**: Partition schemes evolve dynamically (e.g., migrating from daily to hourly partitioning) using Iceberg metadata evolution without requiring multi-terabyte historical data rewrites.
-- **REST Catalog Federation**: Catalog access is standardized via REST Catalog specifications (Polaris, Unity Catalog) ensuring consistent ACID transactions across heterogeneous compute engines (Spark, Trino, DuckDB).
+- **Variant as Canonical Semi-Structured Path**: Semi-structured JSON payloads utilize the `VARIANT` type, eliminating string blob anti-patterns and enabling pushdown predicate evaluation on nested fields.
+- **Partition Evolution Without Rewrites**: Partition schemes evolve dynamically (e.g., migrating from daily to hourly partitioning) using integer `spec_id` metadata evolution without requiring multi-terabyte historical data rewrites.
+- **S3 Object Storage Prefix Hashing**: High-throughput ingestion tables enforce `write.object-storage.enabled = true` to scatter Parquet data across randomized hash prefixes, preventing AWS S3 503 Slow Down request throttling.
+- **REST Catalog Federation & Protocol**: Catalog access is standardized via REST Catalog specifications (Polaris, Unity Catalog OSS, Lakekeeper) supporting scan planning, ETag freshness validation, Idempotency-Key commits, and dynamic short-lived STS credential vending.
 - **Automated Table Lifecycle Maintenance**: Scheduled maintenance procedures automate small-file compaction (`rewrite_data_files`), historical snapshot expiration, and orphan file vacuuming to maintain query performance and prune obsolete storage.
-- **Multi-Dimensional Clustering**: High-cardinality filter columns and access keys utilize Z-order or Hilbert curve clustering to optimize data layout for partition pruning and file skipping.
+- **Multi-Dimensional Clustering**: High-cardinality filter columns and access keys utilize Z-order, Hilbert curve, or Liquid Clustering to optimize data layout for partition pruning and file skipping.
 
 ### 3. Idempotency, Deterministic Upsert MERGE & WAP Protocol
 - **Deterministic Upsert MERGE Semantics**: All table updates utilize atomic SQL `MERGE` statements keyed on natural business keys (`MERGE INTO target USING source ON target.id = source.id ...`), completely eliminating blind appends and duplicate records.
@@ -48,6 +50,7 @@ This reference checklist provides detailed engineering, lakehouse architecture, 
 
 ### 7. Zero-Trust Governance & OWASP ASI Compliance
 - **Non-Human Identity (NHI) Least-Privilege**: Automated pipeline runners, orchestrators, and ETL services authenticate via dedicated, short-lived service principals with least-privilege scoping; shared superuser accounts are strictly prohibited.
+- **Native Table Encryption (KMS)**: Mandate AES-256 encryption at rest via cloud KMS (AWS KMS, GCP CMEK, Azure Key Vault) for all production Iceberg and Delta Lake tables, managing encryption keys through catalog-integrated key governance.
 - **Column-Level & Row-Level Security**: Sensitive attributes and tenant-specific rows are restricted via Column-Level Security (CLS) and Row-Level Security (RLS) policies at the catalog layer.
 - **Dynamic Data Masking (DDM)**: PII, confidential attributes, and customer credentials are dynamically masked for non-privileged roles and staging environments per `data-classification.yaml`.
 - **OWASP ASI03 Privilege Escalation Defense**: Lakehouse query engines and agent-facing MCP interfaces enforce strict permission boundaries preventing agents from escalating privileges or escaping analytical sandboxes.
@@ -67,3 +70,8 @@ This reference checklist provides detailed engineering, lakehouse architecture, 
 - **MinMax Data Skipping & Dictionary Join Acceleration**: Secondary data skipping indexes (`minmax`, `set`, `bloom_filter`) are configured on non-primary filter columns, and low-cardinality categorical dimensions (< 10,000 unique values) are encoded using dictionary compression (`LowCardinality(String)`) to accelerate joins and predicate evaluations.
 - **Automated Partition TTL Lifecycle Policies**: Automated table TTL policies are configured at the partition and column level (e.g., `TTL event_date + INTERVAL 90 DAY DELETE`, `INTERVAL 30 DAY TO VOLUME cold_storage`) to enforce deterministic data lifecycle tiering without manual cron-based deletion scripts.
 - **Query Plan Profiling & Bottleneck Diagnosis**: Query execution plans are profiled using `EXPLAIN PIPELINE` and `EXPLAIN ESTIMATE` to identify bottlenecks: unpruned granules, suboptimal join algorithms, thread contention, and excessive memory allocations, asserting that index analysis prunes > 95% of irrelevant granules on filtered queries.
+
+### 10. OpenLineage & End-to-End Pipeline Traceability
+- **Column-Level Lineage Emission**: Automated pipeline tasks emit standard OpenLineage run and dataset facets across extraction, transformation, and load stages to maintain end-to-end provenance graphs.
+- **Catalog Lineage Integration**: OpenLineage events are integrated with open REST Catalogs (Apache Polaris, Unity Catalog OSS) for automated visual graph rendering and impact analysis.
+- **Upstream Deprecation & Impact Gating**: Upstream schema modifications and producer deprecations require automated impact analysis against registered downstream OpenLineage consumer nodes prior to production rollout.

@@ -38,7 +38,8 @@
         "delta_lake",
         "parquet",
         "duckdb",
-        "postgres"
+        "postgres",
+        "clickhouse"
       ]
     },
     "storage_location": {
@@ -240,6 +241,92 @@
           "minimum": 1
         },
         "auto_recovery_enabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "table_properties": {
+      "type": "object",
+      "description": "Lakehouse and OLAP engine storage table properties.",
+      "properties": {
+        "object_storage_enabled": {
+          "type": "boolean",
+          "description": "Enforce S3 prefix hashing (write.object-storage.enabled)."
+        },
+        "deletion_vectors_enabled": {
+          "type": "boolean",
+          "description": "Puffin RoaringBitmap deletion vectors."
+        },
+        "spec_id": {
+          "type": "integer",
+          "description": "Partition evolution specification ID."
+        },
+        "variant_columns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Semi-structured columns using Variant type."
+        },
+        "index_granularity": {
+          "type": "integer",
+          "description": "ClickHouse primary index granularity (default 8192)."
+        }
+      }
+    },
+    "encryption_config": {
+      "type": "object",
+      "description": "Native table encryption at rest (KMS).",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "kms_provider": {
+          "type": "string",
+          "enum": [
+            "aws_kms",
+            "gcp_cmek",
+            "azure_key_vault",
+            "vault"
+          ]
+        },
+        "kms_key_arn": {
+          "type": "string"
+        },
+        "algorithm": {
+          "type": "string"
+        }
+      }
+    },
+    "rest_catalog_config": {
+      "type": "object",
+      "description": "Iceberg REST Catalog integration parameters.",
+      "properties": {
+        "catalog_type": {
+          "type": "string",
+          "enum": [
+            "apache_polaris",
+            "unity_catalog",
+            "lakekeeper",
+            "custom_rest"
+          ]
+        },
+        "catalog_uri": {
+          "type": "string"
+        },
+        "credential_vending_enabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "lineage_config": {
+      "type": "object",
+      "description": "OpenLineage explicit lineage instrumentation.",
+      "properties": {
+        "openlineage_namespace": {
+          "type": "string"
+        },
+        "emit_column_lineage": {
           "type": "boolean"
         }
       }
