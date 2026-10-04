@@ -69,7 +69,6 @@
         "role": "worker",
         "parts": [
           {
-            "kind": "text",
             "text": "Modified NewLogicAutoAssign.php; writing unit tests"
           }
         ]

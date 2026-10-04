@@ -136,7 +136,6 @@
           "role": "delegator",
           "parts": [
             {
-              "kind": "text",
               "text": "Implement COD store routing in NewLogicAutoAssign.php per slice-01 of technical-delivery-plan 2026-06-12-change-store-order-cod"
             }
           ]

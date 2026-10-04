@@ -82,7 +82,6 @@
           "timestamp": "2026-06-12T11:30:00Z",
           "parts": [
             {
-              "kind": "text",
               "text": "slice-01-command-logic completed. implementation-result.json emitted. 2 files changed. Tests passing."
             }
           ]

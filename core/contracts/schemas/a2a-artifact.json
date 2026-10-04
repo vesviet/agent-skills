@@ -36,6 +36,24 @@
       "items": {
         "type": "object",
         "properties": {
+          "text": {
+            "type": "string",
+            "description": "Textual content of the part."
+          },
+          "data": {
+            "type": "object",
+            "description": "Structured JSON data payload.",
+            "additionalProperties": true
+          },
+          "file": {
+            "type": "object",
+            "description": "File payload or metadata object.",
+            "additionalProperties": true
+          },
+          "file_ref": {
+            "type": "string",
+            "description": "URI or relative path reference to file content."
+          },
           "kind": {
             "type": "string",
             "enum": [
@@ -43,24 +61,39 @@
               "file",
               "data",
               "json"
-            ]
+            ],
+            "description": "Legacy discriminator from A2A v0.x (optional for backwards compatibility; v1.0 discriminates by member presence)."
           },
-          "text": {
-            "type": "string"
-          },
-          "data": {
+          "metadata": {
             "type": "object",
+            "description": "Optional part-level metadata or annotations.",
             "additionalProperties": true
-          },
-          "file_ref": {
-            "type": "string"
           }
         },
-        "required": [
-          "kind"
+        "anyOf": [
+          {
+            "required": [
+              "text"
+            ]
+          },
+          {
+            "required": [
+              "data"
+            ]
+          },
+          {
+            "required": [
+              "file"
+            ]
+          },
+          {
+            "required": [
+              "file_ref"
+            ]
+          }
         ]
       },
-      "description": "A2A multimodal artifact parts."
+      "description": "A2A multimodal artifact parts (A2A v1.0 unified Part model discriminated by member presence)."
     },
     "result": {
       "type": "object",
@@ -127,7 +160,6 @@
       "status": "completed",
       "parts": [
         {
-          "kind": "text",
           "text": "{\"contract_type\":\"implementation-result\",\"slice_id\":\"slice-01-command-logic\",...}"
         }
       ],

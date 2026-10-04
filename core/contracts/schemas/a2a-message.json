@@ -24,9 +24,28 @@
     },
     "parts": {
       "type": "array",
+      "description": "A2A multimodal message parts (A2A v1.0 unified Part model discriminated by member presence).",
       "items": {
         "type": "object",
         "properties": {
+          "text": {
+            "type": "string",
+            "description": "Textual content of the part."
+          },
+          "data": {
+            "type": "object",
+            "description": "Structured JSON data payload.",
+            "additionalProperties": true
+          },
+          "file": {
+            "type": "object",
+            "description": "File payload or metadata object.",
+            "additionalProperties": true
+          },
+          "file_ref": {
+            "type": "string",
+            "description": "URI or relative path reference to file content."
+          },
           "kind": {
             "type": "string",
             "enum": [
@@ -34,21 +53,36 @@
               "file",
               "data",
               "json"
-            ]
+            ],
+            "description": "Legacy discriminator from A2A v0.x (optional for backwards compatibility; v1.0 discriminates by member presence)."
           },
-          "text": {
-            "type": "string"
-          },
-          "data": {
+          "metadata": {
             "type": "object",
+            "description": "Optional part-level metadata or annotations.",
             "additionalProperties": true
-          },
-          "file_ref": {
-            "type": "string"
           }
         },
-        "required": [
-          "kind"
+        "anyOf": [
+          {
+            "required": [
+              "text"
+            ]
+          },
+          {
+            "required": [
+              "data"
+            ]
+          },
+          {
+            "required": [
+              "file"
+            ]
+          },
+          {
+            "required": [
+              "file_ref"
+            ]
+          }
         ]
       }
     }
@@ -65,7 +99,6 @@
       "timestamp": "2026-06-12T11:45:00Z",
       "parts": [
         {
-          "kind": "text",
           "text": "slice-01 completed. See implementation-result.json."
         }
       ]
