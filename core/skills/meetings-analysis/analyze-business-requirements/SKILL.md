@@ -6,167 +6,130 @@ allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_
 
 # Analyze Business Requirements
 
-Use this skill when business needs, bug behavior, or process expectations must be turned into clear, testable requirements.
+Use this skill when business needs, bug behavior, or process expectations must be turned into clear, testable, implementation-ready requirements.
 
 ## When to Use
 
-- a feature/policy change needs requirements
-- making actors, rules, state transitions explicit
-- defining testable acceptance criteria
-- capturing preserved behavior + downstream impact
-- **AI-assisted requirements with LLM-as-judge validation**
-- **Agentic acceptance criteria for AI agent delivery**
-- **EU AI Act chain-of-causality traceability**
+- a feature, workflow, or policy change needs structured requirements
+- making actors, business rules, and state transitions explicit
+- defining testable behavioral acceptance criteria (BDD / Gherkin)
+- capturing preserved behavior versus changed behavior
+- specifying probabilistic acceptance criteria and HITL escalation triggers for AI/LLM features
+- defining autonomy boundaries, MCP tool permissions, and kill-switches for agentic systems
+- preparing structured machine handoffs via `contracts/schemas/feature-ticket.json`
 
 ## Core Rules
 
-- write requirements as observable behavior, not implementation guesses
-- make actors, permissions, rules, and exceptions explicit
-- define preserved_behavior versus changed_behavior clearly
-- identify downstream teams, approvals, or systems affected by the change
-- populate `contracts/schemas/feature-ticket.json` when machine handoff is required
-- embed `analytics_request` or `seo_content_request` in the ticket when delegating
-- do not let ambiguous business intent pass through as an engineering problem
-- apply **Layered Requirements Pipeline**: Impact Mapping (Why/Who → actors, KPIs) → Event Storming (What/Flow → domain events) → User Story Mapping (How/Slices → vertical MVP)
-- every User Story must trace to Impact Map actor behavior AND Event Storming domain event
-- resolve Event Storming hot-spots before sprint backlog finalization
-- slice vertically only: each slice spans UI to database with end-to-end user value
-- **Epic-Organized Gherkin Pipeline** (arXiv:2607.01980): 4-step async LLM — relevance → requirements → epic/mind-map → Gherkin; JSON-constrained output
-- **LLM-as-Judge Validation** (DeepEval, RAGAS): Independent LLM evaluation for clarity, completeness, consistency
-- **Living Requirements Traceability**: AI tools (Trace.space, getleo.ai) link requirements → design → code → tests; mandatory for EU AI Act chain-of-causality
-- **Agentic AC Format**: Deterministic observable assertions for agent auto-validation
-- **Human BA Sign-Off Gate**: Mandatory for AI-assisted AC before sprint commitment
+- **Observable Behavior Over Implementation**: write requirements as observable system behavior and business outcomes; ban internal implementation guesses and GUI micro-actions
+- **The Layered Requirements Pipeline**: structure requirements refinement through 4 progressive stages:
+  1. *Impact Mapping* (Why/Who): map strategic goals to actors and measurable KPI metrics
+  2. *Event Storming* (What/Flow): model timeline-ordered Domain Events (past tense), Commands (imperative), and Aggregates
+  3. *Story Mapping* (How/Slices): slice releases vertically into Walking Skeletons spanning all architectural tiers
+  4. *Executable BDD*: specify Given/When/Then scenarios with stateful invariants and failure guarantees
+- **Enforce BDD Syntactic Precision**:
+  - *Single-Action Invariant*: the `When` step contains exactly ONE discrete action verb; chained actions are prohibited
+  - *Stateful Conservation Invariants*: postconditions (`Then`) assert system invariants (e.g. $\sum \text{Debits} \equiv \sum \text{Credits}$)
+  - *Explicit Failure Guarantees*: negative scenarios define system state when an exception occurs
+- **Boundary Value Analysis (BVA)**: partition input domains into valid/invalid equivalence classes; embed combinatorial pairwise decision tables
+- **AI Probabilistic Acceptance Criteria**: replace binary pass/fail with statistical confidence thresholds over sample windows ($N$ samples); define evaluation harnesses (LLM-as-Judge, golden benchmarks) and production degradation alerts
+- **HITL Escalation Matrix**: mandate trigger conditions, operational SLAs, responsible roles, and immutable audit logs for high-stakes AI decisions
+- **Agentic MCP Governance**: declare autonomy level (L1–L5, L3 ceiling), attenuated per-invocation tool permissions, forbidden zones, and emergency kill-switches
+- **Canonical Machine Handoff**: emit `contracts/schemas/feature-ticket.json` (Draft 2020-12) containing all domain blocks
+- Detailed patterns, math, and templates: [`references/layered-requirements-pipeline-and-bdd-standards.md`](references/layered-requirements-pipeline-and-bdd-standards.md)
 
 ## Suggested Process
 
-### 1. Frame The Business Problem
+### 1. Frame Business Problem & Actors
+Identify the business opportunity, customer pain, target actors, and intended measurable outcome. Clarify preserved behavior versus changed behavior.
 
-Clarify: process/rule under analysis, actors, expected outcome, restore vs new behavior.
+### 2. Map Domain Events & Aggregates (Event Storming)
+Model the business timeline using past-tense Domain Events (`OrderPlaced`, `PaymentSettled`), imperative Commands, and Aggregate invariant boundaries.
 
-### 2. Identify Rules And Exceptions
+### 3. Decompose into Vertical Slices (Walking Skeleton)
+Apply Elephant Carpentry patterns to carve out the thinnest viable end-to-end slice spanning UI, API, and persistence. Audit against INVEST criteria.
 
-Capture: business rules, approval/permission rules, edge cases, state transitions.
+### 4. Author Behavioral Acceptance Criteria (BDD / Gherkin)
+Write Given/When/Then scenarios enforcing the Single-Action Invariant, stateful conservation checks, and explicit failure guarantees. Embed BVA decision matrices.
 
-### 3. Trace Process Impact
+### 5. Formulate AI & Agentic Governance Envelopes
+If AI/LLM is in scope, specify probabilistic AC, evaluation judge, degradation triggers, and HITL escalation protocols. For agentic systems, catalog MCP tool permissions and kill-switches.
 
-Name affected: downstream teams/systems, compliance/audit, data/reporting, operational handoffs.
+### 6. Delegate Dependencies Before Lock
+- Unknown domain/policy: issue `research_request` $\to$ consume `research-report.json`
+- Numeric baselines: issue `analytics_request` $\to$ consume `data-analysis-report.json`
+- Search/content goals: issue `seo_content_request` $\to$ consume `seo-content-brief.json`
 
-### 4. Delegate Before Locking AC
-
-| Signal | Delegate to | Ticket field |
-| ------ | ------------- | ---------------------- |
-| Unknown domain, policy, market | Researcher | Research Request → research-report.json |
-| Metrics, baselines, funnel counts | Data Analyst | analytics_request → data-analysis-report.json |
-| Content discoverability, CTA, linking | SEO Analyst | seo_content_request → seo-content-brief.json |
-
-Do not lock metric/compliance-heavy AC until delegated artifacts return.
-
-### 5. Epic-Organized Gherkin Generation & Validation
-
-1. Relevance Classification (LLM #1): Detect requirement-relevant content
-2. Requirements Update (LLM #2): Add/revise living requirements list
-3. Epic & Mind Map (LLM #3): Group into 3–6 epics with relationships
-4. Gherkin Generation (LLM #4): Feature blocks + Scenarios (JSON-constrained)
-5. LLM-as-Judge Validation: DeepEval/RAGAS for clarity, completeness, consistency
-6. Human BA Sign-Off: Verify against expert blind assessment before sprint
-
-### 6. Write Testable Acceptance Criteria
-
-Express: primary success scenarios, negative/exception cases, observable outputs, preserved constraints, **Agentic AC** (deterministic assertions for agent auto-validation).
-
-### 7. Package For Delivery
-
-Produce: feature-ticket.json, epic-organized-gherkin-spec.json, llm-as-judge-validation-spec.json, living-traceability-spec.json, agentic-ac-spec.json; markdown brief mirroring ticket sections.
+### 7. Package Machine Handoff
+Serialize requirements into `contracts/schemas/feature-ticket.json` adhering to Draft 2020-12.
 
 ## Output Format
 
 ```markdown
-# <Topic> - Business Analysis Brief
+# <Feature Title> - Business Analysis Brief
 
-## Business Context
+## Business Context & Outcome
 - Problem: - Actors: - Outcome: - Preserved behavior: - Changed behavior:
 
-## Requirements
-- Functional requirements: - Business rules: - Permissions / approvals: - Non-goals:
+## Domain Context (Event Storming)
+- Bounded Context: - Aggregate Root: - Domain Events: - Commands:
 
-## Acceptance Criteria
-- Primary scenarios: - Negative or exception cases: - Observable outputs: - Agentic assertions (if AI agent delivery):
+## Vertical Slice Decomposition
+- Slice Pattern: [workflow_step | rule_variation | data_channel | crud]
+- Walking Skeleton: [Yes | No] - INVEST Audit: [Verified]
 
-## Process Impact
-- Current flow: - Target flow: - Affected downstream teams or systems:
+## Business Rules & Invariants
+- [BR-01]: [Declarative business rule and mathematical invariant]
 
-## Traceability
-- Impact Map actors → KPI targets: - Event Storming domain events:
-- User Story → Epic → Feature Block → Gherkin Scenario:
-- Design doc → Code module → Test case links:
-
-## Open Questions
-- ...
-
-## Research Request (optional)
-## Analytics Request (optional)
-## SEO Content Request (optional)
+## Behavioral Acceptance Criteria (BDD)
+```gherkin
+@core @smoke
+Scenario: [Happy path scenario]
+  Given [Precondition state]
+  When [Single discrete action]
+  Then [Expected observable outcome]
+  And [Stateful conservation invariant]
 ```
 
-See `core/roles/business-analyst.md` for handoff rules for Researcher, Data Analyst, SEO Analyst.
+## AI & Agentic Specs (when in scope)
+- Behavioral Boundary: - Probabilistic AC: - HITL Trigger: - Autonomy Level: - Kill-Switch:
+
+## Non-Functional Requirements & Governance
+- Performance SLA: - GDPR Legal Basis: - Deletion Propagation SLA:
+```
 
 ## Checklist
 
-- [ ] problem, actors, expected outcome defined
-- [ ] preserved vs changed behavior stated
-- [ ] business rules and exceptions captured
-- [ ] downstream process impact identified
-- [ ] acceptance criteria made observable
-- [ ] open_questions listed
-- [ ] Research / Analytics / SEO requests issued when triggers apply
-- [ ] feature-ticket.json valid when JSON handoff required
-- [ ] Epic-organized Gherkin pipeline: relevance → requirements → epic/mind-map → Gherkin
-- [ ] JSON-constrained Gherkin output for structural validity (99%+)
-- [ ] LLM-as-judge validation (DeepEval/RAGAS) for clarity, completeness, consistency
-- [ ] Living traceability: requirements → design docs → code modules → test cases
-- [ ] AI traceability tools (Trace.space, getleo.ai) integrated
-- [ ] Agentic AC format: deterministic observable assertions for agent auto-validation
-- [ ] EU AI Act chain-of-causality audit trail for high-risk features
-- [ ] Human BA sign-off gate for AI-assisted AC before sprint commitment
-- [ ] SSE real-time state updates for requirements/epic/Gherkin changes
-- [ ] Every User Story traces to Impact Map actor behavior AND Event Storming domain event
-- [ ] Event Storming hot-spots resolved before sprint backlog finalization
-- [ ] Vertical slicing only: each slice spans UI to database with end-to-end user value
+- [ ] problem, actors, and observable business outcome defined
+- [ ] preserved behavior versus changed behavior explicitly stated
+- [ ] Event Storming timeline modeled with past-tense Domain Events and Aggregates
+- [ ] feature decomposed into thin vertical slices (Walking Skeleton verified)
+- [ ] BDD scenarios enforce Single-Action Invariant and stateful system invariants
+- [ ] boundary value analysis (BVA) and combinatorial decision tables included
+- [ ] AI features specify probabilistic AC, evaluation judge, and degradation alert
+- [ ] high-stakes AI decisions have complete HITL escalation matrices (SLA, role, audit log)
+- [ ] agentic features declare autonomy level (L1–L5), MCP permissions, and kill-switch
+- [ ] personal data processing specifies GDPR Article 6 legal basis and erasure cascade
+- [ ] living assumption register scored ($\text{Impact} \times (6 - \text{Confidence})$)
+- [ ] handoff contract emitted conforming to `contracts/schemas/feature-ticket.json`
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI01 Goal Hijack**: requirement may reframe user goal through expanded scope. Cross-check against original request.
-- **ASI04 Supply Chain**: AI-generated requirements schema-validated against feature ticket; unknown templates untrusted.
-- **ASI07 Inter-Agent Communication**: requirement consumed by Solution Architect and downstream; emit structured contract.
-- **ASI09 Human-Agent Trust Exploitation**: do not present AI-assisted requirement as "reviewed" without human sign-off; surface AI provenance.
-
-## Failure Modes
-
-- **AC from solution, not user outcome**: AC describes implementation not user behavior. Mitigation: rewrite in user-observable terms.
-- **Hidden stakeholder**: downstream role not in recipient list. Mitigation: enumerate affected stakeholders; surface missing before lock.
-- **YMYL without expert sign-off**: YMYL feature ships without SME sign-off. Mitigation: require YMYL gate before AC approval.
-- **Requirement drift after approval**: ticket approved then expands. Mitigation: freeze AC at ticket creation; new requirements re-scoped.
-- **Epic vs requirement coverage gap**: Epic-organized misses lexical coverage but gains expert preference. Mitigation: TF-IDF + dense embedding metrics.
-- **LLM-as-judge false confidence**: Independent LLM misses domain contradictions. Mitigation: blind expert assessment alongside automated eval.
-- **Traceability link rot**: AI links become stale. Mitigation: automated CI checks for traceability freshness.
-- **Agentic AC over-specification**: Deterministic assertions constrain flexibility. Mitigation: balance observable outcomes with implementation freedom.
-- **EU AI Act compliance gaps**: Missing chain-of-causality for high-risk. Mitigation: automated audit trail validation in CI.
+- **ASI01 Goal Hijack**: cross-check refined requirements against original stakeholder intent.
+- **ASI02 Excessive Agency**: restrict agentic features to least-privilege MCP tool allowlists and mandatory kill-switches.
+- **ASI07 Inter-Agent Communication**: hand off requirements strictly via validated `feature-ticket.json` schemas.
+- **ASI09 Human Oversight**: enforce mandatory human sign-off on AI-assisted requirements before sprint lock.
 
 ## Output Contracts
 
 - `contracts/schemas/feature-ticket.json`
-- `contracts/schemas/epic-organized-gherkin-spec.json`
-- `contracts/schemas/llm-as-judge-validation-spec.json`
-- `contracts/schemas/living-traceability-spec.json`
-- `contracts/schemas/agentic-ac-spec.json`
 
 ## Related Skills
 
-- **write-product-brief**: Product intent and scope boundaries from PM
-- **conduct-research**: Light discovery; deep work with Researcher role
-- **design-ux-flow**: Requirements → user-facing interaction flow
-- **meeting-review**: Resolve conflicting assumptions or policies
-- **write-documentation**: Finalized terminology or process guidance
-- **review-service**: Validate implementation matches intended process
+- **elicit-requirements**: structured stakeholder interviewing and BABOK v3 quality audits
+- **write-use-cases**: detailed 13-field Use Case specifications and Cockburn scoping
+- **trace-requirements-impact**: RTM maintenance and BFS change request blast radius analysis
+- **build-story-map**: 2D story mapping, walking skeletons, and CPM dependency scheduling
+- **ai-risk-assessment**: NIST AI RMF governance and EU AI Act risk tiering
+- **plan-technical-delivery**: technical milestone breakdown from feature tickets
 
-Last updated: 2026-09-25
+Last updated: 2026-10-05

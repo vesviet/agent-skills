@@ -1170,7 +1170,7 @@
     "business-analyst": {
       "name": "business-analyst",
       "title": "Business Analyst",
-      "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules, edge cases, or downstream impact. In 2025–2026, this extends to writing behavioral requirements for AI/LLM features with probabilistic acceptance criteria and HITL escalation triggers, and to maintaining a living assumption register that makes the riskiest unverified beliefs visible before engineering builds.",
+      "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules, edge cases, downstream impact, or architectural invariants. In 2025–2027, this extends to mastering Domain-Driven Design (DDD) Event Storming discovery, authoring Behavioral Acceptance Criteria (BDD / Gherkin) with stateful conservation invariants, specifying probabilistic requirements and Human-in-the-Loop (HITL) escalation protocols for AI/LLM features, governing autonomous agent swarms and Model Context Protocol (MCP) tool access boundaries, and maintaining a living assumption register and bidirectional Requirements Traceability Matrix (RTM) that eliminates risk before engineering builds.",
       "file": "core/roles/business-analyst.md",
       "skills": [
         "analyze-business-requirements",
@@ -1178,6 +1178,7 @@
         "write-use-cases",
         "trace-requirements-impact",
         "ai-risk-assessment",
+        "build-story-map",
         "agent-delegation",
         "meeting-review",
         "navigate-service",

@@ -106,6 +106,31 @@
           "then": {
             "type": "string",
             "description": "Expected observable outcome."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "BDD scenario tags (e.g. @smoke, @regression, @p1, @core)."
+          },
+          "and_conditions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Additional conjunction assertions for complex verification."
+          },
+          "stateful_invariants": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "System state invariants that must remain unbroken during and after scenario execution."
+          },
+          "failure_guarantee": {
+            "type": "string",
+            "description": "Explicit postcondition guarantee when execution fails or raises an exception."
           }
         },
         "required": [
@@ -556,6 +581,325 @@
       "required": [
         "red_green_required"
       ]
+    },
+    "vertical_slice_metadata": {
+      "type": "object",
+      "description": "Lean/Agile vertical slicing metadata according to SOTA decomposition patterns (Elephant Carpentry).",
+      "properties": {
+        "slice_pattern": {
+          "type": "string",
+          "enum": [
+            "workflow_step",
+            "business_rule_variation",
+            "data_channel",
+            "user_persona",
+            "major_effort_vs_variation",
+            "crud_operation",
+            "non_functional_sla",
+            "reversibility_tier"
+          ],
+          "description": "Primary slicing pattern used to decompose the feature."
+        },
+        "invest_criteria": {
+          "type": "object",
+          "properties": {
+            "independent": {
+              "type": "boolean"
+            },
+            "negotiable": {
+              "type": "boolean"
+            },
+            "valuable": {
+              "type": "boolean"
+            },
+            "estimable": {
+              "type": "boolean"
+            },
+            "small": {
+              "type": "boolean"
+            },
+            "testable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "independent",
+            "valuable",
+            "testable"
+          ]
+        },
+        "walking_skeleton": {
+          "type": "boolean",
+          "description": "Whether this slice serves as a thin end-to-end tracer bullet across all layers (UI, API, DB)."
+        },
+        "slice_order": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Sequential delivery sequence for this vertical slice."
+        }
+      }
+    },
+    "event_storming_context": {
+      "type": "object",
+      "description": "Domain-Driven Design (DDD) discovery context derived from collaborative Event Storming workshops.",
+      "properties": {
+        "bounded_context": {
+          "type": "string",
+          "description": "Explicit bounded context this feature belongs to."
+        },
+        "aggregate_root": {
+          "type": "string",
+          "description": "Aggregate root enforcing transactional consistency and invariants."
+        },
+        "domain_events": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Immutable business events emitted in past tense (e.g. OrderPlaced, PaymentSettled)."
+        },
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "User or system intents phrased in present imperative (e.g. SubmitOrder, SettlePayment)."
+        },
+        "read_models": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Query views and projections supporting decisions or UI display."
+        },
+        "business_policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "whenever_event": {
+                "type": "string"
+              },
+              "then_command": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "whenever_event",
+              "then_command"
+            ]
+          },
+          "description": "Reactive business policies (Whenever [Event] Then [Command])."
+        }
+      }
+    },
+    "agentic_feature_spec": {
+      "type": "object",
+      "description": "Governance and behavioral requirements for multi-agent workflows and MCP tool access.",
+      "properties": {
+        "autonomy_level": {
+          "type": "string",
+          "enum": [
+            "L1_assistive",
+            "L2_task_based",
+            "L3_conditional",
+            "L4_high_autonomy",
+            "L5_unbounded"
+          ],
+          "description": "Declared autonomy level. L3 (Conditional) is enterprise ceiling; L4/L5 requires special authorization."
+        },
+        "governance_justified_ceiling": {
+          "type": "string",
+          "description": "Justification for declared autonomy level based on reversibility and audit capabilities."
+        },
+        "agent_roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role_name": {
+                "type": "string"
+              },
+              "authority_scope": {
+                "type": "string"
+              },
+              "tool_allowlist": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "escalation_threshold": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "role_name",
+              "authority_scope"
+            ]
+          }
+        },
+        "mcp_tool_permissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tool_name": {
+                "type": "string"
+              },
+              "server_id": {
+                "type": "string"
+              },
+              "permission_level": {
+                "type": "string",
+                "enum": [
+                  "read",
+                  "write",
+                  "delete",
+                  "execute"
+                ]
+              },
+              "credential_mechanism": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "tool_name",
+              "permission_level"
+            ]
+          }
+        },
+        "forbidden_zones": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Hard actions the agent must never take regardless of user prompting."
+        },
+        "kill_switch": {
+          "type": "object",
+          "properties": {
+            "stop_mechanism": {
+              "type": "string"
+            },
+            "credential_revocation_sla": {
+              "type": "string"
+            },
+            "authority_to_invoke": {
+              "type": "string"
+            },
+            "state_preservation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "stop_mechanism",
+            "authority_to_invoke"
+          ]
+        },
+        "agent_registry_entry_required": {
+          "type": "boolean",
+          "description": "Whether an inventory registration gate must pass prior to production deployment."
+        }
+      },
+      "required": [
+        "autonomy_level",
+        "governance_justified_ceiling",
+        "kill_switch"
+      ]
+    },
+    "responsible_ai_spec": {
+      "type": "object",
+      "description": "Responsible AI requirements covering fairness, bias prevention, and explainability.",
+      "properties": {
+        "four_fifths_rule_dir_threshold": {
+          "type": "number",
+          "minimum": 0.8,
+          "maximum": 1.0,
+          "description": "Minimum Disparate Impact Ratio threshold (EEOC 80% rule)."
+        },
+        "protected_groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "disaggregated_error_rate_bounds": {
+          "type": "string",
+          "description": "Maximum allowable deviation of subgroup FNR/FPR from aggregate mean."
+        },
+        "xai_requirements": {
+          "type": "object",
+          "properties": {
+            "explanation_type": {
+              "type": "string",
+              "enum": [
+                "contrastive",
+                "feature_attribution",
+                "counterfactual"
+              ]
+            },
+            "intelligibility_criterion": {
+              "type": "string"
+            },
+            "faithfulness_criterion": {
+              "type": "string"
+            },
+            "actionability_criterion": {
+              "type": "string"
+            },
+            "inline_at_decision_point": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "explanation_type",
+            "intelligibility_criterion",
+            "faithfulness_criterion",
+            "actionability_criterion"
+          ]
+        }
+      }
+    },
+    "nfr_envelope": {
+      "type": "object",
+      "description": "Non-Functional Requirements envelope defining performance, scalability, and regulatory bounds.",
+      "properties": {
+        "latency_p99_ms": {
+          "type": "number",
+          "description": "Maximum allowable 99th percentile response time in milliseconds."
+        },
+        "max_error_rate_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Maximum acceptable error rate percentage."
+        },
+        "data_retention_days": {
+          "type": "integer",
+          "description": "Mandatory audit or data retention period in days."
+        },
+        "gdpr_article_6_legal_basis": {
+          "type": "string",
+          "enum": [
+            "consent",
+            "contract",
+            "legal_obligation",
+            "vital_interests",
+            "public_task",
+            "legitimate_interests",
+            "not_applicable"
+          ]
+        },
+        "right_to_erasure_propagation_sla": {
+          "type": "string",
+          "description": "Target SLA for full erasure propagation across downstream datastores."
+        },
+        "dpia_required": {
+          "type": "boolean",
+          "description": "Whether a formal Data Protection Impact Assessment is required prior to build."
+        }
+      }
     }
   },
   "required": [
@@ -779,6 +1123,170 @@
         "red_green_required": true,
         "mutation_score_threshold_pct": 75.0,
         "reproduction_test_required": false
+      }
+    },
+    {
+      "contract_type": "feature-ticket",
+      "ticket_id": "2026-10-05-agentic-reconciliation-assistant",
+      "created_at": "2026-10-05T09:00:00+07:00",
+      "title": "Autonomous Multi-Agent Settlement Reconciliation with MCP Tool Auditing",
+      "type": "feature",
+      "priority": "high",
+      "business_value": "Automate 85% of multi-currency ledger reconciliation anomalies while maintaining double-entry conservation and full EU AI Act Article 50 transparency.",
+      "preserved_behavior": "Manual reconciliation workbench remains accessible with identical permission models.",
+      "changed_behavior": "Reconciliation Coordinator agent extracts ledger batches, analyzes discrepancy patterns, and drafts balancing journal entries for human sign-off.",
+      "actors": [
+        "Treasury Operations Officer",
+        "Reconciliation Coordinator Agent",
+        "Ledger Query Specialist Agent",
+        "Core Banking Settlement Engine"
+      ],
+      "business_rules": [
+        {
+          "id": "BR-REC-01",
+          "rule": "Total debit legs must equal total credit legs across all balancing journal transactions.",
+          "exceptions": "Exchange rate micro-rounding under 0.01 USD is absorbed into FX rounding reserve."
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "scenario": "Balanced anomaly reconciliation with automated journal draft",
+          "given": "An unreconciled ledger transaction batch exists with discrepancy equal to 12.50 USD",
+          "when": "The Reconciliation Coordinator agent analyzes the transaction legs",
+          "then": "A balancing journal voucher is drafted and presented to Treasury Officer with confidence score and feature attribution",
+          "tags": [
+            "@core",
+            "@smoke",
+            "@p1"
+          ],
+          "and_conditions": [
+            "Treasury Officer receives in-app approval notification within 30 seconds",
+            "Zero automated ledger balance mutations occur prior to explicit human sign-off"
+          ],
+          "stateful_invariants": [
+            "Sum(Debits) == Sum(Credits) across all proposed journal legs"
+          ],
+          "failure_guarantee": "On agent execution failure or timeout, reconciliation batch state reverts to PENDING_MANUAL_REVIEW with zero partial state committed"
+        }
+      ],
+      "vertical_slice_metadata": {
+        "slice_pattern": "workflow_step",
+        "invest_criteria": {
+          "independent": true,
+          "negotiable": true,
+          "valuable": true,
+          "estimable": true,
+          "small": true,
+          "testable": true
+        },
+        "walking_skeleton": true,
+        "slice_order": 1
+      },
+      "event_storming_context": {
+        "bounded_context": "treasury_reconciliation",
+        "aggregate_root": "ReconciliationBatch",
+        "domain_events": [
+          "ReconciliationBatchIngested",
+          "DiscrepancyAnalyzed",
+          "BalancingVoucherDrafted",
+          "ReconciliationCompleted"
+        ],
+        "commands": [
+          "IngestReconciliationBatch",
+          "DraftBalancingVoucher",
+          "ApproveReconciliationVoucher"
+        ],
+        "read_models": [
+          "UnreconciledBatchSummaryView"
+        ],
+        "business_policies": [
+          {
+            "whenever_event": "DiscrepancyAnalyzed",
+            "then_command": "DraftBalancingVoucher"
+          }
+        ]
+      },
+      "agentic_feature_spec": {
+        "autonomy_level": "L3_conditional",
+        "governance_justified_ceiling": "Agent coordinates data extraction, discrepancy correlation, and draft proposal generation; write actions are strictly gated by human approval.",
+        "agent_roles": [
+          {
+            "role_name": "CoordinatorAgent",
+            "authority_scope": "Decomposes batch analysis and routes tasks to Ledger Specialist",
+            "tool_allowlist": [
+              "ledger_query",
+              "fx_rate_lookup"
+            ],
+            "escalation_threshold": "Confidence score < 0.90"
+          }
+        ],
+        "mcp_tool_permissions": [
+          {
+            "tool_name": "ledger_query",
+            "server_id": "mcp-core-banking-gateway",
+            "permission_level": "read",
+            "credential_mechanism": "OAuth2 scoped JWT token evaluated per invocation"
+          },
+          {
+            "tool_name": "draft_journal_voucher",
+            "server_id": "mcp-core-banking-gateway",
+            "permission_level": "write",
+            "credential_mechanism": "Short-lived mTLS client certificate"
+          }
+        ],
+        "forbidden_zones": [
+          "Direct execution of ledger settlement without human approval signature",
+          "Modification of historical closed financial periods",
+          "Export of raw unmasked banking data outside corporate VPC"
+        ],
+        "kill_switch": {
+          "stop_mechanism": "Emergency API token revocation endpoint and webhook pause signal",
+          "credential_revocation_sla": "Under 30 seconds",
+          "authority_to_invoke": "Treasury Operations Lead, On-Call Security Engineer, Head of Compliance",
+          "state_preservation": "In-flight batch state persisted to S3 cold storage; running agent workers terminate gracefully within 10 seconds"
+        },
+        "agent_registry_entry_required": true
+      },
+      "responsible_ai_spec": {
+        "four_fifths_rule_dir_threshold": 0.85,
+        "protected_groups": [
+          "merchant_tier_small_business",
+          "merchant_tier_enterprise"
+        ],
+        "disaggregated_error_rate_bounds": "False discovery rate for anomaly classification must not deviate by > 3% across merchant tiers.",
+        "xai_requirements": {
+          "explanation_type": "contrastive",
+          "intelligibility_criterion": "Explanations readable by non-technical Treasury clerks in plain accounting terminology.",
+          "faithfulness_criterion": "Attribution scores strictly computed from SHAP values against model features.",
+          "actionability_criterion": "Specifies which specific transaction leg caused the reconciliation imbalance.",
+          "inline_at_decision_point": true
+        }
+      },
+      "nfr_envelope": {
+        "latency_p99_ms": 450.0,
+        "max_error_rate_pct": 0.05,
+        "data_retention_days": 2555,
+        "gdpr_article_6_legal_basis": "legal_obligation",
+        "right_to_erasure_propagation_sla": "Not applicable - Statutory financial audit retention exemption",
+        "dpia_required": false
+      },
+      "blast_radius_assessment": {
+        "impact_tier": "service_level",
+        "failure_domains": [
+          "treasury_reconciliation",
+          "core_ledger"
+        ],
+        "downstream_consumers_affected": [
+          "treasury-operations-portal",
+          "general-ledger-export-service"
+        ],
+        "data_blast_radius": "isolated_write"
+      },
+      "sandbox_isolation_tier": "tier_1_isolated_microvm",
+      "test_strategy_ref": {
+        "red_green_required": true,
+        "mutation_score_threshold_pct": 80.0,
+        "reproduction_test_required": true
       }
     }
   ]
