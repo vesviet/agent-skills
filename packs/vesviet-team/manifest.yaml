@@ -102,7 +102,7 @@ swarm_pipeline:
   phase_5: "Reviewer sign-off & Index synchronization"
 
 corpus:
-  snapshot: "2026-10-02"
+  snapshot: "2026-10-04"
   vesviet:
     total_files: 9646
     content_files: 379
@@ -115,7 +115,7 @@ corpus:
     categories: 16
     reports: 358
     pillar_hubs: 10
-    total_words: 1052873
+    total_words: 1054728
   learn:
     total_files: 7534
     content_files: 438
@@ -128,11 +128,12 @@ corpus:
     docs: 3
     categories: 15
     reports: 336
-    masterclass_batches_completed: 5
-    posts_upgraded: 70
-    total_words: 1449893
+    masterclass_batches_completed: 6
+    posts_upgraded: 75
+    total_words: 1450398
   indexes:
     - learn/plan/CONTENT_INDEX.md
+    - learn/reports/CONTENT_INDEX.md
     - vesviet/reports/CONTENT_INDEX.md
 
 data_classification: internal
