@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/business-analyst",
   "contract_type": "agent-card",
   "name": "business-analyst",
-  "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules, edge cases, or downstream impact. In 2025–2026, this extends to writing behavioral requirements for AI/LLM features with probabilistic acceptance criteria and HITL escalation triggers, and to maintaining a living assumption register that makes the riskiest unverified beliefs visible before engineering builds.",
+  "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules, edge cases, downstream impact, or architectural invariants. In 2025–2027, this extends to mastering Domain-Driven Design (DDD) Event Storming discovery, authoring Behavioral Acceptance Criteria (BDD / Gherkin) with stateful conservation invariants, specifying probabilistic requirements and Human-in-the-Loop (HITL) escalation protocols for AI/LLM features, governing autonomous agent swarms and Model Context Protocol (MCP) tool access boundaries, and maintaining a living assumption register and bidirectional Requirements Traceability Matrix (RTM) that eliminates risk before engineering builds.",
   "url": "pack://agent-skills/core/roles/business-analyst.md",
   "version": "5.0.0",
   "protocol_version": "1.0",
@@ -117,6 +117,27 @@
       "description": "Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure/Manage) and NIST AI 600-1 GenAI Profile (12 risk categories), classify EU AI Act risk tiers, and produce an AI risk register covering hallucination thresholds, model degradation signals, bias exposure, and compliance drift. Use when onboarding a new AI feature, scoping an AI system for delivery, or conducting a periodic AI governance audit.",
       "tags": [
         "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "feature-ticket.json"
+      ]
+    },
+    {
+      "id": "build-story-map",
+      "name": "Build Story Map",
+      "description": "Structure and visualize product backlogs using Jeff Patton User Story Mapping, MoSCoW release swimlanes, and Critical Path Method (CPM) dependency scheduling. Use when organizing features into Epic-to-Story hierarchies, defining MVP walking skeletons, slicing releases, calculating float time on critical path tasks, or handing off scoped initiatives to engineering.",
+      "tags": [
+        "pack",
         "pack"
       ],
       "inputModes": [

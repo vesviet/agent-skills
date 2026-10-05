@@ -158,7 +158,7 @@
       "role": "sre",
       "agent_card": "core/a2a/registry/sre.agent-card.json",
       "url": "pack://agent-skills/core/roles/sre.md",
-      "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2025–2026"
+      "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2026–2027"
     },
     {
       "role": "system-engineer",

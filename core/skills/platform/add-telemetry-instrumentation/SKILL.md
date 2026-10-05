@@ -1,6 +1,6 @@
 ---
 name: add-telemetry-instrumentation
-description: Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.input_tokens, gen_ai.request.model), multi-agent workflow correlation, RAG step spans, and tool invocation traces.
+description: Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.tokens, gen_ai.response.model, TTFT), kernel-level eBPF socket telemetry, and MWMBR SLI recording rules.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
@@ -10,10 +10,11 @@ Use this skill when code changes need matching observability so operators can un
 
 ## When to Use
 
-- a service/endpoint/feature needs visibility
-- adding logs, metrics, or traces (OTel)
-- tracing AI/LLM token usage and RAG steps
-- correlating multi-agent workflow spans
+- a service/endpoint/feature needs operational visibility
+- adding logs, metrics, or distributed traces (OTel v1.30+)
+- tracing AI/LLM token usage, response models, and Time-To-First-Token (TTFT)
+- instrumenting kernel-level eBPF socket profiling without sidecar tax
+- defining Multi-Window Multi-Burn-Rate (MWMBR) SLI recording rules
 
 ## Core Rules
 
@@ -22,95 +23,70 @@ Use this skill when code changes need matching observability so operators can un
 - keep telemetry names, labels, and dimensions stable enough for dashboards and alerts
 - avoid high-cardinality labels unless the repo explicitly supports them
 - never log secrets, credentials, tokens, or unnecessary sensitive data
-- use stable OpenTelemetry GenAI conventions (opt in via `OTEL_SEMCONV_STABILITY_OPT_IN=genai`) for LLM/agent tracking; required attributes: `gen_ai.system`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`
-- source GenAI conventions from the **dedicated `open-telemetry/semantic-conventions-genai` repository** (the old location in `semantic-conventions` is a moved-notice): include **agent spans** (`invoke_agent`, `execute_tool`) and **MCP spans** (`gen-ai-mcp`) for agent and MCP-server work; emit `gen_ai.response.finish_reasons` and opt-in content capture (`gen_ai.input.messages`) only when classification policy allows
-- design hierarchical trace spans using `create_agent` operation types and step attributes (`agent.name`, `agent.step_type`) for agent reasoning
-- configure Cloudflare Workers native observability using the `observability` block in `wrangler.jsonc` and OTLP push
-- capture GPU infrastructure metrics prefixed with `hw.gpu.*` via OTel Collector and DCGM exporter integration
-- **OTEL-PROFILING-4TH-PILLAR**: OTel Profiling is now the fourth observability pillar alongside logs/metrics/traces — use Pyroscope or eBPF-based profilers (Beyla) for continuous CPU/memory profiling and emit via OTLP profiling signal; do not rely solely on K8s `kubectl top` for performance diagnosis
-- **NATIVE-HISTOGRAMS**: Replace classic Prometheus fixed-bucket histograms with Native Histograms (Prometheus 2.40+, OTel exponential histograms) for dynamic bucket resolution; eliminates the "wrong bucket count" problem and reduces cardinality overhead
-- **DORA-METRIC-SPANS**: Emit CI/CD spans with semantic conventions (`cicd.pipeline.run.*`, `deploy.environment`) to enable automated DORA metric computation (Lead Time, MTTR) from trace data without manual aggregation
+- **W3C-DISTRIBUTED-TRACING**: enforce end-to-end W3C `traceparent` and `tracestate` context propagation across all HTTP, gRPC, and asynchronous message boundaries (Kafka, Dapr, RabbitMQ)
+- **EBPF-SOCKET-TELEMETRY**: deploy kernel-level eBPF socket profiling (Cilium Hubble, Grafana Beyla, Coroot) to capture L4/L7 flow telemetry, TCP retransmits, socket buffer queue drops, and DNS resolution latency directly from kernel space without injecting sidecar proxies
+- **OTEL-V130-GENAI-CONVENTIONS**: use stable OpenTelemetry GenAI conventions (opt in via `OTEL_SEMCONV_STABILITY_OPT_IN=genai`); mandate `gen_ai.system`, `gen_ai.request.model`, `gen_ai.response.model`, `gen_ai.usage.tokens`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, `gen_ai.response.finish_reasons`, and Time-To-First-Token (TTFT) for streaming responses
+- **MWMBR-SLI-RECORDING-RULES**: configure Prometheus/OTel metric recording rules supporting Multi-Window Multi-Burn-Rate (MWMBR) error budget alerting across short (5m, 30m, 2h) and long (1h, 6h, 3d) evaluation windows with empty-vector coalescing (`or on() vector(0)`)
+- **OTEL-PROFILING-4TH-PILLAR**: use continuous profiling (Pyroscope, Beyla) via OTLP profiling signal alongside logs/metrics/traces
+- **NATIVE-HISTOGRAMS**: prefer native exponential histograms for dynamic bucket resolution over fixed-bucket counts
+- **DORA-METRIC-SPANS**: emit CI/CD and deployment spans (`cicd.pipeline.run.*`, `deploy.environment`) for automated DORA metric computation
 
 ## Suggested Process
 
 ### 1. Identify Critical Paths
-
-Determine the key entrypoints, dependency calls, background jobs, and failure domains that need visibility.
+Determine key entrypoints, dependency calls, background jobs, and failure domains needing visibility.
 
 ### 2. Add Structured Logging
+Add logs for meaningful state changes, warnings, and errors with standard request and correlation IDs.
 
-Add logs for meaningful state changes, warnings, and errors.
+### 3. Configure Metrics & MWMBR Recording Rules
+Add counters and latency histograms for user journeys. Configure multi-window recording rules for error budget burn rates.
 
-Prefer repo-local conventions for:
+### 4. Instrument Distributed Tracing & W3C Context
+Propagate W3C `traceparent` across service boundaries, database queries, and async queues. For LLMs, emit GenAI semantic convention attributes.
 
-- log levels
-- correlation IDs or request IDs
-- structured fields
-- error wrapping or stack capture
-
-### 3. Add Metrics
-
-Add or update metrics that help answer operational questions:
-
-- request, job, or event counts
-- latency or duration distributions
-- failure counts by stable reason
-- dependency call outcomes
-
-### 4. Add Tracing
-
-Instrument spans across service boundaries, external API calls, database queries, or long-running internal operations when the repo uses tracing.
-
-### 5. Check Operational Usefulness
-
-Verify that the telemetry can support dashboards, alerts, incident triage, and release verification without creating noise.
+### 5. Attach eBPF Kernel Telemetry
+Deploy zero-overhead eBPF probes for TCP retransmit rates, DNS latency, and socket buffer drops without adding sidecar containers.
 
 ### 6. Validate Sensitive Data Handling
-
-Confirm that logs, metrics labels, and trace attributes do not expose secrets, credentials, tokens, or unnecessary personal data.
+Confirm that logs, metric labels, and span attributes do not expose secrets, credentials, or PII.
 
 ## Checklist
 
-- [ ] existing telemetry pattern reviewed
-- [ ] critical paths identified
-- [ ] structured logs added or updated
-- [ ] metrics added or updated
-- [ ] tracing added or updated when the repo uses tracing
-- [ ] sensitive data exposure checked
-- [ ] dashboards, alerts, or runbooks updated when needed
-- [ ] OpenTelemetry GenAI semantic conventions applied and enabled via `OTEL_SEMCONV_STABILITY_OPT_IN`
-- [ ] agent reasoning steps traced hierarchically under a root `create_agent` span with `agent.name` and `agent.step_type`
-- [ ] Cloudflare Workers telemetry configured with wrangler `observability` block and OTLP push
-- [ ] GPU metrics (`hw.gpu.*`) scraped via OTel Collector and DCGM exporter
+- [ ] existing telemetry pattern reviewed and critical paths identified
+- [ ] structured logs added with correlation IDs
+- [ ] metrics and MWMBR SLI recording rules configured for short and long windows
+- [ ] distributed tracing instrumented with unbroken W3C traceparent propagation
+- [ ] OpenTelemetry v1.30+ GenAI conventions applied (`gen_ai.usage.tokens`, `gen_ai.response.model`, TTFT)
+- [ ] kernel-level eBPF socket and network flow telemetry verified without sidecar overhead
+- [ ] sensitive data exposure checked and restricted fields redacted
+- [ ] dashboards, alerts, and runbooks updated
 
 ## Failure Modes
 
-- **Instrumentation added without a dashboard**: a metric is emitted but no dashboard consumes it. **Mitigation:** require a dashboard at every instrumentation point; reject metrics without a dashboard.
-- **PII in span attributes**: a span attribute contains PII or a credential. **Mitigation:** classify every span attribute with `data-classification.yaml`; redact restricted fields before persistence.
-- **OTel SDK version drift**: an instrumentation library is updated without re-pinning the OTel registry. **Mitigation:** re-validate every span attribute against the current OTel GenAI convention on SDK upgrade; surface the drift.
-- **Alert noise**: a new alert is added with no runbook. **Mitigation:** require a runbook at every alert; reject alerts without a runbook link.
+- **Instrumentation added without a dashboard**: metric emitted without consumer. **Mitigation:** require dashboard mapping for every core metric.
+- **PII in span attributes**: credential or PII in traces. **Mitigation:** classify attributes and redact restricted fields before export.
+- **Sidecar performance degradation**: proxy sidecars causing CPU/latency spikes. **Mitigation:** replace with kernel-level eBPF socket monitoring.
+- **Alert flapping on low traffic**: burn-rate alerts firing falsely during traffic dips. **Mitigation:** configure PromQL empty vector coalescing (`or on() vector(0)`).
 
 ## Output Contracts
 
 When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
-- **contracts/schemas/deployment-plan.json** — Required fields: infrastructure_changes[], config_updates[], and 
-alidation_run. Set produced_by_role to the emitting developer role.
-
-Skip emission for solo refactor work where no downstream handoff is expected.
+- **contracts/schemas/deployment-plan.json** — Required fields: `infrastructure_changes[]`, `config_updates[]`, and `validation_run`. Set `produced_by_role` to the emitting developer role.
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI03 Identity & Privilege Abuse**: telemetry payloads may include PII or credentials; classify with `data-classification.yaml` and redact restricted fields.
-- **ASI04 Supply Chain**: OTel SDKs, exporters, and collectors must be schema-validated against the expected manifest; treat unknown versions as untrusted.
-- **ASI05 RCE Guard**: never construct telemetry processors or exporters from external content without strict schema validation.
-- **ASI07 Inter-Agent Communication**: telemetry is consumed by SRE and security roles; emit a structured contract so each role can validate.
-- **ASI09 Human-Agent Trust Exploitation**: do not present a telemetry rollout as "complete" without the verification run; surface the residual risk.
+- **ASI03 Identity & Privilege Abuse**: classify telemetry payloads with `data-classification.yaml` and redact credentials.
+- **ASI04 Supply Chain**: OTel SDKs, exporters, and collectors must be schema-validated against expected manifests.
+- **ASI05 RCE Guard**: never construct telemetry processors or exporters from untrusted external content.
+- **ASI07 Inter-Agent Communication**: emit structured contracts so downstream SRE and security roles can validate.
+- **ASI09 Human-Agent Trust Exploitation**: verify live telemetry stream before declaring rollout complete.
 
 ## Related Skills
 
 - **debug-runtime-platform**: Investigate runtime behavior using telemetry evidence
+- **orchestrate-chaos-experiment**: Validate telemetry signals and alert triggering during simulated faults
+- **incident-report**: Connect telemetry evidence and trace IDs to incident postmortems
 - **setup-deployment**: Wire telemetry config into runtime source of truth
 - **performance-profiling**: Measure latency, throughput, or resource bottlenecks
-- **security-audit**: Review sensitive data exposure risk
-- **commit-code**: Prepare telemetry changes for delivery

@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 123 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **135 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 124 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **136 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -135,7 +135,7 @@ React Native, Expo, mobile performance, and store delivery:
 - `deploy-mobile-app`
 - `develop-mobile-app`
 
-### Platform (16)
+### Platform (17)
 
 Delivery, runtime, Cloudflare-specific, cloud, and system infrastructure skills:
 
@@ -143,6 +143,7 @@ Delivery, runtime, Cloudflare-specific, cloud, and system infrastructure skills:
 - `setup-deployment`
 - `setup-gpu-finops`
 - `setup-llm-gateway`
+- `orchestrate-chaos-experiment`
 - `supply-chain-security`
 - `system-design`
 - `wrangler`
@@ -252,6 +253,7 @@ Overlay-specific skills (site stacks, ICM, content data, R3F) live under `overla
 | Recursive system & task decomposition, DAG dependencies, disk-backed persistent planning | `decompose-agentic-system` | Technical Architect |
 | Columnar database architecture, sparse indexing, ClickHouse / DuckDB tuning | `optimize-olap-database` | Data Engineer role |
 | In-process embedded analytical SQL (chDB, DuckDB), cross-source joins | `query-analytical-engine` | Data Analyst role |
+| Controlled chaos engineering, steady-state verification, game day drills | `orchestrate-chaos-experiment` | SRE role |
 
 ## Backlog (not yet skills)
 

@@ -4,7 +4,7 @@
   "root": ".",
   "stats": {
     "roles": 35,
-    "skills": 135,
+    "skills": 136,
     "workflows": 25,
     "schemas": 54
   },
@@ -669,6 +669,39 @@
     ],
     "instrumentation": [
       "add-telemetry-instrumentation"
+    ],
+    "orchestrate_chaos_experiment": [
+      "orchestrate-chaos-experiment"
+    ],
+    "orchestrate-chaos-experiment": [
+      "orchestrate-chaos-experiment"
+    ],
+    "chaos": [
+      "orchestrate-chaos-experiment"
+    ],
+    "chaos_engineering": [
+      "orchestrate-chaos-experiment"
+    ],
+    "chaos-engineering": [
+      "orchestrate-chaos-experiment"
+    ],
+    "chaos_experiment": [
+      "orchestrate-chaos-experiment"
+    ],
+    "fault_injection": [
+      "orchestrate-chaos-experiment"
+    ],
+    "game_day": [
+      "orchestrate-chaos-experiment"
+    ],
+    "incident": [
+      "incident-report"
+    ],
+    "incident_report": [
+      "incident-report"
+    ],
+    "postmortem": [
+      "incident-report"
     ],
     "a2a": [
       "agent-a2a-protocol"
@@ -1599,7 +1632,7 @@
     "sre": {
       "name": "sre",
       "title": "Site Reliability Engineer",
-      "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2025–2026, this extends to defining AI/ML-specific SLOs (output quality, inference latency, token cost budget, model drift), treating model degradation as a reliability incident, and operating proactive reliability practices (chaos engineering, error budget burn rate alerts, automated runbooks).",
+      "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2026–2027, this embodies SOTA reliability engineering: Multi-Window Multi-Burn-Rate (MWMBR) error budget governance, automated release freeze gates, kernel-level eBPF socket and network flow telemetry without sidecar tax, OpenTelemetry v1.30+ GenAI semantic conventions (TTFT, token consumption, model drift), proactive chaos engineering (Chaos Mesh / Litmus steady-state verification), and interruptible automated runbooks with diagnostic decision trees.",
       "file": "core/roles/sre.md",
       "skills": [
         "debug-runtime-platform",
@@ -1607,12 +1640,14 @@
         "add-telemetry-instrumentation",
         "performance-profiling",
         "incident-report",
+        "orchestrate-chaos-experiment",
         "agent-observability",
         "agent-semantic-memory",
         "navigate-service",
         "database-maintenance",
         "manage-secrets",
-        "setup-deployment"
+        "setup-deployment",
+        "agent-delegation"
       ],
       "irreversible_actions": []
     },
@@ -2439,7 +2474,7 @@
       "category": "platform",
       "type": "core",
       "file": "core/skills/platform/add-telemetry-instrumentation/SKILL.md",
-      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.input_tokens, gen_ai.request.model), multi-agent workflow correlation, RAG step spans, and tool invocation traces."
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.tokens, gen_ai.response.model, TTFT), kernel-level eBPF socket telemetry, and MWMBR SLI recording rules."
     },
     "aws-infrastructure": {
       "name": "aws-infrastructure",
@@ -2475,6 +2510,13 @@
       "type": "core",
       "file": "core/skills/platform/durable-objects/SKILL.md",
       "description": "Create and review Cloudflare Durable Objects. Use when building stateful coordination (chat rooms, multiplayer games, booking systems), implementing RPC methods, SQLite storage, alarms, WebSockets, or reviewing DO code for best practices. Covers Workers integration, wrangler config, and testing with Vitest. Biases towards retrieval from Cloudflare docs over pre-trained knowledge."
+    },
+    "orchestrate-chaos-experiment": {
+      "name": "orchestrate-chaos-experiment",
+      "category": "platform",
+      "type": "core",
+      "file": "core/skills/platform/orchestrate-chaos-experiment/SKILL.md",
+      "description": "Plan, execute, and verify controlled chaos engineering experiments and game days. Use when validating system resilience, steady-state hypotheses, automated failover, blast radius containment, or disaster recovery under injected faults."
     },
     "sandbox-sdk": {
       "name": "sandbox-sdk",

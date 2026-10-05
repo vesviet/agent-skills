@@ -369,6 +369,19 @@ SKILL_ALIASES = {
     "performance_profiling": ["performance-profiling"],
     "telemetry": ["add-telemetry-instrumentation"],
     "instrumentation": ["add-telemetry-instrumentation"],
+
+    # SRE & Reliability Engineering
+    "orchestrate_chaos_experiment": ["orchestrate-chaos-experiment"],
+    "orchestrate-chaos-experiment": ["orchestrate-chaos-experiment"],
+    "chaos": ["orchestrate-chaos-experiment"],
+    "chaos_engineering": ["orchestrate-chaos-experiment"],
+    "chaos-engineering": ["orchestrate-chaos-experiment"],
+    "chaos_experiment": ["orchestrate-chaos-experiment"],
+    "fault_injection": ["orchestrate-chaos-experiment"],
+    "game_day": ["orchestrate-chaos-experiment"],
+    "incident": ["incident-report"],
+    "incident_report": ["incident-report"],
+    "postmortem": ["incident-report"],
     
     # A2A & Swarm
     "a2a": ["agent-a2a-protocol"],

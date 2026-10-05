@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "incident-report",
   "title": "Incident Report",
-  "description": "Structured output for SRE incident response and post-mortems.",
+  "description": "Structured output for SRE incident response, reliability postmortems, and preventative action tracking conforming to 2026-2027 SOTA reliability standards.",
   "type": "object",
   "properties": {
     "contract_type": {
@@ -11,7 +11,8 @@
       "description": "Machine-readable contract discriminator."
     },
     "incident_id": {
-      "type": "string"
+      "type": "string",
+      "description": "Unique incident identifier (e.g. INC-2026-10-05-order-failover)."
     },
     "severity": {
       "type": "string",
@@ -20,7 +21,8 @@
         "SEV-2",
         "SEV-3",
         "SEV-4"
-      ]
+      ],
+      "description": "Incident severity tier."
     },
     "status": {
       "type": "string",
@@ -28,22 +30,35 @@
         "investigating",
         "mitigated",
         "resolved"
-      ]
+      ],
+      "description": "Current lifecycle state of the incident."
+    },
+    "title": {
+      "type": "string",
+      "description": "Concise summary title of the incident."
+    },
+    "summary": {
+      "type": "string",
+      "description": "Executive narrative summary of the event."
     },
     "impact": {
       "type": "object",
       "properties": {
         "user_facing": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Whether end-users experienced failures or degraded service."
         },
         "services_affected": {
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "List of affected service names or components."
         },
         "downtime_minutes": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total duration of customer impact in minutes."
         }
       },
       "required": [
@@ -57,10 +72,12 @@
         "properties": {
           "timestamp": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "ISO 8601 / RFC 3339 event timestamp."
           },
           "event": {
-            "type": "string"
+            "type": "string",
+            "description": "Description of the event or milestone."
           }
         },
         "required": [
@@ -69,34 +86,182 @@
         ]
       }
     },
-    "root_cause": {
-      "type": "string",
-      "description": "Identified root cause (or hypothesized if investigating)."
+    "metrics": {
+      "type": "object",
+      "description": "Empirical reliability duration metrics in seconds.",
+      "properties": {
+        "mttd_seconds": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Mean Time to Detect in seconds."
+        },
+        "mttm_seconds": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Mean Time to Mitigate in seconds."
+        },
+        "mttr_seconds": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Mean Time to Resolve in seconds."
+        }
+      },
+      "required": [
+        "mttd_seconds",
+        "mttm_seconds",
+        "mttr_seconds"
+      ]
+    },
+    "error_budget_impact": {
+      "type": "object",
+      "description": "Multi-Window Multi-Burn-Rate (MWMBR) and error budget impact.",
+      "properties": {
+        "burn_rate_peak": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Peak burn rate multiplier observed."
+        },
+        "budget_consumed_percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Error budget consumed (0-100%)."
+        },
+        "slo_breached": {
+          "type": "boolean",
+          "description": "Whether an active SLO was breached."
+        },
+        "slo_target_name": {
+          "type": "string",
+          "description": "Target SLO identifier or name."
+        }
+      },
+      "required": [
+        "burn_rate_peak",
+        "budget_consumed_percentage",
+        "slo_breached"
+      ]
+    },
+    "trace_context": {
+      "type": "object",
+      "description": "OpenTelemetry distributed trace context.",
+      "properties": {
+        "root_trace_id": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{32}$",
+          "description": "W3C 32-hex trace ID."
+        },
+        "culprit_span_id": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{16}$",
+          "description": "W3C 16-hex culprit span ID."
+        }
+      },
+      "required": [
+        "root_trace_id",
+        "culprit_span_id"
+      ]
+    },
+    "root_cause_analysis": {
+      "type": "object",
+      "description": "Root Cause Analysis (RCA) including 5 Whys chain and failure taxonomy.",
+      "properties": {
+        "five_whys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 3,
+          "description": "5 Whys iterative causal chain."
+        },
+        "failure_category": {
+          "type": "string",
+          "enum": [
+            "software_defect",
+            "configuration_drift",
+            "infrastructure_outage",
+            "dependency_failure",
+            "capacity_exhaustion",
+            "security_breach",
+            "data_corruption",
+            "ai_model_degradation",
+            "human_operational_error"
+          ],
+          "description": "Taxonomy classification."
+        },
+        "contributing_factors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Secondary contributing factors."
+        },
+        "trigger": {
+          "type": "string",
+          "description": "Immediate triggering event."
+        }
+      },
+      "required": [
+        "five_whys",
+        "failure_category",
+        "contributing_factors"
+      ]
     },
     "mitigation_steps": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Mitigation steps executed during incident containment."
     },
     "action_items": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
+          "action_item_id": {
+            "type": "string",
+            "description": "Unique identifier (e.g. ACT-001)."
+          },
           "task": {
-            "type": "string"
+            "type": "string",
+            "description": "Concrete technical remediation."
           },
           "owner_role": {
-            "type": "string"
+            "type": "string",
+            "description": "Responsible role slug."
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "P0",
+              "P1",
+              "P2",
+              "P3"
+            ],
+            "description": "Priority tier of the action item."
+          },
+          "target_completion_date": {
+            "type": "string",
+            "format": "date",
+            "description": "YYYY-MM-DD completion target."
+          },
+          "verification_mechanism": {
+            "type": "string",
+            "description": "Verification method (test, chaos drill, canary metric)."
           },
           "ticket_ref": {
-            "type": "string"
+            "type": "string",
+            "description": "External tracking ticket reference."
           }
         },
         "required": [
+          "action_item_id",
           "task",
-          "owner_role"
+          "owner_role",
+          "priority",
+          "target_completion_date",
+          "verification_mechanism"
         ]
       }
     },
@@ -107,41 +272,195 @@
   },
   "required": [
     "contract_type",
+    "incident_id",
     "severity",
     "status",
     "impact",
-    "timeline"
+    "timeline",
+    "metrics",
+    "error_budget_impact",
+    "trace_context",
+    "root_cause_analysis",
+    "action_items"
   ],
   "examples": [
     {
       "contract_type": "incident-report",
-      "incident_id": "INC-2026-06-12-order-assign-failure",
-      "severity": "SEV-2",
-      "started_at": "2026-06-12T10:00:00+07:00",
-      "resolved_at": "2026-06-12T10:45:00+07:00",
-      "title": "COD order assignment failing for store 42 due to store-service 503",
-      "summary": "Store service returned 503 for 45 minutes. COD orders fell back to warehouse courier. No data loss. Alert fired at P95 latency spike.",
+      "incident_id": "INC-2026-10-05-order-failover-storm",
+      "severity": "SEV-1",
+      "status": "resolved",
+      "title": "Checkout order failover cascade under primary database connection exhaustion",
+      "summary": "Primary PostgreSQL database hit connection pool limits during flash traffic, causing checkout service 503 errors and cascading failover re-attempts.",
+      "impact": {
+        "user_facing": true,
+        "services_affected": [
+          "checkout-service",
+          "order-processor",
+          "payment-gateway"
+        ],
+        "downtime_minutes": 18
+      },
       "timeline": [
         {
-          "time": "10:00",
-          "event": "Store-service 503 rate exceeds 20%; order assignment alerts fire"
+          "timestamp": "2026-10-05T08:12:00Z",
+          "event": "MWMBR 14.4x burn rate alert triggered on checkout-service 5xx errors"
         },
         {
-          "time": "10:15",
-          "event": "SRE confirms store-service memory OOM; restart initiated"
+          "timestamp": "2026-10-05T08:14:30Z",
+          "event": "On-call SRE paged; root trace analysis identified culprit span in connection acquisition"
         },
         {
-          "time": "10:45",
-          "event": "Store-service recovered; COD routing resumed"
+          "timestamp": "2026-10-05T08:21:00Z",
+          "event": "Mitigation applied: connection pooler max_client_conn increased and canary circuit-breaker tripped"
+        },
+        {
+          "timestamp": "2026-10-05T08:30:00Z",
+          "event": "Traffic stabilized; error rates returned to baseline steady-state; incident resolved"
         }
       ],
-      "root_cause": "Store-service OOM due to unindexed query on store_couriers table under batch load",
-      "impact": "89 COD orders assigned to warehouse courier instead of store courier during 45-min window",
-      "action_items": [
-        "Add index on store_couriers.store_id (Data Engineer)",
-        "Add store-service circuit breaker to COD routing (Backend Developer)"
+      "metrics": {
+        "mttd_seconds": 150,
+        "mttm_seconds": 540,
+        "mttr_seconds": 1080
+      },
+      "error_budget_impact": {
+        "burn_rate_peak": 18.5,
+        "budget_consumed_percentage": 14.2,
+        "slo_breached": true,
+        "slo_target_name": "checkout_availability_99_9"
+      },
+      "trace_context": {
+        "root_trace_id": "4bf92f3577b34da6a3ce929d0e0e4736",
+        "culprit_span_id": "00f067aa0ba902b7"
+      },
+      "root_cause_analysis": {
+        "trigger": "Unanticipated flash promo campaign drove 4.5x normal concurrent checkout traffic",
+        "five_whys": [
+          "Checkout requests timed out returning HTTP 503 to end users",
+          "Checkout workers blocked indefinitely waiting for free PostgreSQL connections",
+          "The PgBouncer connection pool max_client_conn was set to 100 while workers scaled to 350 pods",
+          "HPA scaling rules were updated without adjusting database proxy connection quotas",
+          "Capacity planning review checklist lacked an automated validation gate between pod replicas and database connection limits"
+        ],
+        "failure_category": "capacity_exhaustion",
+        "contributing_factors": [
+          "Marketing launch schedule was not communicated to SRE on-call team",
+          "Connection pool metrics were missing saturation threshold alerts at 80% capacity"
+        ]
+      },
+      "mitigation_steps": [
+        "Dynamically resized PgBouncer connection limits from 100 to 500 connections",
+        "Tripped non-essential analytics queries to shed database load"
       ],
-      "status": "resolved"
+      "action_items": [
+        {
+          "action_item_id": "ACT-001",
+          "task": "Automate PgBouncer connection quota scaling with K8s HPA max replicas in deployment-plan",
+          "owner_role": "devops-engineer",
+          "priority": "P0",
+          "target_completion_date": "2026-10-12",
+          "verification_mechanism": "Staging load test verifying connection pool sizing under 500 pods",
+          "ticket_ref": "REL-4021"
+        },
+        {
+          "action_item_id": "ACT-002",
+          "task": "Add MWMBR saturation alert rule at 80% database connection utilization",
+          "owner_role": "sre",
+          "priority": "P1",
+          "target_completion_date": "2026-10-15",
+          "verification_mechanism": "Prometheus alert evaluation test with synthetic metric injection",
+          "ticket_ref": "REL-4022"
+        },
+        {
+          "action_item_id": "ACT-003",
+          "task": "Author Chaos Mesh IOChaos drill verifying database slow-query circuit breaker trip time",
+          "owner_role": "sre",
+          "priority": "P2",
+          "target_completion_date": "2026-10-19",
+          "verification_mechanism": "Execute orchestrate-chaos-experiment game day in staging",
+          "ticket_ref": "REL-4023"
+        }
+      ],
+      "ai_hallucination_factor": false
+    },
+    {
+      "contract_type": "incident-report",
+      "incident_id": "INC-2026-10-04-edge-cache-purge-drift",
+      "severity": "SEV-2",
+      "status": "resolved",
+      "title": "Cloudflare edge cache purge desynchronization causing stale inventory reads",
+      "summary": "An edge worker cache purge failed during a catalog sync, resulting in stale product stock counts.",
+      "impact": {
+        "user_facing": true,
+        "services_affected": [
+          "edge-catalog-worker",
+          "inventory-cache"
+        ],
+        "downtime_minutes": 12
+      },
+      "timeline": [
+        {
+          "timestamp": "2026-10-04T14:02:00Z",
+          "event": "Automated inventory sync triggered Cloudflare purge API call"
+        },
+        {
+          "timestamp": "2026-10-04T14:04:15Z",
+          "event": "Edge cache tag purge timed out with HTTP 504 gateway timeout"
+        },
+        {
+          "timestamp": "2026-10-04T14:09:00Z",
+          "event": "SRE executed manual tag purge via Wrangler CLI and verified edge cache eviction"
+        },
+        {
+          "timestamp": "2026-10-04T14:14:00Z",
+          "event": "Cache coherency confirmed across all edge PoPs"
+        }
+      ],
+      "metrics": {
+        "mttd_seconds": 135,
+        "mttm_seconds": 285,
+        "mttr_seconds": 720
+      },
+      "error_budget_impact": {
+        "burn_rate_peak": 4.2,
+        "budget_consumed_percentage": 3.8,
+        "slo_breached": false,
+        "slo_target_name": "edge_cache_freshness_99_5"
+      },
+      "trace_context": {
+        "root_trace_id": "a1b2c3d4e5f60718293a4b5c6d7e8f90",
+        "culprit_span_id": "1234567890abcdef"
+      },
+      "root_cause_analysis": {
+        "trigger": "Batch inventory update emitted 12,000 tag purges simultaneously exceeding API rate limits",
+        "five_whys": [
+          "Customers saw outdated inventory counts on product detail pages",
+          "Cloudflare edge caches retained old cache entries past the catalog update event",
+          "The cache purge API request timed out and was dropped without retry",
+          "The purge client sent unbatched individual tag purges instead of bulk prefixes",
+          "Edge deployment spec lacked a rate-limited retry queue for batch cache invalidations"
+        ],
+        "failure_category": "software_defect",
+        "contributing_factors": [
+          "No backoff jitter was implemented in the edge purge publisher client"
+        ]
+      },
+      "mitigation_steps": [
+        "Flushed affected catalog tags using global wildcard purge",
+        "Reduced purge batch size in application publisher config"
+      ],
+      "action_items": [
+        {
+          "action_item_id": "ACT-101",
+          "task": "Implement chunked bulk cache invalidation with exponential backoff in edge worker",
+          "owner_role": "cloudflare-engineer",
+          "priority": "P1",
+          "target_completion_date": "2026-10-14",
+          "verification_mechanism": "Unit and integration tests for bulk cache invalidation queue",
+          "ticket_ref": "EDGE-1120"
+        }
+      ],
+      "ai_hallucination_factor": false
     }
   ]
 }

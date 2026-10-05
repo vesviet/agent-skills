@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/sre",
   "contract_type": "agent-card",
   "name": "sre",
-  "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2025–2026, this extends to defining AI/ML-specific SLOs (output quality, inference latency, token cost budget, model drift), treating model degradation as a reliability incident, and operating proactive reliability practices (chaos engineering, error budget burn rate alerts, automated runbooks).",
+  "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2026–2027, this embodies SOTA reliability engineering: Multi-Window Multi-Burn-Rate (MWMBR) error budget governance, automated release freeze gates, kernel-level eBPF socket and network flow telemetry without sidecar tax, OpenTelemetry v1.30+ GenAI semantic conventions (TTFT, token consumption, model drift), proactive chaos engineering (Chaos Mesh / Litmus steady-state verification), and interruptible automated runbooks with diagnostic decision trees.",
   "url": "pack://agent-skills/core/roles/sre.md",
   "version": "5.0.0",
   "protocol_version": "1.0",
@@ -72,7 +72,7 @@
     {
       "id": "add-telemetry-instrumentation",
       "name": "Add Telemetry Instrumentation",
-      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.input_tokens, gen_ai.request.model), multi-agent workflow correlation, RAG step spans, and tool invocation traces.",
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.tokens, gen_ai.response.model, TTFT), kernel-level eBPF socket telemetry, and MWMBR SLI recording rules.",
       "tags": [
         "platform",
         "pack"
@@ -117,6 +117,27 @@
       "description": "Capture, structure, and communicate an incident from triage through resolution and prevention. Use when a production failure, degradation, or security event requires a formal timeline, impact assessment, root cause analysis, and follow-up action items.",
       "tags": [
         "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "incident-report.json"
+      ]
+    },
+    {
+      "id": "orchestrate-chaos-experiment",
+      "name": "Orchestrate Chaos Experiment",
+      "description": "Plan, execute, and verify controlled chaos engineering experiments and game days. Use when validating system resilience, steady-state hypotheses, automated failover, blast radius containment, or disaster recovery under injected faults.",
+      "tags": [
+        "platform",
         "pack"
       ],
       "inputModes": [
