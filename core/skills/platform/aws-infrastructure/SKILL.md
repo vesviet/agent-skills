@@ -1,85 +1,89 @@
 ---
 name: aws-infrastructure
-description: Provision, configure, and optimize AWS managed services following IaC-first discipline. Use when provisioning VPC, EC2, EKS, RDS, Lambda, S3, Bedrock, or SageMaker infrastructure; authoring IAM roles and policies; enforcing FinOps tagging and rightsizing; or configuring CloudWatch, X-Ray, and AWS Config observability.
+description: Provision, configure, and optimize AWS cloud infrastructure via OpenTofu state KMS encryption, Crossplane Go compositions, Bottlerocket distroless EKS nodes, and IAM Zero-Trust. Use when provisioning VPCs, EKS, RDS, S3, Bedrock, or specialized silicon; authoring EKS Pod Identity roles and SCPs; or enforcing FinOps cost tags.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # AWS Infrastructure
 
-Use this skill when designing or deploying AWS-native infrastructure, configuring IAM roles and policies, applying FinOps cost-optimization strategies, or setting up observability for AWS services.
+Use this skill when designing, provisioning, or operating AWS cloud infrastructure using OpenTofu v1.8+ with client-side KMS state encryption, Crossplane v1.16+ Go compositions, Bottlerocket distroless EKS nodes, AWS IAM Zero-Trust, Karpenter autoscaling, Graviton4/Trainium2/Inferentia2 compute, and Amazon Bedrock PrivateLink isolation.
 
 ## When to Use
 
-- provisioning a new VPC, EKS cluster, RDS instance, Lambda, or S3 bucket via IaC
-- authoring or reviewing IAM roles, SCPs, or resource policies for least privilege
-- applying FinOps cost-allocation tags and rightsizing recommendations
-- enabling CloudWatch / X-Ray / AWS Config observability on a service
-- producing the `aws-infra-spec.json` handoff for DevOps or System Engineer
+- provisioning VPCs, Bottlerocket EKS clusters, Aurora/RDS, or S3 storage via OpenTofu or Crossplane
+- authoring IAM roles with EKS Pod Identity (v1.31+) or Control Tower Service Control Policies (SCPs)
+- deploying sidecarless service networking via AWS VPC Lattice (Gateway API) and IAM SigV4 auth
+- configuring Karpenter v1.0+ declarative autoscaling with Graviton4 (c8g, m8g, r8g) and Spot fleets
+- provisioning Amazon Bedrock PrivateLink VPC endpoints with Guardrails v2 (contextual grounding >= 0.7)
+- enforcing FinOps cost allocation tags (`team`, `service`, `environment`, `cost-center`) at apply time
+- emitting the `aws-infra-spec.json` machine handoff for downstream DevOps or System Engineers
 
-## Example (Terraform)
+## Example (OpenTofu KMS & Bottlerocket EKS)
 
 ```hcl
-resource "aws_instance" "app" {
-  ami           = "ami-0abcdef1234567890"
-  instance_type = "t3.micro"
-
-  tags = {
-    "team-id"      = "growth"
-    "service-name" = "checkout"
-    "budget-tier"  = "standard"
-  }
-}
-
-resource "aws_cloudwatch_metric_alarm" "cpu" {
-  alarm_name          = "checkout-cpu-high"
-  comparison_operator = "GreaterThanThreshold"
-  threshold           = 80
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = 300
-  evaluation_periods  = 2
-  dimensions = {
-    InstanceId = aws_instance.app.id
+terraform {
+  encryption {
+    key_provider "aws_kms" "primary" {
+      kms_key_id = "arn:aws:kms:us-east-1:123456789012:key/state-key-uuid"
+      region     = "us-east-1"
+      key_spec   = "AES_256"
+    }
+    method "aes_gcm" "state_encryption" {
+      keys = key_provider.aws_kms.primary
+    }
+    state {
+      method   = method.aes_gcm.state_encryption
+      enforced = true
+    }
+    plan {
+      method   = method.aes_gcm.state_encryption
+      enforced = true
+    }
   }
 }
 ```
 
 ## Core Rules
 
-- **IaC First**: All infrastructure must be defined in CloudFormation, Terraform, or AWS CDK. No manual dashboard clicks in production.
-- **Least Privilege IAM**: All IAM roles and policies must follow the principle of least privilege. Do not use wildcard `*` permissions unless strictly necessary and documented.
-- **FinOps Enforcement**: Apply mandatory cost allocation tags to all resources (`team-id`, `service-name`, `budget-tier`). Implement rightsizing recommendations from Compute Optimizer.
-- **Cross-Layer Awareness**: Coordinate with System Engineer for OS and network requirements, and DevOps Engineer for deployment pipelines.
-- **EKS-AUTO-MODE**: Use EKS Auto Mode (GA 2026, Karpenter-based) for new clusters — eliminates manual node group management; Karpenter auto-provisions right-sized Graviton4 nodes on demand based on pending pod requirements.
-- **GRAVITON4-FIRST**: Default all new compute to AWS Graviton4 (C8g, M8g, R8g) for 20-30% lower cost and 10-15% better performance vs x86 equivalents; build multi-arch images (`linux/amd64,linux/arm64`) as standard practice.
-- **IAM-IDENTITY-CENTER**: All human and CI/CD access MUST use IAM Identity Center (SSO) with short-lived credentials. Prohibit creation of IAM Users with AKIA* long-lived access keys via SCP (`iam:CreateAccessKey` deny at root OU).
-- **BEDROCK-GUARDRAILS-V2**: All production Bedrock endpoints MUST have Guardrails v2 with contextual grounding enabled — configure grounding threshold ≥ 0.7 to block hallucinated responses not grounded in the provided context.
-- **S3-EXPRESS-AIWORKLOADS**: Use S3 Express One Zone for AI/ML training data, embedding caches, and high-throughput inference checkpoints requiring < 10ms latency at scale; standard S3 for compliance/backup/audit storage.
+- **OPENTOFU-KMS-LOCK**: All IaC state and plans must be client-side encrypted in-memory via OpenTofu v1.8+ using AWS KMS (AES-GCM) with `enforced = true`; unencrypted remote state in S3 is prohibited.
+- **CROSSPLANE-COMPOSITION-LOCK**: Universal cloud control planes must use Crossplane v1.16+ Compositions powered by compiled Go functions (`function-go-templating`) or KCL; unstructured YAML patch-and-transform is banned.
+- **BOTTLEROCKET-LOCK**: EKS node pools must run AWS Bottlerocket distroless container OS (`amiFamily: Bottlerocket` in `EC2NodeClass`) with SELinux enforcing and dm-verity integrity; general-purpose Linux with shells is prohibited.
+- **AWS-IAM-ZERO-TRUST-LOCK**: Enforce IAM Identity Center for humans and EKS Pod Identity (v1.31+) with `pods.eks.amazonaws.com` for workloads; ban static IAM users and long-lived AKIA keys via root SCP.
+- **KARPENTER-AUTOSCALING-LOCK**: Compute autoscaling must use Karpenter v1.0+ `NodePool` manifests with `WhenEmptyOrUnderutilized` consolidation and disruption budgets; static node groups are prohibited.
+- **GRAVITON4-FIRST-LOCK**: Default compute to AWS Graviton4 (c8g, m8g, r8g); Trainium2 (trn2) and Inferentia2 (inf2) for AI/ML; enforce multi-architecture images (`linux/arm64,linux/amd64`) in CI/CD.
+- **VPC-LATTICE-LOCK**: Cross-VPC and cross-account service networking must route through AWS VPC Lattice via Gateway API (`amazon-vpc-lattice`) with IAM SigV4 auth; proxy sidecars are prohibited.
+- **BEDROCK-ISOLATION-LOCK**: Bedrock endpoints must route exclusively through PrivateLink VPC endpoints; enforce Guardrails v2 with contextual grounding >= 0.7 and token-level cost attribution.
+- **FINOPS-LOCK**: Apply mandatory cost allocation tags (`team`, `service`, `environment`, `cost-center`) enforced via SCP at creation time; review Compute Optimizer rightsizing monthly.
+- **GITOPS-LOCK**: All infrastructure state changes must be committed and reviewed before apply; zero console click-ops.
 
 ## Suggested Process
 
-### Step 1: Collect Inputs
-Gather requirements, including capacity needs, network topology inputs from System Engineer, security constraints, and cost limits.
+### Step 1: Collect Architecture & FinOps Requirements
+Ingest system topology from System Engineer (`system-design-spec.json`), security mandates, compliance constraints, and cost allocation tags (`team`, `service`, `environment`, `cost-center`).
 
-### Step 2: Design Architecture
-Draft the AWS architecture, mapping out VPCs, subnets, managed services (EKS, RDS, Lambda), and AI services (Bedrock, SageMaker). 
+### Step 2: Establish Network, Identity & Governance Foundations
+Configure multi-account landing zone SCPs, IAM Identity Center, VPC subnets, PrivateLink endpoints, and AWS VPC Lattice Service Network with IAM SigV4 authorization policies.
 
-### Step 3: Author IAM and Security Policies
-Draft IAM roles, resource policies, and SCPs. Submit them to the Security Engineer for review and approval.
+### Step 3: Author IAM Roles & Workload Federation
+Author customer-managed IAM roles with EKS Pod Identity trust policies (`pods.eks.amazonaws.com`). Submit IAM definitions to Security Engineer and validate with IAM Access Analyzer.
 
-### Step 4: Implement IaC
-Write the infrastructure code. Ensure all FinOps tags are applied and observability tools (CloudWatch, X-Ray) are enabled.
+### Step 4: Provision Compute, Storage & Managed AI via IaC
+Deploy OpenTofu v1.8+ modules with KMS state encryption or Crossplane Go compositions. Configure Bottlerocket EKS clusters, Karpenter Graviton4 NodePools, Aurora Multi-AZ, and Bedrock PrivateLink endpoints.
 
-### Step 5: Validate and Output
-Test the IaC in a staging environment. Produce the `aws-infra-spec.json` handoff document to specify the provisioned resources, endpoints, and IAM roles.
+### Step 5: Validate, Verify & Emit Machine Contract
+Verify CIS benchmarks via AWS Config and telemetry via ADOT/CloudWatch. Emit `contracts/schemas/aws-infra-spec.json` for downstream DevOps Engineer consumption.
 
 ## Checklist
 
-- [ ] All resources defined in IaC.
-- [ ] IAM roles and policies follow least privilege and have been reviewed by Security Engineer.
-- [ ] Mandatory FinOps tags are applied to all taggable resources.
-- [ ] Observability (CloudWatch, X-Ray) is configured for relevant services.
-- [ ] `aws-infra-spec.json` is generated for downstream consumption.
+- [ ] OpenTofu client-side state KMS encryption configured with `enforced = true` on state and plan.
+- [ ] Crossplane Compositions authoring with compiled Go functions (`function-go-templating`) or KCL.
+- [ ] EKS worker nodes run Bottlerocket distroless OS with SELinux enforcing and dm-verity active.
+- [ ] Zero static AKIA access keys; workload credentials federated via EKS Pod Identity (v1.31+).
+- [ ] Karpenter v1.0+ autoscaling configured with Graviton4 and `WhenEmptyOrUnderutilized` consolidation.
+- [ ] VPC Lattice Gateway API configured with IAM SigV4 authorization; zero proxy sidecars.
+- [ ] Bedrock accessed exclusively via PrivateLink; Guardrails v2 configured with grounding >= 0.7.
+- [ ] Mandatory cost allocation tags (`team`, `service`, `environment`, `cost-center`) enforced by SCP.
+- [ ] `contracts/schemas/aws-infra-spec.json` emitted and validated against schema.
 
 ## Output Contracts
 
@@ -92,25 +96,25 @@ Skip emission for local sandbox experimentation where no cloud resources are pro
 
 ## Failure Modes
 
-- **Manual dashboard change**: a resource is created or modified via the AWS console without IaC. Mitigation: enforce IaC-only via SCP; surface drift as a CI failure.
-- **Wildcard IAM permission**: a policy grants `Action: "*"` on `Resource: "*"`. Mitigation: reject wildcard policies at code review; require least-privilege justification.
-- **Missing FinOps tags**: a resource is provisioned without `team-id`, `service-name`, `budget-tier`. Mitigation: enforce tag policy via AWS Config; reject untagged resources in IaC.
-- **Long-lived access key**: an IAM user with `AKIA*` key is created. Mitigation: enforce `iam:CreateAccessKey` deny SCP at the root OU; require IAM Identity Center for all human/CI access.
-- **Bedrock without Guardrails**: a Bedrock endpoint is deployed without Guardrails v2. Mitigation: enforce Guardrails v2 with grounding threshold ≥ 0.7; reject ungrounded endpoints.
-- **VRAM under-provisioned**: GPU memory allocation ignores KV cache + activation + safety headroom. Mitigation: enforce the GPU-VRAM formula at design time; require ≥ 15% headroom.
-- **Multi-arch image missing**: a container image is built for `linux/amd64` only. Mitigation: enforce multi-arch build (`linux/amd64,linux/arm64`) in CI; default to Graviton4.
+- **Unencrypted State in S3**: IaC state stored unencrypted. Mitigation: Enforce `OPENTOFU-KMS-LOCK` with AES-GCM client-side encryption and S3 bucket policy denying unencrypted uploads.
+- **Drift in Control Planes**: Cloud resources drift out-of-band. Mitigation: Enforce `CROSSPLANE-COMPOSITION-LOCK` with closed-loop reconciliation and compiled Go functions.
+- **Host Compromise on Worker Nodes**: SSH or shell injection into host. Mitigation: Enforce `BOTTLEROCKET-LOCK`; distroless root filesystem with dm-verity halts modified nodes.
+- **Leaked Long-Lived Credentials**: AKIA key compromised. Mitigation: Enforce `AWS-IAM-ZERO-TRUST-LOCK`; root SCP denies `iam:CreateAccessKey`; use IAM Identity Center and EKS Pod Identity.
+- **Ungrounded LLM Responses**: AI hallucination or prompt injection. Mitigation: Enforce `BEDROCK-ISOLATION-LOCK` with Guardrails v2 contextual grounding >= 0.7 and PrivateLink.
+- **Unattributed Cloud Spending**: Resources created without tags. Mitigation: Enforce `FINOPS-LOCK`; SCP denies resource creation missing `team`, `service`, `environment`, or `cost-center`.
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI03 Identity & Privilege Abuse**: IAM roles must follow least privilege; reject wildcard policies; require IAM Identity Center with short-lived credentials.
-- **ASI04 Supply Chain**: Bedrock Guardrails v2 must be enabled on all production endpoints; S3 buckets must enforce `aws:SecureTransport` and block public access by default.
-- **ASI05 RCE Guard**: never construct IAM policy JSON, user data scripts, or SSM commands from external or user-supplied content without strict schema validation.
-- **ASI07 Inter-Agent Communication**: the `aws-infra-spec.json` is consumed by multiple downstream roles; treat it as a public contract and review all changes before deploy.
-- **ASI09 Human-Agent Trust Exploitation**: do not present an architecture as "least privilege" without a wildcard scan; surface any remaining wildcards honestly.
+- **ASI03 Identity & Privilege Abuse**: Enforce EKS Pod Identity and IAM Identity Center; reject wildcard permissions; run IAM Access Analyzer before apply.
+- **ASI04 Supply Chain**: Mandate Bottlerocket distroless AMI and ECR immutable KMS-encrypted repositories; verify Bedrock PrivateLink isolation.
+- **ASI05 RCE Guard**: Never execute unvalidated scripts on EC2 hosts; manage Bottlerocket via transactional `apiclient` API without interactive shells.
+- **ASI07 Inter-Agent Communication**: Treat `aws-infra-spec.json` as authoritative contract; validate schema before handing off to DevOps Engineer.
+- **ASI09 Human-Agent Trust Exploitation**: Always surface wildcard permissions and unencrypted endpoints honestly; do not claim compliance without verification.
 
 ## Related Skills
 
-- **system-design**: For cross-cloud and underlying OS/network topology.
-- **setup-deployment**: For building deployment pipelines on top of the provisioned AWS infrastructure.
-- **manage-secrets**: For configuring AWS Secrets Manager and rotation policies.
-- **security-audit**: For reviewing IAM roles and AWS security posture.
+- **setup-deployment**: For deploying application workloads and GitOps pipelines on top of provisioned AWS infrastructure.
+- **add-telemetry-instrumentation**: For configuring ADOT collectors, CloudWatch Application Signals, and X-Ray tracing.
+- **manage-secrets**: For configuring AWS Secrets Manager and External Secrets Operator (ESO) integration.
+- **security-audit**: For auditing IAM policies, SCPs, and CIS AWS Foundations benchmarks.
+- **system-design**: For cross-cloud architecture and hardware capacity modeling.

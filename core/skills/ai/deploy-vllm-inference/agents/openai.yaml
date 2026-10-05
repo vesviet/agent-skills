@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy vLLM Inference"
+  short_description: "Deploy, scale, and optimize high-throughput LLM inference workloads using vLLM v1 PagedAttention."
+  default_prompt: "Use $deploy-vllm-inference to deploy, scale, and configure production vLLM inference clusters."

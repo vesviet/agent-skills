@@ -516,6 +516,14 @@ SKILL_ALIASES = {
     "mmo_campaign": ["setup-tracking-system", "generate-mmo-content", "analyze-campaign-roi"],
     "mmo_growth": ["deploy-mmo-infrastructure", "create-automation-script", "setup-tracking-system"],
     "growth_stack": ["setup-tracking-system", "analyze-campaign-roi"],
+
+    # AI & Model Inference
+    "deploy_vllm_inference": ["deploy-vllm-inference"],
+    "deploy-vllm": ["deploy-vllm-inference"],
+    "vllm": ["deploy-vllm-inference"],
+    "vllm_inference": ["deploy-vllm-inference"],
+    "paged_attention": ["deploy-vllm-inference"],
+    "radix_cache": ["deploy-vllm-inference"],
 }
 
 

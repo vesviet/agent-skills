@@ -31,6 +31,7 @@ SCHEMAS_ROOT = CORE_ROOT / "contracts" / "schemas"
 
 CANONICAL_TAGS = {
     "agent": "agent",
+    "ai": "ai",
     "backend": "backend",
     "frontend": "frontend",
     "platform": "platform",

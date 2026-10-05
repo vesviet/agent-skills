@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 125 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **137 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 126 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **138 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -39,6 +39,12 @@ Configuration and compliance skills for agentic-ready web presence (MCP, RFC 972
 - `debug-identity-provider`
 - `manage-api-catalog`
 - `manage-auth-md`
+
+### AI (1)
+
+High-throughput LLM inference serving, GPU resource allocation, and distributed acceleration:
+
+- `deploy-vllm-inference`
 
 ### Foundation (14)
 
@@ -255,6 +261,7 @@ Overlay-specific skills (site stacks, ICM, content data, R3F) live under `overla
 | Columnar database architecture, sparse indexing, ClickHouse / DuckDB tuning | `optimize-olap-database` | Data Engineer role |
 | In-process embedded analytical SQL (chDB, DuckDB), cross-source joins | `query-analytical-engine` | Data Analyst role |
 | Controlled chaos engineering, steady-state verification, game day drills | `orchestrate-chaos-experiment` | SRE role |
+| High-throughput LLM serving, vLLM v1 PagedAttention, DRA GPU scheduling | `deploy-vllm-inference` | AI Systems Engineer role |
 
 ## Backlog (not yet skills)
 

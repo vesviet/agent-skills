@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/ai-systems-engineer",
   "contract_type": "agent-card",
   "name": "ai-systems-engineer",
-  "description": "architect, deploy, evaluate, and optimize production-grade AI and LLM systems — bridging machine learning models with resilient backend serving infrastructure, intelligent LLM gateways, structured output enforcement, and empirical evaluation frameworks while enforcing GPU FinOps and defense-in-depth against prompt injection and model drift.",
+  "description": "architect, deploy, evaluate, and optimize production-grade AI and LLM systems — bridging machine learning models with resilient backend serving infrastructure, intelligent LLM gateways, structured output enforcement, and empirical evaluation frameworks while enforcing GPU FinOps, hardware-partitioned accelerator orchestration, knowledge distillation from frontier models to Small Language Models (SLMs), and defense-in-depth against prompt injection and model drift.",
   "url": "pack://agent-skills/core/roles/ai-systems-engineer.md",
   "version": "5.0.0",
   "protocol_version": "1.0",
@@ -27,6 +27,29 @@
     "json"
   ],
   "skills": [
+    {
+      "id": "deploy-vllm-inference",
+      "name": "Deploy Vllm Inference",
+      "description": "Deploy, configure, scale, and optimize high-throughput LLM inference workloads using vLLM v1 PagedAttention. Use when serving self-hosted open models (DeepSeek-R1, Qwen2.5, Llama 3.3) on Kubernetes with Dynamic Resource Allocation (DRA), NVIDIA MIG slicing, dynamic chunked prefill, prefix caching, and multi-tier KV cache offloading.",
+      "tags": [
+        "ai",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "performance-audit.json",
+        "system-design-spec.json",
+        "test-report.json"
+      ]
+    },
     {
       "id": "setup-llm-gateway",
       "name": "Setup Llm Gateway",

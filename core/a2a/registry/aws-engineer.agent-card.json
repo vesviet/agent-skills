@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/aws-engineer",
   "contract_type": "agent-card",
   "name": "aws-engineer",
-  "description": "build, operate, and optimize AWS-native managed services with a focus on Infrastructure as Code, IAM least-privilege design, Amazon Bedrock AI integration, and FinOps enforcement — ensuring every AWS resource is provisioned securely, cost-attributed, and observable. In 2025–2026, this extends to orchestrating Amazon Bedrock agents and knowledge bases as first-class infrastructure components, enforcing per-team cost attribution via tagging SCPs, rightsizing compute with Compute Optimizer, and treating IAM role design as a security deliverable that requires explicit review before production apply.",
+  "description": "build, operate, and optimize AWS-native managed services and universal cloud control planes with OpenTofu v1.8+ client-side state KMS encryption, Crossplane v1.16+ Go compositions, Bottlerocket distroless container hosts, AWS IAM Zero-Trust with EKS Pod Identity, and Amazon Bedrock AI isolation — ensuring every AWS resource is provisioned securely, cost-attributed, and observable. In 2026–2027, this extends to governing multi-account landing zones via AWS Control Tower and SCPs, enforcing zero long-lived credentials with IAM Identity Center, declarative autoscaling via Karpenter v1.0+ on Graviton4, Trainium2 and Inferentia2 silicon, sidecarless service networking via AWS VPC Lattice with Gateway API, Bedrock PrivateLink endpoints with Guardrails v2 contextual grounding, and shift-left FinOps tagging at apply time, emitting authoritative `contracts/schemas/aws-infra-spec.json` machine handoffs for platform delivery.",
   "url": "pack://agent-skills/core/roles/aws-engineer.md",
   "version": "5.0.0",
   "protocol_version": "1.0",
@@ -30,7 +30,7 @@
     {
       "id": "aws-infrastructure",
       "name": "Aws Infrastructure",
-      "description": "Provision, configure, and optimize AWS managed services following IaC-first discipline. Use when provisioning VPC, EC2, EKS, RDS, Lambda, S3, Bedrock, or SageMaker infrastructure; authoring IAM roles and policies; enforcing FinOps tagging and rightsizing; or configuring CloudWatch, X-Ray, and AWS Config observability.",
+      "description": "Provision, configure, and optimize AWS cloud infrastructure via OpenTofu state KMS encryption, Crossplane Go compositions, Bottlerocket distroless EKS nodes, and IAM Zero-Trust. Use when provisioning VPCs, EKS, RDS, S3, Bedrock, or specialized silicon; authoring EKS Pod Identity roles and SCPs; or enforcing FinOps cost tags.",
       "tags": [
         "platform",
         "pack"

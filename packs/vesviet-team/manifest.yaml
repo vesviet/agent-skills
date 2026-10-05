@@ -102,29 +102,29 @@ swarm_pipeline:
   phase_5: "Reviewer sign-off & Index synchronization"
 
 corpus:
-  snapshot: "2026-10-04"
+  snapshot: "2026-10-05"
   vesviet:
     total_files: 9646
-    content_files: 379
+    content_files: 380
     posts: 66
     series: 251
     series_dirs: 25
     series_files: 251
-    radar_files: 39
-    radar_editions: 31
+    radar_files: 40
+    radar_editions: 32
     categories: 16
     reports: 358
     pillar_hubs: 10
     total_words: 1054728
   learn:
     total_files: 7534
-    content_files: 438
+    content_files: 439
     posts: 86
     series: 251
     series_dirs: 25
     series_files: 251
-    radar_files: 75
-    radar_editions: 67
+    radar_files: 76
+    radar_editions: 68
     docs: 3
     categories: 15
     reports: 336

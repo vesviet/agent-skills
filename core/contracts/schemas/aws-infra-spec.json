@@ -2,40 +2,185 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "pack://agent-skills/core/contracts/schemas/aws-infra-spec.json",
   "title": "AWS Infrastructure Specification",
-  "description": "Machine-readable AWS infrastructure handoff produced by the AWS Engineer.",
+  "description": "Machine-readable AWS infrastructure handoff produced by the AWS Engineer detailing provisioned cloud resources, endpoints, IAM roles, and FinOps cost allocation.",
   "type": "object",
   "properties": {
     "contract_type": {
       "type": "string",
-      "const": "aws-infra-spec"
+      "const": "aws-infra-spec",
+      "description": "Machine-readable contract discriminator."
     },
     "spec_id": {
       "type": "string",
-      "format": "uuid"
+      "format": "uuid",
+      "description": "Unique identifier for this infrastructure specification."
     },
     "system_name": {
-      "type": "string"
+      "type": "string",
+      "description": "Name of the system or workload platform."
     },
     "aws_account": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^[0-9]{12}$",
+      "description": "12-digit AWS account ID hosting the infrastructure."
     },
     "region": {
-      "type": "string"
+      "type": "string",
+      "description": "Target AWS region (e.g. us-east-1, eu-west-1)."
     },
     "resource_map": {
-      "type": "object"
+      "type": "object",
+      "description": "Map of provisioned AWS resources, network identifiers, and endpoints.",
+      "properties": {
+        "vpc_id": {
+          "type": "string",
+          "description": "VPC identifier."
+        },
+        "private_subnet_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of private subnet IDs for workloads."
+        },
+        "public_subnet_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of public subnet IDs for ingress."
+        },
+        "isolated_subnet_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of isolated subnet IDs for databases."
+        },
+        "eks_cluster_name": {
+          "type": "string",
+          "description": "Name of the provisioned EKS cluster."
+        },
+        "eks_cluster_endpoint": {
+          "type": "string",
+          "format": "uri",
+          "description": "API server endpoint for the EKS cluster."
+        },
+        "eks_pod_identity_enabled": {
+          "type": "boolean",
+          "description": "Whether AWS EKS Pod Identity (v1.31+) is enabled."
+        },
+        "ecr_repository_uris": {
+          "type": "object",
+          "description": "Map of service names to ECR repository URIs."
+        },
+        "kms_key_arns": {
+          "type": "object",
+          "description": "Map of storage domains to customer-managed KMS key ARNs."
+        },
+        "vpc_lattice_sn_id": {
+          "type": "string",
+          "description": "VPC Lattice Service Network identifier."
+        }
+      },
+      "required": [
+        "vpc_id",
+        "private_subnet_ids"
+      ]
     },
     "iam_roles": {
-      "type": "array"
+      "type": "array",
+      "description": "List of authored IAM roles and workload trust associations.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role_name": {
+            "type": "string",
+            "description": "IAM role name."
+          },
+          "role_arn": {
+            "type": "string",
+            "description": "Amazon Resource Name of the IAM role."
+          },
+          "service_principal": {
+            "type": "string",
+            "description": "Trusted service principal (e.g. pods.eks.amazonaws.com)."
+          }
+        },
+        "required": [
+          "role_name",
+          "role_arn",
+          "service_principal"
+        ]
+      }
     },
     "cost_attribution": {
-      "type": "object"
+      "type": "object",
+      "description": "FinOps cost allocation tags enforced across resources.",
+      "properties": {
+        "team": {
+          "type": "string",
+          "description": "Owning team or engineering squad."
+        },
+        "service": {
+          "type": "string",
+          "description": "Microservice or application name."
+        },
+        "environment": {
+          "type": "string",
+          "description": "Deployment environment (production, staging, dev)."
+        },
+        "cost_center": {
+          "type": "string",
+          "description": "Organizational cost center code."
+        }
+      },
+      "required": [
+        "team",
+        "service",
+        "environment",
+        "cost_center"
+      ]
     },
     "monitoring_config": {
-      "type": "object"
+      "type": "object",
+      "description": "Observability configuration including CloudWatch log groups and telemetry endpoints.",
+      "properties": {
+        "cloudwatch_log_group": {
+          "type": "string",
+          "description": "Primary CloudWatch log group path."
+        },
+        "adot_xray_endpoint": {
+          "type": "string",
+          "description": "AWS Distro for OpenTelemetry / X-Ray ingestion endpoint."
+        }
+      }
     },
     "iac_reference": {
-      "type": "object"
+      "type": "object",
+      "description": "Metadata referencing the authoritative IaC repository, engine, and state encryption.",
+      "properties": {
+        "engine": {
+          "type": "string",
+          "description": "IaC engine (opentofu, terraform, crossplane, cdk)."
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the IaC engine."
+        },
+        "state_encryption": {
+          "type": "string",
+          "description": "Client-side state encryption provider (e.g. aws_kms)."
+        },
+        "repository": {
+          "type": "string",
+          "description": "Repository storing the IaC manifests."
+        },
+        "module_path": {
+          "type": "string",
+          "description": "Relative module path within the repository."
+        }
+      }
     }
   },
   "required": [
@@ -47,5 +192,57 @@
     "resource_map",
     "iam_roles",
     "cost_attribution"
+  ],
+  "examples": [
+    {
+      "contract_type": "aws-infra-spec",
+      "spec_id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+      "system_name": "checkout-platform",
+      "aws_account": "123456789012",
+      "region": "us-east-1",
+      "resource_map": {
+        "vpc_id": "vpc-0a1b2c3d4e5f6g7h8",
+        "private_subnet_ids": [
+          "subnet-01111111111111111",
+          "subnet-02222222222222222",
+          "subnet-03333333333333333"
+        ],
+        "eks_cluster_name": "prod-us-east-1-cluster",
+        "eks_cluster_endpoint": "https://A1B2C3D4E5F6G7H8I9J0.gr7.us-east-1.eks.amazonaws.com",
+        "eks_pod_identity_enabled": true,
+        "ecr_repository_uris": {
+          "checkout_service": "123456789012.dkr.ecr.us-east-1.amazonaws.com/checkout-service"
+        },
+        "kms_key_arns": {
+          "ebs": "arn:aws:kms:us-east-1:123456789012:key/ebs-key-uuid",
+          "secrets": "arn:aws:kms:us-east-1:123456789012:key/secrets-key-uuid"
+        },
+        "vpc_lattice_sn_id": "sn-0123456789abcdef0"
+      },
+      "iam_roles": [
+        {
+          "role_name": "CheckoutServiceWorkloadRole",
+          "role_arn": "arn:aws:iam::123456789012:role/CheckoutServiceWorkloadRole",
+          "service_principal": "pods.eks.amazonaws.com"
+        }
+      ],
+      "cost_attribution": {
+        "team": "checkout",
+        "service": "checkout-service",
+        "environment": "production",
+        "cost_center": "cc-4020"
+      },
+      "monitoring_config": {
+        "cloudwatch_log_group": "/aws/eks/prod-us-east-1-cluster/cluster",
+        "adot_xray_endpoint": "xray.us-east-1.amazonaws.com"
+      },
+      "iac_reference": {
+        "engine": "opentofu",
+        "version": "1.8.2",
+        "state_encryption": "aws_kms",
+        "repository": "github.com/org/aws-infrastructure",
+        "module_path": "modules/eks-cluster"
+      }
+    }
   ]
 }

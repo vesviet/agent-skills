@@ -32,7 +32,7 @@
       "role": "aws-engineer",
       "agent_card": "core/a2a/registry/aws-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/aws-engineer.md",
-      "description": "build, operate, and optimize AWS-native managed services with a focus on Infrastructure as Code, IAM least-privilege des"
+      "description": "build, operate, and optimize AWS-native managed services and universal cloud control planes with OpenTofu v1.8+ client-s"
     },
     {
       "role": "backend-developer",

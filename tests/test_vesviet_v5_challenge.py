@@ -75,13 +75,13 @@ class TestCorpusMetricsConsistency(unittest.TestCase):
         v = c.get("vesviet", {})
         l = c.get("learn", {})
 
-        # Authoritative snapshot counts (supports historical baseline and 2026-10-04 live snapshot)
+        # Authoritative snapshot counts (supports historical baseline, 2026-10-04, and 2026-10-05 live snapshots)
         expected_v = {
-            "content_files": (374, 379),
+            "content_files": (374, 379, 380),
             "posts": 66,
             "series_dirs": 25,
             "series_files": 251,
-            "radar_files": (34, 39),
+            "radar_files": (34, 39, 40),
             "reports": (296, 358),
         }
         for k, exp in expected_v.items():
@@ -91,11 +91,11 @@ class TestCorpusMetricsConsistency(unittest.TestCase):
                 self.assertEqual(v.get(k), exp, f"vesviet manifest {k} mismatch: got {v.get(k)}, expected {exp}")
 
         expected_l = {
-            "content_files": (433, 438),
+            "content_files": (433, 438, 439),
             "posts": 86,
             "series_dirs": 25,
             "series_files": 251,
-            "radar_files": (70, 75),
+            "radar_files": (70, 75, 76),
             "docs": 3,
             "reports": (276, 336),
         }
