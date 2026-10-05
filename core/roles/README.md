@@ -2,6 +2,10 @@
 
 This directory defines reusable roles for the full software delivery lifecycle.
 
+> **Master Roles Inventory**: **35 Roles** | **19 Dedicated Review Checklists** (in `references/`) | **A2A 1.0 JSON-RPC/SSE Native**  
+> **SOTA 2026–2027 Standards**: Flagship Tier 1 roles equipped with 12–24 Architectural Guardrail Locks, production tech stacks, and dedicated challenge test suites  
+> **Authoritative Audit Matrix**: [`reports/role-skill-matrix-sota-audit-2026-2027.md`](../../reports/role-skill-matrix-sota-audit-2026-2027.md)
+
 The roles are global by default. They are meant to adapt to the active repository, product domain, and team structure instead of forcing one process on every project.
 
 All roles in this directory are defined at a principal or master-practitioner level. They are expected to operate with strong judgment, broad system awareness, clear ownership across functions, and explicit impact analysis when behavior changes.

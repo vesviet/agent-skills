@@ -1,16 +1,27 @@
 # Engineering Agent Skills
 
-Global engineering skill pack for software delivery work.
+Global engineering skill pack for multi-agent software delivery, platform architecture, and autonomous swarms.
 
-**Version 5.0.0** is a **Standard 2026 consistency upgrade**. It adds the optional `## Failure Modes` and `## Output Contracts` sections to every skill, role, and workflow in the pack, and `## Security Guardrails (OWASP ASI)` to the security-sensitive ones. It also makes `action-boundaries.yaml` fail-closed by adding explicit `denied` tier placement for every previously-unclassified infra/deploy verb, brings `check-policy.py` up to 2026 with `--emit-audit` (OCSF 99001) and `AGENT_ACTIVE_ROLE_LEVEL=read_only` tier downgrades, and extends `mcp-tool-map.yaml` to cover Python `uv` / `poetry` / `pipx`, Docker, `kubectl delete` / `rollout`, the GitHub CLI, and `npx`. The `## Standard 2026 Alignment` footer is added to every prose file in the pack (root docs, adapters, overlay rules, overlay READMEs) so the pattern is visible at every level. No breaking changes.
+> **Master Catalog**: **35 Roles** | **138 Skills** (126 Core + 12 Overlays) | **25 Workflows** | **54 Data Contract Schemas**  
+> **Master Index & Router**: [`INDEX.md`](INDEX.md) | **Machine Registry**: [`core/a2a/.well-known/role-skill-index.json`](core/a2a/.well-known/role-skill-index.json)  
+> **Engineering Baseline**: SOTA 2026–2027 Standards (Go 1.25+, Python 3.12+/3.13, React 19, Node 22/24 LTS, K8s 1.30+/1.31, vLLM v1 PagedAttention, OpenTofu v1.8+ KMS, Crossplane v1.16+, Bottlerocket, OWASP ASI, EU AI Act, PDPL 2025)  
+> **Authoritative SOTA Audit**: [`reports/role-skill-matrix-sota-audit-2026-2027.md`](reports/role-skill-matrix-sota-audit-2026-2027.md)
 
-Version 4.0.0 was a corrective release from a full-pack audit. It fixes external-standard claims that were wrong or unsourced (WCAG 2.2 criterion numbering and a non-existent ARIA attribute, x402 v2 header names, ACP discovery paths, A2A event and signing details, the MCP baseline revision), resolves role ownership contradictions and policy-boundary conflicts, restores the strict commit gate across all workflows, and adds four validators so each of those drift classes fails the quality gate instead of passing silently.
+**Version 5.0.0** (SOTA 2026–2027 Baseline) is a major engineering and architectural evolution. It standardizes multi-agent swarms under the A2A 1.0 JSON-RPC/SSE protocol, equips key roles with rigorous Architectural Guardrail Locks and dedicated multi-section review checklists, and integrates cutting-edge cloud-native and AI serving primitives:
+- **AI Systems & LLM Serving**: Upgraded `ai-systems-engineer` with vLLM v1 PagedAttention, chunked prefill, prefix caching, K8s 1.31+ Dynamic Resource Allocation (DRA), NVIDIA MIG GPU slicing, DeepSeek-R1 SLM distillation, FastMCP, and LiteLLM spend governance; accompanied by the exclusive `deploy-vllm-inference` skill.
+- **Cloud Infrastructure & AWS**: Upgraded `aws-engineer` with OpenTofu v1.8+ client-side state KMS encryption, Crossplane v1.16+ Go compositions, Bottlerocket distroless worker nodes, Graviton4 (`c8g`, `m8g`), Trainium2 / Inferentia2 accelerators, and Zero-Trust IAM Identity Center; and `devops-engineer` with Pillar 8 AWS Cloud-Native Delivery (EKS Pod Identity, Karpenter v1.0, VPC Lattice Gateway API) and the exclusive `deploy-aws-eks-workloads` skill.
+- **Site Reliability & Resilience**: Upgraded `sre` with Multi-Window Multi-Burn-Rate (MWMBR) SLO alerting, eBPF Tetragon runtime telemetry, Toxiproxy chaos injection, and GenAI blameless RCA.
+- **Product & Requirements Governance**: Upgraded `business-analyst` with Event Storming, Elephant Carpentry vertical slicing, BDD invariants, and EU AI Act / PDPL 2025 conformity.
+- **Domain Accounting & Legal**: Hardened `vietnam-accounting-specialist` (VAS 14, Circular 200/99, Balanced Ledger $\sum \text{Debits} \equiv \sum \text{Credits}$) and `vietnam-legal-counsel` (PDPL 2025, AI Law 134/2025/QH15).
+- **Core Governance & Fail-Closed Policies**: Added `## Failure Modes` and `## Output Contracts` sections to all skills and roles, `## Security Guardrails (OWASP ASI)` for security-critical actions, fail-closed `action-boundaries.yaml`, and 17 automated core validators.
 
-Version 3.4.0 refreshed the pack to 2026 standards — the MCP 2026-07-28 stateless spec with AAIF (Linux Foundation) governance, the corrected EU AI Act timeline, the agentic commerce protocol landscape (ACP, UCP, MPP, x402, AP2), first-party on-device LLM frameworks, and the European Accessibility Act — and added the `audit-content` skill plus the `content-audit` workflow.
+Version 4.0.0 was a corrective release from a full-pack audit. It fixed external-standard claims (WCAG 2.2 criterion numbering, x402 v2 header names, ACP discovery paths, A2A event and signing details, MCP baseline revision), resolved role ownership contradictions, and restored strict commit gates across all workflows.
 
-The repository is now split into a portable **core** plus optional **overlays** so global teams can reuse the foundation without inheriting repo-specific or brand-specific assumptions.
+Version 3.4.0 refreshed the pack to 2026 standards — the MCP 2026-07-28 stateless spec with AAIF (Linux Foundation) governance, corrected EU AI Act timeline, agentic commerce protocol landscape (ACP, UCP, MPP, x402, AP2), first-party on-device LLM frameworks, and the European Accessibility Act.
 
-As of 2026, the core pack reflects the industry shift from ad-hoc prompting to **Context Engineering** and **PromptOps**: prompts are treated as versioned, testable assets; tool integration follows the **Model Context Protocol (MCP)** standard; and prompt quality is measured through automated evaluation rather than gut-feel assessment.
+The repository is organized into a portable **core** plus optional **overlays** so global engineering teams can reuse the foundation without inheriting repo-specific or brand-specific assumptions.
+
+As of 2026–2027, the core pack reflects the industry shift from ad-hoc prompting to **Context Engineering**, **PromptOps**, and **Autonomous Multi-Agent Swarms**: prompts are treated as versioned, testable assets; tool integration follows the **Model Context Protocol (MCP)** standard; and agent outputs validate against formal JSON Schema contracts.
 
 ## Repository Layout
 
@@ -124,12 +135,13 @@ Overlay-specific skills are intentionally kept out of the global core inventory.
 
 | Domain | Representative skills |
 |--------|-----------------------|
+| AI | `deploy-vllm-inference`, `build-mcp-server`, `setup-llm-gateway`, `setup-gpu-finops` |
 | Backend | `add-api-endpoint`, `add-event-handler`, `add-service-client`, `scaffold-new-service` |
 | Frontend | `add-ui-component`, `add-page-route`, `integrate-api-client`, `frontend-testing` |
 | R3F / 3D (overlay) | `debug-3d-scene`, `integrate-r3f-three-legacy`, `optimize-3d-assets` — under `overlays/r3f-stack/` |
-| Platform | `setup-deployment`, `wrangler`, `debug-runtime-platform`, `add-telemetry-instrumentation` |
+| Platform | `deploy-aws-eks-workloads`, `aws-infrastructure`, `setup-deployment`, `wrangler`, `debug-runtime-platform`, `add-telemetry-instrumentation` |
 | Commerce | `integrate-payment-gateway`, `handle-checkout-flow`, `manage-product-catalog`, `manage-order-fulfillment` |
-| Security and Data | `manage-secrets`, `database-maintenance`, `security-audit`, `build-data-pipeline` |
+| Security and Data | `manage-secrets`, `database-maintenance`, `security-audit`, `build-data-pipeline`, `manage-vietnam-accounting` |
 | Documentation | `write-documentation`, `write-tech-radar` |
 
 Full inventory: [core/skills/README.md](core/skills/README.md)
@@ -164,15 +176,17 @@ Core workflows live in [core/workflows/README.md](core/workflows/README.md).
 - `/curriculum-delivery`
 - `/mmo-campaign-lifecycle`
 
-## Quality Gates
+## Quality Gates & Verification
 
-Run these validators after editing core rules, skills, roles, or workflows (includes 2026 compliance):
+Run these validators after editing core rules, skills, roles, or workflows (includes 2026–2027 compliance):
 
 ```bash
 python3 core/scripts/validate-all.py
 ```
 
-`validate-all.py` runs all 16 validators. Individual gates when iterating:
+`validate-all.py` runs all **17 core validators** (rules, skills, roles, workflows, packs, overlays, 2026/2027 compliance, contracts, A2A, agent cards, standardization, version sync, indexes, policies, skill ownership, contract coverage, golden prompt evals).
+
+Individual gates when iterating:
 
 ```bash
 python3 core/scripts/validate-rules.py
@@ -185,13 +199,28 @@ python3 core/scripts/validate-policy-consistency.py  # action-boundaries vs role
 python3 core/scripts/validate-skill-ownership.py     # Primary owners and workflow reachability
 ```
 
-After editing `core/roles/` or bumping `VERSION`, regenerate the A2A registry:
+After editing `core/roles/` or bumping `VERSION`, regenerate the A2A registry and master index:
 
 ```bash
 python3 core/scripts/generate-a2a-registry.py
+python3 core/scripts/generate-index.py
+python3 core/scripts/generate-index.py --check       # verify zero index drift
 ```
 
-The validators enforce structure and references inside the **core** pack. Overlays can adopt the same patterns, but the current validation gate treats core as the portable source of truth.
+### Empirical Challenge Test Suites
+
+The repository enforces strict continuous verification through dedicated challenge test suites in `tests/` (>530 tests, 100% pass):
+
+- `tests/test_ai_systems_engineer_platform_challenge.py`: vLLM v1, K8s DRA, MIG slicing, SLM distillation, and guardrails
+- `tests/test_aws_engineer_platform_challenge.py`: OpenTofu v1.8+ KMS, Crossplane Go compositions, Bottlerocket, and IAM zero-trust
+- `tests/test_devops_engineer_platform_challenge.py`: Pillar 8 EKS Pod Identity, Karpenter v1.0, VPC Lattice Gateway API
+- `tests/test_sre_reliability_challenge.py`: Multi-window burn-rate alerts, Tetragon telemetry, and chaos engineering
+- `tests/test_business_analyst_requirements_challenge.py`: Event Storming, BDD invariants, and EU AI Act / PDPL compliance
+- `tests/test_data_analyst_decision_science_challenge.py`: DuckDB analytics, Text-to-SQL hallucination guard, and SRM checks
+- `tests/test_data_engineer_lakehouse_challenge.py`: Apache Iceberg REST catalog, WAP pattern, and OpenLineage
+- `tests/test_qa_engineer_verification_challenge.py`: G-Eval scoring, PactV3 contract tests, Tracetest OTel spans
+- `tests/test_m2_accounting_challenge.py`: Balanced ledger invariants, VAS 14, Circular 200/99, and MISA AMIS
+- `tests/test_vietnam_legal_pack_challenge.py`: PDPL 2025 Decree 356, AI Law 134/2025, and statutory parity
 
 ## Agent Compatibility
 
@@ -199,6 +228,7 @@ This pack includes adapter files for all major AI coding agents:
 
 | Agent | Adapter File | Auto-Loads |
 |-------|-------------|------------|
+| Google Antigravity | `adapters/antigravity/ANTIGRAVITY.md` + `adapters/antigravity/role-skill-index.json` | Full A2A 1.0, role & skill fast-resolution (`@role`, `@skill`), structured JSON contracts |
 | OpenAI Codex | `AGENTS.md` + `core/codex/` (README + `.a2a-config.json`) + `core/skills/*/*/agents/openai.yaml` | Rules via AGENTS.md; skills via `$skill-name` |
 | Cursor | `.cursorrules` + `.cursor/rules/agent-skills.md` | Rules, roles, skills, workflows |
 | Claude Code | `CLAUDE.md` | Rules, roles, skills, workflows |
