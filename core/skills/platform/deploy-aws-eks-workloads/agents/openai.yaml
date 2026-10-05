@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy AWS EKS Workloads"
+  short_description: "Deploy, scale, and govern cloud-native application workloads on Amazon EKS using SOTA 2026-2027 standards."
+  default_prompt: "Use $deploy-aws-eks-workloads to deploy, scale, and manage workloads on Amazon EKS."

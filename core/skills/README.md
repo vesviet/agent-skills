@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 124 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **136 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 125 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **137 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -135,11 +135,12 @@ React Native, Expo, mobile performance, and store delivery:
 - `deploy-mobile-app`
 - `develop-mobile-app`
 
-### Platform (17)
+### Platform (18)
 
 Delivery, runtime, Cloudflare-specific, cloud, and system infrastructure skills:
 
 - `aws-infrastructure`
+- `deploy-aws-eks-workloads`
 - `setup-deployment`
 - `setup-gpu-finops`
 - `setup-llm-gateway`

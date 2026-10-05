@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `5.0.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **35 Roles** | **136 Skills** (124 Core + 12 Overlays) | **25 Workflows** | **54 Data Contracts**
+> **Total Catalog:** **35 Roles** | **137 Skills** (125 Core + 12 Overlays) | **25 Workflows** | **54 Data Contracts**
 
 ---
 
@@ -44,7 +44,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@content-writer`** | Content Writer | `@writer`, `@copywriter`, `@author`, `@article-writer`, `@blog-writer` | `write-article`, `write-copy`, `repurpose-content` *(+9 more)* | [`core/roles/content-writer.md`](./core/roles/content-writer.md) |
 | **`@data-analyst`** | Data Analyst | `@da`, `@data-analytics` | `analyze-data`, `query-analytical-engine`, `analyze-business-requirements` *(+6 more)* | [`core/roles/data-analyst.md`](./core/roles/data-analyst.md) |
 | **`@data-engineer`** | Data Engineer | `@de`, `@data-eng` | `build-data-pipeline`, `database-maintenance`, `create-migration` *(+11 more)* | [`core/roles/data-engineer.md`](./core/roles/data-engineer.md) |
-| **`@devops-engineer`** | DevOps Engineer | `@devops`, `@infra`, `@infrastructure` | `setup-deployment`, `debug-runtime-platform`, `add-telemetry-instrumentation` *(+13 more)* | [`core/roles/devops-engineer.md`](./core/roles/devops-engineer.md) |
+| **`@devops-engineer`** | DevOps Engineer | `@devops`, `@infra`, `@infrastructure` | `setup-deployment`, `deploy-aws-eks-workloads`, `debug-runtime-platform` *(+14 more)* | [`core/roles/devops-engineer.md`](./core/roles/devops-engineer.md) |
 | **`@ecommerce-engineer`** | Ecommerce Engineer | `@ecommerce`, `@ecom` | `integrate-payment-gateway`, `handle-checkout-flow`, `manage-product-catalog` *(+13 more)* | [`core/roles/ecommerce-engineer.md`](./core/roles/ecommerce-engineer.md) |
 | **`@frontend-developer`** | Frontend Developer | `@frontend`, `@fe`, `@frontend-dev`, `@ui-developer` | `accessibility-review`, `add-page-route`, `add-ui-component` *(+17 more)* | [`core/roles/frontend-developer.md`](./core/roles/frontend-developer.md) |
 | **`@mmo-engineer`** | MMO Engineer | `@mmo`, `@affiliate`, `@growth`, `@growth-lead`, `@growth-engineer`, `@media-buyer`, `@affiliate-marketer` | `deploy-mmo-infrastructure`, `setup-tracking-system`, `create-automation-script` *(+7 more)* | [`core/roles/mmo-engineer.md`](./core/roles/mmo-engineer.md) |
@@ -70,7 +70,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🛠️ Skill Directory (136 Skills)
+## 🛠️ Skill Directory (137 Skills)
 
 ### Category: `agent` (24 skills)
 
@@ -283,7 +283,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@audit-technical-article`** | Audit a technical article or series part on vesviet/learn against the 7 Technical Content Gates 2027... | [`overlays/vesviet-content/skills/audit-technical-article/SKILL.md`](./overlays/vesviet-content/skills/audit-technical-article/SKILL.md) |
 | **`@write-vesviet-learn-content`** | Draft or update Hugo Markdown for the Vesviet portfolio site or the Learn notes site. Use when creat... | [`overlays/vesviet-content/skills/write-vesviet-learn-content/SKILL.md`](./overlays/vesviet-content/skills/write-vesviet-learn-content/SKILL.md) |
 
-### Category: `platform` (17 skills)
+### Category: `platform` (18 skills)
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
@@ -292,6 +292,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@cloudflare-email-service`** | Send and receive transactional emails with Cloudflare Email Service (Email Sending + Email Routing).... | [`core/skills/platform/cloudflare-email-service/SKILL.md`](./core/skills/platform/cloudflare-email-service/SKILL.md) |
 | **`@debug-runtime-platform`** | Investigate deployment, environment, runtime, and rollout issues that are not purely application-cod... | [`core/skills/platform/debug-runtime-platform/SKILL.md`](./core/skills/platform/debug-runtime-platform/SKILL.md) |
 | **`@debug-workers-edge`** | Diagnose Cloudflare Pages and Workers failures at the edge — 5xx, binding errors, Wrangler deploy fa... | [`core/skills/platform/debug-workers-edge/SKILL.md`](./core/skills/platform/debug-workers-edge/SKILL.md) |
+| **`@deploy-aws-eks-workloads`** | Deploy, scale, and govern cloud-native application workloads on Amazon EKS using SOTA 2026-2027 AWS ... | [`core/skills/platform/deploy-aws-eks-workloads/SKILL.md`](./core/skills/platform/deploy-aws-eks-workloads/SKILL.md) |
 | **`@durable-objects`** | Create and review Cloudflare Durable Objects. Use when building stateful coordination (chat rooms, m... | [`core/skills/platform/durable-objects/SKILL.md`](./core/skills/platform/durable-objects/SKILL.md) |
 | **`@orchestrate-chaos-experiment`** | Plan, execute, and verify controlled chaos engineering experiments and game days. Use when validatin... | [`core/skills/platform/orchestrate-chaos-experiment/SKILL.md`](./core/skills/platform/orchestrate-chaos-experiment/SKILL.md) |
 | **`@sandbox-sdk`** | Builds secure, isolated code execution environments on Cloudflare Workers using the Cloudflare Sandb... | [`core/skills/platform/sandbox-sdk/SKILL.md`](./core/skills/platform/sandbox-sdk/SKILL.md) |
@@ -385,6 +386,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@audit_technical_seo`** | `audit-technical-seo` | Active `@role` |
 | **`@auth`** | `implement-auth` | Active `@role` |
 | **`@authentication`** | `implement-auth` | Active `@role` |
+| **`@aws_eks`** | `deploy-aws-eks-workloads` | Active `@role` |
 | **`@aws_infra`** | `aws-infrastructure` | Active `@role` |
 | **`@aws_infrastructure`** | `aws-infrastructure` | Active `@role` |
 | **`@ba`** | `analyze-business-requirements`, `elicit-requirements` | Active `@role` |
@@ -438,9 +440,12 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@delegation`** | `agent-delegation` | Active `@role` |
 | **`@depin_bandwidth`** | `deploy-proxyware-fleet` | Active `@role` |
 | **`@deploy`** | `setup-deployment` | Active `@role` |
+| **`@deploy-aws-eks-workloads`** | `deploy-aws-eks-workloads` | Active `@role` |
 | **`@deploy-mmo-infrastructure`** | `deploy-mmo-infrastructure` | Active `@role` |
 | **`@deploy-mobile-app`** | `deploy-mobile-app` | Active `@role` |
 | **`@deploy-proxyware-fleet`** | `deploy-proxyware-fleet` | Active `@role` |
+| **`@deploy_aws_eks_workloads`** | `deploy-aws-eks-workloads` | Active `@role` |
+| **`@deploy_eks`** | `deploy-aws-eks-workloads` | Active `@role` |
 | **`@deploy_mmo_infrastructure`** | `deploy-mmo-infrastructure` | Active `@role` |
 | **`@deploy_mobile_app`** | `deploy-mobile-app` | Active `@role` |
 | **`@deploy_proxyware_fleet`** | `deploy-proxyware-fleet` | Active `@role` |
@@ -461,6 +466,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@eas_deploy`** | `deploy-mobile-app` | Active `@role` |
 | **`@eas_update`** | `deploy-mobile-app` | Active `@role` |
 | **`@editorial_calendar`** | `design-content-strategy` | Active `@role` |
+| **`@eks_workloads`** | `deploy-aws-eks-workloads` | Active `@role` |
 | **`@embedded_sql`** | `query-analytical-engine` | Active `@role` |
 | **`@event_handler`** | `add-event-handler` | Active `@role` |
 | **`@expo`** | `develop-mobile-app` | Active `@role` |
@@ -489,6 +495,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@json_ld`** | `implement-schema-markup` | Active `@role` |
 | **`@kano`** | `prioritize-roadmap` | Active `@role` |
 | **`@kano_model`** | `prioritize-roadmap` | Active `@role` |
+| **`@karpenter`** | `deploy-aws-eks-workloads` | Active `@role` |
 | **`@kill_early`** | `prioritize-roadmap` | Active `@role` |
 | **`@legal`** | `manage-vietnam-legal` | Active `@role` |
 | **`@legal_compliance`** | `manage-vietnam-legal` | Active `@role` |
@@ -544,6 +551,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@pillar_cluster`** | `design-content-strategy` | Active `@role` |
 | **`@planning_with_files`** | `decompose-agentic-system` | Active `@role` |
 | **`@pm`** | `define-product-strategy`, `prioritize-roadmap` | Active `@role` |
+| **`@pod_identity`** | `deploy-aws-eks-workloads` | Active `@role` |
 | **`@postgres`** | `optimize-postgres` | Active `@role` |
 | **`@postgresql`** | `optimize-postgres` | Active `@role` |
 | **`@postmortem`** | `incident-report` | Active `@role` |
@@ -641,6 +649,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@view-transitions`** | `implement-view-transitions` | Active `@role` |
 | **`@view_transitions`** | `implement-view-transitions` | Active `@role` |
 | **`@visual_regression`** | `setup-visual-regression` | Active `@role` |
+| **`@vpc_lattice`** | `deploy-aws-eks-workloads` | Active `@role` |
 | **`@walking_skeleton`** | `build-story-map` | Active `@role` |
 | **`@workers_best_practices`** | `workers-best-practices` | Active `@role` |
 | **`@working-backwards`** | `define-product-strategy` | Active `@role` |

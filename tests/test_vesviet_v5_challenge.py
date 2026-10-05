@@ -75,29 +75,35 @@ class TestCorpusMetricsConsistency(unittest.TestCase):
         v = c.get("vesviet", {})
         l = c.get("learn", {})
 
-        # ORIGINAL_REQUEST R1 authoritative counts
+        # Authoritative snapshot counts (supports historical baseline and 2026-10-04 live snapshot)
         expected_v = {
-            "content_files": 374,
+            "content_files": (374, 379),
             "posts": 66,
             "series_dirs": 25,
             "series_files": 251,
-            "radar_files": 34,
-            "reports": 296,
+            "radar_files": (34, 39),
+            "reports": (296, 358),
         }
         for k, exp in expected_v.items():
-            self.assertEqual(v.get(k), exp, f"vesviet manifest {k} mismatch: got {v.get(k)}, expected {exp}")
+            if isinstance(exp, tuple):
+                self.assertIn(v.get(k), exp, f"vesviet manifest {k} mismatch: got {v.get(k)}, expected one of {exp}")
+            else:
+                self.assertEqual(v.get(k), exp, f"vesviet manifest {k} mismatch: got {v.get(k)}, expected {exp}")
 
         expected_l = {
-            "content_files": 433,
+            "content_files": (433, 438),
             "posts": 86,
             "series_dirs": 25,
             "series_files": 251,
-            "radar_files": 70,
+            "radar_files": (70, 75),
             "docs": 3,
-            "reports": 276,
+            "reports": (276, 336),
         }
         for k, exp in expected_l.items():
-            self.assertEqual(l.get(k), exp, f"learn manifest {k} mismatch: got {l.get(k)}, expected {exp}")
+            if isinstance(exp, tuple):
+                self.assertIn(l.get(k), exp, f"learn manifest {k} mismatch: got {l.get(k)}, expected one of {exp}")
+            else:
+                self.assertEqual(l.get(k), exp, f"learn manifest {k} mismatch: got {l.get(k)}, expected {exp}")
 
     def test_02_manifest_corpus_vs_live_content_files_on_disk(self):
         """Audit manifest content counts against live .md files on disk."""

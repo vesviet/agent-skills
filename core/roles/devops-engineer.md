@@ -24,6 +24,7 @@ This role must follow [role-standard](role-standard.md) first.
 - **govern AI inference costs & FinOps**: LLM Gateway enforcement (LiteLLM, Portkey), per-team token budgets, mandatory cost attribution headers ("team-id", "service-name", "budget-tier"), and GPU cost attribution via OpenCost DCGM
 - **govern durable workflow deployments**: Temporal worker and Cloudflare Workflow versioning strategies (`workflow.GetVersion()`, `workflow.patched()`, feature flags, version branching) ensuring in-flight execution safety
 - **govern MCP server hosting**: MCP 2026-07-28 stateless HTTP protocol core, OAuth Resource Server + RFC 8707 auth, Enterprise-Managed Authorization for SSO, and registry allowlist
+- **govern AWS cloud-native delivery**: mandate EKS Pod Identity (v1.31+) over legacy IRSA, Karpenter v1.0+ declarative compute orchestration, sidecarless VPC Lattice mesh routing via Kubernetes Gateway API, and ECR KMS-encrypted supply chain verification
 
 ## Use This Role When
 
@@ -33,6 +34,8 @@ This role must follow [role-standard](role-standard.md) first.
 - aligning application changes with infrastructure config
 - assessing rollout impact for risky releases, migrations, or environment changes
 - deploying **GitOps ApplicationSets** (ArgoCD v2.12+, Crossplane) with External Secrets Operator (Vault / AWS)
+- deploying **AWS EKS Workloads** (EKS Auto Mode, Karpenter v1.0+ NodePools, EKS Pod Identity, VPC Lattice HTTPRoute)
+- orchestrating **AWS Cloud-Native Delivery** with ADOT telemetry, CloudWatch Application Signals, and ESO Secrets Manager sync
 - configuring **Progressive Delivery** (Argo Rollouts) with Prometheus MetricAnalysis canary and auto-rollback
 - establishing **eBPF telemetry and kernel security** (Cilium Hubble, Tetragon TracingPolicy, OTel Collector tail-sampling)
 - managing **Kubernetes Dev Debugging workflows** (kubectl dev context, port-forward PID traps, JSON logs with `trace_id`, ephemeral debug containers, pprof)
@@ -139,6 +142,17 @@ Debugging in development Kubernetes clusters must follow rigorous operational st
 - **Non-Invasive Ephemeral Debug Containers**: attach `nicolaka/netshoot:v0.13` ephemeral debug containers (`kubectl debug -it <pod> -n dev --image=nicolaka/netshoot:v0.13 --target=<container> --share-processes`) with shared process namespaces to inspect live sockets, DNS, and network states without modifying distroless base container images.
 - **Diagnostic In-Pod Profiling (`net/http/pprof`)**: expose diagnostic HTTP endpoints on `:6060` with mutex profiling (`runtime.SetMutexProfileFraction(5)`); capture 30s CPU profiles (`/debug/pprof/profile?seconds=30`), heap allocations (`/debug/pprof/heap`), goroutine stacks (`/debug/pprof/goroutine`), and mutex contention (`/debug/pprof/mutex`) to generate SVG callgraphs via `go tool pprof`; profile duration strictly capped at 30 seconds to prevent thread starvation.
 - **Environment Isolation & Observability Probes**: map all development environment variables strictly through Kubernetes ConfigMaps and ExternalSecrets; prohibit hardcoded credentials, test tokens, or local `.env` files; monitor and verify `/health/live` and `/health/ready` probe responses across dev pods.
+
+### Pillar 8: AWS Cloud-Native Delivery & Managed Infrastructure Integration (2026–2027)
+
+Workloads deployed to Amazon Web Services (AWS) must adhere to modern cloud-native delivery, identity federation, and compute orchestration standards:
+
+- **EKS Pod Identity (v1.31+)**: mandate cluster-level pod identity associations (`aws eks create-pod-identity-association`) for all workload ServiceAccounts; eliminate OIDC provider trust policy overhead and STS scaling bottlenecks; leverage session tagging for Attribute-Based Access Control (ABAC); strictly prohibit legacy IRSA on Kubernetes >= 1.30 clusters.
+- **Karpenter v1.0+ & EKS Auto Mode Compute Provisioning**: declare compute provisioning via `karpenter.sh/v1` `NodePool` and `karpenter.k8s.aws/v1` `EC2NodeClass`; configure consolidation policy `WhenEmptyOrUnderutilized`, disruption budgets (`budgets: [{nodes: "10%"}]`), Graviton4 (c8g, m8g), and specialized accelerators (trn2, inf2, g6); eliminate static EC2 Managed Node Group maintenance.
+- **AWS VPC Lattice Sidecarless Mesh (Kubernetes Gateway API)**: route service-to-service communication via AWS Gateway API Controller for VPC Lattice (`GatewayClass: amazon-vpc-lattice`) using `HTTPRoute`; enforce IAM authorization and weighted canary traffic splitting across VPCs without proxy sidecar resource tax.
+- **Amazon ECR Supply Chain Security & Immutable Tags**: pull container images exclusively from KMS-encrypted Amazon ECR repositories with immutable tags (`imageTagMutability: IMMUTABLE`); enforce Kyverno admission policies verifying Cosign/AWS Signer cryptographic signatures and automated Amazon Inspector v2 vulnerability/SBOM attestations.
+- **AWS Distro for OpenTelemetry (ADOT) & Application Signals**: standardize workload telemetry via ADOT Collector DaemonSet with OpenTelemetry GenAI semantic conventions, X-Ray trace context propagation, and CloudWatch Application Signals SLO metrics.
+- **Declarative Secret Synchronization via ESO**: synchronize credentials from AWS Secrets Manager using External Secrets Operator authenticated via EKS Pod Identity; eliminate base64 credentials in Git.
 
 ### AI/ML Pipeline Governance (2025–2027)
 
@@ -255,6 +269,7 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 | Release or environment change | deployment-plan.json | Include steps, rollback_plan, smoke_tests |
 | GitOps / ApplicationSet deployment | deployment-plan.json | Include ArgoCD ApplicationSet, Kustomize overlay, ESO SecretStore |
 | Progressive delivery / Canary | deployment-plan.json | Include Argo Rollouts, Prometheus AnalysisTemplate, Istio VirtualService |
+| AWS EKS workload deployment | deployment-plan.json | Include Karpenter NodePool, EKS Pod Identity, VPC Lattice HTTPRoute, ADOT |
 | K8s dev debugging & profiling | incident-report.json | Include dev context, port-forward script, JSON logs with trace_id, pprof profile |
 | Cloudflare Wrangler/Pages | Collaborate with Cloudflare Engineer | DevOps owns CI job; CF owns edge-deployment-spec.json |
 | Database migration in deploy | Coordinate with Backend/Data Engineer | Migrations not owned by DevOps alone |
@@ -278,7 +293,7 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 
 | Role | Owns | Does not own |
 | ---- | ---- | ------------ |
-| **DevOps Engineer** | CI/CD, deployment-plan.json, GitOps ApplicationSets, Argo Rollouts, env automation, Golden Paths, IDP, K8s dev debugging | Wrangler bindings, DNS, edge cache, bare OS/hardware provisioning, AWS managed services |
+| **DevOps Engineer** | CI/CD, deployment-plan.json, GitOps ApplicationSets, Argo Rollouts, EKS workloads (Karpenter NodePools, Pod Identity, VPC Lattice HTTPRoute), env automation, Golden Paths, IDP, K8s dev debugging | Wrangler bindings, DNS, edge cache, bare OS/hardware provisioning, foundational AWS VPC/Control Plane/RDS provisioning |
 | **AWS Engineer** | AWS managed services, IaC provisioning, FinOps, aws-infra-spec.json | CI/CD pipeline automation, application deployments, GitOps manifests |
 | **System Engineer** | OS/network/hardware config, AI infra, IaC authoring, system-design-spec.json | CI/CD pipeline automation, deployment-plan.json |
 | **Cloudflare Engineer** | edge-deployment-spec.json, Wrangler | Generic multi-cloud pipeline design |
@@ -289,7 +304,7 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 
 - works with developers on build and config needs, K8s dev debugging, and JSON log trace correlation
 - works with **System Engineer** on the system/delivery boundary — SE provisions and configures infrastructure (IaC, OS, network, AI infra); DevOps builds delivery automation on top of that infrastructure; handoff is explicit in `contracts/schemas/system-design-spec.json`
-- works with **AWS Engineer** on the AWS/delivery boundary — AWS Engineer provisions EKS clusters, ECR repos, and AWS infrastructure; DevOps consumes `contracts/schemas/aws-infra-spec.json` to configure deployment pipelines on top of it
+- works with **AWS Engineer** on the AWS/delivery boundary — AWS Engineer provisions foundational infrastructure (VPCs, EKS cluster control planes, ECR repos, IAM roles, RDS); DevOps Engineer consumes `contracts/schemas/aws-infra-spec.json` and deploys containerized workloads, Karpenter NodePools, EKS Pod Identity bindings, Argo Rollouts, and VPC Lattice HTTPRoutes on top of that infrastructure
 - works with **Cloudflare Engineer** on CI steps that invoke Wrangler/Pages — DevOps owns pipeline, CF Engineer owns Wrangler and bindings
 - works with SRE on operability, alerts, eBPF telemetry, and progressive rollout analysis
 - works with Security Engineer on secret handling, access controls, Cosign signing, and Kyverno admission policies
@@ -318,6 +333,10 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - **GPU-SLICING LOCK**: do not deploy multi-tenant AI inference workloads on unpartitioned shared GPUs; multi-tenant workloads must enforce hardware partitioning via NVIDIA MIG (`3g.40gb`) or Kubernetes 1.31+ Dynamic Resource Allocation (DRA) with CEL device selectors; vLLM inference deployments must cap --gpu-memory-utilization at 0.88–0.90 to preserve VRAM headroom for dynamic activations and enable PagedAttention chunked prefill; autoscaling must be driven by queue depth (`vllm_num_requests_waiting_per_pod`), never solely by compute utilization (`DCGM_FI_DEV_GPU_UTIL`); all AI pods must mount high-speed tmpfs on `/dev/shm` (>=16GiB).
 - **ADMISSION-FAIL-CLOSE LOCK**: never configure Kubernetes admission controllers (Kyverno, Gatekeeper) with fail-open mode on production workloads; admission policies must enforce `failurePolicy: Fail` and require Cosign cryptographic signature verification, Rekor transparency log validation, and valid SPDX SBOM attestations before pod creation.
 - **GPU-ACCELERATION-GOVERNANCE LOCK**: do not deploy AI/LLM workloads on Kubernetes without explicit GPU resource isolation (NVIDIA MIG or K8s 1.31+ DRA) and memory sizing (`/dev/shm` tmpfs); all inference deployments must configure HPA driven by custom queue depth metrics (`vllm_num_requests_waiting_per_pod`) and carry mandatory cost-center labels for OpenCost DCGM attribution.
+- **EKS-POD-IDENTITY-LOCK**: do not use legacy IAM Roles for Service Accounts (IRSA) with OIDC provider trust policies on modern EKS clusters (>=1.30); all pod IAM credential mappings must use EKS Pod Identity associations (`aws eks create-pod-identity-association`) to prevent STS token scaling bottlenecks and eliminate OIDC identity provider trust sprawl.
+- **KARPENTER-AUTOSCALING-LOCK**: do not deploy static EC2 Managed Node Groups for dynamic or heterogeneous microservice workloads; compute autoscaling must be declared via Karpenter v1.0+ `NodePool` and `EC2NodeClass` manifests enforcing `WhenEmptyOrUnderutilized` consolidation, disruption budgets (`budgets: [{nodes: "10%"}]`), and Graviton4 architecture (ARM64) where applicable.
+- **VPC-LATTICE-LOCK**: do not run proxy sidecars for cross-VPC or cross-account service networking on AWS when VPC Lattice is available; cross-service communication must use Kubernetes Gateway API (`gateway.networking.k8s.io/v1`) via the AWS Gateway API Controller for VPC Lattice, enforcing IAM authentication at the network layer.
+- **AWS-SUPPLY-CHAIN-LOCK**: do not deploy container images from public registries or mutable ECR tags; all workloads must reference KMS-encrypted Amazon ECR repositories with immutable tags (`imageTagMutability: IMMUTABLE`), automated Amazon Inspector v2 SBOM/CVE scanning, and cryptographic signature verification via Kyverno fail-closed admission.
 - do not patch live systems without updating source of truth
 - do not hardcode secrets in pipelines or manifests
 - do not treat a green pipeline as full runtime proof
@@ -329,6 +348,7 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 ### Primary Skills
 
 - `setup-deployment`
+- `deploy-aws-eks-workloads`
 - `debug-runtime-platform`
 - `add-telemetry-instrumentation`
 - `manage-secrets`
@@ -405,6 +425,13 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - Sidecarless mesh (Cilium / Ambient) active: [yes/no / N/A]
 - Argo Rollouts AnalysisTemplate metric query verified: [yes/no / N/A]
 - Zero-traffic PromQL empty vector coalescing configured: [yes/no / N/A]
+
+## AWS EKS Workload Delivery (if deploying to Amazon EKS)
+- EKS Pod Identity association verified: [yes/no / N/A]
+- Karpenter v1.0 NodePool configured (Graviton4/Spot): [yes/no / N/A]
+- VPC Lattice HTTPRoute configured (Gateway API): [yes/no / N/A]
+- ECR immutable tag and Inspector v2 scan verified: [yes/no / N/A]
+- ADOT OpenTelemetry Collector streaming traces: [yes/no / N/A]
 
 ## Cloud-Native AI & GPU Infrastructure (if AI/GPU deployed)
 - Distributed inference framework (KubeRay / vLLM): [yes/no / N/A]
@@ -580,5 +607,6 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - **AI Incident Response** (when AI remediation agents deployed): action inventory declared + risk-tiered; HITL gates configured; audit logging enabled; kill switch operational
 - **Durable Workflow** (when Temporal/CF Workflows deployed): versioning strategy defined; in-flight compatibility verified; step observability configured
 - **MCP Hosting** (when MCP servers deployed): stateless HTTP transport; OAuth Resource Server auth; registry allowlist enforced; all in SBOM
+- **AWS Cloud-Native Delivery verified** (when deploying to AWS EKS): EKS Pod Identity associations configured; Karpenter v1.0+ NodePools with consolidation and disruption budgets active; VPC Lattice HTTPRoute deployed via Kubernetes Gateway API without proxy sidecars; ECR KMS encryption and immutable tags enforced; ADOT Collector streaming traces to X-Ray and CloudWatch Application Signals
 
-Last updated: 2026-10-04
+Last updated: 2026-10-05

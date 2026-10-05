@@ -238,12 +238,16 @@ class TestDevOpsEngineerRoleInvariants(unittest.TestCase):
             "GPU-SLICING LOCK",
             "ADMISSION-FAIL-CLOSE LOCK",
             "GPU-ACCELERATION-GOVERNANCE LOCK",
+            "EKS-POD-IDENTITY-LOCK",
+            "KARPENTER-AUTOSCALING-LOCK",
+            "VPC-LATTICE-LOCK",
+            "AWS-SUPPLY-CHAIN-LOCK",
         ]
         for lock in expected_locks:
             self.assertIn(lock, self.role_content, f"Missing required guardrail lock: {lock}")
 
-    def test_03_seven_pillars_present(self):
-        """Role must detail all 7 SOTA Pillars from research."""
+    def test_03_eight_pillars_present(self):
+        """Role must detail all 8 SOTA Pillars from research."""
         pillar_terms = [
             "Pillar 1: Declarative Universal Control Planes, GitOps & Secret Management",
             "Pillar 2: Progressive Delivery & Sidecarless Service Mesh",
@@ -252,6 +256,7 @@ class TestDevOpsEngineerRoleInvariants(unittest.TestCase):
             "Pillar 5: Cloud-Native AI & GPU Infrastructure on Kubernetes",
             "Pillar 6: Cryptographic Supply Chain Security & Policy-as-Code Admission",
             "Pillar 7: Senior Fullstack / Team Lead Kubernetes Dev Debugging Standard",
+            "Pillar 8: AWS Cloud-Native Delivery & Managed Infrastructure Integration",
         ]
         for pillar in pillar_terms:
             self.assertIn(pillar, self.role_content, f"Missing pillar definition: {pillar}")
@@ -275,6 +280,7 @@ class TestDevOpsEngineerRoleInvariants(unittest.TestCase):
         """Primary skills toolbox must contain core DevOps skills."""
         expected_skills = [
             "`setup-deployment`",
+            "`deploy-aws-eks-workloads`",
             "`debug-runtime-platform`",
             "`add-telemetry-instrumentation`",
             "`manage-secrets`",
@@ -295,8 +301,8 @@ class TestDevOpsEngineerReviewChecklist(unittest.TestCase):
         assert cls.checklist_path.exists(), "devops-engineer-review-checklist.md must exist"
         cls.checklist_content = cls.checklist_path.read_text(encoding="utf-8")
 
-    def test_01_all_13_sections_present(self):
-        """Checklist must contain all 13 comprehensive SOTA verification sections."""
+    def test_01_all_14_sections_present(self):
+        """Checklist must contain all 14 comprehensive SOTA verification sections."""
         expected_sections = [
             "### 1. Declarative GitOps & Universal Control Plane (ArgoCD SSA & Crossplane)",
             "### 2. Secret Management & Client-Side State Encryption (Vault, ESO, OpenTofu KMS)",
@@ -311,6 +317,7 @@ class TestDevOpsEngineerReviewChecklist(unittest.TestCase):
             "### 11. Cryptographic Supply Chain Security & Provenance (SLSA, Syft SBOM, Cosign Keyless)",
             "### 12. Policy-as-Code & Fail-Closed Admission Enforcement (Kyverno Strict)",
             "### 13. Senior Fullstack / Team Lead Kubernetes Dev Debugging Standards",
+            "### 14. AWS Cloud-Native Delivery & EKS Workloads Standards",
         ]
         for sec in expected_sections:
             self.assertIn(sec, self.checklist_content, f"Missing checklist section: {sec}")
@@ -343,6 +350,10 @@ class TestDevOpsEngineerReviewChecklist(unittest.TestCase):
             "lsof",
             "netshoot",
             "pprof",
+            "Pod Identity",
+            "Karpenter",
+            "VPC Lattice",
+            "ADOT",
         ]
         for kw in keywords:
             self.assertIn(kw, self.checklist_content, f"Missing technical keyword in checklist: {kw}")
@@ -395,6 +406,24 @@ class TestDevOpsEngineerPrimarySkills(unittest.TestCase):
         self.assertIn("name: supply-chain-security", content)
         self.assertIn("allowed-tools:", content)
 
+    def test_05_deploy_aws_eks_workloads_skill_validity(self):
+        """deploy-aws-eks-workloads SKILL.md must be valid, concise (<200 lines), and define allowed-tools."""
+        skill_path = SKILLS_DIR / "platform" / "deploy-aws-eks-workloads" / "SKILL.md"
+        self.assertTrue(skill_path.exists(), "deploy-aws-eks-workloads SKILL.md must exist")
+        content = skill_path.read_text(encoding="utf-8")
+        lines = content.splitlines()
+        self.assertLessEqual(len(lines), 200, "deploy-aws-eks-workloads SKILL.md should be concise (<= 200 lines)")
+        self.assertTrue(content.startswith("---"), "Must start with YAML frontmatter")
+        self.assertIn("name: deploy-aws-eks-workloads", content)
+        self.assertIn("allowed-tools:", content)
+        self.assertIn("## Checklist", content)
+        self.assertIn("## Related Skills", content)
+
+        agent_yaml = SKILLS_DIR / "platform" / "deploy-aws-eks-workloads" / "agents" / "openai.yaml"
+        self.assertTrue(agent_yaml.exists(), "openai.yaml must exist")
+        ref_guide = SKILLS_DIR / "platform" / "deploy-aws-eks-workloads" / "references" / "aws-eks-workload-guide.md"
+        self.assertTrue(ref_guide.exists(), "aws-eks-workload-guide.md must exist")
+
 
 class TestDevOpsEngineerAgentCardAndRegistry(unittest.TestCase):
     """Validation of A2A Agent Card, Discovery Registry, and Alias Resolution."""
@@ -414,9 +443,9 @@ class TestDevOpsEngineerAgentCardAndRegistry(unittest.TestCase):
         self.assertIn("deployment-plan.json", output_schemas)
 
     def test_02_agent_card_skills_coverage(self):
-        """Agent card must expose setup-deployment, debug-runtime-platform, and manage-secrets."""
+        """Agent card must expose setup-deployment, deploy-aws-eks-workloads, debug-runtime-platform, and manage-secrets."""
         card_skills = [s.get("id") for s in self.agent_card.get("skills", [])]
-        expected = ["setup-deployment", "debug-runtime-platform", "manage-secrets", "supply-chain-security"]
+        expected = ["setup-deployment", "deploy-aws-eks-workloads", "debug-runtime-platform", "manage-secrets", "supply-chain-security"]
         for exp in expected:
             self.assertIn(exp, card_skills, f"Missing skill in agent card: {exp}")
 
@@ -437,17 +466,24 @@ class TestDevOpsEngineerAgentCardAndRegistry(unittest.TestCase):
         self.assertIn("devops-engineer", roles_map, "devops-engineer must be mapped in role-skill-index.json")
         devops_skills = roles_map["devops-engineer"].get("skills", [])
         self.assertIn("setup-deployment", devops_skills)
+        self.assertIn("deploy-aws-eks-workloads", devops_skills)
         self.assertIn("debug-runtime-platform", devops_skills)
         self.assertIn("manage-secrets", devops_skills)
 
     def test_05_fast_invocation_alias_resolution(self):
-        """Fast invocation aliases @devops, @infra, @infrastructure must resolve to devops-engineer."""
+        """Fast invocation aliases @devops, @infra, @infrastructure, and AWS EKS skill aliases must resolve."""
         index_path = REGISTRY_DIR / "role-skill-index.json"
         idx = json.loads(index_path.read_text(encoding="utf-8"))
         aliases = idx.get("role_aliases", {})
         self.assertEqual(aliases.get("devops"), "devops-engineer", "@devops alias must resolve to devops-engineer")
         self.assertEqual(aliases.get("infra"), "devops-engineer", "@infra alias must resolve to devops-engineer")
         self.assertEqual(aliases.get("infrastructure"), "devops-engineer", "@infrastructure alias must resolve to devops-engineer")
+
+        skill_aliases = idx.get("skill_aliases", {})
+        self.assertEqual(skill_aliases.get("deploy_aws_eks_workloads"), ["deploy-aws-eks-workloads"])
+        self.assertEqual(skill_aliases.get("karpenter"), ["deploy-aws-eks-workloads"])
+        self.assertEqual(skill_aliases.get("pod_identity"), ["deploy-aws-eks-workloads"])
+        self.assertEqual(skill_aliases.get("vpc_lattice"), ["deploy-aws-eks-workloads"])
 
 
 if __name__ == "__main__":

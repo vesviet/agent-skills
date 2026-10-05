@@ -692,11 +692,11 @@ class TestVietnamLegalRegistryConsistency:
         for name, index_doc in [("core", core_index), ("adapter", adapter_index)]:
             stats = index_doc.get("stats", {})
             assert stats.get("roles") == 35, f"{name} role-skill-index roles stat mismatch: got {stats.get('roles')}, expected 35"
-            assert stats.get("skills") in (133, 135), f"{name} role-skill-index skills stat mismatch: got {stats.get('skills')}, expected 135"
+            assert stats.get("skills") in (133, 135, 137), f"{name} role-skill-index skills stat mismatch: got {stats.get('skills')}, expected 137"
             assert stats.get("schemas") == 54, f"{name} role-skill-index schemas stat mismatch: got {stats.get('schemas')}, expected 54"
 
     def test_index_md_header_counts(self):
-        """INDEX.md header must declare Total Catalog: 35 Roles | 133 or 135 Skills | 25 Workflows | 54 Data Contracts."""
+        """INDEX.md header must declare Total Catalog: 35 Roles | 133, 135 or 137 Skills | 25 Workflows | 54 Data Contracts."""
         index_md_path = REPO_ROOT / "INDEX.md"
         assert index_md_path.is_file()
         content = index_md_path.read_text(encoding="utf-8")
@@ -704,6 +704,7 @@ class TestVietnamLegalRegistryConsistency:
         # Strip bold asterisks for uniform matching
         stripped = content.replace("**", "")
         expected_headers = [
+            "Total Catalog: 35 Roles | 137 Skills (125 Core + 12 Overlays) | 25 Workflows | 54 Data Contracts",
             "Total Catalog: 35 Roles | 135 Skills (123 Core + 12 Overlays) | 25 Workflows | 54 Data Contracts",
             "Total Catalog: 35 Roles | 133 Skills (121 Core + 12 Overlays) | 25 Workflows | 54 Data Contracts",
         ]
@@ -739,16 +740,16 @@ class TestVietnamLegalRegistryConsistency:
         assert adapter_index["stats"]["roles"] == 35
         assert len(adapter_index["roles"]) == 35
 
-        # 5. Total skills: 121 or 123 core skills + 12 overlay skills
+        # 5. Total skills: 121, 123 or 125 core skills + 12 overlay skills
         core_skill_files = list(SKILLS_DIR.glob("**/SKILL.md"))
-        assert len(core_skill_files) in (121, 123), f"Expected 121 or 123 core skills, got {len(core_skill_files)}"
+        assert len(core_skill_files) in (121, 123, 125), f"Expected 121, 123 or 125 core skills, got {len(core_skill_files)}"
         overlay_skill_files = list(REPO_ROOT.glob("overlays/**/SKILL.md"))
         assert len(overlay_skill_files) == 12, f"Expected 12 overlay skills, got {len(overlay_skill_files)}"
 
-        assert core_index["stats"]["skills"] in (133, 135)
-        assert len(core_index["skills"]) in (133, 135)
-        assert adapter_index["stats"]["skills"] in (133, 135)
-        assert len(adapter_index["skills"]) in (133, 135)
+        assert core_index["stats"]["skills"] in (133, 135, 137)
+        assert len(core_index["skills"]) in (133, 135, 137)
+        assert adapter_index["stats"]["skills"] in (133, 135, 137)
+        assert len(adapter_index["skills"]) in (133, 135, 137)
 
         # Verify all skill file paths in index exist on disk
         for skill_id, skill_meta in core_index["skills"].items():

@@ -49,6 +49,27 @@
       ]
     },
     {
+      "id": "deploy-aws-eks-workloads",
+      "name": "Deploy Aws Eks Workloads",
+      "description": "Deploy, scale, and govern cloud-native application workloads on Amazon EKS using SOTA 2026-2027 AWS standards. Use when configuring Karpenter v1.0+ declarative NodePools, EKS Pod Identity associations, AWS VPC Lattice Gateway API routes, ADOT telemetry pipelines, ECR image verification, and GitOps delivery pipelines on AWS.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "deployment-plan.json"
+      ]
+    },
+    {
       "id": "debug-runtime-platform",
       "name": "Debug Runtime Platform",
       "description": "Investigate deployment, environment, runtime, and rollout issues that are not purely application-code bugs. Use when the service behaves differently across environments or when deployment health is unclear.",

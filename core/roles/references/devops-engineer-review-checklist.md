@@ -178,3 +178,18 @@ This reference checklist provides detailed platform engineering, delivery safety
   - distroless container diagnosis executed via `kubectl debug` attaching `nicolaka/netshoot:v0.13` with shared process namespaces (`--share-processes`), enabling live socket (`ss -tulpn`), packet (`tcpdump`), and process inspection without altering base images
 - **Diagnostic In-Pod Profiling (`net/http/pprof`)**:
   - Go microservices expose diagnostic HTTP endpoints on `:6060` with mutex profiling (`runtime.SetMutexProfileFraction(5)`); CPU (`/debug/pprof/profile?seconds=30`), heap (`/debug/pprof/heap`), goroutine (`/debug/pprof/goroutine`), and mutex contention profiles captured and analyzed via `go tool pprof` and SVG callgraph generation. Profile capture duration strictly capped at 30 seconds to prevent thread starvation.
+
+### 14. AWS Cloud-Native Delivery & EKS Workloads Standards
+- **EKS Pod Identity (v1.31+) Association**:
+  - all workload ServiceAccounts mapped via `aws eks create-pod-identity-association`; legacy IRSA OIDC trust policies eliminated; STS session tagging enabled for Attribute-Based Access Control (ABAC); zero static AWS keys in pods or secrets
+- **Karpenter v1.0+ Declarative Compute Orchestration**:
+  - workload compute autoscaling declared via `karpenter.sh/v1` `NodePool` and `karpenter.k8s.aws/v1` `EC2NodeClass` manifests; consolidation policy set to `WhenEmptyOrUnderutilized` with 1m `consolidateAfter`; disruption budgets enforced (`budgets: [{nodes: "10%"}]`); instance families include Graviton4 (`c8g`, `m8g`) and specialized accelerators (`trn2`, `inf2`, `g6`); static EC2 Managed Node Groups eliminated
+- **Sidecarless AWS VPC Lattice Service Mesh (Gateway API)**:
+  - cross-VPC and cross-account service communication declared via Kubernetes Gateway API (`HTTPRoute` bound to `GatewayClass: amazon-vpc-lattice`); weighted canary traffic splitting configured (e.g. 90/10); IAM authorization enforced at the network layer without running proxy sidecars
+- **Amazon ECR Supply Chain Security & Signer Verification**:
+  - container images stored in KMS-encrypted ECR repositories with immutable tags (`imageTagMutability: IMMUTABLE`); Amazon Inspector v2 automated scanning with SPDX/CycloneDX SBOM export active; container image signatures verified via Kyverno fail-closed admission policies
+- **AWS Distro for OpenTelemetry (ADOT) & Application Signals**:
+  - ADOT Collector deployed as DaemonSet with OpenTelemetry GenAI semantic conventions, X-Ray trace context propagation, and CloudWatch Application Signals SLO metrics tracking latency and error rate
+- **Declarative Secret Synchronization via External Secrets Operator (ESO)**:
+  - `ExternalSecret` manifests retrieve database, cache, and third-party credentials from AWS Secrets Manager using the Pod Identity-backed `ClusterSecretStore`; automated secret rotation via EventBridge and Lambda active
+
