@@ -25,7 +25,7 @@ ROOT_README = PROJECT_ROOT / "README.md"
 SKILLS_DIR = CORE_DIR / "skills" / "mmo"
 SCHEMAS_DIR = CORE_DIR / "contracts" / "schemas"
 GENERATE_INDEX = CORE_DIR / "scripts" / "generate-index.py"
-RESEARCH_DOC = PROJECT_ROOT / "mmo_2027_100_rounds_deep_research.md"
+RESEARCH_DOC = PROJECT_ROOT / "reports" / "research" / "mmo-2027-sota-dossier.json"
 
 
 class TestMMOPackManifestAndMetadata(unittest.TestCase):
@@ -215,7 +215,7 @@ class TestMMOResearchPersistence(unittest.TestCase):
     """Challenge 7: Verify existence and comprehensive depth of 100-round deep research artifact."""
 
     def test_research_artifact_exists_and_detailed(self):
-        self.assertTrue(RESEARCH_DOC.exists(), "mmo_2027_100_rounds_deep_research.md must exist")
+        self.assertTrue(RESEARCH_DOC.exists(), "reports/research/mmo-2027-sota-dossier.json must exist")
         text = RESEARCH_DOC.read_text(encoding="utf-8")
         self.assertGreater(len(text), 10000, "Research document must be comprehensive (>10000 chars)")
         self.assertIn("100", text)

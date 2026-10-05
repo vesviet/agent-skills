@@ -5,8 +5,8 @@
 **Artifact Classification**: Engineering Research Notes  
 **Author**: `teamwork_preview_worker_m1`  
 **Parent Orchestrator**: `orchestrator_mmo_1`  
-**Master Dossier Reference**: `D:\myproject\agent-skills\mmo_2027_100_rounds_deep_research.md`  
-**Structured Mirror Reference**: `D:\myproject\agent-skills\reports\research\mmo-2027-sota-dossier.json`  
+**Master Dossier Reference**: `reports/research/mmo-2027-sota-dossier.json`  
+**Structured Mirror Reference**: `reports/research/mmo-2027-sota-dossier.json`  
 **Creation Date**: 2026-09-20T02:32:00Z  
 
 ---
