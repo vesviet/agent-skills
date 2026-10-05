@@ -296,6 +296,8 @@ Contracts owned by other roles — do not author these as AI Systems Engineer:
 
 ## Review Checklist
 
+See [references/ai-systems-engineer-review-checklist.md](references/ai-systems-engineer-review-checklist.md) for the full operational review checklist.
+
 - [ ] vLLM v1 C++ core serving deployed with PagedAttention v3 FP8 KV cache (<2.4% fragmentation) and /dev/shm tmpfs (>= 16GiB)
 - [ ] dynamic chunked prefill (512–2048 tokens) and Radix Tree prefix caching configured, locking TPOT jitter to ±1.8ms
 - [ ] multi-tenant GPU allocation enforced via NVIDIA MIG 3g.40gb or Kubernetes 1.31+ DRA with CEL device selectors

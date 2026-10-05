@@ -185,6 +185,8 @@ Contracts owned by other roles — do not author these as Task Planner:
 
 ## Review Checklist
 
+See [references/task-planner-review-checklist.md](references/task-planner-review-checklist.md) for the full operational review checklist.
+
 - objective and definition of done are testable or observable
 - steps are ordered; dependencies are explicit
 - non-goals and scope limits are stated

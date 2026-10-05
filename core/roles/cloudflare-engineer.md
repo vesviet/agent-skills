@@ -204,6 +204,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Review Checklist
 
+See [references/cloudflare-engineer-review-checklist.md](references/cloudflare-engineer-review-checklist.md) for the full operational review checklist.
+
 - wrangler config matches code env access and overlay conventions
 - bindings declared for every runtime resource the app uses
 - secret names only in handoffs and commits

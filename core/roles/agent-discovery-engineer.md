@@ -166,6 +166,8 @@ Shared skills note: `configure-agent-headers` and `manage-api-catalog` appear in
 
 ## Review Checklist
 
+See [references/agent-discovery-engineer-review-checklist.md](references/agent-discovery-engineer-review-checklist.md) for the full operational review checklist.
+
 ### Protocol Discovery
 - [ ] `# Auth.md` heading is used exactly.
 - [ ] OAuth `register_uri` and `claim_uri` syntax are correct.

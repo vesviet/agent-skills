@@ -273,6 +273,8 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 
 ## Review Checklist
 
+See [references/technical-writer-review-checklist.md](references/technical-writer-review-checklist.md) for the full operational review checklist.
+
 ### Documentation Foundation
 - audience and task are clear
 - sources[] populated in documentation-handoff.json

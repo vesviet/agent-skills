@@ -172,6 +172,8 @@ This role's mission spans techniques that range from routine (isolating ad accou
 
 ## Review Checklist
 
+See [references/mmo-engineer-review-checklist.md](references/mmo-engineer-review-checklist.md) for the full operational review checklist.
+
 - [ ] ANONYMITY-LOCK: origin IP never exposed; all traffic routed through residential/ISP/4G proxies; no standard headless browser used on high-risk operations
 - [ ] ISOLATION-LOCK: no proxy/IP shared across unrelated ad accounts or profiles; shared BM/Pixel access is compartmentalized and documented
 - [ ] TRACKING-LOCK: S2S / CAPI postback verified firing end to end before any budget scale-up

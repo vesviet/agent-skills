@@ -289,6 +289,8 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 
 ## Review Checklist
 
+See [references/product-manager-review-checklist.md](references/product-manager-review-checklist.md) for the full operational review checklist.
+
 ### Scope & Prioritization
 - user problem and business outcome are explicit
 - scope boundaries and non-goals are clear

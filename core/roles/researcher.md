@@ -260,6 +260,8 @@ Structured JSON handoff must validate against `contracts/schemas/research-report
 
 ## Review Checklist
 
+See [references/researcher-review-checklist.md](references/researcher-review-checklist.md) for the full operational review checklist.
+
 ### Depth & Coverage
 - depth_mode matches the agreed bar (deep default unless scoped waiver exists)
 - round count meets schema minimums for the chosen depth_mode

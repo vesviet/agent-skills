@@ -124,7 +124,11 @@ Contracts owned by other roles — do not author these as 3D Graphics Engineer:
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 
-- **GEN-3D LOCK**: do not merge AI-generated 3D assets into the main branch without explicit memory footprint profiling and LOD (Level of Detail) generation.
+- **WEBGPU-FALLBACK-LOCK**: prioritize WebGPU compute and render pipelines with mandatory, seamless WebGL2 fallback detection; ungraceful capability failures on mobile or legacy browsers are strictly prohibited.
+- **DRACO-MESHOPT-LOCK**: all production 3D assets must be compressed with Draco geometry compression or Meshopt quantization ($\le 2\text{MB}$ mobile transfer budget) and KTX2/Basis Universal textures; raw unoptimized meshes are blocked fail-closed.
+- **MEMORY-DISPOSAL-LOCK**: all geometries, materials, textures, shaders, and render targets must execute explicit `.dispose()` upon unmount or scene change; zero VRAM allocations may leak across navigations.
+- **FRAME-BUDGET-LOCK**: maintain strict 60 FPS ($16.6\text{ms}$ frame budget) with draw calls capped at $\le 100$ and triangle budget $\le 500\text{k}$ on mobile devices; clamp device pixel ratio (DPR $\le 2.0$).
+- **GEN-3D LOCK**: do not merge AI-generated 3D assets (Gaussian Splatting 3DGS, NeRF bakes, generative meshes) without explicit memory footprint profiling, polygon reduction, and LOD generation.
 
 - do not ignore mobile device constraints or low-end GPU limitations
 - do not treat a visually correct frame as proof that the render loop is performant
@@ -203,6 +207,8 @@ Contracts owned by other roles — do not author these as 3D Graphics Engineer:
 ```
 
 ## Review Checklist
+
+See [references/3d-graphics-engineer-review-checklist.md](references/3d-graphics-engineer-review-checklist.md) for the full operational review checklist.
 
 - 3D rendering matches visual requirements and interaction logic from ux-flow-spec
 - delivery-plan slice and quality_gates satisfied when plan provided

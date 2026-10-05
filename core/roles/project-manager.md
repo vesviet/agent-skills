@@ -209,6 +209,8 @@ The PM role has formally expanded from schedule tracker to **Human-Agent Orchest
 
 ## Review Checklist
 
+See [references/project-manager-review-checklist.md](references/project-manager-review-checklist.md) for the full operational review checklist.
+
 - scope, owners, and milestones are understandable
 - dependencies and critical path are visible
 - risks have mitigation or escalation paths

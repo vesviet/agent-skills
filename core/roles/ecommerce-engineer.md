@@ -203,6 +203,8 @@ Implement and govern dual-audience commerce infrastructure supporting human shop
 
 ## Review Checklist
 
+See [references/ecommerce-engineer-review-checklist.md](references/ecommerce-engineer-review-checklist.md) for the full operational review checklist.
+
 - pricing calculated server-side; client totals not trusted
 - idempotency keys used for all charge and capture operations
 - webhook signatures validated before processing

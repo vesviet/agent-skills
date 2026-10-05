@@ -364,6 +364,8 @@ Contracts owned by other roles — do not author these as System Engineer:
 
 ## Review Checklist
 
+See [references/system-engineer-review-checklist.md](references/system-engineer-review-checklist.md) for the full operational review checklist.
+
 ### System Design
 - [ ] every NFR has a specific measurable target with a measurement method
 - [ ] topology covers all layers in scope: compute, network, storage, middleware, runtime, AI inference

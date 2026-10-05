@@ -267,6 +267,8 @@ Emit `contracts/schemas/security-audit.json` when machine handoff is required.
 
 ## Review Checklist
 
+See [references/security-engineer-review-checklist.md](references/security-engineer-review-checklist.md) for the full operational review checklist.
+
 - trust boundaries and sensitive data flows are identified
 - threat model covers entry points, attack surface, and sensitive data paths
 - authentication and authorization are checked at the right boundary (not just frontend)

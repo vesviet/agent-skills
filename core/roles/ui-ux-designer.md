@@ -243,6 +243,8 @@ Emit `contracts/schemas/ux-flow-spec.json` and per-component `contracts/schemas/
 
 ## Review Checklist
 
+See [references/ui-ux-designer-review-checklist.md](references/ui-ux-designer-review-checklist.md) for the full operational review checklist.
+
 ### Experience Design & Handoff
 - user journey and primary task are clear
 - preserved and changed behavior match feature-ticket when provided

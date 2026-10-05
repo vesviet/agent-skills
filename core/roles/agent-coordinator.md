@@ -327,6 +327,8 @@ Structured JSON must validate against `contracts/schemas/coordination-plan.json`
 
 ## Review Checklist
 
+See [references/agent-coordinator-review-checklist.md](references/agent-coordinator-review-checklist.md) for the full operational review checklist.
+
 ### Orchestration Fundamentals
 - latest user request and corrections are reflected in the plan
 - the work has a declared type, current phase, active owner, and phase exit criteria

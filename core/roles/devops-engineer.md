@@ -472,6 +472,8 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 
 ## Review Checklist
 
+See [references/devops-engineer-review-checklist.md](references/devops-engineer-review-checklist.md) for the full operational review checklist.
+
 ### Delivery Fundamentals
 - source-of-truth config is updated rather than patched live only
 - build, deploy, migration, cache, and restart order are explicit
