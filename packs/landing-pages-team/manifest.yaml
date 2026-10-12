@@ -1,0 +1,91 @@
+schema_version: "2"
+
+name: landing-pages-team
+description: High-converting single-product landing page engine and merchant SaaS platform pack (noitieng.com / Carrd for Ads). Assembles Cloudflare Workers Edge SSR (< 25ms TTFB), Go 1.25/Kratos v2 Clean Architecture backend, 2D variant matrix (Footwear & Apparel), 5 CRO templates, VietQR Napas 247, Zalo/Messenger floating trust widgets, and Telegram bot telesale automation.
+version: 5.0.0
+
+tags:
+  - core
+  - landing-pages
+  - cloudflare-workers
+  - edge-ssr
+  - go-kratos
+  - clean-architecture
+  - cro
+  - ecommerce
+  - single-product
+  - vietqr
+  - carrd-for-ads
+  - noitieng
+author: user
+maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet-team/landing-pages
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
+includes:
+  - core
+  - overlays/go-microservices
+  - overlays/ui-design-system
+  - overlays/seo-publishing
+
+capabilities:
+  - code-generation
+  - api-development
+  - backend
+  - frontend
+  - edge-ssr
+  - cloudflare-workers
+  - cro-optimization
+  - conversion-rate-optimization
+  - payment-integration
+  - single-product-landing-page
+  - ecommerce
+  - ui-ux-design
+  - testing
+  - deployment
+  - security-audit
+
+data_classification: confidential
+
+activation:
+  strategy: marker_first
+  markers:
+    - wrangler.toml
+    - .kratos.yaml
+    - go.mod
+    - workers/landing-engine/wrangler.toml
+    - backend/go.mod
+    - frontend/dashboard/package.json
+  glob_patterns:
+    - "workers/landing-engine/**/*.ts"
+    - "backend/**/*.go"
+    - "frontend/dashboard/src/**/*.tsx"
+    - "frontend/dashboard/src/**/*.ts"
+  exclude_patterns:
+    - "vendor/**"
+    - "node_modules/**"
+    - "dist/**"
+    - "public/assets/**"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - run_migration
+      - push_to_production
+      - modify_secrets
+      - deploy_cf_worker
+      - deploy_backend_service
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

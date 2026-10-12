@@ -2,7 +2,7 @@
 
 Packs describe how to assemble the portable core with zero or more overlays for a target team. Each pack has a `manifest.yaml` that declares which `core` and `overlays/` to include, along with 2026 governance metadata.
 
-## Available Packs (15)
+## Available Packs (16)
 
 | Pack | Manifest | Composition | Capabilities |
 |------|----------|-------------|-------------|
@@ -21,6 +21,7 @@ Packs describe how to assemble the portable core with zero or more overlays for 
 | `donthan-team` | [manifest.yaml](donthan-team/manifest.yaml) | `core` + `overlays/donthan-web` | Frontend, UX, livestream, PWA |
 | `data-warehouse` | [manifest.yaml](data-warehouse/manifest.yaml) | `core` + `overlays/data-warehouse` (incl. `learning/` track) | Fullstack data warehouse, FastAPI microservices, DuckDB single-writer, Medallion Parquet, MISA AMIS VAS 14, blind recount, PII masking, 4-layer testing, dbt 1.9/Iceberg/Kafka learning track |
 | `mmo-growth-team` | [manifest.yaml](mmo-growth-team/manifest.yaml) | `core` only | v5.0.0 · Full-spectrum MMO growth engineering (AI Affiliate, multi-channel S2S tracking, stealth CDP automation, 5-phase campaign lifecycle, LTV & Blended ROAS economics) |
+| `landing-pages-team` | [manifest.yaml](landing-pages-team/manifest.yaml) | `core` + `overlays/go-microservices` + `overlays/ui-design-system` + `overlays/seo-publishing` | v5.0.0 · High-converting single-product landing page engine & SaaS (`noitieng.com` / Carrd for Ads), Cloudflare Workers Edge SSR (< 25ms TTFB), Go Kratos v2 Clean Architecture, 5 CRO templates, 2D Footwear & Apparel Matrix, VietQR Napas 247, Zalo/Messenger widgets |
 
 ### Pack Spotlight: vesviet-team (v5.0.0)
 
@@ -64,7 +65,16 @@ The `mmo-growth-team` pack orchestrates full-spectrum growth engineering, progra
 - **Multi-Channel Cookieless S2S Tracking**: Direct server-to-server integration with Meta Conversions API (CAPI v20+), TikTok Events API, Google Enhanced Conversions, and iOS 18+ AdAttributionKit with cryptographic UUID v4 deduplication and CTIT fraud filtering.
 - **2026/2027 Stealth CDP Automation**: Next-generation anti-detect browser orchestration over Chrome DevTools Protocol (CDP), Camoufox C++ patched runtime engines, WebGPU / Canvas noise consistency, and Cloudflare Turnstile handling.
 - **5-Phase Swarm Delivery Pipeline**: End-to-end multi-agent execution pipeline formalizing Offer Research → Landing/Content → S2S Tracking → Traffic/Ads → ROI Optimization & Scaling with strict A2A contract gates (`mmo-campaign-spec.json`, `mmo-roi-report.json`).
-- **Financial Engineering & Campaign Economics**: True ROI accounting incorporating blended ad spend, proxy consumption, API token overhead, and account die-rate depreciation alongside Customer Lifetime Value (LTV) and Blended ROAS modeling.
+### Pack Spotlight: landing-pages-team (v5.0.0)
+
+The `landing-pages-team` pack governs the end-to-end engineering, conversion rate optimization (CRO), and distributed infrastructure for high-converting single-product landing pages (**Carrd for Ads** — `noitieng.com`):
+
+- **Edge Serverless SSR (< 25ms TTFB)**: 100% Cloudflare Workers edge delivery with `SITES_KV` caching, 0ms cold starts, and dual host routing serving the SaaS Marketing Storefront (`noitieng.com`, `www.noitieng.com`), merchant subdomains (`*.noitieng.com`), and Merchant Dashboard (`app.noitieng.com`).
+- **Clean Architecture CA-1..CA-9**: Go 1.25 + Kratos v2 backend enforcing strict architectural invariants (zero ORM leak in `biz`, Wire dependency injection, opaque-box E2E tests, zero secrets, zero linter warnings).
+- **Zero-Trust Price Engine (ADR-07)**: Strict server-side recalculation of order totals against database variant models, eliminating client-side price tampering.
+- **Aho-Corasick Ad Policy Scanner (ADR-09)**: High-performance linear-time scanner detecting prohibited ad phrases (TikTok/Facebook Ads compliance) before page publication.
+- **2D Footwear & Apparel Variant Matrix**: Color $\times$ Size 35-44+ selection with smart availability state machine, native `<dialog id="size-guide-modal">`, 1-click Editor preset, and Telesale Telegram bot alerts (`Màu: ... | Size: ...`).
+- **Vietnamese E-commerce Localization**: 1-touch COD checkout, VietQR Napas 247 dynamic QR codes, floating Zalo & Messenger contact widgets, and trusted footer legitimacy (physical warehouse address & 1-to-1 warranty).
 
 ## 2026 Manifest Schema (v2)
 
