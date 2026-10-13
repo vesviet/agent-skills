@@ -24,7 +24,7 @@ The following words and phrases are prohibited in all published articles. Any dr
 | **foster / foster innovation** | Corporate euphemism | Weak verb masking lack of detail | build, generate, write, produce, trigger, establish |
 | **realm / in the realm of** | Archaic domain framing | Academic throat-clearing | in, across, within, for, during engineering of |
 | **crucial / vital / paramount** | False urgency | Weak intensifier without proof | required, critical-path, prerequisite, blocking, necessary |
-| **harness / harness the power** | Utility metaphor | Cliché tech filler | run, execute, deploy, utilize (replace with use), index, query |
+| **harness / harness the power** | Utility metaphor | Cliché tech filler | run, execute, deploy, use, index, query |
 | **navigating / navigating the** | Journey metaphor | Aimless narrative wandering | evaluating, migrating, choosing, auditing, configuring |
 | **intertwined / interlinked** | Abstract relationship | Obscures causal mechanics | depends on, triggers, couples with, blocks, calls |
 | **multifaceted** | Evasive complexity | Refuses to name specific facets | has 3 distinct layers, involves [X, Y, and Z] |

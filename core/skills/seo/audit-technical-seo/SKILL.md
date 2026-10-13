@@ -1,6 +1,6 @@
 ---
 name: audit-technical-seo
-description: Audit crawl budgets, search and AI bot access in robots.txt (Googlebot, OAI-SearchBot, PerplexityBot, Bingbot, and AI search crawlers), XML sitemaps, canonical tags, HTTP status codes, redirect chains (301/404/410), and Core Web Vitals (LCP, INP, CLS) emitting structured audit reports. Use when diagnosing crawlability issues, auditing staging or production sites for technical health, resolving redirect loops or canonical errors, or preparing engineering escalation tickets for frontend and infrastructure teams.
+description: Audit crawl budgets, search and AI bot access in robots.txt (Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, Applebot-Extended, and other AI search crawlers), XML sitemaps, canonical tags, HTTP status codes, redirect chains (301/404/410), and Core Web Vitals (LCP, INP, CLS) emitting structured audit reports. Use when diagnosing crawlability issues, auditing staging or production sites for technical health, resolving redirect loops or canonical errors, or preparing engineering escalation tickets for frontend and infrastructure teams.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, fetch]
 ---
 
@@ -11,7 +11,7 @@ Use this skill with the **SEO Analyst** role to perform technical audits of craw
 ## When to Use
 
 - diagnosing crawl budget waste, server latency bottlenecks, or spider traps
-- verifying `robots.txt` accessibility for AI search crawlers (OAI-SearchBot, PerplexityBot, ClaudeBot, Bingbot) and Googlebot
+- verifying `robots.txt` accessibility for AI search crawlers (OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended, Bingbot) and Googlebot
 - auditing XML sitemaps for syntax compliance, URL freshness, and non-200 exclusions
 - resolving canonical loops, self-canonical errors, or cross-domain canonical mismatches
 - detecting multi-hop redirect chains, 302 temporary redirect leaks, and 404/410 status codes
@@ -53,7 +53,7 @@ Use this skill with the **SEO Analyst** role to perform technical audits of craw
 
 ## Suggested Process
 
-1. **Bot Access & Directive Audit**: Fetch and inspect `robots.txt`; evaluate allow/disallow directives for Googlebot, Bingbot, and AI bots (OAI-SearchBot, PerplexityBot, ClaudeBot); verify sitemap index declaration.
+1. **Bot Access & Directive Audit**: Fetch and inspect `robots.txt`; evaluate allow/disallow directives for Googlebot, Bingbot, and AI bots (OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended); verify sitemap index declaration.
 2. **XML Sitemap Validation**: Extract declared sitemap URLs; verify schema validity, 200 OK HTTP status, canonical alignment, and genuine `lastmod` timestamps.
 3. **Status Code & Redirect Traversal**: Trace HTTP response headers across core site paths; flag redirect chains (> 1 hop), 302 leaks, soft 404s, and un-pruned legacy URLs.
 4. **Canonical & Header Inspection**: Inspect DOM `<link rel="canonical">` and HTTP `Link` headers; verify self-referential canonical tags, absolute HTTPS format, and absence of canonical loops.
@@ -64,7 +64,7 @@ Use this skill with the **SEO Analyst** role to perform technical audits of craw
 
 ## Checklist
 
-- [ ] `robots.txt` explicitly configures access for Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, and ClaudeBot
+- [ ] `robots.txt` explicitly configures access for Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, ClaudeBot, and Applebot-Extended
 - [ ] global wildcard blocks (`Disallow: /`) verified absent for authorized search and discovery bots
 - [ ] XML sitemap syntax validated against sitemaps.org schema with absolute HTTPS URLs and valid ISO-8601 `lastmod` dates
 - [ ] XML sitemap contains exclusively 200 OK canonical URLs with zero redirected, noindexed, or 4xx targets

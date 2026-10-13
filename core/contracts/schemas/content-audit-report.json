@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "contracts/schemas/content-audit-report.json",
   "title": "Content Audit Report",
-  "description": "Structured deliverable emitted by Content Manager using audit-content skill. Records portfolio-wide or URL-level content audit results, ROT classifications, AI semantic flaw scores, information gain ratings, and refresh actions.",
+  "description": "Structured deliverable emitted by Content Manager using audit-content skill. Records portfolio-wide or URL-level content audit results, ROT classifications, AI semantic flaw scores, information gain ratings, 3-tier decay tags, remediation SLAs, slop-risk flags, and refresh actions.",
   "type": "object",
   "required": [
     "contract_type",
@@ -80,6 +80,25 @@
           },
           "staleness_months": {
             "type": "number"
+          },
+          "decay_tier": {
+            "type": "string",
+            "enum": [
+              "none",
+              "tier1_algorithmic_serp",
+              "tier2_geo_citation",
+              "tier3_factual_temporal"
+            ],
+            "description": "3-tier decay classification per content-manager-governance-standards.md: Tier 1 (rank drop >3 positions or impressions -25% MoM), Tier 2 (GEO/AI citation drop >=15% over 30 days), Tier 3 (statistics >18 months, deprecated APIs, broken links)."
+          },
+          "sla_deadline": {
+            "type": "string",
+            "format": "date",
+            "description": "Remediation SLA deadline per the 4-tier triage action plan: Quick Patch <=15d, Structural Rewrite <=30d, Consolidation/301 <=20d, Decommission/410 <=10d."
+          },
+          "slop_risk_flagged": {
+            "type": "boolean",
+            "description": "True when the URL is queued in the portfolio slop_risk_inventory for intro formula drift, substance-free sections, or repetitive conclusions."
           },
           "rot_classification": {
             "type": "string",
@@ -211,6 +230,9 @@
           "rationale": "High traffic but contains robotic cadence and lacks 2026 production telemetry metrics.",
           "traffic_trend": "declining",
           "staleness_months": 14,
+          "decay_tier": "tier1_algorithmic_serp",
+          "sla_deadline": "2026-10-05",
+          "slop_risk_flagged": true,
           "rot_classification": "outdated",
           "ai_semantic_flaw_score": 28,
           "cliches_present": [

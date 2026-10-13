@@ -10,6 +10,41 @@
       "const": "content-handoff",
       "description": "Machine-readable contract discriminator."
     },
+    "produced_by_role": {
+      "type": "string",
+      "description": "Role that emitted this handoff (e.g. content-writer)."
+    },
+    "image_provenance": {
+      "type": "array",
+      "description": "Provenance classification for every media asset in the draft. Required whenever the draft embeds images, diagrams, or screenshots.",
+      "items": {
+        "type": "object",
+        "required": [
+          "asset_path",
+          "provenance"
+        ],
+        "properties": {
+          "asset_path": {
+            "type": "string",
+            "description": "Repo-relative path of the media asset."
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "original_photo",
+              "ai_generated",
+              "licensed_stock",
+              "unknown"
+            ],
+            "description": "C2PA-aligned source classification. unknown is not publishable; resolve before handoff."
+          },
+          "alt_text": {
+            "type": "string",
+            "description": "Descriptive alt text (80-125 characters) for the asset."
+          }
+        }
+      }
+    },
     "handoff_id": {
       "type": "string",
       "description": "Unique handoff identifier. Convention: YYYY-MM-DD-slug."
@@ -105,7 +140,7 @@
         },
         "description": {
           "type": "string",
-          "description": "Specific explanation of what this content adds that is not present in top-3 SERP results for the primary keyword."
+          "description": "Specific explanation of what this content adds that is not present in the top 10 SERP results for the primary keyword."
         },
         "gate_passed": {
           "type": "boolean",
@@ -286,7 +321,7 @@
         "burstiness_std_dev": {
           "type": "number",
           "minimum": 0,
-          "description": "Standard deviation of sentence lengths in words. Natural human cadence requires >= 6.0."
+          "description": "Standard deviation of sentence lengths in words. Natural human cadence requires >= 6.5."
         },
         "active_voice_percentage": {
           "type": "number",
@@ -454,7 +489,7 @@
       ],
       "information_gain": {
         "type": "firsthand_account",
-        "description": "Bao gồm kết quả đo điện năng tiêu thụ thực tế sau 30 ngày sử dụng tại căn hộ 25m² — không có trong top-5 SERP cho từ khóa này",
+        "description": "Bao gồm kết quả đo điện năng tiêu thụ thực tế sau 30 ngày sử dụng tại căn hộ 25m² — không có trong top 10 SERP cho từ khóa này",
         "gate_passed": true
       },
       "geo_aeo_fields_applied": {

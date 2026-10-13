@@ -173,9 +173,9 @@
         }
       }
     },
-    "ai_extractability": {
-      "type": "object",
-      "description": "AI extractability audit — evaluates how well the content can be extracted and cited by generative AI engines.",
+  "ai_extractability": {
+    "type": "object",
+    "description": "AI extractability audit — evaluates how well the content can be extracted and cited by generative AI engines. overall_score implements the GEO Extractability Index (0–100) defined in core/roles/references/seo-analyst-geo-standards.md §5: four 25-point dimensions (BLUF clarity, fact density & empirical proof, entity salience & Wikidata mapping, modular formatting & scannability). answer_first_structure, fact_density, entity_salience, and heading_hierarchy + geo_readiness_checklist.tabular_data_density are the element statuses that feed those four dimensions; schema_markup, ai_bot_crawlability, content_uniqueness, and query_fan_out_coverage are recorded as supporting element evidence.",
       "required": [
         "answer_first_structure",
         "heading_hierarchy",
@@ -185,79 +185,108 @@
         "overall_score"
       ],
       "properties": {
-        "answer_first_structure": {
-          "type": "object",
-          "required": [
-            "status"
-          ],
-          "properties": {
-            "status": {
-              "type": "string",
-              "enum": [
-                "pass",
-                "fail",
-                "partial"
-              ]
-            },
-            "notes": {
-              "type": "string",
-              "description": "e.g. 3 of 5 H2 sections have answer-first block; 2 sections bury answer in paragraph 3."
+          "answer_first_structure": {
+            "type": "object",
+            "description": "Feeds the BLUF clarity dimension (25 pts): H2 block ≤30w direct answer + ≤30w metric proof, total ≤60 words.",
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pass",
+                  "fail",
+                  "partial"
+                ]
+              },
+              "notes": {
+                "type": "string",
+                "description": "e.g. 3 of 5 H2 sections have answer-first block; 2 sections bury answer in paragraph 3."
+              }
             }
-          }
-        },
-        "heading_hierarchy": {
-          "type": "object",
-          "description": "Checks H1→H2→H3 hierarchy is clean and query-intent aligned.",
-          "required": [
-            "status"
-          ],
-          "properties": {
-            "status": {
-              "type": "string",
-              "enum": [
-                "pass",
-                "fail",
-                "partial"
-              ]
-            },
-            "h1_count": {
-              "type": "integer",
-              "description": "Should be exactly 1."
-            },
-            "issues": {
-              "type": "array",
-              "items": {
+          },
+          "entity_salience": {
+            "type": "object",
+            "description": "Feeds the entity salience & Wikidata mapping dimension (25 pts): primary entity as grammatical subject, Wikidata QIDs bound, vague pronouns removed from lead sentences.",
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pass",
+                  "fail",
+                  "partial"
+                ]
+              },
+              "primary_entity_qid": {
+                "type": "string",
+                "description": "Wikidata QID of the primary entity (e.g. Q182496)."
+              },
+              "lead_sentence_placement": {
+                "type": "boolean",
+                "description": "True when the primary entity is the grammatical subject of the opening sentence under each H2."
+              },
+              "notes": {
                 "type": "string"
               }
             }
-          }
-        },
-        "fact_density": {
-          "type": "object",
-          "description": "Verifiable data points per 500 words. Target: minimum 3.",
-          "required": [
-            "status"
-          ],
-          "properties": {
-            "status": {
-              "type": "string",
-              "enum": [
-                "pass",
-                "fail",
-                "partial"
-              ]
-            },
-            "data_points_found": {
-              "type": "integer"
-            },
-            "word_count_approximate": {
-              "type": "integer"
-            },
-            "notes": {
-              "type": "string"
+          },
+          "heading_hierarchy": {
+            "type": "object",
+            "description": "Checks H1→H2→H3 hierarchy is clean and query-intent aligned. Feeds the modular formatting & scannability dimension (25 pts).",
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pass",
+                  "fail",
+                  "partial"
+                ]
+              },
+              "h1_count": {
+                "type": "integer",
+                "description": "Should be exactly 1."
+              },
+              "issues": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             }
-          }
-        },
+          },
+          "fact_density": {
+            "type": "object",
+            "description": "Verifiable data points per 500 words. Target: minimum 3. Feeds the fact density & empirical proof dimension (25 pts).",
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pass",
+                  "fail",
+                  "partial"
+                ]
+              },
+              "data_points_found": {
+                "type": "integer"
+              },
+              "word_count_approximate": {
+                "type": "integer"
+              },
+              "notes": {
+                "type": "string"
+              }
+            }
+          },
         "schema_markup": {
           "type": "object",
           "description": "Whether required schema types from the brief are implemented on the live page.",
@@ -295,7 +324,7 @@
         },
         "ai_bot_crawlability": {
           "type": "object",
-          "description": "Robots.txt check for OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot.",
+          "description": "Robots.txt check for Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, ClaudeBot, and Applebot-Extended.",
           "required": [
             "status"
           ],
@@ -341,7 +370,7 @@
             },
             "notes": {
               "type": "string",
-              "description": "What unique value the article provides vs top-3 SERP results."
+              "description": "What unique value the article provides vs the top 10 SERP results."
             }
           }
         },
@@ -378,7 +407,7 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 100,
-          "description": "AI extractability score 0–100 based on element statuses. Pass = 70+."
+          "description": "AI extractability score 0–100 based on element statuses. Pass = 80+; conditional_pass = 65–79 with documented caveats; fail = below 65 (GEO Extractability Index, core/roles/references/seo-analyst-geo-standards.md §5)."
         },
         "overall_status": {
           "type": "string",
@@ -387,7 +416,7 @@
             "conditional_pass",
             "fail"
           ],
-          "description": "pass = 70+; conditional_pass = 50–69 with documented caveats; fail = below 50."
+              "description": "pass = 80+; conditional_pass = 65–79 with documented caveats; fail = below 65."
         }
       }
     },
@@ -699,7 +728,7 @@
             },
             "notes": {
               "type": "string",
-              "description": "What unique value the article provides vs top-3 SERP results. Required for pass."
+              "description": "What unique value the article provides vs the top 10 SERP results. Required for pass."
             }
           },
           "required": [
@@ -914,6 +943,12 @@
           "status": "pass",
           "notes": "All 5 H2 sections have answer-first block ≤60 words."
         },
+        "entity_salience": {
+          "status": "pass",
+          "primary_entity_qid": "Q182496",
+          "lead_sentence_placement": true,
+          "notes": "Primary entity opens as grammatical subject under every H2; no vague pronouns in lead sentences."
+        },
         "heading_hierarchy": {
           "status": "pass",
           "h1_count": 1,
@@ -937,7 +972,7 @@
         },
         "ai_bot_crawlability": {
           "status": "verified_allowed",
-          "notes": "robots.txt allows OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot."
+          "notes": "robots.txt allows Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended."
         },
         "content_uniqueness": {
           "status": "pass",

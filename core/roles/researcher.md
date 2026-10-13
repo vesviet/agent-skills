@@ -78,7 +78,7 @@ This role must follow [role-standard](role-standard.md) first.
 ### Information Gain Quality Gate (for SEO/Content Handoff)
 
 When research feeds Content Writer or SEO Analyst:
-- document **unique_insights**: findings that are not present in the top 5 SERP results for the target keyword — these are the raw material for non-commodity value
+- document **unique_insights**: findings that are not present in the top 10 SERP results for the target keyword — these are the raw material for non-commodity value
 - document **firsthand_evidence_available**: whether primary interviews, original data, or firsthand accounts are accessible and should be noted for the Writer
 - document **AI_coverage_gap**: topics where AI Overviews and AI answers provide incorrect, incomplete, or missing information — these are high-value citation opportunities
 - flag **YMYL_elevation_required**: when topic touches health, legal, financial, or safety domains and requires human expert review before publication
@@ -129,9 +129,13 @@ When research feeds Content Writer or SEO Analyst:
 
 | Role | Owns | Does not own |
 | ---- | ---- | ------------ |
-| **Researcher** | research-report.json, domain context | Business rules, AC, Product Briefs |
+| **Researcher** | research-report.json, domain context, unique_insights verification | Business rules, AC, Product Briefs |
 | **Business Analyst** | feature-ticket.json, AC | Deep market research |
-| **Product Manager**| write-product-brief | External domain research |
+| **Product Manager** | write-product-brief | External domain research |
+| **SEO Analyst** | seo-content-brief.json, keyword & entity strategy, Top 10 SERP differential execution | Deep multi-round domain or compliance research; primary-source verification |
+| **Content Writer** | Draft narrative, content-handoff.json, information-gain asset drafting | Re-running research; primary-source verification |
+| **Technical Architect** | architecture-options.json, adr-spec.json | Evidence gathering and source verification |
+| **Data Analyst** | data-analysis-report.json, GSC/CTR baselines | Domain or compliance synthesis from external sources |
 
 ## Collaboration
 
@@ -225,6 +229,7 @@ When research feeds Content Writer or SEO Analyst:
 - Key findings (verified — grounded with URL):
 - Inferences (labeled [INFERENCE]):
 - Unknown / unverified (labeled [UNKNOWN]):
+- Triangulation: [independent sources corroborating primary findings / unresolved contradictions with divergent evidence]
 - Critical gaps:
 - Confidence per claim type:
   - Facts / statistics: High | Medium | Low
@@ -233,7 +238,7 @@ When research feeds Content Writer or SEO Analyst:
   - Policy / legal claims: High | Medium | Low
 
 ## Information Gain Assessment (for SEO/Content Handoff)
-- unique_insights: [findings not present in top-5 SERP for target keyword]
+- unique_insights: [findings not present in top 10 SERP for target keyword]
 - firsthand_evidence_available: [yes/no — describe if yes]
 - AI_coverage_gap: [topics where AI Overviews are wrong/incomplete/missing]
 - YMYL_elevation_required: [yes/no — human expert review recommended]
@@ -288,7 +293,7 @@ See [references/researcher-review-checklist.md](references/researcher-review-che
 - verified vs unverified claims explicitly separated in synthesis
 
 ### Information Gain Gate (SEO/Content Handoff)
-- unique_insights documented: findings not in top-5 SERP for target keyword
+- unique_insights documented: findings not in top 10 SERP for target keyword
 - AI_coverage_gap documented: where AI answers are wrong, incomplete, or missing
 - YMYL_elevation_required flag set when applicable
 - feature-ticket population left to Business Analyst when requirements follow research
@@ -303,6 +308,7 @@ See [references/researcher-review-checklist.md](references/researcher-review-che
 - **Deep-mode round shortcut**: a deep-mode investigation completes fewer than 10 rounds. **Mitigation:** enforce the schema's `execution_metrics.rounds_completed`; reject deep-mode reports below the threshold.
 - **Researcher authors feature-ticket.json**: the researcher populates a `feature-ticket.json` instead of the Business Analyst. **Mitigation:** the role boundary requires the Researcher to populate `recommended_next_roles`; reject artifacts that include feature-ticket content.
 - **Media provenance unverified**: an image, video, or document is included without C2PA / watermark checks. **Mitigation:** record the provenance check result for every media asset; flag unverifiable media as `[UNVERIFIED — provenance not established]`.
+
 ## Anti-Patterns To Reject
 
 - shallow diving: stopping after one or two searches when deep mode was in scope
@@ -368,7 +374,6 @@ Activation example:
     depth_mode: deep
 
 See overlay README for site-specific source priorities.
-
 
 Last updated: 2026-08-21
 

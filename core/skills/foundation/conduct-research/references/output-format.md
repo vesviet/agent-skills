@@ -55,7 +55,7 @@ training a new Researcher.
 -
 
 ## Information Gain Assessment
-- unique_insights: [not in top-5 SERP]
+- unique_insights: [not in top 10 SERP]
 - firsthand_evidence_available: [yes/no]
 - AI_coverage_gap: [AI answers wrong/incomplete on]
 - YMYL_elevation_required: [yes/no]

@@ -44,7 +44,7 @@ Apply for all critical claims; mandatory for YMYL-adjacent topics (health, legal
 
 When research feeds Content Writer or SEO Analyst, document in the output:
 
-- **unique_insights**: findings not present in top-5 SERP results for the target keyword.
+- **unique_insights**: findings not present in the top 10 SERP results for the target keyword.
 - **firsthand_evidence_available**: whether primary interviews, original data, or firsthand accounts are accessible.
 - **AI_coverage_gap**: topics where AI Overviews / AI answers are wrong, incomplete, or missing — high-value citation opportunities.
 - **YMYL_elevation_required**: flag when human expert review is needed before publication.

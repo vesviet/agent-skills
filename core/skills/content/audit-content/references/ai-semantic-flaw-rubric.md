@@ -11,7 +11,7 @@ The AI Semantic Flaw Score begins at **0 penalty points** (perfect human-grade s
 | Dimension | Evaluation Criteria | Penalty Weight | Max Deduction |
 | :--- | :--- | :--- | :--- |
 | **1. Cliché Density** | Occurrence of banned AI clichés ("delve", "tapestry", "testament", "unlock", "game-changer", "beacon", "pinnacle", "foster", "realm", "harness", "navigating the landscape"). | -10 points per cliché | -40 points |
-| **2. Cadence Uniformity** | Monotonous sentence lengths lacking 20/60/20 burstiness. Standard deviation of sentence length < 5.0 words, or ≥3 consecutive sentences of identical word count. | -15 to -25 points | -25 points |
+| **2. Cadence Uniformity** | Monotonous sentence lengths lacking 20/60/20 burstiness. Standard deviation of sentence length below 6.5 words (burstiness floor), or ≥3 consecutive sentences of identical word count. | -15 to -25 points | -25 points |
 | **3. Vagueness & Fluff Ratio** | Empty transitional filler ("In today's fast-paced digital world", "Needless to say", "At the end of the day") or generic summaries without technical specifics. | -5 points per paragraph | -20 points |
 | **4. Hallucination & Speculation Risk** | Unsubstantiated metrics, unverified library versions, fabricated command-line flags, or claims marked `[UNVERIFIED]`. | -15 points per claim | -30 points |
 | **5. Passive Voice & Hedging** | Active voice below 85%, or excessive epistemic hedging ("it could perhaps be argued that it might assist"). | -5 to -15 points | -15 points |

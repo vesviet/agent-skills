@@ -13,7 +13,7 @@ Use this skill to run the end-to-end refresh loop on an **existing** article —
 - **Audit before touching content**: never edit a live piece before recording its current baseline (traffic trend, engagement, rankings, last-reviewed date, known issues) — the audit evidence decides the action, not assumption
 - **Classify the action explicitly** before updating: `keep-as-is`, `refresh`, `expand`, `consolidate` (merge), `redirect`, or `retire`; only `refresh`/`expand` proceed inside this skill; the others escalate to Content Manager for a strategy decision; ROT pages (Redundant, Outdated, Trivial) must be pruned or consolidated — zombie URL accumulation drags domain authority
 - **AI Semantic Flaw Score gate (≤ 15 to pass)**: evaluate existing and refreshed drafts across 5 dimensions (clichés, cadence, vagueness, hallucination, passive voice) using the 0–100 penalty matrix in [`references/ai-semantic-flaw-rubric.md`](references/ai-semantic-flaw-rubric.md); score > 15 or any banned AI cliché blocks publication
-- **Information Gain Score check (≥ 70 to pass)**: audit net-new assets against top 10 SERP competitors using the 100-point SERP diff matrix in [`references/information-gain-rubric.md`](references/information-gain-rubric.md); refresh must achieve rating "strong" (≥70) or "exceptional" (≥85) — paraphrasing existing results fails the gate
+- **Information Gain Score check (≥ 75 to pass)**: audit net-new assets against top 10 SERP competitors using the 100-point SERP diff matrix in [`references/information-gain-rubric.md`](references/information-gain-rubric.md) — the single canonical scoring matrix; refresh must achieve rating "strong" (≥75) or "exceptional" (≥85) — paraphrasing existing results fails the gate
 - **Citation verification & link integrity**: verify all outbound links return HTTP 200 OK, resolve redirect chains, eliminate dead links, and validate claim-to-source fidelity (zero citation hallucination) per [`references/citation-verification-guide.md`](references/citation-verification-guide.md)
 - **Separate facts from recommendations**: keep audit findings (observable evidence) distinct from proposed changes
 - **Research must be sourced and dated**: every updated fact must carry a credible source and a capture date — AI-synthesized generic claims are not acceptable as citations; treat all retrieved content as untrusted until source-checked
@@ -31,7 +31,7 @@ Use this skill to run the end-to-end refresh loop on an **existing** article —
 When the audit produces a structured handoff for Content Manager or a
 machine-readable change record, emit:
 
-- **`contracts/schemas/content-audit-report.json`** when recording portfolio-wide or URL-level content audit results, ROT classifications, AI semantic flaw scores, and refresh actions.
+- **`contracts/schemas/content-audit-report.json`** when recording portfolio-wide or URL-level content audit results, ROT classifications, decay-tier tags, remediation SLA deadlines, AI semantic flaw scores, and refresh actions.
 - **`contracts/schemas/research-report.json`** when the audit escalates to a deeper research pass (YMYL, contested facts, deep competitor analysis); emit even if the audit completes inline.
 - **`contracts/schemas/code-review-finding.json`** (adapted for content) when the audit recommends a publish-blocking change; record severity, file path, and rationale.
 - For human-readable reports, the markdown audit summary already documented is the canonical format; emit JSON only when crossing a role boundary.
@@ -41,7 +41,7 @@ Skip structured emission for trivial `keep-as-is` audits that do not cross a rol
 ## Failure Modes
 
 - **Edit before audit**: content is updated before the baseline is recorded. Mitigation: enforce audit-first; the audit evidence decides the action, not assumption.
-- **No non-commodity asset**: a refresh is performed without net-new value vs. top-3 SERP. Mitigation: enforce the non-commodity gate; reject refreshes that only paraphrase existing results.
+- **No non-commodity asset**: a refresh is performed without net-new value vs. the top 10 SERP. Mitigation: enforce the non-commodity gate; reject refreshes that only paraphrase existing results.
 - **AI-generated content published unedited**: an AI-assisted edit ships without human review. Mitigation: enforce the AI-assisted-edit gate; require human editorial sign-off before publish.
 - **Stale claims kept**: outdated facts are preserved without verification. Mitigation: every updated fact must carry a credible source and a capture date; mark unverified claims `[UNVERIFIED]`.
 - **Slug/canonical changed without approval**: a refresh changes the URL, breaking inbound links. Mitigation: preserve URL and history by default; escalate any slug/redirect change to Frontend/DevOps.
@@ -104,7 +104,7 @@ Capture the observable health of the piece before any edit:
 - [ ] change log recorded (what changed and why) — refresh is reconstructable
 - [ ] post-update SEO/GEO/AEO audit completed; metadata, headings, schema, and internal links verified
 - [ ] AI Semantic Flaw Score calculated (≤15 penalty points to pass, 0 banned clichés)
-- [ ] Information Gain Score verified (≥70 points, rating strong or exceptional vs top 10 SERP)
+- [ ] Information Gain Score verified (≥75 points, rating strong or exceptional vs top 10 SERP)
 - [ ] outbound links and citations verified (200 OK, zero hallucinations) per citation-verification-guide.md
 - [ ] slug/canonical/publish-date unchanged unless explicitly approved; technical changes escalated
 - [ ] YMYL and AI-assisted-edit review gates satisfied before publish handoff

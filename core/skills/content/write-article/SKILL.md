@@ -8,7 +8,7 @@ allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 
 Use this skill with the **Content Writer** role when the deliverable is a publishable article (Markdown, MDX, or Hugo/Astro content files). Articles must optimize for three discovery surfaces simultaneously: traditional search (SEO), direct-answer engines (AEO), and generative AI citation (GEO).
 
-The specific thresholds below (answer-first ≤60 words, fact density, E-E-A-T proof types) are the same GEO/AEO/E-E-A-T standard defined in `optimize-seo`'s Core Rules — this skill is where a Content Writer **implements** that standard while drafting, not a second definition of it. If the two ever disagree, `optimize-seo` is the source of truth; update rules there first, then mirror the change here.
+The specific thresholds below (answer-first ≤60 words, fact density, E-E-A-T proof types) are the same GEO/AEO/E-E-A-T standard defined in `optimize-seo`'s Core Rules. The anti-AI style metrics (blacklist, 20/60/20 burstiness, active voice) are defined canonically in `core/roles/references/content-writer-anti-ai-standards.md`. This skill is where a Content Writer **implements** those standards while drafting, not a second definition of them. If the two ever disagree, update the canonical source first, then mirror the change here.
 
 ## When to Use
 
@@ -21,7 +21,7 @@ The specific thresholds below (answer-first ≤60 words, fact density, E-E-A-T p
 
 ### Anti-AI Style & Natural Cadence
 - **Zero-tolerance Anti-AI clichés blacklist**: prohibit "delve", "tapestry", "testament", "unlock", "game-changer", "foster", etc. per [`references/anti-ai-style-guide.md`](references/anti-ai-style-guide.md)
-- **Burstiness & natural cadence**: enforce 20/60/20 sentence length distribution (<12w: ~20%, 12–25w: ~60%, >25w: ~20%) to avoid robotic monotony; cadence std dev ≥ 6.5 words
+- **Burstiness & natural cadence**: enforce the 20/60/20 sentence length distribution (~20% short 3–7 words, ~60% medium 8–18 words, ~20% complex 19–28 words) to avoid robotic monotony; cadence std dev ≥ 6.5 words
 - **Active voice mandate**: require ≥85% active voice with clear subject agency; eliminate passive evasion
 
 ### Answer-First & Section BLUF Structure (AEO/GEO mandatory)
@@ -30,9 +30,9 @@ The specific thresholds below (answer-first ≤60 words, fact density, E-E-A-T p
 - mirror H2 headings to natural language queries; address sub-questions with H3 subheadings
 
 ### Information Gain & Shallow Synthesis Prevention
-- **Shallow synthesis prevention**: reject drafts that merely synthesize top-5 SERP results without firsthand engineering commentary, benchmarks, or telemetry
-- every article must document what it adds beyond top-3 SERP results (acceptable types: original_data, firsthand_account, expert_interview, unique_framework)
-- inject ≥30% unique human insight, local knowledge, or original empirical data
+- **Shallow synthesis prevention**: reject drafts that merely synthesize top 10 SERP results without firsthand engineering commentary, benchmarks, or telemetry
+- every article must document what it adds beyond the top 10 SERP results (acceptable types: original_data, firsthand_account, expert_interview, unique_framework)
+- inject unique human insight, local knowledge, or original empirical data as the documented non-commodity element
 
 ### Authentic Sourcing & Fact Density
 - enforce Tier 1/2 source credibility taxonomy per [`references/authentic-source-matrix.md`](references/authentic-source-matrix.md); prohibit unverified blogs and AI summaries
@@ -71,7 +71,7 @@ The full 6-step process (define question, research with CoVe + AEO discovery, ou
 
 When AI support is used anywhere in drafting, apply three disciplines — full templates live in [references/ai-drafting-playbook.md](references/ai-drafting-playbook.md):
 
-1. **SERP-grounded outline loop**: build the prompt from all five components (role, brief, constraints, SERP reference, output format), ground on top-5 results, audit heading hygiene, iterate until depth — never one-shot the outline.
+1. **SERP-grounded outline loop**: build the prompt from all five components (role, brief, constraints, SERP reference, output format), ground on top 10 results, audit heading hygiene, iterate until depth — never one-shot the outline.
 2. **Brief-driven images**: every generated image gets a structured brief (subject, composition, style, context, technical) plus kebab-case filename, 80-125 char alt-text, and `image_provenance` in the handoff.
 3. **Five-component draft frame**: role + brief + signed-off structure + keyword policy + visual/media spec kept inline per drafting call; any missing component statistically produces boilerplate.
 
@@ -84,7 +84,7 @@ When AI support is used anywhere in drafting, apply three disciplines — full t
 
 ### AI-Assisted Outline (when applicable)
 - [ ] outline prompt included all five components (role, brief, constraints, SERP reference, output format)
-- [ ] SERP top-5 grounding pass documented
+- [ ] SERP top-10 grounding pass documented
 - [ ] heading hygiene audit passed (one H1, intent-distinct H2s, real sub-question H3s)
 - [ ] outline iterated until depth; iteration count captured in handoff
 - [ ] non-commodity sections identified before drafting
@@ -136,7 +136,6 @@ When AI support is used anywhere in drafting, apply three disciplines — full t
 - **Information gain absent**: the article paraphrases existing top results without unique value. Mitigation: require an information-gain asset (original data, firsthand account, expert interview) before drafting.
 - **Schema invalid**: structured data markup is hand-typed and drifts from the spec. Mitigation: auto-generate schema from the source; validate against the current schema.
 - **AI label missing on AI-assisted content**: AI-assisted publishing without the required disclosure. Mitigation: apply the platform's AI content label policy before publish.
-- **Socratic gate bypassed**: an LLM tutor outputs the final answer or a complete code block. Mitigation: enforce the Socratic constraint; reject tutor prompts that output answers.
 
 ## Security Guardrails (OWASP ASI)
 

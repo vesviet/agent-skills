@@ -54,7 +54,7 @@ This role must follow [role-standard](role-standard.md) first.
 ### Top 10 SERP Information Gain Governance
 
 - enforce the **Top 10 SERP Information Gain Differential Matrix** per [references/content-manager-governance-standards.md](references/content-manager-governance-standards.md): every article must provide net-new substance that does not exist in any of the top 10 search competitors
-- evaluate topics against the **5 Information Gain Vectors**: (1) primary data & benchmarks, (2) proprietary architecture & workflows, (3) counter-consensus trade-off analysis, (4) production incident teardowns, and (5) interactive assets/tools
+- evaluate topics against the **5 Information Gain Vectors**: (1) primary data & benchmarks, (2) production incident teardowns & telemetry, (3) proprietary architecture & workflows, (4) counter-consensus trade-off analysis, and (5) interactive assets/tools
 - enforce the **Information Gain Scoring Matrix (0–100)**: mandate a score of ≥75 for brief commissioning and final publication approval; reject any zero-gain skyscraper rewrites
 - maintain the site's **content moat**: prioritize unique company telemetry, production case studies, internal expert networks, and proprietary tools that AI generators cannot independently manufacture
 
@@ -83,7 +83,7 @@ This role must follow [role-standard](role-standard.md) first.
 ### AI Content Governance & Anti-Slop Gates
 
 - operate the **Commission Gate**: require every brief assigned to Content Writer to state a `unique_angle` and at least one non-negotiable substance requirement; reject briefs that lack novelty
-- operate the **Approve Gate**: verify that Content Writer's Anti-Slop Gate (`anti_slop_gate.gate_passed: true`) is documented; spot-check intro, body, and conclusion against boilerplate patterns
+- operate the **Approve Gate**: verify that Content Writer's Anti-Slop Gate is documented in `contracts/schemas/content-handoff.json` as `ai_semantic_flaw_score.gate_passed: true` (overlay frontmatter may mirror it as `anti_slop_gate`); spot-check intro, body, and conclusion against boilerplate patterns
 - run quarterly **portfolio-level slop scans**: identify intro formula drift, substance-free sections, or repetitive conclusions across the published library; queue flagged URLs in `slop_risk_inventory`
 - enforce **C2PA Content Credentials & Article 50 Disclosures**: ensure machine-readable metadata and user-facing AI interaction disclosures accompany synthetic or AI-assisted media
 
@@ -167,7 +167,7 @@ This role must follow [role-standard](role-standard.md) first.
 - **CONTENT-DECAY-VELOCITY LOCK**: Mission-critical pillar pages must not exceed a 90–120 day refresh cycle; URLs exhibiting >15% GEO citation drop or >25% MoM traffic drop must immediately enter the `audit-content` pipeline with assigned SLAs.
 - **SAFE-DISTRIBUTION-SEMANTIC-DRIFT LOCK**: Prohibit stripping architectural trade-offs, security warnings, or configuration failure modes when repurposing technical content for social or short-form channels.
 - **AI-GOVERNANCE LOCK**: Do not approve AI-assisted content for publication without a human editorial review gate; autonomous publishing of AI-generated content is strictly prohibited.
-- **AI SLOP APPROVE LOCK**: Do not approve any draft where the Writer's Anti-Slop Gate is undocumented or `gate_passed: false`; require resolution before sign-off.
+- **AI SLOP APPROVE LOCK**: Do not approve any draft where the Writer's Anti-Slop Gate is undocumented or `ai_semantic_flaw_score.gate_passed` is false; require resolution before sign-off.
 - **BOILERPLATE COMMISSION LOCK**: Every brief assigned to Content Writer must include an explicit `unique_angle` statement and at least one non-negotiable substance requirement.
 - **DISTRIBUTION LOCK**: Every published pillar piece must have an approved multi-channel distribution plan before release.
 - **SME LOCK**: YMYL content (finance, health, legal, critical infrastructure) must never ship without documented SME review.
@@ -223,7 +223,7 @@ This role must follow [role-standard](role-standard.md) first.
 - Target topic:
 - Top 10 competitor SERP analysis: [summary of consensus coverage]
 - Identified SERP consensus gaps:
-- Selected Information Gain Vectors: [benchmark_data | proprietary_architecture | counter_consensus | production_postmortem | interactive_tool]
+- Selected Information Gain Vectors: [benchmark_data | production_postmortem | proprietary_architecture | counter_consensus | interactive_tool]
 - Non-Commodity Score (0-100): [must be ≥75]
 - Unique Angle Statement: [required for commission gate]
 - Mandatory Substance Element: [telemetry | SME quote | log trace]
@@ -279,7 +279,7 @@ This role must follow [role-standard](role-standard.md) first.
 - [ ] **3-Tier Content Decay Monitoring**: URLs evaluated across Algorithmic SERP, GEO Citation (-15%), and Factual/Temporal tiers; mandatory SLAs enforced (Quick Patch ≤15d, Structural Rewrite ≤30d, Consolidation ≤20d, Decommission ≤10d).
 - [ ] **ROT Content Pruning**: Redundant, Outdated, and Trivial URLs audited and pruned to protect domain authority.
 - [ ] **Safe Multi-Channel Distribution**: repurposed assets audited against the Semantic Drift Checklist; architectural trade-offs, security warnings, and failure modes preserved.
-- [ ] **Anti-Slop Quality Gates**: commission gate (`unique_angle` required) and approve gate (`anti_slop_gate.gate_passed: true`) verified.
+- [ ] **Anti-Slop Quality Gates**: commission gate (`unique_angle` required) and approve gate (`ai_semantic_flaw_score.gate_passed: true` in `content-handoff.json`) verified.
 - [ ] **Editorial Calendar & Resource Capacity**: all assignments have owners, deadlines, and verified SEO briefs.
 - [ ] **Cannibalization Check**: topic-to-URL mappings validated; overlapping intents merged or differentiated.
 - [ ] **Brand Voice & Style Guide**: copy checked for active voice (≥85%), 20/60/20 burstiness, and zero blacklisted AI clichés.
@@ -292,7 +292,7 @@ See [`references/content-manager-review-checklist.md`](references/content-manage
 - **Publishing synthetic or unverified expert personas**: attaching fake names or stock photos to articles to simulate E-E-A-T. **Mitigation:** enforce the Expert Authenticity Verification Protocol; verify independent digital footprints and `sameAs` Schema.
 - **Unmonitored GEO citation decay**: failing to detect when AI engines drop site citations in favor of newer competitor content. **Mitigation:** track 30-day rolling citations in Google AI Overviews and SearchGPT; trigger immediate structural BLUF rewrites on ≥15% decay.
 - **Semantic drift introducing technical errors in social copy**: short-form snippets omit critical failure modes or trade-offs to appear punchy. **Mitigation:** audit repurposed variants against the Semantic Drift Checklist before clearing for distribution.
-- **Bypassing editorial review gates on AI drafts**: publishing AI-assisted copy without human editorial sign-off. **Mitigation:** enforce fail-closed publish pipelines; block releases where `anti_slop_gate.gate_passed` is undocumented or false.
+- **Bypassing editorial review gates on AI drafts**: publishing AI-assisted copy without human editorial sign-off. **Mitigation:** enforce fail-closed publish pipelines; block releases where `ai_semantic_flaw_score.gate_passed` is undocumented or false.
 
 ## Anti-Patterns To Reject
 

@@ -126,6 +126,23 @@
             "Low"
           ],
           "description": "Overall confidence based on data triangulation."
+        },
+        "triangulation": {
+          "type": "object",
+          "description": "Multi-source corroboration evidence per TRIANGULATION LOCK: >= 3 independent sources for contentious assertions; contradictions preserved with divergent evidence instead of artificial compromise.",
+          "properties": {
+            "sources_corroborating_count": {
+              "type": "integer",
+              "description": "Number of independent sources corroborating the primary findings."
+            },
+            "unresolved_contradictions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Contradictions presented with explicit divergent evidence rather than artificially smoothed."
+            }
+          }
         }
       },
       "required": [
@@ -211,8 +228,10 @@
       "properties": {
         "unique_insights": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Findings not present in top-5 SERP results for the target keyword — raw material for information gain."
+          "items": {
+            "type": "string"
+          },
+          "description": "Findings not present in the top 10 SERP results for the target keyword — raw material for information gain."
         },
         "firsthand_evidence_available": {
           "type": "boolean",
@@ -224,7 +243,9 @@
         },
         "ai_coverage_gap": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "Topics where AI Overviews / AI answers are incorrect, incomplete, or missing — high-value citation opportunities."
         },
         "ymyl_elevation_required": {
@@ -253,7 +274,9 @@
         },
         "claims_submitted": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "Atomic sub-claims submitted to Chain-of-Verification."
         },
         "claims_verified": {
@@ -261,10 +284,17 @@
           "items": {
             "type": "object",
             "properties": {
-              "claim": { "type": "string" },
-              "source_url": { "type": "string" }
+              "claim": {
+                "type": "string"
+              },
+              "source_url": {
+                "type": "string"
+              }
             },
-            "required": ["claim", "source_url"]
+            "required": [
+              "claim",
+              "source_url"
+            ]
           },
           "description": "Claims confirmed against original source document with URL."
         },
@@ -273,10 +303,18 @@
           "items": {
             "type": "object",
             "properties": {
-              "claim": { "type": "string" },
-              "reason": { "type": "string", "description": "Why unverified: source not retrieved, 404, mismatch, etc." }
+              "claim": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string",
+                "description": "Why unverified: source not retrieved, 404, mismatch, etc."
+              }
             },
-            "required": ["claim", "reason"]
+            "required": [
+              "claim",
+              "reason"
+            ]
           },
           "description": "Claims that could not be confirmed — labeled [UNVERIFIED] in synthesis."
         }
@@ -292,7 +330,9 @@
       "properties": {
         "ai_tools_used_for_queries": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "AI tools used only to generate search queries and identify sub-topics (not cited as sources). E.g. Perplexity, ChatGPT, Google AI Overview."
         },
         "ai_citation_mismatches": {
@@ -300,12 +340,25 @@
           "items": {
             "type": "object",
             "properties": {
-              "ai_tool": { "type": "string" },
-              "claimed_url": { "type": "string" },
-              "claimed_fact": { "type": "string" },
-              "mismatch_reason": { "type": "string", "description": "404, content mismatch, hallucinated stat, etc." }
+              "ai_tool": {
+                "type": "string"
+              },
+              "claimed_url": {
+                "type": "string"
+              },
+              "claimed_fact": {
+                "type": "string"
+              },
+              "mismatch_reason": {
+                "type": "string",
+                "description": "404, content mismatch, hallucinated stat, etc."
+              }
             },
-            "required": ["ai_tool", "claimed_url", "mismatch_reason"]
+            "required": [
+              "ai_tool",
+              "claimed_url",
+              "mismatch_reason"
+            ]
           },
           "description": "AI-CITATION MISMATCH entries: URLs or facts provided by AI tools that could not be confirmed in original documents."
         },
@@ -376,7 +429,10 @@
         {
           "role": "technical-architect",
           "rationale": "Research findings provide trade-off basis for assignment engine architecture decision",
-          "open_decisions": ["Centralized vs per-store queue topology", "Fallback SLA thresholds"]
+          "open_decisions": [
+            "Centralized vs per-store queue topology",
+            "Fallback SLA thresholds"
+          ]
         },
         {
           "role": "business-analyst",
@@ -388,7 +444,7 @@
       ],
       "information_gain": {
         "unique_insights": [
-          "23% failure rate reduction with store-specific pools — not found in top-5 SERP for 'COD courier routing SE Asia'"
+          "23% failure rate reduction with store-specific pools — not found in the top 10 SERP for 'COD courier routing SE Asia'"
         ],
         "firsthand_evidence_available": false,
         "ai_coverage_gap": [
@@ -416,7 +472,10 @@
         ]
       },
       "ai_source_discipline": {
-        "ai_tools_used_for_queries": ["Perplexity", "Google AI Overview"],
+        "ai_tools_used_for_queries": [
+          "Perplexity",
+          "Google AI Overview"
+        ],
         "ai_citation_mismatches": [
           {
             "ai_tool": "Perplexity",
@@ -430,4 +489,3 @@
     }
   ]
 }
-

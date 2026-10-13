@@ -53,7 +53,7 @@
     {
       "id": "audit-technical-seo",
       "name": "Audit Technical Seo",
-      "description": "Audit crawl budgets, search and AI bot access in robots.txt (Googlebot, OAI-SearchBot, PerplexityBot, Bingbot, and AI search crawlers), XML sitemaps, canonical tags, HTTP status codes, redirect chains (301/404/410), and Core Web Vitals (LCP, INP, CLS) emitting structured audit reports. Use when diagnosing crawlability issues, auditing staging or production sites for technical health, resolving redirect loops or canonical errors, or preparing engineering escalation tickets for frontend and infrastructure teams.",
+      "description": "Audit crawl budgets, search and AI bot access in robots.txt (Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, Applebot-Extended, and other AI search crawlers), XML sitemaps, canonical tags, HTTP status codes, redirect chains (301/404/410), and Core Web Vitals (LCP, INP, CLS) emitting structured audit reports. Use when diagnosing crawlability issues, auditing staging or production sites for technical health, resolving redirect loops or canonical errors, or preparing engineering escalation tickets for frontend and infrastructure teams.",
       "tags": [
         "seo",
         "pack"

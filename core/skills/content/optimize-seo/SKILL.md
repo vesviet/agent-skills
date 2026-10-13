@@ -48,7 +48,7 @@ Rules for GEO/AEO:
 - format with **structured comparison tables & quantitative lists**: markdown comparison tables and dense quantitative data points (≥3 verifiable data points per 500 words) to maximize RAG passage extraction
 - include **query fan-out coverage** in one comprehensive page: cover the 3–5 implicit sub-questions of a topic on the page — do NOT spin one page per query variant (scaled page-per-variant proliferation is a spam-policy violation)
 - **GEO over-optimization guard**: information-distorting rewrites (over-claiming, distorting facts to sound citable) are now a *detection* target for engines (Counter-GEO-Bench line of research) — keep fact density honest; a distorted quotable sentence is a suppression risk, not a win
-- verify **AI bot crawlability**: robots.txt must allow OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot — flag blocks in audits
+- verify **AI bot crawlability**: robots.txt must allow OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended, and BingBot — flag blocks in audits
 - verify the site is **included in "Search generative AI features"** in Search Console — a new opt-in eligibility gate for AI Overviews/AI Mode display
 - measure citations **per engine, not in aggregate** — and measure **repeatedly**: LLM brand recommendations are unstable across repeated queries; never conclude citation presence/absence from a single run; log multiple runs across different dates
 - track **Gen AI performance in Search Console** (Generative AI report: impressions/pages/countries/devices) as a first-class weekly KPI alongside classic Performance and Discover
@@ -61,7 +61,7 @@ Rules for GEO/AEO:
 - mandate connected **Schema.org JSON-LD `@graph`**: include `TechArticle`, `Person` (with E-E-A-T `sameAs` links), and `FAQPage`
 - **no AI-specific schema exists** — do not let briefs or audits recommend "AI schema" markup; keep standard Article/Organization/LocalBusiness/Product schema matched to visible text; drop speakable and FAQ-rich-result expectations (FAQ rich results largely retired since 2023)
 - assign each article to a **pillar–cluster position**: pillar, supporting, or supplementary, linked to pillar URL
-- document **non-commodity element**: the unique POV, first-hand evidence, or original analysis this content adds beyond top-3 SERP results
+- document **non-commodity element**: the unique POV, first-hand evidence, or original analysis this content adds beyond top 10 SERP results
 - specify **content freshness type**: new_topic, evergreen_refresh, data_update, or experience_addition
 
 ### Internal Linking Discipline
@@ -127,7 +127,7 @@ The main file keeps a short checklist summary:
 - [ ] pillar URL and cluster position documented
 - [ ] E-E-A-T experience proof type specified and YMYL flag set when applicable
 - [ ] byline/author-page and "How" process statement (incl. AI-assistance disclosure when substantial) present
-- [ ] AI bot crawlability verified (OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot)
+- [ ] AI bot crawlability verified (OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended, BingBot)
 - [ ] site confirmed included in "Search generative AI features" in Search Console
 - [ ] citation sampling done per engine, repeated across multiple runs/dates
 - [ ] Gen AI performance report (impressions) reviewed this week

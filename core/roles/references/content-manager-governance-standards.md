@@ -15,32 +15,27 @@ Before commissioning or approving any content piece, Content Managers must verif
 | Vector | Operational Description | Concrete Example | Rejection Criteria If Missing |
 | :--- | :--- | :--- | :--- |
 | **Vector 1: Primary Data & Benchmarks** | Original, unreleased measurements, production telemetry, or stress-test metrics. | Running 1M requests through an Envoy proxy vs HAProxy under identical CPU constraints. | Reject if statistics are merely cited from third-party aggregators without original test runs. |
-| **Vector 2: Proprietary Architecture** | Custom workflows, in-house architectural blueprints, or specialized integration patterns. | Documenting a zero-trust multi-cluster Kubernetes service mesh deployment pattern. | Reject if the architecture diagram is a generic redraw of official vendor docs. |
-| **Vector 3: Counter-Consensus Analysis** | Defensible challenge to common industry assumptions backed by empirical trade-offs. | Explaining why Microservices introduced 4x cloud latency and arguing for a Modular Monolith. | Reject if the article presents only standard industry cheerleading without trade-off analysis. |
-| **Vector 4: Production Postmortems** | Real-world failure modes, edge-case breakdowns, and remediation logs. | Teardown of a memory leak in Go runtime garbage collection under high alloc rates. | Reject if all scenarios are sanitized toy examples without real-world edge cases. |
+| **Vector 2: Production Postmortems & Case Evidence** | Real-world failure modes, edge-case breakdowns, incident timelines, and remediation logs. | Teardown of a memory leak in Go runtime garbage collection under high alloc rates. | Reject if all scenarios are sanitized toy examples without real-world edge cases. |
+| **Vector 3: Proprietary Architecture** | Custom workflows, in-house architectural blueprints, or specialized integration patterns. | Documenting a zero-trust multi-cluster Kubernetes service mesh deployment pattern. | Reject if the architecture diagram is a generic redraw of official vendor docs. |
+| **Vector 4: Counter-Consensus Analysis** | Defensible challenge to common industry assumptions backed by empirical trade-offs. | Explaining why Microservices introduced 4x cloud latency and arguing for a Modular Monolith. | Reject if the article presents only standard industry cheerleading without trade-off analysis. |
 | **Vector 5: Interactive Assets & Tools** | Calculators, interactive MDX widgets, reproduction repositories, or config generators. | An interactive subnet calculator embedded directly into the article body. | Reject if complex quantitative concepts are described only with static descriptive prose. |
 
 ### 1.2 Information Gain Scoring Matrix (0–100 Rubric)
 
-The Content Manager scores candidate briefs and final drafts against this 100-point differential rubric:
+The Content Manager scores candidate briefs and final drafts against the canonical 100-point differential rubric in [`../../skills/content/audit-content/references/information-gain-rubric.md`](../../skills/content/audit-content/references/information-gain-rubric.md) — the single scoring matrix for this gate. Weights are mirrored here:
 
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                   INFORMATION GAIN SCORING (0-100)                     │
-├───────────────────────────────────┬────────────────────────────────────┤
-│ Dimension                         │ Maximum Points                     │
-├───────────────────────────────────┼────────────────────────────────────┤
-│ 1. Novel Data / Telemetry         │ 30 points                          │
-│ 2. Counter-Consensus Perspective  │ 25 points                          │
-│ 3. Firsthand Empirical Proof      │ 25 points                          │
-│ 4. Structural Utility & Formats   │ 20 points                          │
-└───────────────────────────────────┴────────────────────────────────────┘
-```
+| Dimension | Maximum Points |
+| :--- | :---: |
+| 1. Novel Empirical Data & Benchmarks | 35 points |
+| 2. Production Telemetry, Postmortems & Case Evidence | 25 points |
+| 3. Proprietary Architecture & Frameworks | 20 points |
+| 4. Contrarian / Nuanced Trade-Offs | 10 points |
+| 5. Interactive Assets & Tools | 10 points |
 
-- **90–100 (Exceptional):** Major primary benchmark or authoritative postmortem; introduces industry-first data points or architecture.
-- **75–89 (Strong - Minimum Approval Threshold):** Distinct empirical data, verifiable trade-offs, and novel angles exceeding all top 10 search competitors.
-- **50–74 (Moderate - Revision Required):** Contains minor proprietary insight but largely mirrors top-10 SERP structure. Sent back for deeper SME extraction.
-- **<50 (Zero / Low Gain - Outright Rejection):** Generic skyscraper rewrite that paraphrases existing search results. Blocked at the commission or approve gate.
+- **85–100 (Exceptional):** Major primary benchmark or authoritative postmortem; introduces industry-first data points or architecture.
+- **75–84 (Strong — Minimum Approval Threshold):** Distinct empirical data, verifiable trade-offs, and novel angles exceeding all top 10 search competitors.
+- **50–74 (Moderate — Revision Required):** Contains minor proprietary insight but largely mirrors top-10 SERP structure. Sent back for deeper SME extraction.
+- **30–49 (Low) / 0–29 (Zero — Outright Rejection):** Derivative synthesis or generic skyscraper rewrite that paraphrases existing search results. Blocked at the commission or approve gate.
 
 ---
 

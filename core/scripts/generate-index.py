@@ -527,6 +527,18 @@ SKILL_ALIASES = {
 }
 
 
+def toolbox_skills(content: str) -> tuple[list[str], list[str]]:
+    """Split the Skill Toolbox into (primary, supporting) skill lists."""
+    match = re.search(r"## Skill Toolbox\s*\n(.*?)(?=\n## |\Z)", content, re.DOTALL)
+    if not match:
+        return [], []
+    toolbox = match.group(1)
+    supporting_split = re.split(r"### Supporting Skills", toolbox)
+    primary = re.findall(r"- `([a-z0-9-]+)`", supporting_split[0])
+    supporting = re.findall(r"- `([a-z0-9-]+)`", supporting_split[1]) if len(supporting_split) > 1 else []
+    return primary, supporting
+
+
 def parse_roles() -> dict:
     roles = {}
     for r_file in sorted(ROLES_DIR.glob("*.md")):
@@ -538,7 +550,8 @@ def parse_roles() -> dict:
         if not desc_m:
             desc_m = re.search(r"^>\s*(.+)$", content, re.MULTILINE)
         skills = re.findall(r"- `([a-z0-9-]+)`", content)
-        
+        primary_skills, supporting_skills = toolbox_skills(content)
+
         irrev_m = re.search(r"## Irreversible Actions\s*\n((?:[^\n]+\n)+)", content)
         irreversible = []
         if irrev_m:
@@ -550,6 +563,8 @@ def parse_roles() -> dict:
             "description": desc_m.group(1).strip() if desc_m else "",
             "file": str(r_file.relative_to(ROOT)).replace("\\", "/"),
             "skills": skills,
+            "primary_skills": primary_skills or skills,
+            "supporting_skills": supporting_skills,
             "irreversible_actions": irreversible
         }
     return roles
@@ -666,9 +681,10 @@ def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas:
 
     for role_name, r in roles.items():
         aliases_str = ", ".join(role_to_aliases.get(role_name, [])) or "—"
-        skills_str = ", ".join(f"`{s}`" for s in r["skills"][:3])
-        if len(r["skills"]) > 3:
-            skills_str += f" *(+{len(r['skills']) - 3} more)*"
+        primary_list = r.get("primary_skills") or r["skills"]
+        skills_str = ", ".join(f"`{s}`" for s in primary_list[:3])
+        if len(primary_list) > 3:
+            skills_str += f" *(+{len(primary_list) - 3} more)*"
         md.append(f"| **`@{role_name}`** | {r['title']} | {aliases_str} | {skills_str} | [`{r['file']}`](./{r['file']}) |")
 
     md.append("")

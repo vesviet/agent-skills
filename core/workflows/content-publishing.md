@@ -78,7 +78,7 @@ Before sending draft to SEO Audit:
 - title tag ≤60 chars and meta description ≤160 chars
 - FAQ block present if required
 - answer-first opening present in each H2 section (≤60 words direct answer before elaboration)
-- execute Anti-AI Semantic Audit self-check: run blacklisted clichés scan ("delve", "tapestry", "testament", "unlock", "game-changer", "pinnacle", "foster", "realm", "crucial", "harness", "navigating", "intertwined", "multifaceted", "underpin", "cornerstone", "elevate", "shed light", "ever-evolving" — zero tolerated), verify burstiness variance (sentence length std dev ≥ 6.0 words), and verify active voice percentage (≥85%)
+- execute Anti-AI Semantic Audit self-check: run blacklisted clichés scan ("delve", "tapestry", "testament", "unlock", "game-changer", "pinnacle", "foster", "realm", "crucial", "harness", "navigating", "intertwined", "multifaceted", "underpin", "cornerstone", "elevate", "shed light", "ever-evolving" — zero tolerated), verify burstiness variance (sentence length std dev ≥ 6.5 words), and verify active voice percentage (≥85%)
 - document Information Gain: verify empirical proof (benchmarks, logs, firsthand case studies) and record net-new value that surpasses the current Top 10 SERP results
 - experience proof signal is included or gap is explicitly flagged
 
@@ -188,7 +188,7 @@ If the article is delayed, mark it as `carry-over` in the log and carry the topi
 
 ### Failure Modes
 
-- **Draft published without anti-slop gate**: a draft ships without the editorial gate passing. **Mitigation:** enforce the gate at the publish step; block releases where `anti_slop_gate.gate_passed` is `no` or undocumented.
+- **Draft published without anti-slop gate**: a draft ships without the editorial gate passing. **Mitigation:** enforce the gate at the publish step; block releases where `ai_semantic_flaw_score.gate_passed` is `false` or undocumented.
 - **Hallucinated fact published**: a statistic or quote appears in the article that is not in the source. **Mitigation:** every claim traces to a primary source; flag unsourced claims as drafts; require Chain-of-Verification for YMYL.
 - **E-E-A-T proof absent on YMYL**: a YMYL-adjacent article ships without experience proof, author entity, or trust signals. **Mitigation:** require the E-E-A-T gate for YMYL; require human expert review.
 - **Cross-channel format ignored**: identical copy is posted across channels without native reformatting. **Mitigation:** enforce channel-native format alignment (LinkedIn 150-300 words, X 5-7 posts, etc.).

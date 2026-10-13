@@ -28,7 +28,7 @@ this rule adds the twin-corpus specifics.
 - **Entity consistency**: identical author facts (`Lê Tuấn Anh`, Go backend architect, 17+ years) across both hosts, `hire.md`, about pages, and schema.org `Person` markup.
 - **Citation measurement**: per engine, multiple runs, logged over dates — never conclude from a single run (LLM recommendations are unstable).
 - **Honest fact density**: over-claiming to sound citable is a suppression risk (Counter-GEO detection); keep numbers honest.
-- **AI-bot crawlability**: `robots.txt` must permit OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot — audit on every release.
+- **AI-bot crawlability**: `robots.txt` must permit OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended, BingBot — audit on every release.
 
 ## On-Page Technical SEO
 

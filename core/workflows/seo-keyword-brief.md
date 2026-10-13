@@ -43,13 +43,13 @@ Use skill: `optimize-seo`
 
 Run at least one SERP scan and one People Also Ask pass:
 
-- identify the top-3 ranking results and their content formats
+- identify the top 10 ranking results and their content formats
 - extract the main keyword and 2–4 secondary keywords
 - note the dominant content format (listicle, guide, comparison, FAQ, how-to)
 - check AI Overviews (Google), Perplexity, and ChatGPT for the query — note answer format and cited sources
 - document query fan-out: 3–5 related sub-questions the article should cover
 
-Use skill: `conduct-research` when competitor depth or domain authority context is needed.
+Delegate to the **Researcher** role (A2A task via `agent-delegation`) and use the `conduct-research` skill when competitor depth or domain authority context is needed — `conduct-research` is a Supporting skill for SEO Analyst, so it runs only under Researcher collaboration or delegation per the SKILL TOOLBOX LOCK.
 
 #### 3. Check Cannibalization And Internal Links
 
@@ -70,7 +70,7 @@ Assign the article to the site's topical cluster:
 
 - classify as: pillar, supporting cluster, or supplementary
 - if supporting or supplementary, identify the pillar page URL to link to
-- document the non-commodity element: what this article adds beyond the current top-3 SERP results
+- document the non-commodity element: what this article adds beyond the current top 10 SERP results
 - classify content freshness type: `new_topic` | `evergreen_refresh` | `data_update` | `experience_addition`
 - list key entities (brands, people, concepts, locations) that must appear for topical coverage
 

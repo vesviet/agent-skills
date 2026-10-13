@@ -21,12 +21,12 @@ Every proposed content brief must pass the **Top 10 SERP Information Gain Gate**
 (What everyone already says = 0 Value)
                   │
                   ▼
- [ Evaluate 5 Information Gain Vectors ]
-  1. Primary Telemetry & Benchmarks
-  2. Production Architecture & Code
-  3. Counter-Consensus Trade-Offs
-  4. Real Incident & Postmortem Data
-  5. Interactive Tools & Calculators
+  [ Evaluate 5 Information Gain Vectors ]
+   1. Primary Telemetry & Benchmarks
+   2. Production Incident & Postmortem Data
+   3. Proprietary Architecture & Code
+   4. Counter-Consensus Trade-Offs
+   5. Interactive Tools & Calculators
                   │
                   ▼
        [ Calculate Non-Commodity Score ]
@@ -65,12 +65,14 @@ To achieve a passing score, a piece of content must contribute original, uncopie
 
 ### 1.2 Non-Commodity Scoring Rubric (0–100)
 
+The canonical 100-point scoring matrix lives in [`../../audit-content/references/information-gain-rubric.md`](../../audit-content/references/information-gain-rubric.md). Bands are mirrored here:
+
 | Score Tier | Evaluation Criteria | Production Decision |
 | :--- | :--- | :--- |
 | **85–100 (Exceptional)** | Contributes ≥2 original empirical vectors (e.g. raw hardware benchmarks + downloadable production config). Defines the industry benchmark. | **Approved Immediately**; designated as high-priority core pillar asset. |
 | **75–84 (Strong)** | Contributes ≥1 verifiable empirical vector (e.g. firsthand incident postmortem or novel trade-off data). Clearly distinct from SERP baseline. | **Approved for Drafting**; satisfies all gateway requirements. |
 | **50–74 (Moderate)** | Well-written synthesis, but relies entirely on publicly available documentation without proprietary telemetry or unique operational data. | **REJECTED**; writer must partner with engineering SME to source proprietary proof. |
-| **< 50 (Commodity Skyscraper)** | Paraphrased regurgitation of top 5 Google search results. Zero information gain; pure search engine spam. | **REJECTED PERMANENTLY**; brief cancelled. |
+| **30–49 (Low) / 0–29 (Zero — Commodity Skyscraper)** | Paraphrased regurgitation of top 10 Google search results. Zero information gain; pure search engine spam. | **REJECTED PERMANENTLY**; brief cancelled. |
 
 ---
 

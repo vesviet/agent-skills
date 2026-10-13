@@ -34,7 +34,7 @@ Use this skill with the **Content Manager** role to architect, govern, and optim
 ### Top 10 SERP Information Gain Gate (≥75/100)
 - mandate differential evaluation against all Top 10 ranking SERP competitors before commissioning briefs per [`references/information-gain-and-decay-triage.md`](references/information-gain-and-decay-triage.md)
 - reject zero-gain skyscraper rewrites that merely synthesize existing search results
-- require at least one of the **5 Information Gain Vectors** in every topic brief: (1) primary data & telemetry, (2) proprietary architecture/code, (3) counter-consensus trade-off analysis, (4) production incident teardowns, (5) interactive tools/models
+- require at least one of the **5 Information Gain Vectors** in every topic brief: (1) primary data & telemetry, (2) production incident teardowns & case evidence, (3) proprietary architecture/code, (4) counter-consensus trade-off analysis, (5) interactive tools/models — weights and bands per the canonical rubric in `audit-content/references/information-gain-rubric.md`
 - briefs scoring < 75/100 on the Non-Commodity Matrix must be rejected or revised with net-new empirical assets
 
 ### 3-Tier Content Decay Monitoring & Lifecycle SLAs

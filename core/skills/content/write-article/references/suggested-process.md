@@ -12,7 +12,7 @@
 ### 2. Information Gain Analysis
 
 Before drafting, identify what unique value this article will provide:
-- search top-3 SERP results for the primary keyword
+- search top-10 SERP results for the primary keyword
 - note what they cover and what gaps remain
 - document the information gain type and source (firsthand data, local insight, expert quote, original framework)
 - if no unique value is identifiable, escalate before drafting

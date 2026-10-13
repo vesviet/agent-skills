@@ -1118,6 +1118,21 @@
         "performance-profiling",
         "agent-delegation"
       ],
+      "primary_skills": [
+        "debug-3d-scene",
+        "integrate-r3f-three-legacy",
+        "optimize-3d-assets"
+      ],
+      "supporting_skills": [
+        "navigate-service",
+        "troubleshoot-service",
+        "commit-code",
+        "frontend-testing",
+        "write-tests",
+        "review-code",
+        "performance-profiling",
+        "agent-delegation"
+      ],
       "irreversible_actions": []
     },
     "agent-coordinator": {
@@ -1146,6 +1161,29 @@
         "write-documentation",
         "incident-report"
       ],
+      "primary_skills": [
+        "agent-a2a-protocol",
+        "agent-delegation",
+        "agent-graph-orchestration",
+        "agent-tool-orchestration",
+        "agent-context-management",
+        "agent-quality-gate",
+        "agent-handoff",
+        "agent-panel-meeting",
+        "agent-memory-compaction",
+        "agent-model-routing",
+        "agent-observability",
+        "agent-prompt-lifecycle",
+        "agent-semantic-memory"
+      ],
+      "supporting_skills": [
+        "navigate-service",
+        "troubleshoot-service",
+        "review-code",
+        "review-service",
+        "write-documentation",
+        "incident-report"
+      ],
       "irreversible_actions": []
     },
     "agent-discovery-engineer": {
@@ -1162,6 +1200,22 @@
         "manage-api-catalog",
         "configure-agent-skills",
         "manage-agent-identity",
+        "configure-agent-commerce",
+        "configure-llms-txt",
+        "commit-code",
+        "agent-delegation"
+      ],
+      "primary_skills": [
+        "manage-auth-md",
+        "configure-oauth-metadata",
+        "debug-identity-provider",
+        "configure-mcp",
+        "configure-agent-headers",
+        "manage-api-catalog",
+        "configure-agent-skills",
+        "manage-agent-identity"
+      ],
+      "supporting_skills": [
         "configure-agent-commerce",
         "configure-llms-txt",
         "commit-code",
@@ -1192,6 +1246,26 @@
         "configure-mcp",
         "write-tests"
       ],
+      "primary_skills": [
+        "deploy-vllm-inference",
+        "setup-llm-gateway",
+        "setup-gpu-finops",
+        "implement-structured-outputs",
+        "build-mcp-server"
+      ],
+      "supporting_skills": [
+        "system-design",
+        "performance-profiling",
+        "add-telemetry-instrumentation",
+        "debug-runtime-platform",
+        "security-audit",
+        "ai-risk-assessment",
+        "conduct-research",
+        "agent-observability",
+        "agent-delegation",
+        "configure-mcp",
+        "write-tests"
+      ],
       "irreversible_actions": []
     },
     "aws-engineer": {
@@ -1203,6 +1277,22 @@
         "aws-infrastructure",
         "setup-deployment",
         "add-telemetry-instrumentation",
+        "system-design",
+        "security-audit",
+        "manage-secrets",
+        "debug-runtime-platform",
+        "navigate-service",
+        "conduct-research",
+        "agent-delegation",
+        "database-maintenance",
+        "incident-report"
+      ],
+      "primary_skills": [
+        "aws-infrastructure",
+        "setup-deployment",
+        "add-telemetry-instrumentation"
+      ],
+      "supporting_skills": [
         "system-design",
         "security-audit",
         "manage-secrets",
@@ -1241,6 +1331,29 @@
         "add-telemetry-instrumentation",
         "setup-llm-gateway"
       ],
+      "primary_skills": [
+        "add-api-endpoint",
+        "add-event-handler",
+        "add-service-client",
+        "create-migration",
+        "implement-auth",
+        "optimize-postgres",
+        "write-tests",
+        "commit-code",
+        "scaffold-new-service",
+        "navigate-service",
+        "build-mcp-server",
+        "implement-structured-outputs"
+      ],
+      "supporting_skills": [
+        "troubleshoot-service",
+        "performance-profiling",
+        "review-code",
+        "agent-delegation",
+        "configure-mcp",
+        "add-telemetry-instrumentation",
+        "setup-llm-gateway"
+      ],
       "irreversible_actions": []
     },
     "business-analyst": {
@@ -1255,6 +1368,22 @@
         "trace-requirements-impact",
         "ai-risk-assessment",
         "build-story-map",
+        "agent-delegation",
+        "meeting-review",
+        "navigate-service",
+        "write-documentation",
+        "review-service",
+        "conduct-research"
+      ],
+      "primary_skills": [
+        "analyze-business-requirements",
+        "elicit-requirements",
+        "write-use-cases",
+        "trace-requirements-impact",
+        "ai-risk-assessment",
+        "build-story-map"
+      ],
+      "supporting_skills": [
         "agent-delegation",
         "meeting-review",
         "navigate-service",
@@ -1292,6 +1421,31 @@
         "troubleshoot-service",
         "agent-delegation"
       ],
+      "primary_skills": [
+        "wrangler",
+        "durable-objects",
+        "turnstile-spin",
+        "workers-best-practices",
+        "sandbox-sdk",
+        "configure-agent-headers",
+        "manage-api-catalog",
+        "cloudflare-email-service",
+        "debug-workers-edge",
+        "web-perf",
+        "configure-mcp",
+        "setup-llm-gateway",
+        "implement-structured-outputs"
+      ],
+      "supporting_skills": [
+        "setup-deployment",
+        "debug-runtime-platform",
+        "supply-chain-security",
+        "manage-secrets",
+        "navigate-service",
+        "commit-code",
+        "troubleshoot-service",
+        "agent-delegation"
+      ],
       "irreversible_actions": []
     },
     "content-manager": {
@@ -1302,6 +1456,24 @@
       "skills": [
         "design-content-strategy",
         "audit-content",
+        "write-copy",
+        "repurpose-content",
+        "optimize-seo",
+        "write-article",
+        "conduct-research",
+        "analyze-data",
+        "write-product-brief",
+        "analyze-business-requirements",
+        "write-documentation",
+        "agent-delegation",
+        "meeting-review",
+        "configure-llms-txt"
+      ],
+      "primary_skills": [
+        "design-content-strategy",
+        "audit-content"
+      ],
+      "supporting_skills": [
         "write-copy",
         "repurpose-content",
         "optimize-seo",
@@ -1336,6 +1508,22 @@
         "meeting-review",
         "agent-delegation"
       ],
+      "primary_skills": [
+        "write-article",
+        "write-copy",
+        "repurpose-content"
+      ],
+      "supporting_skills": [
+        "design-content-strategy",
+        "audit-content",
+        "optimize-seo",
+        "conduct-research",
+        "write-documentation",
+        "write-product-brief",
+        "analyze-business-requirements",
+        "meeting-review",
+        "agent-delegation"
+      ],
       "irreversible_actions": []
     },
     "data-analyst": {
@@ -1346,6 +1534,19 @@
       "skills": [
         "analyze-data",
         "query-analytical-engine",
+        "analyze-business-requirements",
+        "build-data-pipeline",
+        "database-maintenance",
+        "conduct-research",
+        "write-documentation",
+        "agent-delegation",
+        "sandbox-sdk"
+      ],
+      "primary_skills": [
+        "analyze-data",
+        "query-analytical-engine"
+      ],
+      "supporting_skills": [
         "analyze-business-requirements",
         "build-data-pipeline",
         "database-maintenance",
@@ -1366,6 +1567,24 @@
         "database-maintenance",
         "create-migration",
         "optimize-olap-database",
+        "analyze-data",
+        "query-analytical-engine",
+        "review-code",
+        "write-documentation",
+        "security-audit",
+        "add-telemetry-instrumentation",
+        "performance-profiling",
+        "agent-delegation",
+        "configure-mcp",
+        "sandbox-sdk"
+      ],
+      "primary_skills": [
+        "build-data-pipeline",
+        "database-maintenance",
+        "create-migration",
+        "optimize-olap-database"
+      ],
+      "supporting_skills": [
         "analyze-data",
         "query-analytical-engine",
         "review-code",
@@ -1403,6 +1622,27 @@
         "incident-report",
         "setup-gpu-finops"
       ],
+      "primary_skills": [
+        "setup-deployment",
+        "deploy-aws-eks-workloads",
+        "debug-runtime-platform",
+        "add-telemetry-instrumentation",
+        "manage-secrets",
+        "configure-mcp",
+        "setup-llm-gateway",
+        "supply-chain-security"
+      ],
+      "supporting_skills": [
+        "navigate-service",
+        "commit-code",
+        "troubleshoot-service",
+        "database-maintenance",
+        "security-audit",
+        "agent-delegation",
+        "sandbox-sdk",
+        "incident-report",
+        "setup-gpu-finops"
+      ],
       "irreversible_actions": []
     },
     "ecommerce-engineer": {
@@ -1416,6 +1656,26 @@
         "manage-product-catalog",
         "manage-order-fulfillment",
         "configure-agent-commerce",
+        "add-api-endpoint",
+        "add-event-handler",
+        "security-audit",
+        "manage-secrets",
+        "write-tests",
+        "database-maintenance",
+        "review-code",
+        "agent-delegation",
+        "setup-tracking-system",
+        "configure-agent-headers",
+        "performance-profiling"
+      ],
+      "primary_skills": [
+        "integrate-payment-gateway",
+        "handle-checkout-flow",
+        "manage-product-catalog",
+        "manage-order-fulfillment",
+        "configure-agent-commerce"
+      ],
+      "supporting_skills": [
         "add-api-endpoint",
         "add-event-handler",
         "security-audit",
@@ -1457,6 +1717,30 @@
         "web-perf",
         "add-telemetry-instrumentation"
       ],
+      "primary_skills": [
+        "accessibility-review",
+        "add-page-route",
+        "add-ui-component",
+        "commit-code",
+        "component-composition",
+        "frontend-testing",
+        "implement-view-transitions",
+        "implement-webmcp",
+        "integrate-api-client",
+        "navigate-service",
+        "setup-design-system",
+        "setup-visual-regression"
+      ],
+      "supporting_skills": [
+        "performance-profiling",
+        "write-tests",
+        "troubleshoot-service",
+        "review-code",
+        "agent-delegation",
+        "configure-mcp",
+        "web-perf",
+        "add-telemetry-instrumentation"
+      ],
       "irreversible_actions": []
     },
     "mmo-engineer": {
@@ -1472,6 +1756,20 @@
         "deploy-proxyware-fleet",
         "generate-mmo-content",
         "analyze-campaign-roi",
+        "write-tests",
+        "review-code",
+        "analyze-data"
+      ],
+      "primary_skills": [
+        "deploy-mmo-infrastructure",
+        "setup-tracking-system",
+        "create-automation-script",
+        "manage-mmo-assets",
+        "deploy-proxyware-fleet",
+        "generate-mmo-content",
+        "analyze-campaign-roi"
+      ],
+      "supporting_skills": [
         "write-tests",
         "review-code",
         "analyze-data"
@@ -1492,6 +1790,24 @@
         "frontend-testing",
         "commit-code",
         "navigate-service",
+        "accessibility-review",
+        "performance-profiling",
+        "review-code",
+        "troubleshoot-service",
+        "agent-delegation",
+        "manage-secrets"
+      ],
+      "primary_skills": [
+        "develop-mobile-app",
+        "deploy-mobile-app",
+        "add-ui-component",
+        "integrate-api-client",
+        "write-tests",
+        "frontend-testing",
+        "commit-code",
+        "navigate-service"
+      ],
+      "supporting_skills": [
         "accessibility-review",
         "performance-profiling",
         "review-code",
@@ -1525,6 +1841,27 @@
         "write-tech-radar",
         "review-service"
       ],
+      "primary_skills": [
+        "define-product-strategy",
+        "prioritize-roadmap",
+        "model-saas-metrics",
+        "build-story-map",
+        "write-product-brief"
+      ],
+      "supporting_skills": [
+        "meeting-review",
+        "analyze-business-requirements",
+        "conduct-research",
+        "ai-risk-assessment",
+        "agent-delegation",
+        "agent-prompt-lifecycle",
+        "add-telemetry-instrumentation",
+        "configure-agent-commerce",
+        "configure-agent-skills",
+        "navigate-service",
+        "write-tech-radar",
+        "review-service"
+      ],
       "irreversible_actions": []
     },
     "project-manager": {
@@ -1534,6 +1871,21 @@
       "file": "core/roles/project-manager.md",
       "skills": [
         "meeting-review",
+        "agent-delegation",
+        "agent-graph-orchestration",
+        "ai-risk-assessment",
+        "analyze-data",
+        "plan-technical-delivery",
+        "setup-gpu-finops",
+        "agent-observability",
+        "incident-report",
+        "navigate-service",
+        "review-service"
+      ],
+      "primary_skills": [
+        "meeting-review"
+      ],
+      "supporting_skills": [
         "agent-delegation",
         "agent-graph-orchestration",
         "ai-risk-assessment",
@@ -1568,6 +1920,24 @@
         "troubleshoot-service",
         "performance-profiling"
       ],
+      "primary_skills": [
+        "write-tests",
+        "frontend-testing",
+        "systematic-debugging",
+        "combinatorial-testing",
+        "agent-quality-gate",
+        "accessibility-review",
+        "configure-mcp",
+        "implement-webmcp"
+      ],
+      "supporting_skills": [
+        "review-service",
+        "agent-observability",
+        "navigate-service",
+        "review-code",
+        "troubleshoot-service",
+        "performance-profiling"
+      ],
       "irreversible_actions": []
     },
     "researcher": {
@@ -1577,6 +1947,20 @@
       "file": "core/roles/researcher.md",
       "skills": [
         "conduct-research",
+        "analyze-business-requirements",
+        "agent-delegation",
+        "agent-context-management",
+        "agent-semantic-memory",
+        "agent-memory-compaction",
+        "agent-tool-orchestration",
+        "agent-quality-gate",
+        "write-documentation",
+        "optimize-seo"
+      ],
+      "primary_skills": [
+        "conduct-research"
+      ],
+      "supporting_skills": [
         "analyze-business-requirements",
         "agent-delegation",
         "agent-context-management",
@@ -1606,6 +1990,20 @@
         "performance-profiling",
         "meeting-review"
       ],
+      "primary_skills": [
+        "review-code",
+        "review-service",
+        "configure-mcp",
+        "implement-structured-outputs"
+      ],
+      "supporting_skills": [
+        "design-review",
+        "accessibility-review",
+        "navigate-service",
+        "security-audit",
+        "performance-profiling",
+        "meeting-review"
+      ],
       "irreversible_actions": []
     },
     "security-engineer": {
@@ -1619,6 +2017,23 @@
         "supply-chain-security",
         "ai-risk-assessment",
         "manage-agent-identity",
+        "conduct-research",
+        "review-code",
+        "navigate-service",
+        "review-service",
+        "meeting-review",
+        "agent-delegation",
+        "agent-observability",
+        "add-telemetry-instrumentation"
+      ],
+      "primary_skills": [
+        "security-audit",
+        "manage-secrets",
+        "supply-chain-security",
+        "ai-risk-assessment",
+        "manage-agent-identity"
+      ],
+      "supporting_skills": [
         "conduct-research",
         "review-code",
         "navigate-service",
@@ -1649,6 +2064,22 @@
         "agent-delegation",
         "manage-api-catalog"
       ],
+      "primary_skills": [
+        "optimize-seo",
+        "audit-technical-seo",
+        "implement-schema-markup",
+        "configure-agent-headers",
+        "configure-mcp"
+      ],
+      "supporting_skills": [
+        "conduct-research",
+        "analyze-business-requirements",
+        "analyze-data",
+        "write-documentation",
+        "configure-llms-txt",
+        "agent-delegation",
+        "manage-api-catalog"
+      ],
       "irreversible_actions": []
     },
     "solution-architect": {
@@ -1659,6 +2090,23 @@
       "skills": [
         "write-tech-radar",
         "meeting-review",
+        "system-design",
+        "conduct-research",
+        "analyze-business-requirements",
+        "write-product-brief",
+        "navigate-service",
+        "review-service",
+        "write-documentation",
+        "agent-delegation",
+        "security-audit",
+        "ai-risk-assessment",
+        "agent-model-routing"
+      ],
+      "primary_skills": [
+        "write-tech-radar",
+        "meeting-review"
+      ],
+      "supporting_skills": [
         "system-design",
         "conduct-research",
         "analyze-business-requirements",
@@ -1685,6 +2133,23 @@
         "performance-profiling",
         "incident-report",
         "orchestrate-chaos-experiment",
+        "agent-observability",
+        "agent-semantic-memory",
+        "navigate-service",
+        "database-maintenance",
+        "manage-secrets",
+        "setup-deployment",
+        "agent-delegation"
+      ],
+      "primary_skills": [
+        "debug-runtime-platform",
+        "troubleshoot-service",
+        "add-telemetry-instrumentation",
+        "performance-profiling",
+        "incident-report",
+        "orchestrate-chaos-experiment"
+      ],
+      "supporting_skills": [
         "agent-observability",
         "agent-semantic-memory",
         "navigate-service",
@@ -1722,6 +2187,30 @@
         "durable-objects",
         "ai-risk-assessment"
       ],
+      "primary_skills": [
+        "system-design",
+        "performance-profiling",
+        "debug-runtime-platform",
+        "add-telemetry-instrumentation",
+        "setup-gpu-finops",
+        "setup-llm-gateway",
+        "manage-agent-identity",
+        "supply-chain-security"
+      ],
+      "supporting_skills": [
+        "plan-technical-delivery",
+        "troubleshoot-service",
+        "navigate-service",
+        "setup-deployment",
+        "security-audit",
+        "database-maintenance",
+        "conduct-research",
+        "agent-observability",
+        "agent-delegation",
+        "aws-infrastructure",
+        "durable-objects",
+        "ai-risk-assessment"
+      ],
       "irreversible_actions": []
     },
     "task-planner": {
@@ -1732,6 +2221,18 @@
       "skills": [
         "design-ux-flow",
         "plan-technical-delivery",
+        "meeting-review",
+        "write-product-brief",
+        "analyze-business-requirements",
+        "navigate-service",
+        "configure-mcp",
+        "agent-quality-gate"
+      ],
+      "primary_skills": [
+        "design-ux-flow",
+        "plan-technical-delivery"
+      ],
+      "supporting_skills": [
         "meeting-review",
         "write-product-brief",
         "analyze-business-requirements",
@@ -1757,6 +2258,19 @@
         "meeting-review",
         "agent-delegation"
       ],
+      "primary_skills": [
+        "design-learning-plan",
+        "create-exercises",
+        "grade-and-review"
+      ],
+      "supporting_skills": [
+        "agent-semantic-memory",
+        "conduct-research",
+        "write-documentation",
+        "write-article",
+        "meeting-review",
+        "agent-delegation"
+      ],
       "irreversible_actions": []
     },
     "technical-architect": {
@@ -1771,6 +2285,27 @@
         "write-tech-radar",
         "architect-mcp-server",
         "decompose-agentic-system",
+        "ai-risk-assessment",
+        "review-service",
+        "navigate-service",
+        "conduct-research",
+        "scaffold-new-service",
+        "review-code",
+        "security-audit",
+        "supply-chain-security",
+        "setup-deployment",
+        "agent-delegation",
+        "write-documentation"
+      ],
+      "primary_skills": [
+        "system-design",
+        "agent-panel-meeting",
+        "meeting-review",
+        "write-tech-radar",
+        "architect-mcp-server",
+        "decompose-agentic-system"
+      ],
+      "supporting_skills": [
         "ai-risk-assessment",
         "review-service",
         "navigate-service",
@@ -1813,6 +2348,31 @@
         "agent-graph-orchestration",
         "agent-model-routing"
       ],
+      "primary_skills": [
+        "plan-technical-delivery",
+        "review-code",
+        "meeting-review",
+        "agent-quality-gate",
+        "agent-prompt-lifecycle",
+        "ai-risk-assessment",
+        "add-telemetry-instrumentation"
+      ],
+      "supporting_skills": [
+        "review-service",
+        "navigate-service",
+        "scaffold-new-service",
+        "performance-profiling",
+        "agent-delegation",
+        "write-tests",
+        "commit-code",
+        "create-migration",
+        "troubleshoot-service",
+        "agent-observability",
+        "security-audit",
+        "supply-chain-security",
+        "agent-graph-orchestration",
+        "agent-model-routing"
+      ],
       "irreversible_actions": []
     },
     "technical-writer": {
@@ -1824,6 +2384,23 @@
         "write-documentation",
         "release-notes",
         "configure-llms-txt",
+        "write-tech-radar",
+        "agent-delegation",
+        "navigate-service",
+        "meeting-review",
+        "review-service",
+        "manage-api-catalog",
+        "configure-mcp",
+        "write-article",
+        "accessibility-review",
+        "ai-risk-assessment"
+      ],
+      "primary_skills": [
+        "write-documentation",
+        "release-notes",
+        "configure-llms-txt"
+      ],
+      "supporting_skills": [
         "write-tech-radar",
         "agent-delegation",
         "navigate-service",
@@ -1853,6 +2430,19 @@
         "write-documentation",
         "agent-delegation"
       ],
+      "primary_skills": [
+        "design-ux-flow",
+        "design-review"
+      ],
+      "supporting_skills": [
+        "meeting-review",
+        "navigate-service",
+        "accessibility-review",
+        "analyze-business-requirements",
+        "write-product-brief",
+        "write-documentation",
+        "agent-delegation"
+      ],
       "irreversible_actions": []
     },
     "vietnam-accounting-specialist": {
@@ -1862,6 +2452,17 @@
       "file": "core/roles/vietnam-accounting-specialist.md",
       "skills": [
         "manage-vietnam-accounting",
+        "analyze-business-requirements",
+        "analyze-data",
+        "conduct-research",
+        "security-audit",
+        "write-documentation",
+        "agent-delegation"
+      ],
+      "primary_skills": [
+        "manage-vietnam-accounting"
+      ],
+      "supporting_skills": [
         "analyze-business-requirements",
         "analyze-data",
         "conduct-research",
@@ -1880,6 +2481,18 @@
         "manage-vietnam-legal",
         "audit-ai-compliance",
         "draft-legal-opinion",
+        "conduct-research",
+        "analyze-business-requirements",
+        "security-audit",
+        "write-documentation",
+        "agent-delegation"
+      ],
+      "primary_skills": [
+        "manage-vietnam-legal",
+        "audit-ai-compliance",
+        "draft-legal-opinion"
+      ],
+      "supporting_skills": [
         "conduct-research",
         "analyze-business-requirements",
         "security-audit",
@@ -2763,7 +3376,7 @@
       "category": "seo",
       "type": "core",
       "file": "core/skills/seo/audit-technical-seo/SKILL.md",
-      "description": "Audit crawl budgets, search and AI bot access in robots.txt (Googlebot, OAI-SearchBot, PerplexityBot, Bingbot, and AI search crawlers), XML sitemaps, canonical tags, HTTP status codes, redirect chains (301/404/410), and Core Web Vitals (LCP, INP, CLS) emitting structured audit reports. Use when diagnosing crawlability issues, auditing staging or production sites for technical health, resolving redirect loops or canonical errors, or preparing engineering escalation tickets for frontend and infrastructure teams."
+      "description": "Audit crawl budgets, search and AI bot access in robots.txt (Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, Applebot-Extended, and other AI search crawlers), XML sitemaps, canonical tags, HTTP status codes, redirect chains (301/404/410), and Core Web Vitals (LCP, INP, CLS) emitting structured audit reports. Use when diagnosing crawlability issues, auditing staging or production sites for technical health, resolving redirect loops or canonical errors, or preparing engineering escalation tickets for frontend and infrastructure teams."
     },
     "implement-schema-markup": {
       "name": "implement-schema-markup",

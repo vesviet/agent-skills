@@ -34,7 +34,7 @@ This reference checklist provides operational verification criteria for deep tec
 
 ### 5. Information Gain & Differentiating Value Extraction (`INFORMATION GAIN GATE`)
 - **Non-Commodity Value Extraction**:
-  - research synthesis must provide actionable Information Gain: identifying unique insights, architectural trade-offs, and empirical findings not present in commodity top-5 search results
+  - research synthesis must provide actionable Information Gain: identifying unique insights, architectural trade-offs, and empirical findings not present in commodity top 10 search results
   - document `AI_coverage_gap`: explicitly highlighting where current AI models and public summaries provide incorrect, outdated, or superficial guidance
 
 ### 6. Deep Research Report Auditing & Verification (`DEEP-RESEARCH-VERIFY LOCK`)

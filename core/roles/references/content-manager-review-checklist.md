@@ -14,14 +14,14 @@ This reference checklist provides actionable governance rubrics for evaluating p
 ### Top 10 SERP Information Gain Gate
 - **Competitor SERP Differential**: Verified against top 10 search ranking pages (not just top 3); consensus content patterns mapped and documented.
 - **Non-Commodity Score Threshold (≥75/100)**: Evaluated per scoring matrix; candidate topics failing this threshold are rejected or rescoped.
-- **Information Gain Vectors**: At least one of the 5 vectors is verified (primary data/benchmarks, proprietary architecture/workflows, counter-consensus trade-offs, production incident postmortems, interactive tools).
+- **Information Gain Vectors**: At least one of the 5 vectors is verified (primary data/benchmarks, production incident postmortems & telemetry, proprietary architecture/workflows, counter-consensus trade-offs, interactive tools).
 - **Zero Skyscraper Paraphrasing**: Outright rejection of briefs or drafts that merely compile and reword ranking competitor consensus.
 - **Mandatory Substance Requirement**: Every brief specifies at least one non-negotiable empirical proof element (telemetry trace, SME transcript quote, reproduction log).
 
 ### Anti-Slop & Boilerplate Governance
 - **Commission Gate Compliance**: Every brief assigned to Content Writer includes an explicit `unique_angle` statement and `boilerplate_risk` flags for high-risk topics.
-- **Approve Gate Verification**: Writer's Anti-Slop Gate (`anti_slop_gate.gate_passed: true`) verified before any draft advances to publication.
-- **Zero Blacklisted AI Clichés**: Zero tolerance for banned robotic tropes ("delve", "tapestry", "testament", "unlock", "game-changer", "beacon", "foster", "realm", "crucial", "harness", "navigating", etc.).
+- **Approve Gate Verification**: Writer's Anti-Slop Gate (`ai_semantic_flaw_score.gate_passed: true` in `content-handoff.json`, mirrorable as `anti_slop_gate` overlay frontmatter) verified before any draft advances to publication.
+- **Zero Blacklisted AI Clichés**: Zero tolerance for banned robotic tropes ("delve", "tapestry", "testament", "unlock", "game-changer", "beacon", "pinnacle", "foster", "realm", "crucial", "harness", "navigating", "intertwined", "multifaceted", "underpin", "cornerstone", "elevate", "shed light", "ever-evolving", etc.).
 - **20/60/20 Burstiness & Cadence Verification**: Sentence lengths follow natural human distribution (~20% short, ~60% medium, ~20% complex); no 3 consecutive sentences of identical word length.
 - **Boilerplate Elimination**: Intros, mid-sections, and conclusions verified free of generic throat-clearing, tour-guide transitions, or redundant summaries.
 - **Portfolio-Level Slop Scans**: Regular library audits document `slop_risk_inventory` to catch intro formula drift or repetitive phrasing across published URLs.

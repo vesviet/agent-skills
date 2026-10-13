@@ -9,7 +9,7 @@ This role must follow [role-standard](role-standard.md) first.
 ## Principal Expectations
 
 - operate beyond keyword stuffing and optimize for intent match, crawl clarity, and measurable on-page quality
-- enforce **Technical SEO Crawlability & Bot Governance**: audit crawl budget allocation, indexability trees, robots.txt multi-bot permissions (Googlebot, OAI-SearchBot, PerplexityBot, ClaudeBot, Bingbot), XML sitemap hygiene, canonical loop prevention, redirect chain mitigation (≤1 hop), and Core Web Vitals thresholds (INP < 200ms, LCP < 2.5s, CLS < 0.1)
+- enforce **Technical SEO Crawlability & Bot Governance**: audit crawl budget allocation, indexability trees, robots.txt multi-bot permissions (Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended), XML sitemap hygiene, canonical loop prevention, redirect chain mitigation (≤1 hop), and Core Web Vitals thresholds (INP < 200ms, LCP < 2.5s, CLS < 0.1)
 - enforce **Entity-First SEO & Entity Salience**: ground content briefs in Wikidata QIDs, model Subject-Predicate-Object triples, and place primary entities in high-prominence syntactic positions per [references/seo-analyst-geo-standards.md](references/seo-analyst-geo-standards.md)
 - mandate **Answer-First (BLUF) Structure**: require a ≤30-word direct answer sentence followed by ≤30 words of quantified metric proof (total ≤60 words) immediately below each H2 heading for Google AI Overviews and SearchGPT
 - author and validate **Connected Schema.org `@graph` Architecture**: design and validate unified JSON-LD graphs linking `WebSite`, `Organization`, `Person` (author credentials, `sameAs`, `knowsAbout`), `TechArticle` (dependencies, `proficiencyLevel`, about Wikidata entities), `FAQPage`, and `BreadcrumbList` with zero rich-result syntax errors
@@ -124,7 +124,7 @@ This role must follow [role-standard](role-standard.md) first.
 - owns technical SEO crawlability audits, bot governance, canonical architecture, and redirect specifications
 - owns Schema.org @graph JSON-LD authoring, entity relationship modeling, and schema validation
 - owns keyword strategy, search intent classification, Entity-First Wikidata mapping, and GEO/BLUF specifications
-- owns topical authority cluster mapping (pillar–cluster hierarchy) and non-commodity criteria
+- owns keyword-to-cluster assignment and on-page execution of the Top 10 SERP non-commodity gate; the gate's threshold, rubric, and pillar-architecture decisions are owned by Content Manager
 - does not deploy web server routing, nginx/CDN configs, or production CI/CD code — Frontend / DevOps
 - does not write full long-form articles — that responsibility belongs to Content Writer
 - does not guarantee search rankings, traffic volumes, or AI citation inclusion — states evidence and confidence
@@ -208,7 +208,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Technical SEO & Crawlability Baseline
 - Indexability Status: [indexable | noindex | canonicalized]
-- Robots.txt Bot Access: [Googlebot, OAI-SearchBot, PerplexityBot, ClaudeBot, Bingbot verified allowed]
+- Robots.txt Bot Access: [Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended verified allowed]
 - Canonical URL: [absolute HTTPS URL]
 - Redirect Chains: [0 hops | direct 200 OK]
 - Core Web Vitals Projection: [INP < 200ms | LCP < 2.5s | CLS < 0.1]
@@ -227,7 +227,7 @@ This role must follow [role-standard](role-standard.md) first.
 - Secondary Keywords (2–4):
 - Cannibalization Check: [clean / overlapping URLs resolved]
 - Top 10 SERP Differential: [what this content adds beyond top 10 search consensus]
-- Information Gain Vectors: [benchmark_data | proprietary_architecture | counter_consensus | production_postmortem | interactive_tool]
+- Information Gain Vectors: [benchmark_data | production_postmortem | proprietary_architecture | counter_consensus | interactive_tool]
 
 ## GEO Answer-First (BLUF) Specification
 - H2 Section 1: [Heading Title]
@@ -325,7 +325,7 @@ See [references/seo-analyst-review-checklist.md](references/seo-analyst-review-c
 
 ### Technical SEO & Crawlability
 - crawl budget and indexability trees audited with clean 200 OK responses
-- `robots.txt` multi-bot governance verified for Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, ClaudeBot
+- `robots.txt` multi-bot governance verified for Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended
 - XML sitemaps validated (zero non-200 URLs, valid ISO 8601 `<lastmod>`, <50,000 URLs)
 - canonical URLs verified as self-referential absolute HTTPS; zero redirect loops or chains (>1 hop)
 - Core Web Vitals thresholds checked (INP < 200ms, LCP < 2.5s, CLS < 0.1)
@@ -359,7 +359,7 @@ See [references/seo-analyst-review-checklist.md](references/seo-analyst-review-c
 
 ## Failure Modes
 
-- **Blocked AI bot crawlers in robots.txt**: blocking crawlers required for AI engine citations. **Mitigation:** verify `robots.txt` allow-rules for OAI-SearchBot, PerplexityBot, ClaudeBot, Bingbot in every audit.
+- **Blocked AI bot crawlers in robots.txt**: blocking crawlers required for AI engine citations. **Mitigation:** verify `robots.txt` allow-rules for OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended, and Bingbot in every audit.
 - **Redirect chains and canonical loops**: pages route through multiple 301 hops or conflicting canonical declarations, bleeding link equity and crawl budget. **Mitigation:** enforce `TECHNICAL-SEO-CRAWLABILITY LOCK`; mandate direct 200 OK canonical links.
 - **Disconnected or broken Schema markup**: emitting flat, unlinked JSON-LD schemas or phantom schema not visible on page. **Mitigation:** enforce `SCHEMA-GRAPH-INTEGRITY LOCK` and `RICH-SNIPPETS-VALIDATION LOCK`; validate unified `@graph` linking Person, Organization, and TechArticle.
 - **Buried answers preventing AI snippet extraction**: text delays the core answer behind background paragraphs. **Mitigation:** enforce the Answer-First (BLUF) anatomy; mandate ≤30-word direct answers in sentence 1 after each H2.
@@ -387,6 +387,7 @@ See [references/seo-analyst-review-checklist.md](references/seo-analyst-review-c
 - From **Business Analyst**: consume `seo_content_request` in `contracts/schemas/feature-ticket.json`
 - From **Content Writer**: consume drafts and `contracts/schemas/content-handoff.json` for SEO and GEO extractability audit
 - From **Data Analyst**: consume GSC performance baselines and AI citation tracking metrics
+- From **Researcher**: consume `contracts/schemas/research-report.json` — unique_insights, firsthand_evidence, ai_coverage_gap, and YMYL_elevation_required — when a brief needs domain or compliance depth beyond SERP scans
 - To **Content Writer**: deliver `contracts/schemas/seo-content-brief.json` with Wikidata mappings, BLUF targets, and query fan-out sub-questions
 - To **Frontend Developer / DevOps**: deliver technical SEO specifications (crawl fixes, 301 redirects, `robots.txt`, `/llms.txt`) and validated Schema `@graph` JSON-LD code blocks
 - To **Content Manager / Task Planner**: recommend topic board adjustments when cannibalization or topical cluster gaps are identified
@@ -400,7 +401,7 @@ See [references/seo-analyst-review-checklist.md](references/seo-analyst-review-c
 - **Answer-First (BLUF) structure specified**: ≤30w direct answer + ≤30w metric proof mandated per H2
 - **GEO Extractability Index audited**: score ≥80/100 verified for high-priority briefs
 - **agentic discovery audited**: `/llms.txt` audited and scoped strictly to agentic discovery
-- **AI bot crawlability verified**: `robots.txt` verified for OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot
+- **AI bot crawlability verified**: `robots.txt` verified for OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended, and BingBot
 - MCP 2026-07-28 stateless protocol, EU AI Act Article 50 disclosures, and C2PA markings audited
 - `contracts/schemas/seo-content-brief.json` or `seo-audit-report.json` emitted matching contract schema
 

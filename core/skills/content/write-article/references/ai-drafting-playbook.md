@@ -28,7 +28,7 @@ skilled at extracting intent from SERP patterns and structuring long-form articl
 - Target audience: <persona, locale, expertise level>
 - Tone & voice: <brand voice guide reference>
 - Business goal / CTA:
-- Information gain required: <what this article must add beyond top-3 SERP results>
+- Information gain required: <what this article must add beyond top 10 SERP results>
 
 # Constraints
 - Length target: <word count or section count>
@@ -37,7 +37,7 @@ skilled at extracting intent from SERP patterns and structuring long-form articl
 - Internal link targets to include: <list from SEO brief>
 - YMYL-adjacent: [yes/no]
 
-# Reference SERP (top 5)
+# Reference SERP (top 10)
 <summarize each: title, structure, what's good, what's missing>
 
 # Output format requested
@@ -48,8 +48,8 @@ Without all five components the LLM will produce generic structure.
 
 ### Step 2 — SERP grounding pass
 
-Before prompting, manually scan top 5–10 SERP results for the primary keyword and document:
-- common H2 sections across the top 3 (these are table stakes — must cover)
+Before prompting, manually scan the top 10 SERP results for the primary keyword and document:
+- common H2 sections across the top 10 (these are table stakes — must cover)
 - gaps where top results are thin, outdated, or missing firsthand signal (these are information-gain slots)
 - the dominant content format winning for this intent (long-form guide, comparison, listicle, how-to)
 

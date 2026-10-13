@@ -91,7 +91,7 @@ Before searching:
 
 ### 6. Information Gain Assessment
 
-Before synthesis, compare findings against top-5 SERP results for the target keyword:
+Before synthesis, compare findings against the top 10 SERP results for the target keyword:
 - what is unique in these findings?
 - where do AI Overviews provide incorrect or incomplete information?
 - is firsthand data or primary interview material available?

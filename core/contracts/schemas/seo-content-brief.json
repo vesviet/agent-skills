@@ -151,7 +151,7 @@
         },
         "information_gain": {
           "type": "string",
-          "description": "What this content adds beyond top-3 SERP results. Required — no brief ships without this. E.g. unique data, firsthand experience, local insight, original analysis."
+          "description": "What this content adds beyond the top 10 SERP results. Required — no brief ships without this. E.g. unique data, firsthand experience, local insight, original analysis."
         },
         "key_entities": {
           "type": "array",
@@ -292,7 +292,7 @@
                 "blocked",
                 "not_checked"
               ],
-              "description": "Whether OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot are allowed in robots.txt."
+              "description": "Whether Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, ClaudeBot, and Applebot-Extended are allowed in robots.txt."
             },
             "notes": {
               "type": "string",
@@ -672,7 +672,7 @@
           "thu thiem vs district 2"
         ],
         "cannibalization_check": "No existing Lease posts target thu-thiem as primary keyword in last 7 days. Checked publish-log 2026-06-05 to 2026-06-11.",
-        "serp_notes": "Top results include blog posts from 2023–2024. No AI Overview found. Perplexity cites Expat.com and PropertyGuru. FAQ section present in 3 of top 5 results."
+        "serp_notes": "Top results include blog posts from 2023–2024. No AI Overview found. Perplexity cites Expat.com and PropertyGuru. FAQ section present in 3 of top 10 results."
       },
       "geo_aeo": {
         "answer_first_block": "Thu Thiem is a modern riverside district in Ho Chi Minh City offering expat-friendly apartments from $700–$2,500/month, with new infrastructure completed in 2024 and easy Metro Line 1 access.",

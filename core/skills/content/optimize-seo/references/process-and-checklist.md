@@ -85,7 +85,7 @@ AI extractability audit elements:
 - [ ] engine-specific citation rules applied per `references/geo-ai-citation-playbook.md` (Perplexity tables, SearchGPT entity fidelity, Google AI Overviews lists)
 - [ ] structured comparison tables and dense quantitative lists implemented
 - [ ] fact density requirement documented (≥3 verifiable data points per 500 words)
-- [ ] AI bot crawlability verified (OAI-SearchBot, PerplexityBot, ClaudeBot, BingBot)
+- [ ] AI bot crawlability verified (OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended, BingBot)
 - [ ] citation sampling done per engine (numbered vs inline styles noted), not in aggregate
 - [ ] audit scored on four axes with projected post-fix score reported
 

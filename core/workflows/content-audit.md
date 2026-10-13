@@ -76,7 +76,7 @@ Use skill: `write-article`
 
 - the Content Manager delegates the refresh to the Content Writer (`agent-delegation`) with the audit findings, claim list, and information-gain gaps as input
 - correct outdated facts, refresh statistics, replace dead links, and add the missing information-gain sections
-- enforce Anti-AI Cliché blacklist (zero tolerance for banned terms), natural burstiness (sentence length std dev ≥ 6.0 words), active voice (≥85%), and BLUF answer-first formatting (≤60 words per H2) during content refresh
+- enforce Anti-AI Cliché blacklist (zero tolerance for banned terms), natural burstiness (sentence length std dev ≥ 6.5 words), active voice (≥85%), and BLUF answer-first formatting (≤60 words per H2) during content refresh
 - preserve and strengthen (never strip) E-E-A-T signals; keep to the brand voice guide
 - record a change log: what was updated, corrected, added, and why — the refresh must be reconstructable
 

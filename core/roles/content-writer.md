@@ -259,7 +259,7 @@ When working under a site overlay (lease-content, vesviet-content, seo-publishin
 ## Information Gain vs Top 10 SERP
 - Non-Commodity Score (0-100): [must be ≥75]
 - Differential value added: [what this article provides that top 10 search results lack]
-- Information gain vectors: [benchmark_data | proprietary_architecture | counter_consensus | production_postmortem | interactive_tool]
+- Information gain vectors: [benchmark_data | production_postmortem | proprietary_architecture | counter_consensus | interactive_tool]
 
 ## GEO / AEO Answer-First Execution
 - BLUF blocks implemented after every H2 (≤30w answer + ≤30w proof): [yes/no]
