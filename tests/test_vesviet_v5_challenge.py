@@ -91,7 +91,7 @@ class TestCorpusMetricsConsistency(unittest.TestCase):
                 self.assertEqual(v.get(k), exp, f"vesviet manifest {k} mismatch: got {v.get(k)}, expected {exp}")
 
         expected_l = {
-            "content_files": (433, 438, 439),
+            "content_files": (433, 438, 439, 440),
             "posts": 86,
             "series_dirs": 25,
             "series_files": 251,

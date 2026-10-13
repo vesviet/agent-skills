@@ -2,7 +2,7 @@
 
 Packs describe how to assemble the portable core with zero or more overlays for a target team. Each pack has a `manifest.yaml` that declares which `core` and `overlays/` to include, along with 2026 governance metadata.
 
-## Available Packs (16)
+## Available Packs (17)
 
 | Pack | Manifest | Composition | Capabilities |
 |------|----------|-------------|-------------|
@@ -22,6 +22,8 @@ Packs describe how to assemble the portable core with zero or more overlays for 
 | `data-warehouse` | [manifest.yaml](data-warehouse/manifest.yaml) | `core` + `overlays/data-warehouse` (incl. `learning/` track) | Fullstack data warehouse, FastAPI microservices, DuckDB single-writer, Medallion Parquet, MISA AMIS VAS 14, blind recount, PII masking, 4-layer testing, dbt 1.9/Iceberg/Kafka learning track |
 | `mmo-growth-team` | [manifest.yaml](mmo-growth-team/manifest.yaml) | `core` only | v5.0.0 · Full-spectrum MMO growth engineering (AI Affiliate, multi-channel S2S tracking, stealth CDP automation, 5-phase campaign lifecycle, LTV & Blended ROAS economics) |
 | `landing-pages-team` | [manifest.yaml](landing-pages-team/manifest.yaml) | `core` + `overlays/go-microservices` + `overlays/ui-design-system` + `overlays/seo-publishing` | v5.0.0 · High-converting single-product landing page engine & SaaS (`noitieng.com` / Carrd for Ads), Cloudflare Workers Edge SSR (< 25ms TTFB), Go Kratos v2 Clean Architecture, 5 CRO templates, 2D Footwear & Apparel Matrix, VietQR Napas 247, Zalo/Messenger widgets |
+| `shoppe-team` | [manifest.yaml](shoppe-team/manifest.yaml) | `core` + `overlays/seo-publishing` + `overlays/ui-design-system` | v5.0.0 · Tri-Engine Affiliate & Cashback Growth Engineering Pack for MotDeal ecosystem (`deal-bot-dispatcher`, `cashback-api-gateway`, `cashback-pwa-web`, `pseo-nextjs-engine`), 5 VAS Financial Invariants (1010–5010), T+1 Reconciliation, curl_cffi Chrome 124+ Anti-WAF, 1-1 Chatbot PWA, Next.js 15 ISR |
+
 
 ### Pack Spotlight: vesviet-team (v5.0.0)
 
@@ -75,6 +77,24 @@ The `landing-pages-team` pack governs the end-to-end engineering, conversion rat
 - **Aho-Corasick Ad Policy Scanner (ADR-09)**: High-performance linear-time scanner detecting prohibited ad phrases (TikTok/Facebook Ads compliance) before page publication.
 - **2D Footwear & Apparel Variant Matrix**: Color $\times$ Size 35-44+ selection with smart availability state machine, native `<dialog id="size-guide-modal">`, 1-click Editor preset, and Telesale Telegram bot alerts (`Màu: ... | Size: ...`).
 - **Vietnamese E-commerce Localization**: 1-touch COD checkout, VietQR Napas 247 dynamic QR codes, floating Zalo & Messenger contact widgets, and trusted footer legitimacy (physical warehouse address & 1-to-1 warranty).
+
+### Pack Spotlight: shoppe-team (v5.0.0)
+
+The `shoppe-team` pack governs the end-to-end engineering, automated deal intelligence, financial reconciliation, and conversion optimization for the MotDeal affiliate & cashback ecosystem (`motdeal.com` and `app.motdeal.com`):
+
+- **Tri-Engine 4-Microservice Architecture**:
+  - `deal-bot-dispatcher`: Python 3.11 scraper with curl_cffi Chrome 124+ TLS impersonation & browser fingerprinting bypassing anti-scraping WAFs; LiteLLM Gemini Flash structured deal extraction; multi-channel Telegram/Zalo bot deal broadcasting.
+  - `cashback-api-gateway`: FastAPI high-throughput financial gateway enforcing strict Double-Entry Ledger (VAS Chart of Accounts 1010–5010); T+1 automated reconciliation engine; VietQR Napas 247 dynamic payment generation and MoMo disbursement; Redis 7 idempotent deduplication; HMAC-SHA256 affiliate webhook verification.
+  - `cashback-pwa-web`: React 19 + Vite + Tailwind CSS mobile-first PWA; offline-capable Service Worker; sub-second 1-1 Chatbot affiliate conversion widget with native clipboard link interception; dynamic BridgePage routing for mobile app-deep-linking.
+  - `pseo-nextjs-engine`: Next.js 15+ App Router programmatic SEO engine; on-demand Incremental Static Regeneration (ISR); dynamic multi-cluster hierarchy (brand, category, voucher, store); automated Schema.org JSON-LD graphs; IndexNow push protocol.
+- **5 VAS Financial Accounting Invariants**:
+  - *Invariant A (Balanced Parity)*: Double-entry ledger parity $\sum \text{Debits} \equiv \sum \text{Credits}$ across TK 1010–5010 enforced at transaction boundaries (`ledger_engine.py:135`, `LedgerUnbalancedException`).
+  - *Invariant B (Clawback Protection)*: Contra-Asset TK 1030 automatically debited on affiliate return/cancellation clawback, offset against subsequent cashback before user payouts (`state_machine.py:358-366`, `chk_user_clawback_debt_positive`).
+  - *Invariant C (Atomic Concurrency)*: Cash-out withdrawal race conditions eliminated via row-level locking `with_for_update()` in PostgreSQL transactions (`withdrawals.py:151-156`).
+  - *Invariant D (Sole Domain Exclusivity)*: Zero domain leak with strict canonical host restriction to `motdeal.com` and `app.motdeal.com`, HSTS 63072000s, and metadataBase enforcement (`layout.tsx:14-16`).
+  - *Invariant E (Zero-Balance Floor)*: Non-negative floor on TK 2020 Available Cashback ensuring no negative payouts (`ledger_engine.py:165`, `NegativeBalanceException`, `chk_positive_available_balance`).
+- **17 Operational Roles Swarm Matrix**: Multi-agent collaboration covering `@researcher`, `@reviewer`, `@seo-analyst`, `@product-manager`, `@project-manager`, `@business-analyst`, `@solution-architect`, `@technical-architect`, `@technical-lead`, `@backend-developer`, `@frontend-developer`, `@sre`, `@system-engineer`, `@task-planner`, `@teacher`, `@content-manager`, and `@content-writer`, supported by domain specialists (`@vietnam-accounting-specialist`, `@ui-ux-designer`).
+- **Brand Identity & Design System**: Mascot Sóc Mót (playful squirrel hunter mascot), Warm Canvas (`#FBF9F5`), Shopee Accent Orange (`#EE4D2D`), Acorn Gold (`#D97706`), Deep Slate (`#0F172A`), lightweight BridgePage bundle budget ($< 20\text{ KB}$), and Emil Spring physics micro-interactions.
 
 ## 2026 Manifest Schema (v2)
 
@@ -169,7 +189,7 @@ MCP tool discovery is dynamic (JSON-RPC `tools/list`) and does not use static ma
 
 ## Standard 2026 Alignment
 
-All 14 pack manifests follow `schema_version: "2"` and embed the
+All 17 pack manifests follow `schema_version: "2"` and embed the
 `governance` block (EU AI Act tier, audit logging, secret handling,
 human oversight). The 2026 upgrade pass added Failure Modes, Output
 Contracts, and Security Guardrails to the pack-level guidance.

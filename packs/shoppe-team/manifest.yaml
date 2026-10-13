@@ -1,0 +1,125 @@
+schema_version: "2"
+
+name: shoppe-team
+description: Tri-Engine Affiliate & Cashback Growth Engineering Pack for MotDeal ecosystem (deal-bot-dispatcher, cashback-api-gateway, cashback-pwa-web, pseo-nextjs-engine). Enforces 2027 SOTA standards across 5 VAS financial invariants, double-entry ledger 1010-5010, T+1 reconciliation, curl_cffi Chrome 124+ anti-WAF scraping, 1-1 Chatbot PWA conversion, and Next.js 15 ISR programmatic SEO.
+version: 5.0.0
+
+tags:
+  - core
+  - ecommerce
+  - affiliate
+  - cashback
+  - tri-engine
+  - motdeal
+  - shopee
+  - double-entry-ledger
+  - vietqr
+  - fastapi
+  - react-pwa
+  - nextjs-isr
+  - programmatic-seo
+  - anti-waf
+  - k3s
+
+author: user
+maintained_by: platform-team
+license: MIT
+homepage: https://github.com/vesviet-team/shoppe
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
+includes:
+  - core
+  - overlays/seo-publishing
+  - overlays/ui-design-system
+
+capabilities:
+  - code-generation
+  - api-development
+  - backend
+  - frontend
+  - double-entry-ledger
+  - t1-reconciliation
+  - scraper-anti-waf
+  - pwa-chatbot
+  - programmatic-seo
+  - vietqr-napas-247
+  - k3s-docker-ops
+  - testing
+  - security-audit
+  - financial-engineering
+
+data_classification: confidential
+
+activation:
+  strategy: marker_first
+  markers:
+    - deal-bot-dispatcher/requirements.txt
+    - cashback-api-gateway/requirements.txt
+    - cashback-pwa-web/package.json
+    - pseo-nextjs-engine/package.json
+    - motdeal.com
+  glob_patterns:
+    - "deal-bot-dispatcher/**/*.py"
+    - "cashback-api-gateway/**/*.py"
+    - "cashback-pwa-web/src/**/*.{ts,tsx}"
+    - "pseo-nextjs-engine/src/**/*.{ts,tsx}"
+  exclude_patterns:
+    - "**/__pycache__/**"
+    - "**/.pytest_cache/**"
+    - "**/node_modules/**"
+    - "**/.next/**"
+    - "**/dist/**"
+
+shoppe_focus:
+  primary_roles:
+    - backend-developer
+    - frontend-developer
+    - technical-architect
+    - solution-architect
+    - seo-analyst
+    - sre
+    - system-engineer
+  supporting_roles:
+    - researcher
+    - reviewer
+    - product-manager
+    - project-manager
+    - business-analyst
+    - technical-lead
+    - task-planner
+    - teacher
+    - content-manager
+    - content-writer
+    - technical-writer
+    - vietnam-accounting-specialist
+    - ui-ux-designer
+  workflows:
+    - shoppe-tri-engine-lifecycle
+  invariants:
+    - "VAS Double-Entry Parity: sum(Debits) == sum(Credits)"
+    - "Sole Domain Exclusivity: motdeal.com & app.motdeal.com"
+    - "Zero-Balance Floor on TK 2020 & Contra-Asset 1030 for Clawback"
+    - "Atomic Cash-Out Concurrency Protection via with_for_update"
+    - "Cryptographic T+1 Statement Hash Deduplication via SHA-256"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - run_migration
+      - push_to_production
+      - modify_secrets
+      - approve_large_withdrawal
+      - execute_period_end_closing
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

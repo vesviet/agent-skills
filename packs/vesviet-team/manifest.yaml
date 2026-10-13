@@ -118,7 +118,7 @@ corpus:
     total_words: 1054728
   learn:
     total_files: 7534
-    content_files: 439
+    content_files: 440
     posts: 86
     series: 251
     series_dirs: 25

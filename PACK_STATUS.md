@@ -1,7 +1,7 @@
 # Pack Status (post-5.0.0 standards-2027 upgrade)
 
 **Validators:** 17/17 pass, 0 errors, 0 warnings.
-**Catalog:** 34 roles, 109 skills (97 core + 12 overlay), 24 workflows, 50 contracts, 14 packs, 18 overlays.
+**Catalog:** 34 roles, 109 skills (97 core + 12 overlay), 24 workflows, 50 contracts, 17 packs, 18 overlays.
 
 ## 0. Standards-2027 upgrade summary (5.0.0, 2026-09-07)
 
@@ -34,10 +34,12 @@ Grounded in five-track deep research (sources through September 2026):
 | `.cursorrules` | 100% has Standard 2026 footer |
 | VERSION | `5.0.0` consistent across registry, cards, adapters, changelog |
 | CHANGELOG | `[5.0.0] - 2026-09-07` entry complete |
-| 14 pack manifests | All have version, schema_version, governance, includes, capabilities |
+| 17 pack manifests | All have version, schema_version, governance, includes, capabilities (incl. shoppe-team) |
 | 34 agent cards | All regenerated, version 5.0.0, A2A 1.0 |
 | A2A registry, ai-catalog, agent-card.json | All 5.0.0 / 1.1 |
 | Generated artifacts (INDEX, role-skill-index × 2, capability-map) | All consistent |
+
+*Active packs inventory (17):* `content-sprint-team`, `data-analyst-team`, `data-warehouse`, `donthan-team`, `ecommerce-team`, `global-engineering`, `golf-team`, `icm-team`, `landing-pages-team`, `lease-team`, `maylanhtreotuong-team`, `mdg-team`, `mmo-growth-team`, `obj-team`, `shoppe-team`, `sport-team`, `vesviet-team`.
 
 ## 2. Things the validators do NOT check — possible follow-ups
 
