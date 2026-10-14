@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 126 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **138 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 146 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **158 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -129,6 +129,31 @@ MMO/growth-ops skills with compliance notices; each maps to `REVIEW-SYSTEM LOCK`
 - `integrate-api-client`
 - `setup-design-system`
 - `setup-visual-regression`
+
+### Game Development (20)
+
+Real-time gameplay engineering, ECS architecture, game feel tuning, physics & camera systems, game AI, procedural generation, shaders, technical art, dynamic audio, performance profiling, and multi-platform publishing across 5 pillars:
+
+- `integrate-game-engine` — Cross-engine lifecycle integration, deterministic asset imports, export presets, and headless CI test runners
+- `develop-gameplay-systems` — Deterministic fixed-timestep gameplay loops, kinematic character controllers, hierarchical state machines, and combat mechanics
+- `architect-ecs-systems` — Data-oriented Entity Component System (ECS) architecture, cache-friendly SoA memory layouts, archetypes, and parallel job systems
+- `manage-scene-lifecycle` — Asynchronous scene streaming, additive level loading, deterministic object pooling, and leak-free memory/VRAM lifecycle management
+- `implement-save-persistence` — Versioned save/load serialization, schema migration pipelines, cryptographic integrity checks, and cloud-sync conflict resolution
+- `tune-game-feel` — Tactile game feel ("juice"), coyote time, input buffering, hit-stop micro-freezes, trauma-based screen shake, and accessibility toggles
+- `configure-physics-collision` — Physics engine configuration, collision layer/mask matrices, Continuous Collision Detection (CCD), and non-allocating spatial queries
+- `abstract-input-actions` — Cross-device input action abstraction, runtime control remapping, input chord/buffer queues, and controller haptics
+- `direct-camera-systems` — Virtual camera orchestration, Cinemachine/PhantomCamera blending, dead-zone framing, spring-damper smoothing, and occlusion avoidance
+- `author-game-ai` — Game AI architecture across Behavior Trees, Utility AI, GOAP, NavMesh pathfinding, steering behaviors, and time-sliced perception
+- `design-procedural-generation` — Seeded deterministic procedural generation using Wave Function Collapse (WFC), BSP dungeons, cellular automata, and noise fields
+- `build-game-ui-ux` — Resolution-independent HUDs, diegetic/spatial UI, focus-driven gamepad navigation, safe-area scaling, and rich-text localization
+- `integrate-dialogue-narrative` — Branching narrative and dialogue trees (Ink, Yarn Spinner, Dialogic), quest state trackers, and localized voiceover lip-sync triggers
+- `program-game-shaders` — Real-time HLSL/GLSL/Godot shader programming, PBR material pipelines, compute shaders, and full-screen post-processing passes
+- `inspect-blender-rigs-motion` — DCC-to-engine skeletal rig validation, bone weight normalization, root motion extraction, retargeting, and glTF/FBX export hygiene
+- `render-webgl-threejs` — WebGL2/WebGPU and Three.js browser rendering, instanced draw calls, KTX2/Draco compression, and GPU resource disposal
+- `generate-game-assets-pipeline` — Automated 2D/3D asset conditioning, LOD chain generation, texture atlas packing, and provenance-gated AI asset pipelines
+- `mix-dynamic-game-audio` — Interactive audio bus routing (FMOD, Wwise, native mixers), adaptive music stems, 3D spatial attenuation, voice stealing, and sidechain ducking
+- `profile-game-performance` — CPU/GPU frame-time profiling, draw-call batching, memory allocation tracking, thermal throttling triage, and `performance-audit.json` emission
+- `automate-game-publishing` — Reproducible multi-platform build automation, Steamworks Pipe/SDK integration, console/mobile store compliance, and crash symbol upload
 
 > R3F/Three.js cluster (`debug-3d-scene`, `integrate-r3f-three-legacy`, `optimize-3d-assets`) migrated to `overlays/r3f-stack/skills/` in v4.0.0 per the stack-overlay naming rules.
 

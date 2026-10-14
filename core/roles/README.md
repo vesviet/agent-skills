@@ -2,7 +2,7 @@
 
 This directory defines reusable roles for the full software delivery lifecycle.
 
-> **Master Roles Inventory**: **35 Roles** | **19 Dedicated Review Checklists** (in `references/`) | **A2A 1.0 JSON-RPC/SSE Native**  
+> **Master Roles Inventory**: **36 Roles** | **20 Dedicated Review Checklists** (in `references/`) | **A2A 1.0 JSON-RPC/SSE Native**  
 > **SOTA 2026–2027 Standards**: Flagship Tier 1 roles equipped with 12–24 Architectural Guardrail Locks, production tech stacks, and dedicated challenge test suites  
 > **Authoritative Audit Matrix**: [`reports/role-skill-matrix-sota-audit-2026-2027.md`](../../reports/role-skill-matrix-sota-audit-2026-2027.md)
 
@@ -71,6 +71,7 @@ All roles in this pack are expected to:
 - [frontend-developer](frontend-developer.md)
 - [mobile-engineer](mobile-engineer.md)
 - [3d-graphics-engineer](3d-graphics-engineer.md)
+- [game-developer](game-developer.md)
 - [ecommerce-engineer](ecommerce-engineer.md)
 - [security-engineer](security-engineer.md)
 
@@ -138,6 +139,7 @@ All roles in this pack are expected to:
 - Backend Developer
 - Frontend Developer
 - Mobile Engineer
+- Game Developer
 - E-commerce Engineer
 - Technical Lead
 - Security Engineer
@@ -225,6 +227,7 @@ All roles in this pack are expected to:
 | Frontend Developer | `/add-new-feature`, `/refactoring` |
 | Mobile Engineer | `/add-new-feature`, `/refactoring`, `/troubleshooting`, `/hotfix-production` |
 | 3D Graphics Engineer | `/add-new-feature`, `/refactoring`, `/troubleshooting` |
+| Game Developer | `/add-new-feature`, `/refactoring`, `/troubleshooting` |
 | QA Engineer | `/service-review-release`, `/qa-validation` |
 | Reviewer | `/service-review-release`, `/tech-repo-review` |
 | Security Engineer | `/service-review-release`, `/hotfix-production`, `/security-incident-response`, `/dependency-upgrade` |

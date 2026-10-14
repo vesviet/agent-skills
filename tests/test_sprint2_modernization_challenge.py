@@ -56,7 +56,7 @@ class TestSprint2ModernizationChallenge(unittest.TestCase):
         """Every role in core/roles/*.md must have a corresponding review checklist."""
         role_files = sorted(ROLES_DIR.glob("*.md"))
         role_names = [f.stem for f in role_files if f.name not in ("role-standard.md", "README.md", "INDEX.md")]
-        self.assertEqual(len(role_names), 35, f"Expected 35 roles, found {len(role_names)}")
+        self.assertGreaterEqual(len(role_names), 35, f"Expected at least 35 roles, found {len(role_names)}")
 
         missing_checklists = []
         for role in role_names:

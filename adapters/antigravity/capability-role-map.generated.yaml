@@ -16,6 +16,7 @@ capability_role_map:
   devops-engineer: devops-engineer
   ecommerce-engineer: ecommerce-engineer
   frontend-developer: frontend-developer
+  game-developer: game-developer
   mmo-engineer: mmo-engineer
   mobile-engineer: mobile-engineer
   product-manager: product-manager

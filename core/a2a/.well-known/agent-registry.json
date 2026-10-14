@@ -95,6 +95,12 @@
       "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business "
     },
     {
+      "role": "game-developer",
+      "agent_card": "core/a2a/registry/game-developer.agent-card.json",
+      "url": "pack://agent-skills/core/roles/game-developer.md",
+      "description": "architect, implement, optimize, and maintain real-time interactive game systems, character controllers, mechanics, physi"
+    },
+    {
       "role": "mmo-engineer",
       "agent_card": "core/a2a/registry/mmo-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/mmo-engineer.md",

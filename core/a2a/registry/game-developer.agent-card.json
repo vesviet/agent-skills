@@ -1,0 +1,477 @@
+{
+  "id": "pack://agent-skills/core/roles/game-developer",
+  "contract_type": "agent-card",
+  "name": "game-developer",
+  "description": "architect, implement, optimize, and maintain real-time interactive game systems, character controllers, mechanics, physics simulations, and engine pipelines across target platforms, ensuring rock-solid frame rate determinism, low-latency responsiveness, and zero memory leaks. In 2026–2027, this includes orchestrating cross-engine architecture (Godot, Unity, Unreal, Web Engines), enforcing automated headless test harnesses, integrating deterministic asset pipelines, and balancing tactile \"game feel\" with disciplined memory and frame budgets.",
+  "url": "pack://agent-skills/core/roles/game-developer.md",
+  "version": "5.0.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "integrate-game-engine",
+      "name": "Integrate Game Engine",
+      "description": "Bridge game architecture across engines, manage headless test runners, configure export pipelines, and enforce asset normalization. Use when configuring Godot, Unity, Unreal, or Web game engine builds and headless test runners.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "develop-gameplay-systems",
+      "name": "Develop Gameplay Systems",
+      "description": "Build deterministic, high-performance gameplay systems, character controllers, state machines, and combat mechanics across game engines. Use when implementing player movement, mechanics, physics interactions, or game loops.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "architect-ecs-systems",
+      "name": "Architect Ecs Systems",
+      "description": "Architect data-oriented Entity Component System (ECS) architectures, archetype storages, and cache-friendly query schedules. Use when implementing high-entity simulations, DOD architectures, or parallel systems in Bevy, Flecs, or Unity DOTS.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "manage-scene-lifecycle",
+      "name": "Manage Scene Lifecycle",
+      "description": "Orchestrate scene hierarchies, asynchronous level streaming, additive scene loading, and resource disposal lifecycles. Use when managing scene transitions, additive loading, VRAM cleanup, or dependency injection across scenes.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "implement-save-persistence",
+      "name": "Implement Save Persistence",
+      "description": "Implements monotonic save schemas, version migration pipelines, cryptographic integrity checksums, binary and JSON serialization, and cross-platform cloud saves. Use when building game save systems, profile persistence, autosave checkpoints, or Steam Cloud synchronization.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "tune-game-feel",
+      "name": "Tune Game Feel",
+      "description": "Tune responsiveness, input buffering, screen shake, hit-stop, and audiovisual juice to maximize game feel and tactile player feedback. Use when adding polish, hit reactions, camera shake, coyote time, or feedback layers.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "configure-physics-collision",
+      "name": "Configure Physics Collision",
+      "description": "Configures deterministic fixed timestep tuning, Continuous Collision Detection (CCD), spatial query layers, kinematic substepping, raycasting, and contact normal stabilization. Use when tuning physics engines, resolving fast-mover tunneling, setting collision matrices, or stabilizing character ground contacts.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "abstract-input-actions",
+      "name": "Abstract Input Actions",
+      "description": "Abstracts hardware-agnostic input action mappings, chorded and buffered inputs, radial analog deadzones, runtime rebindable bindings, and multi-device hot-swap handling. Use when building input managers, controller support, keybinding menus, or accessibility input remapping.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "direct-camera-systems",
+      "name": "Direct Camera Systems",
+      "description": "Directs 2D and 3D virtual camera systems including frame-rate independent smooth dampening, deadzone framing, velocity look-ahead lead targeting, confinement bounds, room transitions, and multi-target zoom framing. Use when implementing follow cameras, cinematic transitions, lock-on targeting, or 3D spring arms.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "author-game-ai",
+      "name": "Author Game Ai",
+      "description": "Authors modular game AI architectures using Behavior Trees (BT), shared and local blackboards, Utility AI response curves, local steering behaviors, and time-sliced NavMesh or A* pathfinding budgets. Use when implementing NPC decision-making, combat squad tactics, crowd steering, or pathfinding agents.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "design-procedural-generation",
+      "name": "Design Procedural Generation",
+      "description": "Designs deterministic procedural content generation (PCG) pipelines using seeded PRNG streams, multi-octave Perlin and Simplex noise, cellular automata cave shaping, and graph-based dungeon room layouts. Use when generating procedural levels, terrain heightmaps, roguelike dungeons, or seeded loot tables.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "build-game-ui-ux",
+      "name": "Build Game Ui Ux",
+      "description": "Builds responsive game UI and HUD architectures featuring multi-resolution canvas scaling, 9-slice anchors, mobile and ultrawide safe-area margins, gamepad and keyboard focus navigation, and reactive dialogue or HUD overlays. Use when implementing game menus, HUD widgets, inventory grids, or controller-navigable interfaces.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "integrate-dialogue-narrative",
+      "name": "Integrate Dialogue Narrative",
+      "description": "Integrates branching narrative trees, deterministic condition flag evaluators, localization string tables, and Yarn Spinner or Ink runtime pipelines. Use when building dialogue systems, quest state machines, interactive cutscenes, or localized branching conversations.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "program-game-shaders",
+      "name": "Program Game Shaders",
+      "description": "Author high-performance vertex and fragment shaders across GLSL, HLSL, and Godot Shader Language for UV distortion, dissolve, outlines, and depth effects. Use when programming custom game materials, screen-space post-processing, or GPU visual effects.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "inspect-blender-rigs-motion",
+      "name": "Inspect Blender Rigs Motion",
+      "description": "Diagnose and repair Blender armatures, bone roll alignment, animation retargeting hierarchies, and root motion trajectories before game engine import. Use when validating skeletal meshes, fixing bone twists, or extracting root motion for Godot, Unity, or Unreal.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "render-webgl-threejs",
+      "name": "Render Webgl Threejs",
+      "description": "Architect interactive WebGL2 and WebGPU 3D scenes using Three.js or React Three Fiber with compressed GLTF streaming, PBR materials, and post-processing pipelines. Use when building browser 3D games, WebGPU render loops, or EffectComposer pipelines.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "generate-game-assets-pipeline",
+      "name": "Generate Game Assets Pipeline",
+      "description": "Automate procedural and AI-assisted game asset pipelines including pixel sprite sheets, texture atlas packing, and PBR channel packing. Use when generating game art pipelines, packing sprite atlases, or normalizing textures and meshes for engine import.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "mix-dynamic-game-audio",
+      "name": "Mix Dynamic Game Audio",
+      "description": "Architect dynamic game audio hierarchies, bus mixers, sidechain ducking, adaptive music stem crossfading, and pooled 3D positional sound emitters. Use when implementing interactive soundscapes, adaptive music states, or spatial SFX systems.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "profile-game-performance",
+      "name": "Profile Game Performance",
+      "description": "Profile and optimize CPU/GPU frame budgets, eliminate garbage collection stalls, batch draw calls, manage LODs, and audit VRAM footprints. Use when diagnosing frame drops, stutter, high draw calls, or memory leaks in game engines.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "automate-game-publishing",
+      "name": "Automate Game Publishing",
+      "description": "Automate headless cross-platform game builds, Steamworks SteamPipe depot uploads, itch.io Butler CLI deployments, and web/mobile release packaging. Use when setting up CI/CD release pipelines, Steam/itch.io deployment scripts, or reproducible build artifacts.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "implementation-result.json",
+    "performance-audit.json"
+  ],
+  "role_file": "core/roles/game-developer.md",
+  "policy_profile": "game-developer"
+}

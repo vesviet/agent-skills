@@ -47,6 +47,7 @@ CANONICAL_TAGS = {
     "mobile": "mobile",
     "seo": "seo",
     "legal-compliance": "legal",
+    "gamedev": "gamedev",
 }
 
 

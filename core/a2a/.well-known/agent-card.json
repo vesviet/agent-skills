@@ -96,6 +96,11 @@
       "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business "
     },
     {
+      "id": "game-developer",
+      "name": "Game Developer",
+      "description": "architect, implement, optimize, and maintain real-time interactive game systems, character controllers, mechanics, physi"
+    },
+    {
       "id": "mmo-engineer",
       "name": "Mmo Engineer",
       "description": "Design, deploy, and operate end-to-end Make Money Online (MMO) operations. Maximize ROI through advanced stealth automat"

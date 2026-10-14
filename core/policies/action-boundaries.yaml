@@ -587,6 +587,44 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+    game-developer:
+      allowed:
+        - create_file
+        - read_file
+        - run_build
+        - run_dev_server
+        - run_linter
+        - run_tests
+        - search_code
+        - write_file
+      requires_approval:
+        - delegate_task
+        - delete_file
+        - install_dependency
+        - modify_public_api_contract
+      denied:
+        - bypass_ai_guardrail
+        - clear_agent_memory
+        - deploy_ai_model
+        - modify_prompt_template
+        - delete_branch_main
+        - drop_database
+        - force_push
+        - modify_environment_config
+        - modify_secrets
+        - push_to_production
+        - run_migration
+        - apply_iac
+        - delete_cloudflare_resource
+        - drop_storage_volume
+        - modify_iam_policy
+        - modify_network_topology_production
+        - modify_payment_gateway_config
+        - self_approve_iam
+        - shipping_label_generation
+        - terminate_instance
+        - write_database
+        - export_data
     mobile-engineer:
       allowed:
         - create_file

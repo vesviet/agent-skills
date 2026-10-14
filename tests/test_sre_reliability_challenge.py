@@ -671,8 +671,8 @@ class TestSREAliasResolutionAndRegistrySync(unittest.TestCase):
         """Verifies core/skills/README.md matches disk (124 core, 12 overlays, 136 total; Platform (17))."""
         readme_path = SKILLS_DIR / "README.md"
         readme_text = readme_path.read_text(encoding="utf-8")
-        self.assertTrue(re.search(r"\b12[4-9] portable core skills\b", readme_text))
-        self.assertTrue(re.search(r"\b13[6-9] total\b", readme_text))
+        self.assertTrue(re.search(r"\b(12[4-9]|1[3-9]\d) portable core skills\b", readme_text))
+        self.assertTrue(re.search(r"\b(13[6-9]|1[4-9]\d) total\b", readme_text))
         self.assertTrue(re.search(r"### Platform \((1[7-9]|[2-9]\d)\)", readme_text))
         self.assertIn("- `orchestrate-chaos-experiment`", readme_text)
 

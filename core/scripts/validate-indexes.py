@@ -91,7 +91,7 @@ def check_skills_index() -> list[str]:
         if not m:
             continue
         label = m.group(1).strip().lower().replace(" and ", "-").replace(" ", "-")
-        category = {"security-data": "security-data"}.get(label, label)
+        category = {"security-data": "security-data", "game-development": "gamedev"}.get(label, label)
         if category not in by_cat:
             continue
         declared = int(m.group(2))

@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `5.0.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **35 Roles** | **138 Skills** (126 Core + 12 Overlays) | **25 Workflows** | **54 Data Contracts**
+> **Total Catalog:** **36 Roles** | **158 Skills** (146 Core + 12 Overlays) | **25 Workflows** | **54 Data Contracts**
 
 ---
 
@@ -28,7 +28,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🎭 Role Directory (35 Roles)
+## 🎭 Role Directory (36 Roles)
 
 | Role Slug | Title | Common Aliases | Primary Skills | Role File |
 |:---|:---|:---|:---|:---|
@@ -47,6 +47,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@devops-engineer`** | DevOps Engineer | `@devops`, `@infra`, `@infrastructure` | `setup-deployment`, `deploy-aws-eks-workloads`, `debug-runtime-platform` *(+5 more)* | [`core/roles/devops-engineer.md`](./core/roles/devops-engineer.md) |
 | **`@ecommerce-engineer`** | Ecommerce Engineer | `@ecommerce`, `@ecom` | `integrate-payment-gateway`, `handle-checkout-flow`, `manage-product-catalog` *(+2 more)* | [`core/roles/ecommerce-engineer.md`](./core/roles/ecommerce-engineer.md) |
 | **`@frontend-developer`** | Frontend Developer | `@frontend`, `@fe`, `@frontend-dev`, `@ui-developer` | `accessibility-review`, `add-page-route`, `add-ui-component` *(+9 more)* | [`core/roles/frontend-developer.md`](./core/roles/frontend-developer.md) |
+| **`@game-developer`** | Game Developer | `@game-dev`, `@gamedev`, `@game`, `@game-engineer`, `@gameplay-engineer` | `integrate-game-engine`, `develop-gameplay-systems`, `architect-ecs-systems` *(+17 more)* | [`core/roles/game-developer.md`](./core/roles/game-developer.md) |
 | **`@mmo-engineer`** | MMO Engineer | `@mmo`, `@affiliate`, `@growth`, `@growth-lead`, `@growth-engineer`, `@media-buyer`, `@affiliate-marketer` | `deploy-mmo-infrastructure`, `setup-tracking-system`, `create-automation-script` *(+4 more)* | [`core/roles/mmo-engineer.md`](./core/roles/mmo-engineer.md) |
 | **`@mobile-engineer`** | Mobile Engineer | `@mobile`, `@flutter`, `@react-native` | `develop-mobile-app`, `deploy-mobile-app`, `add-ui-component` *(+5 more)* | [`core/roles/mobile-engineer.md`](./core/roles/mobile-engineer.md) |
 | **`@product-manager`** | Product Manager | `@pm`, `@prod-mgr`, `@product-owner`, `@po` | `define-product-strategy`, `prioritize-roadmap`, `model-saas-metrics` *(+2 more)* | [`core/roles/product-manager.md`](./core/roles/product-manager.md) |
@@ -70,7 +71,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🛠️ Skill Directory (138 Skills)
+## 🛠️ Skill Directory (158 Skills)
 
 ### Category: `agent` (24 skills)
 
@@ -196,6 +197,31 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@integrate-api-client`** | Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handling... | [`core/skills/frontend/integrate-api-client/SKILL.md`](./core/skills/frontend/integrate-api-client/SKILL.md) |
 | **`@setup-design-system`** | Configure a scalable design system, styling framework, and component architecture for a frontend pro... | [`core/skills/frontend/setup-design-system/SKILL.md`](./core/skills/frontend/setup-design-system/SKILL.md) |
 | **`@setup-visual-regression`** | Configure automated visual diffing for UI components and pages. Use when establishing pixel-level re... | [`core/skills/frontend/setup-visual-regression/SKILL.md`](./core/skills/frontend/setup-visual-regression/SKILL.md) |
+
+### Category: `gamedev` (20 skills)
+
+| Skill Slug | Description | File |
+|:---|:---|:---|
+| **`@abstract-input-actions`** | Abstracts hardware-agnostic input action mappings, chorded and buffered inputs, radial analog deadzo... | [`core/skills/gamedev/abstract-input-actions/SKILL.md`](./core/skills/gamedev/abstract-input-actions/SKILL.md) |
+| **`@architect-ecs-systems`** | Architect data-oriented Entity Component System (ECS) architectures, archetype storages, and cache-f... | [`core/skills/gamedev/architect-ecs-systems/SKILL.md`](./core/skills/gamedev/architect-ecs-systems/SKILL.md) |
+| **`@author-game-ai`** | Authors modular game AI architectures using Behavior Trees (BT), shared and local blackboards, Utili... | [`core/skills/gamedev/author-game-ai/SKILL.md`](./core/skills/gamedev/author-game-ai/SKILL.md) |
+| **`@automate-game-publishing`** | Automate headless cross-platform game builds, Steamworks SteamPipe depot uploads, itch.io Butler CLI... | [`core/skills/gamedev/automate-game-publishing/SKILL.md`](./core/skills/gamedev/automate-game-publishing/SKILL.md) |
+| **`@build-game-ui-ux`** | Builds responsive game UI and HUD architectures featuring multi-resolution canvas scaling, 9-slice a... | [`core/skills/gamedev/build-game-ui-ux/SKILL.md`](./core/skills/gamedev/build-game-ui-ux/SKILL.md) |
+| **`@configure-physics-collision`** | Configures deterministic fixed timestep tuning, Continuous Collision Detection (CCD), spatial query ... | [`core/skills/gamedev/configure-physics-collision/SKILL.md`](./core/skills/gamedev/configure-physics-collision/SKILL.md) |
+| **`@design-procedural-generation`** | Designs deterministic procedural content generation (PCG) pipelines using seeded PRNG streams, multi... | [`core/skills/gamedev/design-procedural-generation/SKILL.md`](./core/skills/gamedev/design-procedural-generation/SKILL.md) |
+| **`@develop-gameplay-systems`** | Build deterministic, high-performance gameplay systems, character controllers, state machines, and c... | [`core/skills/gamedev/develop-gameplay-systems/SKILL.md`](./core/skills/gamedev/develop-gameplay-systems/SKILL.md) |
+| **`@direct-camera-systems`** | Directs 2D and 3D virtual camera systems including frame-rate independent smooth dampening, deadzone... | [`core/skills/gamedev/direct-camera-systems/SKILL.md`](./core/skills/gamedev/direct-camera-systems/SKILL.md) |
+| **`@generate-game-assets-pipeline`** | Automate procedural and AI-assisted game asset pipelines including pixel sprite sheets, texture atla... | [`core/skills/gamedev/generate-game-assets-pipeline/SKILL.md`](./core/skills/gamedev/generate-game-assets-pipeline/SKILL.md) |
+| **`@implement-save-persistence`** | Implements monotonic save schemas, version migration pipelines, cryptographic integrity checksums, b... | [`core/skills/gamedev/implement-save-persistence/SKILL.md`](./core/skills/gamedev/implement-save-persistence/SKILL.md) |
+| **`@inspect-blender-rigs-motion`** | Diagnose and repair Blender armatures, bone roll alignment, animation retargeting hierarchies, and r... | [`core/skills/gamedev/inspect-blender-rigs-motion/SKILL.md`](./core/skills/gamedev/inspect-blender-rigs-motion/SKILL.md) |
+| **`@integrate-dialogue-narrative`** | Integrates branching narrative trees, deterministic condition flag evaluators, localization string t... | [`core/skills/gamedev/integrate-dialogue-narrative/SKILL.md`](./core/skills/gamedev/integrate-dialogue-narrative/SKILL.md) |
+| **`@integrate-game-engine`** | Bridge game architecture across engines, manage headless test runners, configure export pipelines, a... | [`core/skills/gamedev/integrate-game-engine/SKILL.md`](./core/skills/gamedev/integrate-game-engine/SKILL.md) |
+| **`@manage-scene-lifecycle`** | Orchestrate scene hierarchies, asynchronous level streaming, additive scene loading, and resource di... | [`core/skills/gamedev/manage-scene-lifecycle/SKILL.md`](./core/skills/gamedev/manage-scene-lifecycle/SKILL.md) |
+| **`@mix-dynamic-game-audio`** | Architect dynamic game audio hierarchies, bus mixers, sidechain ducking, adaptive music stem crossfa... | [`core/skills/gamedev/mix-dynamic-game-audio/SKILL.md`](./core/skills/gamedev/mix-dynamic-game-audio/SKILL.md) |
+| **`@profile-game-performance`** | Profile and optimize CPU/GPU frame budgets, eliminate garbage collection stalls, batch draw calls, m... | [`core/skills/gamedev/profile-game-performance/SKILL.md`](./core/skills/gamedev/profile-game-performance/SKILL.md) |
+| **`@program-game-shaders`** | Author high-performance vertex and fragment shaders across GLSL, HLSL, and Godot Shader Language for... | [`core/skills/gamedev/program-game-shaders/SKILL.md`](./core/skills/gamedev/program-game-shaders/SKILL.md) |
+| **`@render-webgl-threejs`** | Architect interactive WebGL2 and WebGPU 3D scenes using Three.js or React Three Fiber with compresse... | [`core/skills/gamedev/render-webgl-threejs/SKILL.md`](./core/skills/gamedev/render-webgl-threejs/SKILL.md) |
+| **`@tune-game-feel`** | Tune responsiveness, input buffering, screen shake, hit-stop, and audiovisual juice to maximize game... | [`core/skills/gamedev/tune-game-feel/SKILL.md`](./core/skills/gamedev/tune-game-feel/SKILL.md) |
 
 ### Category: `legal-compliance` (3 skills)
 
@@ -360,6 +386,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@7powers`** | `define-product-strategy` | Active `@role` |
 | **`@a2a`** | `agent-a2a-protocol` | Active `@role` |
 | **`@a2a_protocol`** | `agent-a2a-protocol` | Active `@role` |
+| **`@abstract-input-actions`** | `abstract-input-actions` | Active `@role` |
+| **`@abstract_input_actions`** | `abstract-input-actions` | Active `@role` |
 | **`@accounting`** | `manage-vietnam-accounting` | Active `@role` |
 | **`@add_api_endpoint`** | `add-api-endpoint` | Active `@role` |
 | **`@add_event_handler`** | `add-event-handler` | Active `@role` |
@@ -383,8 +411,12 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@anti_slop`** | `setup-design-system`, `component-composition` | Active `@role` |
 | **`@api`** | `add-api-endpoint` | Active `@role` |
 | **`@app_store`** | `deploy-mobile-app` | Active `@role` |
+| **`@architect-ecs-systems`** | `architect-ecs-systems` | Active `@role` |
 | **`@architect-mcp-server`** | `architect-mcp-server` | Active `@role` |
+| **`@architect_ecs_systems`** | `architect-ecs-systems` | Active `@role` |
 | **`@architect_mcp_server`** | `architect-mcp-server` | Active `@role` |
+| **`@asset-pipeline`** | `generate-game-assets-pipeline` | Active `@role` |
+| **`@asset_pipeline`** | `generate-game-assets-pipeline` | Active `@role` |
 | **`@audit-ai-compliance`** | `audit-ai-compliance` | Active `@role` |
 | **`@audit-technical-seo`** | `audit-technical-seo` | Active `@role` |
 | **`@audit_ai_compliance`** | `audit-ai-compliance` | Active `@role` |
@@ -392,6 +424,10 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@audit_technical_seo`** | `audit-technical-seo` | Active `@role` |
 | **`@auth`** | `implement-auth` | Active `@role` |
 | **`@authentication`** | `implement-auth` | Active `@role` |
+| **`@author-game-ai`** | `author-game-ai` | Active `@role` |
+| **`@author_game_ai`** | `author-game-ai` | Active `@role` |
+| **`@automate-game-publishing`** | `automate-game-publishing` | Active `@role` |
+| **`@automate_game_publishing`** | `automate-game-publishing` | Active `@role` |
 | **`@aws_eks`** | `deploy-aws-eks-workloads` | Active `@role` |
 | **`@aws_infra`** | `aws-infrastructure` | Active `@role` |
 | **`@aws_infrastructure`** | `aws-infrastructure` | Active `@role` |
@@ -399,9 +435,15 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@babok`** | `elicit-requirements`, `trace-requirements-impact` | Active `@role` |
 | **`@bandwidth_monetization`** | `deploy-proxyware-fleet` | Active `@role` |
 | **`@blended_roas`** | `analyze-campaign-roi` | Active `@role` |
+| **`@blender-rigs`** | `inspect-blender-rigs-motion` | Active `@role` |
+| **`@blender_rigs`** | `inspect-blender-rigs-motion` | Active `@role` |
+| **`@build-game-ui-ux`** | `build-game-ui-ux` | Active `@role` |
 | **`@build_data_pipeline`** | `build-data-pipeline` | Active `@role` |
+| **`@build_game_ui_ux`** | `build-game-ui-ux` | Active `@role` |
 | **`@build_mcp_server`** | `build-mcp-server` | Active `@role` |
 | **`@business_requirements`** | `analyze-business-requirements` | Active `@role` |
+| **`@camera-systems`** | `direct-camera-systems` | Active `@role` |
+| **`@camera_systems`** | `direct-camera-systems` | Active `@role` |
 | **`@campaign_roi`** | `analyze-campaign-roi` | Active `@role` |
 | **`@capi`** | `setup-tracking-system` | Active `@role` |
 | **`@cdp_automation`** | `create-automation-script` | Active `@role` |
@@ -423,6 +465,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@compound-components`** | `component-composition` | Active `@role` |
 | **`@compound_components`** | `component-composition` | Active `@role` |
 | **`@conduct_research`** | `conduct-research` | Active `@role` |
+| **`@configure-physics-collision`** | `configure-physics-collision` | Active `@role` |
+| **`@configure_physics_collision`** | `configure-physics-collision` | Active `@role` |
 | **`@connection_pooling`** | `optimize-postgres` | Active `@role` |
 | **`@content_audit`** | `audit-content` | Active `@role` |
 | **`@content_strategy`** | `design-content-strategy` | Active `@role` |
@@ -459,11 +503,20 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@deploy_vllm_inference`** | `deploy-vllm-inference` | Active `@role` |
 | **`@deployment`** | `setup-deployment` | Active `@role` |
 | **`@design-content-strategy`** | `design-content-strategy` | Active `@role` |
+| **`@design-procedural-generation`** | `design-procedural-generation` | Active `@role` |
 | **`@design_content_strategy`** | `design-content-strategy` | Active `@role` |
 | **`@design_mcp_server`** | `architect-mcp-server` | Active `@role` |
+| **`@design_procedural_generation`** | `design-procedural-generation` | Active `@role` |
 | **`@design_system`** | `setup-design-system` | Active `@role` |
+| **`@develop-gameplay-systems`** | `develop-gameplay-systems` | Active `@role` |
 | **`@develop-mobile-app`** | `develop-mobile-app` | Active `@role` |
+| **`@develop_gameplay_systems`** | `develop-gameplay-systems` | Active `@role` |
 | **`@develop_mobile_app`** | `develop-mobile-app` | Active `@role` |
+| **`@dialogue`** | `integrate-dialogue-narrative` | Active `@role` |
+| **`@dialogue-system`** | `integrate-dialogue-narrative` | Active `@role` |
+| **`@dialogue_system`** | `integrate-dialogue-narrative` | Active `@role` |
+| **`@direct-camera-systems`** | `direct-camera-systems` | Active `@role` |
+| **`@direct_camera_systems`** | `direct-camera-systems` | Active `@role` |
 | **`@direct_response`** | `write-copy` | Active `@role` |
 | **`@docs`** | `write-documentation` | Active `@role` |
 | **`@documentation`** | `write-documentation` | Active `@role` |
@@ -473,6 +526,9 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@eas_build`** | `deploy-mobile-app` | Active `@role` |
 | **`@eas_deploy`** | `deploy-mobile-app` | Active `@role` |
 | **`@eas_update`** | `deploy-mobile-app` | Active `@role` |
+| **`@ecs`** | `architect-ecs-systems` | Active `@role` |
+| **`@ecs-systems`** | `architect-ecs-systems` | Active `@role` |
+| **`@ecs_systems`** | `architect-ecs-systems` | Active `@role` |
 | **`@editorial_calendar`** | `design-content-strategy` | Active `@role` |
 | **`@eks_workloads`** | `deploy-aws-eks-workloads` | Active `@role` |
 | **`@embedded_sql`** | `query-analytical-engine` | Active `@role` |
@@ -482,8 +538,35 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@fault_injection`** | `orchestrate-chaos-experiment` | Active `@role` |
 | **`@flashlist`** | `develop-mobile-app` | Active `@role` |
 | **`@frontend_testing`** | `frontend-testing` | Active `@role` |
+| **`@game-ai`** | `author-game-ai` | Active `@role` |
+| **`@game-audio`** | `mix-dynamic-game-audio` | Active `@role` |
+| **`@game-camera`** | `direct-camera-systems` | Active `@role` |
+| **`@game-engine`** | `integrate-game-engine` | Active `@role` |
+| **`@game-feel`** | `tune-game-feel` | Active `@role` |
+| **`@game-input`** | `abstract-input-actions` | Active `@role` |
+| **`@game-perf`** | `profile-game-performance` | Active `@role` |
+| **`@game-publishing`** | `automate-game-publishing` | Active `@role` |
+| **`@game-shaders`** | `program-game-shaders` | Active `@role` |
+| **`@game-ui`** | `build-game-ui-ux` | Active `@role` |
+| **`@game-ui-ux`** | `build-game-ui-ux` | Active `@role` |
+| **`@game_ai`** | `author-game-ai` | Active `@role` |
+| **`@game_audio`** | `mix-dynamic-game-audio` | Active `@role` |
+| **`@game_camera`** | `direct-camera-systems` | Active `@role` |
 | **`@game_day`** | `orchestrate-chaos-experiment` | Active `@role` |
+| **`@game_engine`** | `integrate-game-engine` | Active `@role` |
+| **`@game_feel`** | `tune-game-feel` | Active `@role` |
+| **`@game_input`** | `abstract-input-actions` | Active `@role` |
+| **`@game_perf`** | `profile-game-performance` | Active `@role` |
+| **`@game_publishing`** | `automate-game-publishing` | Active `@role` |
+| **`@game_shaders`** | `program-game-shaders` | Active `@role` |
+| **`@game_ui`** | `build-game-ui-ux` | Active `@role` |
+| **`@game_ui_ux`** | `build-game-ui-ux` | Active `@role` |
+| **`@gameplay`** | `develop-gameplay-systems` | Active `@role` |
+| **`@gameplay-systems`** | `develop-gameplay-systems` | Active `@role` |
+| **`@gameplay_systems`** | `develop-gameplay-systems` | Active `@role` |
+| **`@generate-game-assets-pipeline`** | `generate-game-assets-pipeline` | Active `@role` |
 | **`@generate-mmo-content`** | `generate-mmo-content` | Active `@role` |
+| **`@generate_game_assets_pipeline`** | `generate-game-assets-pipeline` | Active `@role` |
 | **`@generate_mmo_content`** | `generate-mmo-content` | Active `@role` |
 | **`@google_play`** | `deploy-mobile-app` | Active `@role` |
 | **`@graph_orchestration`** | `agent-graph-orchestration` | Active `@role` |
@@ -491,16 +574,27 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@handoff`** | `agent-handoff` | Active `@role` |
 | **`@hermes`** | `develop-mobile-app` | Active `@role` |
 | **`@humanizer`** | `write-copy` | Active `@role` |
+| **`@implement-save-persistence`** | `implement-save-persistence` | Active `@role` |
 | **`@implement-schema-markup`** | `implement-schema-markup` | Active `@role` |
 | **`@implement-view-transitions`** | `implement-view-transitions` | Active `@role` |
 | **`@implement_auth`** | `implement-auth` | Active `@role` |
+| **`@implement_save_persistence`** | `implement-save-persistence` | Active `@role` |
 | **`@implement_schema_markup`** | `implement-schema-markup` | Active `@role` |
 | **`@implement_structured_outputs`** | `implement-structured-outputs` | Active `@role` |
 | **`@implement_view_transitions`** | `implement-view-transitions` | Active `@role` |
 | **`@incident`** | `incident-report` | Active `@role` |
 | **`@incident_report`** | `incident-report` | Active `@role` |
+| **`@input-actions`** | `abstract-input-actions` | Active `@role` |
+| **`@input_actions`** | `abstract-input-actions` | Active `@role` |
+| **`@inspect-blender-rigs-motion`** | `inspect-blender-rigs-motion` | Active `@role` |
+| **`@inspect_blender_rigs_motion`** | `inspect-blender-rigs-motion` | Active `@role` |
 | **`@instrumentation`** | `add-telemetry-instrumentation` | Active `@role` |
+| **`@integrate-dialogue-narrative`** | `integrate-dialogue-narrative` | Active `@role` |
+| **`@integrate-game-engine`** | `integrate-game-engine` | Active `@role` |
+| **`@integrate_dialogue_narrative`** | `integrate-dialogue-narrative` | Active `@role` |
+| **`@integrate_game_engine`** | `integrate-game-engine` | Active `@role` |
 | **`@json_ld`** | `implement-schema-markup` | Active `@role` |
+| **`@juice`** | `tune-game-feel` | Active `@role` |
 | **`@kano`** | `prioritize-roadmap` | Active `@role` |
 | **`@kano_model`** | `prioritize-roadmap` | Active `@role` |
 | **`@karpenter`** | `deploy-aws-eks-workloads` | Active `@role` |
@@ -512,8 +606,10 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@ltv_roas`** | `analyze-campaign-roi` | Active `@role` |
 | **`@luat`** | `manage-vietnam-legal` | Active `@role` |
 | **`@manage-mmo-assets`** | `manage-mmo-assets` | Active `@role` |
+| **`@manage-scene-lifecycle`** | `manage-scene-lifecycle` | Active `@role` |
 | **`@manage-vietnam-legal`** | `manage-vietnam-legal` | Active `@role` |
 | **`@manage_mmo_assets`** | `manage-mmo-assets` | Active `@role` |
+| **`@manage_scene_lifecycle`** | `manage-scene-lifecycle` | Active `@role` |
 | **`@manage_secrets`** | `manage-secrets` | Active `@role` |
 | **`@manage_vietnam_legal`** | `manage-vietnam-legal` | Active `@role` |
 | **`@marketing_copy`** | `write-copy` | Active `@role` |
@@ -524,6 +620,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@memory-compaction`** | `agent-memory-compaction` | Active `@role` |
 | **`@memory_compaction`** | `agent-memory-compaction` | Active `@role` |
 | **`@migration`** | `create-migration` | Active `@role` |
+| **`@mix-dynamic-game-audio`** | `mix-dynamic-game-audio` | Active `@role` |
+| **`@mix_dynamic_game_audio`** | `mix-dynamic-game-audio` | Active `@role` |
 | **`@mmo-assets`** | `manage-mmo-assets` | Active `@role` |
 | **`@mmo-content`** | `generate-mmo-content` | Active `@role` |
 | **`@mmo-infra`** | `deploy-mmo-infrastructure` | Active `@role` |
@@ -538,6 +636,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@mom_test`** | `define-product-strategy` | Active `@role` |
 | **`@motion-physics`** | `implement-view-transitions` | Active `@role` |
 | **`@motion_physics`** | `implement-view-transitions` | Active `@role` |
+| **`@narrative`** | `integrate-dialogue-narrative` | Active `@role` |
 | **`@new_endpoint`** | `add-api-endpoint` | Active `@role` |
 | **`@oauth`** | `implement-auth` | Active `@role` |
 | **`@olap_optimization`** | `optimize-olap-database` | Active `@role` |
@@ -556,6 +655,9 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@perf`** | `performance-profiling` | Active `@role` |
 | **`@performance`** | `performance-profiling` | Active `@role` |
 | **`@performance_profiling`** | `performance-profiling` | Active `@role` |
+| **`@physics`** | `configure-physics-collision` | Active `@role` |
+| **`@physics-collision`** | `configure-physics-collision` | Active `@role` |
+| **`@physics_collision`** | `configure-physics-collision` | Active `@role` |
 | **`@pict`** | `combinatorial-testing` | Active `@role` |
 | **`@pillar_cluster`** | `design-content-strategy` | Active `@role` |
 | **`@planning_with_files`** | `decompose-agentic-system` | Active `@role` |
@@ -572,9 +674,16 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@prioritization`** | `prioritize-roadmap` | Active `@role` |
 | **`@prioritize-roadmap`** | `prioritize-roadmap` | Active `@role` |
 | **`@prioritize_roadmap`** | `prioritize-roadmap` | Active `@role` |
+| **`@procedural-generation`** | `design-procedural-generation` | Active `@role` |
+| **`@procedural_generation`** | `design-procedural-generation` | Active `@role` |
+| **`@procgen`** | `design-procedural-generation` | Active `@role` |
 | **`@product-strategy`** | `define-product-strategy` | Active `@role` |
 | **`@product_brief`** | `write-product-brief` | Active `@role` |
 | **`@product_strategy`** | `define-product-strategy` | Active `@role` |
+| **`@profile-game-performance`** | `profile-game-performance` | Active `@role` |
+| **`@profile_game_performance`** | `profile-game-performance` | Active `@role` |
+| **`@program-game-shaders`** | `program-game-shaders` | Active `@role` |
+| **`@program_game_shaders`** | `program-game-shaders` | Active `@role` |
 | **`@proxy-fleet`** | `deploy-proxyware-fleet` | Active `@role` |
 | **`@proxy_fleet`** | `deploy-proxyware-fleet` | Active `@role` |
 | **`@proxyware`** | `deploy-proxyware-fleet` | Active `@role` |
@@ -586,6 +695,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@rca`** | `systematic-debugging` | Active `@role` |
 | **`@react_native`** | `develop-mobile-app` | Active `@role` |
 | **`@recursive_decomposition`** | `decompose-agentic-system` | Active `@role` |
+| **`@render-webgl-threejs`** | `render-webgl-threejs` | Active `@role` |
+| **`@render_webgl_threejs`** | `render-webgl-threejs` | Active `@role` |
 | **`@repurpose_content`** | `repurpose-content` | Active `@role` |
 | **`@requirements`** | `analyze-business-requirements`, `elicit-requirements` | Active `@role` |
 | **`@research`** | `conduct-research` | Active `@role` |
@@ -603,8 +714,14 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@s2s_tracking`** | `setup-tracking-system` | Active `@role` |
 | **`@saas-metrics`** | `model-saas-metrics` | Active `@role` |
 | **`@saas_metrics`** | `model-saas-metrics` | Active `@role` |
+| **`@save-persistence`** | `implement-save-persistence` | Active `@role` |
+| **`@save-system`** | `implement-save-persistence` | Active `@role` |
+| **`@save_persistence`** | `implement-save-persistence` | Active `@role` |
+| **`@save_system`** | `implement-save-persistence` | Active `@role` |
 | **`@scaffold_new_service`** | `scaffold-new-service` | Active `@role` |
 | **`@scaffold_service`** | `scaffold-new-service` | Active `@role` |
+| **`@scene-lifecycle`** | `manage-scene-lifecycle` | Active `@role` |
+| **`@scene_lifecycle`** | `manage-scene-lifecycle` | Active `@role` |
 | **`@schema_graph`** | `implement-schema-markup` | Active `@role` |
 | **`@schema_markup`** | `implement-schema-markup` | Active `@role` |
 | **`@secrets`** | `manage-secrets` | Active `@role` |
@@ -644,6 +761,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@tool_orchestration`** | `agent-tool-orchestration` | Active `@role` |
 | **`@totp_verification`** | `manage-mmo-assets` | Active `@role` |
 | **`@tracking`** | `setup-tracking-system` | Active `@role` |
+| **`@tune-game-feel`** | `tune-game-feel` | Active `@role` |
+| **`@tune_game_feel`** | `tune-game-feel` | Active `@role` |
 | **`@ui_component`** | `add-ui-component` | Active `@role` |
 | **`@unit-economics`** | `model-saas-metrics` | Active `@role` |
 | **`@unit_economics`** | `model-saas-metrics` | Active `@role` |
@@ -663,6 +782,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@vllm_inference`** | `deploy-vllm-inference` | Active `@role` |
 | **`@vpc_lattice`** | `deploy-aws-eks-workloads` | Active `@role` |
 | **`@walking_skeleton`** | `build-story-map` | Active `@role` |
+| **`@webgl-threejs`** | `render-webgl-threejs` | Active `@role` |
+| **`@webgl_threejs`** | `render-webgl-threejs` | Active `@role` |
 | **`@workers_best_practices`** | `workers-best-practices` | Active `@role` |
 | **`@working-backwards`** | `define-product-strategy` | Active `@role` |
 | **`@working_backwards`** | `define-product-strategy` | Active `@role` |
