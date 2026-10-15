@@ -9,7 +9,7 @@ Use an overlay when:
 - a workflow assumes one repository family or publishing pipeline
 - a pack needs local conventions that do not belong in the global core
 
-## Current Overlays (18)
+## Current Overlays (21)
 
 ### Stack Overlays (tech-specific, project-agnostic)
 
@@ -43,6 +43,9 @@ Use an overlay when:
 | [ui-design-system](ui-design-system/README.md) | UI design systems | Flow/component handoff conventions |
 | [data-analyst-stack](data-analyst-stack/README.md) | DuckDB + Metabase BI + dbt 1.9 + Iceberg | BI metric templates, Metabase spec template, dbt microbatch, Iceberg REST Catalog patterns |
 | [data-warehouse](data-warehouse/README.md) | Omnichannel retail platform (DuckDB 1.5+, MISA AMIS, VAS 14, PWA) | DuckDB Single-Writer, MISA AMIS VAS 14 voucher splitting, blind recount physical stocktaking, Decree 13/2023/ND-CP PII masking, plus `learning/` data-engineering track (merged from `data-engineer-rabity`: Iceberg, dbt 1.9, Kafka, Spark) |
+| [cad-projection](cad-projection/README.md) | Computer-Aided Design (CAD) & technical drawing | Millimeter coordinate system ($1\text{ unit} = 1\text{mm}$), Landscape A3 sheet, 4-tier ISO stroke hierarchy, $\pm 30^\circ$ isometric projection matrix, `isometric-svg-projection` skill |
+| [fintech-compliance](fintech-compliance/README.md) | Financial technology & credit risk modeling | Basel/Fair Lending compliance, monotonic Weight of Evidence (WOE) binning, Information Value (IV) thresholds, scorecard point scaling (PDO), Population Stability Index (PSI) drift monitoring, `build-credit-scorecard` skill |
+| [security-research](security-research/README.md) | Binary analysis & security research | Ethical and legal boundaries, Tier 2/3 container/microVM sandbox isolation, decompiler triage coordination (Ghidra, radare2, Electron unpackers), REA evidence ledger, `reverse-engineer-binary` skill |
 
 ## 2026 Critical Migration Notes
 
@@ -83,4 +86,4 @@ consistent Standard 2026 pointer.
   follow the META-RULE in `core/rules/code.md` — no commit, no push, no
   publish without explicit user confirmation.
 
-Last updated: 2026-09-01
+Last updated: 2026-10-15

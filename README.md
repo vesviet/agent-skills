@@ -2,18 +2,18 @@
 
 Global engineering skill pack for multi-agent software delivery, platform architecture, and autonomous swarms.
 
-> **Master Catalog**: **35 Roles** | **138 Skills** (126 Core + 12 Overlays) | **25 Workflows** | **54 Data Contract Schemas**  
+> **Master Catalog**: **36 Roles** | **168 Skills** (153 Core + 15 Overlays) | **25 Workflows** | **55 Data Contract Schemas**  
 > **Master Index & Router**: [`INDEX.md`](INDEX.md) | **Machine Registry**: [`core/a2a/.well-known/role-skill-index.json`](core/a2a/.well-known/role-skill-index.json)  
 > **Engineering Baseline**: SOTA 2026–2027 Standards (Go 1.25+, Python 3.12+/3.13, React 19, Node 22/24 LTS, K8s 1.30+/1.31, vLLM v1 PagedAttention, OpenTofu v1.8+ KMS, Crossplane v1.16+, Bottlerocket, OWASP ASI, EU AI Act, PDPL 2025)  
 > **Authoritative SOTA Audit**: [`reports/role-skill-matrix-sota-audit-2026-2027.md`](reports/role-skill-matrix-sota-audit-2026-2027.md)
 
-**Version 5.0.0** (SOTA 2026–2027 Baseline) is a major engineering and architectural evolution. It standardizes multi-agent swarms under the A2A 1.0 JSON-RPC/SSE protocol, equips key roles with rigorous Architectural Guardrail Locks and dedicated multi-section review checklists, and integrates cutting-edge cloud-native and AI serving primitives:
+**Version 5.1.0** (SOTA 2026–2027 Baseline) is a major engineering and architectural evolution. It standardizes multi-agent swarms under the A2A 1.0 JSON-RPC/SSE protocol, equips key roles with rigorous Architectural Guardrail Locks and dedicated multi-section review checklists, and integrates cutting-edge cloud-native and AI serving primitives:
 - **AI Systems & LLM Serving**: Upgraded `ai-systems-engineer` with vLLM v1 PagedAttention, chunked prefill, prefix caching, K8s 1.31+ Dynamic Resource Allocation (DRA), NVIDIA MIG GPU slicing, DeepSeek-R1 SLM distillation, FastMCP, and LiteLLM spend governance; accompanied by the exclusive `deploy-vllm-inference` skill.
 - **Cloud Infrastructure & AWS**: Upgraded `aws-engineer` with OpenTofu v1.8+ client-side state KMS encryption, Crossplane v1.16+ Go compositions, Bottlerocket distroless worker nodes, Graviton4 (`c8g`, `m8g`), Trainium2 / Inferentia2 accelerators, and Zero-Trust IAM Identity Center; and `devops-engineer` with Pillar 8 AWS Cloud-Native Delivery (EKS Pod Identity, Karpenter v1.0, VPC Lattice Gateway API) and the exclusive `deploy-aws-eks-workloads` skill.
 - **Site Reliability & Resilience**: Upgraded `sre` with Multi-Window Multi-Burn-Rate (MWMBR) SLO alerting, eBPF Tetragon runtime telemetry, Toxiproxy chaos injection, and GenAI blameless RCA.
 - **Product & Requirements Governance**: Upgraded `business-analyst` with Event Storming, Elephant Carpentry vertical slicing, BDD invariants, and EU AI Act / PDPL 2025 conformity.
 - **Domain Accounting & Legal**: Hardened `vietnam-accounting-specialist` (VAS 14, Circular 200/99, Balanced Ledger $\sum \text{Debits} \equiv \sum \text{Credits}$) and `vietnam-legal-counsel` (PDPL 2025, AI Law 134/2025/QH15).
-- **Core Governance & Fail-Closed Policies**: Added `## Failure Modes` and `## Output Contracts` sections to all skills and roles, `## Security Guardrails (OWASP ASI)` for security-critical actions, fail-closed `action-boundaries.yaml`, and 17 automated core validators.
+- **Core Governance & Fail-Closed Policies**: Added `## Failure Modes` and `## Output Contracts` sections to all skills and roles, `## Security Guardrails (OWASP ASI)` for security-critical actions, fail-closed `action-boundaries.yaml`, and 18 automated core validators.
 
 Version 4.0.0 was a corrective release from a full-pack audit. It fixed external-standard claims (WCAG 2.2 criterion numbering, x402 v2 header names, ACP discovery paths, A2A event and signing details, MCP baseline revision), resolved role ownership contradictions, and restored strict commit gates across all workflows.
 
@@ -69,6 +69,9 @@ Current overlays:
 - `seo-publishing`: SEO publishing cadence and board conventions
 - `sport-icm`: Sport catalog conventions for the ICM Cloudflare site
 - `ui-design-system`: shared UI/design-system conventions
+- `cad-projection`: CAD projection, SVG millimeter coordinate systems, and isometric transformation matrices
+- `fintech-compliance`: credit risk modeling, regulatory scorecards, and financial compliance
+- `security-research`: binary disassembly, decompilation triage, and reverse engineering governance
 
 Overlay-specific skills are intentionally kept out of the global core inventory.
 

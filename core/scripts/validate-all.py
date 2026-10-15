@@ -41,6 +41,7 @@ VALIDATORS = (
     "validate-skill-ownership.py",
     "validate-contract-coverage.py",
     "validate-golden-evals.py",
+    "validate-thirdparty-skills.py",
 )
 
 TOOL_NAME = "agent-pack-validator"

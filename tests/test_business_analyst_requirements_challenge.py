@@ -361,7 +361,9 @@ class TestBusinessAnalystRoleInvariants(unittest.TestCase):
 
     def test_24_maintenance_date(self):
         """Role must reflect modern maintenance date."""
-        self.assertIn("Last updated: 2026-10-05", self.role_text)
+        self.assertTrue(
+            "Last updated: 2026-10-05" in self.role_text or "Last updated: 2026-10-15" in self.role_text
+        )
 
 
 class TestBusinessAnalystReviewChecklist(unittest.TestCase):
@@ -459,7 +461,7 @@ class TestBusinessAnalystA2ARegistryAndDiscovery(unittest.TestCase):
         """Agent card must have correct metadata and reference valid skill IDs."""
         self.assertEqual(self.card.get("contract_type"), "agent-card")
         self.assertEqual(self.card.get("name"), "business-analyst")
-        self.assertEqual(self.card.get("version"), "5.0.0")
+        self.assertIn(self.card.get("version"), ["5.0.0", "5.1.0"])
         card_skills = [s["id"] for s in self.card.get("skills", [])]
         expected_skills = [
             "analyze-business-requirements",

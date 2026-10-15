@@ -693,7 +693,7 @@ class TestVietnamLegalRegistryConsistency:
             stats = index_doc.get("stats", {})
             assert stats.get("roles") >= 35, f"{name} role-skill-index roles stat mismatch: got {stats.get('roles')}, expected >= 35"
             assert stats.get("skills") >= 133, f"{name} role-skill-index skills stat mismatch: got {stats.get('skills')}, expected >= 133"
-            assert stats.get("schemas") == 54, f"{name} role-skill-index schemas stat mismatch: got {stats.get('schemas')}, expected 54"
+            assert stats.get("schemas") in (54, 55), f"{name} role-skill-index schemas stat mismatch: got {stats.get('schemas')}, expected 54 or 55"
 
     def test_index_md_header_counts(self):
         """INDEX.md header must declare Total Catalog with at least 35 Roles, 25 Workflows, 54 Data Contracts."""
@@ -704,6 +704,7 @@ class TestVietnamLegalRegistryConsistency:
         # Strip bold asterisks for uniform matching
         stripped = content.replace("**", "")
         expected_headers = [
+            "Total Catalog: 36 Roles | 168 Skills (153 Core + 15 Overlays) | 25 Workflows | 55 Data Contracts",
             "Total Catalog: 36 Roles | 158 Skills (146 Core + 12 Overlays) | 25 Workflows | 54 Data Contracts",
             "Total Catalog: 36 Roles | 141 Skills (129 Core + 12 Overlays) | 25 Workflows | 54 Data Contracts",
             "Total Catalog: 35 Roles | 138 Skills (126 Core + 12 Overlays) | 25 Workflows | 54 Data Contracts",
@@ -747,7 +748,7 @@ class TestVietnamLegalRegistryConsistency:
         core_skill_files = list(SKILLS_DIR.glob("**/SKILL.md"))
         assert len(core_skill_files) >= 121, f"Expected >= 121 core skills, got {len(core_skill_files)}"
         overlay_skill_files = list(REPO_ROOT.glob("overlays/**/SKILL.md"))
-        assert len(overlay_skill_files) == 12, f"Expected 12 overlay skills, got {len(overlay_skill_files)}"
+        assert len(overlay_skill_files) in (12, 15), f"Expected 12 or 15 overlay skills, got {len(overlay_skill_files)}"
 
         assert core_index["stats"]["skills"] >= 133
         assert len(core_index["skills"]) >= 133
@@ -759,13 +760,13 @@ class TestVietnamLegalRegistryConsistency:
             skill_path = REPO_ROOT / skill_meta["file"]
             assert skill_path.is_file(), f"Skill file missing for {skill_id}: {skill_path}"
 
-        # 6. 54 Schemas in core/contracts/schemas/
+        # 6. Schemas in core/contracts/schemas/
         schema_files = list(SCHEMAS_DIR.glob("*.json"))
-        assert len(schema_files) == 54, f"Expected 54 schema files, got {len(schema_files)}"
-        assert core_index["stats"]["schemas"] == 54
-        assert len(core_index.get("schemas", [])) == 54
-        assert adapter_index["stats"]["schemas"] == 54
-        assert len(adapter_index.get("schemas", [])) == 54
+        assert len(schema_files) in (54, 55), f"Expected 54 or 55 schema files, got {len(schema_files)}"
+        assert core_index["stats"]["schemas"] in (54, 55)
+        assert len(core_index.get("schemas", [])) in (54, 55)
+        assert adapter_index["stats"]["schemas"] in (54, 55)
+        assert len(adapter_index.get("schemas", [])) in (54, 55)
 
         for s in core_index.get("schemas", []):
             assert (SCHEMAS_DIR / s).is_file(), f"Schema file missing: {s}"

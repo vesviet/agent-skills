@@ -4,7 +4,7 @@
   "name": "security-engineer",
   "description": "reduce security risk early by identifying weaknesses in design, code, configuration, dependencies, and operations before they become incidents. In 2025–2026, this extends to assessing AI/LLM-specific attack surfaces (prompt injection, training data poisoning, model output exploitation), enforcing shift-left security practices (threat modeling before design sign-off, SAST/DAST in CI), and treating AI systems as high-risk trust boundary additions that require explicit security review before deployment.",
   "url": "pack://agent-skills/core/roles/security-engineer.md",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -117,6 +117,27 @@
       "description": "Manages the full lifecycle of Non-Human Identities (NHI) for AI agent sessions — including provisioning scoped credentials, enforcing just-in-time access, behavioral baseline monitoring, and secure offboarding. Use when onboarding a new agent role to production, rotating agent credentials, auditing active agent sessions, or responding to anomalous agent behavior.",
       "tags": [
         "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "security-audit.json"
+      ]
+    },
+    {
+      "id": "skill-preflight-ast-check",
+      "name": "Skill Preflight Ast Check",
+      "description": "Use when performing zero-execution static AST security vetting of third-party agent skills, enforcing OWASP AST01-AST10 and blocking the lethal trifecta.",
+      "tags": [
+        "security",
         "pack"
       ],
       "inputModes": [

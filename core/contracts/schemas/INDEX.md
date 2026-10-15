@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**54 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 53/54
+**55 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 54/55
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 
@@ -13,6 +13,7 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | **Solution & Governance** | | | |
 | `solution-brief.json` | Solution Brief | ✅ | ✅ |
 | `ai-risk-register.json` | AI Risk Register | ✅ | ✅ |
+| `assumptions-ledger.json` | Assumptions Ledger Specification | ✅ | ✅ |
 | **Engineering Delivery** | | | |
 | `feature-ticket.json` | Feature Ticket Specification | ✅ | ✅ |
 | `technical-delivery-plan.json` | Technical Delivery Plan | ✅ | ✅ |
@@ -167,6 +168,7 @@ legal-compliance-review.json
 |--------|-------------|-------------|
 | `solution-brief.json` | Solution Architect | Technical Architect, Business Analyst, Product Manager, Agent Coordinator, Researcher |
 | `ai-risk-register.json` | Business Analyst, Project Manager, Security Engineer | Product Manager, Technical Architect, Security Engineer, Agent Coordinator |
+| `assumptions-ledger.json` | Business Analyst, Task Planner | Technical Lead, Product Manager, Developer, Agent Coordinator |
 | `feature-ticket.json` | Business Analyst | Technical Architect, Technical Lead, Backend/Frontend Developer, Data Analyst, SEO Analyst |
 | `technical-delivery-plan.json` | Technical Lead | Backend Developer, Frontend Developer, Mobile Engineer, QA Engineer, Reviewer, Agent Coordinator |
 | `adr-spec.json` | Technical Architect | Backend Developer, Frontend Developer, Mobile Engineer, Cloudflare Engineer |

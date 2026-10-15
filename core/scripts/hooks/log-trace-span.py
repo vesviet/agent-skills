@@ -40,7 +40,7 @@ def get_pack_version() -> str:
     v_file = pack_root() / "VERSION"
     if v_file.is_file():
         return v_file.read_text(encoding="utf-8").strip()
-    return "5.0.0"
+    return "5.1.0"
 
 
 def main() -> int:

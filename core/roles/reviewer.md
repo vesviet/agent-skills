@@ -183,6 +183,7 @@ Contracts owned by other roles — do not author these as Reviewer:
 - `security-audit`
 - `performance-profiling`
 - `meeting-review`
+- `anti-ui-slop-finish-gate`
 
 ## Output Template
 
@@ -286,4 +287,4 @@ See [`references/reviewer-review-checklist.md`](references/reviewer-review-check
 - `contracts/schemas/code-review-finding.json` emitted
 - merge recommendation supported by verifiable evidence
 
-Last updated: 2026-09-05
+Last updated: 2026-10-15

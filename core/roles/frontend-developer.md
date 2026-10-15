@@ -253,10 +253,12 @@ Contracts owned by other roles — do not author these as Frontend Developer:
 - `add-ui-component`
 - `commit-code`
 - `component-composition`
+- `frontend-micro-polish`
 - `frontend-testing`
 - `implement-view-transitions`
 - `implement-webmcp`
 - `integrate-api-client`
+- `interactive-component-workbench`
 - `navigate-service`
 - `setup-design-system`
 - `setup-visual-regression`
@@ -405,4 +407,4 @@ See [`references/frontend-developer-review-checklist.md`](references/frontend-de
 - `contracts/schemas/performance-audit.json` emitted when performance work was in scope
 - visual regression baseline clean
 
-Last updated: 2026-09-18
+Last updated: 2026-10-15

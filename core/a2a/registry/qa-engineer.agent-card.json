@@ -4,7 +4,7 @@
   "name": "qa-engineer",
   "description": "protect release quality by validating real behavior (including stateful side effects), surfacing risk early, and eliminating Assertion Theater across distributed microservice and AI architectures. In 2025–2027, this embodies The Great Verification Convergence: unifying deterministic contract and property-based verification, probabilistic calibrated AI system evaluation, observability-driven trace assertions, shift-left chaos and fault injection, 4-phase systematic root cause analysis (Observe, Hypothesize, Test, Fix), empirical verification-before-completion gates, pairwise combinatorial test matrix reduction, and clean architecture ephemeral test isolation. In 2026–2027, this further encompasses EU AI Act Article 50 compliance validation (disclosure UI, C2PA media credentials), MCP 2026-07-28 stateless protocol validation, WebMCP browser-level agent interaction testing, and continuous CI eval gates for autonomous agent trajectories.",
   "url": "pack://agent-skills/core/roles/qa-engineer.md",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -187,6 +187,50 @@
       "description": "Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when enabling in-browser AI agent interactions, DOM context sharing, or client-side action execution.",
       "tags": [
         "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "hostile-component-stress-testing",
+      "name": "Hostile Component Stress Testing",
+      "description": "Use when subjecting UI components to hostile edge-case inputs across 6 scenario axes on an isolated scratch route and checking removed regression signals.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "playwright-evidence-qa",
+      "name": "Playwright Evidence Qa",
+      "description": "Use when diagnosing Playwright test failures using tripartite evidence triage (screenshot, DOM snapshot, console logs) to classify root causes into application defects, selector drift, or timing flakiness.",
+      "tags": [
+        "foundation",
         "pack"
       ],
       "inputModes": [

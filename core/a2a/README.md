@@ -1,6 +1,6 @@
 # A2A Protocol & Multi-Agent Architecture
 
-This directory contains the **Agent-to-Agent (A2A) Protocol v1.0.1** implementation, canonical discovery endpoints, and generated agent cards for the `agent-skills` engineering pack (Pack Version **5.0.0**).
+This directory contains the **Agent-to-Agent (A2A) Protocol v1.0.1** implementation, canonical discovery endpoints, and generated agent cards for the `agent-skills` engineering pack (Pack Version **5.1.0**).
 
 Governed under the **Agentic AI Foundation (AAIF)** — a Linux Foundation collaborative project alongside MCP, AGENTS.md, goose, and agentgateway — the A2A protocol defines open, vendor-neutral specifications for autonomous agent discovery, multi-turn task negotiation, state synchronization, and verifiable handoffs.
 
@@ -19,7 +19,7 @@ Modern agentic systems separate concerns across two orthogonal protocol layers:
                                      │ (Delegates tasks to specialized roles)
 ┌────────────────────────────────────▼────────────────────────────────────┐
 │                       PORTABLE ROLES & AGENT CARDS                      │
-│   34 Distinct Role Definitions (Primary / Supporting Skill Toolboxes)    │
+│   36 Distinct Role Definitions (Primary / Supporting Skill Toolboxes)    │
 └────────────────────────────────────┬────────────────────────────────────┘
                                      │ (Executes skills using tools)
 ┌────────────────────────────────────▼────────────────────────────────────┐
@@ -41,13 +41,13 @@ core/a2a/
 ├── README.md                          # This architecture specification
 ├── .well-known/
 │   ├── agent-card.json                # Canonical pack-level Agent Card (IANA permanent URI)
-│   ├── agent-registry.json            # Internal registry cataloging all 34 role cards
+│   ├── agent-registry.json            # Internal registry cataloging all 36 role cards
 │   ├── ai-catalog.json                # Google AI Catalog 2026 meta-index (ARD standard)
 │   └── role-skill-index.json          # Machine-readable skill/role index for client runtime
 └── registry/
     ├── agent-coordinator.agent-card.json
     ├── backend-developer.agent-card.json
-    ├── ... (34 per-role Agent Cards)
+    ├── ... (36 per-role Agent Cards)
     └── vietnam-accounting-specialist.agent-card.json
 ```
 

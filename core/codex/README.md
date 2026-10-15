@@ -1,6 +1,6 @@
 # Codex Adapter — Agent Skills Pack
 
-This directory contains the OpenAI Codex adapter for the `agent-skills` engineering pack (Standard 2026/2027, pack version **5.0.0**).
+This directory contains the OpenAI Codex adapter for the `agent-skills` engineering pack (Standard 2026/2027, pack version **5.1.0**).
 
 OpenAI Codex (both the Codex CLI and the unified ChatGPT desktop Work mode) natively reads `AGENTS.md` at the repository root as its primary, persistent instruction manual. This adapter extends root-level `AGENTS.md` with enterprise A2A 1.0 multi-agent discovery, configuration layering (`.codex/config.toml`), and per-skill interface descriptors (`agents/openai.yaml`).
 

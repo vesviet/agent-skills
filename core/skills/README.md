@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 146 portable core skills under `core/skills/` + 12 overlay skills under `overlays/*/skills/` = **158 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 153 portable core skills under `core/skills/` + 15 overlay skills under `overlays/*/skills/` = **168 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -46,7 +46,7 @@ High-throughput LLM inference serving, GPU resource allocation, and distributed 
 
 - `deploy-vllm-inference`
 
-### Foundation (14)
+### Foundation (16)
 
 Cross-cutting portable skills:
 
@@ -57,9 +57,11 @@ Cross-cutting portable skills:
 - `create-migration`
 - `design-review`
 - `design-ux-flow`
+- `hostile-component-stress-testing`
 - `incident-report`
 - `performance-profiling`
 - `plan-technical-delivery`
+- `playwright-evidence-qa`
 - `release-notes`
 - `systematic-debugging`
 - `write-product-brief`
@@ -118,15 +120,19 @@ MMO/growth-ops skills with compliance notices; each maps to `REVIEW-SYSTEM LOCK`
 - `optimize-postgres`
 - `scaffold-new-service`
 
-### Frontend (9)
+### Frontend (13)
 
 - `add-page-route`
 - `add-ui-component`
+- `anti-ui-slop-finish-gate`
 - `component-composition`
+- `design-system-engineering`
+- `frontend-micro-polish`
 - `frontend-testing`
 - `implement-view-transitions`
 - `implement-webmcp`
 - `integrate-api-client`
+- `interactive-component-workbench`
 - `setup-design-system`
 - `setup-visual-regression`
 
@@ -215,7 +221,7 @@ E-commerce catalog, checkout, payment, and fulfillment:
 - `manage-product-catalog`
 - `manage-order-fulfillment`
 
-### Security And Data (7)
+### Security And Data (8)
 
 - `manage-secrets`
 - `database-maintenance`
@@ -224,6 +230,7 @@ E-commerce catalog, checkout, payment, and fulfillment:
 - `build-data-pipeline`
 - `optimize-olap-database`
 - `query-analytical-engine`
+- `skill-preflight-ast-check`
 
 ### Documentation (3)
 
@@ -287,6 +294,13 @@ Overlay-specific skills (site stacks, ICM, content data, R3F) live under `overla
 | In-process embedded analytical SQL (chDB, DuckDB), cross-source joins | `query-analytical-engine` | Data Analyst role |
 | Controlled chaos engineering, steady-state verification, game day drills | `orchestrate-chaos-experiment` | SRE role |
 | High-throughput LLM serving, vLLM v1 PagedAttention, DRA GPU scheduling | `deploy-vllm-inference` | AI Systems Engineer role |
+| Concentric border radius, OKLCH lightness delta steps, APCA contrast math | `design-system-engineering` | UI/UX Designer role |
+| 100% state coverage & optical finish gate criteria | `anti-ui-slop-finish-gate` | UI/UX Designer role |
+| 2px optical button padding offsets, play centroid shift, iOS zoom guard | `frontend-micro-polish` | Frontend Developer role |
+| URL search param switchers (?__state=, ?__variant=) for component previews | `interactive-component-workbench` | Frontend Developer role |
+| 6-axis hostile scenario resilience testing (break-axes) | `hostile-component-stress-testing` | QA Engineer role |
+| Tripartite evidence triage (screenshot + DOM snapshot + console/telemetry) | `playwright-evidence-qa` | QA Engineer role |
+| Zero-execution static AST security analysis for third-party skills | `skill-preflight-ast-check` | Security Engineer role |
 
 ## Backlog (not yet skills)
 

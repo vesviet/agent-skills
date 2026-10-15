@@ -342,6 +342,8 @@ This role must follow [role-standard](role-standard.md) first.
 - `accessibility-review`
 - `configure-mcp`
 - `implement-webmcp`
+- `hostile-component-stress-testing`
+- `playwright-evidence-qa`
 
 ### Supporting Skills (use when collaborating)
 
@@ -564,4 +566,4 @@ See [`references/qa-engineer-review-checklist.md`](references/qa-engineer-review
 - `contracts/schemas/test-report.json` emitted with full execution and trace evidence
 - `contracts/schemas/validation-result.json` emitted for release gating
 
-Last updated: 2026-10-04
+Last updated: 2026-10-15

@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
-> **Location:** `core/` & `overlays/` | **Version:** `5.0.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **36 Roles** | **158 Skills** (146 Core + 12 Overlays) | **25 Workflows** | **54 Data Contracts**
+> **Location:** `core/` & `overlays/` | **Version:** `5.1.0` (A2A 1.0 + Antigravity)
+> **Total Catalog:** **36 Roles** | **168 Skills** (153 Core + 15 Overlays) | **25 Workflows** | **55 Data Contracts**
 
 ---
 
@@ -46,16 +46,16 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@data-engineer`** | Data Engineer | `@de`, `@data-eng` | `build-data-pipeline`, `database-maintenance`, `create-migration` *(+1 more)* | [`core/roles/data-engineer.md`](./core/roles/data-engineer.md) |
 | **`@devops-engineer`** | DevOps Engineer | `@devops`, `@infra`, `@infrastructure` | `setup-deployment`, `deploy-aws-eks-workloads`, `debug-runtime-platform` *(+5 more)* | [`core/roles/devops-engineer.md`](./core/roles/devops-engineer.md) |
 | **`@ecommerce-engineer`** | Ecommerce Engineer | `@ecommerce`, `@ecom` | `integrate-payment-gateway`, `handle-checkout-flow`, `manage-product-catalog` *(+2 more)* | [`core/roles/ecommerce-engineer.md`](./core/roles/ecommerce-engineer.md) |
-| **`@frontend-developer`** | Frontend Developer | `@frontend`, `@fe`, `@frontend-dev`, `@ui-developer` | `accessibility-review`, `add-page-route`, `add-ui-component` *(+9 more)* | [`core/roles/frontend-developer.md`](./core/roles/frontend-developer.md) |
+| **`@frontend-developer`** | Frontend Developer | `@frontend`, `@fe`, `@frontend-dev`, `@ui-developer` | `accessibility-review`, `add-page-route`, `add-ui-component` *(+11 more)* | [`core/roles/frontend-developer.md`](./core/roles/frontend-developer.md) |
 | **`@game-developer`** | Game Developer | `@game-dev`, `@gamedev`, `@game`, `@game-engineer`, `@gameplay-engineer` | `integrate-game-engine`, `develop-gameplay-systems`, `architect-ecs-systems` *(+17 more)* | [`core/roles/game-developer.md`](./core/roles/game-developer.md) |
 | **`@mmo-engineer`** | MMO Engineer | `@mmo`, `@affiliate`, `@growth`, `@growth-lead`, `@growth-engineer`, `@media-buyer`, `@affiliate-marketer` | `deploy-mmo-infrastructure`, `setup-tracking-system`, `create-automation-script` *(+4 more)* | [`core/roles/mmo-engineer.md`](./core/roles/mmo-engineer.md) |
 | **`@mobile-engineer`** | Mobile Engineer | `@mobile`, `@flutter`, `@react-native` | `develop-mobile-app`, `deploy-mobile-app`, `add-ui-component` *(+5 more)* | [`core/roles/mobile-engineer.md`](./core/roles/mobile-engineer.md) |
 | **`@product-manager`** | Product Manager | `@pm`, `@prod-mgr`, `@product-owner`, `@po` | `define-product-strategy`, `prioritize-roadmap`, `model-saas-metrics` *(+2 more)* | [`core/roles/product-manager.md`](./core/roles/product-manager.md) |
 | **`@project-manager`** | Project Manager | `@pjm`, `@proj-mgr`, `@scrum-master` | `meeting-review` | [`core/roles/project-manager.md`](./core/roles/project-manager.md) |
-| **`@qa-engineer`** | QA Engineer | `@qa`, `@tester`, `@test-engineer` | `write-tests`, `frontend-testing`, `systematic-debugging` *(+5 more)* | [`core/roles/qa-engineer.md`](./core/roles/qa-engineer.md) |
+| **`@qa-engineer`** | QA Engineer | `@qa`, `@tester`, `@test-engineer` | `write-tests`, `frontend-testing`, `systematic-debugging` *(+7 more)* | [`core/roles/qa-engineer.md`](./core/roles/qa-engineer.md) |
 | **`@researcher`** | Researcher | `@research`, `@deep-research` | `conduct-research` | [`core/roles/researcher.md`](./core/roles/researcher.md) |
 | **`@reviewer`** | Reviewer | `@code-reviewer`, `@pr-reviewer` | `review-code`, `review-service`, `configure-mcp` *(+1 more)* | [`core/roles/reviewer.md`](./core/roles/reviewer.md) |
-| **`@security-engineer`** | Security Engineer | `@security`, `@sec`, `@appsec`, `@secops` | `security-audit`, `manage-secrets`, `supply-chain-security` *(+2 more)* | [`core/roles/security-engineer.md`](./core/roles/security-engineer.md) |
+| **`@security-engineer`** | Security Engineer | `@security`, `@sec`, `@appsec`, `@secops` | `security-audit`, `manage-secrets`, `supply-chain-security` *(+3 more)* | [`core/roles/security-engineer.md`](./core/roles/security-engineer.md) |
 | **`@seo-analyst`** | SEO Analyst | `@seo`, `@seo-specialist`, `@seo-expert` | `optimize-seo`, `audit-technical-seo`, `implement-schema-markup` *(+2 more)* | [`core/roles/seo-analyst.md`](./core/roles/seo-analyst.md) |
 | **`@solution-architect`** | Solution Architect | `@architect`, `@solution-arch`, `@solutions-architect` | `write-tech-radar`, `meeting-review` | [`core/roles/solution-architect.md`](./core/roles/solution-architect.md) |
 | **`@sre`** | Site Reliability Engineer | `@reliability` | `debug-runtime-platform`, `troubleshoot-service`, `add-telemetry-instrumentation` *(+3 more)* | [`core/roles/sre.md`](./core/roles/sre.md) |
@@ -65,13 +65,13 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@technical-architect`** | Technical Architect | `@tech-architect`, `@enterprise-architect` | `system-design`, `agent-panel-meeting`, `meeting-review` *(+3 more)* | [`core/roles/technical-architect.md`](./core/roles/technical-architect.md) |
 | **`@technical-lead`** | Technical Lead | `@lead`, `@tech-lead`, `@engineering-lead` | `plan-technical-delivery`, `review-code`, `meeting-review` *(+4 more)* | [`core/roles/technical-lead.md`](./core/roles/technical-lead.md) |
 | **`@technical-writer`** | Technical Writer | `@tech-writer`, `@doc-writer`, `@docs`, `@documentation-writer` | `write-documentation`, `release-notes`, `configure-llms-txt` | [`core/roles/technical-writer.md`](./core/roles/technical-writer.md) |
-| **`@ui-ux-designer`** | UI/UX Designer | `@designer`, `@ui`, `@ux`, `@ui-ux`, `@uiux` | `design-ux-flow`, `design-review` | [`core/roles/ui-ux-designer.md`](./core/roles/ui-ux-designer.md) |
+| **`@ui-ux-designer`** | UI/UX Designer | `@designer`, `@ui`, `@ux`, `@ui-ux`, `@uiux` | `design-ux-flow`, `design-review`, `design-system-engineering` *(+1 more)* | [`core/roles/ui-ux-designer.md`](./core/roles/ui-ux-designer.md) |
 | **`@vietnam-accounting-specialist`** | Vietnam Accounting Specialist | `@accounting`, `@accountant`, `@ke-toan`, `@vietnam-accounting` | `manage-vietnam-accounting` | [`core/roles/vietnam-accounting-specialist.md`](./core/roles/vietnam-accounting-specialist.md) |
 | **`@vietnam-legal-counsel`** | Vietnam Legal Counsel | `@lawyer`, `@luat-su`, `@legal`, `@legal-counsel` | `manage-vietnam-legal`, `audit-ai-compliance`, `draft-legal-opinion` | [`core/roles/vietnam-legal-counsel.md`](./core/roles/vietnam-legal-counsel.md) |
 
 ---
 
-## 🛠️ Skill Directory (158 Skills)
+## 🛠️ Skill Directory (168 Skills)
 
 ### Category: `agent` (24 skills)
 
@@ -165,7 +165,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@design-learning-plan`** | Create a structured, curriculum-aligned learning plan or syllabus following ZPD pathways, SMART obje... | [`core/skills/education/design-learning-plan/SKILL.md`](./core/skills/education/design-learning-plan/SKILL.md) |
 | **`@grade-and-review`** | Evaluate learner work and provide constructive feedback on the designated grading scale. Use when gr... | [`core/skills/education/grade-and-review/SKILL.md`](./core/skills/education/grade-and-review/SKILL.md) |
 
-### Category: `foundation` (14 skills)
+### Category: `foundation` (16 skills)
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
@@ -176,25 +176,31 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@create-migration`** | Create safe schema or data migrations by following the repo's local migration tool, naming rules, ro... | [`core/skills/foundation/create-migration/SKILL.md`](./core/skills/foundation/create-migration/SKILL.md) |
 | **`@design-review`** | Review UX flows, visual hierarchy, interaction patterns, and design-system alignment against specs a... | [`core/skills/foundation/design-review/SKILL.md`](./core/skills/foundation/design-review/SKILL.md) |
 | **`@design-ux-flow`** | Design or refine a UX flow by defining user goals, preserved behavior, screen states, interaction ru... | [`core/skills/foundation/design-ux-flow/SKILL.md`](./core/skills/foundation/design-ux-flow/SKILL.md) |
+| **`@hostile-component-stress-testing`** | Use when subjecting UI components to hostile edge-case inputs across 6 scenario axes on an isolated ... | [`core/skills/foundation/hostile-component-stress-testing/SKILL.md`](./core/skills/foundation/hostile-component-stress-testing/SKILL.md) |
 | **`@incident-report`** | Capture, structure, and communicate an incident from triage through resolution and prevention. Use w... | [`core/skills/foundation/incident-report/SKILL.md`](./core/skills/foundation/incident-report/SKILL.md) |
 | **`@performance-profiling`** | Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, a... | [`core/skills/foundation/performance-profiling/SKILL.md`](./core/skills/foundation/performance-profiling/SKILL.md) |
 | **`@plan-technical-delivery`** | Turn architecture decisions and requirements into a delivery-ready technical plan with slices, quali... | [`core/skills/foundation/plan-technical-delivery/SKILL.md`](./core/skills/foundation/plan-technical-delivery/SKILL.md) |
+| **`@playwright-evidence-qa`** | Use when diagnosing Playwright test failures using tripartite evidence triage (screenshot, DOM snaps... | [`core/skills/foundation/playwright-evidence-qa/SKILL.md`](./core/skills/foundation/playwright-evidence-qa/SKILL.md) |
 | **`@release-notes`** | Draft, structure, and review release notes for a software change so that users, operators, and downs... | [`core/skills/foundation/release-notes/SKILL.md`](./core/skills/foundation/release-notes/SKILL.md) |
 | **`@systematic-debugging`** | Apply 4-phase systematic root cause analysis (Observe, Hypothesize, Test, Fix) and verification-befo... | [`core/skills/foundation/systematic-debugging/SKILL.md`](./core/skills/foundation/systematic-debugging/SKILL.md) |
 | **`@write-product-brief`** | Write or refine a product brief that makes user value, business outcome, preserved behavior, affecte... | [`core/skills/foundation/write-product-brief/SKILL.md`](./core/skills/foundation/write-product-brief/SKILL.md) |
 | **`@write-tests`** | Add or update tests by following repo-local test conventions, choosing the right test scope, isolati... | [`core/skills/foundation/write-tests/SKILL.md`](./core/skills/foundation/write-tests/SKILL.md) |
 
-### Category: `frontend` (9 skills)
+### Category: `frontend` (13 skills)
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
 | **`@add-page-route`** | Add or modify a page, screen, or route by following the repo's navigation, data-loading, layout, and... | [`core/skills/frontend/add-page-route/SKILL.md`](./core/skills/frontend/add-page-route/SKILL.md) |
 | **`@add-ui-component`** | Add or evolve a reusable UI component by following the repo's design system, composition patterns, a... | [`core/skills/frontend/add-ui-component/SKILL.md`](./core/skills/frontend/add-ui-component/SKILL.md) |
+| **`@anti-ui-slop-finish-gate`** | Use when conducting pre-staging UI finish reviews, enforcing 100% interaction state coverage, and ap... | [`core/skills/frontend/anti-ui-slop-finish-gate/SKILL.md`](./core/skills/frontend/anti-ui-slop-finish-gate/SKILL.md) |
 | **`@component-composition`** | Architect scalable UI components using compound components, Radix-style asChild slot delegation, hea... | [`core/skills/frontend/component-composition/SKILL.md`](./core/skills/frontend/component-composition/SKILL.md) |
+| **`@design-system-engineering`** | Use when engineering design token architectures, calculating concentric border radii, establishing p... | [`core/skills/frontend/design-system-engineering/SKILL.md`](./core/skills/frontend/design-system-engineering/SKILL.md) |
+| **`@frontend-micro-polish`** | Use when applying micro-typographic polish, optical padding compensations, mobile input zoom guards,... | [`core/skills/frontend/frontend-micro-polish/SKILL.md`](./core/skills/frontend/frontend-micro-polish/SKILL.md) |
 | **`@frontend-testing`** | Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, an... | [`core/skills/frontend/frontend-testing/SKILL.md`](./core/skills/frontend/frontend-testing/SKILL.md) |
 | **`@implement-view-transitions`** | Implement fluid, native-feeling page and state transitions using CSS View Transitions API, React 19 ... | [`core/skills/frontend/implement-view-transitions/SKILL.md`](./core/skills/frontend/implement-view-transitions/SKILL.md) |
 | **`@implement-webmcp`** | Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when enabli... | [`core/skills/frontend/implement-webmcp/SKILL.md`](./core/skills/frontend/implement-webmcp/SKILL.md) |
 | **`@integrate-api-client`** | Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handling... | [`core/skills/frontend/integrate-api-client/SKILL.md`](./core/skills/frontend/integrate-api-client/SKILL.md) |
+| **`@interactive-component-workbench`** | Use when building scratch-route component workbenches with search-param state switchers and multi-va... | [`core/skills/frontend/interactive-component-workbench/SKILL.md`](./core/skills/frontend/interactive-component-workbench/SKILL.md) |
 | **`@setup-design-system`** | Configure a scalable design system, styling framework, and component architecture for a frontend pro... | [`core/skills/frontend/setup-design-system/SKILL.md`](./core/skills/frontend/setup-design-system/SKILL.md) |
 | **`@setup-visual-regression`** | Configure automated visual diffing for UI components and pages. Use when establishing pixel-level re... | [`core/skills/frontend/setup-visual-regression/SKILL.md`](./core/skills/frontend/setup-visual-regression/SKILL.md) |
 
@@ -258,6 +264,18 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@deploy-mobile-app`** | Configure and execute mobile deployment pipelines using EAS Build, native code signing credentials, ... | [`core/skills/mobile/deploy-mobile-app/SKILL.md`](./core/skills/mobile/deploy-mobile-app/SKILL.md) |
 | **`@develop-mobile-app`** | Architect high-performance mobile applications using React Native New Architecture, Hermes bytecode ... | [`core/skills/mobile/develop-mobile-app/SKILL.md`](./core/skills/mobile/develop-mobile-app/SKILL.md) |
 
+### Category: `overlay/cad-projection` (1 skills)
+
+| Skill Slug | Description | File |
+|:---|:---|:---|
+| **`@isometric-svg-projection`** | Use when generating precision isometric vector diagrams, engineering schematics, and CAD projections... | [`overlays/cad-projection/skills/isometric-svg-projection/SKILL.md`](./overlays/cad-projection/skills/isometric-svg-projection/SKILL.md) |
+
+### Category: `overlay/fintech-compliance` (1 skills)
+
+| Skill Slug | Description | File |
+|:---|:---|:---|
+| **`@build-credit-scorecard`** | Use when building regulatory credit risk scorecards, performing monotonic WOE binning, evaluating IV... | [`overlays/fintech-compliance/skills/build-credit-scorecard/SKILL.md`](./overlays/fintech-compliance/skills/build-credit-scorecard/SKILL.md) |
+
 ### Category: `overlay/golf-icm` (1 skills)
 
 | Skill Slug | Description | File |
@@ -308,6 +326,12 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@integrate-r3f-three-legacy`** | Integrate or migrate between React Three Fiber and legacy imperative Three.js code by controlling sc... | [`overlays/r3f-stack/skills/integrate-r3f-three-legacy/SKILL.md`](./overlays/r3f-stack/skills/integrate-r3f-three-legacy/SKILL.md) |
 | **`@optimize-3d-assets`** | Optimize 3D assets and rendering inputs by reviewing model formats, geometry density, texture memory... | [`overlays/r3f-stack/skills/optimize-3d-assets/SKILL.md`](./overlays/r3f-stack/skills/optimize-3d-assets/SKILL.md) |
 
+### Category: `overlay/security-research` (1 skills)
+
+| Skill Slug | Description | File |
+|:---|:---|:---|
+| **`@reverse-engineer-binary`** | Use when deconstructing compiled binaries, Electron bundles, and firmware images in air-gapped sandb... | [`overlays/security-research/skills/reverse-engineer-binary/SKILL.md`](./overlays/security-research/skills/reverse-engineer-binary/SKILL.md) |
+
 ### Category: `overlay/vesviet-content` (2 skills)
 
 | Skill Slug | Description | File |
@@ -357,7 +381,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@review-service`** | Review an entire service for release readiness. Use for full-service audits, production-readiness ch... | [`core/skills/repo-ops/review-service/SKILL.md`](./core/skills/repo-ops/review-service/SKILL.md) |
 | **`@troubleshoot-service`** | Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the failing ... | [`core/skills/repo-ops/troubleshoot-service/SKILL.md`](./core/skills/repo-ops/troubleshoot-service/SKILL.md) |
 
-### Category: `security-data` (7 skills)
+### Category: `security-data` (8 skills)
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
@@ -368,6 +392,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@optimize-olap-database`** | Design high-throughput OLAP schemas for Iceberg v4/v3, tune ClickHouse/DuckDB columnar engines, conf... | [`core/skills/security-data/optimize-olap-database/SKILL.md`](./core/skills/security-data/optimize-olap-database/SKILL.md) |
 | **`@query-analytical-engine`** | Execute in-process analytical SQL with chDB and DuckDB v1.1+, orchestrate multi-step stateful pipeli... | [`core/skills/security-data/query-analytical-engine/SKILL.md`](./core/skills/security-data/query-analytical-engine/SKILL.md) |
 | **`@security-audit`** | Review code, configuration, and service behavior for security risks by checking trust boundaries, se... | [`core/skills/security-data/security-audit/SKILL.md`](./core/skills/security-data/security-audit/SKILL.md) |
+| **`@skill-preflight-ast-check`** | Use when performing zero-execution static AST security vetting of third-party agent skills, enforcin... | [`core/skills/security-data/skill-preflight-ast-check/SKILL.md`](./core/skills/security-data/skill-preflight-ast-check/SKILL.md) |
 
 ### Category: `seo` (2 skills)
 
@@ -834,7 +859,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 📑 Data Contracts & Schemas (54 Schemas)
+## 📑 Data Contracts & Schemas (55 Schemas)
 
 | Schema File | Schema Title | Path |
 |:---|:---|:---|
@@ -854,6 +879,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | `amis-voucher-contract.json` | AMIS Accounting Voucher Contract | [`core/contracts/schemas/amis-voucher-contract.json`](./core/contracts/schemas/amis-voucher-contract.json) |
 | `api-contract-spec.json` | API Contract Specification | [`core/contracts/schemas/api-contract-spec.json`](./core/contracts/schemas/api-contract-spec.json) |
 | `architecture-options.json` | Architecture Options Brief | [`core/contracts/schemas/architecture-options.json`](./core/contracts/schemas/architecture-options.json) |
+| `assumptions-ledger.json` | Assumptions Ledger Specification | [`core/contracts/schemas/assumptions-ledger.json`](./core/contracts/schemas/assumptions-ledger.json) |
 | `aws-infra-spec.json` | AWS Infrastructure Specification | [`core/contracts/schemas/aws-infra-spec.json`](./core/contracts/schemas/aws-infra-spec.json) |
 | `code-review-finding.json` | Code Review Finding | [`core/contracts/schemas/code-review-finding.json`](./core/contracts/schemas/code-review-finding.json) |
 | `content-audit-report.json` | Content Audit Report | [`core/contracts/schemas/content-audit-report.json`](./core/contracts/schemas/content-audit-report.json) |

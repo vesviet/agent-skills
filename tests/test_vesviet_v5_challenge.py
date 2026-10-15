@@ -21,10 +21,12 @@ PACK_README_PATH = VESVIET_PACK_DIR / "README.md"
 PACKS_README_PATH = PACKS_DIR / "README.md"
 VESVIET_OVERLAY_DIR = PROJECT_ROOT / "overlays" / "vesviet-content"
 LINK_TOPOLOGY_RULE = VESVIET_OVERLAY_DIR / "rules" / "link-topology.md"
-ORIGINAL_REQUEST_PATH = Path("d:/myproject/.agents/ORIGINAL_REQUEST.md")
 
-VESVIET_SITE_DIR = Path("d:/myproject/vesviet")
-LEARN_SITE_DIR = Path("d:/myproject/learn")
+WORKSPACE_ROOT = PROJECT_ROOT.parent if (PROJECT_ROOT.parent / "vesviet").exists() else Path("d:/myproject")
+ORIGINAL_REQUEST_PATH = WORKSPACE_ROOT / ".agents" / "ORIGINAL_REQUEST.md"
+
+VESVIET_SITE_DIR = WORKSPACE_ROOT / "vesviet"
+LEARN_SITE_DIR = WORKSPACE_ROOT / "learn"
 
 VESVIET_CONTENT_INDEX = VESVIET_SITE_DIR / "reports" / "CONTENT_INDEX.md"
 LEARN_PLAN_CONTENT_INDEX = LEARN_SITE_DIR / "plan" / "CONTENT_INDEX.md"
@@ -144,7 +146,7 @@ class TestCorpusMetricsConsistency(unittest.TestCase):
         declared_indexes = self.manifest.get("corpus", {}).get("indexes", [])
         self.assertGreater(len(declared_indexes), 0, "Manifest must declare corpus index paths")
         for idx in declared_indexes:
-            idx_path = Path("d:/myproject") / idx
+            idx_path = WORKSPACE_ROOT / idx
             self.assertTrue(idx_path.exists(), f"Declared index file must exist on disk: {idx_path}")
 
     def test_04_readme_corpus_consistency(self):

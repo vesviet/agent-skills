@@ -4,7 +4,7 @@
   "name": "frontend-developer",
   "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to architecting scalable component systems via compound components and Radix-style slot delegation to eliminate boolean prop explosion, engineering fluid, native-feeling page and state transitions using the CSS View Transitions API and React 19 ViewTransition while strictly safeguarding Core Web Vitals (INP < 200ms) with off-thread composited motion, governing AI-generated UI code with tiered trust validation, enforcing Taste-Skill anti-slop frontend engineering standards (viewport stability with min-h-100dvh, continuous motion state isolation via Motion hooks, asset hygiene, and Big Bans enforcement), owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, architecting PWA service workers as agentic orchestration control-planes, implementing EU AI Act Article 50 disclosure UI components as a legal requirement (live from 2 August 2026), and sanitizing AI-generated content before DOM insertion using Trusted Types and DOMPurify.",
   "url": "pack://agent-skills/core/roles/frontend-developer.md",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -138,6 +138,28 @@
       ]
     },
     {
+      "id": "frontend-micro-polish",
+      "name": "Frontend Micro Polish",
+      "description": "Use when applying micro-typographic polish, optical padding compensations, mobile input zoom guards, active tap scales, and 3-layer shadow elevations.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
       "id": "frontend-testing",
       "name": "Frontend Testing",
       "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence.",
@@ -207,6 +229,28 @@
       "id": "integrate-api-client",
       "name": "Integrate Api Client",
       "description": "Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handling, and state-management patterns. Use when a UI needs to read or mutate backend data.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "interactive-component-workbench",
+      "name": "Interactive Component Workbench",
+      "description": "Use when building scratch-route component workbenches with search-param state switchers and multi-variant pickers for isolated multi-state UI testing.",
       "tags": [
         "frontend",
         "pack"

@@ -1,11 +1,11 @@
-# Pack Status (post-5.0.0 standards-2027 upgrade)
+# Pack Status (post-5.1.0 standards-2027 upgrade)
 
-**Validators:** 17/17 pass, 0 errors, 0 warnings.
-**Catalog:** 34 roles, 109 skills (97 core + 12 overlay), 24 workflows, 50 contracts, 17 packs, 18 overlays.
+**Validators:** 18/18 pass, 0 errors, 0 warnings.
+**Catalog:** 36 roles, 168 skills (153 core + 15 overlay), 25 workflows, 55 contracts, 17 packs, 21 overlays.
 
-## 0. Standards-2027 upgrade summary (5.0.0, 2026-09-07)
+## 0. Standards-2027 upgrade summary (5.1.0, 2026-10-15)
 
-Grounded in five-track deep research (sources through September 2026):
+Grounded in five-track deep research (sources through October 2026):
 
 - **A2A**: well-known URI corrected to `agent-card.json`; v1.0.x wire conventions (SCREAMING_SNAKE_CASE states, unified Part, `google.rpc.Status`, JCS+JWS card signatures, multi-tenancy); protocol floor v1.0.1; governance AAIF/Linux Foundation.
 - **MCP**: stateless-era Core Rules (`server/discover`, `_meta`, MRTR, state handles, deprecation guardrails, CIMD before DCR removal after summer 2027); MCP Registry publishing; OWASP MCP Top 10 guardrails; WebMCP downgraded to watch-item.
@@ -20,10 +20,10 @@ Grounded in five-track deep research (sources through September 2026):
 
 | Area | Status |
 |---|---|
-| Skills (97 core + 10 overlay) | 100% have `## Failure Modes` + `## Output Contracts` + `## Security Guardrails (OWASP ASI)` |
-| Roles (34) | 100% have `## Failure Modes` + OWASP + contract refs + Last updated footer |
+| Skills (153 core + 15 overlay) | 100% have `## Failure Modes` + `## Output Contracts` + `## Security Guardrails (OWASP ASI)` |
+| Roles (36) | 100% have `## Failure Modes` + OWASP + contract refs + Last updated footer |
 | Policies (3 YAML + 1 hook + 1 README) | `## Failure Modes` not applicable (YAML); README has Failure Modes + Standard 2026 footer |
-| Workflows (24 core + overlay) | 100% have `### Failure Modes` + `### Output Contracts` + `### Security Guardrails (OWASP ASI)` |
+| Workflows (25 core + overlay) | 100% have `### Failure Modes` + `### Output Contracts` + `### Security Guardrails (OWASP ASI)` |
 | Overlay rules | 100% have Standard 2026 footer |
 | Overlay READMEs | 100% have Standard 2026 footer |
 | Root docs | 100% have Standard 2026 footer |
@@ -32,11 +32,11 @@ Grounded in five-track deep research (sources through September 2026):
 | `core/adapter-parity.md` + `packs/README.md` | 100% Tier A upgraded |
 | `core/*` READMEs (14) | 100% have Standard 2026 footer |
 | `.cursorrules` | 100% has Standard 2026 footer |
-| VERSION | `5.0.0` consistent across registry, cards, adapters, changelog |
-| CHANGELOG | `[5.0.0] - 2026-09-07` entry complete |
+| VERSION | `5.1.0` consistent across registry, cards, adapters, changelog |
+| CHANGELOG | `[5.1.0] - 2026-10-15` entry complete |
 | 17 pack manifests | All have version, schema_version, governance, includes, capabilities (incl. shoppe-team) |
-| 34 agent cards | All regenerated, version 5.0.0, A2A 1.0 |
-| A2A registry, ai-catalog, agent-card.json | All 5.0.0 / 1.1 |
+| 36 agent cards | All regenerated, version 5.1.0, A2A 1.0 |
+| A2A registry, ai-catalog, agent-card.json | All 5.1.0 / 1.1 |
 | Generated artifacts (INDEX, role-skill-index × 2, capability-map) | All consistent |
 
 *Active packs inventory (17):* `content-sprint-team`, `data-analyst-team`, `data-warehouse`, `donthan-team`, `ecommerce-team`, `global-engineering`, `golf-team`, `icm-team`, `landing-pages-team`, `lease-team`, `maylanhtreotuong-team`, `mdg-team`, `mmo-growth-team`, `obj-team`, `shoppe-team`, `sport-team`, `vesviet-team`.
@@ -75,7 +75,7 @@ The 5 long role files and the 404-line Detailed Schema Descriptions are quality-
 
 ## 4. What is NOT a gap
 
-- 16/16 validators pass with 0 warnings
+- 18/18 validators pass with 0 warnings
 - 0 duplicate headers
 - 0 broken cross-references
 - 0 missing Last updated footers

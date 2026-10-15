@@ -203,6 +203,7 @@ System Engineers author IaC and provision infrastructure — Security Engineer r
 - `supply-chain-security`
 - `ai-risk-assessment`
 - `manage-agent-identity`
+- `skill-preflight-ast-check`
 
 ### Supporting Skills (use when collaborating)
 
@@ -335,4 +336,4 @@ See [references/security-engineer-review-checklist.md](references/security-engin
 - **EU AI Act Article 15 adversarial resilience documented**: red-team testing results and WORM audit logging confirmed for high-risk AI deployments
 
 
-Last updated: 2026-08-21
+Last updated: 2026-10-15

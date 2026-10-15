@@ -2,6 +2,52 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [5.1.0] - 2026-10-15
+
+External skill ecosystem benchmark ingestion and engineering hardening release, synthesized from the comprehensive benchmark research dossier (`reports/external-skills-ecosystem-benchmark-research.md`). Adds 7 portable core skills, 1 JSON Schema Draft 2020-12 data contract, 3 specialized domain overlays (each with rules and overlay skills), a zero-execution AST static security scanner for third-party skills, and expands the automated validation pipeline to 18 gates.
+
+### P0 Foundational Skills & AST Security Tooling
+
+- `design-system-engineering` (assigned Primary to `@ui-ux-designer`):
+  Codifies concentric border radius mathematical formula ($R_{\text{outer}} = R_{\text{inner}} + \text{padding} + \text{borderWidth}$) with cutoff invariant for $\text{padding} > 24\text{px}$, OKLCH lightness ramp delta step rules ($\Delta L \approx 0.04-0.05$ light, $\Delta L \approx 0.07-0.10$ mid, floor $\ge 0.03$), constant hue angle $\Delta H = 0^\circ$, and APCA contrast thresholds ($L_c \ge 75$ body text, $L_c \ge 60$ fluent text). Composes with `overlays/ui-design-system`.
+- `frontend-micro-polish` (assigned Primary to `@frontend-developer`):
+  Codifies $2\text{px}$ optical button padding offsets (`ps-3.5 pe-4`), $+2\text{px}$ play button centroid shift (`transform: translateX(2px)`), $16\text{px}$ iOS Safari font-size zoom guard, unitless `line-height` multipliers, $0.96$ active tap scale with $150\text{ms}$ transition tokens, 3-layer light elevation shadows, and dark mode 1px highlight rings. Emits `contracts/schemas/implementation-result.json`.
+- `skill-preflight-ast-check` (assigned Primary to `@security-engineer`):
+  Codifies zero-execution static AST security analysis for third-party skills, enforcing OWASP AST01–AST10 governance rules and mathematical evaluation of the Lethal Trifecta ($\mathcal{T}_{\text{lethal}}(\mathcal{S}) = \mathcal{D}_{\text{priv}} \wedge \mathcal{C}_{\text{untrusted}} \wedge \mathcal{E}_{\text{net}}$). Establishes mandatory Network Level 0 air-gap enforcement and 4-tier execution sandbox hierarchy. Emits `contracts/schemas/security-audit.json`.
+- `anti-ui-slop-finish-gate` (assigned Primary to `@ui-ux-designer`, Supporting to `@reviewer`):
+  Codifies objective finish criteria requiring 100% interaction state coverage (empty, loading, error, hover, active, focus-visible), the 13 universal escalation triggers causing immediate pipeline `Block`, and negative asset constraints banning synthetic quotes and abstract SVG swirls. Emits `contracts/schemas/ui-component-spec.json`.
+- `core/scripts/validate-thirdparty-skills.py` (AST Static Security Scanner):
+  Zero-dependency Python AST static analysis scanner detecting dangerous builtins (`eval`, `exec`), subprocess invocation, unapproved network module imports, environment variable harvesting, prompt injection markers, and pipe-to-shell hazards. Includes 7 automated self-test vectors and is wired into `core/scripts/validate-all.py` as Gate 18.
+
+### P1 Resilient Testing, Assumptions Ledger & Interactive Workbench
+
+- `hostile-component-stress-testing` (assigned Primary to `@qa-engineer`):
+  Codifies the 6 hostile scenario axes (content length, shape, quantity, container bounds, lifecycle states, environment) adapted from `jakubkrehel/break`. Incorporates regex watchers for removed accessibility and layout signals.
+- `core/contracts/schemas/assumptions-ledger.json` (The Enso Method Assumptions Ledger):
+  JSON Schema Draft 2020-12 specification defining open questions, hypotheses, confidence ratings (0.0–1.0), impact assessment enums, computed risk scores ($\text{Impact} \times (6 - \text{Confidence})$), and unblocking verification paths. Emits `assumptions-ledger` discriminator. Registered in `core/contracts/schemas/INDEX.md`, `core/contracts/README.md`, and declared in `@business-analyst` and `@task-planner` deliverable routing.
+- `interactive-component-workbench` (assigned Primary to `@frontend-developer`):
+  Codifies scratch-route URL search param switchers (`?__state=`, `?__variant=`) for isolated multi-state component testing across 5 permissible variation axes (Structure, Density, Emphasis, Type, Voice) with container query collapse and screenshot visibility shortcuts.
+- `playwright-evidence-qa` (assigned Primary to `@qa-engineer`):
+  Codifies tripartite evidence triage (screenshot + DOM snapshot + console/telemetry) for diagnosing Playwright flakiness, defining a 3-way root cause taxonomy (Application Defect, Selector Drift, Timing Flakiness) and 10-iteration verification gates.
+
+### P2 Specialized Engineering Overlays
+
+- `overlays/cad-projection/`:
+  Establishes CAD vector projection standards, Landscape A3 sheet sizing (`viewBox="0 0 420 297"`), ISO 128 stroke hierarchy ($0.35, 0.22, 0.16, 0.13\text{mm}$), SVG millimeter coordinate transformations, and the $3\text{D} \to 2\text{D}$ isometric transformation matrix. Contains skill `isometric-svg-projection` and `rules/cad-conventions.md`.
+- `overlays/fintech-compliance/`:
+  Establishes credit risk modeling and financial regulatory compliance, codifying monotonic Weight of Evidence (WOE) binning, automated $\chi^2$ bin pooling, Information Value (IV) feature selection thresholds, Points to Double Odds (PDO) score scaling, and Population Stability Index (PSI) drift monitoring. Contains skill `build-credit-scorecard` and `rules/credit-scorecard-rules.md`.
+- `overlays/security-research/`:
+  Establishes binary disassembly, decompilation triage, and reverse engineering governance. Codifies Source Code Presence Guard, Tier 2 (gVisor OCI container) and Tier 3 (Firecracker microVM) sandbox isolation, multi-toolchain triage (Ghidra, radare2, Electron asar unpackers), and formal Reverse Engineering Artifact (REA) evidence ledger standards. Contains skill `reverse-engineer-binary` and `rules/reverse-engineering-rules.md`.
+
+### Monorepo & Catalog Updates
+
+- Total skills inventory expanded to 168 (153 portable core skills + 15 overlay skills).
+- Total JSON contract schemas expanded to 55 (added `assumptions-ledger.json`).
+- Total domain overlays expanded to 21 (added `cad-projection`, `fintech-compliance`, `security-research`).
+- Automated validation test suite expanded to 18 gates (integrated `validate-thirdparty-skills.py`).
+- Updated role definitions across `@ui-ux-designer`, `@frontend-developer`, `@security-engineer`, `@qa-engineer`, `@reviewer`, `@business-analyst`, and `@task-planner`.
+- Regenerated A2A agent registry, agent cards, and master markdown router `INDEX.md`.
+
 ## [5.0.0] - 2026-09-07
 
 Standards-2027 alignment release, grounded in a five-track deep research pass

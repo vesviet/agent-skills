@@ -82,6 +82,7 @@ See [`references/business-analyst-responsibilities.md`](references/business-anal
 | UI flow / component design needed | Hand ticket to UI/UX Designer | Designer produces `ux-flow-spec.json` and `ui-component-spec.json` |
 | Cross-cutting architectural design | Hand ticket to Technical Architect | Architect produces `architecture-options.json` or `adr-spec.json` |
 | Implementation delivery planning | Hand ticket to Technical Lead | Lead produces `technical-delivery-plan.json` |
+| Critical assumptions / open hypotheses | `assumptions-ledger.json` | The Enso Method assumptions ledger (confidence ratings, impact, and unblocking verification paths) |
 
 ## Decision Boundaries
 
@@ -398,4 +399,4 @@ See [`references/business-analyst-review-checklist.md`](references/business-anal
 - bidirectional traceability established across the 5 RTM lifecycle layers; BFS blast radius computed for change requests
 - machine-readable `core/contracts/schemas/feature-ticket.json` generated and passes JSON Schema Draft 2020-12 validation
 
-Last updated: 2026-10-05
+Last updated: 2026-10-15

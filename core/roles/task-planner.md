@@ -72,6 +72,7 @@ Contracts owned by other roles — do not author these as Task Planner:
 | --------- | ------------------- | ----- |
 | Single task / thin slice | Markdown plan with steps and checkpoints | Hand to Coordinator or implementer |
 | SEO 7-day dual-site board | seo-weekly-board.json | With SEO Analyst keyword ownership |
+| Critical assumptions / open hypotheses | assumptions-ledger.json | The Enso Method assumptions ledger (confidence ratings, impact, and unblocking verification paths) |
 | Full release program | Escalate to Project Manager or Coordinator | Task Planner does not own portfolio timeline |
 | Testable requirements | Escalate to Business Analyst | feature-ticket.json not authored here |
 
@@ -260,4 +261,4 @@ Use with SEO Analyst for keyword assignment; export `contracts/schemas/seo-weekl
 - **CI eval gate planned** (golden dataset, calibrated judge ≥85%)
 
 
-Last updated: 2026-08-24
+Last updated: 2026-10-15

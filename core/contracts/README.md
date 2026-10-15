@@ -25,11 +25,12 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
             → validation-result.json ← Agent Coordinator (phase gate)
 ```
 
-## All Schemas (54 total)
+## All Schemas (55 total)
 
 ### Solution & Governance
 - `solution-brief.json` — Solution Architect scoping handoff (build-vs-buy, capability gaps, AI feasibility, compliance)
 - `ai-risk-register.json` — AI risk register (NIST AI RMF + 600-1, EU AI Act tier, OWASP ASI alignment)
+- `assumptions-ledger.json` — The Enso Method assumptions ledger (open questions, hypotheses, confidence ratings 0.0–1.0, impact assessment, and unblocking verification paths)
 
 ### Engineering Delivery
 - `feature-ticket.json` — Business requirements and AC

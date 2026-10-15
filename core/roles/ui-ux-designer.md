@@ -151,6 +151,8 @@ See [`references/ui-ux-designer-responsibilities.md`](references/ui-ux-designer-
 
 - `design-ux-flow`
 - `design-review`
+- `design-system-engineering`
+- `anti-ui-slop-finish-gate`
 
 ### Supporting Skills (use when collaborating)
 - `meeting-review`
@@ -387,4 +389,4 @@ Activation example:
 See overlay README files before finalizing specs.
 
 
-Last updated: 2026-09-17
+Last updated: 2026-10-15
