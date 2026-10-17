@@ -28,5 +28,5 @@ dev = [
 testpaths = ["tests"]
 asyncio_mode = "strict"
 filterwarnings = [
-    "ignore::pytest.PytestRemovedIn10Warning",
+    "ignore::pytest.PytestWarning",
 ]

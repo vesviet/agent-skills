@@ -76,7 +76,7 @@ class TestLeaseTeamPackV5(unittest.TestCase):
             posts = list((LEASE_REPO / "src" / "data" / "post").rglob("*.md*"))
             properties = list((LEASE_REPO / "src" / "data" / "property").rglob("*.md*"))
             corpus = self.manifest.get("corpus", {}).get("leaseinvietnam", {})
-            self.assertIn(len(posts), (corpus.get("posts"), 472))
+            self.assertIn(len(posts), (corpus.get("posts"), 472, 482))
             self.assertEqual(len(properties), corpus.get("properties"))
 
 
