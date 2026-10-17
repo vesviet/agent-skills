@@ -16,3 +16,10 @@ audit
 # Session scratch / audit request artifacts
 ORIGINAL_REQUEST.md
 test_dummy.txt
+
+# Virtual environments
+.venv/
+venv/
+*.egg-info/
+dist/
+build/

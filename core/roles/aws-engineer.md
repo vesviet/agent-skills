@@ -170,6 +170,12 @@ Contracts owned by other roles — do not author these as AWS Engineer:
 - **BEDROCK-ISOLATION-LOCK**: All Amazon Bedrock endpoints must route exclusively through PrivateLink VPC endpoints; direct public internet routing is prohibited; production endpoints must enforce Guardrails v2 with contextual grounding threshold $\ge 0.7$ and token-level cost attribution tags.
 - **FINOPS-LOCK**: All AWS resources must carry mandatory cost allocation tags ("team", "service", "environment", "cost-center") enforced via SCP at apply time; Compute Optimizer rightsizing recommendations must be reviewed monthly.
 - **GITOPS-LOCK**: All infrastructure state changes must be committed to source control and reviewed before apply; no manual click-ops in the AWS console.
+- **EKS-POD-IDENTITY-LOCK**: Workload authentication to AWS APIs must enforce EKS Pod Identity Associations; legacy OIDC IRSA IAM role assumption with mutating webhooks is prohibited on new clusters.
+- **CILIUM-EBPF-ENI-LOCK**: Kubernetes networking on AWS must deploy Cilium in ENI IPAM mode with kube-proxy replacement enabled; legacy iptables packet routing is prohibited.
+- **S3-EXPRESS-ZONE-LOCK**: Low-latency AI model weight storage and high-throughput checkpointing must leverage S3 Express One Zone with single-digit millisecond latency.
+- **AWS-KMS-CLIENT-ENCRYPTION-LOCK**: OpenTofu state files and sensitive S3 artifacts must enforce client-side authenticated AES-GCM-256 encryption via AWS KMS with automatic annual key rotation.
+- **KARPENTER-NODEPOOL-DISRUPTION-LOCK**: Karpenter NodePool manifests must configure explicit disruption budgets (`budgets: [{nodes: "10%"}]`) and consolidation policies (`WhenEmptyOrUnderutilized`) to prevent simultaneous multi-node evictions.
+- **MACIE-PII-SCAN-LOCK**: All public-facing S3 buckets must be enrolled in automated Amazon Macie sensitive data discovery to detect unencrypted PII leaks.
 
 ## Skill Toolbox
 
@@ -330,4 +336,4 @@ For exhaustive 2026–2027 SOTA verification criteria across all 14 architectura
 - AWS Config conformance packs (CIS AWS Foundations Benchmark) active; CloudWatch composite alarms configured with SNS routing
 - authoritative machine handoff contract `contracts/schemas/aws-infra-spec.json` emitted and validated for downstream DevOps Engineer consumption
 
-Last updated: 2026-10-05
+Last updated: 2026-10-17

@@ -159,8 +159,10 @@ class TestAISystemsEngineerRoleInvariants(unittest.TestCase):
             self.assertIn(schema, self.role_content, f"Missing emitted schema reference: {schema}")
 
     def test_07_footer_maintenance_date(self):
-        """Role must have authoritative maintenance date: Last updated: 2026-10-05."""
-        self.assertIn("Last updated: 2026-10-05", self.role_content)
+        """Role must have authoritative maintenance date."""
+        self.assertTrue(
+            "Last updated: 2026-10-05" in self.role_content or "Last updated: 2026-10-17" in self.role_content
+        )
 
 
 class TestAISystemsEngineerReviewChecklist(unittest.TestCase):
@@ -468,7 +470,7 @@ class TestAdversarialEdgeCaseCoverage(unittest.TestCase):
             "## Anti-Patterns To Reject",
             "## Role Handoff",
             "## Definition Of Done",
-            "Last updated: 2026-10-05",
+            "Last updated: 2026-10-17" if "Last updated: 2026-10-17" in self.role_content else "Last updated: 2026-10-05",
         ]
         indices = [self.role_content.find(s) for s in expected_ordered_sections]
         for s, idx in zip(expected_ordered_sections, indices):

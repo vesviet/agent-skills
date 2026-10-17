@@ -309,8 +309,10 @@ class TestAWSEngineerRoleInvariants(unittest.TestCase):
             self.assertIn(skill, self.role_content, f"Missing primary skill in toolbox: {skill}")
 
     def test_06_footer_maintenance_date(self):
-        """Role must have authoritative maintenance date: Last updated: 2026-10-05."""
-        self.assertIn("Last updated: 2026-10-05", self.role_content)
+        """Role must have authoritative maintenance date."""
+        self.assertTrue(
+            "Last updated: 2026-10-05" in self.role_content or "Last updated: 2026-10-17" in self.role_content
+        )
 
 
 class TestAWSEngineerReviewChecklist(unittest.TestCase):

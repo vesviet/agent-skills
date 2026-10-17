@@ -143,6 +143,8 @@ class TestCorpusMetricsConsistency(unittest.TestCase):
 
     def test_03_content_index_reference_files_existence(self):
         """Check that manifest declared index files exist."""
+        if not VESVIET_SITE_DIR.exists():
+            self.skipTest("Live site directories not found on local disk")
         declared_indexes = self.manifest.get("corpus", {}).get("indexes", [])
         self.assertGreater(len(declared_indexes), 0, "Manifest must declare corpus index paths")
         for idx in declared_indexes:

@@ -208,6 +208,12 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 - **UNIT-ECONOMICS LOCK**: do not greenlight agentic workflows without modeling full Total Cost of Ownership (inference, orchestration, evals, guardrails, human review) and cost per verified outcome
 - **ARTICLE-50 TRANSPARENCY LOCK**: do not release AI conversational interfaces or synthetic media generators without compliant upfront AI disclosure and machine-readable synthetic marking (live 2 August 2026)
 - **AGENTIC-DRIFT LOCK**: do not permit autonomous multi-step agent execution without strict action boundaries, budget limits, confidence scoring thresholds, and deterministic fail-safe fallback paths
+- **AGENT-ROI-4PILLAR-LOCK**: every business proposal for autonomous agent deployment must quantify ROI across the 4 canonical pillars: (1) Hard-dollar labor displacement/augmentation, (2) Process cycle time compression, (3) Error remediation savings, (4) New revenue capacity ($ROI = (S - C)/C$).
+- **COST-PER-VERIFIED-OUTCOME-LOCK**: AI feature economics must calculate Cost-per-Verified-Outcome ($CPVO = \frac{\text{Total AI Inference} + \text{Evals} + \text{Guardrails} + \text{HITL Review}}{\text{Verified Successful Outcomes}}$) rather than raw token usage ($CPT$).
+- **BLAST-RADIUS-TIER-LOCK**: every PRD / feature brief must classify product blast radius into Tiers 1–4 with explicit rollback triggers and circuit-breaker containment limits.
+- **GOLDEN-EVAL-CURATION-LOCK**: Product Managers must version and maintain Golden Evaluation datasets ($\ge 100$ ground-truth test cases) in Git before approving prompt or model changes to production.
+- **PROBABILISTIC-SLA-LOCK**: AI-powered product capabilities must define precision ($\ge 90\%$), recall ($\ge 85\%$), and hallucination rate ceilings ($<1.0\%$) with statistical confidence intervals ($p < 0.05$).
+- **C2PA-METADATA-DISCLOSURE-LOCK**: all generative synthetic media features must mandate C2PA cryptographic metadata embedding and `<AIDisclosureBanner>` before customer-facing interaction.
 
 ## Skill Toolbox
 
@@ -372,5 +378,5 @@ See [references/product-manager-review-checklist.md](references/product-manager-
 - **Article 50 disclosure and C2PA marking specified**: upfront notice and provenance verified
 
 
-Last updated: 2026-08-21
+Last updated: 2026-10-17
 

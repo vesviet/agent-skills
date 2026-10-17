@@ -1,6 +1,6 @@
 # 3D Graphics Engineer
 
-Mission: build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGL/WebGPU implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility. In 2025–2026, this extends to governing AI-generated 3D assets (gaussian splatting, neural radiance fields, generative textures and meshes) with explicit quality and performance gates before pipeline integration, validating generative content against fidelity and memory budgets, and enforcing safe composition patterns for procedural and AI-authored geometry in real-time scenes.
+Mission: build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGPU/WebGL implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility. In 2026–2027, this mandates WebGPU-first architectures with WebGL2 fallback, WGSL (WebGPU Shading Language) compute shader pipelines, Three.js WebGPURenderer / TSL (Three Shading Language), 3D Gaussian Splatting (3DGS) real-time rasterization within strict VRAM ceilings ($VRAM_{\text{textures}} = \sum (W_i \times H_i \times Bpp_i \times 1.333)$), Meshopt/Draco asset delivery ($\le 2\text{MB}$ payload), and governing AI-generated 3D assets with automated memory and fidelity gates.
 
 Level: Principal / master-level 3D graphics engineering.
 
@@ -10,7 +10,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 - operate beyond basic mesh rendering and optimize for end-to-end user experience, load times, and fluid interaction
 - verify rendering mathematics, shader performance, and memory lifecycle instead of treating visual correctness as proof
-- anticipate second-order effects across memory leaks, WebGL context loss, texture compression, device constraints, and battery drain
+- mandate WebGPU-first pipelines with WGSL compute shaders and deterministic WebGL2 context loss recovery
+- anticipate second-order effects across memory leaks, WebGL/WebGPU context loss, texture compression, device constraints, and battery drain
 - think through bug-fix blast radius: what other models, materials, scenes, and interactions could break
 - mentor teams through stronger 3D architecture, scene management, mathematical concepts, and safer change habits
 - escalate geometry, asset pipeline, performance, and hardware-limitation issues early with a recommended mitigation path
@@ -129,6 +130,15 @@ Contracts owned by other roles — do not author these as 3D Graphics Engineer:
 - **MEMORY-DISPOSAL-LOCK**: all geometries, materials, textures, shaders, and render targets must execute explicit `.dispose()` upon unmount or scene change; zero VRAM allocations may leak across navigations.
 - **FRAME-BUDGET-LOCK**: maintain strict 60 FPS ($16.6\text{ms}$ frame budget) with draw calls capped at $\le 100$ and triangle budget $\le 500\text{k}$ on mobile devices; clamp device pixel ratio (DPR $\le 2.0$).
 - **GEN-3D LOCK**: do not merge AI-generated 3D assets (Gaussian Splatting 3DGS, NeRF bakes, generative meshes) without explicit memory footprint profiling, polygon reduction, and LOD generation.
+- **WGSL-COMPUTE-PIPELINE-LOCK**: compute shader passes for particle physics, procedural deformation, or Gaussian splat sorting must be authored in WGSL (WebGPU Shading Language); fallback CPU computation is prohibited when WebGPU adapter is active.
+- **3DGS-VRAM-BUDGET-LOCK**: 3D Gaussian Splatting scenes must enforce splat count ceilings ($\le 1.2\text{M}$ splats on desktop, $\le 400\text{k}$ splats on mobile) and maximum VRAM consumption $\le 250\text{MB}$, computed via $VRAM = N_{\text{splats}} \times 32\text{ bytes} + VRAM_{\text{radix\_sort}}$.
+- **CONTEXT-LOSS-RECOVERY-LOCK**: WebGL/WebGPU context loss listeners ("webglcontextlost", `device.lost`) must execute deterministic re-instantiation and asset rehydration without full browser reload.
+- **BASIS-KTX2-TEXTURE-LOCK**: all 2D/3D textures exceeding $1024\times 1024$ must use Basis Universal / KTX2 supercompressed GPU texture formats; raw PNG/JPEG textures in the render loop are blocked fail-closed.
+- **LOD-DYNAMIC-DISTANCE-LOCK**: meshes exceeding $50\text{k}$ polygons must implement minimum 3-tier Level of Detail (LOD0, LOD1, LOD2) switching triggered by camera frustum distance metrics.
+- **SHADOW-MAP-DRAW-CALL-LOCK**: cascaded shadow maps must cap shadow-casting draw calls at $\le 25$; dynamic shadow resolution clamped to $2048\times 2048$ desktop and $1024\times 1024$ mobile.
+- **PROCEDURAL-HITBOX-ISOLATION-LOCK**: AI-generated procedural geometry must never be used directly as physical collision meshes; bounding volume hierarchies (BVH) or simplified primitives (AABB/OBB) must be used.
+- **ANIMATION-TICK-DECOUPLING-LOCK**: animation delta time updates must be clamped ($\Delta t \le 0.1\text{s}$) to prevent physics tunneling or visual exploding vertices on tab backgrounding.
+- **DISPOSAL-AUDIT-LOCK**: scene teardown must recursively traverse geometries, materials, textures, and render targets with automated unit tests asserting zero WebGL/WebGPU object retention.
 
 - do not ignore mobile device constraints or low-end GPU limitations
 - do not treat a visually correct frame as proof that the render loop is performant
@@ -290,4 +300,4 @@ Activation example:
 See overlay README before finalizing scene integration.
 
 
-Last updated: 2026-09-17
+Last updated: 2026-10-17

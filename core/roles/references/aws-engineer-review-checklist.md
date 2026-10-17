@@ -37,7 +37,6 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
 - **Kubernetes-Native Cloud Resource Management**:
   - cloud infrastructure managed as Kubernetes custom resources via Composite Resource Definitions (XRDs); platform teams expose high-level declarative claims while shielding developers from raw cloud parameter complexity
   - Crossplane Compositions authoring in pipeline mode powered by compiled Go functions (`function-go-templating`) or KCL (`function-kcl`), replacing legacy unstructured YAML patch-and-transform with compile-time type validation, conditionals, and deterministic loops
-- **Closed-Loop Reconciliation & Cloud Drift Correction**:
   - continuous reconciliation loops actively detect and correct out-of-band AWS resource drift against desired XRD state
   - product development teams consume claims (`AppEnvironment`, `PostgreSQLInstance`) without requiring direct AWS IAM credentials or provider access
 
@@ -47,9 +46,7 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
   - SELinux configured and actively operating in `enforcing` mode across all worker node pools
   - Linux kernel `dm-verity` cryptographic verification of root filesystem enabled at boot time; kernel halts immediately if root partition integrity check fails
   - root filesystem mounted strictly read-only; interactive shells (`/bin/sh`, `/bin/bash`) and package managers (`apt`, `yum`) completely eliminated from host filesystem
-- **Transactional Updates & Minimal Attack Surface**:
-  - OS updates applied transactionally via `apiclient` over Unix domain socket (`/run/api.sock`) to inactive disk partition with automatic A/B rollback on boot failure
-  - ephemeral `control-container` (SSM) and `admin-container` disabled by default in production; enabled only via auditable break-glass approval with automated expiration
+  - OS updates applied transactionally via `apiclient` over Unix domain socket (`/run/api.sock`) with automatic A/B rollback on boot failure
 
 ### 4. AWS IAM Zero-Trust, Identity Center & Access Governance (`AWS-IAM-ZERO-TRUST-LOCK`)
 - **Zero Static Credentials & Centralized SSO**:
@@ -59,7 +56,6 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
 - **Least-Privilege Policy Governance**:
   - customer-managed IAM policies specify exact actions and concrete resource ARNs; wildcard (`Resource: "*"`, `Action: "*"`) permissions are strictly prohibited in production
   - IAM Access Analyzer validation executed with zero public or cross-account access findings before any policy apply
-  - Security Engineer review and explicit approval completed for all IAM policy modifications prior to production rollout
 
 ### 5. AWS EKS Pod Identity (v1.31+) & Workload Credential Federation
 - **Link-Local Credential Federation**:
@@ -70,12 +66,33 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
   - STS session tags (`eks-cluster-name`, `kubernetes-namespace`, `kubernetes-service-account`) automatically propagated to downstream AWS API requests for fine-grained policy enforcement
 
 ### 6. Karpenter v1.0+ Declarative Autoscaling & Compute Architecture
-- **Just-In-Time Node Provisioning**:
-  - compute autoscaling declared via Karpenter v1.0+ `NodePool` (`karpenter.sh/v1`) and `EC2NodeClass` (`karpenter.k8s.aws/v1`) manifests, provisioning instances directly from pending pod scheduling events
-  - consolidation policy configured to `WhenEmptyOrUnderutilized` with 1m `consolidateAfter` for continuous bin-packing and cost minimization
-- **Disruption Budgets & Drift Rollouts**:
-  - disruption budgets declared (`budgets: [{nodes: "10%"}]`) with scheduled maintenance windows to protect workload availability during node replacement
-  - automated drift detection enabled on Karpenter controllers to automate AMI rollouts and NodeClass configuration updates without downtime
+- **Just-In-Time Node Provisioning & Disruption Budgets**:
+  - compute autoscaling declared via Karpenter v1.0+ `NodePool` (`karpenter.sh/v1`) and `EC2NodeClass` (`karpenter.k8s.aws/v1`) manifests:
+    ```yaml
+    apiVersion: karpenter.sh/v1
+    kind: NodePool
+    metadata:
+      name: general-compute
+    spec:
+      template:
+        spec:
+          nodeClassRef:
+            group: karpenter.k8s.aws
+            kind: EC2NodeClass
+            name: bottlerocket-arm64
+          requirements:
+          - key: "karpenter.k8s.aws/instance-family"
+            operator: In
+            values: ["c8g", "m8g", "r8g"]
+          - key: "kubernetes.io/arch"
+            operator: In
+            values: ["arm64"]
+      disruption:
+        consolidationPolicy: WhenEmptyOrUnderutilized
+        consolidateAfter: 1m
+        budgets:
+        - nodes: "10%"
+    ```
   - static EC2 Managed Node Groups eliminated for dynamic microservice workloads
 
 ### 7. Graviton4, Trainium2 & Inferentia2 Compute Acceleration
@@ -95,12 +112,11 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
   - Service Network Auth Policies enforce AWS IAM SigV4 mutual authentication at the network layer, denying unauthenticated requests with HTTP 403 Forbidden before reaching backend pods
 
 ### 9. Enterprise Multi-Account Architecture, Control Tower & SCP Guardrails
-- **Landing Zone Governance & OU Structure**:
+- **Landing Zone Governance & Account Factory for Terraform (AFT)**:
   - multi-account architecture deployed via AWS Control Tower with Account Factory for Terraform (AFT)
   - strict Organizational Unit (OU) hierarchy enforced: Core/Security, Infrastructure, Workloads (Production, Staging, Dev), and Sandbox
 - **Non-Negotiable Service Control Policies (SCPs)**:
   - SCPs enforce root account API deny, CloudTrail and AWS Config immutability, mandatory cost allocation tags, and regional operation restrictions (`aws:RequestedRegion`)
-  - centralized network hub VPC deployed with Transit Gateway, AWS Network Firewall, and VPC Peering where appropriate
 
 ### 10. Cloud Storage, Database Resiliency & KMS Encryption at Rest
 - **Storage Protection & S3 Express One Zone**:
@@ -112,19 +128,20 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
 
 ### 11. Amazon Bedrock & AI/ML Managed Infrastructure Isolation
 - **PrivateLink VPC Isolation & Model ARN Scoping**:
-  - Amazon Bedrock APIs accessed exclusively via PrivateLink VPC endpoints (`com.amazonaws.<region>.bedrock-runtime`, `com.amazonaws.<region>.bedrock`); direct public routing is prohibited
+  - Amazon Bedrock APIs accessed exclusively via PrivateLink VPC endpoints (`com.amazonaws.<region>.bedrock-runtime`); direct public routing is prohibited
   - Bedrock IAM policies specify exact model ARNs; wildcard model access (`bedrock:InvokeModel` on `*`) is strictly prohibited
 - **Guardrails v2 & Token-Level Cost Tracking**:
   - production Bedrock endpoints enforce Guardrails v2 with contextual grounding threshold $\ge 0.7$, PII redaction filters, and denied topics
   - token-level cost attribution tags (`team-id`, `service-name`, `budget-tier`) attached to invocation metadata for granular billing attribution
 
 ### 12. AWS FinOps Engineering & Cost Attribution Governance
+- **Mathematical Compute Efficiency & Unit Costing**:
+  - cluster bin-packing and instance efficiency modeled continuously:
+    $$\text{Efficiency}_{\text{node}} = \frac{\sum \text{Requested CPU} + \text{Requested Memory}}{\text{Total Allocatable Capacity}} \ge 0.85$$
+  - total compute spend bounded across all running instance allocations:
+    $$Cost_{\text{compute}} = \sum_{i=1}^N \left( R_{\text{instance}, i} \times (1 - D_{\text{savings}, i}) \times T_{\text{hours}, i} \right)$$
 - **Shift-Left Tagging Enforcement**:
   - mandatory cost allocation tags (`team`, `service`, `environment`, `cost-center`) enforced via SCP at creation time; untagged resource provisioning blocked fail-closed
-  - CloudWatch Cost Allocation Tags activated in billing console; zero untagged resources permitted in production accounts
-- **Rightsizing & Savings Strategies**:
-  - AWS Compute Optimizer rightsizing recommendations reviewed monthly; rightsizing executed with risk justification
-  - Compute Savings Plans and Spot Fleet strategies defined for fault-tolerant and batch workloads with automated interruption handling
 
 ### 13. Cloud-Native Observability, Telemetry & AWS Config Compliance
 - **ADOT & Embedded Metric Format (EMF)**:
@@ -139,3 +156,14 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
   - handoff artifact emitted and validated against `contracts/schemas/aws-infra-spec.json`
   - mandatory properties populated: `spec_id`, `system_name`, `aws_account`, `region`, `resource_map`, `iam_roles`, `cost_attribution`
   - authoritative delivery completed to DevOps Engineer for `deployment-plan.json` generation and Kubernetes manifest binding
+
+### 15. Gate Review & Contract Conformance Verification Table
+| Verification Gate | Target Invariant | Required Tool / Command | Pass Criteria |
+| :--- | :--- | :--- | :--- |
+| **OpenTofu KMS Encryption** | AES-GCM 256 client state | `tofu state pull \| file -` | State payload encrypted binary |
+| **Pod Identity Mapping** | Zero IRSA trust policies | `aws eks list-pod-identity-associations` | Association active; STS link-local |
+| **Bottlerocket Integrity** | dm-verity enabled | `kubectl get ec2nodeclass -o yaml` | `amiFamily: Bottlerocket` |
+| **Karpenter Disruption** | Node budget $\le 10\%$ | `kubectl get nodepool -o yaml` | `budgets: [{nodes: "10%"}]` |
+| **Zero Wildcard IAM** | Zero `Action: "*"` | `aws access-analyzer validate-policy` | 0 security errors/warnings |
+| **Graviton4 Standard** | Architecture == arm64 | `kubectl get nodes -L kubernetes.io/arch` | 100% arm64 for microservices |
+| **Handoff Contract** | Valid `aws-infra-spec.json` | `python3 core/scripts/validate-contracts.py` | 100% schema compliant |

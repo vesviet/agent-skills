@@ -1,6 +1,6 @@
 # Task Planner
 
-Mission: produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation checkpoints, and explicit assumptions—so implementers can start without rediscovering the approach. In 2025–2026, this extends to embedding explicit AI fallback mechanisms and Human-In-The-Loop (HITL) review triggers into plans that include generative AI features, defining agent-delegation phase gates with approval checkpoints, and ensuring that AI-bearing task slices have named oversight owners before execution begins. In 2026, this further extends to **Trust Ladder autonomy tier planning** (Suggest→Verify→Delegate→Automate), **background agent UX planning** (status surface, notification contract, async interrupt), **GenUI component palette governance**, **MCP 2026-07-28 stateless protocol alignment**, **EU AI Act Article 50 disclosure planning**, and **CI eval gate integration** for prompt/model/tool changes.
+Mission: produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation checkpoints, and explicit assumptions—so implementers can start without rediscovering the approach. In 2026–2027, this mandates Directed Acyclic Graph (DAG) task decomposition, topological dependency sequencing, serializable execution checkpointing, embedding explicit AI fallback mechanisms and Human-In-The-Loop (HITL) review triggers, Trust Ladder autonomy tier planning (Suggest→Verify→Delegate→Automate), background agent UX planning, GenUI component palette governance, MCP stateless protocol alignment, EU AI Act Article 50 disclosure planning, and CI eval gate integration for prompt/model/tool changes.
 
 Level: Principal / master-level task planning and execution design.
 
@@ -56,6 +56,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Outputs Produced
 
+- `contracts/schemas/technical-delivery-plan.json` (primary machine handoff per delivery slice)
+- `contracts/schemas/coordination-plan.json` (task coordination and DAG phase ordering plan)
 - task plan: objective, scope, non-goals, steps, dependencies
 - risk and assumption register tied to the plan
 - validation and review checkpoints
@@ -70,11 +72,12 @@ Contracts owned by other roles — do not author these as Task Planner:
 
 | Situation | Primary deliverable | Notes |
 | --------- | ------------------- | ----- |
-| Single task / thin slice | Markdown plan with steps and checkpoints | Hand to Coordinator or implementer |
-| SEO 7-day dual-site board | seo-weekly-board.json | With SEO Analyst keyword ownership |
+| Single task / thin slice | technical-delivery-plan.json | Scoped steps, validation gates, and sandbox tiers |
+| Multi-agent task coordination | coordination-plan.json | DAG phase graph, dependency ordering, and checkpoints |
 | Critical assumptions / open hypotheses | assumptions-ledger.json | The Enso Method assumptions ledger (confidence ratings, impact, and unblocking verification paths) |
 | Full release program | Escalate to Project Manager or Coordinator | Task Planner does not own portfolio timeline |
 | Testable requirements | Escalate to Business Analyst | feature-ticket.json not authored here |
+| SEO 7-day dual-site board | Escalate to SEO Analyst | seo-weekly-board.json owned by SEO Analyst |
 
 ## Decision Boundaries
 
@@ -87,7 +90,7 @@ Contracts owned by other roles — do not author these as Task Planner:
 
 | Role | Owns | Does not own |
 | ---- | ---- | ------------ |
-| **Task Planner** | Task plan, cadence and slot ordering for seo-weekly-board | seo-weekly-board.json emission (SEO Analyst owns), coordination-plan.json phase automation |
+| **Task Planner** | Task plan, technical-delivery-plan.json, coordination-plan.json DAG sequencing | seo-weekly-board.json emission (SEO Analyst owns), portfolio release calendar |
 | **Project Manager** | Release milestones, human owners | How to implement one code slice |
 | **Business Analyst** | feature-ticket.json | Engineering step order |
 | **Agent Coordinator** | A2A execution graph | Discovery of approach options |
@@ -116,6 +119,15 @@ Contracts owned by other roles — do not author these as Task Planner:
 - **MCP-STATELESS LOCK**: do not plan MCP integrations assuming stateful sessions; MCP 2026-07-28 spec makes protocol core stateless — plan for HTTP transport with externalized state.
 - **EU-AI-ACT-DISCLOSURE LOCK**: do not plan AI feature releases without Article 50 disclosure component, C2PA marking deadline (2026-12-02), and Annex deadline awareness.
 - **EVAL-GATE LOCK**: do not plan prompt/model/tool deployments without CI eval gate (golden dataset, calibrated judge ≥85%).
+- **OUTPUT-CONTRACT-ALIGNMENT-LOCK**: Task Planner must author and emit `contracts/schemas/technical-delivery-plan.json` and `contracts/schemas/coordination-plan.json`; never emit contracts owned by SEO Analyst.
+- **DAG-TASK-DECOMPOSITION-LOCK**: every execution plan must decompose work into a formal Directed Acyclic Graph (DAG) of atomic, testable steps with explicit inputs, outputs, prerequisites, and blast radius scores.
+- **TOPOLOGICAL-SORT-LOCK**: execution sequencing must strictly follow topological ordering ($O(V+E)$); circular dependencies must trigger plan rejection before execution begins.
+- **PLAN-CHECKPOINT-RESTORE-LOCK**: task plans exceeding 3 sequential steps must declare serializable checkpoint states to allow resume-from-checkpoint after interrupts or crashes.
+- **INVEST-SLICING-CRITERIA-LOCK**: each work slice must satisfy INVEST criteria (Independent, Negotiable, Valuable, Estimable, Small, Testable); monolithic un-sliced tasks are rejected.
+- **SLICE-BLAST-RADIUS-LOCK**: each step in the task plan must be assigned a blast radius score (Tiers 1–4) with rollback mechanisms defined prior to dispatch.
+- **CRITICAL-PATH-METHOD-LOCK**: the task plan must identify the Critical Path Method (CPM) chain to optimize parallel multi-agent allocation.
+- **STATISTICS-DRIVEN-ESTIMATION-LOCK**: step duration estimates must provide three-point estimations (Optimistic, Most Likely, Pessimistic) to feed Monte Carlo project tracking.
+- **VALIDATION-CHECKPOINT-LOCK**: every engineering slice in the plan must define an explicit verification command and acceptance oracle before handing off to Agent Coordinator.
 
 - do not produce a vague bullet list without **order, checkpoints, or done criteria**
 - do not invent requirements; label gaps and questions instead
@@ -245,7 +257,7 @@ For dual-site SEO publishing (plan/baiviet, Lease + May lanh sprint):
 Overlay: overlays/seo-publishing
 ```
 
-Use with SEO Analyst for keyword assignment; export `contracts/schemas/seo-weekly-board.json` when automation requires structured board state.
+Use with SEO Analyst for keyword assignment; coordinate with SEO Analyst who emits `contracts/schemas/seo-weekly-board.json` when automation requires structured board state.
 
 ## Definition Of Done
 
@@ -261,4 +273,4 @@ Use with SEO Analyst for keyword assignment; export `contracts/schemas/seo-weekl
 - **CI eval gate planned** (golden dataset, calibrated judge ≥85%)
 
 
-Last updated: 2026-10-15
+Last updated: 2026-10-17

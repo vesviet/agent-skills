@@ -23,7 +23,7 @@
     {
       "id": "3d-graphics-engineer",
       "name": "3D Graphics Engineer",
-      "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGL/WebGPU impleme"
+      "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGPU/WebGL impleme"
     },
     {
       "id": "agent-coordinator",
@@ -33,7 +33,7 @@
     {
       "id": "agent-discovery-engineer",
       "name": "Agent Discovery Engineer",
-      "description": "Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance acros"
+      "description": "Own the integration, architecture, and maintenance of Agent Discovery protocols and machine registries, ensuring 100% co"
     },
     {
       "id": "ai-systems-engineer",

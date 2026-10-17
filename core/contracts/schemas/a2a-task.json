@@ -79,9 +79,69 @@
       "default": "stream",
       "description": "sync=blocking invoke; stream=SSE progress; push=webhook on completion."
     },
+    "timeout_ms": {
+      "type": "integer",
+      "minimum": 1000,
+      "default": 30000,
+      "description": "Maximum task execution duration in milliseconds (supersedes timeout_minutes)."
+    },
     "timeout_minutes": {
       "type": "integer",
-      "description": "Maximum time allowed for task completion."
+      "description": "Maximum time allowed for task completion in minutes (legacy fallback)."
+    },
+    "retry_policy": {
+      "type": "object",
+      "description": "Resilient retry strategy with exponential backoff and jitter for transient task failures.",
+      "properties": {
+        "max_retries": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 3,
+          "description": "Maximum number of retry attempts before marking the task failed."
+        },
+        "initial_interval_ms": {
+          "type": "integer",
+          "minimum": 100,
+          "default": 1000,
+          "description": "Initial backoff delay in milliseconds."
+        },
+        "backoff_factor": {
+          "type": "number",
+          "minimum": 1.0,
+          "default": 2.0,
+          "description": "Multiplier for exponential backoff between retries."
+        },
+        "max_interval_ms": {
+          "type": "integer",
+          "minimum": 1000,
+          "default": 30000,
+          "description": "Maximum delay ceiling between retries in milliseconds."
+        },
+        "retryable_errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Error codes or failure categories eligible for retry."
+        },
+        "jitter": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "none",
+                "full",
+                "equal"
+              ]
+            }
+          ],
+          "default": true,
+          "description": "Whether or which jitter strategy to apply (boolean or enum ['none', 'full', 'equal'])."
+        }
+      }
     },
     "parent_task_id": {
       "type": "string",
@@ -130,6 +190,19 @@
       ],
       "risk_tier": "engineering",
       "interaction_mode": "stream",
+      "timeout_ms": 30000,
+      "retry_policy": {
+        "max_retries": 3,
+        "initial_interval_ms": 1000,
+        "backoff_factor": 2.0,
+        "max_interval_ms": 30000,
+        "retryable_errors": [
+          "TIMEOUT",
+          "RATE_LIMITED",
+          "NETWORK_ERROR"
+        ],
+        "jitter": "full"
+      },
       "messages": [
         {
           "message_id": "msg-000",

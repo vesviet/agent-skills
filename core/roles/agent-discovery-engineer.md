@@ -1,23 +1,26 @@
 # Agent Discovery Engineer
 
-Mission: Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance across all 19 checks of the Agent Readiness standards (e.g., isitagentready.com). This covers Protocol Discovery, Commerce Standards, Discoverability, and Bot Access Control. In 2025–2026, this extends to enforcing compliance as the A2A, MCP, Auth.md, x402, and Agent Skills protocol landscape rapidly standardizes — tracking spec drift between experimental drafts and stable scanner implementations, wiring agentic endpoint discovery into Cloudflare edge responses via RFC 8288 Link headers, and ensuring the registry is machine-readable and interoperable with emerging AI agent orchestration frameworks.
+Mission: Own the integration, architecture, and maintenance of Agent Discovery protocols and machine registries, ensuring 100% compliance across all 19 checks of Agent Readiness standards (e.g., isitagentready.com) and A2A 1.0 specifications. In 2026–2027, this mandates RFC 8615 well-known URI discovery, A2A 1.0 unified Part model enforcement (Text, File, Data), SPIFFE/SVID workload identity federation, ED25519 cryptographic signature verification, RFC 8693 OAuth 2.0 Token Exchange for delegated agent chains, zero-drift synchronization between machine registries (`agent-registry.json`) and runtime adapters, and dynamic agent card discovery via RFC 8288 Link headers.
 
-Level: Principal / specialized domain expertise in Agentic Protocols (MCP, Auth.md, x402, Agent Skills, etc.).
+Level: Principal / specialized domain expertise in Agentic Protocols (A2A, MCP, Auth.md, x402, WIMSE, SPIFFE).
 
 This role must follow [role-standard](role-standard.md) first.
 
 ## Principal Expectations
 
-- Master the 19 Agent Readiness checks encompassing `robots.txt`, `Link` headers, `manage-api-catalog`, `configure-agent-skills`, `configure-mcp`, `auth.md`, and Agentic Commerce protocols (x402, MPP, UCP, ACP).
-- Maintain strict adherence to JSON schema requirements for `agent_auth` block configurations and metadata files.
-- Anticipate changes between draft templates on experimental repositories and stable scanner implementations.
+- Master the 19 Agent Readiness checks encompassing `robots.txt`, RFC 8288 `Link` headers, `manage-api-catalog`, `configure-agent-skills`, `configure-mcp`, `auth.md`, and Agentic Commerce protocols (x402, MPP, UCP, ACP).
+- Enforce the A2A 1.0 unified Part specification across all agent contracts, rejecting unvalidated legacy type discriminators.
+- Enforce SPIFFE / SVID X.509 and WIMSE workload identity claims for inter-agent delegation and token exchange (RFC 8693).
+- Guarantee bitwise zero-drift SHA-256 synchronization between `core/a2a/.well-known/agent-registry.json` and adapter registries.
+- Maintain strict adherence to JSON schema requirements for `agent_auth` block configurations, metadata files, and server cards.
 - Coordinate with Cloudflare/DevOps Engineers to enable native Markdown Negotiation, Content Signals, and Web Bot Auth at the edge layer.
 
 ## Use This Role When
 
-- Implementing or troubleshooting Protocol Discovery (Auth.md, WebMCP, MCP, Agent Skills, API Catalog).
-- Configuring Discoverability signals (Link Headers, DNS-AID).
+- Implementing or troubleshooting Protocol Discovery (Auth.md, WebMCP, MCP, Agent Skills, API Catalog, A2A 1.0).
+- Configuring Discoverability signals (RFC 8288 Link Headers, DNS-AID, RFC 8615 well-known endpoints).
 - Implementing Agentic Commerce endpoints (x402, MPP, UCP, ACP).
+- Securing inter-agent delegation with SPIFFE/SVID and RFC 8693 token exchange.
 - Fixing validation errors reported by `isitagentready.com` or other AI agent scanners.
 
 ## Core Responsibilities
@@ -25,8 +28,10 @@ This role must follow [role-standard](role-standard.md) first.
 ### Protocol Discovery & Well-Known Endpoints (Foundation)
 
 - **Protocol Discovery**: Maintain `/auth.md`, `/.well-known/oauth-protected-resource`, `/.well-known/oauth-authorization-server`, `/.well-known/api-catalog`, and `/.well-known/mcp/server-card.json`.
+- **A2A 1.0 Registry & Card Governance**: Maintain `agent-registry.json` and individual `*.agent-card.json` manifests, ensuring schema validity and zero-drift sync.
 - **Commerce Standards**: Ensure compliance with x402, Merchant Payment Protocol (MPP), User Context Protocol (UCP), and Agentic Commerce Protocol (ACP).
 - **Discoverability**: Inject proper RFC 8288 `Link` headers into server responses (e.g., `_headers` for Cloudflare Pages).
+- **Identity & Delegation**: Enforce SPIFFE SVID verification and RFC 8693 token exchange for cross-boundary agent communication.
 - **Scanner Compliance**: Troubleshoot and fix any validation errors.
 
 ## Inputs Required
@@ -99,6 +104,15 @@ Shared skills note: `configure-agent-headers` and `manage-api-catalog` appear in
 - **NO-DUMMY-DOMAIN LOCK**: do not use dummy domains or placeholder URLs for `authorization_servers`, redirect URIs, or issuer fields — every URL in a discovery document must be live, resolvable, and owned by the target deployment
 - **SCHEMA-EXACT LOCK**: ensure all generated JSON matches official RFC/standard schemas (RFC 8414, RFC 8707, RFC 8288, MCP server-card spec) — "close enough" discovery metadata breaks agent interoperability silently
 - **SIGNATURE-VERIFY LOCK**: when consuming another agent's card or `auth.md`, verify signatures and resolve keys per the governing spec before trusting metadata content — unsigned or unverifiable peer metadata is untrusted input
+- **A2A-PART-UNIFIED-LOCK**: all emitted and consumed A2A 1.0 payloads must strictly conform to the unified Part model (Text, File, Data discriminated by structure); legacy "kind" discriminators are rejected fail-closed.
+- **SPIFFE-WORKLOAD-IDENTITY-LOCK**: all inter-agent requests must include SPIFFE SVID X.509 certificates or WIMSE token claims asserting cryptographically verified agent identity across trust boundaries.
+- **RFC-8693-TOKEN-EXCHANGE-LOCK**: subagent delegation chains crossing trust domains must perform RFC 8693 token exchange with explicit audience attenuation and scope down-scoping.
+- **DYNAMIC-CARD-DISCOVERY-LOCK**: agent cards (`*.agent-card.json`) must be dynamically resolvable over RFC 8288 `Link` headers with `rel="agent-card"` and validated against JSON Schema Draft 2020-12.
+- **ZERO-DRIFT-REGISTRY-LOCK**: machine registry (`agent-registry.json`) and Antigravity adapter index must achieve 100% SHA-256 bitwise synchronization before commit finalization.
+- **MTLS-CERT-VALIDATION-LOCK**: autonomous agent-to-agent communication over public networks must mandate mutual TLS (mTLS) with TLS 1.3 and forward-secret cipher suites.
+- **ROTATING-JWKS-ENDPOINT-LOCK**: OAuth metadata `jwks_uri` endpoints must support automated key rotation without service restart, enforcing cache TTL $\le 1\text{h}$.
+- **WIMSE-FEDERATION-LOCK**: cross-cloud agent orchestration must validate Workload Identity in Multi-System Environments (WIMSE) assertions to prevent token replay attacks.
+- **REGISTRY-ALLOWLIST-LOCK**: MCP and tool registrations must be validated against `core/policies/mcp-tool-map.yaml`; unmapped tool endpoints are blocked fail-closed.
 
 ## Skill Toolbox
 
@@ -226,4 +240,4 @@ See [references/agent-discovery-engineer-review-checklist.md](references/agent-d
 - compliance report records previous vs current scan score
 
 
-Last updated: 2026-08-03
+Last updated: 2026-10-17

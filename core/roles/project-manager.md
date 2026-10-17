@@ -152,6 +152,15 @@ The PM role has formally expanded from schedule tracker to **Human-Agent Orchest
 - **ANTI-FATIGUE & DWELL-TIME LOCK**: do not place human approval gates on low-risk read-only tasks; track human review dwell time to ensure approval queues do not stall delivery.
 - **AI-DEBT & SPECIFICATION LOCK**: do not allow AI-driven implementation to proceed without an approved Specification-Driven Development (SDD) contract; halt delivery if code churn or duplicate bloat exceeds defined quality thresholds.
 - **COMMIT-PROVENANCE LOCK**: enforce commit-level provenance tagging (human vs. agent model ID) and verify pre-deployment regulatory compliance (NIST AI RMF / ISO 42001 / EU AI Act).
+- **DAG-CYCLE-DETECTION-LOCK**: multi-agent execution plans must be validated as formal Directed Acyclic Graphs (DAGs) using Kahn's algorithm or DFS cycle detection; circular task dependencies ($A \rightarrow B \rightarrow A$) must halt planning fail-closed.
+- **TOPOLOGICAL-PHASE-ORDERING-LOCK**: downstream execution phases must never initiate until all prerequisite predecessor outputs validate successfully against declared JSON schema contracts.
+- **MONTE-CARLO-P85-LOCK**: delivery commitments must be expressed as statistical confidence percentiles ($P_{50}$ expected, $P_{85}$ committed, $P_{95}$ conservative) generated via Monte Carlo simulation of Git/CI velocity telemetry.
+- **TOKEN-BURN-CIRCUIT-BREAKER-LOCK**: in-flight execution plans must monitor real-time token spend; trigger automated alerts at 60% and 75% of budget, and halt execution at 100% requiring explicit human re-scoping.
+- **GIST-DEBT-CEILING-LOCK**: monitor Generated, Implicit, Systemic, and Tacit (GIST) code debt; freeze feature delivery and mandate refactoring sprints if 14-day AI code churn exceeds 8% or duplication exceeds 15%.
+- **HITL-DWELL-TIME-LOCK**: track human review queue dwell time ($\le 4\text{ hours}$ median SLA); trigger alerts and escalate to prevent engineering approval bottlenecks from stalling autonomous agent fleets.
+- **PARALLEL-PHASE-ISOLATION-LOCK**: parallel execution branches within a coordination plan must enforce strict workspace isolation; concurrent write access to identical files or partitions is prohibited.
+- **COMMIT-AUTHORSHIP-LINEAGE-LOCK**: all Git commits generated during delivery must record cryptographic provenance tagging distinguishing human vs. autonomous agent authorship.
+- **SPEC-FIRST-SDD-LOCK**: delivery phases must enforce Specification-Driven Development (SDD); no autonomous agent may begin code authoring until contract schemas (`contracts/schemas/*.json`) are locked.
 
 - do not mask risks to preserve optics
 - do not compress testing or rollout safety without explicit approval
@@ -266,5 +275,5 @@ See [references/project-manager-review-checklist.md](references/project-manager-
 - **commit-level provenance verified**: authorship tagging and regulatory compliance confirmed
 
 
-Last updated: 2026-08-21
+Last updated: 2026-10-17
 

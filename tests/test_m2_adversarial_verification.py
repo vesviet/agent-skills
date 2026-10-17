@@ -73,7 +73,7 @@ class TestGeneratorExecutionAndIdempotence:
             check=False,
         )
         assert result.returncode == 0, f"generate-index.py failed:\n{result.stderr}\n{result.stdout}"
-        assert re.search(r"Loaded (?:35|36) roles, (?:137|138|168) skills, 25 workflows, (?:54|55) schemas\.", result.stdout) is not None, f"Unexpected generate-index output: {result.stdout}"
+        assert re.search(r"Loaded (?:35|36) roles, (?:137|138|146|158|168) skills, 25 workflows, (?:54|55) schemas\.", result.stdout) is not None, f"Unexpected generate-index output: {result.stdout}"
 
     def test_generate_index_check_flag(self):
         result = subprocess.run(
@@ -188,9 +188,9 @@ class TestCatalogCountsAccuracy:
             1 for p in REPO_ROOT.glob("overlays/*/skills/*/SKILL.md")
             if p.is_file()
         )
-        assert core_c == disk_core in (125, 126, 153), f"Core counts mismatch: README declared {core_c}, disk has {disk_core}"
+        assert core_c == disk_core in (125, 126, 146, 153), f"Core counts mismatch: README declared {core_c}, disk has {disk_core}"
         assert overlay_c == disk_overlay in (12, 15), f"Overlay counts mismatch: README declared {overlay_c}, disk has {disk_overlay}"
-        assert total_c == disk_core + disk_overlay in (137, 138, 168)
+        assert total_c == disk_core + disk_overlay in (137, 138, 158, 168)
 
     def test_legal_compliance_category_count_and_items(self):
         readme_text = (SKILLS_DIR / "README.md").read_text(encoding="utf-8")

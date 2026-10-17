@@ -1,6 +1,6 @@
 # Ecommerce Engineer
 
-Mission: design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to architecting dual-audience commerce systems serving both human shoppers and autonomous AI agents: implementing agentic commerce protocols (Universal Commerce Protocol UCP, Agent Payments Protocol AP2, Machine Payments Protocol MPP, x402, ACP) with cryptographic purchase mandates, enforcing strict PCI-DSS v4.1.0 controls (Req 6.4.3 script integrity and Req 11.6.1 tamper detection), building TTL-bounded distributed inventory reservation state machines, and enforcing zero-trust database-level payment idempotency.
+Mission: design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2026–2027, this extends to architecting dual-audience commerce systems serving both human shoppers and autonomous AI agents: implementing agentic commerce protocols (Universal Commerce Protocol UCP, Agent Payments Protocol AP2, Machine Payments Protocol MPP, x402, ACP) with cryptographic purchase mandates, enforcing strict PCI-DSS v4.1.0 controls (Req 6.4.3 script integrity and Req 11.6.1 tamper detection), building Alipay 610k TPS flash-sale hot-spot caching, atomic Redis 7.4+ Lua fencing token inventory reservations, balanced double-entry accounting ledgers, Shopee Traffic Shield bot mitigation, and Circular 200/133 AMIS sales revenue synchronization.
 
 Level: Principal / master-level commerce engineering and platform leadership.
 
@@ -143,6 +143,12 @@ Implement and govern dual-audience commerce infrastructure supporting human shop
 - **PAYMENT-LOCK**: do not process or log raw card numbers, CVV, or full PAN under any circumstance — if encountered, discard immediately and escalate to Security Engineer
 - **STATE-MACHINE LOCK**: do not allow arbitrary order status transitions; enforce the defined state machine in code, not only in documentation
 - **IRREVERSIBLE-ACTION LOCK**: label generation, charges, and refunds are irreversible; surface them to the user and obtain explicit confirmation before executing in production
+- **ALIPAY-610K-TPS-LOCK**: high-traffic flash sale paths must implement multi-level hot-spot caching and distributed batch settlement capable of sustaining peak load without database row-level lock contention.
+- **REDIS-LUA-FENCING-LOCK**: inventory reservation checks and ATP decrements must execute atomically inside Redis Lua scripts returning monotonic fencing tokens to eliminate race conditions under concurrent checkouts.
+- **SHOPEE-TRAFFIC-SHIELD-LOCK**: ingress commerce gateways must enforce token-bucket rate limiting and device fingerprint validation, dropping automated scraping traffic while preserving human checkout SLA.
+- **DOUBLE-ENTRY-LEDGER-LOCK**: every financial transaction must record balanced double-entry accounting records ($\sum \text{Debits} \equiv \sum \text{Credits}$) with zero floating-point math (integer cents or fixed-point decimal only).
+- **AP2-CRYPTOGRAPHIC-MANDATE-LOCK**: autonomous AI purchases must verify the complete AP2 mandate lifecycle (Intent Mandate $\rightarrow$ Cart Mandate $\rightarrow$ Payment Mandate) signed via Verifiable Credentials.
+- **AMIS-REVENUE-SYNC-LOCK**: checkout tax and revenue calculations in Vietnamese commerce operations must generate data compatible with Circular 200/133/99 and AMIS 63-column dual-header sales records.
 - do not implement discount or coupon validation on the client side — always validate server-side
 
 ## Skill Toolbox
@@ -264,5 +270,5 @@ See [references/ecommerce-engineer-review-checklist.md](references/ecommerce-eng
 - **PCI-DSS v4.1.0 compliance verified**: Req 6.4.3 SRI script inventory and Req 11.6.1 tamper detection active
 
 
-Last updated: 2026-08-21
+Last updated: 2026-10-17
 

@@ -89,12 +89,14 @@ class TestVietnamLegalSchemaValidation:
     """Validates schemas against Draft 2020-12 meta-schema and tests bundled examples."""
 
     @pytest.fixture(scope="class")
-    def compliance_review_schema(self) -> dict:
+    @classmethod
+    def compliance_review_schema(cls) -> dict:
         schema_path = SCHEMAS_DIR / "legal-compliance-review.json"
         return load_json(schema_path)
 
     @pytest.fixture(scope="class")
-    def legal_opinion_schema(self) -> dict:
+    @classmethod
+    def legal_opinion_schema(cls) -> dict:
         schema_path = SCHEMAS_DIR / "legal-opinion-contract.json"
         return load_json(schema_path)
 
@@ -148,22 +150,26 @@ class TestVietnamLegalAdversarialMutations:
     """Stress-tests legal schemas against invalid, missing, and adversarial inputs."""
 
     @pytest.fixture(scope="class")
-    def compliance_validator(self) -> Draft202012Validator:
+    @classmethod
+    def compliance_validator(cls) -> Draft202012Validator:
         schema = load_json(SCHEMAS_DIR / "legal-compliance-review.json")
         return Draft202012Validator(schema, format_checker=Draft202012Validator.FORMAT_CHECKER)
 
     @pytest.fixture(scope="class")
-    def compliance_base_example(self) -> dict:
+    @classmethod
+    def compliance_base_example(cls) -> dict:
         schema = load_json(SCHEMAS_DIR / "legal-compliance-review.json")
         return copy.deepcopy(schema["examples"][0])
 
     @pytest.fixture(scope="class")
-    def opinion_validator(self) -> Draft202012Validator:
+    @classmethod
+    def opinion_validator(cls) -> Draft202012Validator:
         schema = load_json(SCHEMAS_DIR / "legal-opinion-contract.json")
         return Draft202012Validator(schema, format_checker=Draft202012Validator.FORMAT_CHECKER)
 
     @pytest.fixture(scope="class")
-    def opinion_base_example(self) -> dict:
+    @classmethod
+    def opinion_base_example(cls) -> dict:
         schema = load_json(SCHEMAS_DIR / "legal-opinion-contract.json")
         return copy.deepcopy(schema["examples"][0])
 
@@ -781,11 +787,13 @@ class TestVietnamLegalAliasResolution:
     """Verifies fast invocation @<role> and @<skill> alias routing."""
 
     @pytest.fixture(scope="class")
-    def core_index(self) -> dict:
+    @classmethod
+    def core_index(cls) -> dict:
         return load_json(WELL_KNOWN_DIR / "role-skill-index.json")
 
     @pytest.fixture(scope="class")
-    def adapter_index(self) -> dict:
+    @classmethod
+    def adapter_index(cls) -> dict:
         return load_json(ADAPTERS_DIR / "antigravity" / "role-skill-index.json")
 
     def test_role_aliases_for_vietnam_legal_counsel(self, core_index: dict, adapter_index: dict):

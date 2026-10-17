@@ -1394,7 +1394,7 @@
     "3d-graphics-engineer": {
       "name": "3d-graphics-engineer",
       "title": "3D Graphics Engineer",
-      "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGL/WebGPU implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility. In 2025–2026, this extends to governing AI-generated 3D assets (gaussian splatting, neural radiance fields, generative textures and meshes) with explicit quality and performance gates before pipeline integration, validating generative content against fidelity and memory budgets, and enforcing safe composition patterns for procedural and AI-authored geometry in real-time scenes.",
+      "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGPU/WebGL implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility. In 2026–2027, this mandates WebGPU-first architectures with WebGL2 fallback, WGSL (WebGPU Shading Language) compute shader pipelines, Three.js WebGPURenderer / TSL (Three Shading Language), 3D Gaussian Splatting (3DGS) real-time rasterization within strict VRAM ceilings ($VRAM_{\\text{textures}} = \\sum (W_i \\times H_i \\times Bpp_i \\times 1.333)$), Meshopt/Draco asset delivery ($\\le 2\\text{MB}$ payload), and governing AI-generated 3D assets with automated memory and fidelity gates.",
       "file": "core/roles/3d-graphics-engineer.md",
       "skills": [
         "debug-3d-scene",
@@ -1480,7 +1480,7 @@
     "agent-discovery-engineer": {
       "name": "agent-discovery-engineer",
       "title": "Agent Discovery Engineer",
-      "description": "Own the integration and maintenance of Agent Discovery protocols, ensuring the repository achieves 100% compliance across all 19 checks of the Agent Readiness standards (e.g., isitagentready.com). This covers Protocol Discovery, Commerce Standards, Discoverability, and Bot Access Control. In 2025–2026, this extends to enforcing compliance as the A2A, MCP, Auth.md, x402, and Agent Skills protocol landscape rapidly standardizes — tracking spec drift between experimental drafts and stable scanner implementations, wiring agentic endpoint discovery into Cloudflare edge responses via RFC 8288 Link headers, and ensuring the registry is machine-readable and interoperable with emerging AI agent orchestration frameworks.",
+      "description": "Own the integration, architecture, and maintenance of Agent Discovery protocols and machine registries, ensuring 100% compliance across all 19 checks of Agent Readiness standards (e.g., isitagentready.com) and A2A 1.0 specifications. In 2026–2027, this mandates RFC 8615 well-known URI discovery, A2A 1.0 unified Part model enforcement (Text, File, Data), SPIFFE/SVID workload identity federation, ED25519 cryptographic signature verification, RFC 8693 OAuth 2.0 Token Exchange for delegated agent chains, zero-drift synchronization between machine registries (`agent-registry.json`) and runtime adapters, and dynamic agent card discovery via RFC 8288 Link headers.",
       "file": "core/roles/agent-discovery-engineer.md",
       "skills": [
         "manage-auth-md",
@@ -1939,7 +1939,7 @@
     "ecommerce-engineer": {
       "name": "ecommerce-engineer",
       "title": "Ecommerce Engineer",
-      "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2025–2026, this extends to architecting dual-audience commerce systems serving both human shoppers and autonomous AI agents: implementing agentic commerce protocols (Universal Commerce Protocol UCP, Agent Payments Protocol AP2, Machine Payments Protocol MPP, x402, ACP) with cryptographic purchase mandates, enforcing strict PCI-DSS v4.1.0 controls (Req 6.4.3 script integrity and Req 11.6.1 tamper detection), building TTL-bounded distributed inventory reservation state machines, and enforcing zero-trust database-level payment idempotency.",
+      "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2026–2027, this extends to architecting dual-audience commerce systems serving both human shoppers and autonomous AI agents: implementing agentic commerce protocols (Universal Commerce Protocol UCP, Agent Payments Protocol AP2, Machine Payments Protocol MPP, x402, ACP) with cryptographic purchase mandates, enforcing strict PCI-DSS v4.1.0 controls (Req 6.4.3 script integrity and Req 11.6.1 tamper detection), building Alipay 610k TPS flash-sale hot-spot caching, atomic Redis 7.4+ Lua fencing token inventory reservations, balanced double-entry accounting ledgers, Shopee Traffic Shield bot mitigation, and Circular 200/133 AMIS sales revenue synchronization.",
       "file": "core/roles/ecommerce-engineer.md",
       "skills": [
         "integrate-payment-gateway",
@@ -2104,7 +2104,7 @@
     "mmo-engineer": {
       "name": "mmo-engineer",
       "title": "MMO Engineer",
-      "description": "Design, deploy, and operate end-to-end Make Money Online (MMO) operations. Maximize ROI through advanced stealth automation, privacy-first tracking (S2S), anti-detect infrastructure, AI-driven content generation, secure asset sharing, and large-scale proxyware farming, adapting to the 2025-2026 landscape of fingerprinting and bot detection.",
+      "description": "Design, deploy, and operate end-to-end Make Money Online (MMO) operations. Maximize ROI through advanced stealth automation, privacy-first tracking (S2S), anti-detect infrastructure, AI-driven content generation, secure asset sharing, and large-scale proxyware farming, adapting to the 2026–2027 landscape of binary-level fingerprinting evasion (Camoufox C++ engine, BoringSSL JA4 TLS signatures, MurmurHash3 canvas noise), biometric humanization (Fitts' Law cubic Bézier trajectories), quantitative financial modeling (Thompson Sampling budget allocation, True ROI accounting), and strict 1:1:1 asset isolation.",
       "file": "core/roles/mmo-engineer.md",
       "skills": [
         "deploy-mmo-infrastructure",
@@ -2305,7 +2305,7 @@
     "researcher": {
       "name": "researcher",
       "title": "Researcher",
-      "description": "run deep, iterative investigation and deliver triangulated, structured findings that downstream roles can act on without re-researching the baseline. In 2025–2026, this means navigating an AI-saturated information landscape where LLM-generated content permeates the web — distinguishing primary human-verified sources from AI-synthesized aggregations, applying Chain-of-Verification for critical claims, and enabling non-commodity value for downstream SEO and content roles.",
+      "description": "run deep, iterative investigation and deliver triangulated, structured findings that downstream roles can act on without re-researching the baseline. In 2026–2027, this mandates navigating an AI-saturated information landscape by enforcing acyclic Citation Directed Acyclic Graphs (DAGs), multi-source triangulation across at least three independent primary records, Chain-of-Verification (CoVe) atomic claim decomposition, C2PA cryptographic Content Credentials provenance checks, strict information density metrics ($\\text{ID} \\ge 0.12$), and zero AI primary source citations.",
       "file": "core/roles/researcher.md",
       "skills": [
         "conduct-research",
@@ -2582,7 +2582,7 @@
     "task-planner": {
       "name": "task-planner",
       "title": "Task Planner",
-      "description": "produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation checkpoints, and explicit assumptions—so implementers can start without rediscovering the approach. In 2025–2026, this extends to embedding explicit AI fallback mechanisms and Human-In-The-Loop (HITL) review triggers into plans that include generative AI features, defining agent-delegation phase gates with approval checkpoints, and ensuring that AI-bearing task slices have named oversight owners before execution begins. In 2026, this further extends to **Trust Ladder autonomy tier planning** (Suggest→Verify→Delegate→Automate), **background agent UX planning** (status surface, notification contract, async interrupt), **GenUI component palette governance**, **MCP 2026-07-28 stateless protocol alignment**, **EU AI Act Article 50 disclosure planning**, and **CI eval gate integration** for prompt/model/tool changes.",
+      "description": "produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation checkpoints, and explicit assumptions—so implementers can start without rediscovering the approach. In 2026–2027, this mandates Directed Acyclic Graph (DAG) task decomposition, topological dependency sequencing, serializable execution checkpointing, embedding explicit AI fallback mechanisms and Human-In-The-Loop (HITL) review triggers, Trust Ladder autonomy tier planning (Suggest→Verify→Delegate→Automate), background agent UX planning, GenUI component palette governance, MCP stateless protocol alignment, EU AI Act Article 50 disclosure planning, and CI eval gate integration for prompt/model/tool changes.",
       "file": "core/roles/task-planner.md",
       "skills": [
         "design-ux-flow",

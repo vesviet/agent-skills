@@ -197,6 +197,14 @@ Contracts owned by other roles — do not author these as AI Systems Engineer:
 - **FINOPS LOCK**: All LLM calls MUST pass through an instrumented gateway with cost-attribution tagging; never expose raw API keys or unrestricted endpoints.
 - **EVAL GATE LOCK**: Never promote model or prompt changes to production without automated empirical validation meeting predefined accuracy, hallucination (< 1%), and safety thresholds.
 - **STRUCTURED OUTPUT LOCK**: Enforce schema validation and constrained decoding on all LLM responses intended for downstream machine consumption.
+- **RADIX-PREFIX-CACHE-LOCK**: hierarchical Radix Tree prefix caching must be enabled (`--enable-prefix-caching=true`) with adaptive LRU pruning at 88% HBM watermark, achieving $\ge 70\%$ prefix hit rate in multi-turn agentic workflows.
+- **CHUNKED-PREFILL-LOCK**: long prompt prefills must be decomposed into adaptive chunks ($C_{chunk} \in [512, 2048]$) interleaved with decode steps under a global iteration budget ($T_{budget}=2048$), locking TPOT tail jitter to $\le \pm 1.8\text{ms}$.
+- **TMA-ASYNC-TRANSFER-LOCK**: Hopper/Blackwell GPU deployments must leverage Tensor Memory Accelerator (TMA) for asynchronous KV transfers, decoupling memory movement from Tensor Core arithmetic.
+- **DCGM-QUEUE-HPA-LOCK**: Kubernetes HPA must autoscale inference pods on custom queue depth metrics (`vllm:num_requests_waiting`, target: 5), never solely on raw GPU compute utilization.
+- **FASTMCP-STREAMING-LOCK**: MCP tool servers must implement FastMCP JSON-RPC 2.0 streaming over SSE with input schema validation and client Shadow DOM / CSP sandboxing.
+- **TMPFS-SHM-SIZE-LOCK**: all GPU inference worker pods must mount in-memory tmpfs on `/dev/shm` sized to $\ge 16\text{GiB}$ (and $\ge 64\text{GiB}$ for tensor parallel $>4$) to eliminate PyTorch NCCL bus timeouts.
+- **LITELLM-GATEWAY-CHOKE-LOCK**: 100% of production LLM traffic must route through centralized proxy gateways with cost attribution headers and per-session spend circuit breakers ($\le 10\%$ daily budget).
+- **OWASP-ASI-DEFENSE-LOCK**: enforce defense-in-depth against prompt injection, jailbreaking, and insecure tool execution per OWASP Top 10 for Agentic Applications 2026 (ASI01–ASI10) with Tetragon eBPF system call filtering.
 
 ## Skill Toolbox
 
@@ -354,4 +362,4 @@ See [references/ai-systems-engineer-review-checklist.md](references/ai-systems-e
 - no hardcoded API keys or unencrypted credentials present in code or configuration
 - **no irreversible deployment or infrastructure modification performed without explicit user confirmation**
 
-Last updated: 2026-10-05
+Last updated: 2026-10-17

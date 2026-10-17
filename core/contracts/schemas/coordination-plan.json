@@ -130,6 +130,66 @@
         }
       }
     },
+    "timeout_ms": {
+      "type": "integer",
+      "minimum": 1000,
+      "default": 30000,
+      "description": "Maximum overall coordination plan execution duration in milliseconds."
+    },
+    "retry_policy": {
+      "type": "object",
+      "description": "Graph-level default retry strategy with exponential backoff and jitter.",
+      "properties": {
+        "max_retries": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 3,
+          "description": "Maximum number of retry attempts."
+        },
+        "initial_interval_ms": {
+          "type": "integer",
+          "minimum": 100,
+          "default": 1000,
+          "description": "Initial backoff delay in milliseconds."
+        },
+        "backoff_factor": {
+          "type": "number",
+          "minimum": 1.0,
+          "default": 2.0,
+          "description": "Multiplier for exponential backoff between retries."
+        },
+        "max_interval_ms": {
+          "type": "integer",
+          "minimum": 1000,
+          "default": 30000,
+          "description": "Maximum delay ceiling between retries in milliseconds."
+        },
+        "retryable_errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Error codes or failure categories eligible for retry."
+        },
+        "jitter": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "none",
+                "full",
+                "equal"
+              ]
+            }
+          ],
+          "default": true,
+          "description": "Whether or which jitter strategy to apply (boolean or enum ['none', 'full', 'equal'])."
+        }
+      }
+    },
     "phases": {
       "type": "array",
       "description": "Ordered execution phases. Each phase produces a gate artifact before the next phase starts. For parallel groups, write-scope isolation must be confirmed before any parallel phase begins.",
@@ -204,6 +264,66 @@
           "confidence_rationale": {
             "type": "string",
             "description": "Rationale for the confidence level. Required when confidence_level is low or medium."
+          },
+          "timeout_ms": {
+            "type": "integer",
+            "minimum": 1000,
+            "default": 30000,
+            "description": "Maximum execution duration for this phase in milliseconds."
+          },
+          "retry_policy": {
+            "type": "object",
+            "description": "Phase-specific retry strategy with exponential backoff and jitter.",
+            "properties": {
+              "max_retries": {
+                "type": "integer",
+                "minimum": 0,
+                "default": 3,
+                "description": "Maximum number of retry attempts before marking the phase failed."
+              },
+              "initial_interval_ms": {
+                "type": "integer",
+                "minimum": 100,
+                "default": 1000,
+                "description": "Initial backoff delay in milliseconds."
+              },
+              "backoff_factor": {
+                "type": "number",
+                "minimum": 1.0,
+                "default": 2.0,
+                "description": "Multiplier for exponential backoff between retries."
+              },
+              "max_interval_ms": {
+                "type": "integer",
+                "minimum": 1000,
+                "default": 30000,
+                "description": "Maximum delay ceiling between retries in milliseconds."
+              },
+              "retryable_errors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Error codes or failure categories eligible for retry."
+              },
+              "jitter": {
+                "oneOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "full",
+                      "equal"
+                    ]
+                  }
+                ],
+                "default": true,
+                "description": "Whether or which jitter strategy to apply (boolean or enum ['none', 'full', 'equal'])."
+              }
+            }
           }
         },
         "required": [
@@ -316,6 +436,18 @@
         "total_actual": 10850,
         "budget_alerts": []
       },
+      "timeout_ms": 60000,
+      "retry_policy": {
+        "max_retries": 3,
+        "initial_interval_ms": 1000,
+        "backoff_factor": 2.0,
+        "max_interval_ms": 30000,
+        "retryable_errors": [
+          "TIMEOUT",
+          "NETWORK_ERROR"
+        ],
+        "jitter": "full"
+      },
       "phases": [
         {
           "phase_id": "phase-1-implement",
@@ -328,7 +460,18 @@
           "token_budget_estimated": 5000,
           "token_budget_actual": 4800,
           "confidence_level": "high",
-          "confidence_rationale": "Requirements clear from feature-ticket.json; existing test suite provides regression baseline."
+          "confidence_rationale": "Requirements clear from feature-ticket.json; existing test suite provides regression baseline.",
+          "timeout_ms": 30000,
+          "retry_policy": {
+            "max_retries": 2,
+            "initial_interval_ms": 500,
+            "backoff_factor": 2.0,
+            "max_interval_ms": 5000,
+            "retryable_errors": [
+              "TIMEOUT"
+            ],
+            "jitter": true
+          }
         },
         {
           "phase_id": "phase-2-review",

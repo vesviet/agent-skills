@@ -13,6 +13,8 @@ This reference checklist provides detailed AI systems engineering, model serving
 - **PagedAttention v3 Memory Bounds & Slab Layout**:
   - Key-Value (KV) cache partitioned into discrete physical blocks of size $B=32$ tokens, completely eliminating external memory fragmentation and restricting internal memory fragmentation to $<2.4\%$ across high-concurrency batches
   - Key-Value tensors quantized to FP8 (`--kv-cache-dtype fp8` / `fp8_e4m3`), halving byte footprint per token from 163.8 KB/tok to 81.9 KB/tok on 70B parameter models
+  - exact Key-Value cache memory footprint calculated and bounded via:
+    $$\text{Memory}_{KV} = 2 \times n_{\text{layers}} \times n_{\text{heads}} \times d_{\text{head}} \times L_{\text{ctx}} \times \text{sizeof(dtype)}$$
   - Hopper Tensor Memory Accelerator (TMA) asynchronous memory transfers and Warp Specialization active (Producer warps issue TMA descriptors; Consumer warps execute FP8 Tensor Core GEMMs)
 - **VRAM Utilization Safety Ceiling**:
   - `--gpu-memory-utilization` strictly capped between `0.88` and `0.90`
@@ -21,11 +23,11 @@ This reference checklist provides detailed AI systems engineering, model serving
 ### 3. Dynamic Chunked Prefill & Head-of-Line Blocking Mitigation
 - **Token Chunk Slicing & Iteration Budgets**:
   - dynamic chunked prefill enabled (`--enable-chunked-prefill=true`) with max batched tokens configured (`--max-num-batched-tokens 2048`)
-  - long incoming prompts decomposed into bounded chunks ($C_{chunk} \in [512, 2048]$ tokens) interleaved with active decode steps
-  - global iteration budget ($T_{budget} = 2048$) enforced to bound single-step GPU kernel execution time to $\le 25\text{ms}$
+  - long incoming prompts decomposed into bounded chunks ($C_{\text{chunk}} \in [512, 2048]$ tokens) interleaved with active decode steps
+  - global iteration budget ($T_{\text{budget}} = 2048$) enforced to bound single-step GPU kernel execution time to $\le 25\text{ms}$
 - **Latency SLAs & Jitter Verification**:
   - P99 Time-to-First-Token (TTFT) under concurrent burst prefill verified at $\le 100\text{ms}$
-  - Time-Per-Output-Token (TPOT) tail jitter locked within $\pm 2.0\text{ms}$ (eliminating decode stalls caused by monolithic GEMM prefill bursts)
+  - Time-Per-Output-Token (TPOT) tail jitter locked within $\pm 1.8\text{ms}$ (eliminating decode stalls caused by monolithic GEMM prefill bursts)
 
 ### 4. Hierarchical Prefix Caching & Radix Tree Block Management
 - **Radix Tree Cache Traversal**:
@@ -50,7 +52,18 @@ This reference checklist provides detailed AI systems engineering, model serving
 - **Kubernetes 1.31+ Dynamic Resource Allocation (DRA)**:
   - GPU resources claimed via Kubernetes 1.31+ DRA `ResourceClaim` / `ResourceClaimTemplate` objects using Common Expression Language (CEL) device selectors:
     ```yaml
-    selector: "device.attributes['gpu.nvidia.com'].memory >= 40.GiB && device.attributes['gpu.nvidia.com'].architecture == 'Hopper'"
+    apiVersion: resource.k8s.io/v1alpha3
+    kind: ResourceClaim
+    metadata:
+      name: h100-80gb-claim
+    spec:
+      devices:
+        requests:
+        - name: gpu
+          deviceClassName: gpu.nvidia.com
+          selectors:
+          - cel:
+              expression: "device.attributes['gpu.nvidia.com'].memory >= 80.GiB && device.attributes['gpu.nvidia.com'].architecture == 'Hopper'"
     ```
   - opaque integer GPU requests (`nvidia.com/gpu: 1`) without detailed VRAM capacity models rejected
 
@@ -70,7 +83,17 @@ This reference checklist provides detailed AI systems engineering, model serving
 
 ### 9. FastMCP Server Architecture & Streaming Tool Sandboxing
 - **Model Context Protocol (MCP) Stream Transport**:
-  - FastMCP servers implement JSON-RPC 2.0 streaming transport over Server-Sent Events (SSE) or stdio
+  - FastMCP servers implement JSON-RPC 2.0 streaming transport over Server-Sent Events (SSE) or stdio:
+    ```python
+    from fastmcp import FastMCP
+    
+    mcp = FastMCP("ai-systems-tool-server")
+    
+    @mcp.tool()
+    async def evaluate_inference_metrics(model_id: str) -> dict:
+        """Stream GPU utilization and cache hit metrics."""
+        return {"model": model_id, "p99_ttft_ms": 78.4, "cache_hit_rate": 0.74}
+    ```
   - tool definitions declare explicit JSON Schema input contracts and comprehensive parameter descriptions for LLM function calling
 - **Progressive Component Streaming & Isolation**:
   - long-running tools emit intermediate progress fragments before LLM token generation concludes
@@ -99,7 +122,10 @@ This reference checklist provides detailed AI systems engineering, model serving
 
 ### 13. GPU FinOps, DCGM Observability & Queue-Depth Autoscaling
 - **Queue-Depth Driven HPA Autoscaling**:
-  - Kubernetes Horizontal Pod Autoscaler (`autoscaling/v2`) scales on request queue depth custom metrics (`vllm:num_requests_waiting`, target: 5 requests per pod) and KV cache usage factor (`vllm:gpu_cache_usage_factor`, target: 0.80) via Prometheus Adapter
+  - Kubernetes Horizontal Pod Autoscaler (`autoscaling/v2`) scales on request queue depth custom metrics (`vllm:num_requests_waiting`, target: 5 requests per pod) and KV cache usage factor (`vllm:gpu_cache_usage_factor`, target: 0.80) via Prometheus Adapter:
+    ```promql
+    vllm:num_requests_waiting{job="vllm-serving"} > 5
+    ```
   - autoscaling based solely on GPU compute utilization (`DCGM_FI_DEV_GPU_UTIL`) strictly rejected: memory-bound autoregressive decoding leaves compute at 30–40% while queues saturate
 - **OpenCost DCGM Metric Attribution**:
   - NVIDIA DCGM Prometheus exporters collect `DCGM_FI_DEV_GPU_UTIL` and `DCGM_FI_DEV_FB_USED`; OpenCost attributes hourly GPU costs per namespace and service
@@ -113,3 +139,13 @@ This reference checklist provides detailed AI systems engineering, model serving
 - **HugePages & Storage Mounts**:
   - worker pods allocate $\ge 32\text{GiB}$ HugePages (`hugepages-2Mi: 32Gi`) for low-overhead RDMA memory registration
   - health check endpoints (`/health`) configured for liveness and readiness probes with initial delays accounting for model weight loading and warmup
+
+### 15. Gate Review & Contract Conformance Verification Table
+| Verification Gate | Target Invariant | Required Tool / Command | Pass Criteria |
+| :--- | :--- | :--- | :--- |
+| **VRAM Safety Ceiling** | Utilization $\le 0.90$ | `nvidia-smi --query-gpu=memory.used --format=csv` | Headroom $\ge 10\%$ reserved |
+| **Prefix Cache Hit Rate** | Hit rate $\ge 70\%$ | Prometheus `vllm:prefix_cache_hits_total` | Hit rate $\ge 70\%$ warm |
+| **P99 TTFT SLA** | TTFT $\le 100\text{ms}$ | OTel traces `gen_ai.server.ttft` | P99 $\le 100\text{ms}$ |
+| **TPOT Tail Jitter** | Jitter $\le \pm 1.8\text{ms}$ | vLLM benchmark client (`vllm bench`) | TPOT variance $\le 1.8\text{ms}$ |
+| **K8s DRA Device Claim** | CEL claim resolution | `kubectl get resourceclaims -n ai-serving` | Claim status: Bound |
+| **tmpfs Sizing** | `/dev/shm` $\ge 16\text{GiB}$ | `df -h /dev/shm` inside inference pod | Available $\ge 16\text{GiB}$ |
