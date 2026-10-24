@@ -1,0 +1,49 @@
+{
+  "name": "@vesviet/agent-skills",
+  "version": "5.6.0",
+  "description": "Engineering skill pack for AI-assisted delivery: 182 skills, 38 roles, 25 workflows, 60 data contracts, with a CLI to install skills into your agent platform.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "agent-skills": "bin/agent-skills.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "bin/",
+    "core/skills/",
+    "core/roles/",
+    "core/workflows/",
+    "core/rules/",
+    "core/policies/",
+    "core/contracts/",
+    "adapters/",
+    "overlays/",
+    "packs/",
+    "INDEX.md",
+    "README.md",
+    "LICENSE",
+    "VERSION"
+  ],
+  "scripts": {
+    "test": "node --test tests/npm/cli.test.mjs",
+    "prepack": "node scripts/check-npm-version-sync.mjs",
+    "prepublishOnly": "node scripts/check-npm-version-sync.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:vesviet/agent-skills.git"
+  },
+  "homepage": "https://github.com/vesviet/agent-skills#readme",
+  "keywords": [
+    "agent-skills",
+    "ai-agents",
+    "skills",
+    "engineering-standards",
+    "claude",
+    "zcode",
+    "prompt-engineering"
+  ],
+  "author": "vesviet"
+}

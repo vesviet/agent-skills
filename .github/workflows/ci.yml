@@ -66,6 +66,26 @@ jobs:
           python core/scripts/generate-a2a-registry.py
           git diff --exit-code core/ adapters/
 
+  npm:
+    name: npm package (node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [20, 22]
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Files whitelist gate (npm pack dry run)
+        run: npm pack --dry-run
+      - name: CLI tests
+        run: node --test tests/npm/cli.test.mjs
+
   secrets:
     name: gitleaks secret scan
     runs-on: ubuntu-latest

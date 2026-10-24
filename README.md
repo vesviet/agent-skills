@@ -20,13 +20,25 @@ Modern AI-assisted engineering shifts from ad-hoc prompting to **Context Enginee
 
 ## Quick Start
 
-### 1. Add to Your Repository
+### 1. Install via npm (Node.js)
+
+```bash
+npm install @vesviet/agent-skills
+npx agent-skills list --taxonomy gamedev
+npx agent-skills install --target claude --taxonomy frontend,gamedev
+```
+
+The CLI copies selected skills into your agent platform's skills directory
+(`zcode`, `claude`, or any directory via `--path`). Requires Node.js >= 20.
+Validations and generators remain Python-side (`requirements-dev.txt`).
+
+### 2. Add to Your Repository
 
 ```bash
 git submodule add <repo-url> agent-skills
 ```
 
-### 2. Activate Your AI Agent / IDE
+### 3. Activate Your AI Agent / IDE
 
 | Agent / IDE | Entrypoint / Adapter | Activation & Capabilities |
 |---|---|---|

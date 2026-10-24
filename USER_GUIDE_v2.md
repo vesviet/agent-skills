@@ -6,6 +6,10 @@
 
 Welcome to the **Agent-Skills** ecosystem (pack 5.6.0). This system transforms standard AI coding assistants into an **Autonomous Swarm Environment**. Instead of having one general AI try to do everything, you now have a team of highly specialized, policy-driven "Virtual Employees" that can talk to each other using strict Data Contracts.
 
+> **Node.js users:** install the pack with `npm install @vesviet/agent-skills` and copy skills
+> into your platform with `npx agent-skills install --target zcode|claude` (or `--path <dir>`).
+> See `README.md` → Quick Start for details.
+
 ### What is new in 5.0.0 (Standard 2026)
 
 Every skill, role, and workflow in the pack now carries:

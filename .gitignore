@@ -24,3 +24,14 @@ venv/
 *.egg-info/
 dist/
 build/
+
+# Node.js
+node_modules/
+*.tgz
+.npmrc
+
+# Local secrets — never commit
+.env
+.env.*
+!.env.example
+.dev.vars

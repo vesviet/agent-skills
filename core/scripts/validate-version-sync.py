@@ -84,6 +84,16 @@ def check_pinned(version: str) -> list[str]:
     return errors
 
 
+def check_package_json(version: str) -> list[str]:
+    path = ROOT / "package.json"
+    if not path.is_file():
+        return ["package.json: missing"]
+    got = json.loads(path.read_text(encoding="utf-8")).get("version")
+    if got != version:
+        return [f"package.json: version {got!r} != VERSION {version!r}"]
+    return []
+
+
 def check_changelog(version: str) -> list[str]:
     path = ROOT / "CHANGELOG.md"
     text = path.read_text(encoding="utf-8")
@@ -128,6 +138,7 @@ def main() -> int:
     errors += check_registry(version)
     errors += check_agent_cards(version)
     errors += check_pinned(version)
+    errors += check_package_json(version)
     errors += check_changelog(version)
     errors += check_no_stray_versions(version)
 
@@ -137,7 +148,7 @@ def main() -> int:
             print(f"- {error}")
         return 1
 
-    print(f"Version sync validation passed: VERSION {version} consistent across registry, cards, adapters, changelog.")
+    print(f"Version sync validation passed: VERSION {version} consistent across registry, cards, adapters, package.json, changelog.")
     return 0
 
 
