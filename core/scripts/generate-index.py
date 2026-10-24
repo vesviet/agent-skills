@@ -947,7 +947,7 @@ def main() -> int:
 
     for label, (path, content) in artifacts.items():
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(content, encoding="utf-8")
+        path.write_text(content, encoding="utf-8", newline="\n")
         print(f"Generated {path}")
 
     return 0

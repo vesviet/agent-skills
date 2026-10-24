@@ -22,7 +22,7 @@ PACKS_README_PATH = PACKS_DIR / "README.md"
 HUGO_OVERLAY_DIR = PROJECT_ROOT / "overlays" / "hugo-authority-content"
 LINK_TOPOLOGY_RULE = HUGO_OVERLAY_DIR / "rules" / "link-topology.md"
 
-WORKSPACE_ROOT = PROJECT_ROOT.parent if (PROJECT_ROOT.parent / "authority-blog").exists() else Path("/var/www/app")
+WORKSPACE_ROOT = PROJECT_ROOT.parent
 ORIGINAL_REQUEST_PATH = WORKSPACE_ROOT / ".agents" / "ORIGINAL_REQUEST.md"
 
 AUTHORITY_SITE_DIR = WORKSPACE_ROOT / "authority-blog"

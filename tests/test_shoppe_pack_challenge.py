@@ -25,7 +25,7 @@ SHOPPE_DIR = PACKS_DIR / "affiliate-cashback-team"
 SHOPPE_MANIFEST = SHOPPE_DIR / "manifest.yaml"
 SHOPPE_README = SHOPPE_DIR / "README.md"
 SHOPPE_WORKFLOW = SHOPPE_DIR / "workflows" / "affiliate-tri-engine-lifecycle.md"
-SHOPPE_REPO = Path("/var/www/app/affiliate-cashback")
+SHOPPE_REPO = PROJECT_ROOT.parent / "affiliate-cashback"
 
 
 class TestShoppeManifestSchemaV2(unittest.TestCase):

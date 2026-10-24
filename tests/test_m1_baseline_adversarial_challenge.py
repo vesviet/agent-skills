@@ -11,7 +11,7 @@ Empirically and adversarially tests the 5 baseline fixes applied in Milestone 1:
 
 import atexit
 import contextlib
-import fcntl
+import hashlib
 import importlib.util
 import json
 import os
@@ -22,20 +22,23 @@ import sys
 import tempfile
 import unittest
 
+from filelock import FileLock, Timeout as FileLockTimeout
+
 
 ROOT = Path(__file__).resolve().parent.parent
 WORKSPACE_ROOT = ROOT.parent
 SCRIPTS_DIR = ROOT / "core" / "scripts"
-MUTATION_LOCK_PATH = Path(tempfile.gettempdir()) / "agent_skills_mutation.lock"
+_REPO_LOCK_KEY = hashlib.sha256(str(ROOT.resolve()).encode("utf-8")).hexdigest()[:12]
+MUTATION_LOCK_PATH = Path(tempfile.gettempdir()) / f"agent_skills_{_REPO_LOCK_KEY}.mutation.lock"
 
 
 @contextlib.contextmanager
 def temporary_file_mutation(path: Path, mutated_content: str):
     """Context manager for disk-level mutation testing with process locking, git baseline resolution, and guaranteed atomic restoration."""
-    lock_fd = open(MUTATION_LOCK_PATH, "w")
+    lock = FileLock(str(MUTATION_LOCK_PATH), timeout=30)
     try:
-        fcntl.flock(lock_fd, fcntl.LOCK_EX)
-    except OSError:
+        lock.acquire()
+    except FileLockTimeout:
         pass
 
     # Read pristine original content: prefer git HEAD if tracked to prevent TOCTOU races
@@ -56,11 +59,11 @@ def temporary_file_mutation(path: Path, mutated_content: str):
         if not restored:
             try:
                 tmp_restore = path.with_suffix(path.suffix + ".restore_tmp")
-                tmp_restore.write_text(original_content, encoding="utf-8")
+                tmp_restore.write_text(original_content, encoding="utf-8", newline="\n")
                 tmp_restore.replace(path)
             except Exception:
                 try:
-                    path.write_text(original_content, encoding="utf-8")
+                    path.write_text(original_content, encoding="utf-8", newline="\n")
                 except Exception:
                     pass
             restored = True
@@ -83,7 +86,7 @@ def temporary_file_mutation(path: Path, mutated_content: str):
 
     try:
         tmp_mutate = path.with_suffix(path.suffix + ".mutate_tmp")
-        tmp_mutate.write_text(mutated_content, encoding="utf-8")
+        tmp_mutate.write_text(mutated_content, encoding="utf-8", newline="\n")
         tmp_mutate.replace(path)
         yield
     finally:
@@ -100,8 +103,7 @@ def temporary_file_mutation(path: Path, mutated_content: str):
         except (ValueError, AttributeError):
             pass
         try:
-            fcntl.flock(lock_fd, fcntl.LOCK_UN)
-            lock_fd.close()
+            lock.release()
         except Exception:
             pass
 
@@ -173,7 +175,7 @@ class TestBaselineInvariants(unittest.TestCase):
         self.assertNotIn("## Outputs Produed", content)
         self.assertIn("## Outputs Produced", content)
 
-    def test_07_all_17_gates_pass(self):
+    def test_07_all_gates_pass(self):
         proc = subprocess.run(
             [sys.executable, str(SCRIPTS_DIR / "validate-all.py"), "--format", "json"],
             cwd=str(ROOT),
@@ -185,7 +187,15 @@ class TestBaselineInvariants(unittest.TestCase):
         data = json.loads(proc.stdout)
         self.assertTrue(data.get("passed"), "Overall passed must be True")
         self.assertEqual(data.get("failed"), 0, "No gates may fail")
-        self.assertIn(data.get("total"), [17, 18], "Expected 17 or 18 validation gates")
+        spec = importlib.util.spec_from_file_location("validate_all_module", SCRIPTS_DIR / "validate-all.py")
+        module = importlib.util.module_from_spec(spec)
+        sys.modules["validate_all_module"] = module
+        spec.loader.exec_module(module)
+        self.assertEqual(
+            data.get("total"),
+            len(module.VALIDATORS),
+            "Gate count must match the VALIDATORS tuple in validate-all.py",
+        )
 
 
 class TestAdversarialSensitivityRuleValidation(unittest.TestCase):

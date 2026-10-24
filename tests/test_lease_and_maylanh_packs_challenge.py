@@ -15,13 +15,13 @@ LEASE_DIR = PACKS_DIR / "real-estate-team"
 LEASE_MANIFEST = LEASE_DIR / "manifest.yaml"
 LEASE_README = LEASE_DIR / "README.md"
 LEASE_WORKFLOW = LEASE_DIR / "workflows" / "publish-real-estate-content.md"
-LEASE_REPO = Path("/var/www/app/real-estate")
+LEASE_REPO = PROJECT_ROOT.parent / "real-estate"
 
 HVAC_DIR = PACKS_DIR / "hvac-content-team"
 HVAC_MANIFEST = HVAC_DIR / "manifest.yaml"
 HVAC_README = HVAC_DIR / "README.md"
 HVAC_WORKFLOW = HVAC_DIR / "workflows" / "publish-hvac-content.md"
-HVAC_REPO = Path("/var/www/app/hvac-portal")
+HVAC_REPO = PROJECT_ROOT.parent / "hvac-portal"
 
 
 class TestLeaseTeamPackV5(unittest.TestCase):

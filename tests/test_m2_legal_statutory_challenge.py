@@ -32,7 +32,7 @@ Adversarially and empirically tests:
 
 import atexit
 import contextlib
-import fcntl
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -44,22 +44,25 @@ import tempfile
 import unittest
 import yaml
 
+from filelock import FileLock, Timeout as FileLockTimeout
+
 ROOT = Path(__file__).resolve().parent.parent
 WORKSPACE_ROOT = ROOT.parent
 SCRIPTS_DIR = ROOT / "core" / "scripts"
 ROLES_DIR = ROOT / "core" / "roles"
 SKILLS_DIR = ROOT / "core" / "skills"
 LEGAL_SKILLS_DIR = SKILLS_DIR / "legal-compliance"
-MUTATION_LOCK_PATH = Path(tempfile.gettempdir()) / "agent_skills_mutation.lock"
+_REPO_LOCK_KEY = hashlib.sha256(str(ROOT.resolve()).encode("utf-8")).hexdigest()[:12]
+MUTATION_LOCK_PATH = Path(tempfile.gettempdir()) / f"agent_skills_{_REPO_LOCK_KEY}.mutation.lock"
 
 
 @contextlib.contextmanager
 def temporary_file_mutation(path: Path, mutated_content: str):
     """Context manager for disk-level mutation testing with process locking, git baseline resolution, and guaranteed atomic restoration."""
-    lock_fd = open(MUTATION_LOCK_PATH, "w")
+    lock = FileLock(str(MUTATION_LOCK_PATH), timeout=30)
     try:
-        fcntl.flock(lock_fd, fcntl.LOCK_EX)
-    except OSError:
+        lock.acquire()
+    except FileLockTimeout:
         pass
 
     # Read pristine original content: prefer git HEAD if tracked to prevent TOCTOU races
@@ -80,11 +83,11 @@ def temporary_file_mutation(path: Path, mutated_content: str):
         if not restored:
             try:
                 tmp_restore = path.with_suffix(path.suffix + ".restore_tmp")
-                tmp_restore.write_text(original_content, encoding="utf-8")
+                tmp_restore.write_text(original_content, encoding="utf-8", newline="\n")
                 tmp_restore.replace(path)
             except Exception:
                 try:
-                    path.write_text(original_content, encoding="utf-8")
+                    path.write_text(original_content, encoding="utf-8", newline="\n")
                 except Exception:
                     pass
             restored = True
@@ -107,7 +110,7 @@ def temporary_file_mutation(path: Path, mutated_content: str):
 
     try:
         tmp_mutate = path.with_suffix(path.suffix + ".mutate_tmp")
-        tmp_mutate.write_text(mutated_content, encoding="utf-8")
+        tmp_mutate.write_text(mutated_content, encoding="utf-8", newline="\n")
         tmp_mutate.replace(path)
         yield
     finally:
@@ -124,8 +127,7 @@ def temporary_file_mutation(path: Path, mutated_content: str):
         except (ValueError, AttributeError):
             pass
         try:
-            fcntl.flock(lock_fd, fcntl.LOCK_UN)
-            lock_fd.close()
+            lock.release()
         except Exception:
             pass
 

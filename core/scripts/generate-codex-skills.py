@@ -99,7 +99,7 @@ def main() -> int:
             )
 
             (skill_dir / "agents").mkdir(parents=True, exist_ok=True)
-            openai_yaml.write_text(content, encoding="utf-8")
+            openai_yaml.write_text(content, encoding="utf-8", newline="\n")
             if openai_yaml.is_file():
                 updated += 1
             else:

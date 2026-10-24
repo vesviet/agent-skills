@@ -579,7 +579,7 @@ class TestTier2BoundaryAndCornerCases(unittest.TestCase):
         self.assertEqual(stripped, "docs/api-guide.md")
 
         test_wildcard = "src/components/*.tsx"
-        parent_dir = str(Path(test_wildcard).parent)
+        parent_dir = Path(test_wildcard).parent.as_posix()
         self.assertEqual(parent_dir, "src/components")
 
     def test_t2_b4_token_and_line_budget_ceilings(self):

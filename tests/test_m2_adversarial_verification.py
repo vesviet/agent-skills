@@ -410,7 +410,7 @@ class TestAdversarialSensitivityMutations:
         orig = readme.read_text(encoding="utf-8")
         try:
             bad_readme = orig.replace("### Legal Compliance (3)", "### Legal Compliance (4)")
-            readme.write_text(bad_readme, encoding="utf-8")
+            readme.write_text(bad_readme, encoding="utf-8", newline="\n")
             res = subprocess.run(
                 [sys.executable, str(SCRIPTS_DIR / "validate-indexes.py")],
                 cwd=str(REPO_ROOT),
@@ -420,7 +420,7 @@ class TestAdversarialSensitivityMutations:
             assert res.returncode != 0
             assert "Legal Compliance (4)" in res.stdout
         finally:
-            readme.write_text(orig, encoding="utf-8")
+            readme.write_text(orig, encoding="utf-8", newline="\n")
 
     def test_stale_index_aliases_fails_check(self):
         script = SCRIPTS_DIR / "generate-index.py"
@@ -430,7 +430,7 @@ class TestAdversarialSensitivityMutations:
                 "\"legal_opinion_drafting\": [\"draft-legal-opinion\"],",
                 "\"legal_opinion_drafting\": [\"draft-legal-opinion\"],\n    \"stale_unregistered_alias\": [\"draft-legal-opinion\"],",
             )
-            script.write_text(bad_script, encoding="utf-8")
+            script.write_text(bad_script, encoding="utf-8", newline="\n")
             res = subprocess.run(
                 [sys.executable, str(SCRIPTS_DIR / "generate-index.py"), "--check"],
                 cwd=str(REPO_ROOT),
@@ -440,14 +440,14 @@ class TestAdversarialSensitivityMutations:
             assert res.returncode != 0
             assert "Stale generated artifacts" in res.stdout
         finally:
-            script.write_text(orig_script, encoding="utf-8")
+            script.write_text(orig_script, encoding="utf-8", newline="\n")
 
     def test_corrupted_schema_required_field_fails_contract_validation(self):
         schema = SCHEMAS_DIR / "legal-compliance-review.json"
         orig_schema = schema.read_text(encoding="utf-8")
         try:
             bad_schema = orig_schema.replace("\"required\": [", "\"required\": [\"non_existent_key_12345\", ")
-            schema.write_text(bad_schema, encoding="utf-8")
+            schema.write_text(bad_schema, encoding="utf-8", newline="\n")
             res = subprocess.run(
                 [sys.executable, str(SCRIPTS_DIR / "validate-contracts.py")],
                 cwd=str(REPO_ROOT),
@@ -457,7 +457,7 @@ class TestAdversarialSensitivityMutations:
             assert res.returncode != 0
             assert "missing required property non_existent_key_12345" in res.stdout
         finally:
-            schema.write_text(orig_schema, encoding="utf-8")
+            schema.write_text(orig_schema, encoding="utf-8", newline="\n")
 
 
 def parse_frontmatter(text: str) -> tuple[dict, str, list[str]]:

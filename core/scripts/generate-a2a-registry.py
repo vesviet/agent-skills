@@ -176,7 +176,7 @@ def main() -> int:
     for path in roles:
         card = build_agent_card(path, known_skills)
         out = REGISTRY_ROOT / f"{path.stem}.agent-card.json"
-        out.write_text(json.dumps(card, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        out.write_text(json.dumps(card, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
         entries.append(
             {
                 "role": path.stem,
@@ -195,7 +195,7 @@ def main() -> int:
         "agents": entries,
     }
     WELL_KNOWN.write_text(
-        json.dumps(registry, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(registry, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n"
     )
 
     # /.well-known/agent-card.json — A2A canonical single-agent card endpoint (IANA permanent)
@@ -224,7 +224,7 @@ def main() -> int:
         ],
     }
     WELL_KNOWN_AGENT.write_text(
-        json.dumps(canonical_card, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(canonical_card, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n"
     )
 
     # /.well-known/ai-catalog.json — AI Catalog meta-index (LF Agent-Card/ai-catalog shape)
@@ -240,7 +240,7 @@ def main() -> int:
         "openapi": [],
     }
     AI_CATALOG.write_text(
-        json.dumps(ai_catalog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(ai_catalog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n"
     )
 
     cap_lines = [
@@ -253,7 +253,7 @@ def main() -> int:
         cap_id = role.replace("_", "-")
         cap_lines.append(f"  {cap_id}: {role}")
     cap_path = ROOT / "adapters" / "antigravity" / "capability-role-map.generated.yaml"
-    cap_path.write_text("\n".join(cap_lines) + "\n", encoding="utf-8")
+    cap_path.write_text("\n".join(cap_lines) + "\n", encoding="utf-8", newline="\n")
 
     print(f"Generated {len(entries)} agent cards under {REGISTRY_ROOT.relative_to(ROOT)}")
     print(f"Canonical A2A endpoint: {WELL_KNOWN_AGENT.relative_to(ROOT)}")
