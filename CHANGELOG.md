@@ -2,6 +2,20 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [5.6.1] - 2026-10-24
+
+Patch release: npm distribution hardening and a token-free release pipeline.
+
+### npm CLI fixes
+
+- `agent-skills --version` now works as a standalone flag; the argument parser no longer mistakes a leading flag for the command name.
+- `agent-skills list` matches the documented catalog (38 roles, 25 workflows) by excluding README, role-standard, and INDEX files when scanning.
+
+### Release pipeline
+
+- Releases publish from CI via npm trusted publishing (OIDC) with automatic provenance attestations; no registry token is stored as a CI secret.
+- `repository.url` switched to the canonical https form so the OIDC repository claim matches exactly.
+
 ## [5.6.0] - 2026-10-23
 
 SOTA Deep Research Modernization of the Principal Researcher role, `conduct-research` core skill, and `research-report.json` Draft 2020-12 data contract across the canonical framework. Formalizes Stanford STORM multi-perspective persona discovery and conversational interview probing before search execution. Enforces mathematical Citation Directed Acyclic Graph (DAG) acyclicity via 3-color DFS cycle detection, multi-source triangulation ($\ge 3$ independent primary sources), zero-AI-primary source citation lock, Chain-of-Verification (CoVe) atomic verification matrix with C2PA cryptographic provenance inspection, and quantitative Information Density ($\text{ID} \ge 0.12$).

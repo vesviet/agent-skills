@@ -372,7 +372,7 @@ class TestA2AAgentCardAndRegistry(unittest.TestCase):
         data = json.loads(card_path.read_text(encoding="utf-8"))
         self.assertEqual(data.get("contract_type"), "agent-card")
         self.assertEqual(data.get("name"), "data-engineer")
-        self.assertIn(data.get("version"), ["5.0.0", "5.1.0", "5.2.0", "5.3.0", "5.4.0", "5.5.0", "5.6.0"])
+        self.assertIn(data.get("version"), ["5.0.0", "5.1.0", "5.2.0", "5.3.0", "5.4.0", "5.5.0", "5.6.0", "5.6.1"])
 
         skill_ids = [s["id"] for s in data.get("skills", [])]
         self.assertIn("build-data-pipeline", skill_ids)

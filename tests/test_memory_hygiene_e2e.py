@@ -81,7 +81,7 @@ def _ensure_dms_fixture(dms_root: Path) -> Path:
         doc_path = agents / doc_name
         if not doc_path.is_file():
             doc_path.write_text(
-                f"# {doc_name}\n\nVersion: 5.6.0\nCatalog: 182 skills, 60 data contracts.\n",
+                f"# {doc_name}\n\nVersion: 5.6.1\nCatalog: 182 skills, 60 data contracts.\n",
                 encoding="utf-8",
             )
 
@@ -726,7 +726,7 @@ class TestTier3CrossFeatureCombinations(unittest.TestCase):
         for doc_path in [index_doc, sync_doc]:
             if doc_path.is_file():
                 content = doc_path.read_text(encoding="utf-8")
-                self.assertTrue(any(v in content for v in ["5.4.0", "5.5.0", "5.6.0"]))
+                self.assertTrue(any(v in content for v in ["5.4.0", "5.5.0", "5.6.0", "5.6.1"]))
                 self.assertIn("182 skills", content)
                 self.assertTrue(any(c in content for c in ["59 contracts", "60 contracts", "60 data contracts"]))
 

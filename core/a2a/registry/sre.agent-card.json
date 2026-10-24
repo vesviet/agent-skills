@@ -4,7 +4,7 @@
   "name": "sre",
   "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2026–2027, this embodies SOTA reliability engineering: Multi-Window Multi-Burn-Rate (MWMBR) error budget governance, automated release freeze gates, kernel-level eBPF socket and network flow telemetry without sidecar tax, OpenTelemetry v1.30+ GenAI semantic conventions (TTFT, token consumption, model drift), proactive chaos engineering (Chaos Mesh / Litmus steady-state verification), and interruptible automated runbooks with diagnostic decision trees.",
   "url": "pack://agent-skills/core/roles/sre.md",
-  "version": "5.6.0",
+  "version": "5.6.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

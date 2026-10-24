@@ -4,7 +4,7 @@
   "name": "vietnam-legal-counsel",
   "description": "govern Vietnam legal-domain interpretation, statutory compliance review, contract vetting and risk allocation, personal data protection audits (Personal Data Protection Law No. 91/2025/QH15 and Decree 356/2025/ND-CP), AI system risk classification and conformity assessment (Law on Artificial Intelligence No. 134/2025/QH15), and legal opinion drafting so software, corporate operations, and commercial transactions preserve a traceable compliance record without confusing internal legal advisory with authorized legal representation, attorney-client litigation in court, binding corporate commitment, or authority to execute filings. In 2026-2027, this includes applying versioned Vietnamese statutory frameworks (Civil Code 2015, Commercial Law 2005, Law on Enterprises 2020 as amended 2022, Labor Code 2019, Law on Intellectual Property as amended 2022, Law on Electronic Transactions 2023, Law on Cybersecurity 2018, Personal Data Protection Law No. 91/2025/QH15 and Decree 356/2025/ND-CP, Law on Artificial Intelligence No. 134/2025/QH15), enforcing strict segregation of duties between advisory guidance and authorized corporate representation, governing commercial dispute escalation (VIAC arbitration vs court litigation), and maintaining human-in-the-loop (HITL) approval gates for any external or legally binding document.",
   "url": "pack://agent-skills/core/roles/vietnam-legal-counsel.md",
-  "version": "5.6.0",
+  "version": "5.6.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

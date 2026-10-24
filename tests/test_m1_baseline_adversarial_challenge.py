@@ -34,23 +34,15 @@ MUTATION_LOCK_PATH = Path(tempfile.gettempdir()) / f"agent_skills_{_REPO_LOCK_KE
 
 @contextlib.contextmanager
 def temporary_file_mutation(path: Path, mutated_content: str):
-    """Context manager for disk-level mutation testing with process locking, git baseline resolution, and guaranteed atomic restoration."""
+    """Context manager for disk-level mutation testing with process locking, working-tree snapshot, and guaranteed atomic restoration."""
     lock = FileLock(str(MUTATION_LOCK_PATH), timeout=30)
     try:
         lock.acquire()
     except FileLockTimeout:
         pass
 
-    # Read pristine original content: prefer git HEAD if tracked to prevent TOCTOU races
-    try:
-        rel_path = path.resolve().relative_to(ROOT.resolve()).as_posix()
-        original_content = subprocess.check_output(
-            ["git", "show", f"HEAD:{rel_path}"],
-            cwd=str(ROOT),
-            stderr=subprocess.DEVNULL,
-        ).decode("utf-8")
-    except Exception:
-        original_content = path.read_text(encoding="utf-8")
+    # Snapshot the working tree before mutating so uncommitted edits survive restoration
+    original_content = path.read_text(encoding="utf-8")
 
     restored = False
 

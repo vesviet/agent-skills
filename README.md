@@ -1,6 +1,6 @@
 # Agent Skills — Engineering & Multi-Agent Pack
 
-**Version 5.6.0** · Portable engineering standards, principal-level agent roles, modular skills, structured data contracts, and end-to-end workflows for AI coding assistants and autonomous multi-agent swarms.
+**Version 5.6.1** · Portable engineering standards, principal-level agent roles, modular skills, structured data contracts, and end-to-end workflows for AI coding assistants and autonomous multi-agent swarms.
 
 > **Catalog**: **38 Roles** · **182 Skills** (167 Core + 15 Overlays) · **25 Workflows** · **60 JSON Schemas** · **17 Team Packs** · **21 Overlays**  
 > **Navigation**: [Master Index (`INDEX.md`)](INDEX.md) · [Machine Registry (`role-skill-index.json`)](core/a2a/.well-known/role-skill-index.json) · [Contributing Guide](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)

@@ -26,8 +26,13 @@ test("list --json returns the pack catalog", async () => {
   }
   assert.ok(data.skills.some((s) => s.name === "tune-game-feel" && s.taxonomy === "gamedev"));
   assert.ok(data.skills.some((s) => s.source !== "core"), "overlay skills are listed");
-  assert.ok(data.roles.length >= 30);
-  assert.ok(data.workflows.length >= 20);
+  assert.equal(data.roles.length, 38);
+  assert.equal(data.workflows.length, 25);
+});
+
+test("--version prints the pack version", async () => {
+  const { stdout } = await run(["--version"]);
+  assert.equal(stdout.trim(), pkg.version);
 });
 
 test("list --taxonomy filters skills only", async () => {

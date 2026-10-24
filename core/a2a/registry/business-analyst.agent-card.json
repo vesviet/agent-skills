@@ -4,7 +4,7 @@
   "name": "business-analyst",
   "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules, edge cases, downstream impact, or architectural invariants. In 2025–2027, this extends to mastering Domain-Driven Design (DDD) Event Storming discovery, authoring Behavioral Acceptance Criteria (BDD / Gherkin) with stateful conservation invariants, specifying probabilistic requirements and Human-in-the-Loop (HITL) escalation protocols for AI/LLM features, governing autonomous agent swarms and Model Context Protocol (MCP) tool access boundaries, and maintaining a living assumption register and bidirectional Requirements Traceability Matrix (RTM) that eliminates risk before engineering builds.",
   "url": "pack://agent-skills/core/roles/business-analyst.md",
-  "version": "5.6.0",
+  "version": "5.6.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

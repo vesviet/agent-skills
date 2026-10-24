@@ -88,25 +88,28 @@ async function listMarkdown(dir, exclude) {
   if (!(await fileExists(dir))) return [];
   const entries = await readdir(dir, { withFileTypes: true });
   return entries
-    .filter((e) => e.isFile() && e.name.endsWith(".md") && !exclude.includes(e.name))
+    .filter((e) => e.isFile() && e.name.endsWith(".md"))
     .map((e) => e.name.replace(/\.md$/, ""))
+    .filter((name) => !exclude.includes(name))
     .sort();
 }
 
 function parseArgs(argv) {
-  const [command, ...rest] = argv;
+  let command;
   const flags = {};
-  for (let i = 0; i < rest.length; i += 1) {
-    const arg = rest[i];
-    if (arg === "--json" || arg === "--help") {
-      flags[arg] = true;
-    } else if (["--taxonomy", "--skill", "--target", "--path"].includes(arg)) {
-      const value = rest[i + 1];
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
+    if (["--taxonomy", "--skill", "--target", "--path"].includes(arg)) {
+      const value = argv[i + 1];
       if (value === undefined || value.startsWith("--")) {
         throw new UsageError(`missing value for ${arg}`);
       }
       flags[arg] = value;
       i += 1;
+    } else if (arg === "--json" || arg === "--help" || arg === "--version") {
+      flags[arg] = true;
+    } else if (command === undefined && !arg.startsWith("--")) {
+      command = arg;
     } else {
       throw new UsageError(`unknown argument: ${arg}`);
     }
@@ -124,8 +127,8 @@ async function cmdList(flags) {
   const skills = (await listSkills()).filter(
     (s) => !taxonomies || taxonomies.includes(s.taxonomy) || taxonomies.includes(s.source)
   );
-  const roles = taxonomies ? [] : await listMarkdown(ROLES_DIR, ["README", "role-standard"]);
-  const workflows = taxonomies ? [] : await listMarkdown(WORKFLOWS_DIR, ["README"]);
+  const roles = taxonomies ? [] : await listMarkdown(ROLES_DIR, ["README", "role-standard", "INDEX"]);
+  const workflows = taxonomies ? [] : await listMarkdown(WORKFLOWS_DIR, ["README", "INDEX"]);
 
   if (flags["--json"]) {
     process.stdout.write(
@@ -213,13 +216,13 @@ async function cmdInstall(flags) {
 
 async function main() {
   const { command, flags } = parseArgs(process.argv.slice(2));
-  if (flags["--help"] || command === "help" || command === undefined) {
-    process.stdout.write(USAGE);
-    return command === undefined && !flags["--help"] ? 2 : 0;
-  }
   if (flags["--version"] || command === "version") {
     process.stdout.write(`${await packVersion()}\n`);
     return 0;
+  }
+  if (flags["--help"] || command === "help" || command === undefined) {
+    process.stdout.write(USAGE);
+    return command === undefined && !flags["--help"] ? 2 : 0;
   }
   if (command === "list") return cmdList(flags);
   if (command === "install") return cmdInstall(flags);
