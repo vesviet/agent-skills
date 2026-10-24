@@ -57,6 +57,23 @@ When completing ECS architecture implementation, emit:
 - [ ] Parallel systems have validated disjoint mutable borrow access
 - [ ] Headless test runner validates deterministic simulation output
 
+## Failure Modes
+
+- **Mutation during iteration**: structural changes (spawn/despawn, add/remove component) mutate archetype tables while a query is iterating, invalidating iterators and corrupting entity handles. Mitigation: defer structural changes through command buffers flushed only at stage boundaries.
+- **Circular system dependencies**: systems scheduled in a dependency cycle deadlock or reorder nondeterministically between ticks. Mitigation: build an explicit acyclic dependency graph per schedule and fail the build on cycles.
+- **Parallel data race**: two systems with overlapping mutable component queries run on parallel threads and produce torn writes. Mitigation: validate disjoint mutable borrow access at schedule construction; allow full concurrency only for read-only queries.
+- **God component regression**: simulation and presentation state collapse back into one monolithic component, reintroducing pointer chasing and cache misses. Mitigation: keep components minimal POD structs without pointers or vtables; re-measure cache misses after refactors.
+- **Simulation desync**: nondeterministic system ordering or iteration produces divergent world state across runs, breaking replays and netcode rollback. Mitigation: run the headless deterministic benchmark so tick outputs match across executions.
+- **Sync-point spike**: a huge batch of deferred structural commands flushes in a single stage, hitching the frame. Mitigation: amortize command buffer flushes and cap structural changes per stage.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: Bevy/Flecs/Unity DOTS packages and engine plugins are external dependencies pulled into the simulation core. Mitigation: pin exact versions and verify against the pack schema before adoption; reject drifted or unverified packages.
+- **ASI05 RCE Guard**: schedules and queries must never be composed from dynamic strings or external config without validation. Mitigation: construct system registration in code or schema-validated declarative files only.
+- **ASI06 Context & Memory Poisoning**: entity/component data deserialized from saves, network snapshots, or mods enters archetypes directly. Mitigation: validate component payloads against component schemas before insertion; treat deserialized state as untrusted.
+- **ASI08 Cascading Failures**: a system error mid-stage must not let downstream systems consume a half-mutated world. Mitigation: abort the tick, restore the last consistent world state, and declare failure explicitly to the coordinator.
+- **ASI07 Inter-Agent Communication**: the architecture is consumed by gameplay and performance roles downstream. Mitigation: emit the schema-valid `implementation-result.json` contract so peers can validate schedule and storage decisions.
+
 ## Related Skills
 
 - **develop-gameplay-systems**: kinematic gameplay systems and hierarchical state machines

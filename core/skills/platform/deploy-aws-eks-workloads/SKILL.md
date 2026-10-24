@@ -132,6 +132,33 @@ Check pod status, Pod Identity credential mounts (`AWS_CONTAINER_CREDENTIALS_FUL
 - [ ] Verify Kubernetes Gateway API HTTPRoute is bound to VPC Lattice gateway without proxy sidecar injection
 - [ ] Confirm ADOT Collector is exporting traces to AWS X-Ray and emitting CloudWatch Application Signals metrics
 
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
+
+- **contracts/schemas/deployment-plan.json** — Required fields: `contract_type`, `version` (deployed manifest revision), `environments[]`, `steps[]` (each with `order`, `action`, `is_destructive` — Pod Identity association, NodePool apply, GitOps sync, HTTPRoute exposure), and `rollback_plan`. Populate `gitops_compliance` with the ArgoCD `ServerSideApply=true` sync options and `supply_chain_security` with the ECR immutable-tag and Kyverno/Cosign verification state.
+- Include credential-mount, HTTPRoute binding, and ADOT/X-Ray export evidence in the `verification` field so SRE and Technical Lead can validate the rollout without re-probing the cluster.
+- Skip emission for local dry runs that do not cross a role boundary.
+
+## Failure Modes
+
+- **IRSA fallback**: a workload falls back to legacy IRSA OIDC annotations, reintroducing STS scaling bottlenecks. Mitigation: create an EKS Pod Identity association for every workload ServiceAccount; reject manifests carrying `eks.amazonaws.com/role-arn` annotations.
+- **Secret committed to Git**: a database password lands as plaintext or base64 in a Kustomize overlay. Mitigation: synchronize only via `ExternalSecret` backed by the Pod Identity-authenticated `ClusterSecretStore`; scan the GitOps repo for secret material.
+- **Karpenter disruption storm**: `WhenEmptyOrUnderutilized` consolidation without a disruption budget evicts a large share of nodes at once under spot churn. Mitigation: declare `budgets: [{nodes: "10%"}]` and a `consolidateAfter` delay in every NodePool.
+- **Mutable image tag**: a workload references `:latest` or a mutable ECR tag, so rollback cannot reproduce the running artifact. Mitigation: enforce `imageTagMutability: IMMUTABLE`, pin image digests, and gate admission on Kyverno Cosign/AWS Signer verification.
+- **Over-privileged Pod Identity role**: the association grants a broad managed policy far beyond the workload's actual AWS calls. Mitigation: scope each role to the minimum actions of its workload; audit association role ARNs during review.
+- **Client-side apply conflict**: ArgoCD syncs without `ServerSideApply=true`, clobbering fields managed by Karpenter and other controllers. Mitigation: set `syncOptions: [ServerSideApply=true]` on the ArgoCD application.
+- **Telemetry gap**: ADOT is deployed but X-Ray receives no traces and Application Signals shows no SLO metrics, yet the deploy is reported done. Mitigation: verify trace export and SLO metrics in the verification step before closing the rollout.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: a Pod Identity association grants the workload ServiceAccount an IAM role broader than its actual AWS calls. Mitigation: least-privilege roles per ServiceAccount; review every `create-pod-identity-association` role ARN for scope creep.
+- **ASI04 Supply Chain**: images pulled from outside the KMS-encrypted, immutable-tag ECR repositories, or lacking signatures. Mitigation: pull exclusively from ECR with `imageTagMutability: IMMUTABLE`; enforce Kyverno `verifyImages` checks on Cosign/AWS Signer signatures and Inspector v2 attestations.
+- **ASI05 RCE Guard**: GitOps renders manifests from repository content, so untrusted PR templates or injected env values become cluster state. Mitigation: validate rendered manifests against Kyverno policies and CEL rules before sync; never render manifest fields directly from unreviewed external input.
+- **ASI07 Inter-Agent Communication**: the rollout is consumed by Project Manager, SRE, and Technical Lead. Mitigation: emit the schema-validated `deployment-plan.json` with `gitops_compliance` and `verification` populated so downstream roles validate without cluster access.
+- **ASI08 Cascading Failures**: Karpenter node consolidation concurrent with a GitOps rollout cascades into a partial outage reported as healthy. Mitigation: disruption budgets plus ArgoCD sync waves; declare rollout failure explicitly to the coordinator instead of propagating partial state.
+- **ASI09 Human-Agent Trust Exploitation**: declaring the deploy green from `kubectl get pods` alone while credential-mount or spot-disruption issues remain. Mitigation: show Pod Identity credential-mount, HTTPRoute binding, and Application Signals evidence; surface spot capacity risk honestly.
+
 ## Related Skills
 
 - **setup-deployment**: GitOps delivery pipelines and ArgoCD application manifests

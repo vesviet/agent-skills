@@ -167,15 +167,13 @@ pending → cancelled (only before shipped)
 - **Vietnam compliance gap**: Decree 248/2026 verification gate before `fulfillment_started` event.
 - **Restock without inspection**: mandatory `inspection_completed` event with Grade A before `restocked`.
 
+## Output Contracts
+
 When the fulfillment workflow is consumed by warehouse, shipping, or support agents, emit:
 
 - **`contracts/schemas/api-contract-spec.json`** describing the fulfillment endpoints, the request/response shapes, and the state transitions.
-- **`contracts/schemas/event-sourced-order-spec.json`** for event log schema and projection logic.
-- **`contracts/schemas/saga-orchestration-spec.json`** for Temporal/Step Functions workflow definition.
-- **`contracts/schemas/agent-fulfillment-auth-spec.json`** for JWT claim verification.
-- **`contracts/schemas/vn-carrier-webhook-spec.json`** for GHN/GHTK/GrabExpress webhook contracts.
-- **`contracts/schemas/restock-inspection-spec.json`** for inspection gate workflow.
-- For human-readable reports, a markdown summary of the order state machine, the failure modes, and the rollback path.
+- Inline JSON deliverables for the event-sourced order log (event + projection shapes), the saga workflow definition (Temporal/Step Functions, compensation order), and the restock inspection gate.
+- Inline specs for JWT `fulfillment_authorized` claim verification and carrier webhook normalization (GHN/GHTK/GrabExpress), plus a markdown state-machine summary for human reviewers.
 
 Skip emission for single-order experiments that do not cross a role boundary.
 

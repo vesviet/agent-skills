@@ -56,6 +56,24 @@ When completing dynamic game audio implementation, emit:
 - [ ] 3D spatial emitters configure distance attenuation curves and occlusion low-pass filtering
 - [ ] Adaptive music stems transition smoothly across game states without timeline drift
 
+## Failure Modes
+
+- **Digital clipping**: layered explosion and combat SFX sum above $0\text{dBFS}$ and clip because the `Master` bus has no limiter. Mitigation: place a peak limiter on the `Master` bus at $-1.0\text{dBFS}$ and verify worst-case combat mixes headroom.
+- **Machine-gunning**: rapid repeated cues (footsteps, gunfire) trigger the identical sample at identical pitch, sounding robotic. Mitigation: apply round-robin sample selection plus micro-randomization ($\pm 0.05\text{--}0.12$ pitch, $\pm 1.5\text{dB}$ volume) per trigger.
+- **Voice exhaustion**: unbounded concurrent emitters exhaust hardware voices, cause phase cancellation, and overload the audio CPU budget. Mitigation: pre-allocate a fixed emitter pool with per-cue polyphony caps (e.g. max 4 footstep voices) and priority-based voice stealing.
+- **Buried dialogue**: the sidechain ducker is missing or has slow attack, so `Music`/`Ambience` drown `Voice/Dialogue` lines. Mitigation: attach a ducker with fast attack and $\approx 300\text{ms}$ release attenuating background buses by $-6$ to $-9\text{dB}$.
+- **Music timeline drift**: adaptive stems restart their playback heads on each state transition, breaking bar/beat synchronization. Mitigation: crossfade stem volumes on the shared bar/beat timeline without restarting playback heads.
+- **Occlusion filter popping**: the occlusion LPF cutoff jumps audibly when a line-of-sight raycast toggles. Mitigation: ramp LPF cutoff modulation smoothly rather than switching it discontinuously.
+- **Bus tree bypass**: a cue is played directly to hardware output, skipping mute/volume control and the master limiter. Mitigation: route every cue through the explicit bus tree and reject direct-to-output playback calls in review.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: audio middleware integrations and bank importers (FMOD/Wwise plugins, decoder libraries) are external code in the runtime audio path. Mitigation: pin exact versions and verify provenance before adoption; reject unverified audio plugins.
+- **ASI05 RCE Guard**: audio banks and cue definitions from external sources must never be compiled into executable logic. Mitigation: validate bank metadata against the declared cue schema and resolve cues through pre-registered playback paths only.
+- **ASI06 Context & Memory Poisoning**: persisted mixer settings and user volume overrides reloaded from disk across sessions may be tampered with. Mitigation: validate deserialized bus/cue identifiers and gain ranges against the mixer topology before applying.
+- **ASI07 Inter-Agent Communication**: audio results are consumed by scene-lifecycle and game-feel roles downstream. Mitigation: emit the schema-valid `implementation-result.json` contract so peers can verify bus routing and pooling decisions.
+- **ASI09 Human-Agent Trust Exploitation**: do not report the mix as clip-free or the pool as sufficient without evidence. Mitigation: back claims with headless worst-case playback tests against the limiter and polyphony caps.
+
 ## Related Skills
 
 - **tune-game-feel**: multi-tier impact audio feedback and sound ducking curves

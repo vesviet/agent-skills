@@ -69,6 +69,33 @@ Produce a standardized metrics dashboard highlighting unit economic health, expa
 - [ ] Van Westendorp Price Sensitivity Envelope identifies OPP and IPP
 - [ ] AI TCO accounts for 80/20 cost ratio (evals, guardrails, and human review included)
 
+## Output Contracts
+
+When this skill feeds an executive briefing or a downstream product decision, emit:
+
+- **contracts/schemas/data-analysis-report.json** — Required fields: business_question, metrics[] (each SaaS metric with name, definition, value, grain, time_range), recommendations. Each definition must state the cohort/churn basis used.
+- **ai-tco-envelope.md** (inline deliverable) — Cost per Verified Outcome breakdown showing the 80/20 split: raw inference (~20%) vs orchestration, eval pipelines, guardrails, embeddings, caching, and human-in-the-loop review (~80%).
+
+Skip emission for quick solo sanity checks with no stakeholder handoff.
+
+## Failure Modes
+
+- **Mixed cohort definitions**: LTV is computed with one churn definition while NRR in the same report uses another, making ratios incomparable. Mitigation: pin one cohort/churn definition per metric and record it in metrics[].definition.
+- **Non-margin LTV**: LTV is computed as ARPU / Churn without the Gross Margin adjustment, inflating value. Mitigation: enforce LTV = (ARPU × Gross Margin %) / Churn Rate.
+- **Understated CAC**: CAC counts only ad spend, omitting salaries, commissions, and tools. Mitigation: include fully loaded S&M costs in every CAC and payback calculation.
+- **Non-sequential Magic Number**: quarters are mixed (Q3 ARR delta over Q1 S&M expense), inflating efficiency. Mitigation: use sequential quarters Q_n vs Q_{n-1} for both the ARR delta and the S&M denominator.
+- **Token-only AI budget**: TCO is modeled from raw inference cost alone. Mitigation: apply the 80/20 envelope and express results as Cost per Verified Outcome (e.g. cost per resolved support ticket).
+- **Fabricated benchmarks**: industry benchmarks are presented as company measurements. Mitigation: separate measured metrics from benchmark references and cite the period and data source for every number.
+- **Mixed Rule-of-40 bases**: growth rate is computed on one fiscal convention while the margin silently swaps FCF for EBITDA. Mitigation: state the margin basis explicitly and keep it consistent across reporting periods.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: a desired narrative embedded in the request ("show Rule of 40 passing") steers metric selection. Mitigation: compute the full mandated metric set from raw inputs; never curate metrics to fit a target conclusion.
+- **ASI03 Identity & Privilege Abuse**: revenue, churn, and customer-level financial inputs are confidential. Mitigation: read only the declared data sources for this task and distribute reports solely to authorized finance/product stakeholders.
+- **ASI06 Context & Memory Poisoning**: prior-period metrics recalled from memory or a stale dashboard are reused as current inputs. Mitigation: re-pull each input from the verified source system and record time_range per metric.
+- **ASI07 Inter-Agent Communication**: metric reports are consumed by Product Manager and Business Analyst roles. Mitigation: emit data-analysis-report.json with explicit definitions and grain so downstream roles can reconcile numbers.
+- **ASI09 Human-Agent Trust Exploitation**: fabricated or cherry-picked unit economics presented to executives or investors to justify scaling spend. Mitigation: flag low-confidence inputs, keep benchmark vs measured distinct, and state plainly when Magic Number < 0.75 argues against acceleration.
+
 ## Related Skills
 
 - **define-product-strategy**: formulate value proposition and 7 Powers pricing power

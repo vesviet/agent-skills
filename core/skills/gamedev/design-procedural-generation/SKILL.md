@@ -55,6 +55,24 @@ When completing procedural generation implementation, emit:
 - [ ] Generation runs asynchronously or within bounded loading budgets without UI freezes
 - [ ] Headless test suite validates 1,000+ random seeds for zero soft-locks or unreachable rooms
 
+## Failure Modes
+
+- **Global RNG contamination**: a stray `Math.random()` or global `rand()` call shifts the stream so identical master seeds produce different level layouts. Mitigation: instantiate isolated deterministic PRNG streams (`PCG32`, `SplitMix64`, `Xoshiro256**`) per subsystem and ban global random entirely.
+- **Unreachable generation**: BSP/WFC output isolates a key room or exit, soft-locking the run. Mitigation: gate every map behind a flood-fill/`A*` reachability check and auto-carve tunnels or re-roll with a deterministic salt increment on failure.
+- **Cross-platform desync**: floating-point differences in noise evaluation break bitwise-identical layouts between target platforms. Mitigation: run the multi-seed headless suite on every target platform and use fixed-point math where divergence appears.
+- **Main-thread stall**: heavy mesh synthesis and tilemap baking run synchronously, freezing the loading screen. Mitigation: execute generation on background worker threads or time-sliced coroutines within bounded loading budgets.
+- **WFC non-convergence**: constraint propagation hits a contradiction and loops indefinitely. Mitigation: impose an iteration budget and fall back to a deterministic salt re-roll instead of retrying forever.
+- **Unrecorded seed/version**: the save file omits the master seed or generator version, making reported edge-case layouts unreproducible. Mitigation: persist master seed and generator version in saves and replay logs at generation time.
+- **Cosmetic-loot stream coupling**: a particle VFX roll consumes the loot stream, changing drops when effects change. Mitigation: derive separate `terrain_rng`, `dungeon_rng`, `loot_rng` sub-seeds from the master seed so subsystems never share a stream.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: third-party noise libraries and WFC/tile content packs are external inputs to generation. Mitigation: pin versions, verify schema and provenance before adoption, and regression-test seeds after any dependency bump.
+- **ASI05 RCE Guard**: WFC tile constraints and generator configs authored as content must never be evaluated as code. Mitigation: load generation definitions as schema-validated data files; reject constraint scripts or executable payloads inside tile packs.
+- **ASI06 Context & Memory Poisoning**: master seeds read from save files or replay logs are untrusted inputs; a tampered seed can trigger pathological generation or crash the baker. Mitigation: validate seed format, length, and ranges before derivation; reject malformed seeds with a fresh default seed.
+- **ASI07 Inter-Agent Communication**: generation output feeds save-persistence, AI navmesh baking, and scene streaming roles. Mitigation: emit the schema-valid `implementation-result.json` contract including seed and generator version so downstream roles reproduce the same world.
+- **ASI09 Human-Agent Trust Exploitation**: do not claim "1,000+ seed validation" without running it. Mitigation: report the actual headless seed-sweep coverage and any soft-lock incidents found.
+
 ## Related Skills
 
 - **implement-save-persistence**: serializing master seeds and delta world modifications in save files

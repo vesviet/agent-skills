@@ -57,6 +57,24 @@ When completing engine integration or build automation, emit:
 - [ ] Export templates strip editor code and debug asserts in release configurations
 - [ ] Binary package size complies with platform store distribution limits
 
+## Failure Modes
+
+- **Graphical-only verification**: tests can only run with a window open, so CI never executes them and failures ship silently. Mitigation: enforce headless-first verification (`godot --headless`, Unity `-batchmode -nographics`, Unreal `-nullrhi`) for every module.
+- **Swallowed test failures**: the runner prints assertion failures but still exits $0$, so CI goes green over broken suites. Mitigation: verify stdout parsing maps failures to non-zero OS exit codes before trusting a pass.
+- **Ad-hoc import drift**: import settings edited locally instead of in version-controlled `.import`/`.meta`/manifest files produce nondeterministic, machine-dependent builds. Mitigation: codify all compression, slicing, and optimization settings in committed configs.
+- **Wrong platform compression**: ASTC shipped to desktop or DXT to web yields garbled or black textures on target devices. Mitigation: enforce per-platform profiles (BC7/DXT5 desktop, ASTC/ETC2 mobile, KTX2/Basis web) and verify POT sizes.
+- **Draw call ceiling blown**: scenes exceed draw call budgets ($\le 250$ mobile, $\le 2000$ desktop) and collapse the frame rate post-integration. Mitigation: enforce ceilings in CI profiling against the explicit frame budgets.
+- **Engine lock-in**: business logic entangled with engine nodes makes porting or headless testing impossible. Mitigation: keep game state and logic in pure libraries behind thin adapter interfaces.
+- **Editor code in release**: debug asserts, editor-only tools, or symbols survive into shipping builds. Mitigation: configure export templates to strip editor code and debug symbols in release configurations.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: engine binaries, export templates, and engine plugins/addons are external executables in the build path. Mitigation: pin exact engine and template versions, verify checksums against official releases, and reject unverified plugin downloads.
+- **ASI05 RCE Guard**: CI constructs engine CLI commands (`godot --headless`, `RunUAT`, `-batchmode`) from project paths and arguments. Mitigation: validate paths and flags against allowlist patterns; never interpolate untrusted branch or asset names into shell invocations.
+- **ASI08 Cascading Failures**: a failing import or asset step must not let the build continue with half-applied presets. Mitigation: fail the pipeline explicitly at the first non-zero exit and report the failing stage to the coordinator.
+- **ASI07 Inter-Agent Communication**: engine configuration is consumed by gameplay and game-feel roles downstream. Mitigation: emit the schema-valid `implementation-result.json` contract with runner, budget, and export settings so peers integrate against validated configuration.
+- **ASI09 Human-Agent Trust Exploitation**: do not report "headless suite passing" without the run evidence. Mitigation: cite the actual exit code and suite output; disclose skipped or flaky tests.
+
 ## Related Skills
 
 - **develop-gameplay-systems**: core gameplay loops and fixed-timestep execution

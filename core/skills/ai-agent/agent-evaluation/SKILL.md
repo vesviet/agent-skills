@@ -84,6 +84,15 @@ When completing an evaluation benchmark, emit `contracts/schemas/agent-eval-repo
 - [ ] Output artifacts strictly validate against `agent-eval-report.json`
 - [ ] Automated gate blocks release upon safety violations or pass rate below 90%
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: the 20% hostile safety probes contain real injection payloads that can hijack the harness or the executing agent under test. Mitigation: run all fixtures in the isolated sandbox; grade safety probes with deterministic `must_not_include` assertions so injected content never reaches an executing tool or a free-text judge.
+- **ASI04 Supply Chain**: benchmark suites imported from external registries carry poisoned fixtures or golden labels. Mitigation: version-control all fixtures in-repo with immutable inputs; verify provenance and schema before importing any external suite.
+- **ASI06 Context & Memory Poisoning**: LLM-as-judge rubric prompts read adversarial test outputs that can instruct the judge to award top scores. Mitigation: wrap judge inputs as untrusted reference material, anchor every Likert point explicitly, and run judges at temperature 0.0.
+- **ASI07 Inter-Agent Communication**: `agent-eval-report.json` is consumed by Technical Lead, Prompt Engineer, and automated release gates. Mitigation: emit only schema-validated reports so downstream agents and CI gates never parse partial or schema-drifted results.
+- **ASI08 Cascading Failures**: a flaky gate or partial run silently unblocks (or blocks) a downstream release. Mitigation: fail-closed on any structural contract invalidity; declare evaluation failure explicitly instead of propagating partial results.
+- **ASI09 Human-Agent Trust Exploitation**: self-preference-biased scores, or a `conditional_approval` dressed as a pass, are presented as objective evidence to ship. Mitigation: disclose judge identity and calibration; fail-closed on any safety/injection breach regardless of the composite score.
+
 ## Related Skills
 
 - **write-tests**: Authoring unit and integration tests for software components.

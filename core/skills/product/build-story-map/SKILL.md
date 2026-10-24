@@ -68,6 +68,33 @@ Convert the release swimlane into a task dependency network. Perform forward and
 - [ ] CPM analysis identifies critical path tasks with zero float
 - [ ] stories prepared for handoff to BA and engineering via structured contracts
 
+## Output Contracts
+
+When this skill feeds a coordinated BA/engineering handoff, emit:
+
+- **contracts/schemas/feature-ticket.json** — one ticket per story in the active release slice. Required fields: title, business_value (the story's `As a... I want... So that...` statement), acceptance criteria, MoSCoW priority. Set produced_by_role to the emitting product role.
+- **story-map.md** (inline deliverable; no dedicated schema exists) — the 2D map itself: backbone activities → tasks left-to-right, release swimlanes (MVP / Release 1.1 / Release 2.0) with MoSCoW tags, plus the CPM network showing ES/EF/LS/LF, float per task, and the zero-float critical path chain.
+
+Skip emission for solo backlog grooming with no downstream consumer.
+
+## Failure Modes
+
+- **Disconnected MVP silos**: the Walking Skeleton builds 100% of one activity (e.g. User Management) while Checkout stays non-functional. Mitigation: require the MVP slice to cross every backbone activity end-to-end before any story is assigned to a later release.
+- **Backbone mirrors org chart**: activities ordered by team structure instead of the chronological customer journey. Mitigation: validate the horizontal axis against sequential real user steps before slicing swimlanes.
+- **Valueless stories**: stories written as task labels ("build settings page") without the `As a... I want... So that...` statement. Mitigation: reject any story missing the three-part value statement at feature-ticket.json export time.
+- **Untagged MoSCoW**: stories inside an active release slice carry no M/S/C/W classification. Mitigation: block slice handoff until every story in the active swimlane is tagged; keep Won't-Have exclusions explicit.
+- **Asserted critical path**: the Critical Path is declared without forward/backward passes, so float values are guesses. Mitigation: compute ES/EF/LS/LF per task and verify Float = LS − ES = 0 on every task in the claimed chain.
+- **Hidden cross-team dependencies**: swimlanes sliced as if teams work in isolation. Mitigation: draw explicit dependency arrows between cross-functional tasks before running CPM.
+- **Later-slice scope creep**: Release 2.0 stories quietly absorb MVP scope. Mitigation: re-audit slice boundaries at each release cut; move items only via an explicit MoSCoW re-tag.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: stakeholder comments on the map try to smuggle unbudgeted features into the MVP slice by reframing them as Must-Have. Mitigation: every added story re-runs MoSCoW tagging and the walking-skeleton check; reject untagged insertions.
+- **ASI03 Identity & Privilege Abuse**: unreleased release slices and capacity data are competitively sensitive. Mitigation: share the map and CPM schedule only with the roles named in the handoff; keep them out of shared channels.
+- **ASI06 Context & Memory Poisoning**: a story map or backlog imported from a prior session's memory carries stale priorities. Mitigation: re-validate imported backbone ordering and MoSCoW tags against the current backlog source before reuse.
+- **ASI07 Inter-Agent Communication**: story exports are consumed by BA and engineering roles. Mitigation: emit schema-validated feature-ticket.json contracts instead of prose so downstream roles can verify scope.
+- **ASI09 Human-Agent Trust Exploitation**: a fabricated critical path or invented task durations presented as verified analysis to lock a launch date. Mitigation: label all durations as estimates and show the float math behind any launch-date claim.
+
 ## Related Skills
 
 - **define-product-strategy**: provide PR/FAQ and Opportunity Solution Tree context

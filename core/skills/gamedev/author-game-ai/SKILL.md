@@ -53,6 +53,24 @@ When completing game AI implementation, emit:
 - [ ] Squad combat token systems prevent unfair simultaneous enemy dogpiling
 - [ ] Headless automated tests verify BT state transitions, utility scoring, and path resolution
 
+## Failure Modes
+
+- **Omniscient perception**: AI queries omniscient world state directly and reacts instantly to actions the player cannot predict, making encounters unfair. Mitigation: route all perception through vision cones, occlusion raycasts, and configurable reaction delays at throttled $5\text{--}10$ Hz ticks.
+- **Pathfinding stampede**: dozens of agents request full `A*`/NavMesh paths in the same frame, spiking the frame budget. Mitigation: queue path requests through the budgeted time-sliced scheduler capped at a fixed millisecond ceiling per tick.
+- **Shared-node state bleed**: Behavior Tree nodes store per-agent state locally, so agents sharing a tree overwrite each other's cooldowns and targets. Mitigation: keep BT and Utility nodes stateless and move all per-agent state into typed Blackboards.
+- **Corridor deadlock**: RVO/local steering agents jam in doorways or clump into overlapping crowds. Mitigation: combine macro path corridors with context steering and verify convergence in headless simulation tests.
+- **Attack dogpiling**: unlimited simultaneous melee attackers make encounters unwinnable. Mitigation: enforce squad token pools (e.g. $2$ melee attackers max) while remaining NPCs strafe or flank.
+- **Utility score runaway**: unnormalized response curves exceed $[0,1]$ and dominate action selection erratically. Mitigation: clamp and normalize all Utility AI scores across distance, health, and threat factors.
+- **Perception tick hitching**: sensory raycast sweeps run every render frame instead of throttled intervals. Mitigation: throttle sensory updates to $5\text{--}10$ Hz independent of render rate.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: blackboard values and designer-authored behavior definitions are external content; they must parameterize decision logic, never inject new logic. Mitigation: validate BT/utility definitions against the declared schema before tree construction.
+- **ASI05 RCE Guard**: never build behavior logic from raw strings in AI content files or mod packages. Mitigation: resolve behaviors through pre-registered node types instead of evaluating external code strings.
+- **ASI06 Memory & Context Poisoning**: shared squad blackboards propagate one agent's poisoned or stale perception (`last_known_position`, `alert_level`) to the whole squad. Mitigation: validate sensory inputs at write time and age out stale entries instead of amplifying them.
+- **ASI07 Inter-Agent Communication**: squad token pools and squad-level blackboards are inter-agent message surfaces. Mitigation: schema-validate squad messages and token claims; do not escalate trust based on the claiming agent.
+- **ASI09 Human-Agent Trust Exploitation**: do not report AI encounters as "fair and readable" without evidence. Mitigation: back fairness claims (reaction delays, wind-up telegraphs, token caps) with deterministic headless simulation results.
+
 ## Related Skills
 
 - **develop-gameplay-systems**: integrating AI movement intents with shared character controllers

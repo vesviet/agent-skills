@@ -85,6 +85,15 @@ When auditing prompt security or detecting injection anomalies, emit `contracts/
 - [ ] Maximum autonomous tool loop step limit enforced
 - [ ] Security audit log records all blocked injections and schema boundary violations
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: the Core Rules already mandate the containment pair — structural `<untrusted_data>` delimiter isolation with sanitized closing tags, plus the dual-LLM/sandwich pattern that keeps raw external content away from the privileged executor.
+- **ASI02 Tool Misuse & Exploitation**: already mandated as bounded tool parameter execution — strict Draft 2020-12 input schemas, no freeform `command`/`query`/`eval` arguments, path allowlists, and hard step budgets on autonomous loops.
+- **ASI05 RCE Guard**: the no-freeform-code-execution bound is the RCE control. Mitigation: replace open shell and query surfaces on general-purpose tools with enums and pre-compiled query templates.
+- **ASI06 Context & Memory Poisoning**: facts extracted from untrusted content and written to memory or RAG stores re-poison later sessions even after the live prompt is defended. Mitigation: carry delimiter provenance tags into stored facts and re-run quarantine checks on retrieval (see `memory-hygiene`).
+- **ASI07 Inter-Agent Communication**: downstream agents in multi-agent chains process upstream untrusted messages. Mitigation: scan inter-agent tool-call arguments for canary leakage — not only user-visible output — and wrap relayed messages in the same delimiters.
+- **ASI09 Human-Agent Trust Exploitation**: a passing audit presented as injection immunity. Mitigation: abort execution fail-closed on any canary leak, keep every blocked injection in the security audit trail, and report residual untested surfaces honestly.
+
 ## Related Skills
 
 - **security-audit**: Performing comprehensive security reviews and threat modeling.

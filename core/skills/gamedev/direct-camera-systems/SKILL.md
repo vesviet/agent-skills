@@ -55,6 +55,23 @@ When completing camera system implementation, emit:
 - [ ] Multi-target framing smoothly interpolates centroid position and clamped zoom limits
 - [ ] Additive shake/impulse offsets respect user accessibility reduction sliders
 
+## Failure Modes
+
+- **Frame-rate dependent smoothing**: naive `lerp(a, b, 0.1)` per frame makes tracking sluggish at $240$ Hz and snappy at $60$ Hz. Mitigation: use exponential decay (`lerp(a, b, 1.0 - exp(-lambda * dt))`) or critically damped spring solvers so behavior matches across refresh rates.
+- **Update-order jitter**: the camera evaluates before target movement and physics interpolation complete, producing one-frame positional jitter. Mitigation: run camera positioning strictly in `LateUpdate`/post-movement ticks.
+- **Destructive shake corruption**: trauma and recoil write directly into the base camera transform, accumulating drift the tracker never recovers from. Mitigation: apply shake and impulses as additive local offsets on a child rig node.
+- **Void exposure**: missing or undersized confinement bounds let the frustum show out-of-bounds void areas. Mitigation: clamp camera frustum edges against `Polygon2D`/`AABB` confiners per room.
+- **Spring-arm clip-through**: the 3D camera clips through walls or pops violently when occluded. Mitigation: attach sphere-cast spring arms that pull the camera forward along the boom instead of letting geometry pass through it.
+- **Micro-movement panning**: no deadzone makes the camera pan constantly on tiny player adjustments, inducing motion sickness. Mitigation: configure screen-space soft/hard deadzones and smooth the velocity look-ahead offset.
+- **Zoom runaway**: multi-target framing oscillates or exceeds playable zoom as the bounding box grows. Mitigation: interpolate the focal point to the weighted centroid and clamp orthographic size/FOV within `[min_zoom, max_zoom]`.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI06 Context & Memory Poisoning**: cached smoothed-velocity and look-ahead state carried across scene transitions produces stale, wrong tracking in the new room. Mitigation: reset rig damping state on scene/room change and validate cached target references before use.
+- **ASI07 Inter-Agent Communication**: camera rigs are shared with game-feel (trauma layering), gameplay (movement vectors), and scene (transition blending) roles. Mitigation: emit the schema-valid `implementation-result.json` contract so peers bind to the declared rig API, not internal fields.
+- **ASI08 Cascading Failures**: a camera solver error must not corrupt gameplay transforms; the camera is an observer, not an authority. Mitigation: keep camera reads one-directional from world state, declare failures explicitly, and never write back into gameplay entities.
+- **ASI09 Human-Agent Trust Exploitation**: shake intensity is a vestibular/ accessibility risk, not just polish. Mitigation: always wire trauma amplitude through the user's shake-reduction slider and disclose when a cutscene bypasses it.
+
 ## Related Skills
 
 - **tune-game-feel**: layering trauma-based screen shake and impact impulses onto camera rigs

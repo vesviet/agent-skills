@@ -59,6 +59,24 @@ When completing game shader programming, emit:
 - [ ] Uniform buffers and material parameters expose clear min/max range hints for artists
 - [ ] Shader variants are pre-warmed to prevent runtime PSO compilation hitches
 
+## Failure Modes
+
+- **NaN propagation**: `normalize()` of a zero-length vector, division by zero, or `acos()` of a denormalized dot product yields NaN that spreads through lighting/post-processing as black or flickering pixels. Mitigation: guard degenerate inputs with an epsilon (e.g. `max(length(n), 1e-6)`) and clamp trig arguments before use.
+- **Warp divergence**: per-pixel dynamic `if/else` on varying conditions halves SIMD wave occupancy on the GPU. Mitigation: replace branches with `step()`, `smoothstep()`, `mix()`/`lerp()`, and `clamp()` intrinsics.
+- **Mobile precision swimming**: default or `lowp` precision on world positions and UVs makes vertices jitter and UVs crawl on mobile GPUs. Mitigation: declare explicit `highp` for world/UV coordinates and `mediump`/`half` only for colors and normals.
+- **Early-Z disabled by discard**: alpha `discard`/`clip()` in opaque passes kills Early-Z rejection on tile-based mobile GPUs, exploding fragment cost. Mitigation: isolate alpha clipping to dedicated alpha-test render queues and prefer alpha blending or depth pre-pass where possible.
+- **Clip-space convention mismatch**: depth linearization assumes $[-1,1]$ (OpenGL) while the target API uses $[0,1]$ (D3D/Vulkan/Metal), inverting depth-intersection foam and contact effects. Mitigation: verify the target graphics API convention and test linearized depth against known distances.
+- **Normal matrix mismatch**: normals transformed by the model matrix instead of its inverse-transpose light incorrectly under non-uniform scale, darkening or wrapping surfaces. Mitigation: use `mat3(transpose(inverse(model)))` and document the Object→World→Tangent transitions.
+- **First-use compilation stutter**: shader variants compile at runtime when first seen on screen, hitching gameplay. Mitigation: register active variants in a startup pre-warm manifest so PSOs compile during loading screens.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: community shader packs and post-processing stacks are external GPU-executed code. Mitigation: pin exact versions and review the GLSL/HLSL source before adoption; reject minified or obfuscated shader libraries.
+- **ASI05 RCE Guard**: never assemble shader source by concatenating external strings or asset-store material files. Mitigation: compile only reviewed source files through offline shader validation; treat engine-imported shader graphs as unverified until they compile cleanly.
+- **ASI06 Context & Memory Poisoning**: external material parameter files can push out-of-range uniforms (negative outline widths, infinite dissolve strengths) into validated shaders. Mitigation: enforce min/max range hints on uniform buffers and clamp artist-facing parameters at upload.
+- **ASI07 Inter-Agent Communication**: variants and material contracts are consumed by the WebGL renderer and performance roles. Mitigation: emit the schema-valid `implementation-result.json` contract listing variants, queues, and precision choices for peer validation.
+- **ASI08 Cascading Failures**: one silently broken variant must not ship broken materials into every downstream scene. Mitigation: fail the build on any shader compile error and declare the failing variant explicitly to the coordinator.
+
 ## Related Skills
 
 - **render-webgl-threejs**: custom GLSL shader material integration and post-processing passes

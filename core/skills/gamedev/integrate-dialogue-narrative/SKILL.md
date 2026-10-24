@@ -55,6 +55,24 @@ When completing dialogue and narrative integration, emit:
 - [ ] Narrative variable storage serializes cleanly into the game save persistence system
 - [ ] Headless validation verifies all dialogue nodes, variable references, and localization keys
 
+## Failure Modes
+
+- **Hardcoded prose drift**: conversation lines are hardcoded in gameplay scripts, breaking localization and leaving branches invisible to translators. Mitigation: author all branching, lines, and conditions in external `.yarn`/`.ink`/graph data assets addressed by immutable line IDs.
+- **Eval-based command dispatch**: narrative side-effects run through reflection or `eval()`, letting content files call arbitrary code. Mitigation: dispatch `<<camera_focus>>`-style commands only through registered, type-checked command bindings.
+- **Dead-end nodes**: a branching graph ships with unreachable nodes, missing links, or missing localization keys, stalling the player mid-conversation. Mitigation: run the headless narrative linter in CI that compiles all scripts and verifies zero dead ends and key coverage.
+- **Variable store desync**: `NarrativeVariableStorage` drifts from the save persistence layer, losing quest flags across sessions. Mitigation: synchronize the store directly with the save layer and serialize flags, visited nodes, and quest states in saves.
+- **Typewriter reflow jitter**: per-frame string concatenation forces text re-layout, jittering word wraps mid-reveal. Mitigation: pre-lay-out rich text buffers and reveal via visible-character count or vertex alpha.
+- **Input context collision**: dialogue advance presses leak into gameplay actions (or vice versa) when contexts overlap. Mitigation: switch to the dedicated `DialogueContext` while a conversation is active and restore the prior context on exit.
+- **Localization key mutation**: renamed line IDs orphan existing translations and every locale. Mitigation: treat line IDs as immutable; CI key verification fails on orphaned or missing table entries.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: dialogue scripts from writers, mods, or DLC packs are external content that must not redefine game behavior. Mitigation: restrict them to the declared node/variable/command schema; anything outside registered bindings is rejected at compile time.
+- **ASI05 RCE Guard**: never evaluate narrative expressions or commands via `eval()`/reflection. Mitigation: evaluate conditions and dispatch commands exclusively inside the sandboxed narrative VM with registered type-checked bindings.
+- **ASI06 Context & Memory Poisoning**: narrative flags hydrated from saves are untrusted shared state; tampered values could force quest stages or unlock gated content. Mitigation: validate flag types and ranges on hydration and reject unknown keys.
+- **ASI07 Inter-Agent Communication**: narrative state flows to UI rendering, save persistence, and input context roles. Mitigation: emit the schema-valid `implementation-result.json` contract so peers bind to the declared variable store and command API.
+- **ASI09 Human-Agent Trust Exploitation**: do not claim all branches are reachable and localized without the linter pass. Mitigation: report actual CI narrative-lint results, including any suppressed dead-end or missing-key warnings.
+
 ## Related Skills
 
 - **build-game-ui-ux**: rendering dialogue overlays, speaker portraits, and controller-navigable choice lists

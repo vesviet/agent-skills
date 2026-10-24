@@ -128,6 +128,32 @@ curl -s http://localhost:8000/metrics | grep -E "vllm:num_requests_waiting|vllm:
 - [ ] Ensure multi-tenant GPU allocation uses NVIDIA MIG or K8s 1.31+ DRA CEL selectors
 - [ ] Confirm HPA scales on request queue depth (`vllm_num_requests_waiting_per_pod`)
 
+## Output Contracts
+
+When this skill is invoked as part of a coordinated multi-role delivery, emit:
+
+- **contracts/schemas/deployment-plan.json** — Required fields: `contract_type`, `version` (vLLM engine + model revision), `environments[]`, `steps[]` (each with `order`, `action`, `is_destructive` — GPU ResourceClaim creation, StatefulSet rollout, HPA attachment), and `rollback_plan`. Populate `ai_gpu_infrastructure` with the GPU topology (tensor-parallel size, MIG/DRA claim) and `verification` with `/health` and `vllm:num_requests_waiting` probe evidence.
+- Skip emission for single-node local experiments with no downstream handoff.
+
+## Failure Modes
+
+- **KV-cache OOM under burst**: the prefix-cache hit rate collapses under novel traffic, concurrent prefills consume the KV pool, and the engine is OOM-killed. Mitigation: size the KV cache from the VRAM formula with the 12% safety headroom, cap `--gpu-memory-utilization` at 0.90, and alert on `vllm:gpu_cache_usage_factor` before the kill.
+- **Tensor-parallel port collision**: multiple TP-8 replicas bind the same default distributed-init/NCCL port on one node and hang at startup. Mitigation: assign each pod a unique distributed-init port/hostname and confirm NCCL init in the readiness probe.
+- **Silent quantization quality loss**: switching weights or KV cache to FP8 (`--kv-cache-dtype fp8`) degrades long-context accuracy with no error logged. Mitigation: benchmark a golden set before and after quantization; only promote the configuration if accuracy holds.
+- **Undersized `/dev/shm`**: the tmpfs mount is below 16GiB, starving the v1 SPSC ring buffers and deadlocking NCCL. Mitigation: mount an in-memory tmpfs of at least 16GiB (the reference manifest uses 64GiB) plus HugePages; reject manifests without it.
+- **Autoscaling on GPU utilization**: the HPA scales on GPU compute utilization, so decode-heavy queues grow while GPUs look busy. Mitigation: bind the HPA to queue depth (`vllm:num_requests_waiting`, target 5), never solely on GPU utilization.
+- **Software time-slicing on production**: multi-tenant GPU sharing falls back to time-slicing, reintroducing TPOT jitter and noisy-neighbor preemption. Mitigation: enforce NVIDIA MIG (`3g.40gb`) or DRA CEL selectors; reject time-sliced production layouts.
+- **Health green, throughput dead**: `/health` returns OK while prefix caching is disabled and the cache hit rate hovers near 0. Mitigation: verify `--enable-prefix-caching=true` with `--block-size 32` and cache-hit telemetry in the verification step, not just the health endpoint.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: the served model follows instructions from untrusted end-user traffic, so jailbreaks steer generation toward policy violations. Mitigation: treat inference traffic as untrusted, keep system prompts immutable per deployment, and front the endpoint with the patterns from `prompt-injection-defense`.
+- **ASI03 Identity & Privilege Abuse**: Radix-tree prefix caching reuses KV blocks across users, letting one tenant's cached context surface in another tenant's responses. Mitigation: partition tenants into separate deployments or MIG slices so prefix caches are never shared across trust boundaries.
+- **ASI04 Supply Chain**: model weights pulled from unverified mirrors can be poisoned or tampered. Mitigation: pull only from the canonical publisher repository pinned by revision SHA, and record weight hashes plus quantization metadata in a CycloneDX 1.6 AI/ML BOM (see `supply-chain-security`).
+- **ASI05 RCE Guard**: the OpenAI-compatible server exposes engine-facing parameters (chat template kwargs, LoRA adapter names, sampling overrides); unvalidated passthrough becomes arbitrary engine configuration. Mitigation: expose only a validated allowlist of request fields; reject unknown kwargs at the gateway.
+- **ASI07 Inter-Agent Communication**: GPU topology and capacity claims are consumed by DevOps and SRE roles. Mitigation: emit the schema-validated `deployment-plan.json` so downstream roles verify DRA/MIG claims against the ordered steps instead of trusting prose.
+- **ASI09 Human-Agent Trust Exploitation**: reporting the deployment as production-ready from the VRAM sizing formula alone. Mitigation: present measured throughput, TPOT jitter, and cache-hit numbers from the verification probes before declaring success.
+
 ## Related Skills
 
 - **setup-gpu-finops**: GPU capacity modeling, DCGM telemetry, and OpenCost attribution

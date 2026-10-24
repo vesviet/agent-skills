@@ -180,6 +180,15 @@ When completing an AI governance, safety, or compliance risk evaluation, emit:
 
 Skip emission for non-AI software delivery slices.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: an assessed agentic system ingests external retrieval content that can reframe its operating objective; the assessment must record prompt-injection exposure. Mitigation: require an explicit ASI01 entry in `owasp_asi_alignment` for every agentic system with external data sources.
+- **ASI03 Identity & Privilege Abuse**: the assessed agent holds credentials whose scope exceeds its declared autonomy tier. Mitigation: verify issued credentials match the declared autonomy level (supervised / semi-autonomous / fully autonomous) and log over-privileged access as a register entry.
+- **ASI06 Memory & Context Poisoning**: retrieval-augmented systems under assessment ingest poisoned memory that persists across sessions. Mitigation: assess cross-session memory validation as a NIST AI 600-1 Human-AI Configuration risk and document the validation mechanism in the register.
+- **ASI08 Cascading Failures**: a multi-agent chain propagates one agent's failure downstream with no circuit breaker. Mitigation: require the cascading-failure trace and circuit breaker strategy as mandatory register content for multi-agent systems.
+- **ASI09 Human-Agent Trust Exploitation**: the tier is down-classified or the HITL gate is waived to hit a delivery deadline, exploiting the sponsor's trust in the compliance artifact. Mitigation: require a documented rationale for any down-classification and reject High-Risk scopes without a mandatory HITL gate.
+- **ASI10 Rogue Agents**: an autonomous component drifts beyond its authorized action set after deployment. Mitigation: classify every agent action as reversible or irreversible in the register; require explicit human approval gates for irreversible actions.
+
 ## Related Skills
 
 - **analyze-business-requirements**: BA is the first to apply EU AI Act tier classification in `feature-ticket.json`

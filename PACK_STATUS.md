@@ -1,6 +1,6 @@
 # Pack Status (post-5.6.0 standards-2027 upgrade)
 
-**Validators:** 18/18 pass, 0 errors, 0 warnings.
+**Validators:** 19/19 pass, 0 errors, 0 warnings.
 **Catalog:** 38 roles, 182 skills (167 core + 15 overlay), 25 workflows, 60 contracts, 17 packs, 21 overlays.
 
 ## 0. Standards-2027 upgrade summary (5.1.0, 2026-10-15)
@@ -75,7 +75,7 @@ The 5 long role files and the 404-line Detailed Schema Descriptions are quality-
 
 ## 4. What is NOT a gap
 
-- 18/18 validators pass with 0 warnings
+- 19/19 validators pass with 0 warnings
 - 0 duplicate headers
 - 0 broken cross-references
 - 0 missing Last updated footers

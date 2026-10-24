@@ -97,6 +97,15 @@ Use:
 - **OWASP ASI not applied**: a finding is reported without referencing the OWASP ASI item. Mitigation: tag every finding with the relevant ASI01-ASI10 item and the agentic threat surface.
 - **Credential in finding**: a finding includes a real secret or token. Mitigation: redact before publishing; never paste live credentials into audit reports.
 
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: when auditing agentic systems, verify that untrusted content (tool outputs, retrieved data) cannot reframe the agent's operating objective; tag violations under the ASI01 check the Core Rules already mandate.
+- **ASI03 Identity & Privilege Abuse**: authn/authz and runtime-permission review is the privilege-abuse control — flag any chain (tool call, delegation, role assumption) that widens privileges beyond the declared task scope.
+- **ASI04 Supply Chain**: dependency and downstream trust assumptions are already in scope; the checklist requires SLSA Level 3 integrity for production builds — report unsigned or unpinned dependencies as findings.
+- **ASI05 RCE Guard**: already mandated — verify execution sandbox boundary adherence against `core/policies/execution-sandbox.md` for every agentic system audited.
+- **ASI06 Context & Memory Poisoning**: treat memory stores and retrieved context as untrusted surfaces in AI/ML reviews; check provenance validation and injection quarantine before trusting agent-internal context.
+- **ASI09 Human-Agent Trust Exploitation**: findings must never be softened to unblock shipping. Mitigation: lead with severity-sorted results (CVSS 4.0 BTE), keep blocking risk visible, and redact live credentials from every user-visible artifact.
+
 ## Related Skills
 
 - **review-code**: Review concrete code changes with broader quality checks

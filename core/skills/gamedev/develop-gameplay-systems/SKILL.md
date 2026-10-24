@@ -46,6 +46,24 @@ When completing a gameplay system implementation, emit:
 - [ ] No allocations occur inside `Update` or `FixedUpdate` hot loops
 - [ ] Headless test suite passes with zero exit errors
 
+## Failure Modes
+
+- **Frame-rate dependent movement**: movement speed binds to variable render delta times, so players at $144$ FPS move faster than at $60$ FPS. Mitigation: run velocity integration exclusively inside fixed tick loops (`_physics_process`, `FixedUpdate`) using $\vec{x}_{t+1} = \vec{x}_t + \vec{v}_t \cdot \Delta t_{\text{fixed}}$.
+- **Ambient state mutation**: an unrelated system writes a player-state flag directly, triggering an untraceable transition (e.g. instant `Stunned` without the stun event). Mitigation: allow transitions only through verified input conditions on the state machine; broadcast transition events instead of shared-flag writes.
+- **Broken single-active-state invariant**: two states run simultaneously or none at all, enabling double-jump exploits or dead input. Mitigation: enforce single-active-state invariants with validated transition tables and assert them in unit tests.
+- **GC spikes in hot loops**: raycast hit arrays, closures, or temporary vectors allocated inside `Update`/`FixedUpdate` cause frame hitches. Mitigation: pre-allocate collision queries and vectors; use `RaycastNonAlloc`/`PhysicsServer` with reusable buffers.
+- **Collision in render update**: spatial queries run in `_process`/`Update`, missing or duplicating checks at variable rates. Mitigation: keep all collision detection and spatial queries inside the fixed tick.
+- **Slope/wall confusion**: the controller treats steep walls as walkable ground or slides down valid slopes. Mitigation: separate slope-limit checks from wall-slide logic and cover both with headless test cases.
+- **Silent refactor regressions**: a state machine refactor breaks transitions without any visible error. Mitigation: run the headless test suite and require zero exit errors before reporting completion.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI01 Goal Hijack**: player input packets and mod-loaded scripts are untrusted external content that must never rewrite simulation rules or state-transition tables. Mitigation: treat inputs as data feeding validated transitions; never let external content redefine mechanics at runtime.
+- **ASI05 RCE Guard**: never evaluate logic strings from mods, network messages, or level content inside the game loop. Mitigation: resolve behaviors through pre-registered state handlers; reject executable payloads.
+- **ASI06 Context & Memory Poisoning**: restored character state from saves or network snapshots can carry NaN velocities or out-of-bounds positions that poison the simulation. Mitigation: validate deserialized state (finite values, sane magnitudes) before the first fixed tick.
+- **ASI07 Inter-Agent Communication**: gameplay slices are consumed by game-feel, engine-integration, and asset roles. Mitigation: emit the schema-valid `implementation-result.json` contract so peers integrate against validated behavior.
+- **ASI09 Human-Agent Trust Exploitation**: do not report the implementation as tested without a clean run. Mitigation: state the actual headless test result, including any skipped or failing cases.
+
 ## Related Skills
 
 - **tune-game-feel**: layered audiovisual responsiveness and timing buffers

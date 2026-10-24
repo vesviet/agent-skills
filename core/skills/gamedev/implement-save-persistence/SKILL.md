@@ -59,6 +59,24 @@ When completing save persistence implementation, emit:
 - [ ] Cloud save paths are scoped per account and handle multi-device sync conflicts safely
 - [ ] Headless unit tests verify migration chains, checksum failure recovery, and round-trip integrity
 
+## Failure Modes
+
+- **Save corruption on interrupt**: a crash or power loss mid-write truncates the save being overwritten in place. Mitigation: serialize to a `.tmp` staging file, `fsync`, rotate a `.bak` of the previous valid save, then atomically rename into the slot.
+- **Migration data loss**: a version jump (e.g. `v1 -> v3` directly) skips transform steps and silently drops legacy fields. Mitigation: apply sequential step-by-step migration functions (`v1 -> v2 -> v3`), validating invariants after each step against legacy save fixtures.
+- **Checksum bypass**: a corrupted or malformed payload is deserialized before integrity verification and crashes the game on hydration. Mitigation: verify the SHA-256/HMAC-SHA256 envelope digest before deserialization; fall back to `.bak` and alert the player safely on failure.
+- **Cloud sync clobber**: multi-device timestamp conflicts overwrite newer progress with an older cloud copy. Mitigation: resolve conflicts deterministically using timestamp plus `playtime_seconds`, scoped per platform account ID.
+- **Schema drift without version bump**: new fields ship without incrementing `schema_version`, so older builds misparse newer saves. Mitigation: embed the integer `schema_version` in every header and fail closed on unknown newer versions.
+- **Path traversal via slot/profile names**: user-supplied profile or slot names are concatenated into file paths, writing outside the save directory. Mitigation: sanitize names against a strict allowlist character set before path construction.
+- **Autosave during critical sections**: an autosave fires mid scene-transition and snapshots a torn world state. Mitigation: trigger autosave checkpoints only at stable gameplay states.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: cloud save storage runs under the platform account identity. Mitigation: scope all read/write paths to the current account's directory (`user://`, `Application.persistentDataPath`, Steam Cloud); never touch another profile's slots.
+- **ASI05 RCE Guard**: never deserialize saves with object deserializers that execute constructors or type callbacks. Mitigation: use data-only formats (JSON, MessagePack, FlatBuffers) validated against the schema after checksum verification.
+- **ASI06 Context & Memory Poisoning**: saves are untrusted on-disk input; hex-edited inventories or world flags must not inject structure into runtime state. Mitigation: validate deserialized fields against schema types and ranges before hydrating gameplay systems.
+- **ASI08 Cascading Failures**: checksum or migration failure must not propagate corrupt state into gameplay. Mitigation: declare the failure, fall back to `.bak`, and surface a safe player alert instead of continuing with partial data.
+- **ASI07 Inter-Agent Communication**: save state is consumed by scene, engine, and narrative roles. Mitigation: emit the schema-valid `implementation-result.json` contract with schema version and storage layout so peers integrate against validated persistence.
+
 ## Related Skills
 
 - **manage-scene-lifecycle**: hydrating and persisting scene state across level transitions

@@ -56,6 +56,24 @@ When completing game publishing automation, emit:
 - [ ] Automated smoke test verifies executable launch and asset archive integrity prior to upload
 - [ ] Store deployments target a staging or release-candidate channel before public promotion
 
+## Failure Modes
+
+- **Credential leakage**: Steamworks passwords, Butler API keys, or code-signing certs are committed inside `app_build.vdf` files or export presets. Mitigation: inject credentials exclusively via CI environment variables; scan manifests before commit.
+- **Non-reproducible export**: a release binary is exported manually from a developer's local editor state instead of a clean checkout, shipping local-only changes. Mitigation: build exclusively via headless CLI runners (`godot --headless --export-release`, Unity `-batchmode -quit`, `RunUAT BuildCookRun`) from version-controlled source.
+- **Direct-to-live promotion**: a depot upload bypasses staging and lands on the public branch before validation. Mitigation: target `staging`/`rc` beta branches first and require manual live promotion.
+- **Broken artifact shipped**: a zero-byte or corrupt `.pck`/`.pak` archive passes through because the integrity gate was skipped. Mitigation: block deployment unless automated tests pass, archives verify non-zero, and executable launch is smoke-confirmed.
+- **Debug symbols in depot**: `.pdb`/`.dSYM` files ship to players, bloating downloads and exposing internals. Mitigation: enforce `FileExclusion` rules and archive symbols separately as build artifacts.
+- **Untraceable crash logs**: shipped builds lack version/commit metadata so player crash reports cannot be mapped to source. Mitigation: stamp `vMAJOR.MINOR.PATCH+sha` into engine metadata before invoking the export compiler.
+- **Broken web headers**: the WebAssembly build uploads without `SharedArrayBuffer` COOP/COEP headers and fails at runtime. Mitigation: verify response headers before the web deployment stage.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI03 Identity & Privilege Abuse**: Steam and Butler credentials are the publishing identity; their misuse pushes builds under the studio's store presence. Mitigation: scope secrets to deploy jobs only, never print them in CI logs, and rotate them on pipeline change.
+- **ASI04 Supply Chain**: `steamcmd`, `butler`, engine export templates, and CI runner images are external tooling in the release path. Mitigation: pin exact tool versions, verify checksums/provenance before use, and reject unpinned downloads.
+- **ASI05 RCE Guard**: never interpolate untrusted values (branch names, channel tags, version strings) directly into `steamcmd` or `butler` command strings. Mitigation: validate all parameters against allowlist patterns before shell construction.
+- **ASI07 Inter-Agent Communication**: release metadata is consumed by DevOps and store-operations roles for promotion decisions. Mitigation: emit the schema-valid `implementation-result.json` contract with version, channel, and integrity results so downstream roles act on validated state.
+- **ASI09 Human-Agent Trust Exploitation**: never auto-promote a staging build to the live public branch. Mitigation: require explicit human confirmation for live promotion and surface failed gates honestly.
+
 ## Related Skills
 
 - **integrate-game-engine**: headless engine export templates and cross-platform build profiles

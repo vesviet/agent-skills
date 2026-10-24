@@ -123,6 +123,17 @@ Scenario: [Happy path scenario]
 
 - `contracts/schemas/feature-ticket.json`
 
+## Failure Modes
+
+- **Chained When steps**: a Gherkin `When` contains two actions ("submits and confirms"), hiding a real state transition and making the scenario untestable. Mitigation: enforce the Single-Action Invariant; split chained actions into separate scenarios with intermediate `Given` states.
+- **Preserved behavior omitted**: the brief specifies the change but never states what must keep working, so regressions ship unnoticed. Mitigation: record preserved-vs-changed behavior explicitly and derive regression acceptance criteria from the preserved set.
+- **Implementation leak**: acceptance criteria name tables, classes, or GUI micro-actions instead of observable outcomes. Mitigation: rewrite each criterion as observable system behavior; ban internal implementation guesses per the Core Rules.
+- **Probabilistic AC without harness**: an AI feature gets "≥95% accuracy" with no sample size, judge, or degradation alert, making it unenforceable at test time. Mitigation: every probabilistic AC must define the N-sample window, the evaluation judge (LLM-as-Judge or golden benchmark), and a production degradation trigger.
+- **Toothless HITL escalation**: the escalation matrix names a role but no trigger or SLA, so high-stakes AI failures never escalate. Mitigation: require trigger condition, operational SLA, responsible role, and immutable audit log for every HITL entry.
+- **Autonomy over ceiling**: an agentic feature ships with L4/L5 autonomy or broad MCP tool permissions and no kill-switch. Mitigation: cap autonomy at the L3 ceiling, attenuate per-invocation tool permissions, and declare forbidden zones plus an emergency kill-switch.
+- **Exception state unspecified**: negative scenarios stop at "an error is shown" without asserting system state, so failed transactions leave locks held or ledgers unbalanced. Mitigation: every negative scenario defines explicit failure guarantees and stateful conservation invariants.
+- **Invalid machine handoff**: the `feature-ticket.json` emitted at lock time fails Draft 2020-12 validation, breaking downstream Technical Architect and Technical Lead consumption. Mitigation: validate the serialized ticket against the schema before lock; fix the domain blocks, never the schema.
+
 ## Related Skills
 
 - **elicit-requirements**: structured stakeholder interviewing and BABOK v3 quality audits

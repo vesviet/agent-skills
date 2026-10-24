@@ -56,6 +56,24 @@ When completing scene lifecycle management, emit:
 - [ ] Dependencies are injected cleanly into newly instantiated scene root nodes
 - [ ] Loading screen and transition animations maintain stable frame pacing
 
+## Failure Modes
+
+- **Main-thread stall**: a scene transition loads synchronously on the render thread, freezing the frame and the transition animation. Mitigation: stream scenes in background threads or async promises while showing smooth transition feedback.
+- **Signal and listener leaks**: a scene unloads without disconnecting observers, leaving dangling event handlers that fire on destroyed nodes and creep memory. Mitigation: disconnect all signals, event bus subscriptions, and timers in `OnDeactivate()`/`OnDisposed()`.
+- **VRAM creep**: orphan textures, meshes, and audio streams survive chunk unloads until long sessions run out of GPU memory. Mitigation: explicitly purge orphaned resources on unload and track VRAM budgets per streaming sector.
+- **Hook order violation**: `OnActivate()` fires before `OnInitialize()` or a deactivated scene keeps receiving ticks, producing half-initialized state. Mitigation: enforce the ordered lifecycle (`OnPreload -> OnInitialize -> OnActivate -> OnDeactivate -> OnDisposed`) exclusively through the coordinator.
+- **Pop-in without pre-warming**: the fade-in reveals a scene whose shaders have not compiled yet, causing a blank flash or hitch. Mitigation: pre-warm shaders and await the first drawn frame during the transition blackout before fading in.
+- **Singleton state bleed**: global mutable singletons carry stale scene state (old player session flags) into freshly loaded scenes. Mitigation: pass dependencies via explicit injection context scoped to each scene load.
+- **Streaming thrash**: a player pacing along a chunk boundary repeatedly loads and unloads the same sectors, thrashing I/O. Mitigation: apply hysteresis margins to streaming volumes so unload radii exceed load radii.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI05 RCE Guard**: scene and chunk identifiers used to construct load paths can originate from level scripts or mods. Mitigation: validate scene paths against a registered scene manifest before instantiation; reject traversal patterns.
+- **ASI06 Context & Memory Poisoning**: dependencies injected into scenes (save data reference, session state) are shared cross-scene memory; stale or tampered references must not silently re-enter new scenes. Mitigation: validate injected context at `OnInitialize()` and reset scene-scoped caches on unload.
+- **ASI08 Cascading Failures**: a failed chunk load must not leave a half-streamed world running. Mitigation: declare the failure, roll back to the last complete scene state, and surface the error to the coordinator before gameplay continues.
+- **ASI07 Inter-Agent Communication**: the coordinator mediates between engine, persistence, and camera/UI systems during transitions. Mitigation: emit the schema-valid `implementation-result.json` contract so peers bind to the declared lifecycle and streaming API.
+- **ASI09 Human-Agent Trust Exploitation**: do not claim leak-free unloads from inspection alone. Mitigation: back zero-leak claims with post-unload resource/VRAM profiling evidence across repeated transitions.
+
 ## Related Skills
 
 - **integrate-game-engine**: engine project structure and asset importer presets

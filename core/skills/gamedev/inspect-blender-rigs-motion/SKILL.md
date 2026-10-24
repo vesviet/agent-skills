@@ -59,6 +59,23 @@ When completing Blender rig and motion inspection, emit:
 - [ ] Root bone tracks planar locomotion cleanly without pelvis double-transform drift
 - [ ] Exported glTF/FBX passes headless engine import without scale or quaternion warnings
 
+## Failure Modes
+
+- **Unapplied transform export**: the armature or mesh ships with non-unit or negative scale, arriving in-engine $100\times$ oversized or with inverted normals. Mitigation: run the headless audit enforcing unit scale `(1.0, 1.0, 1.0)`, zero rotation, and origin alignment before any export.
+- **Bone roll twist**: inconsistent primary/secondary axes across limb chains make quaternions flip and joints twist during animation blending. Mitigation: recalculate rolls in Edit Mode (`bpy.ops.armature.calculate_roll`) aligning hinge axes to local $X$/$Z$, symmetric across left/right chains.
+- **Control rig exported**: IK/CTRL/MCH helper bones reach the engine, breaking skeleton mapping and bloating the runtime hierarchy. Mitigation: isolate `DEF-*` deform bones and export only those to the target engine.
+- **Root/pelvis double transform**: locomotion deltas stay on the hips while a root bone also moves, so the character travels twice as far. Mitigation: dedicate a ground-projected `Root` bone above `Hips`, put planar deltas on `Root`, and keep in-place vertical bounce on the pelvis.
+- **Weight limit overrun**: vertices exceed 4 bone influences, tripping GPU skinning limits or falling back to CPU skinning. Mitigation: cap influences at 4 and renormalize weight sums ($\sum w_i = 1.0$) during the audit.
+- **Rest pose mismatch**: retargeting bakes onto a skeleton whose T-pose/A-pose differs from the source, mangling limbs. Mitigation: verify rest-pose quaternion parity before baking action keyframes.
+- **Euler discontinuity artifacts**: baked curves contain euler flips that read as $360^\circ$ spin frames in-engine. Mitigation: apply euler discontinuity filtering when baking constrained IK/FK channels to FK transforms.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI05 RCE Guard**: untrusted `.blend` files can embed Python drivers and auto-run scripts. Mitigation: open them headless with script auto-execution disabled (`blender --background` with autoexec off); never enable embedded driver evaluation on downloaded assets.
+- **ASI04 Supply Chain**: mocap libraries, rigged character packs, and Blender export add-ons are external inputs. Mitigation: verify provenance and license before ingestion and pin add-on versions used by the pipeline.
+- **ASI07 Inter-Agent Communication**: rig audit results and skeleton mappings are consumed by engine-integration and gameplay roles. Mitigation: emit the schema-valid `implementation-result.json` contract with bone mapping metadata so importers validate against the declared skeleton.
+- **ASI09 Human-Agent Trust Exploitation**: do not claim a rig is engine-clean without evidence. Mitigation: report the actual headless engine import result, including any scale or quaternion warnings that remain.
+
 ## Related Skills
 
 - **integrate-game-engine**: deterministic 3D glTF/FBX importer configurations and skeleton mapping

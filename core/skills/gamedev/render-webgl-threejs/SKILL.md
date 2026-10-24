@@ -57,6 +57,24 @@ When completing WebGL and Three.js rendering implementation, emit:
 - [ ] Post-processing effects are merged into minimal full-screen render passes
 - [ ] Geometries, materials, textures, and render targets execute `.dispose()` on unmount
 
+## Failure Modes
+
+- **Context loss crash**: `webglcontextlost` is unhandled, so a mobile tab suspend or GPU driver reset leaves a permanent black canvas. Mitigation: handle `webglcontextlost`/`webglcontextrestored` and re-create or re-upload GPU resources on restore.
+- **VRAM leak on unmount**: `BufferGeometry`, `Material`, `Texture`, and `WebGLRenderTarget` are never `.dispose()`d, so GPU memory climbs until the context dies. Mitigation: enforce explicit disposal on every unmount/despawn path; never rely on JS garbage collection for GPU resources.
+- **High-DPI fill-rate collapse**: unclamped `devicePixelRatio` (3x–4x on quad-HD phones) quadruples fragment work and tanks frame rate. Mitigation: clamp with `Math.min(window.devicePixelRatio, 2.0)`.
+- **Draw call explosion**: repeated props, foliage, and projectiles are rendered as individual meshes, blowing the draw call budget. Mitigation: convert repeated static meshes to `THREE.InstancedMesh`/`BatchedMesh` to collapse them into single GPU submissions.
+- **Main-thread decode stall**: uncompressed GLTF geometry and textures decode on the main thread, freezing interaction for seconds during streaming. Mitigation: enforce Draco/Meshopt geometry compression and KTX2/Basis textures so assets stay compressed and decode off the main thread.
+- **Post-process blit chain**: bloom, vignette, and grading run as separate full-screen passes, exhausting the fragment budget. Mitigation: merge effects into a single `EffectComposer` `EffectPass` instead of chained render-target blits.
+- **Color space mismatch**: linear colors are written to an sRGB-expecting display (or tone mapping is missing), washing out or darkening PBR output. Mitigation: set `outputColorSpace = SRGBColorSpace` with `ACESFilmicToneMapping` and calibrate PMREM environment lighting against them.
+
+## Security Guardrails (OWASP ASI)
+
+- **ASI04 Supply Chain**: Three.js, React Three Fiber, `pmndrs/postprocessing`, and their minor-revision API churn are external dependencies in the render path. Mitigation: pin exact versions in the lockfile and re-run the render tests on every bump.
+- **ASI05 RCE Guard**: Draco/Meshopt/KTX2 decoders are WASM binaries; loading them from third-party CDNs executes foreign code in the page. Mitigation: bundle decoders from pinned, verified package sources only and reject runtime decoder URLs from untrusted origins.
+- **ASI06 Context & Memory Poisoning**: remotely streamed GLTF scenes and textures are untrusted content entering the renderer. Mitigation: validate scene structure and asset URLs against an allowlist before handing them to loaders; never let embedded GLTF extensions (scripts, cameras) auto-execute.
+- **ASI07 Inter-Agent Communication**: rendering slices are consumed by shader and performance roles for further optimization. Mitigation: emit the schema-valid `implementation-result.json` contract so peers can verify compression, instancing, and disposal decisions.
+- **ASI09 Human-Agent Trust Exploitation**: do not claim a mobile 60FPS target is met from desktop-only checks. Mitigation: report frame rates only from the actual target-class devices and state untested platforms honestly.
+
 ## Related Skills
 
 - **program-game-shaders**: custom GLSL vertex/fragment shaders and post-processing effects
