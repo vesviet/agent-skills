@@ -1,6 +1,6 @@
 # Development, Testing, and Validation Dependencies for agent-skills
 duckdb>=1.1.0
-filelock>=3.16.0
+filelock>=4.2.4
 jsonschema>=4.23.0
 pyarrow>=17.0.0
 pydantic>=2.14.1
