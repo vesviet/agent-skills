@@ -1,0 +1,12 @@
+title = "agent-skills gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Synthetic secret-detection fixtures and research snippets, not live credentials"
+paths = [
+  '''tests/test_prune_memory\.py''',
+  '''tests/test_memory_hygiene_e2e\.py''',
+  '''reports/backend-developer-repo-research\.md''',
+]

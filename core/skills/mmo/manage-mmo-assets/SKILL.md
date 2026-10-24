@@ -25,9 +25,9 @@ Ad platforms (Meta, Google, TikTok) prohibit circumventing their account, owners
 
 ```python
 # Programmatic RFC 6238 2FA/TOTP token generation via Vault
-import pyotp, hvac
+import os, pyotp, hvac
 
-vault = hvac.Client(url="https://vault.internal:8200", token="VAULT_TOKEN")
+vault = hvac.Client(url="https://vault.internal:8200", token=os.environ["VAULT_TOKEN"])
 secret = vault.secrets.kv.v2.read_secret_version(path="mmo/silos/silo-a/account-01")
 totp_seed = secret["data"]["data"]["totp_seed"]
 

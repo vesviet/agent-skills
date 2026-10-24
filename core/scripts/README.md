@@ -127,10 +127,14 @@ AGENT_ACTIVE_ROLE=backend-developer TOOL_NAME=write python3 core/scripts/hooks/c
 | JSON Schema | `jsonschema` Draft202012Validator | 4.x |
 | Output format | JSON + SARIF 2.1.0 | — |
 | Exit codes | 0=pass · 1=fail · 2=error | — |
-| Pre-commit | `pre-commit` 4.x (Dependabot-managed) | 4.6+ |
-| Secret scan | `gitleaks` v8.x (hook) · `trufflehog` v3 (CI) | — |
+| Pre-commit | `pre-commit` 4.x (checker hooks only; Dependabot-managed) | 4.6+ |
+| Secret scan | `gitleaks` v8.x (CI + local hook) | — |
 | Policy-as-code | `conftest` + OPA Rego | 0.64+ |
 | Commit linting | `convco` | latest |
+
+CI runs `.github/workflows/ci.yml` on every push/PR: the full test matrix
+(ubuntu/windows, Python 3.12/3.13), all validators with SARIF 2.1.0 upload,
+a generated-artifact freshness gate, and a gitleaks secret scan.
 
 Run from the repository root or using paths directly under `core/scripts/`.
 
