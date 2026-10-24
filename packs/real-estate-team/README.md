@@ -1,7 +1,7 @@
 # Real Estate Content & SEO Team Pack (`real-estate-team`)
 
 > **Master Operating Standard & Multi-Agent Swarm for Real Estate Portal (`real-estate.example.com`).**  
-> **Pack Version**: 5.0.0 · **Schema Version**: "2" · **Baseline Snapshot**: 2026-09-19 · **Manifest**: [manifest.yaml](manifest.yaml)
+> **Pack Version**: 5.0.0 · **Schema Version**: "2" · **Baseline Snapshot**: 2026-10-24 · **Manifest**: [manifest.yaml](manifest.yaml)
 
 ---
 
@@ -18,10 +18,10 @@ Real Estate Portal is the definitive real estate, legal advisory, and relocation
 │ Astro v5 High-Speed Edge Frontend                       │ Cloudflare Pages Edge Engine  │
 ├─────────────────────────────────────────────────────────┼───────────────────────────────┤
 │ Content Collections:                                    │ Deployment: Cloudflare Edge   │
-│ - 463 Long-Form Posts (12 Categorical Clusters)         │ Global Latency: <50ms         │
+│ - 482 Long-Form Posts (12 Categorical Clusters)         │ Global Latency: <50ms         │
 │ - 61 Luxury Property Portfolios                         │ Core Web Vitals: 100/100      │
-│ - 98 Verified E-E-A-T Author Personas                   │ Framework: Astro v5.12+ SSR   │
-│ Total Corpus: 1,548,527 Words · 100% AnswerFirst        │ Design: Tailwind CSS v3.4     │
+│ - 98 Verified E-E-A-T Author Personas (17 Core SMEs)    │ Framework: Astro v5.12+ SSR   │
+│ Total Corpus: 1,622,635 Words · 100% AnswerFirst        │ Design: Tailwind CSS v3.4     │
 └──────────────────────────┬──────────────────────────────┴───────────────────────────────┘
                            │
                            │   5-PILLAR CONTENT ARCHITECTURE
@@ -61,7 +61,7 @@ Every piece of content created or upgraded by the swarm must strictly map to one
 In 2026 and 2027, search behavior is dominated by generative AI engines (Google AI Overviews, Perplexity, Claude, ChatGPT Search). The `real-estate-team` mandates strict architectural compliance with Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO):
 
 ### 3.1 The Mandatory `<AnswerFirst>` Component
-Every single post (`100%` coverage across 463 posts) must begin immediately below the H1 title with an `<AnswerFirst>` callout:
+Every single post (`100%` coverage across 482 posts) must begin immediately below the H1 title with an `<AnswerFirst>` callout:
 
 ```astro
 <AnswerFirst>
@@ -105,7 +105,7 @@ flowchart LR
 
 ## 5. Property-Post Link Equity Topology (Zero Orphan Policy)
 
-The site structure interconnects 463 editorial guides with 61 luxury property portfolios:
+The site structure interconnects 482 editorial guides with 61 luxury property portfolios:
 
 ```mermaid
 flowchart TD
@@ -116,17 +116,27 @@ flowchart TD
         P4["The River Thu Thiem (District 2)"]
     end
 
-    subgraph Hubs["12 Categorical Guide Clusters (src/data/post/)"]
-        G_Neigh["neighborhood/ (70 guides)"]
-        G_Legal["legal/ (57 guides)"]
-        G_Rev["property-review/ (45 reviews)"]
-        G_Comp["comparisons/ (14 comparisons)"]
+    subgraph Hubs["12 Categorical Guide Clusters (482 Posts in src/data/post/)"]
+        G_Comp["comparisons/ (15 posts)"]
+        G_Guide["guides/ (113 posts)"]
+        G_Legal["legal/ (36 posts)"]
+        G_Living["living/ (50 posts)"]
+        G_MktData["market-data/ (25 posts)"]
+        G_MktRadar["market-radar/ (27 posts)"]
+        G_Neigh["neighborhood/ (70 posts)"]
+        G_NeighComp["neighborhood-comparison/ (21 posts)"]
+        G_Rev["property-review/ (36 posts)"]
+        G_Scam["scam/ (22 posts)"]
+        G_Travel["travel/ (24 posts)"]
+        G_Trust["trust-safety/ (43 posts)"]
     end
 
     G_Neigh -->|Mandatory Inbound| P1 & P2 & P3 & P4
     G_Rev -->|Deep Dive Citation| P1 & P2 & P3 & P4
+    G_Comp -->|Comparative Analysis| P1 & P2 & P3 & P4
     P1 & P2 & P3 & P4 -->|Bidirectional Link| G_Neigh
     P1 & P2 & P3 & P4 -->|Legal Guidance| G_Legal
+    P1 & P2 & P3 & P4 -->|Trust & Safety| G_Trust
 ```
 
 ### Topology Laws:

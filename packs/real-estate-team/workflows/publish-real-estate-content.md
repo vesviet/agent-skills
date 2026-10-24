@@ -25,7 +25,7 @@ flowchart LR
 - **Owner**: `@task-planner` & `@seo-analyst`
 - **Inputs**: `plan/CONTENT_INDEX.md`, target search query, target expat intent (Family, Digital Nomad, Executive, Diplomat).
 - **Actions**:
-  1. Verify target slug does not duplicate any of the 463 existing posts.
+  1. Verify target slug does not duplicate any of the 482 existing posts.
   2. Select author persona from the 98-persona E-E-A-T registry matching subject domain.
   3. Map article to one of the 5 Pillars (Intelligence, Information, Insights, Neighborhoods, Integration).
   4. Identify at least 2 relevant property targets in `src/data/property/` for bidirectional link equity.

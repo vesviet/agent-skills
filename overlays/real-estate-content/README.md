@@ -20,9 +20,11 @@ This overlay contains content-specific extensions for the Real Estate Portal and
 
 ## Corpus Index
 
-The overlay consumes — and must stay consistent with — the per-repo content index:
+The overlay consumes — and must stay consistent with — the per-repo content indexes:
 
-- `real-estate/plan/CONTENT_INDEX.md`
+- `real-estate/plan/CONTENT_INDEX.md` (482 posts)
+- `real-estate/plan/LAW_CONTENT_INDEX_AND_AUDIT_2026.md` (204 law-related posts)
+- `real-estate/plan/PROPERTY_INDEX.md` (61 properties)
 
 Regenerate that index after every batch upgrade, then update `config/collections.md` with the new counts.
 
