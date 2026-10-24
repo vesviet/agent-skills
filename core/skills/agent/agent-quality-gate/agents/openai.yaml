@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Quality Gate"
+  short_description: "Run validators, lints, tests, builds, and diff checks"
+  default_prompt: "Use $agent-quality-gate for this task."

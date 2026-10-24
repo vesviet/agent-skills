@@ -1,0 +1,13 @@
+{
+  "case_id": "PAY-010",
+  "name": "Saga Compensating Transaction on Partial Capture Failure",
+  "work_type": "implementation",
+  "role": "ecommerce-engineer",
+  "skill": "integrate-payment-gateway",
+  "user_request": "Implement distributed transaction rollback releasing reserved warehouse stock if payment capture fails.",
+  "target": "services/checkout/saga_coordinator.ts",
+  "context": {
+    "pattern": "Saga Orchestrator",
+    "step": "Payment capture rejected by issuing bank"
+  }
+}

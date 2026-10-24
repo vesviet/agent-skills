@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Handoff"
+  short_description: "Summarize state, validation, blockers, and next actions"
+  default_prompt: "Use $agent-handoff for this task."

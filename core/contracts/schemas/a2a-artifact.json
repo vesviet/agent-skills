@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a2a-artifact",
+  "title": "A2A Task Artifact",
+  "description": "Deliverable returned by a worker agent (A2A Artifact / Antigravity task result).",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "ID of the original A2A task this artifact responds to."
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "submitted",
+        "working",
+        "input-required",
+        "completed",
+        "failed",
+        "canceled"
+      ],
+      "description": "Terminal or in-progress task state mirrored on artifact."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "failed",
+        "blocked",
+        "partial"
+      ],
+      "description": "Pack-level outcome status (maps to A2A terminal states)."
+    },
+    "parts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Textual content of the part."
+          },
+          "data": {
+            "type": "object",
+            "description": "Structured JSON data payload.",
+            "additionalProperties": true
+          },
+          "file": {
+            "type": "object",
+            "description": "File payload or metadata object.",
+            "additionalProperties": true
+          },
+          "file_ref": {
+            "type": "string",
+            "description": "URI or relative path reference to file content."
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "text",
+              "file",
+              "data",
+              "json"
+            ],
+            "description": "Legacy discriminator from A2A v0.x (optional for backwards compatibility; v1.0 discriminates by member presence)."
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Optional part-level metadata or annotations.",
+            "additionalProperties": true
+          }
+        },
+        "anyOf": [
+          {
+            "required": [
+              "text"
+            ]
+          },
+          {
+            "required": [
+              "data"
+            ]
+          },
+          {
+            "required": [
+              "file"
+            ]
+          },
+          {
+            "required": [
+              "file_ref"
+            ]
+          }
+        ]
+      },
+      "description": "A2A multimodal artifact parts (A2A v1.0 unified Part model discriminated by member presence)."
+    },
+    "result": {
+      "type": "object",
+      "description": "Structured output conforming to output_schema_ref from the task.",
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Proof that success criteria were met."
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "criterion": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "criterion",
+          "reason"
+        ]
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "token_usage": {
+      "type": "object",
+      "properties": {
+        "input_tokens": {
+          "type": "integer"
+        },
+        "output_tokens": {
+          "type": "integer"
+        },
+        "model_used": {
+          "type": "string"
+        }
+      }
+    },
+    "trace_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "status"
+  ],
+  "examples": [
+    {
+      "task_id": "task-cod-store-routing-slice-01",
+      "state": "completed",
+      "status": "completed",
+      "parts": [
+        {
+          "text": "{\"contract_type\":\"implementation-result\",\"slice_id\":\"slice-01-command-logic\",...}"
+        }
+      ],
+      "evidence": [
+        "Implementation result validates against contracts/schemas/implementation-result.json"
+      ]
+    }
+  ]
+}

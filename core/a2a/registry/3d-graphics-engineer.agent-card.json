@@ -1,0 +1,103 @@
+{
+  "id": "pack://agent-skills/core/roles/3d-graphics-engineer",
+  "contract_type": "agent-card",
+  "name": "3d-graphics-engineer",
+  "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGPU/WebGL implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility. In 2026–2027, this mandates WebGPU-first architectures with WebGL2 fallback, WGSL (WebGPU Shading Language) compute shader pipelines, Three.js WebGPURenderer / TSL (Three Shading Language), 3D Gaussian Splatting (3DGS) real-time rasterization within strict VRAM ceilings ($VRAM_{\\text{textures}} = \\sum (W_i \\times H_i \\times Bpp_i \\times 1.333)$), Meshopt/Draco asset delivery ($\\le 2\\text{MB}$ payload), and governing AI-generated 3D assets with automated memory and fidelity gates.",
+  "url": "pack://agent-skills/core/roles/3d-graphics-engineer.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "debug-3d-scene",
+      "name": "Debug 3D Scene",
+      "description": "Skill debug-3d-scene.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "integrate-r3f-three-legacy",
+      "name": "Integrate R3F Three Legacy",
+      "description": "Skill integrate-r3f-three-legacy.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
+      "id": "optimize-3d-assets",
+      "name": "Optimize 3D Assets",
+      "description": "Skill optimize-3d-assets.",
+      "tags": [
+        "pack",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "implementation-result.json",
+    "performance-audit.json"
+  ],
+  "role_file": "core/roles/3d-graphics-engineer.md",
+  "policy_profile": "3d-graphics-engineer"
+}

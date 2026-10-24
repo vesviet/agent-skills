@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "series-article",
+  "title": "Series Article",
+  "description": "Schema for a series article output, validating required frontmatter fields and body structure before publishing.",
+  "type": "object",
+  "required": [
+    "contract_type",
+    "frontmatter",
+    "body"
+  ],
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "series-article",
+      "description": "Machine-readable contract discriminator."
+    },
+    "frontmatter": {
+      "type": "object",
+      "required": [
+        "title",
+        "date",
+        "draft",
+        "description",
+        "ShowToc",
+        "TocOpen",
+        "weight",
+        "categories",
+        "tags"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 120,
+          "description": "Article title including part number for series parts."
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+07:00$",
+          "description": "ISO 8601 datetime with +07:00 timezone offset."
+        },
+        "draft": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 160,
+          "description": "Meta description, must be ≤ 160 characters."
+        },
+        "ShowToc": {
+          "type": "boolean",
+          "const": true
+        },
+        "TocOpen": {
+          "type": "boolean",
+          "const": true
+        },
+        "weight": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Ordering weight within the series."
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2
+        }
+      }
+    },
+    "body": {
+      "type": "object",
+      "required": [
+        "prerequisite_block",
+        "sections",
+        "production_failure",
+        "cta_link"
+      ],
+      "properties": {
+        "prerequisite_block": {
+          "type": "boolean",
+          "const": true,
+          "description": "Must open with a > **Prerequisite:** blockquote."
+        },
+        "sections": {
+          "type": "integer",
+          "minimum": 3,
+          "description": "Minimum number of H2 sections in the article body."
+        },
+        "production_failure": {
+          "type": "boolean",
+          "const": true,
+          "description": "Must contain at least one Production Failure case study."
+        },
+        "cta_link": {
+          "type": "boolean",
+          "const": true,
+          "description": "Must close with a Next Step / CTA link to the following part."
+        },
+        "code_snippets_linted": {
+          "type": "boolean",
+          "const": true,
+          "description": "All code snippets must pass basic linting for their language."
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "contract_type": "series-article",
+      "series_id": "cod-order-guide-2026",
+      "article_index": 1,
+      "title": "COD Ordering Guide for Store Managers",
+      "previous_article_ref": null,
+      "next_article_ref": "how-to-track-your-cod-courier",
+      "summary": "Introduction to COD order routing for store managers",
+      "internal_links": [
+        "/property/ho-chi-minh-retail-stores",
+        "/guide/store-manager-dashboard"
+      ],
+      "frontmatter": {
+        "title": "Example series article title",
+        "date": "2026-07-22T09:00:00+07:00",
+        "draft": false,
+        "description": "An example article that satisfies the series article contract.",
+        "ShowToc": true,
+        "TocOpen": true,
+        "weight": 1,
+        "categories": [
+          "Engineering"
+        ],
+        "tags": [
+          "example",
+          "series"
+        ]
+      },
+      "body": {
+        "prerequisite_block": true,
+        "sections": 3,
+        "production_failure": true,
+        "cta_link": true,
+        "code_snippets_linted": true
+      }
+    }
+  ]
+}

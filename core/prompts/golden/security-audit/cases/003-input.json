@@ -1,0 +1,14 @@
+{
+  "case_id": "SEC-003",
+  "name": "Insecure Direct Object Reference in Tenant Documents (CWE-639)",
+  "work_type": "audit",
+  "role": "security-engineer",
+  "skill": "security-audit",
+  "user_request": "Review document retrieval endpoint for multi-tenant isolation and access control boundaries.",
+  "target": "api/documents/[id].ts",
+  "context": {
+    "code_snippet": "export async function getDocument(req: Request, { params }: RouteProps) {\n  const doc = await db.documents.findUnique({ where: { id: params.id } });\n  if (!doc) return new Response('Not Found', { status: 404 });\n  return Response.json(doc);\n}",
+    "auth_context": "authenticated_user",
+    "environment": "production"
+  }
+}

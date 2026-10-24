@@ -1,0 +1,13 @@
+{
+  "case_id": "PAY-002",
+  "name": "Constant-Time Signature Comparison (Timing Attack Defense)",
+  "work_type": "implementation",
+  "role": "ecommerce-engineer",
+  "skill": "integrate-payment-gateway",
+  "user_request": "Author custom cryptographic webhook HMAC verification routine preventing timing side-channel attacks.",
+  "target": "services/payment/signature.ts",
+  "context": {
+    "algorithm": "sha256",
+    "threat_model": "Remote microsecond timing differential analysis"
+  }
+}

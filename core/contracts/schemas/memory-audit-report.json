@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "memory-audit-report",
+  "title": "Memory Audit Report",
+  "description": "Formal JSON Schema Draft 2020-12 specifying memory audit findings, stale entry classification, dead path verification, token delta savings, and sanitized security items (OWASP ASI06).",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "memory-audit-report",
+      "description": "Machine-readable contract discriminator."
+    },
+    "audit_id": {
+      "type": "string",
+      "description": "Unique audit execution identifier, e.g. MEM-AUDIT-2026-10-21-001."
+    },
+    "target_file": {
+      "type": "string",
+      "description": "Path to the memory file audited, e.g. MEMORY.md or .agents/memory.md."
+    },
+    "audited_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp when the audit was performed."
+    },
+    "auditor": {
+      "type": "object",
+      "description": "Entity and toolchain executing the memory audit.",
+      "properties": {
+        "role": {
+          "type": "string",
+          "description": "Agent role slug performing the audit (e.g. prompt-engineer, security-engineer)."
+        },
+        "tool": {
+          "type": "string",
+          "description": "Tool or script executed (e.g. prune-memory.py, manual-review)."
+        },
+        "runtime_mode": {
+          "type": "string",
+          "enum": ["check", "dry-run", "in-place", "archive-only"]
+        }
+      },
+      "required": ["role", "tool", "runtime_mode"]
+    },
+    "lifecycle_phase": {
+      "type": "string",
+      "enum": ["audit", "triage", "compaction", "archival"],
+      "description": "Current lifecycle phase of the memory operation."
+    },
+    "token_metrics": {
+      "type": "object",
+      "description": "Token volume statistics before and after memory hygiene operations.",
+      "properties": {
+        "tokens_before": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tokens_after": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "token_delta": {
+          "type": "integer",
+          "description": "Net reduction in token count (positive indicates savings)."
+        },
+        "token_reduction_pct": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 100.0
+        },
+        "budget_token_cap": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "budget_exceeded": {
+          "type": "boolean"
+        }
+      },
+      "required": ["tokens_before", "tokens_after", "token_delta", "token_reduction_pct", "budget_token_cap", "budget_exceeded"]
+    },
+    "line_metrics": {
+      "type": "object",
+      "description": "Line count statistics before and after memory hygiene operations.",
+      "properties": {
+        "lines_before": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lines_after": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "line_budget_cap": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "line_budget_exceeded": {
+          "type": "boolean"
+        }
+      },
+      "required": ["lines_before", "lines_after", "line_budget_cap", "line_budget_exceeded"]
+    },
+    "entry_triage_summary": {
+      "type": "object",
+      "description": "Summary counts of memory entries categorized by the 5-status lifecycle triage model.",
+      "properties": {
+        "active_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stale_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "redundant_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "resolved_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "poisoned_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_entries": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": ["active_count", "stale_count", "redundant_count", "resolved_count", "poisoned_count", "total_entries"]
+    },
+    "findings": {
+      "type": "array",
+      "description": "Detailed audit findings for individual memory items.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "finding_id": {
+            "type": "string"
+          },
+          "entry_id": {
+            "type": "string",
+            "description": "Identifier of the memory entry (e.g. M-01, C-53, or line range)."
+          },
+          "classification": {
+            "type": "string",
+            "enum": ["active", "stale", "redundant", "resolved", "poisoned"]
+          },
+          "topic": {
+            "type": "string"
+          },
+          "raw_content": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "referenced_paths": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "dead_paths": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "action_taken": {
+            "type": "string",
+            "enum": ["retained", "updated", "compacted", "archived", "quarantined", "deleted"]
+          }
+        },
+        "required": ["finding_id", "classification", "topic", "reason", "action_taken"]
+      }
+    },
+    "security_sanitization": {
+      "type": "object",
+      "description": "OWASP ASI06 context and memory poisoning inspection results.",
+      "properties": {
+        "owasp_asi06_checked": {
+          "type": "boolean"
+        },
+        "secrets_detected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "poisoned_entries_quarantined": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sanitized_items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "finding_id": { "type": "string" },
+              "threat_type": {
+                "type": "string",
+                "enum": ["hallucinated_path", "unverified_tool_output", "credential_leak", "hidden_instruction", "context_overflow"]
+              },
+              "action": { "type": "string" },
+              "details": { "type": "string" }
+            },
+            "required": ["finding_id", "threat_type", "action", "details"]
+          }
+        }
+      },
+      "required": ["owasp_asi06_checked", "secrets_detected", "poisoned_entries_quarantined", "sanitized_items"]
+    },
+    "archival_target": {
+      "type": "string",
+      "description": "Path to the archival destination file if archival was performed."
+    }
+  },
+  "required": [
+    "contract_type",
+    "audit_id",
+    "target_file",
+    "audited_at",
+    "auditor",
+    "token_metrics",
+    "line_metrics",
+    "entry_triage_summary",
+    "findings",
+    "security_sanitization"
+  ],
+  "examples": [
+    {
+      "contract_type": "memory-audit-report",
+      "audit_id": "MEM-AUDIT-2026-10-21-001",
+      "target_file": ".agents/memory.md",
+      "audited_at": "2026-10-21T01:30:00Z",
+      "auditor": {
+        "role": "prompt-engineer",
+        "tool": "prune-memory.py",
+        "runtime_mode": "check"
+      },
+      "lifecycle_phase": "triage",
+      "token_metrics": {
+        "tokens_before": 1420,
+        "tokens_after": 860,
+        "token_delta": 560,
+        "token_reduction_pct": 39.4,
+        "budget_token_cap": 1500,
+        "budget_exceeded": false
+      },
+      "line_metrics": {
+        "lines_before": 118,
+        "lines_after": 68,
+        "line_budget_cap": 100,
+        "line_budget_exceeded": false
+      },
+      "entry_triage_summary": {
+        "active_count": 8,
+        "stale_count": 4,
+        "redundant_count": 2,
+        "resolved_count": 5,
+        "poisoned_count": 0,
+        "total_entries": 19
+      },
+      "findings": [
+        {
+          "finding_id": "F-01",
+          "entry_id": "M-05",
+          "classification": "stale",
+          "topic": "Scale & 504 Traps",
+          "raw_content": "pagination-trap.md, scale-20m-orders",
+          "reason": "Referenced pagination-trap.md does not exist in live repository root.",
+          "referenced_paths": ["pagination-trap.md", "scale-20m-orders"],
+          "dead_paths": ["pagination-trap.md"],
+          "action_taken": "updated"
+        }
+      ],
+      "security_sanitization": {
+        "owasp_asi06_checked": true,
+        "secrets_detected": 0,
+        "poisoned_entries_quarantined": 0,
+        "sanitized_items": []
+      },
+      "archival_target": ".agents/memory_archive.md"
+    }
+  ]
+}

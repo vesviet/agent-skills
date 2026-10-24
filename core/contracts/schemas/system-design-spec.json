@@ -1,0 +1,434 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "system-design-spec",
+  "title": "System Design Specification",
+  "description": "Structured output for a system design covering topology, NFRs, capacity model, and AI infrastructure. Primary handoff artifact from System Engineer to DevOps, SRE, Technical Architect, and Backend Developer roles.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "system-design-spec",
+      "description": "Machine-readable contract discriminator."
+    },
+    "spec_id": {
+      "type": "string",
+      "description": "Unique identifier for this system design (e.g., YYYY-MM-DD-system-name)."
+    },
+    "system_name": {
+      "type": "string",
+      "description": "Name of the system or infrastructure scope this design covers."
+    },
+    "design_trigger": {
+      "type": "string",
+      "enum": ["new_system", "capacity_review", "performance_investigation", "ai_infra_setup", "environment_expansion", "disaster_recovery", "refactoring"],
+      "description": "What prompted this system design."
+    },
+    "nfr_targets": {
+      "type": "array",
+      "description": "Measurable non-functional requirement targets this design must satisfy.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nfr": {
+            "type": "string",
+            "description": "The NFR name (e.g., availability, p99_latency, throughput, rto, rpo)."
+          },
+          "target": {
+            "type": "string",
+            "description": "Specific measurable target (e.g., '99.9%', '< 200ms at 1000 req/s', '< 15 min')."
+          },
+          "measurement_method": {
+            "type": "string",
+            "description": "How this target will be measured (e.g., 'synthetic monitoring every 60s', 'Prometheus p99 histogram')."
+          },
+          "current_baseline": {
+            "type": "string",
+            "description": "Current measured value before this design is applied, if known."
+          }
+        },
+        "required": ["nfr", "target"]
+      },
+      "minItems": 1
+    },
+    "topology": {
+      "type": "object",
+      "description": "System topology across all relevant infrastructure layers.",
+      "properties": {
+        "compute": {
+          "type": "object",
+          "properties": {
+            "description": { "type": "string" },
+            "instance_types": { "type": "array", "items": { "type": "string" } },
+            "replica_count": { "type": "string" },
+            "autoscaling_policy": { "type": "string" }
+          }
+        },
+        "network": {
+          "type": "object",
+          "properties": {
+            "description": { "type": "string" },
+            "load_balancer": { "type": "string" },
+            "segments": { "type": "array", "items": { "type": "string" } },
+            "dns_strategy": { "type": "string" },
+            "zero_trust_enabled": { "type": "boolean" }
+          }
+        },
+        "storage": {
+          "type": "object",
+          "properties": {
+            "description": { "type": "string" },
+            "primary_database": { "type": "string" },
+            "storage_tiers": { "type": "array", "items": { "type": "string" } },
+            "backup_strategy": { "type": "string" },
+            "retention_policy": { "type": "string" }
+          }
+        },
+        "middleware": {
+          "type": "object",
+          "properties": {
+            "description": { "type": "string" },
+            "message_queue": { "type": "string" },
+            "cache_hierarchy": { "type": "string" },
+            "api_gateway": { "type": "string" }
+          }
+        },
+        "environments": {
+          "type": "array",
+          "description": "Environment topology (staging, production, DR, etc.).",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "purpose": { "type": "string" },
+              "isolation_level": {
+                "type": "string",
+                "enum": ["fully_isolated", "shared_infra", "shared_data", "production_mirror"]
+              }
+            },
+            "required": ["name", "purpose"]
+          }
+        }
+      }
+    },
+    "ai_infrastructure": {
+      "type": "object",
+      "description": "AI inference infrastructure specification. Omit if no AI workloads in scope.",
+      "properties": {
+        "in_scope": {
+          "type": "boolean",
+          "description": "Set to true if AI inference infrastructure is part of this design."
+        },
+        "gpu_allocation": {
+          "type": "object",
+          "properties": {
+            "gpu_type": { "type": "string", "description": "e.g., A100-80GB, H100-80GB, RTX-4090" },
+            "gpu_count": { "type": "integer" },
+            "vram_per_pod_gb": { "type": "number" },
+            "vram_breakdown": {
+              "type": "object",
+              "properties": {
+                "model_weights_gb": { "type": "number" },
+                "kv_cache_gb": { "type": "number" },
+                "activation_overhead_gb": { "type": "number" },
+                "safety_headroom_pct": { "type": "number", "description": "Minimum 15% recommended." }
+              }
+            },
+            "namespace_quota": { "type": "string", "description": "Kubernetes namespace GPU quota." }
+          }
+        },
+        "inference_server": {
+          "type": "object",
+          "properties": {
+            "stack": {
+              "type": "string",
+              "enum": ["vLLM", "TensorRT-LLM", "Triton", "Ollama", "custom"],
+              "description": "Inference serving stack selected."
+            },
+            "key_config": {
+              "type": "object",
+              "description": "Key configuration parameters for the selected inference server.",
+              "additionalProperties": { "type": "string" }
+            },
+            "selection_rationale": { "type": "string" },
+            "warmup_strategy": { "type": "string" }
+          }
+        },
+        "vector_database": {
+          "type": "object",
+          "properties": {
+            "database": {
+              "type": "string",
+              "enum": ["pgvector", "Qdrant", "Weaviate", "Pinecone", "Milvus", "other"]
+            },
+            "index_type": {
+              "type": "string",
+              "enum": ["HNSW", "IVFFlat", "IVF_PQ", "scalar_quantized", "product_quantized", "managed"]
+            },
+            "index_parameters": {
+              "type": "object",
+              "description": "Key index parameters (e.g., m, ef_construction, ef, nprobe) with rationale.",
+              "additionalProperties": { "type": "string" }
+            },
+            "selection_rationale": { "type": "string" }
+          }
+        },
+        "embedding_pipeline": {
+          "type": "object",
+          "properties": {
+            "embedding_model": { "type": "string" },
+            "placement": {
+              "type": "string",
+              "enum": ["co_located", "remote_service", "managed_api"]
+            },
+            "caching_strategy": { "type": "string" },
+            "batching_strategy": { "type": "string" }
+          }
+        },
+        "edge_cloud_routing": {
+          "type": "object",
+          "properties": {
+            "description": { "type": "string" },
+            "edge_inference_criteria": { "type": "string" },
+            "cloud_inference_criteria": { "type": "string" }
+          }
+        }
+      },
+      "required": ["in_scope"]
+    },
+    "capacity_model": {
+      "type": "object",
+      "description": "Capacity model for primary system resources.",
+      "properties": {
+        "modeled_at": {
+          "type": "string",
+          "description": "ISO 8601 date when this capacity model was produced."
+        },
+        "review_cadence": {
+          "type": "string",
+          "description": "How often this model should be reviewed and updated (e.g., monthly, quarterly)."
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "resource": { "type": "string", "description": "e.g., CPU, Memory, GPU_VRAM, Network_egress, Storage" },
+              "current_usage": { "type": "string" },
+              "forecast_3mo": { "type": "string" },
+              "forecast_12mo": { "type": "string" },
+              "headroom": { "type": "string" },
+              "action_trigger": { "type": "string", "description": "Threshold that triggers a scaling or upgrade action." }
+            },
+            "required": ["resource", "current_usage", "forecast_3mo", "forecast_12mo", "action_trigger"]
+          }
+        }
+      },
+      "required": ["modeled_at", "resources"]
+    },
+    "iac_reference": {
+      "type": "object",
+      "description": "Reference to the IaC that implements this system design.",
+      "properties": {
+        "repository": { "type": "string" },
+        "paths": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Paths to Terraform modules, Ansible playbooks, or Kubernetes manifests."
+        },
+        "tooling": {
+          "type": "string",
+          "enum": ["Terraform", "Ansible", "Pulumi", "Kubernetes_manifests", "Helm", "mixed"]
+        },
+        "apply_sequence": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ordered list of apply steps respecting infrastructure dependencies."
+        }
+      }
+    },
+    "design_decisions": {
+      "type": "array",
+      "description": "Key design decisions with rationale and accepted trade-offs.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision": { "type": "string" },
+          "alternatives_considered": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "rationale": { "type": "string" },
+          "accepted_trade_off": { "type": "string" }
+        },
+        "required": ["decision", "rationale", "accepted_trade_off"]
+      }
+    },
+    "cross_layer_impact": {
+      "type": "array",
+      "description": "Second-order effects of infrastructure changes across adjacent layers.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "change": { "type": "string" },
+          "affected_layer": { "type": "string" },
+          "impact": { "type": "string" },
+          "mitigation": { "type": "string" }
+        },
+        "required": ["change", "affected_layer", "impact"]
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "description": "Unresolved design questions, accepted risks, and escalation items.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": { "type": "string" },
+          "owner": { "type": "string" },
+          "blocks": {
+            "type": "string",
+            "description": "What downstream activity this question blocks, if any."
+          }
+        },
+        "required": ["question"]
+      }
+    },
+    "downstream_handoffs": {
+      "type": "object",
+      "description": "What each downstream role needs from this spec.",
+      "properties": {
+        "devops_engineer": { "type": "string" },
+        "sre": { "type": "string" },
+        "technical_architect": { "type": "string" },
+        "security_engineer": { "type": "string" },
+        "backend_developer": { "type": "string" }
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "spec_id",
+    "system_name",
+    "design_trigger",
+    "nfr_targets",
+    "topology",
+    "capacity_model"
+  ],
+  "examples": [
+    {
+      "contract_type": "system-design-spec",
+      "spec_id": "2026-07-01-inference-cluster-v1",
+      "system_name": "LLM Inference Cluster — Production",
+      "design_trigger": "ai_infra_setup",
+      "nfr_targets": [
+        {
+          "nfr": "p99_latency",
+          "target": "< 3000ms for 2K-token completion at 50 concurrent requests",
+          "measurement_method": "Prometheus histogram p99 on inference endpoint",
+          "current_baseline": "not yet measured — new system"
+        },
+        {
+          "nfr": "availability",
+          "target": "99.5% — max 43.8h downtime/year",
+          "measurement_method": "synthetic health-check every 60s",
+          "current_baseline": "n/a"
+        }
+      ],
+      "topology": {
+        "compute": {
+          "description": "GPU nodes for inference; CPU nodes for embedding and coordination",
+          "instance_types": ["g5.12xlarge (4x A10G, 96GB VRAM total)", "c6i.4xlarge (CPU embedding)"],
+          "replica_count": "2 GPU nodes minimum; 3 at peak",
+          "autoscaling_policy": "scale out at GPU utilization > 75% for 5min; scale in at < 30% for 30min"
+        },
+        "network": {
+          "description": "Private subnet for GPU nodes; load balancer in public subnet",
+          "load_balancer": "ALB with sticky sessions disabled; health check: /health every 10s",
+          "segments": ["gpu-inference (private)", "embedding-workers (private)", "public-ingress"]
+        },
+        "environments": [
+          {
+            "name": "staging",
+            "purpose": "integration testing and load validation",
+            "isolation_level": "fully_isolated"
+          },
+          {
+            "name": "production",
+            "purpose": "live traffic",
+            "isolation_level": "fully_isolated"
+          }
+        ]
+      },
+      "ai_infrastructure": {
+        "in_scope": true,
+        "gpu_allocation": {
+          "gpu_type": "A10G-24GB",
+          "gpu_count": 8,
+          "vram_per_pod_gb": 22,
+          "vram_breakdown": {
+            "model_weights_gb": 14.5,
+            "kv_cache_gb": 5.5,
+            "activation_overhead_gb": 0.5,
+            "safety_headroom_pct": 6.25
+          }
+        },
+        "inference_server": {
+          "stack": "vLLM",
+          "key_config": {
+            "max_model_len": "4096",
+            "tensor_parallel_size": "2",
+            "max_num_batches": "32",
+            "quantization": "awq"
+          },
+          "selection_rationale": "vLLM continuous batching maximizes GPU utilization at target 50-concurrent-request load",
+          "warmup_strategy": "pre-load model at pod startup; send 10 synthetic requests before registering as healthy"
+        },
+        "vector_database": {
+          "database": "Qdrant",
+          "index_type": "HNSW",
+          "index_parameters": {
+            "m": "16 — higher connectivity for better recall at cost of memory",
+            "ef_construction": "200 — build quality; higher = better recall + slower indexing",
+            "ef": "128 — query-time recall target: 0.95+ at < 10ms"
+          },
+          "selection_rationale": "Qdrant chosen for payload-filtered search capability and Rust performance at expected 5M vector scale"
+        }
+      },
+      "capacity_model": {
+        "modeled_at": "2026-07-01",
+        "review_cadence": "monthly",
+        "resources": [
+          {
+            "resource": "GPU_VRAM",
+            "current_usage": "18 GB / 24 GB per A10G",
+            "forecast_3mo": "20 GB",
+            "forecast_12mo": "22 GB",
+            "headroom": "2–6 GB",
+            "action_trigger": "Upgrade to A100 when forecast exceeds 21 GB sustained"
+          },
+          {
+            "resource": "GPU_count",
+            "current_usage": "6 of 8 provisioned",
+            "forecast_3mo": "8",
+            "forecast_12mo": "12",
+            "headroom": "2 nodes",
+            "action_trigger": "Add node when utilization > 75% for 5min sustained"
+          }
+        ]
+      },
+      "design_decisions": [
+        {
+          "decision": "vLLM over TensorRT-LLM for serving stack",
+          "alternatives_considered": ["TensorRT-LLM", "Triton with custom backend"],
+          "rationale": "vLLM continuous batching matches high-concurrency workload pattern better than static batching; faster iteration cycle vs. TRT engine compilation",
+          "accepted_trade_off": "5–10% lower peak throughput vs. TensorRT-LLM at equivalent hardware; acceptable at current scale"
+        }
+      ],
+      "downstream_handoffs": {
+        "devops_engineer": "Provision GPU nodes per instance_types spec; configure ALB health check per network.load_balancer; apply IaC modules in apply_sequence order",
+        "sre": "Set SLO budgets against nfr_targets; configure GPU utilization alert at 75% trigger; capacity review monthly per capacity_model.review_cadence",
+        "technical_architect": "Inference cluster supports max_model_len 4096 and 50 concurrent requests; connection pool max 200 from application layer"
+      }
+    }
+  ]
+}

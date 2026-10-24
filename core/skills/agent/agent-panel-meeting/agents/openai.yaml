@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Panel Meeting"
+  short_description: "Orchestrate a 6-round, multi-role cross-examination panel meeting to debate a..."
+  default_prompt: "Use $agent-panel-meeting to execute agent panel meeting tasks in this codebase."

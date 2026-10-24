@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "unique index",
+    "event_id",
+    "advisory lock",
+    "distributed lock",
+    "idempotent"
+  ],
+  "must_not_include": [
+    "process duplicate event",
+    "ignore race condition"
+  ],
+  "required_tokens": [
+    "unique index",
+    "event_id",
+    "advisory lock",
+    "distributed lock",
+    "idempotent"
+  ],
+  "forbidden_tokens": [
+    "process duplicate event",
+    "ignore race condition"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

@@ -1,0 +1,65 @@
+schema_version: "2"
+
+name: laravel-ecommerce-team
+description: Global engineering core plus Laravel 13 + Filament v4 + Livewire 3 conventions plus Laravel E-Commerce overlay. Includes PHP 8.4, Pest v5, Laravel Reverb, Laravel Pulse.
+version: 4.0.0
+
+tags:
+  - core
+  - laravel
+  - filament
+  - ecommerce
+  - php
+author: user
+maintained_by: platform-team
+license: MIT
+homepage: https://github.com/example-org/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
+includes:
+  - core
+  - overlays/laravel-filament
+  - overlays/laravel-ecommerce
+
+capabilities:
+  - code-generation
+  - backend
+  - frontend
+  - testing
+  - deployment
+  - ecommerce
+  - admin-panel
+
+data_classification: internal
+
+activation:
+  strategy: marker_first
+  markers:
+    - composer.json
+    - artisan
+    - phpunit.xml
+  glob_patterns:
+    - "app/**/*.php"
+    - "app/Filament/**/*.php"
+    - "app/Livewire/**/*.php"
+    - "database/migrations/**/*.php"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - run_migration
+      - push_to_production
+      - modify_secrets
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

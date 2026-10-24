@@ -1,0 +1,823 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "research-report",
+  "title": "Research Report Specification",
+  "description": "Structured output for iterative research synthesis with deep (10+ rounds) or scoped depth, Citation DAG acyclicity, CoVe verification matrix, and Information Density tracking.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "research-report"
+    },
+    "objective": {
+      "type": "string",
+      "description": "The core hypothesis, question, or problem being researched."
+    },
+    "feature_ticket_ref": {
+      "type": "string",
+      "description": "Optional path or ID linking to feature-ticket.json when research supports requirements work."
+    },
+    "execution_metrics": {
+      "type": "object",
+      "properties": {
+        "depth_mode": {
+          "type": "string",
+          "enum": [
+            "deep",
+            "scoped"
+          ],
+          "description": "deep = default 10+ rounds; scoped = user- or BA-narrowed depth with documented waiver."
+        },
+        "total_rounds": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Distinct research loops executed. Minimum 10 when depth_mode is deep; minimum 3 when scoped."
+        },
+        "sources_analyzed": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "scope_waiver_note": {
+          "type": "string",
+          "description": "Required when depth_mode is scoped: who narrowed scope and why fewer rounds are sufficient."
+        }
+      },
+      "required": [
+        "depth_mode",
+        "total_rounds",
+        "sources_analyzed"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "depth_mode": {
+                "const": "deep"
+              }
+            },
+            "required": [
+              "depth_mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "total_rounds": {
+                "minimum": 10
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "depth_mode": {
+                "const": "scoped"
+              }
+            },
+            "required": [
+              "depth_mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "total_rounds": {
+                "minimum": 3
+              },
+              "scope_waiver_note": {
+                "minLength": 1
+              }
+            },
+            "required": [
+              "scope_waiver_note"
+            ]
+          }
+        }
+      ]
+    },
+    "citation_dag": {
+      "type": "object",
+      "description": "Directed Acyclic Graph topology of citations enforcing mathematical acyclicity, edge verification, and triangulation.",
+      "properties": {
+        "is_acyclic": {
+          "type": "boolean",
+          "const": true,
+          "description": "Must be true; circular citations are rejected fail-closed."
+        },
+        "cycle_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of detected cycles; must be 0 for acyclic DAG."
+        },
+        "cycle_check_algorithm": {
+          "type": "string",
+          "enum": [
+            "dfs_three_color",
+            "kahns_algorithm",
+            "tarjan_scc"
+          ],
+          "description": "Algorithm used to verify acyclicity."
+        },
+        "validation_status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed"
+          ],
+          "description": "Validation status of DAG acyclicity check."
+        },
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "node_id": {
+                "type": "string"
+              },
+              "node_type": {
+                "type": "string",
+                "enum": [
+                  "claim",
+                  "source",
+                  "evidence"
+                ]
+              },
+              "label": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "source_url": {
+                "type": "string"
+              },
+              "source_type": {
+                "type": "string"
+              },
+              "source_tier": {
+                "type": "string",
+                "enum": [
+                  "Primary",
+                  "Secondary",
+                  "Tertiary"
+                ]
+              },
+              "triangulation_count": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "node_id",
+              "node_type",
+              "label"
+            ]
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "edge_id": {
+                "type": "string"
+              },
+              "from_node_id": {
+                "type": "string"
+              },
+              "to_node_id": {
+                "type": "string"
+              },
+              "relationship": {
+                "type": "string",
+                "enum": [
+                  "cites",
+                  "corroborates",
+                  "derives_from",
+                  "contradicts"
+                ]
+              },
+              "weight": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              }
+            },
+            "required": [
+              "from_node_id",
+              "to_node_id",
+              "relationship"
+            ]
+          }
+        }
+      },
+      "required": [
+        "is_acyclic",
+        "cycle_check_algorithm",
+        "validation_status",
+        "nodes",
+        "edges"
+      ]
+    },
+    "cove_verification_matrix": {
+      "type": "object",
+      "description": "Chain-of-Verification (CoVe) atomic claim decomposition and verification audit matrix.",
+      "properties": {
+        "total_claims_assessed": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "verified_claims_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "refuted_claims_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unverifiable_claims_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "matrix": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim_id": {
+                "type": "string"
+              },
+              "atomic_proposition": {
+                "type": "string"
+              },
+              "verification_question": {
+                "type": "string"
+              },
+              "isolated_query_used": {
+                "type": "string"
+              },
+              "primary_source_urls": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "verification_status": {
+                "type": "string",
+                "enum": [
+                  "verified",
+                  "refuted",
+                  "unverifiable"
+                ]
+              },
+              "confidence_score": {
+                "type": "string",
+                "enum": [
+                  "High",
+                  "Medium",
+                  "Low"
+                ]
+              },
+              "c2pa_provenance_checked": {
+                "type": "boolean"
+              },
+              "c2pa_status": {
+                "type": "string",
+                "enum": [
+                  "signed_valid",
+                  "watermark_detected",
+                  "unverified_provenance",
+                  "not_applicable"
+                ]
+              }
+            },
+            "required": [
+              "claim_id",
+              "atomic_proposition",
+              "verification_question",
+              "isolated_query_used",
+              "verification_status",
+              "confidence_score"
+            ]
+          }
+        }
+      },
+      "required": [
+        "total_claims_assessed",
+        "verified_claims_count",
+        "refuted_claims_count",
+        "unverifiable_claims_count",
+        "matrix"
+      ]
+    },
+    "information_density": {
+      "type": "object",
+      "description": "Information density measurement ensuring high signal-to-noise ratio in research synthesis.",
+      "properties": {
+        "total_words": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "named_entities_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "quantified_metrics_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "density_score": {
+          "type": "number",
+          "minimum": 0.12
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0.12
+        },
+        "threshold_met": {
+          "type": "boolean"
+        },
+        "formula": {
+          "type": "string",
+          "const": "ID = (Named Entities + Quantified Metrics) / Total Words"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed"
+          ]
+        }
+      },
+      "required": [
+        "total_words",
+        "named_entities_count",
+        "quantified_metrics_count",
+        "density_score",
+        "formula",
+        "status"
+      ]
+    },
+    "synthesis": {
+      "type": "object",
+      "properties": {
+        "key_findings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Primary verified insights discovered."
+        },
+        "inferences": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Labeled inferences that are not fully verified."
+        },
+        "critical_gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Missing, ambiguous, or unverifiable information after research."
+        },
+        "confidence_score": {
+          "type": "string",
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ],
+          "description": "Overall confidence based on data triangulation."
+        },
+        "triangulation": {
+          "type": "object",
+          "description": "Multi-source corroboration evidence per TRIANGULATION LOCK: >= 3 independent sources for contentious assertions; contradictions preserved with divergent evidence instead of artificial compromise.",
+          "properties": {
+            "sources_corroborating_count": {
+              "type": "integer",
+              "description": "Number of independent sources corroborating the primary findings."
+            },
+            "unresolved_contradictions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Contradictions presented with explicit divergent evidence rather than artificially smoothed."
+            }
+          }
+        }
+      },
+      "required": [
+        "key_findings",
+        "critical_gaps",
+        "confidence_score"
+      ]
+    },
+    "raw_data_references": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "credibility": {
+            "type": "string",
+            "enum": [
+              "Primary",
+              "Secondary",
+              "Tertiary",
+              "AI-generated"
+            ],
+            "description": "Source tier per researcher source hierarchy: Primary (gov/official/peer-reviewed), Secondary (reputable news/expert), Tertiary (Wikipedia/reference), AI-generated (never cite — query use only)."
+          },
+          "source_type": {
+            "type": "string",
+            "description": "Optional: e.g. government-record, peer-reviewed-journal, news-article, industry-report, official-docs."
+          },
+          "context_summary": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_name",
+          "url",
+          "credibility"
+        ]
+      }
+    },
+    "recommended_next_roles": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Downstream owners; Researcher recommends but does not decide for them.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Target role slug, e.g. technical-architect, business-analyst, content-writer."
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "open_decisions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "role",
+          "rationale"
+        ]
+      }
+    },
+    "residual_risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Risks and skipped checks when certainty is limited."
+    },
+    "information_gain": {
+      "type": "object",
+      "description": "Required when handing off to Content Writer or SEO Analyst. Documents unique research value vs top SERP results.",
+      "properties": {
+        "unique_insights": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Findings not present in the top 10 SERP results for the target keyword — raw material for information gain."
+        },
+        "firsthand_evidence_available": {
+          "type": "boolean",
+          "description": "Whether primary interviews, original data, or firsthand accounts are accessible and noted for the Writer."
+        },
+        "firsthand_evidence_notes": {
+          "type": "string",
+          "description": "Describe the firsthand evidence if firsthand_evidence_available is true."
+        },
+        "ai_coverage_gap": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Topics where AI Overviews / AI answers are incorrect, incomplete, or missing — high-value citation opportunities."
+        },
+        "ymyl_elevation_required": {
+          "type": "boolean",
+          "description": "True when topic touches health, legal, financial, or safety domains and requires human expert review before publication."
+        },
+        "ymyl_notes": {
+          "type": "string",
+          "description": "Describe which YMYL domain applies and what expert review is recommended."
+        }
+      },
+      "required": [
+        "unique_insights",
+        "firsthand_evidence_available",
+        "ai_coverage_gap",
+        "ymyl_elevation_required"
+      ]
+    },
+    "cove_log": {
+      "type": "object",
+      "description": "Chain-of-Verification audit trail. Mandatory when ymyl_adjacent is true or when handing off critical claims.",
+      "properties": {
+        "ymyl_adjacent": {
+          "type": "boolean",
+          "description": "True when topic touches health, legal, financial, or safety domains — CoVe is mandatory."
+        },
+        "claims_submitted": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Atomic sub-claims submitted to Chain-of-Verification."
+        },
+        "claims_verified": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "source_url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "claim",
+              "source_url"
+            ]
+          },
+          "description": "Claims confirmed against original source document with URL."
+        },
+        "claims_unverified": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string",
+                "description": "Why unverified: source not retrieved, 404, mismatch, etc."
+              }
+            },
+            "required": [
+              "claim",
+              "reason"
+            ]
+          },
+          "description": "Claims that could not be confirmed — labeled [UNVERIFIED] in synthesis."
+        }
+      },
+      "required": [
+        "ymyl_adjacent",
+        "claims_submitted"
+      ]
+    },
+    "ai_source_discipline": {
+      "type": "object",
+      "description": "Machine-readable AI source audit trail. Documents AI tools used for query-only and any citation mismatches found.",
+      "properties": {
+        "ai_tools_used_for_queries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "AI tools used only to generate search queries and identify sub-topics (not cited as sources). E.g. Perplexity, ChatGPT, Google AI Overview."
+        },
+        "ai_citation_mismatches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ai_tool": {
+                "type": "string"
+              },
+              "claimed_url": {
+                "type": "string"
+              },
+              "claimed_fact": {
+                "type": "string"
+              },
+              "mismatch_reason": {
+                "type": "string",
+                "description": "404, content mismatch, hallucinated stat, etc."
+              }
+            },
+            "required": [
+              "ai_tool",
+              "claimed_url",
+              "mismatch_reason"
+            ]
+          },
+          "description": "AI-CITATION MISMATCH entries: URLs or facts provided by AI tools that could not be confirmed in original documents."
+        },
+        "grounding_completeness_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of material claims that have a verifiable source URL. Target: 100% for primary claims."
+        }
+      },
+      "required": [
+        "ai_tools_used_for_queries",
+        "ai_citation_mismatches",
+        "grounding_completeness_pct"
+      ]
+    }
+  },
+  "required": [
+    "contract_type",
+    "objective",
+    "execution_metrics",
+    "synthesis",
+    "raw_data_references",
+    "recommended_next_roles"
+  ],
+  "examples": [
+    {
+      "contract_type": "research-report",
+      "report_id": "2026-10-23-sota-deep-research-evaluation",
+      "objective": "Evaluate 2026 SOTA Deep Research architectures, Citation DAG acyclicity, CoVe verification matrices, and Stanford STORM persona discovery.",
+      "conducted_by": "researcher",
+      "created_at": "2026-10-23T02:00:00+07:00",
+      "execution_metrics": {
+        "depth_mode": "deep",
+        "total_rounds": 10,
+        "sources_analyzed": 14
+      },
+      "citation_dag": {
+        "is_acyclic": true,
+        "cycle_count": 0,
+        "cycle_check_algorithm": "dfs_three_color",
+        "validation_status": "passed",
+        "nodes": [
+          {
+            "node_id": "claim_storm_persona",
+            "node_type": "claim",
+            "label": "Stanford STORM executes multi-perspective persona discovery and conversational interviews before query generation",
+            "triangulation_count": 3
+          },
+          {
+            "node_id": "src_storm_paper",
+            "node_type": "source",
+            "label": "Stanford STORM Paper (arXiv:2402.14207)",
+            "url": "https://arxiv.org/abs/2402.14207",
+            "source_url": "https://arxiv.org/abs/2402.14207",
+            "source_type": "peer-reviewed-journal",
+            "source_tier": "Primary",
+            "triangulation_count": 1
+          },
+          {
+            "node_id": "src_c2pa_standard",
+            "node_type": "source",
+            "label": "C2PA Technical Specification v1.3",
+            "url": "https://c2pa.org/specifications/specifications/1.3/index.html",
+            "source_url": "https://c2pa.org/specifications/specifications/1.3/index.html",
+            "source_type": "technical-standard",
+            "source_tier": "Primary",
+            "triangulation_count": 1
+          }
+        ],
+        "edges": [
+          {
+            "edge_id": "edge_storm_citation",
+            "from_node_id": "claim_storm_persona",
+            "to_node_id": "src_storm_paper",
+            "relationship": "cites",
+            "weight": 1.0
+          }
+        ]
+      },
+      "cove_verification_matrix": {
+        "total_claims_assessed": 2,
+        "verified_claims_count": 2,
+        "refuted_claims_count": 0,
+        "unverifiable_claims_count": 0,
+        "matrix": [
+          {
+            "claim_id": "claim_01",
+            "atomic_proposition": "Stanford STORM uses multi-perspective persona discovery before search query generation.",
+            "verification_question": "Does Stanford STORM discover personas prior to formulating search queries?",
+            "isolated_query_used": "Stanford STORM persona discovery query formulation sequence",
+            "primary_source_urls": [
+              "https://arxiv.org/abs/2402.14207"
+            ],
+            "verification_status": "verified",
+            "confidence_score": "High",
+            "c2pa_provenance_checked": true,
+            "c2pa_status": "signed_valid"
+          },
+          {
+            "claim_id": "claim_02",
+            "atomic_proposition": "C2PA Content Credentials embed cryptographic JUMBF manifests signed by X.509 certificates.",
+            "verification_question": "Does C2PA bind JUMBF manifests using X.509 PKI signatures?",
+            "isolated_query_used": "C2PA JUMBF manifest X.509 signature verification",
+            "primary_source_urls": [
+              "https://c2pa.org/specifications/specifications/1.3/index.html"
+            ],
+            "verification_status": "verified",
+            "confidence_score": "High",
+            "c2pa_provenance_checked": true,
+            "c2pa_status": "signed_valid"
+          }
+        ]
+      },
+      "information_density": {
+        "total_words": 120,
+        "named_entities_count": 16,
+        "quantified_metrics_count": 8,
+        "density_score": 0.20,
+        "score": 0.20,
+        "threshold_met": true,
+        "formula": "ID = (Named Entities + Quantified Metrics) / Total Words",
+        "status": "passed"
+      },
+      "synthesis": {
+        "key_findings": [
+          "Stanford STORM persona discovery and simulated interviews eliminate single-perspective confirmation bias.",
+          "Citation DAG topological sorting guarantees zero circular AI citations."
+        ],
+        "inferences": [
+          "[INFERENCE] Automated cycle detection overhead is negligible for research graphs with <= 500 nodes."
+        ],
+        "critical_gaps": [
+          "Hardware acceleration support for real-time C2PA signature verification on edge devices."
+        ],
+        "confidence_score": "High",
+        "triangulation": {
+          "sources_corroborating_count": 3,
+          "unresolved_contradictions": []
+        }
+      },
+      "raw_data_references": [
+        {
+          "source_name": "Stanford University STORM Research Paper",
+          "url": "https://arxiv.org/abs/2402.14207",
+          "credibility": "Primary",
+          "source_type": "peer-reviewed-journal",
+          "context_summary": "Presents STORM architecture for multi-perspective inquiry and synthesis"
+        }
+      ],
+      "recommended_next_roles": [
+        {
+          "role": "technical-architect",
+          "rationale": "Incorporate Citation DAG and STORM interview protocols into agent framework design",
+          "open_decisions": [
+            "Select cycle check algorithm implementation",
+            "Define schema versioning strategy"
+          ]
+        }
+      ],
+      "residual_risks": [],
+      "information_gain": {
+        "unique_insights": [
+          "Mathematical topological cycle detection prevents synthetic circular AI echo chambers."
+        ],
+        "firsthand_evidence_available": true,
+        "firsthand_evidence_notes": "Benchmark scripts run in local scratchpad environment",
+        "ai_coverage_gap": [
+          "Commodity search results treat AI summaries as citable evidence; refuted by SOTA standards."
+        ],
+        "ymyl_elevation_required": false
+      },
+      "cove_log": {
+        "ymyl_adjacent": false,
+        "claims_submitted": [
+          "Stanford STORM uses multi-perspective persona discovery"
+        ],
+        "claims_verified": [
+          {
+            "claim": "Stanford STORM uses multi-perspective persona discovery",
+            "source_url": "https://arxiv.org/abs/2402.14207"
+          }
+        ],
+        "claims_unverified": []
+      },
+      "ai_source_discipline": {
+        "ai_tools_used_for_queries": [
+          "Perplexity",
+          "Google AI Overview"
+        ],
+        "ai_citation_mismatches": [],
+        "grounding_completeness_pct": 100
+      }
+    }
+  ]
+}

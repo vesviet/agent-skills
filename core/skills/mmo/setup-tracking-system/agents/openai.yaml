@@ -1,0 +1,4 @@
+interface:
+  display_name: "Setup Tracking System"
+  short_description: "Configure advanced privacy-first tracking including Server-to-Server (S2S) po..."
+  default_prompt: "Use $setup-tracking-system to execute setup tracking system tasks in this codebase."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design UX Flow"
+  short_description: "Design user experience flows and interaction patterns"
+  default_prompt: "Use $design-ux-flow for this task."

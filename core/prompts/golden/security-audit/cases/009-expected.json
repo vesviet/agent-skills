@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "XSS",
+    "CWE-79",
+    "DOMPurify",
+    "sanitization",
+    "CSP"
+  ],
+  "must_not_include": [
+    "v-html without sanitization",
+    "trust raw markdown"
+  ],
+  "required_tokens": [
+    "XSS",
+    "CWE-79",
+    "DOMPurify",
+    "sanitization",
+    "CSP"
+  ],
+  "forbidden_tokens": [
+    "v-html without sanitization",
+    "trust raw markdown"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/security-audit.json",
+    "contract_type": "security-audit"
+  }
+}

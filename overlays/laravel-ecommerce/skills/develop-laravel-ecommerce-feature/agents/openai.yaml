@@ -1,0 +1,4 @@
+interface:
+  display_name: "Develop Laravel E-Commerce Feature"
+  short_description: "Build features in the Laravel e-commerce"
+  default_prompt: "Use $develop-laravel-ecommerce-feature to add or modify a feature in this codebase."

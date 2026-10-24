@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "dependency inversion",
+    "interface abstraction",
+    "decoupling",
+    "inject dependency",
+    "DIP"
+  ],
+  "must_not_include": [
+    "direct instantiation with new",
+    "tight coupling"
+  ],
+  "required_tokens": [
+    "dependency inversion",
+    "interface abstraction",
+    "decoupling",
+    "inject dependency",
+    "DIP"
+  ],
+  "forbidden_tokens": [
+    "direct instantiation with new",
+    "tight coupling"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Component Composition"
+  short_description: "Architect scalable UI components using compound components, Radix-style asChi..."
+  default_prompt: "Use $component-composition to execute component composition tasks in this codebase."

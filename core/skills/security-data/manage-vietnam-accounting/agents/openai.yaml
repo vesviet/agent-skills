@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Vietnam Accounting"
+  short_description: "Prepare and review Vietnam accounting controls, accounting-regime evidence, r..."
+  default_prompt: "Use $manage-vietnam-accounting to execute manage vietnam accounting tasks in this codebase."

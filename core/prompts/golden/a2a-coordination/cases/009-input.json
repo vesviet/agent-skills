@@ -1,0 +1,13 @@
+{
+  "case_id": "A2A-009",
+  "name": "Task Cancellation and State Rollback on User Abort",
+  "work_type": "coordination",
+  "role": "agent-coordinator",
+  "skill": "agent-a2a-protocol",
+  "user_request": "Cancel in-progress subagent task upon receiving immediate user cancellation instruction.",
+  "target": "workflows/task_cancellation.ts",
+  "context": {
+    "contract": "core/contracts/schemas/a2a-task-cancel.json",
+    "subagents_active": 3
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "case_id": "SEC-004",
+  "name": "Agent Indirect Prompt Injection via RAG Document Ingestion (OWASP ASI01)",
+  "work_type": "audit",
+  "role": "security-engineer",
+  "skill": "security-audit",
+  "user_request": "Audit our RAG indexing and retrieval agent pipeline for indirect prompt injection vectors.",
+  "target": "agents/rag/retrieval_agent.py",
+  "context": {
+    "code_snippet": "def query_agent(query: str, doc_chunks: list[str]):\n    context = '\\n'.join(doc_chunks)\n    prompt = f\"Context:\\n{context}\\n\\nAnswer question: {query}\"\n    return llm.generate(prompt)",
+    "threat": "Untrusted user documents contain prompt injections attempting goal hijacking",
+    "environment": "agent_swarm"
+  }
+}

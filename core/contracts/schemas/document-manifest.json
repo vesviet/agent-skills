@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "document-manifest",
+  "title": "Document Manifest Specification",
+  "description": "Formal JSON Schema Draft 2020-12 specifying document generation metadata, SHA-256 checksums, formula validation logs, font metrics, and table structural invariants.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "document-manifest",
+      "description": "Machine-readable contract discriminator."
+    },
+    "manifest_id": {
+      "type": "string",
+      "description": "Unique manifest identifier, e.g. DOC-2026-10-19-settlement-q3"
+    },
+    "document_type": {
+      "type": "string",
+      "enum": ["docx", "xlsx", "pdf", "pptx"],
+      "description": "Document format family."
+    },
+    "file_path": {
+      "type": "string",
+      "description": "Relative or workspace-absolute path to the generated document."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp of generation completion."
+    },
+    "checksums": {
+      "type": "object",
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "md5": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": ["sha256", "byte_size"]
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "generator_tool": { "type": "string" },
+        "page_count": { "type": "integer", "minimum": 1 },
+        "slide_count": { "type": "integer", "minimum": 1 },
+        "sheet_count": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "formula_validation_logs": {
+      "type": "object",
+      "properties": {
+        "recalc_executed": { "type": "boolean" },
+        "recalc_engine": { "type": "string" },
+        "errors_found": { "type": "boolean" },
+        "error_count": { "type": "integer", "minimum": 0 },
+        "external_links_status": {
+          "type": "string",
+          "enum": ["clean", "risk_detected", "forced", "blocked"]
+        },
+        "error_details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "sheet": { "type": "string" },
+              "cell": { "type": "string" },
+              "error_type": { "type": "string" },
+              "formula": { "type": "string" }
+            },
+            "required": ["sheet", "cell", "error_type"]
+          }
+        }
+      },
+      "required": ["recalc_executed", "errors_found", "error_count"]
+    },
+    "font_metrics": {
+      "type": "object",
+      "properties": {
+        "embedded_fonts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "missing_fonts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "font_family_fallbacks": {
+          "type": "object"
+        }
+      }
+    },
+    "table_metrics": {
+      "type": "object",
+      "properties": {
+        "dxa_table_widths_enforced": { "type": "boolean" },
+        "column_widths_sum_valid": { "type": "boolean" },
+        "total_tables": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "validation_status": {
+      "type": "string",
+      "enum": ["passed", "failed", "warning"],
+      "description": "Overall document qualification status."
+    }
+  },
+  "required": [
+    "contract_type",
+    "manifest_id",
+    "document_type",
+    "file_path",
+    "generated_at",
+    "checksums",
+    "validation_status"
+  ],
+  "examples": [
+    {
+      "contract_type": "document-manifest",
+      "manifest_id": "DOC-2026-10-19-financial-settlement-bf12",
+      "document_type": "xlsx",
+      "file_path": "storage/exports/settlement-2026-10-19.xlsx",
+      "generated_at": "2026-10-19T02:45:00Z",
+      "checksums": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "byte_size": 245760
+      },
+      "metadata": {
+        "title": "Monthly 3PL Carrier Financial Settlement",
+        "author": "report-services",
+        "generator_tool": "openpyxl+recalc.py",
+        "sheet_count": 3
+      },
+      "formula_validation_logs": {
+        "recalc_executed": true,
+        "recalc_engine": "libreoffice-headless",
+        "errors_found": false,
+        "error_count": 0,
+        "external_links_status": "clean",
+        "error_details": []
+      },
+      "validation_status": "passed"
+    }
+  ]
+}

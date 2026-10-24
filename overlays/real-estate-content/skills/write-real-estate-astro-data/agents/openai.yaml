@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Real Estate Astro Data"
+  short_description: "Astro MDX/Markdown for real estate portal src/data"
+  default_prompt: "Use $write-real-estate-astro-data to draft or update post, property, or product content under src/data per Astro content config."

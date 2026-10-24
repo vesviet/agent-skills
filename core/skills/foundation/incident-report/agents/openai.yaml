@@ -1,0 +1,4 @@
+interface:
+  display_name: "Incident Report"
+  short_description: "Capture and structure a production incident from triage through prevention"
+  default_prompt: "Use $incident-report to document this incident with timeline, impact, root cause, and action items."

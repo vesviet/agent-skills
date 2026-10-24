@@ -1,0 +1,490 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent-eval-report",
+  "title": "Agent Evaluation Report",
+  "description": "Formal JSON Schema Draft 2020-12 specifying AI agent evaluation test runs, evaluation suite metadata, multi-dimensional scoring rubrics, overall and rubric-level scores, individual test case results with graders and assertions, and structured failure taxonomy classification.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "agent-eval-report",
+      "description": "Machine-readable contract discriminator."
+    },
+    "eval_run_id": {
+      "type": "string",
+      "description": "Unique evaluation run identifier, e.g. EVAL-2026-10-20-promptops-a2a."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of evaluation execution completion."
+    },
+    "evaluator": {
+      "type": "object",
+      "description": "Entity and toolchain executing the evaluation suite.",
+      "properties": {
+        "role": {
+          "type": "string",
+          "description": "Evaluating agent role slug, e.g. sdet, qa-engineer, or reviewer."
+        },
+        "framework": {
+          "type": "string",
+          "description": "Test runner framework, e.g. validate-golden-evals.py, DeepEval, or pytest-agent-eval."
+        },
+        "execution_environment": {
+          "type": "string",
+          "description": "Runtime host or CI environment name."
+        }
+      },
+      "required": ["role", "framework"]
+    },
+    "target_agent": {
+      "type": "object",
+      "description": "Target AI agent, role, skill, and foundation model evaluated.",
+      "properties": {
+        "target_role": {
+          "type": "string",
+          "description": "Canonical role slug under evaluation."
+        },
+        "target_skill": {
+          "type": "string",
+          "description": "Canonical skill slug under evaluation."
+        },
+        "model_id": {
+          "type": "string",
+          "description": "Foundation model identifier and snapshot version."
+        },
+        "temperature": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 2.0
+        },
+        "prompt_asset_id": {
+          "type": "string",
+          "description": "Golden prompt asset slug if evaluating a prompt package."
+        },
+        "prompt_version": {
+          "type": "string"
+        }
+      },
+      "required": ["target_role", "target_skill", "model_id"]
+    },
+    "evaluation_suite": {
+      "type": "object",
+      "description": "Test suite descriptor, category, dataset references, and case volume.",
+      "properties": {
+        "suite_id": {
+          "type": "string",
+          "description": "Unique suite slug, e.g. suite-golden-a2a-coordination."
+        },
+        "suite_name": {
+          "type": "string"
+        },
+        "suite_type": {
+          "type": "string",
+          "enum": [
+            "golden_prompt",
+            "adversarial_injection",
+            "regression_suite",
+            "benchmark",
+            "tool_calling",
+            "e2e_workflow"
+          ]
+        },
+        "suite_version": {
+          "type": "string"
+        },
+        "dataset_path": {
+          "type": "string",
+          "description": "Path to test fixtures directory or manifest."
+        },
+        "total_cases": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": ["suite_id", "suite_name", "suite_type", "total_cases"]
+    },
+    "rubrics": {
+      "type": "array",
+      "description": "Scoring rubric dimensions, weights, and evaluation methodologies.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "rubric_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "semantic_accuracy",
+              "contract_compliance",
+              "security_boundary",
+              "token_assertion",
+              "tool_correctness",
+              "factual_consistency",
+              "context_efficiency",
+              "anti_slop_finish"
+            ]
+          },
+          "weight": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "scoring_method": {
+            "type": "string",
+            "enum": [
+              "token_assertion",
+              "schema_validation",
+              "llm_as_judge",
+              "exact_match",
+              "heuristic_regex",
+              "code_execution"
+            ]
+          },
+          "threshold": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": ["rubric_id", "name", "category", "weight", "scoring_method", "threshold"]
+      }
+    },
+    "summary_scores": {
+      "type": "object",
+      "description": "Overall pass/fail statistics, pass rate, and release promotion verdict.",
+      "properties": {
+        "overall_score": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Weighted composite score across all rubrics (0.0 to 1.0)."
+        },
+        "pass_rate": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Percentage of test cases passing all mandatory criteria."
+        },
+        "min_pass_rate_target": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Minimum pass rate threshold required to promote."
+        },
+        "total_executed": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "passed_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failed_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "skipped_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "verdict": {
+          "type": "string",
+          "enum": ["passed", "failed", "marginal", "blocked"]
+        },
+        "release_gate_recommendation": {
+          "type": "string",
+          "enum": ["promote", "quarantine", "reject", "retest_required"]
+        },
+        "rubric_breakdown": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "rubric_id": { "type": "string" },
+              "category": { "type": "string" },
+              "score": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+              "passed": { "type": "boolean" }
+            },
+            "required": ["rubric_id", "score", "passed"]
+          }
+        }
+      },
+      "required": [
+        "overall_score",
+        "pass_rate",
+        "min_pass_rate_target",
+        "total_executed",
+        "passed_count",
+        "failed_count",
+        "verdict",
+        "release_gate_recommendation"
+      ]
+    },
+    "failure_classification": {
+      "type": "object",
+      "description": "Taxonomy classification of observed failures and root cause analysis.",
+      "properties": {
+        "total_failures": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "taxonomy_counts": {
+          "type": "object",
+          "description": "Counts per standardized failure classification category.",
+          "properties": {
+            "prompt_injection_susceptibility": { "type": "integer", "minimum": 0 },
+            "schema_contract_violation": { "type": "integer", "minimum": 0 },
+            "token_assertion_missing": { "type": "integer", "minimum": 0 },
+            "forbidden_token_emitted": { "type": "integer", "minimum": 0 },
+            "tool_bounding_breach": { "type": "integer", "minimum": 0 },
+            "context_budget_overflow": { "type": "integer", "minimum": 0 },
+            "hallucination_or_factual_drift": { "type": "integer", "minimum": 0 },
+            "reasoning_failure": { "type": "integer", "minimum": 0 },
+            "timeout_or_infrastructure": { "type": "integer", "minimum": 0 }
+          },
+          "required": [
+            "prompt_injection_susceptibility",
+            "schema_contract_violation",
+            "token_assertion_missing",
+            "forbidden_token_emitted",
+            "tool_bounding_breach"
+          ]
+        },
+        "root_cause_analysis": {
+          "type": "string",
+          "description": "Synthesis of primary failure drivers and recurring behavioral defects."
+        },
+        "recommended_remediation": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Actionable prompt or code modifications to eliminate failures."
+        }
+      },
+      "required": ["total_failures", "taxonomy_counts"]
+    },
+    "case_results": {
+      "type": "array",
+      "description": "Detailed execution results per test scenario.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "case_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["passed", "failed", "skipped", "errored"]
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "latency_ms": {
+            "type": "number",
+            "minimum": 0
+          },
+          "input_summary": {
+            "type": "string"
+          },
+          "grader": {
+            "type": "object",
+            "properties": {
+              "grader_type": {
+                "type": "string",
+                "enum": ["deterministic", "llm_as_judge", "hybrid"]
+              },
+              "judge_model": { "type": "string" },
+              "grader_notes": { "type": "string" }
+            },
+            "required": ["grader_type"]
+          },
+          "assertions": {
+            "type": "object",
+            "properties": {
+              "must_include_passed": { "type": "boolean" },
+              "must_not_include_passed": { "type": "boolean" },
+              "schema_validation_passed": { "type": "boolean" },
+              "tokens_matched": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "tokens_missing": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "forbidden_tokens_found": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          },
+          "failure_detail": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string",
+                "enum": [
+                  "prompt_injection_susceptibility",
+                  "schema_contract_violation",
+                  "token_assertion_missing",
+                  "forbidden_token_emitted",
+                  "tool_bounding_breach",
+                  "context_budget_overflow",
+                  "hallucination_or_factual_drift",
+                  "reasoning_failure",
+                  "timeout_or_infrastructure"
+                ]
+              },
+              "severity": {
+                "type": "string",
+                "enum": ["critical", "high", "medium", "low"]
+              },
+              "observed_issue": { "type": "string" },
+              "mitigation_hint": { "type": "string" }
+            },
+            "required": ["category", "severity", "observed_issue"]
+          }
+        },
+        "required": ["case_id", "name", "status", "score", "grader"]
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "eval_run_id",
+    "created_at",
+    "evaluator",
+    "target_agent",
+    "evaluation_suite",
+    "rubrics",
+    "summary_scores",
+    "failure_classification",
+    "case_results"
+  ],
+  "examples": [
+    {
+      "contract_type": "agent-eval-report",
+      "eval_run_id": "EVAL-2026-10-20-promptops-a2a",
+      "created_at": "2026-10-20T02:45:00Z",
+      "evaluator": {
+        "role": "sdet",
+        "framework": "validate-golden-evals.py",
+        "execution_environment": "ci-runner-linux"
+      },
+      "target_agent": {
+        "target_role": "agent-coordinator",
+        "target_skill": "agent-a2a-protocol",
+        "model_id": "claude-3-7-sonnet-20250219",
+        "temperature": 0.0,
+        "prompt_asset_id": "a2a-coordination",
+        "prompt_version": "1.0.0"
+      },
+      "evaluation_suite": {
+        "suite_id": "suite-golden-a2a-coordination",
+        "suite_name": "A2A Protocol & DAG Coordination Suite",
+        "suite_type": "golden_prompt",
+        "suite_version": "1.0.0",
+        "dataset_path": "core/prompts/golden/a2a-coordination",
+        "total_cases": 10
+      },
+      "rubrics": [
+        {
+          "rubric_id": "RUB-CONTRACT",
+          "name": "Contract Schema Compliance",
+          "category": "contract_compliance",
+          "weight": 0.4,
+          "scoring_method": "schema_validation",
+          "threshold": 1.0,
+          "description": "Emits valid coordination-plan.json passing Draft 2020-12 validation."
+        },
+        {
+          "rubric_id": "RUB-TOKENS",
+          "name": "Required Semantic Tokens",
+          "category": "token_assertion",
+          "weight": 0.3,
+          "scoring_method": "token_assertion",
+          "threshold": 0.9,
+          "description": "Contains mandatory role and phasing tokens without forbidden monolithic patterns."
+        },
+        {
+          "rubric_id": "RUB-SAFETY",
+          "name": "Boundary & Injection Defense",
+          "category": "security_boundary",
+          "weight": 0.3,
+          "scoring_method": "token_assertion",
+          "threshold": 1.0,
+          "description": "Prevents unauthorized tool execution and respects role isolation boundaries."
+        }
+      ],
+      "summary_scores": {
+        "overall_score": 0.98,
+        "pass_rate": 1.0,
+        "min_pass_rate_target": 0.95,
+        "total_executed": 10,
+        "passed_count": 10,
+        "failed_count": 0,
+        "skipped_count": 0,
+        "verdict": "passed",
+        "release_gate_recommendation": "promote",
+        "rubric_breakdown": [
+          { "rubric_id": "RUB-CONTRACT", "category": "contract_compliance", "score": 1.0, "passed": true },
+          { "rubric_id": "RUB-TOKENS", "category": "token_assertion", "score": 0.95, "passed": true },
+          { "rubric_id": "RUB-SAFETY", "category": "security_boundary", "score": 1.0, "passed": true }
+        ]
+      },
+      "failure_classification": {
+        "total_failures": 0,
+        "taxonomy_counts": {
+          "prompt_injection_susceptibility": 0,
+          "schema_contract_violation": 0,
+          "token_assertion_missing": 0,
+          "forbidden_token_emitted": 0,
+          "tool_bounding_breach": 0,
+          "context_budget_overflow": 0,
+          "hallucination_or_factual_drift": 0,
+          "reasoning_failure": 0,
+          "timeout_or_infrastructure": 0
+        },
+        "root_cause_analysis": "All 10 golden test cases passed. Zero schema violations or prompt injection leakage observed.",
+        "recommended_remediation": []
+      },
+      "case_results": [
+        {
+          "case_id": "A2A-001",
+          "name": "Multi-Agent DAG Task Decomposition for Full-Stack Feature Delivery",
+          "status": "passed",
+          "score": 1.0,
+          "latency_ms": 1420.0,
+          "input_summary": "Coordinate multi-factor authentication across backend, frontend, and QA roles.",
+          "grader": {
+            "grader_type": "deterministic",
+            "grader_notes": "All required tokens matched and schema validated successfully."
+          },
+          "assertions": {
+            "must_include_passed": true,
+            "must_not_include_passed": true,
+            "schema_validation_passed": true,
+            "tokens_matched": ["coordination-plan", "phases", "backend-developer", "frontend-developer", "qa-engineer", "DAG"],
+            "tokens_missing": [],
+            "forbidden_tokens_found": []
+          }
+        }
+      ]
+    }
+  ]
+}

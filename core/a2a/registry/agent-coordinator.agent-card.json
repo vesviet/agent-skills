@@ -1,0 +1,341 @@
+{
+  "id": "pack://agent-skills/core/roles/agent-coordinator",
+  "contract_type": "agent-card",
+  "name": "agent-coordinator",
+  "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality gates, and driving work from intake to validated handoff without losing context or skipping safety. In 2025–2026, this means treating multi-agent systems as distributed software: enforcing deterministic state transitions, applying runtime guardrails (not prompt-based trust), maintaining end-to-end trace observability, managing token budgets as a design constraint, and applying explicit HITL gates before irreversible actions. In 2026, this further extends to **MCP 2026-07-28 stateless protocol enforcement** in A2A delegation, **EU AI Act Article 50 disclosure gate** for AI feature deployments, **NHI lifecycle governance** per agent phase, and **agentic fitness function calibration** before CI gating.",
+  "url": "pack://agent-skills/core/roles/agent-coordinator.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "agent-a2a-protocol",
+      "name": "Agent A2A Protocol",
+      "description": "Implement the full A2A 1.0 task lifecycle including Agent Card discovery, JSON-RPC invoke/stream, task get/list/cancel, SSE progress events, and Antigravity-compatible handoffs. Use when integrating multi-agent systems, exposing agent services, or operating as Antigravity with structured agent-to-agent communication.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-delegation",
+      "name": "Agent Delegation",
+      "description": "Delegate scoped sub-tasks from a supervisor agent to specialist worker agents using structured A2A task contracts, validate returned artifacts against output schemas, and handle delegation failures. Use when a task exceeds one agent's role boundary, requires parallel specialist work, or benefits from isolated context to reduce hallucination risk.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-graph-orchestration",
+      "name": "Agent Graph Orchestration",
+      "description": "Model multi-phase delivery as a directed graph with parallel branches, phase gates, and A2A delegations per node. Use when coordinating bugs or features across multiple specialist roles, parallel validation tracks, or merge points that require evidence before advancing.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-tool-orchestration",
+      "name": "Agent Tool Orchestration",
+      "description": "Plan and sequence agent tool use by choosing the smallest reliable tool, controlling work phase by phase, parallelizing independent reads, avoiding unsafe shell operations, and validating results. Use when a task requires multiple searches, file edits, commands, or external checks across a bug, feature, review, or debugging flow.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-context-management",
+      "name": "Agent Context Management",
+      "description": "Manage working context across long or multi-step agent tasks by tracking user intent, current phase, active owner, repo rules, explored evidence, assumptions, and remaining work. Use when a task spans many files, resumes after interruption, or needs reliable bug or feature control across phases.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-quality-gate",
+      "name": "Agent Quality Gate",
+      "description": "Run and interpret repository quality gates for agent-delivered changes, including validators, lint, tests, build checks, diff sanity checks, and phase-exit evidence. Use when reporting completion, advancing a bug or feature to the next phase, or declaring a pack, role, workflow, or code change ready.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-handoff",
+      "name": "Agent Handoff",
+      "description": "Produce concise agent handoffs, status updates, and completion summaries that preserve phase state, decisions, changed files, validation evidence, blockers, and next actions. Use when pausing, resuming, handing work to another session, or reporting completed engineering work across bug or feature control flows.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-panel-meeting",
+      "name": "Agent Panel Meeting",
+      "description": "Orchestrate a 6-round, multi-role cross-examination panel meeting to debate architecture, code, or features and produce a final decision-ready JSON contract with trade-offs and residual risks. Use when rigorous cross-functional alignment is required before deciding, building, or shipping.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-memory-compaction",
+      "name": "Agent Memory Compaction",
+      "description": "Use when compacting long-running agent conversation context into an anchored 10-slot working state, applying 60/80 compaction triggers, Head-Tail Tool Output Truncation (TOC), and attention allocation to prevent context window degradation and goal drift.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-model-routing",
+      "name": "Agent Model Routing",
+      "description": "Select the most cost-effective model for each task or sub-task based on complexity, risk tier, and budget constraints. Use when orchestrating multi-step workflows, delegating tasks, or when token costs need active management.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-observability",
+      "name": "Agent Observability",
+      "description": "Trace agent reasoning chains, tool call sequences, context injections, and token costs to enable debugging, cost attribution, and continuous evaluation improvement. Use when deploying agents to production, diagnosing unexpected outputs, tracking costs across tenants, or building evaluation datasets from real-world failures.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-prompt-lifecycle",
+      "name": "Agent Prompt Lifecycle",
+      "description": "Manage prompt assets through their full lifecycle including versioning, evaluation against golden datasets, drift detection, and controlled promotion across environments. Use when creating, updating, reviewing, or auditing prompt definitions in roles, skills, workflows, or system instructions to ensure measurable quality and safe deployment.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    },
+    {
+      "id": "agent-semantic-memory",
+      "name": "Agent Semantic Memory",
+      "description": "Read from and write to persistent memory stores so agents retain codebase patterns, past fixes, and architectural facts across conversations. Use when starting work in a known repo, after fixing a non-obvious bug, after discovering a codebase convention, or when the same mistake has occurred more than once.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "a2a-artifact.json",
+        "a2a-task-progress.json",
+        "a2a-task-status.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "a2a-artifact.json",
+    "a2a-task-progress.json",
+    "a2a-task-status.json",
+    "a2a-task.json",
+    "coordination-plan.json",
+    "implementation-result.json",
+    "validation-result.json"
+  ],
+  "role_file": "core/roles/agent-coordinator.md",
+  "policy_profile": "agent-coordinator"
+}

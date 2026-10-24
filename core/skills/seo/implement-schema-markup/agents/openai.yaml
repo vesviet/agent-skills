@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement Schema Markup"
+  short_description: "Connected Schema.org @graph JSON-LD architecture and entity grounding"
+  default_prompt: "Use $implement-schema-markup to architect connected Schema.org @graph JSON-LD, ground entities with Wikidata QIDs, and validate rich results compliance."

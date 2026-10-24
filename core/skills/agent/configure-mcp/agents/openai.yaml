@@ -1,0 +1,4 @@
+interface:
+  display_name: "Configure MCP"
+  short_description: "Sets up the full MCP presence for a web service — experimental Server Card di..."
+  default_prompt: "Use $configure-mcp to execute configure mcp tasks in this codebase."

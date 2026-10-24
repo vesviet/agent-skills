@@ -1,0 +1,4 @@
+interface:
+  display_name: "Develop B2B Golf Feature"
+  short_description: "Build features for the B2B Golf catalog site"
+  default_prompt: "Use $develop-b2b-golf-feature to add or modify a feature in this codebase."

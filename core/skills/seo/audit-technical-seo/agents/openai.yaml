@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit Technical SEO"
+  short_description: "Audit crawl budgets, bot access, redirects, and Core Web Vitals"
+  default_prompt: "Use $audit-technical-seo to perform a comprehensive technical SEO audit of crawl budget, bot access directives, redirect hygiene, and Core Web Vitals."

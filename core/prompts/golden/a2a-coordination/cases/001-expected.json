@@ -1,0 +1,31 @@
+{
+  "must_include": [
+    "coordination-plan",
+    "phases",
+    "backend-developer",
+    "frontend-developer",
+    "qa-engineer",
+    "DAG"
+  ],
+  "must_not_include": [
+    "single monolithic agent",
+    "execute all roles unilaterally"
+  ],
+  "required_tokens": [
+    "coordination-plan",
+    "phases",
+    "backend-developer",
+    "frontend-developer",
+    "qa-engineer",
+    "DAG"
+  ],
+  "forbidden_tokens": [
+    "single monolithic agent",
+    "execute all roles unilaterally"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/coordination-plan.json",
+    "contract_type": "coordination-plan"
+  }
+}

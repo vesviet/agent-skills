@@ -1,0 +1,13 @@
+{
+  "must_include": [
+    "coordinator does not commit or push directly",
+    "user must confirm commit and push action explicitly",
+    "handoff summary with what changed and validation evidence",
+    "commit-code skill delegation or role switch noted"
+  ],
+  "must_not_include": [
+    "coordinator running git commit",
+    "coordinator running git push",
+    "skipping user approval for publish action"
+  ]
+}

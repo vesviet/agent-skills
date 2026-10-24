@@ -1,0 +1,414 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mmo-campaign-spec",
+  "title": "MMO Campaign Specification",
+  "description": "Structured output defining an end-to-end Make Money Online (MMO) campaign architecture across offer research, programmatic landing pages, S2S tracking, stealth automation, and financial guardrails.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "mmo-campaign-spec",
+      "description": "Machine-readable contract discriminator."
+    },
+    "campaign_id": {
+      "type": "string",
+      "pattern": "^mmo-[a-z0-9-]+$",
+      "description": "Unique identifier for the MMO campaign."
+    },
+    "campaign_name": {
+      "type": "string",
+      "description": "Human-readable name of the campaign."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 creation timestamp."
+    },
+    "version": {
+      "type": "string",
+      "description": "Specification version string."
+    },
+    "target_vertical": {
+      "type": "string",
+      "enum": [
+        "ai-affiliate",
+        "ecommerce-dropship",
+        "lead-generation",
+        "traffic-arbitrage",
+        "depin-bandwidth"
+      ],
+      "description": "Primary industry vertical and monetization business model."
+    },
+    "network_platform": {
+      "type": "object",
+      "description": "Affiliate network or merchant platform integration parameters.",
+      "properties": {
+        "platform_name": {
+          "type": "string",
+          "enum": [
+            "tiktok-shop",
+            "shopee",
+            "amazon",
+            "lazada",
+            "custom-affiliate"
+          ]
+        },
+        "offer_id": {
+          "type": "string"
+        },
+        "affiliate_network": {
+          "type": "string"
+        },
+        "payout_type": {
+          "type": "string",
+          "enum": [
+            "CPA",
+            "CPL",
+            "CPS",
+            "revshare",
+            "multi-tier"
+          ]
+        },
+        "base_payout_amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "platform_name",
+        "payout_type",
+        "base_payout_amount",
+        "currency"
+      ]
+    },
+    "audience_targeting": {
+      "type": "object",
+      "description": "Target demographics, geographies, devices, and language constraints.",
+      "properties": {
+        "geos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          }
+        },
+        "devices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "geos"
+      ]
+    },
+    "content_and_creative_spec": {
+      "type": "object",
+      "description": "Creative angle, landing page style, and programmatic generation parameters.",
+      "properties": {
+        "page_type": {
+          "type": "string",
+          "enum": [
+            "pseo-landing",
+            "bridge-page",
+            "review-article",
+            "short-video-hook"
+          ]
+        },
+        "pseo_parameters": {
+          "type": "object",
+          "properties": {
+            "entity_seed_keyword": {
+              "type": "string"
+            },
+            "answer_first_summary": {
+              "type": "string"
+            },
+            "dynamic_pricing_feed": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "entity_seed_keyword",
+            "answer_first_summary"
+          ]
+        },
+        "creative_hooks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "page_type"
+      ]
+    },
+    "tracking_architecture": {
+      "type": "object",
+      "description": "Server-to-Server tracking topology, endpoint mappings, and anti-fraud criteria.",
+      "properties": {
+        "tracker_type": {
+          "type": "string",
+          "enum": [
+            "voluum",
+            "keitaro",
+            "binom",
+            "custom-edge"
+          ]
+        },
+        "s2s_endpoints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "platform": {
+                "type": "string",
+                "enum": [
+                  "meta-capi-v20",
+                  "tiktok-events-api",
+                  "google-enhanced-conversions",
+                  "affiliate-webhook"
+                ]
+              },
+              "endpoint_url": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "platform",
+              "endpoint_url"
+            ]
+          }
+        },
+        "click_id_parameter": {
+          "type": "string"
+        },
+        "ctit_min_threshold_seconds": {
+          "type": "number",
+          "minimum": 1.0
+        },
+        "ios18_attribution_mode": {
+          "type": "string",
+          "enum": [
+            "AdAttributionKit",
+            "SKAdNetwork",
+            "probabilistic-coarse"
+          ]
+        }
+      },
+      "required": [
+        "tracker_type",
+        "s2s_endpoints",
+        "click_id_parameter",
+        "ctit_min_threshold_seconds"
+      ]
+    },
+    "infrastructure_and_stealth": {
+      "type": "object",
+      "description": "Anti-detect browser profiles, residential proxy routing, and bot-evasion configuration.",
+      "properties": {
+        "proxy_type": {
+          "type": "string",
+          "enum": [
+            "residential",
+            "mobile-4g",
+            "isp",
+            "depin-bandwidth"
+          ]
+        },
+        "anti_detect_provider": {
+          "type": "string",
+          "enum": [
+            "adspower",
+            "dolphin-anty",
+            "camoufox-c++",
+            "multilogin"
+          ]
+        },
+        "canvas_noise_mode": {
+          "type": "string",
+          "enum": [
+            "consistent-hash",
+            "webgpu-noise",
+            "off"
+          ]
+        },
+        "turnstile_solver": {
+          "type": "string",
+          "enum": [
+            "cdp-human-mimic",
+            "token-inject",
+            "managed-turnstile"
+          ]
+        },
+        "vcc_profile_ref": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "proxy_type",
+        "anti_detect_provider",
+        "canvas_noise_mode"
+      ]
+    },
+    "budget_and_economics": {
+      "type": "object",
+      "description": "Financial guardrails, spend caps, target ROAS, and die-rate tolerances.",
+      "properties": {
+        "daily_ad_spend_cap": {
+          "type": "number",
+          "minimum": 0
+        },
+        "target_blended_roas": {
+          "type": "number",
+          "minimum": 1.0
+        },
+        "max_acceptable_die_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1.0
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "daily_ad_spend_cap",
+        "target_blended_roas",
+        "max_acceptable_die_rate",
+        "currency"
+      ]
+    },
+    "risk_and_guardrails": {
+      "type": "object",
+      "description": "Compliance boundaries, human-in-the-loop locks, and data classification.",
+      "properties": {
+        "action_boundary_level": {
+          "type": "string",
+          "enum": [
+            "autonomous",
+            "hitl_gated"
+          ]
+        },
+        "review_system_lock": {
+          "type": "boolean",
+          "const": true
+        },
+        "data_classification": {
+          "type": "string",
+          "enum": [
+            "confidential",
+            "restricted"
+          ]
+        }
+      },
+      "required": [
+        "action_boundary_level",
+        "review_system_lock",
+        "data_classification"
+      ]
+    }
+  },
+  "required": [
+    "contract_type",
+    "campaign_id",
+    "campaign_name",
+    "created_at",
+    "version",
+    "target_vertical",
+    "network_platform",
+    "tracking_architecture",
+    "infrastructure_and_stealth",
+    "budget_and_economics",
+    "risk_and_guardrails"
+  ],
+  "examples": [
+    {
+      "contract_type": "mmo-campaign-spec",
+      "campaign_id": "mmo-tiktok-affiliate-vn-01",
+      "campaign_name": "TikTok Shop Vietnam AI Tech Gadgets pSEO & S2S Arbitrage",
+      "created_at": "2027-01-15T08:00:00Z",
+      "version": "1.0.0",
+      "target_vertical": "ai-affiliate",
+      "network_platform": {
+        "platform_name": "tiktok-shop",
+        "offer_id": "tts-vn-gadget-9921",
+        "affiliate_network": "TikTok Creator Marketplace VN",
+        "payout_type": "CPS",
+        "base_payout_amount": 12.50,
+        "currency": "USD"
+      },
+      "audience_targeting": {
+        "geos": [
+          "VN"
+        ],
+        "devices": [
+          "mobile",
+          "tablet"
+        ],
+        "languages": [
+          "vi",
+          "en"
+        ]
+      },
+      "content_and_creative_spec": {
+        "page_type": "pseo-landing",
+        "pseo_parameters": {
+          "entity_seed_keyword": "tai nghe bluetooth gia re chong on",
+          "answer_first_summary": "Top 3 tai nghe bluetooth chong on chu dong duoi 500k duoc kiem chung thoi luong pin >8h va micro loc on tot nhat 2027.",
+          "dynamic_pricing_feed": true
+        },
+        "creative_hooks": [
+          "Dung mua tai nghe gia re khi chua biet 3 dieu nay",
+          "Test chong on tai nghe 300k giua nga tu duong pho Sai Gon"
+        ]
+      },
+      "tracking_architecture": {
+        "tracker_type": "keitaro",
+        "s2s_endpoints": [
+          {
+            "platform": "tiktok-events-api",
+            "endpoint_url": "https://business-api.tiktok.com/open_api/v1.3/event/track/"
+          },
+          {
+            "platform": "meta-capi-v20",
+            "endpoint_url": "https://graph.facebook.com/v20.0/123456789/events"
+          }
+        ],
+        "click_id_parameter": "ttclid",
+        "ctit_min_threshold_seconds": 2.5,
+        "ios18_attribution_mode": "AdAttributionKit"
+      },
+      "infrastructure_and_stealth": {
+        "proxy_type": "residential",
+        "anti_detect_provider": "camoufox-c++",
+        "canvas_noise_mode": "consistent-hash",
+        "turnstile_solver": "cdp-human-mimic",
+        "vcc_profile_ref": "vcc-card-corp-tier1-04"
+      },
+      "budget_and_economics": {
+        "daily_ad_spend_cap": 300.00,
+        "target_blended_roas": 2.2,
+        "max_acceptable_die_rate": 0.05,
+        "currency": "USD"
+      },
+      "risk_and_guardrails": {
+        "action_boundary_level": "hitl_gated",
+        "review_system_lock": true,
+        "data_classification": "restricted"
+      }
+    }
+  ]
+}

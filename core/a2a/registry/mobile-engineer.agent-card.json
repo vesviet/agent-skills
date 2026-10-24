@@ -1,0 +1,213 @@
+{
+  "id": "pack://agent-skills/core/roles/mobile-engineer",
+  "contract_type": "agent-card",
+  "name": "mobile-engineer",
+  "description": "deliver correct, performant, and accessible mobile experiences on iOS and Android by owning native app logic, platform integration, offline behavior, and release readiness without hiding device, OS version, or distribution risk. In 2025–2026, this extends to governing AI-generated mobile code with tiered trust validation (parallel to Frontend Developer standards), complying with App Store AI policies (Apple 4.3(b), Google Play AI disclosure), designing hybrid on-device/cloud LLM hosting architecture, and applying privacy-preserving ML patterns (federated learning + differential privacy) for on-device personalization.",
+  "url": "pack://agent-skills/core/roles/mobile-engineer.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "develop-mobile-app",
+      "name": "Develop Mobile App",
+      "description": "Architect high-performance mobile applications using React Native New Architecture, Hermes bytecode engine, TurboModules/JSI, Bridgeless mode, FlashList recycling, Reanimated worklets, and offline-first state persistence with MMKV and WatermelonDB. Use when building or optimizing React Native apps, virtualizing heavy lists, creating 60/120 FPS UI animations, or designing offline-first mobile sync architectures.",
+      "tags": [
+        "mobile",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "deploy-mobile-app",
+      "name": "Deploy Mobile App",
+      "description": "Configure and execute mobile deployment pipelines using EAS Build, native code signing credentials, OTA updates via EAS Update, App Store and Google Play compliance, AI content disclosures, and crash symbolication. Use when configuring EAS build profiles, publishing OTA updates, preparing store releases, or validating Apple 4.3(b) and Google Play AI compliance.",
+      "tags": [
+        "mobile",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "add-ui-component",
+      "name": "Add Ui Component",
+      "description": "Add or evolve a reusable UI component by following the repo's design system, composition patterns, accessibility rules, and state boundaries. Use when building frontend components or shared presentation elements.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "integrate-api-client",
+      "name": "Integrate Api Client",
+      "description": "Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handling, and state-management patterns. Use when a UI needs to read or mutate backend data.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "write-tests",
+      "name": "Write Tests",
+      "description": "Add or update tests by following repo-local test conventions, choosing the right test scope, isolating dependencies, and validating risky paths before delivery. Use when behavior needs regression coverage or release confidence.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "frontend-testing",
+      "name": "Frontend Testing",
+      "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "commit-code",
+      "name": "Commit Code",
+      "description": "Validate and package a finished change into a clean commit by following repo-local validation, generation, release-note, and approval rules. Use when the user explicitly asks to prepare or create a commit.",
+      "tags": [
+        "devops",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json",
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "navigate-service",
+      "name": "Navigate Service",
+      "description": "Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session.",
+      "tags": [
+        "devops",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "edge-deployment-spec.json",
+        "implementation-result.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "edge-deployment-spec.json",
+    "implementation-result.json"
+  ],
+  "role_file": "core/roles/mobile-engineer.md",
+  "policy_profile": "mobile-engineer"
+}

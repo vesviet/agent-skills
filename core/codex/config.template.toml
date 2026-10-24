@@ -1,0 +1,38 @@
+# OpenAI Codex CLI Configuration Template — Standard 2026/2027
+# Copy to .codex/config.toml at the workspace root to configure Codex CLI.
+# Do NOT place API keys in this file; authenticate using `codex login --with-api-key`
+# or set the OPENAI_API_KEY environment variable.
+
+# Primary instructions file: Codex reads this persistent instruction guide first
+model_instructions_file = "AGENTS.md"
+
+# Model Selection: "gpt-5", "o3", "o3-mini", or project default
+model = "gpt-5"
+
+# Wire API: modern Codex CLI uses the late-2026 Responses API
+wire_api = "responses"
+
+# Approval Policy: "ask" enforces human-in-the-loop review before executing state-changing commands
+# Aligns with core/rules/code.md (META-RULE: no commit, push, or destructive action without approval)
+approval_policy = "ask"
+
+# Sandbox Mode: restrict file system modifications strictly within workspace boundaries
+sandbox = "workspace"
+
+# A2A (Agent-to-Agent) Protocol Integration
+[a2a]
+enabled = true
+config_file = "core/codex/.a2a-config.json"
+registry = "core/a2a/.well-known/agent-registry.json"
+
+# Model Context Protocol (MCP) Servers
+# Configure external tool integrations mapped through core/policies/mcp-tool-map.yaml
+
+[mcp_servers.filesystem]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "."]
+
+# Optional: Pack tools MCP server (when running local agent-skills MCP sidecar)
+# [mcp_servers.agent_skills]
+# command = "python3"
+# args = ["core/scripts/hooks/check-policy.py", "--mcp-mode"]

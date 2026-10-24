@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "task.status",
+    "task.artifact",
+    "a2a-task-progress.json",
+    "SSE",
+    "streaming lifecycle"
+  ],
+  "must_not_include": [
+    "poll every second indefinitely",
+    "ignore SSE connection close"
+  ],
+  "required_tokens": [
+    "task.status",
+    "task.artifact",
+    "a2a-task-progress.json",
+    "SSE",
+    "streaming lifecycle"
+  ],
+  "forbidden_tokens": [
+    "poll every second indefinitely",
+    "ignore SSE connection close"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/coordination-plan.json",
+    "contract_type": "coordination-plan"
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Configure Agent Headers"
+  short_description: "Exposes well-known agentic endpoints via RFC 8288 HTTP Link headers and optio..."
+  default_prompt: "Use $configure-agent-headers to execute configure agent headers tasks in this codebase."

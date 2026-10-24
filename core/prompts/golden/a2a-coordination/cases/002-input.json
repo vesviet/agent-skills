@@ -1,0 +1,13 @@
+{
+  "case_id": "A2A-002",
+  "name": "Agent Card Discovery & Capability Resolution from Registry",
+  "work_type": "coordination",
+  "role": "agent-coordinator",
+  "skill": "agent-a2a-protocol",
+  "user_request": "Resolve which specialist agents can produce api-contract-spec and security-audit artifacts from registry.",
+  "target": "registry/discovery.ts",
+  "context": {
+    "registry_path": "core/a2a/.well-known/agent-registry.json",
+    "card_format": "agent-card.json"
+  }
+}

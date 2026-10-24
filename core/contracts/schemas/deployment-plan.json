@@ -1,0 +1,600 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "deployment-plan",
+  "title": "Deployment Plan",
+  "description": "Structured output for a deployment strategy and execution plan.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "deployment-plan",
+      "description": "Machine-readable contract discriminator."
+    },
+    "version": {
+      "type": "string",
+      "description": "Version tag or commit hash being deployed."
+    },
+    "environments": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Target environments (e.g., staging, production)."
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "type": "integer"
+          },
+          "action": {
+            "type": "string"
+          },
+          "is_destructive": {
+            "type": "boolean"
+          },
+          "owner": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "order",
+          "action",
+          "is_destructive"
+        ]
+      },
+      "description": "Ordered sequence of deployment steps."
+    },
+    "rollback_plan": {
+      "description": "Rollback strategy and execution procedure supporting prose description or structured specification.",
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Prose rollback summary for lightweight or legacy deployments."
+        },
+        {
+          "type": "object",
+          "description": "Structured rollback plan specification.",
+          "properties": {
+            "strategy": {
+              "type": "string",
+              "description": "Rollback strategy mechanism."
+            },
+            "data_loss_risk": {
+              "type": "boolean",
+              "description": "Whether rollback incurs data loss risk."
+            },
+            "trigger_conditions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Automated or manual conditions that trigger a rollback."
+            },
+            "automated": {
+              "type": "boolean",
+              "description": "Whether rollback execution is automated."
+            },
+            "max_rollback_duration_minutes": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum tolerated duration in minutes for rollback completion."
+            }
+          },
+          "required": [
+            "strategy",
+            "data_loss_risk"
+          ]
+        }
+      ]
+    },
+    "smoke_tests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Post-deployment checks to verify health."
+    },
+    "gitops_compliance": {
+      "type": "object",
+      "description": "GitOps discipline adherence.",
+      "properties": {
+        "drift_detection_configured": {
+          "type": "boolean",
+          "description": "Whether automated drift detection is active for this infrastructure."
+        },
+        "iac_repo_ref": {
+          "type": "string",
+          "description": "Repository or path where the infrastructure state is declared."
+        }
+      },
+      "required": [
+        "drift_detection_configured"
+      ]
+    },
+    "supply_chain_security": {
+      "type": "object",
+      "description": "SLSA and supply chain security compliance.",
+      "properties": {
+        "sbom_generated": {
+          "type": "boolean"
+        },
+        "dependencies_pinned_to_sha": {
+          "type": "boolean",
+          "description": "Third-party CI actions and tools use pinned commit SHAs, not mutable tags."
+        },
+        "vulnerability_scan_passed": {
+          "type": "boolean",
+          "description": "CI dependency scan passed with no un-waivered critical/high CVEs."
+        }
+      },
+      "required": [
+        "sbom_generated",
+        "dependencies_pinned_to_sha",
+        "vulnerability_scan_passed"
+      ]
+    },
+    "ai_ml_deployment": {
+      "type": "object",
+      "description": "Specific deployment controls for AI/ML models. Omit if not deploying a model.",
+      "properties": {
+        "shadow_testing_completed": {
+          "type": "boolean"
+        },
+        "automatic_rollback_triggers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Model-specific triggers (e.g. latency P99, output quality score)."
+        },
+        "cold_start_latency_ms": {
+          "type": "integer"
+        },
+        "monitoring_deployed": {
+          "type": "boolean",
+          "description": "True if model monitoring (drift, token cost, etc) is live."
+        }
+      }
+    },
+    "progressive_delivery": {
+      "type": "object",
+      "description": "Progressive delivery and automated canary rollout strategy.",
+      "properties": {
+        "canary_steps": {
+          "type": "array",
+          "description": "Progressive canary step weights and pause intervals.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "set_weight": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Traffic percentage routed to canary (0-100)."
+              },
+              "pause_duration": {
+                "type": "string",
+                "description": "Duration to pause before next step (e.g. '10m', '1h')."
+              }
+            },
+            "required": [
+              "set_weight"
+            ]
+          }
+        },
+        "metric_analysis": {
+          "type": "object",
+          "description": "Automated metric analysis configuration.",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "description": "Metrics provider (e.g. prometheus, datadog)."
+            },
+            "metrics": {
+              "type": "array",
+              "description": "List of metrics evaluated during canary analysis.",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "threshold": {
+                        "type": "string"
+                      },
+                      "query": {
+                        "type": "string"
+                      },
+                      "p99_latency_ms": {
+                        "type": "number"
+                      },
+                      "max_error_rate_pct": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ]
+                  }
+                ]
+              }
+            },
+            "interval": {
+              "type": "string",
+              "description": "Analysis evaluation interval."
+            },
+            "thresholds": {
+              "type": "object",
+              "properties": {
+                "p99_latency_ms": {
+                  "type": "number"
+                },
+                "max_error_rate_pct": {
+                  "type": "number"
+                }
+              }
+            },
+            "promql_query": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "provider",
+            "metrics"
+          ]
+        },
+        "auto_rollback": {
+          "type": "boolean",
+          "description": "Whether automated rollback is triggered upon analysis failure."
+        }
+      },
+      "required": [
+        "canary_steps",
+        "metric_analysis",
+        "auto_rollback"
+      ]
+    },
+    "gitops_metadata": {
+      "type": "object",
+      "description": "Declarative GitOps and Universal Control Plane metadata.",
+      "properties": {
+        "applicationset_ref": {
+          "type": "string",
+          "description": "Reference to the ArgoCD ApplicationSet managing this workload."
+        },
+        "sync_policy": {
+          "type": "object",
+          "description": "Automated sync and prune policy configuration.",
+          "properties": {
+            "automated": {
+              "type": "boolean"
+            },
+            "prune": {
+              "type": "boolean"
+            },
+            "self_heal": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "automated",
+            "prune",
+            "self_heal"
+          ]
+        },
+        "ssa_enabled": {
+          "type": "boolean",
+          "description": "Whether Server-Side Apply (SSA) is enabled for reconciliation."
+        }
+      },
+      "required": [
+        "applicationset_ref",
+        "sync_policy",
+        "ssa_enabled"
+      ]
+    },
+    "supply_chain": {
+      "type": "object",
+      "description": "Cryptographic supply chain security and provenance.",
+      "properties": {
+        "slsa_level": {
+          "type": "string",
+          "enum": [
+            "SLSA_LEVEL_1",
+            "SLSA_LEVEL_2",
+            "SLSA_LEVEL_3",
+            "SLSA_LEVEL_4"
+          ],
+          "description": "SLSA build provenance level."
+        },
+        "cosign_verified": {
+          "type": "boolean",
+          "description": "Whether container images are signed and verified via Sigstore Cosign."
+        },
+        "sbom_format": {
+          "type": "string",
+          "enum": [
+            "SPDX_2_3",
+            "CYCLONEDX_1_5",
+            "NONE"
+          ],
+          "description": "Format of the generated Software Bill of Materials."
+        }
+      },
+      "required": [
+        "slsa_level",
+        "cosign_verified",
+        "sbom_format"
+      ]
+    },
+    "ai_gpu_infrastructure": {
+      "type": "object",
+      "description": "Cloud-native AI & GPU infrastructure settings on Kubernetes.",
+      "properties": {
+        "mig_profile": {
+          "type": "string",
+          "description": "NVIDIA Multi-Instance GPU slice profile (e.g. 'mig-3g.40gb', 'none')."
+        },
+        "ray_cluster_ref": {
+          "type": "string",
+          "description": "Reference to the KubeRay RayCluster or RayService managing distributed execution."
+        },
+        "vllm_engine_config": {
+          "type": "object",
+          "description": "High-throughput vLLM serving engine configuration.",
+          "properties": {
+            "gpu_memory_utilization": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0,
+              "description": "VRAM fraction allocated for weights and KV cache."
+            },
+            "max_model_len": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum model context length in tokens."
+            },
+            "tensor_parallel_size": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Number of GPUs for tensor parallelism."
+            }
+          },
+          "required": [
+            "gpu_memory_utilization",
+            "max_model_len",
+            "tensor_parallel_size"
+          ]
+        }
+      },
+      "required": [
+        "mig_profile",
+        "ray_cluster_ref",
+        "vllm_engine_config"
+      ]
+    },
+    "ebpf_security": {
+      "type": "object",
+      "description": "Kernel-level eBPF security policies and sidecarless mesh settings.",
+      "properties": {
+        "tetragon_policy_enforced": {
+          "type": "boolean",
+          "description": "Whether Cilium Tetragon in-kernel Sigkill TracingPolicy is enforced."
+        },
+        "ambient_mesh_mode": {
+          "type": "string",
+          "enum": [
+            "ZTUNNEL_L4",
+            "WAYPOINT_L7",
+            "DISABLED"
+          ],
+          "description": "Sidecarless service mesh mode."
+        }
+      },
+      "required": [
+        "tetragon_policy_enforced",
+        "ambient_mesh_mode"
+      ]
+    },
+    "verification": {
+      "type": "object",
+      "description": "Post-deployment health checks and observability.",
+      "properties": {
+        "health_checks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dashboards_or_logs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "smoke_tests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Post-deployment checks to verify health."
+        }
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "version",
+    "environments",
+    "steps",
+    "rollback_plan"
+  ],
+  "examples": [
+    {
+      "contract_type": "deployment-plan",
+      "plan_id": "2026-06-12-cod-store-order",
+      "service": "DMS orders-service",
+      "environment": "staging",
+      "version": "v1.4.2-cod-routing",
+      "steps": [
+        {
+          "order": 1,
+          "action": "Run database migration check (none required)",
+          "is_destructive": false,
+          "owner": "devops-engineer"
+        },
+        {
+          "order": 2,
+          "action": "Deploy to staging via CI pipeline",
+          "is_destructive": false,
+          "owner": "devops-engineer"
+        },
+        {
+          "order": 3,
+          "action": "Run smoke test: assign COD order to store 42",
+          "is_destructive": false,
+          "owner": "qa-engineer"
+        },
+        {
+          "order": 4,
+          "action": "Promote to production on QA sign-off",
+          "is_destructive": false,
+          "owner": "devops-engineer"
+        }
+      ],
+      "rollback_plan": "Revert deployment to previous build. No migration rollback required.",
+      "monitoring": "Watch order assignment error rate for 30 min post-deploy. Alert if > 0.5%.",
+      "environments": [
+        "staging"
+      ]
+    },
+    {
+      "contract_type": "deployment-plan",
+      "version": "v2.5.0-sota-platform",
+      "plan_id": "2026-10-04-k8s-sota-rollout",
+      "service": "llm-inference-platform",
+      "environments": [
+        "production-us-east-1",
+        "production-eu-west-1"
+      ],
+      "steps": [
+        {
+          "order": 1,
+          "action": "Verify SLSA Level 3 provenance and Cosign signature verification via admission controller",
+          "is_destructive": false,
+          "owner": "devops-engineer"
+        },
+        {
+          "order": 2,
+          "action": "Apply ArgoCD ApplicationSet with Server-Side Apply (SSA) reconciliation",
+          "is_destructive": false,
+          "owner": "devops-engineer"
+        },
+        {
+          "order": 3,
+          "action": "Initiate Argo Rollouts progressive canary deployment with Prometheus MetricAnalysis",
+          "is_destructive": false,
+          "owner": "devops-engineer"
+        },
+        {
+          "order": 4,
+          "action": "Promote to 100% traffic upon successful MetricAnalysis and Tetragon runtime enforcement",
+          "is_destructive": false,
+          "owner": "devops-engineer"
+        }
+      ],
+      "rollback_plan": {
+        "strategy": "automated_canary_abort_and_previous_image",
+        "data_loss_risk": false,
+        "trigger_conditions": [
+          "P99 latency exceeding 250ms for 3 consecutive analysis runs",
+          "HTTP 5xx error rate exceeding 1.0%",
+          "Tetragon security policy breach signal detected"
+        ],
+        "automated": true,
+        "max_rollback_duration_minutes": 5
+      },
+      "progressive_delivery": {
+        "canary_steps": [
+          {
+            "set_weight": 10,
+            "pause_duration": "5m"
+          },
+          {
+            "set_weight": 25,
+            "pause_duration": "10m"
+          },
+          {
+            "set_weight": 50,
+            "pause_duration": "15m"
+          },
+          {
+            "set_weight": 100
+          }
+        ],
+        "metric_analysis": {
+          "provider": "prometheus",
+          "metrics": [
+            {
+              "name": "p99-latency-check",
+              "threshold": "< 250ms",
+              "query": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)) or on() vector(0)",
+              "p99_latency_ms": 250.0
+            },
+            {
+              "name": "error-rate-check",
+              "threshold": "< 1.0%",
+              "query": "sum(rate(http_requests_total{status=~'5..'}[5m])) / sum(rate(http_requests_total[5m])) * 100 or on() vector(0)",
+              "max_error_rate_pct": 1.0
+            }
+          ],
+          "interval": "1m",
+          "thresholds": {
+            "p99_latency_ms": 250.0,
+            "max_error_rate_pct": 1.0
+          }
+        },
+        "auto_rollback": true
+      },
+      "gitops_metadata": {
+        "applicationset_ref": "argocd/vllm-inference-platform-matrix",
+        "sync_policy": {
+          "automated": true,
+          "prune": true,
+          "self_heal": true
+        },
+        "ssa_enabled": true
+      },
+      "supply_chain": {
+        "slsa_level": "SLSA_LEVEL_3",
+        "cosign_verified": true,
+        "sbom_format": "SPDX_2_3"
+      },
+      "ai_gpu_infrastructure": {
+        "mig_profile": "mig-3g.40gb",
+        "ray_cluster_ref": "kuberay/vllm-deepseek-cluster",
+        "vllm_engine_config": {
+          "gpu_memory_utilization": 0.9,
+          "max_model_len": 8192,
+          "tensor_parallel_size": 4
+        }
+      },
+      "ebpf_security": {
+        "tetragon_policy_enforced": true,
+        "ambient_mesh_mode": "ZTUNNEL_L4"
+      },
+      "smoke_tests": [
+        "curl -f https://inference.internal/healthz",
+        "grpcurl -plaintext localhost:50051 grpc.health.v1.Health/Check"
+      ]
+    }
+  ]
+}

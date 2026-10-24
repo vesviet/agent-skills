@@ -1,0 +1,20 @@
+{
+  "version": "1.1",
+  "agents": [
+    {
+      "type": "a2a",
+      "url": "/.well-known/agent-card.json"
+    },
+    {
+      "type": "registry",
+      "url": "/.well-known/agent-registry.json"
+    }
+  ],
+  "mcp": [
+    {
+      "type": "mcp-tool-map",
+      "url": "core/policies/mcp-tool-map.yaml"
+    }
+  ],
+  "openapi": []
+}

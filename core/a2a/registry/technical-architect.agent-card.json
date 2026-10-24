@@ -1,0 +1,169 @@
+{
+  "id": "pack://agent-skills/core/roles/technical-architect",
+  "contract_type": "agent-card",
+  "name": "technical-architect",
+  "description": "shape system structure and technical direction so the product can evolve safely, coherently, and at the right cost without hiding migration, compatibility, or operational risk. In 2025–2026, this extends to architecting AI-native systems (LLM pipelines, agentic boundaries, probabilistic design), enforcing evolutionary architecture through automated fitness functions, and embedding privacy and compliance as structural constraints — not post-deployment layers.",
+  "url": "pack://agent-skills/core/roles/technical-architect.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "system-design",
+      "name": "System Design",
+      "description": "Design, specify, and document complex system architectures covering compute, network, storage, middleware, and AI inference layers. Translate NFRs into measurable infrastructure targets and produce capacity models. Use when designing or reviewing system topology, sizing infrastructure, planning capacity, or specifying AI infrastructure (GPU, inference servers, vector databases).",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    },
+    {
+      "id": "agent-panel-meeting",
+      "name": "Agent Panel Meeting",
+      "description": "Orchestrate a 6-round, multi-role cross-examination panel meeting to debate architecture, code, or features and produce a final decision-ready JSON contract with trade-offs and residual risks. Use when rigorous cross-functional alignment is required before deciding, building, or shipping.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    },
+    {
+      "id": "meeting-review",
+      "name": "Meeting Review",
+      "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.",
+      "tags": [
+        "analysis",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    },
+    {
+      "id": "write-tech-radar",
+      "name": "Write Tech Radar",
+      "description": "Draft or update a technology radar entry by summarizing context, trade-offs, recommendation, and adoption guidance in a concise decision-oriented format. Use when documenting technology choices, trials, or directional guidance.",
+      "tags": [
+        "documentation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    },
+    {
+      "id": "architect-mcp-server",
+      "name": "Architect Mcp Server",
+      "description": "Architect enterprise-grade Model Context Protocol (MCP) servers, tool surfaces, schemas, transport protocols, and security perimeters. Use when designing MCP server contracts, selecting streamable HTTP or stdio transports, standardizing Zod/Pydantic schemas, externalizing state handles (SEP-2567), configuring OAuth 2.1 RFC 8707 Resource Indicators, or establishing Shadow MCP governance.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    },
+    {
+      "id": "decompose-agentic-system",
+      "name": "Decompose Agentic System",
+      "description": "Architect recursive system and task decomposition for large-scale multi-agent architectures (100+ files, 50K+ tokens), DAG dependency trees, disk-backed persistent planning (planning-with-files), anti-context-rot mechanisms, NHI autonomy-tier classification, and policy-as-code fitness functions. Use when scoping complex multi-agent workflows, establishing durable markdown planning, isolating agent blast radiuses, or preventing LLM context rot.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "adr-spec.json",
+        "architecture-options.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "adr-spec.json",
+    "architecture-options.json"
+  ],
+  "role_file": "core/roles/technical-architect.md",
+  "policy_profile": "technical-architect"
+}

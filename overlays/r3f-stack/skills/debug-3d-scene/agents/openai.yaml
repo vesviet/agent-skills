@@ -1,0 +1,4 @@
+interface:
+  display_name: "Debug 3D Scene"
+  short_description: "Debug 3D rendering, materials, transforms, and scene issues"
+  default_prompt: "Use $debug-3d-scene for this task."

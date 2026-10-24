@@ -1,0 +1,4 @@
+interface:
+  display_name: "Debug Workers Edge"
+  short_description: "Diagnose Cloudflare Pages and Workers failures at the edge — 5xx, binding err..."
+  default_prompt: "Use $debug-workers-edge to execute debug workers edge tasks in this codebase."

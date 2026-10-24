@@ -1,0 +1,13 @@
+{
+  "case_id": "REF-004",
+  "name": "Safety-Net Test Harness Creation Prior to Refactoring",
+  "work_type": "refactoring",
+  "role": "technical-lead",
+  "skill": "review-code",
+  "user_request": "Establish high-coverage characterization tests for legacy pricing calculator before altering implementation.",
+  "target": "services/pricing/calculator.ts",
+  "context": {
+    "legacy_module": "Complex tiered discounts with zero existing unit tests",
+    "rule": "Never refactor without a verified passing test safety net"
+  }
+}

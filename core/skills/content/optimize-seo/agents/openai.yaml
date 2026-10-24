@@ -1,0 +1,4 @@
+interface:
+  display_name: "Optimize SEO"
+  short_description: "SEO brief, audit, and metadata production"
+  default_prompt: "Use $optimize-seo to produce a keyword brief, on-page SEO audit, or metadata for this content, page, or site section."

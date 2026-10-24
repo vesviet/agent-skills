@@ -1,0 +1,4 @@
+interface:
+  display_name: "Analyze Campaign Roi"
+  short_description: "Analyze S2S conversion data, monitor ad account die-rates, and calculate camp..."
+  default_prompt: "Use $analyze-campaign-roi to execute analyze campaign roi tasks in this codebase."

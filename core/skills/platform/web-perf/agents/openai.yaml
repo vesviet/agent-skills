@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Perf"
+  short_description: "Analyzes web page performance using Chrome DevTools MCP — measuring Core Web ..."
+  default_prompt: "Use $web-perf to execute web perf tasks in this codebase."

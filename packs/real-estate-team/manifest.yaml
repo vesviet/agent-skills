@@ -1,0 +1,115 @@
+schema_version: "2"
+
+name: real-estate-team
+display_name: Real Estate Content & SEO Team
+description: High-authority content engineering and SEO publishing pack for Real Estate Portal (https://real-estate.example.com - Astro v5 + Cloudflare Pages). Composes portable core with overlays/real-estate-content and overlays/seo-publishing. Enforces the 5-Pillar Housing Content Framework (Intelligence, Information, Insights, Neighborhoods, Integration), 2026/2027 GEO/AEO standards (<AnswerFirst> component, fact density >=3 points/500w, anti-slop gating), 8-batch empirical AEO upgrade discipline, 98-persona E-E-A-T authorship, property-post cross-linking (61 luxury portfolios x 463 guides), and a 4-role multi-agent delivery pipeline.
+version: 5.0.0
+
+tags:
+  - core
+  - content
+  - seo
+  - geo-aeo
+  - content-strategy
+  - expat-housing
+  - real-estate
+  - astro
+  - cloudflare
+author: user
+maintained_by: platform-team
+license: MIT
+homepage: https://github.com/example-org/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
+includes:
+  - core
+  - overlays/real-estate-content
+  - overlays/seo-publishing
+
+capabilities:
+  - content-strategy
+  - content-generation
+  - seo
+  - geo-aeo
+  - publishing-workflow
+  - ai-search-optimization
+  - empirical-content-upgrade
+  - eeat-persona-authorship
+  - property-link-integration
+
+content_focus:
+  primary_roles:
+    - content-writer
+    - seo-analyst
+    - task-planner
+    - content-manager
+  secondary_roles:
+    - reviewer
+    - technical-writer
+  drafting_skills:
+    - write-real-estate-astro-data
+    - write-article
+  audit_skills:
+    - optimize-seo
+    - audit-content
+    - audit-technical-seo
+    - implement-schema-markup
+  standards:
+    - "real-estate-content rules: content-schema, seo-baseline, 5-pillar-standards, property-linking"
+    - "seo-publishing overlay: 7-day sprint boards, GEO/AEO AI citation tracking"
+  workflows:
+    - publish-real-estate-content
+    - empirical-lease-upgrade-lifecycle
+    - seo-content-lifecycle
+    - content-publishing
+    - seo-keyword-brief
+
+corpus:
+  snapshot: "2026-09-19"
+  real_estate:
+    posts: 463
+    properties: 61
+    categories: 12
+    words: 1548527
+    empirical_batches_completed: 8
+    posts_at_masterclass: 100
+    answerfirst_coverage: "463/463"
+    author_registry_personas: 98
+    indexes:
+      - real-estate/plan/CONTENT_INDEX.md
+      - real-estate/REPO_INDEX.md
+      - real-estate/CONTENT_STRATEGY.md
+      - real-estate/full-content-audit-report.md
+
+data_classification: internal
+
+activation:
+  strategy: marker_first
+  markers:
+    - real-estate/
+    - src/data/property/
+    - src/data/post/
+  glob_patterns:
+    - "real-estate/src/data/**/*.md"
+    - "real-estate/src/data/**/*.mdx"
+    - "src/data/property/**/*.md"
+    - "src/data/post/**/*.md"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - publish_to_production
+      - modify_secrets
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

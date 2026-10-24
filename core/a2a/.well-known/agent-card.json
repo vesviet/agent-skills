@@ -1,0 +1,214 @@
+{
+  "name": "agent-skills-pack",
+  "description": "Agent Skills Pack — multi-role engineering skill pack for AI-assisted delivery",
+  "url": "pack://agent-skills",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "3d-graphics-engineer",
+      "name": "3D Graphics Engineer",
+      "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGPU/WebGL impleme"
+    },
+    {
+      "id": "agent-coordinator",
+      "name": "Agent Coordinator",
+      "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality g"
+    },
+    {
+      "id": "agent-discovery-engineer",
+      "name": "Agent Discovery Engineer",
+      "description": "Own the integration, architecture, and maintenance of Agent Discovery protocols and machine registries, ensuring 100% co"
+    },
+    {
+      "id": "ai-systems-engineer",
+      "name": "Ai Systems Engineer",
+      "description": "architect, deploy, evaluate, and optimize production-grade AI and LLM systems — bridging machine learning models with re"
+    },
+    {
+      "id": "aws-engineer",
+      "name": "Aws Engineer",
+      "description": "build, operate, and optimize AWS-native managed services and universal cloud control planes with OpenTofu v1.8+ client-s"
+    },
+    {
+      "id": "backend-developer",
+      "name": "Backend Developer",
+      "description": "build correct, maintainable, testable backend behavior across APIs, business logic, data access, and integrations while "
+    },
+    {
+      "id": "business-analyst",
+      "name": "Business Analyst",
+      "description": "turn ambiguous business needs into clear, testable, and implementation-ready requirements without losing business rules,"
+    },
+    {
+      "id": "cloudflare-engineer",
+      "name": "Cloudflare Engineer",
+      "description": "own Cloudflare edge delivery — Wrangler, Pages/Workers deploy paths, runtime bindings, DNS/cache/Turnstile configuration"
+    },
+    {
+      "id": "content-manager",
+      "name": "Content Manager",
+      "description": "direct the overall content portfolio strategy of a website — from architecting comprehensive pillar-cluster taxonomies, "
+    },
+    {
+      "id": "content-writer",
+      "name": "Content Writer",
+      "description": "produce new articles, landing pages, and direct-response conversion copy that match the intended audience, voice, and ev"
+    },
+    {
+      "id": "data-analyst",
+      "name": "Data Analyst",
+      "description": "answer critical business and product questions with reproducible, statistically grounded, and well-documented decision s"
+    },
+    {
+      "id": "data-engineer",
+      "name": "Data Engineer",
+      "description": "design, build, and maintain deterministic, high-throughput lakehouse layers, transactional storage formats, high-perform"
+    },
+    {
+      "id": "devops-engineer",
+      "name": "Devops Engineer",
+      "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollo"
+    },
+    {
+      "id": "ecommerce-engineer",
+      "name": "Ecommerce Engineer",
+      "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and "
+    },
+    {
+      "id": "frontend-developer",
+      "name": "Frontend Developer",
+      "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business "
+    },
+    {
+      "id": "game-developer",
+      "name": "Game Developer",
+      "description": "architect, implement, optimize, and maintain real-time interactive game systems, character controllers, mechanics, physi"
+    },
+    {
+      "id": "mmo-engineer",
+      "name": "Mmo Engineer",
+      "description": "Design, deploy, and operate end-to-end Make Money Online (MMO) operations. Maximize ROI through advanced stealth automat"
+    },
+    {
+      "id": "mobile-engineer",
+      "name": "Mobile Engineer",
+      "description": "deliver correct, performant, and accessible mobile experiences on iOS and Android by owning native app logic, platform i"
+    },
+    {
+      "id": "product-manager",
+      "name": "Product Manager",
+      "description": "maximize user and business value through clear prioritization, scope control, and outcome-driven delivery without hiding"
+    },
+    {
+      "id": "project-manager",
+      "name": "Project Manager",
+      "description": "turn agreed product scope into an executable plan with clear milestones, dependencies, owners, and risk control. In 2025"
+    },
+    {
+      "id": "prompt-engineer",
+      "name": "Prompt Engineer",
+      "description": "design, optimize, evaluate, and maintain production prompt architectures, context window allocations, and dynamic agent "
+    },
+    {
+      "id": "qa-engineer",
+      "name": "Qa Engineer",
+      "description": "protect release quality by validating real behavior (including stateful side effects), surfacing risk early, and elimina"
+    },
+    {
+      "id": "researcher",
+      "name": "Researcher",
+      "description": "run deep, iterative investigation and deliver triangulated, structured findings that downstream roles can act on without"
+    },
+    {
+      "id": "reviewer",
+      "name": "Reviewer",
+      "description": "raise quality through precise, evidence-based review that catches defects, protects maintainability, and teaches good pa"
+    },
+    {
+      "id": "sdet",
+      "name": "Sdet",
+      "description": "architect, build, and maintain automated test engineering frameworks, agent evaluation harnesses, empirical benchmark su"
+    },
+    {
+      "id": "security-engineer",
+      "name": "Security Engineer",
+      "description": "reduce security risk early by identifying weaknesses in design, code, configuration, dependencies, and operations before"
+    },
+    {
+      "id": "seo-analyst",
+      "name": "Seo Analyst",
+      "description": "ensure publishable content meets search intent across traditional search, Google AI Overviews, Google AI Mode, and third"
+    },
+    {
+      "id": "solution-architect",
+      "name": "Solution Architect",
+      "description": "translate business goals, stakeholder constraints, and existing capability into a structured solution design that engine"
+    },
+    {
+      "id": "sre",
+      "name": "Sre",
+      "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2026–2027"
+    },
+    {
+      "id": "system-engineer",
+      "name": "System Engineer",
+      "description": "design, implement, and optimize complex systems end-to-end — from hardware and OS configuration through network topology"
+    },
+    {
+      "id": "task-planner",
+      "name": "Task Planner",
+      "description": "produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation check"
+    },
+    {
+      "id": "teacher",
+      "name": "Teacher",
+      "description": "empower learners to acquire knowledge, internalize core concepts across technical and scientific disciplines, and valida"
+    },
+    {
+      "id": "technical-architect",
+      "name": "Technical Architect",
+      "description": "shape system structure and technical direction so the product can evolve safely, coherently, and at the right cost witho"
+    },
+    {
+      "id": "technical-lead",
+      "name": "Technical Lead",
+      "description": "turn architecture and requirements into a delivery-ready technical plan, guide implementation quality, and keep engineer"
+    },
+    {
+      "id": "technical-writer",
+      "name": "Technical Writer",
+      "description": "make systems, features, and operational procedures understandable so that users, teams, and AI agents can act without gu"
+    },
+    {
+      "id": "ui-ux-designer",
+      "name": "Ui Ux Designer",
+      "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2"
+    },
+    {
+      "id": "vietnam-accounting-specialist",
+      "name": "Vietnam Accounting Specialist",
+      "description": "govern Vietnam accounting-domain interpretation, evidence review, reconciliations, period-close controls, e-invoice data"
+    },
+    {
+      "id": "vietnam-legal-counsel",
+      "name": "Vietnam Legal Counsel",
+      "description": "govern Vietnam legal-domain interpretation, statutory compliance review, contract vetting and risk allocation, personal "
+    }
+  ]
+}

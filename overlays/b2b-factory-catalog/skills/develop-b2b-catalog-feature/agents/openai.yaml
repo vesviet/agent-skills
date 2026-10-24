@@ -1,0 +1,4 @@
+interface:
+  display_name: "Develop B2B Catalog Feature"
+  short_description: "Build features for the B2B Factory Direct Astro site"
+  default_prompt: "Use $develop-b2b-catalog-feature to add or modify a feature in this codebase."

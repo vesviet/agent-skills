@@ -1,0 +1,5 @@
+{
+  "work_type": "bug",
+  "phase": "triage",
+  "user_request": "Suspected SQL injection in the search endpoint — reported by a security researcher"
+}

@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "assumptions-ledger",
+  "title": "Assumptions Ledger Specification",
+  "description": "Structured assumptions ledger from The Enso Method. Used by Business Analyst and Task Planner to log open ambiguities and confidence ratings, enabling engineering to proceed non-blocking.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "assumptions-ledger",
+      "description": "Machine-readable contract discriminator."
+    },
+    "ledger_id": {
+      "type": "string",
+      "description": "Unique identifier, e.g. ASM-2026-10-15-slug"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "project_or_ticket_ref": {
+      "type": "string",
+      "description": "Reference ticket or feature identifier"
+    },
+    "assumptions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "assumption_id": {
+            "type": "string",
+            "description": "Unique identifier, e.g. ASM-001"
+          },
+          "statement": {
+            "type": "string",
+            "description": "Declarative statement of the belief or assumption"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "business_rule",
+              "technical_constraint",
+              "user_experience",
+              "data_source",
+              "security_compliance",
+              "performance_sla"
+            ]
+          },
+          "confidence_rating": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "description": "Confidence level between 0.0 (pure guess) and 1.0 (verified fact)"
+          },
+          "impact_assessment": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "risk_score": {
+            "type": "number",
+            "description": "Calculated as impact (1-5) * (6 - confidence_tier (1-5)). Range 1-25."
+          },
+          "unblocking_verification_path": {
+            "type": "string",
+            "description": "Actionable method to confirm or refute the assumption"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "validated",
+              "invalidated",
+              "superseded"
+            ]
+          },
+          "stakeholder_owner": {
+            "type": "string"
+          },
+          "fallback_plan": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "assumption_id",
+          "statement",
+          "category",
+          "confidence_rating",
+          "impact_assessment",
+          "unblocking_verification_path",
+          "status"
+        ]
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "ledger_id",
+    "created_at",
+    "project_or_ticket_ref",
+    "assumptions"
+  ],
+  "examples": [
+    {
+      "contract_type": "assumptions-ledger",
+      "ledger_id": "ASM-2026-10-15-checkout-flow",
+      "created_at": "2026-10-15T04:30:00Z",
+      "project_or_ticket_ref": "FT-2026-10-15-checkout",
+      "assumptions": [
+        {
+          "assumption_id": "ASM-001",
+          "statement": "Users prefer one-click guest checkout over mandatory registration.",
+          "category": "user_experience",
+          "confidence_rating": 0.8,
+          "impact_assessment": "high",
+          "risk_score": 8.0,
+          "unblocking_verification_path": "Review Google Analytics drop-off rates on registration step.",
+          "status": "pending",
+          "stakeholder_owner": "Product Manager",
+          "fallback_plan": "Support optional sign-up prompt on the order confirmation screen."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Handle Checkout Flow"
+  short_description: "Design and implement the end-to-end checkout flow including cart management, ..."
+  default_prompt: "Use $handle-checkout-flow to execute handle checkout flow tasks in this codebase."

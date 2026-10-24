@@ -1,0 +1,4 @@
+interface:
+  display_name: "Durable Objects"
+  short_description: "Create and review Cloudflare Durable Objects"
+  default_prompt: "Use $durable-objects to execute durable objects tasks in this codebase."

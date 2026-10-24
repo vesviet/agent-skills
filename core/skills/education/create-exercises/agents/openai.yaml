@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Exercises"
+  short_description: "Design assignments and practice tests aligned with THCS and MOET standards"
+  default_prompt: "Use $create-exercises to generate practice tests or assignments for this learning objective."

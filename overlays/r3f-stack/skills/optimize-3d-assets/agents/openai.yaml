@@ -1,0 +1,4 @@
+interface:
+  display_name: "Optimize 3D Assets"
+  short_description: "Optimize 3D models, textures, and scene performance"
+  default_prompt: "Use $optimize-3d-assets for this task."

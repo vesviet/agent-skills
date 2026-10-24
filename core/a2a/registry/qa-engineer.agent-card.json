@@ -1,0 +1,301 @@
+{
+  "id": "pack://agent-skills/core/roles/qa-engineer",
+  "contract_type": "agent-card",
+  "name": "qa-engineer",
+  "description": "protect release quality by validating real behavior (including stateful side effects), surfacing risk early, and eliminating Assertion Theater across distributed microservice and AI architectures. In 2025–2027, this embodies The Great Verification Convergence: unifying deterministic contract and property-based verification, probabilistic calibrated AI system evaluation, observability-driven trace assertions, shift-left chaos and fault injection, 4-phase systematic root cause analysis (Observe, Hypothesize, Test, Fix), empirical verification-before-completion gates, pairwise combinatorial test matrix reduction, and clean architecture ephemeral test isolation. In 2026–2027, this further encompasses EU AI Act Article 50 compliance validation (disclosure UI, C2PA media credentials), MCP 2026-07-28 stateless protocol validation, WebMCP browser-level agent interaction testing, and continuous CI eval gates for autonomous agent trajectories.",
+  "url": "pack://agent-skills/core/roles/qa-engineer.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "write-tests",
+      "name": "Write Tests",
+      "description": "Add or update tests by following repo-local test conventions, choosing the right test scope, isolating dependencies, and validating risky paths before delivery. Use when behavior needs regression coverage or release confidence.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "frontend-testing",
+      "name": "Frontend Testing",
+      "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "systematic-debugging",
+      "name": "Systematic Debugging",
+      "description": "Apply 4-phase systematic root cause analysis (Observe, Hypothesize, Test, Fix) and verification-before-completion guardrails to eliminate trial-and-error patching. Use when diagnosing defects, investigating test failures, or isolating runtime regressions.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "combinatorial-testing",
+      "name": "Combinatorial Testing",
+      "description": "Design pairwise and n-way combinatorial test suites using orthogonal arrays and covering parameter matrices to prevent combinatorial explosion. Use when testing multi-parameter workflows, distributed configurations, or cross-service API contracts.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "agent-quality-gate",
+      "name": "Agent Quality Gate",
+      "description": "Run and interpret repository quality gates for agent-delivered changes, including validators, lint, tests, build checks, diff sanity checks, and phase-exit evidence. Use when reporting completion, advancing a bug or feature to the next phase, or declaring a pack, role, workflow, or code change ready.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "accessibility-review",
+      "name": "Accessibility Review",
+      "description": "Audit UI for keyboard navigation, focus order, screen-reader labels, color contrast, motion preferences, and ARIA correctness against WCAG 2.2 criteria (including Focus Not Obscured 2.4.11, Target Size 2.5.8, Accessible Authentication 3.3.8, Dragging Movements 2.5.7, Redundant Entry 3.3.7). Use automated CI gates via @axe-core/playwright for regression detection alongside manual screen-reader testing. Use when validating user-facing flows before release, after design specs land, or when fixing reported a11y defects.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "configure-mcp",
+      "name": "Configure Mcp",
+      "description": "Sets up the full MCP presence for a web service — experimental Server Card discovery, WebMCP browser provider component, and supporting host/route configuration — so AI clients auto-discover and connect without manual configuration. Use when registering a new MCP server, adding browser-side context sharing, updating tool capabilities, or debugging MCP client connectivity failures.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "implement-webmcp",
+      "name": "Implement Webmcp",
+      "description": "Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when enabling in-browser AI agent interactions, DOM context sharing, or client-side action execution.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "hostile-component-stress-testing",
+      "name": "Hostile Component Stress Testing",
+      "description": "Use when subjecting UI components to hostile edge-case inputs across 6 scenario axes on an isolated scratch route and checking removed regression signals.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "playwright-evidence-qa",
+      "name": "Playwright Evidence Qa",
+      "description": "Use when diagnosing Playwright test failures using tripartite evidence triage (screenshot, DOM snapshot, console logs) to classify root causes into application defects, selector drift, or timing flakiness.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "webapp-server-runner",
+      "name": "Webapp Server Runner",
+      "description": "Use when executing local web application test suites, managing multi-server background lifecycles via with_server.py, polling sockets for readiness, and executing Playwright browser automation with guaranteed cleanup.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    },
+    {
+      "id": "web-quality-audit",
+      "name": "Web Quality Audit",
+      "description": "Use when conducting Core Web Vitals audits, profiling Long Animation Frames and interaction responsiveness, auditing DOM depth and bundle bloat, and enforcing Lighthouse CI quality gates.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "test-report.json",
+        "validation-result.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "test-report.json",
+    "validation-result.json"
+  ],
+  "role_file": "core/roles/qa-engineer.md",
+  "policy_profile": "qa-engineer"
+}

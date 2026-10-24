@@ -1,0 +1,40 @@
+{
+  "version": "1.0.0",
+  "type": "skill-index",
+  "root": ".",
+  "generated": "2026-09-25T08:00:00Z",
+  "skills": [
+    {
+      "name": "deploy-mobile-app",
+      "description": "Configure and execute mobile deployment pipelines using EAS Build, native code signing credentials, OTA updates via EAS Update, App Store and Google Play compliance, AI content disclosures, and crash symbolication. Use when configuring EAS build profiles, publishing OTA updates, preparing store releases, or validating Apple 4.3(b) and Google Play AI compliance.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "develop-mobile-app",
+      "description": "Architect high-performance mobile applications using React Native New Architecture, Hermes bytecode engine, TurboModules/JSI, Bridgeless mode, FlashList recycling, Reanimated worklets, and offline-first state persistence with MMKV and WatermelonDB. Use when building or optimizing React Native apps, virtualizing heavy lists, creating 60/120 FPS UI animations, or designing offline-first mobile sync architectures.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    }
+  ]
+}

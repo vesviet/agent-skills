@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement Auth"
+  short_description: "Implement secure authentication and session lifecycle"
+  default_prompt: "Use $implement-auth to implement modern authentication, OAuth2 PKCE, and session security in this codebase."

@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a2a-task-status",
+  "title": "A2A Task Status",
+  "description": "Response for Get Task / List Tasks operations (A2A 1.0).",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "submitted",
+        "working",
+        "input-required",
+        "completed",
+        "failed",
+        "canceled"
+      ]
+    },
+    "delegator": {
+      "type": "string"
+    },
+    "assignee_role": {
+      "type": "string"
+    },
+    "interaction_mode": {
+      "type": "string",
+      "enum": [
+        "sync",
+        "stream",
+        "push"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "$ref": "a2a-message.json"
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "description": "Latest artifact when state is terminal or partial.",
+      "additionalProperties": true
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cancel_reason": {
+      "type": "string"
+    },
+    "timeout_ms": {
+      "type": "integer",
+      "minimum": 1000,
+      "default": 30000,
+      "description": "Maximum task execution duration in milliseconds allocated for this task."
+    },
+    "retry_policy": {
+      "type": "object",
+      "description": "Resilient retry strategy governing this task execution.",
+      "properties": {
+        "max_retries": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 3,
+          "description": "Maximum number of retry attempts before marking the task failed."
+        },
+        "initial_interval_ms": {
+          "type": "integer",
+          "minimum": 100,
+          "default": 1000,
+          "description": "Initial backoff delay in milliseconds."
+        },
+        "backoff_factor": {
+          "type": "number",
+          "minimum": 1.0,
+          "default": 2.0,
+          "description": "Multiplier for exponential backoff between retries."
+        },
+        "max_interval_ms": {
+          "type": "integer",
+          "minimum": 1000,
+          "default": 30000,
+          "description": "Maximum delay ceiling between retries in milliseconds."
+        },
+        "retryable_errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Error codes or failure categories eligible for retry."
+        },
+        "jitter": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "none",
+                "full",
+                "equal"
+              ]
+            }
+          ],
+          "default": true,
+          "description": "Whether or which jitter strategy to apply (boolean or enum ['none', 'full', 'equal'])."
+        }
+      }
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of retries attempted so far for this task."
+    },
+    "execution_duration_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total elapsed execution duration in milliseconds."
+    },
+    "next_retry_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Scheduled timestamp for the next retry attempt if currently backing off."
+    }
+  },
+  "required": [
+    "task_id",
+    "state",
+    "updated_at"
+  ],
+  "examples": [
+    {
+      "task_id": "task-example-001",
+      "state": "completed",
+      "delegator": "agent-coordinator",
+      "assignee_role": "backend-developer",
+      "interaction_mode": "stream",
+      "timeout_ms": 30000,
+      "retry_policy": {
+        "max_retries": 3,
+        "initial_interval_ms": 1000,
+        "backoff_factor": 2.0,
+        "max_interval_ms": 30000,
+        "retryable_errors": [
+          "TIMEOUT",
+          "RATE_LIMITED"
+        ],
+        "jitter": "full"
+      },
+      "retry_count": 0,
+      "execution_duration_ms": 1250,
+      "updated_at": "2026-06-12T11:30:00Z",
+      "messages": [
+        {
+          "message_id": "msg-003",
+          "role": "agent",
+          "timestamp": "2026-06-12T11:30:00Z",
+          "parts": [
+            {
+              "text": "slice-01-command-logic completed. implementation-result.json emitted. 2 files changed. Tests passing."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "agent-registry.json",
+    "agent-card.json",
+    "skills",
+    "output_schema_refs",
+    "capability matching"
+  ],
+  "must_not_include": [
+    "hardcode agent endpoint",
+    "bypass agent card"
+  ],
+  "required_tokens": [
+    "agent-registry.json",
+    "agent-card.json",
+    "skills",
+    "output_schema_refs",
+    "capability matching"
+  ],
+  "forbidden_tokens": [
+    "hardcode agent endpoint",
+    "bypass agent card"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/coordination-plan.json",
+    "contract_type": "coordination-plan"
+  }
+}

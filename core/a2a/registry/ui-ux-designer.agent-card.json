@@ -1,0 +1,176 @@
+{
+  "id": "pack://agent-skills/core/roles/ui-ux-designer",
+  "contract_type": "agent-card",
+  "name": "ui-ux-designer",
+  "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2026, this extends to designing for probabilistic AI systems (non-deterministic states, confidence indicators, transparency hooks, human override patterns), governing design systems as living infrastructure with W3C-compliant token architecture and automated design-to-code pipelines, and enforcing Taste-Skill anti-slop frontend and UX design standards (brief inference, three-dial parameterization, anti-default typography and layout discipline, and ruthless copy auditing) to ensure interfaces feel human-crafted, distinct, and free of AI tropes. In 2026, this further extends to designing for agentic AI systems with explicit autonomy tier governance (Trust Ladder), background agent intervention affordances, and GenUI component palette constraints; and to aligning with EU AI Act Article 50 transparency obligations (live 2 August 2026) and MCP 2026-07-28 protocol updates.",
+  "url": "pack://agent-skills/core/roles/ui-ux-designer.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "design-ux-flow",
+      "name": "Design Ux Flow",
+      "description": "Design or refine a UX flow by defining user goals, preserved behavior, screen states, interaction rules, edge cases, and adjacent flow impact. Use when a feature, bug fix, or behavior change needs a UX/UI brief that frontend and QA can implement and validate reliably.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "design-tokens-spec.json",
+        "ui-component-spec.json",
+        "ux-flow-spec.json"
+      ]
+    },
+    {
+      "id": "design-review",
+      "name": "Design Review",
+      "description": "Review UX flows, visual hierarchy, interaction patterns, and design-system alignment against specs and user goals. Use when validating ui-component-spec or ux-flow-spec before implementation, or critiquing marketing/product UI without reviewing application code.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "design-tokens-spec.json",
+        "ui-component-spec.json",
+        "ux-flow-spec.json"
+      ]
+    },
+    {
+      "id": "design-system-engineering",
+      "name": "Design System Engineering",
+      "description": "Use when engineering design token architectures, calculating concentric border radii, establishing perceptual OKLCH color ramps, and verifying APCA contrast tables.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "design-tokens-spec.json",
+        "ui-component-spec.json",
+        "ux-flow-spec.json"
+      ]
+    },
+    {
+      "id": "anti-ui-slop-finish-gate",
+      "name": "Anti Ui Slop Finish Gate",
+      "description": "Use when conducting pre-staging UI finish reviews, enforcing 100% interaction state coverage, and applying the 13 universal escalation triggers.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "design-tokens-spec.json",
+        "ui-component-spec.json",
+        "ux-flow-spec.json"
+      ]
+    },
+    {
+      "id": "pptx",
+      "name": "Pptx",
+      "description": "Use when creating, editing, or inspecting PowerPoint (.pptx/.potx) presentations, authoring decks via pptxgenjs, generating visual slide thumbnail grids via thumbnail.py, duplicating layouts via add_slide.py, or pruning dead relationships via clean.py.",
+      "tags": [
+        "document",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "design-tokens-spec.json",
+        "ui-component-spec.json",
+        "ux-flow-spec.json"
+      ]
+    },
+    {
+      "id": "design-md-specification",
+      "name": "Design Md Specification",
+      "description": "Use when generating machine-readable DESIGN.md documents, specifying YAML frontmatter design tokens, enforcing two-tier token architectures, calculating concentric radii, and codifying tabular-nums standards.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "design-tokens-spec.json",
+        "ui-component-spec.json",
+        "ux-flow-spec.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "design-tokens-spec.json",
+    "ui-component-spec.json",
+    "ux-flow-spec.json"
+  ],
+  "role_file": "core/roles/ui-ux-designer.md",
+  "policy_profile": "ui-ux-designer"
+}

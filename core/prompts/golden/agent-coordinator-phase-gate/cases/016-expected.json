@@ -1,0 +1,13 @@
+{
+  "must_include": [
+    "scope defined: minor version upgrades, no major version bumps",
+    "regression risk from dependency changes acknowledged",
+    "test coverage plan for affected packages",
+    "reviewer or security-engineer for packages with security patches"
+  ],
+  "must_not_include": [
+    "upgrade major versions without explicit approval",
+    "skip regression testing for dependency changes",
+    "install dependencies without package-lock verification"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "case_id": "PAY-001",
+  "name": "Stripe Webhook Signature Verification with Raw Payload (PCI-DSS v4.1.0)",
+  "work_type": "implementation",
+  "role": "ecommerce-engineer",
+  "skill": "integrate-payment-gateway",
+  "user_request": "Implement the Stripe webhook ingestion endpoint ensuring full signature verification against tampered payloads.",
+  "target": "api/webhooks/stripe.ts",
+  "context": {
+    "framework": "Next.js / Node.js",
+    "security_standard": "PCI-DSS v4.1.0 Requirement 6.4",
+    "secret_env": "STRIPE_WEBHOOK_SECRET"
+  }
+}

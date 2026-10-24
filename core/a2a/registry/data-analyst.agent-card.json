@@ -1,0 +1,99 @@
+{
+  "id": "pack://agent-skills/core/roles/data-analyst",
+  "contract_type": "agent-card",
+  "name": "data-analyst",
+  "description": "answer critical business and product questions with reproducible, statistically grounded, and well-documented decision science from lakehouse and tabular data — defining metrics rigorously through canonical semantic layers, executing in-process analytical SQL engines (chDB DataStore/SQL, DuckDB) and cross-source federation, eliminating Text-to-SQL hallucination, separating verifiable empirical evidence from narrative interpretation, and delivering stakeholder-ready insights without owning production pipeline infrastructure. In 2025–2027, this embodies modern Decision Science: conducting Semantic Metric Querying via FastMCP gateways with sqlglot AST validation (read-only SELECT, join depth <= 3, row limit <= 1000), executing in-process analytical SQL via chDB DataStore/SQL and DuckDB v1.1+ with zero-copy Apache Arrow interchange and cross-source federation (S3, PostgreSQL, MySQL, Iceberg), conducting lightning-fast exploratory analysis under strict 4GB RAM ceilings, executing statistical distribution drift detection (PSI, Two-Sample KS-test, Tukey's IQR), enforcing Pearson's Chi-squared Sample Ratio Mismatch (SRM) pre-checks (p < 0.001), modeling Judea Pearl's Causal Hierarchy through Causal DAGs and DoWhy 4-step robustness refutations, delivering quantitative reports with cryptographic source hashes, **tracking agent query costs as FinOps line item**, and **leveraging Apache Ossie interchange for vendor-neutral semantic portability**.",
+  "url": "pack://agent-skills/core/roles/data-analyst.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "analyze-data",
+      "name": "Analyze Data",
+      "description": "Explore analytical datasets using DuckDB/Polars, query canonical Semantic Metric Catalogs (dbt MetricFlow, Cube.js, Apache Ossie) to eliminate Text-to-SQL hallucinations, detect statistical distribution drift, track agent query costs as FinOps line item, and deliver quantitatively verified insights with explicit fact/interpretation separation. Use when answering business questions from data without owning production pipeline infrastructure.",
+      "tags": [
+        "analysis",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "data-analysis-report.json"
+      ]
+    },
+    {
+      "id": "query-analytical-engine",
+      "name": "Query Analytical Engine",
+      "description": "Execute in-process analytical SQL with chDB and DuckDB v1.1+, orchestrate multi-step stateful pipelines via chdb.session, federate queries across S3 Parquet, PostgreSQL, MySQL, and Iceberg without heavy ETL, leverage Apache Arrow C Data Interface, and enforce safe read-only AST validation. Use when conducting fast in-process analytical queries, cross-source federation, or ad-hoc OLAP exploration.",
+      "tags": [
+        "security",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "data-analysis-report.json"
+      ]
+    },
+    {
+      "id": "xlsx",
+      "name": "Xlsx",
+      "description": "Use when creating, analyzing, or modifying Microsoft Excel (.xlsx/.xlsm) workbooks, enforcing the Zero Formula Error invariant via recalc.py, dynamic formula injection, two-pass model reading, and openpyxl streaming.",
+      "tags": [
+        "document",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "data-analysis-report.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "data-analysis-report.json"
+  ],
+  "role_file": "core/roles/data-analyst.md",
+  "policy_profile": "data-analyst"
+}

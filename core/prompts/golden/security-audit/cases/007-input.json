@@ -1,0 +1,13 @@
+{
+  "case_id": "SEC-007",
+  "name": "Broken Authentication & JWT Algorithm None Attack (CWE-347)",
+  "work_type": "audit",
+  "role": "security-engineer",
+  "skill": "security-audit",
+  "user_request": "Review JWT verification middleware for cryptographic signature validation flaws.",
+  "target": "middleware/auth.ts",
+  "context": {
+    "code_snippet": "export function verifyToken(token: string) {\n  const [headerB64, payloadB64, signature] = token.split('.');\n  const header = JSON.parse(Buffer.from(headerB64, 'base64').toString());\n  if (header.alg === 'none') {\n    return JSON.parse(Buffer.from(payloadB64, 'base64').toString());\n  }\n  return jwt.verify(token, process.env.JWT_SECRET!);\n}",
+    "environment": "production"
+  }
+}

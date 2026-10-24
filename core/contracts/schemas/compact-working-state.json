@@ -1,0 +1,282 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "compact-working-state",
+  "title": "Compact Working State Specification",
+  "description": "Formal JSON Schema Draft 2020-12 specifying the 10-slot anchored working state for in-flight agent context window compaction, attention management, and persistent memory handoff.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "compact-working-state",
+      "description": "Machine-readable contract discriminator."
+    },
+    "checkpoint_id": {
+      "type": "string",
+      "description": "Unique checkpoint identifier, e.g. CHK-20261021-001."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of checkpoint creation."
+    },
+    "current_goal": {
+      "type": "string",
+      "description": "Root user-explicit objective; protected against ASI01 goal hijacking."
+    },
+    "work_type": {
+      "type": "string",
+      "enum": ["feature", "bugfix", "refactor", "migration", "investigation", "release", "architecture", "audit"],
+      "description": "Categorized operational task mode."
+    },
+    "phase_control": {
+      "type": "object",
+      "description": "Structured phase tracking and gate ownership.",
+      "properties": {
+        "current_phase": {
+          "type": "string",
+          "description": "Active phase name or identifier."
+        },
+        "total_phases": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Total number of planned phases."
+        },
+        "phase_name": {
+          "type": "string",
+          "description": "Descriptive title of the current phase."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["in_progress", "completed", "blocked", "paused"],
+          "description": "Execution status of the current phase."
+        },
+        "active_owner": {
+          "type": "string",
+          "description": "Role slug or subagent identifier owning the phase."
+        }
+      },
+      "required": ["current_phase", "phase_name", "status"]
+    },
+    "active_constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Active negative constraints, architectural guardrails, and security locks."
+    },
+    "files_modified_and_inspected": {
+      "type": "object",
+      "description": "Complete file paths modified and inspected during execution.",
+      "properties": {
+        "modified": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Complete, untruncated paths of all modified files."
+        },
+        "inspected": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Paths of key reference, config, or source files inspected."
+        }
+      },
+      "required": ["modified", "inspected"]
+    },
+    "decisions_and_tradeoffs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "type": "string",
+            "description": "Architecture or implementation decision made."
+          },
+          "rationale": {
+            "type": "string",
+            "description": "Justification and tradeoffs considered."
+          },
+          "alternatives_rejected": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Alternative designs or implementations rejected."
+          }
+        },
+        "required": ["decision", "rationale"]
+      },
+      "description": "Decisions made and alternative designs rejected."
+    },
+    "verification_and_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Exact command executed for verification."
+          },
+          "exit_code": {
+            "type": "integer",
+            "description": "Process exit code returned by command."
+          },
+          "verbatim_snippet": {
+            "type": "string",
+            "description": "Verbatim output line or test count summary."
+          },
+          "status": {
+            "type": "string",
+            "enum": ["passed", "failed", "pending"],
+            "description": "Verification outcome status."
+          }
+        },
+        "required": ["command", "exit_code", "status"]
+      },
+      "description": "Verifiable proof of tests, builds, and linting."
+    },
+    "failed_attempts_and_antipatterns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "attempt": {
+            "type": "string",
+            "description": "Approach or command that failed."
+          },
+          "failure_reason": {
+            "type": "string",
+            "description": "Specific error message or failure mode."
+          },
+          "preventive_rule": {
+            "type": "string",
+            "description": "Learned rule to prevent recurring failure."
+          }
+        },
+        "required": ["attempt", "failure_reason"]
+      },
+      "description": "Documented dead ends and failure patterns to prevent amnesiac loops."
+    },
+    "preserved_invariants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Baseline contracts, interfaces, and behaviors that must remain stable."
+    },
+    "next_single_safe_action": {
+      "type": "string",
+      "description": "The immediate atomic next command or code modification to execute."
+    },
+    "compaction_metrics": {
+      "type": "object",
+      "description": "Quantitative telemetry for the compaction cycle.",
+      "properties": {
+        "token_compression_ratio": {
+          "type": "number",
+          "description": "TCR (pre_tokens / post_tokens)."
+        },
+        "critical_retention_rate": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "CIRR recall metric."
+        },
+        "goal_drift_metric": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "GDM semantic drift metric."
+        },
+        "tool_reinvocation_waste": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "TRW repeated tool call fraction."
+        }
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "current_goal",
+    "work_type",
+    "phase_control",
+    "active_constraints",
+    "files_modified_and_inspected",
+    "decisions_and_tradeoffs",
+    "verification_and_evidence",
+    "failed_attempts_and_antipatterns",
+    "preserved_invariants",
+    "next_single_safe_action"
+  ],
+  "examples": [
+    {
+      "contract_type": "compact-working-state",
+      "checkpoint_id": "CHK-20261021-001",
+      "timestamp": "2026-10-21T06:55:00Z",
+      "current_goal": "Upgrade agent-memory-compaction skill and author compact-working-state contract schema #60",
+      "work_type": "feature",
+      "phase_control": {
+        "current_phase": "implementation",
+        "total_phases": 4,
+        "phase_name": "Core Skills and Tooling Authoring",
+        "status": "in_progress",
+        "active_owner": "@agent-coordinator"
+      },
+      "active_constraints": [
+        "All SKILL.md files must strictly stay under 200 lines",
+        "Pass 100% of validate-all.py and unit tests",
+        "No hardcoding of test assertions or facade logic"
+      ],
+      "files_modified_and_inspected": {
+        "modified": [
+          "core/skills/agent/agent-memory-compaction/SKILL.md",
+          "core/contracts/schemas/compact-working-state.json"
+        ],
+        "inspected": [
+          "core/contracts/schemas/memory-audit-report.json",
+          "core/scripts/validate-contracts.py"
+        ]
+      },
+      "decisions_and_tradeoffs": [
+        {
+          "decision": "Use Draft 2020-12 with 10 canonical slots",
+          "rationale": "Prevents attention degradation and conforms with SOTA dual-memory architecture",
+          "alternatives_rejected": [
+            "Free-form narrative markdown summaries",
+            "Unstructured JSON key-value bags"
+          ]
+        }
+      ],
+      "verification_and_evidence": [
+        {
+          "command": "python3 core/scripts/validate-skills.py",
+          "exit_code": 0,
+          "verbatim_snippet": "Skill validation passed: 182 skills checked.",
+          "status": "passed"
+        }
+      ],
+      "failed_attempts_and_antipatterns": [
+        {
+          "attempt": "Recursive narrative prose summarization",
+          "failure_reason": "Geometric information loss and hallucination drift after 3 turns",
+          "preventive_rule": "Always use anchored 10-slot schema"
+        }
+      ],
+      "preserved_invariants": [
+        "All 59 existing schema contracts must remain valid",
+        "Zero regressions in existing test suite"
+      ],
+      "next_single_safe_action": "Register compact-working-state.json in INDEX.md and README.md",
+      "compaction_metrics": {
+        "token_compression_ratio": 7.4,
+        "critical_retention_rate": 0.99,
+        "goal_drift_metric": 0.02,
+        "tool_reinvocation_waste": 0.005
+      }
+    }
+  ]
+}

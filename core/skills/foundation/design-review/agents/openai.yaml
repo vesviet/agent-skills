@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Review"
+  short_description: "Critique UI/UX design against standards"
+  default_prompt: "Use $design-review to critique this design, flow, or component against usability standards and design principles."

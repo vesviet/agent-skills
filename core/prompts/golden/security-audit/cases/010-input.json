@@ -1,0 +1,13 @@
+{
+  "case_id": "SEC-010",
+  "name": "Agent Supply Chain MCP Server Unpinned Dependencies (OWASP ASI04)",
+  "work_type": "audit",
+  "role": "security-engineer",
+  "skill": "security-audit",
+  "user_request": "Audit agent swarm tool configuration for supply chain integrity and third-party MCP tool security.",
+  "target": "mcp/servers_config.json",
+  "context": {
+    "code_snippet": "{\n  \"mcpServers\": {\n    \"remote-tools\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@unverified-corp/mcp-server@latest\"]\n    }\n  }\n}",
+    "environment": "agent_swarm"
+  }
+}

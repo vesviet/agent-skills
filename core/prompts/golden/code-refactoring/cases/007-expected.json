@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "strategy pattern",
+    "open-closed",
+    "polymorphism",
+    "replace conditional",
+    "OCP"
+  ],
+  "must_not_include": [
+    "giant switch case",
+    "chained if-else cascade"
+  ],
+  "required_tokens": [
+    "strategy pattern",
+    "open-closed",
+    "polymorphism",
+    "replace conditional",
+    "OCP"
+  ],
+  "forbidden_tokens": [
+    "giant switch case",
+    "chained if-else cascade"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

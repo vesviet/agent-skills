@@ -1,0 +1,15 @@
+{
+  "work_type": "incident",
+  "phase": "postmortem",
+  "user_request": "The auth service outage from yesterday is resolved. We need to conduct a blameless postmortem.",
+  "context": {
+    "incident_id": "INC-2026-1012",
+    "duration_minutes": 47,
+    "root_cause": "config drift between staging and production",
+    "resolution": "reverted config to last known good state",
+    "affected_services": [
+      "auth-service",
+      "api-gateway"
+    ]
+  }
+}

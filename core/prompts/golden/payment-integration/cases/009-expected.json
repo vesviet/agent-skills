@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "402 Payment Required",
+    "Machine Payments Protocol",
+    "SetupIntent",
+    "off_session",
+    "programmatic payment"
+  ],
+  "must_not_include": [
+    "interactive browser popup",
+    "manual human 3DS required"
+  ],
+  "required_tokens": [
+    "402 Payment Required",
+    "Machine Payments Protocol",
+    "SetupIntent",
+    "off_session",
+    "programmatic payment"
+  ],
+  "forbidden_tokens": [
+    "interactive browser popup",
+    "manual human 3DS required"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

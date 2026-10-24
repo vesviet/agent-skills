@@ -1,0 +1,81 @@
+{
+  "id": "pack://agent-skills/core/roles/prompt-engineer",
+  "contract_type": "agent-card",
+  "name": "prompt-engineer",
+  "description": "design, optimize, evaluate, and maintain production prompt architectures, context window allocations, and dynamic agent instruction pipelines for maximum reasoning density, reliability, and token efficiency. In 2026, this extends to systematic context budgeting, mitigating lost-in-the-middle attention degradation, structuring few-shot demonstration corpora, eliminating semantic redundancy, and ensuring robust integration with structured output schemas and agentic tool boundaries.",
+  "url": "pack://agent-skills/core/roles/prompt-engineer.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "context-optimization",
+      "name": "Context Optimization",
+      "description": "Use when optimizing LLM agent context windows, allocating token budgets, pruning semantic duplicates, scoring relevance density, and ordering context to mitigate lost-in-the-middle degradation.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "coordination-plan.json",
+        "memory-audit-report.json"
+      ]
+    },
+    {
+      "id": "memory-hygiene",
+      "name": "Memory Hygiene",
+      "description": "Use when auditing, triaging, compacting, and archiving agent persistent memory stores (MEMORY.md, .cursor/rules, AGENTS.md), ingesting compact-working-state checkpoints, verifying Single-Source-of-Truth references against live repository files, enforcing strict token budgets, and preventing OWASP ASI06 memory and context poisoning.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "coordination-plan.json",
+        "memory-audit-report.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "coordination-plan.json",
+    "memory-audit-report.json"
+  ],
+  "role_file": "core/roles/prompt-engineer.md",
+  "policy_profile": "prompt-engineer"
+}

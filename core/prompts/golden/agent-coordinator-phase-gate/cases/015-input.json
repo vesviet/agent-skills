@@ -1,0 +1,14 @@
+{
+  "work_type": "incident",
+  "phase": "triage",
+  "user_request": "SEV1: the entire authentication service is down. Users cannot log in. Started 10 minutes ago.",
+  "context": {
+    "severity": "SEV1",
+    "services_affected": [
+      "auth-service",
+      "api-gateway"
+    ],
+    "error_signal": "503 on all /auth/* endpoints",
+    "on_call": "SRE paged"
+  }
+}

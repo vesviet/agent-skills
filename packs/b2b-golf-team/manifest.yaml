@@ -1,0 +1,63 @@
+schema_version: "2"
+
+name: b2b-golf-team
+description: Global engineering core plus Astro v6/v7 + Cloudflare conventions plus B2B Golf niche catalog overlay. Covers golf apparel catalog, gallery scripts, TailwindCSS v4, Cloudflare Workers deploy.
+version: 4.0.0
+
+tags:
+  - core
+  - astro
+  - cloudflare
+  - frontend
+  - content
+author: user
+maintained_by: platform-team
+license: MIT
+homepage: https://github.com/example-org/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
+includes:
+  - core
+  - overlays/astro-cloudflare
+  - overlays/b2b-catalog-golf
+
+capabilities:
+  - frontend
+  - code-generation
+  - deployment
+  - seo
+  - content-management
+  - edge-computing
+
+data_classification: internal
+
+activation:
+  strategy: marker_first
+  markers:
+    - astro.config.mjs
+    - astro.config.ts
+    - wrangler.jsonc
+    - generate_galleries.mjs
+  glob_patterns:
+    - "src/pages/**/*.astro"
+    - "src/data/**/*.json"
+    - "generated_galleries.json"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - push_to_production
+      - modify_secrets
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

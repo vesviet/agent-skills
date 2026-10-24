@@ -1,0 +1,375 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "edge-deployment-spec",
+  "title": "Edge Deployment Specification",
+  "description": "Structured Cloudflare edge deployment handoff: Wrangler, bindings, DNS/cache, rollout, and rollback.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "edge-deployment-spec"
+    },
+    "platform": {
+      "type": "string",
+      "const": "cloudflare"
+    },
+    "project_ref": {
+      "type": "string",
+      "description": "Repository path or project identifier."
+    },
+    "deployment_target": {
+      "type": "string",
+      "enum": [
+        "pages",
+        "workers",
+        "workers_for_platforms"
+      ],
+      "description": "Primary Cloudflare deploy surface."
+    },
+    "version": {
+      "type": "string",
+      "description": "Git ref, build ID, or release tag being deployed."
+    },
+    "environments": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "Target environments (preview, production, etc.)."
+    },
+    "wrangler_config_path": {
+      "type": "string",
+      "description": "Path to wrangler.jsonc or wrangler.toml in repo."
+    },
+    "bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "r2",
+              "kv",
+              "d1",
+              "service",
+              "queue",
+              "analytics_engine",
+              "other"
+            ]
+          },
+          "binding_name": {
+            "type": "string"
+          },
+          "resource_id": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "binding_name"
+        ]
+      },
+      "description": "Worker/Pages runtime bindings declared in Wrangler."
+    },
+    "dns_and_routing": {
+      "type": "object",
+      "properties": {
+        "zones": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "routes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "custom_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "redirects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "cache_and_security": {
+      "type": "object",
+      "properties": {
+        "cache_rules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "turnstile_sites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "waf_notes": {
+          "type": "string",
+          "description": "WAF or bot rules changed; Security Engineer approval reference if required."
+        }
+      }
+    },
+    "secret_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Secret identifiers only — never secret values."
+    },
+    "deploy_steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "type": "integer"
+          },
+          "action": {
+            "type": "string"
+          },
+          "is_destructive": {
+            "type": "boolean"
+          },
+          "owner": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "order",
+          "action",
+          "is_destructive"
+        ]
+      }
+    },
+    "rollback_plan": {
+      "type": "object",
+      "properties": {
+        "strategy": {
+          "type": "string",
+          "enum": [
+            "previous_deployment",
+            "revert_commit",
+            "disable_route",
+            "manual_restore"
+          ]
+        },
+        "estimated_time_mins": {
+          "type": "integer"
+        },
+        "data_loss_risk": {
+          "type": "string",
+          "enum": [
+            "none",
+            "low",
+            "high"
+          ]
+        }
+      },
+      "required": [
+        "strategy",
+        "data_loss_risk"
+      ]
+    },
+    "smoke_tests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "documentation_deltas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Operator doc paths or topics for Technical Writer."
+    },
+    "residual_risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "edge_ai_integration": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "object",
+          "description": "Workers AI + AI Gateway unified control plane details (2026-08 unification and later).",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "gateway_id": {
+              "type": "string",
+              "description": "AI Gateway ID used on env.AI.run calls; 'default' is the standard value."
+            },
+            "model_naming": {
+              "type": "string",
+              "description": "Model naming convention in cost logs, e.g. 'provider/model'."
+            },
+            "model_first_routing": {
+              "type": "string",
+              "description": "'pilot' | 'ga' | 'not-used' — provider-transparent model request routing status."
+            }
+          },
+          "required": [
+            "enabled",
+            "gateway_id"
+          ]
+        }
+      ]
+    },
+    "runtime_capabilities": {
+      "type": "object",
+      "description": "Workers runtime capabilities used by this deployment (2026-2027).",
+      "properties": {
+        "containers": {
+          "type": "boolean",
+          "description": "Cloudflare Containers (GA, DO-managed instances; inbound TCP/gRPC supported since Aug 2026)."
+        },
+        "sandbox_sdk": {
+          "type": "string",
+          "description": "'none' | 'stable' | '1.0-preview' — Cloudflare Sandbox SDK usage."
+        },
+        "durable_objects_sqlite": {
+          "type": "boolean",
+          "description": "Durable Objects with SQLite storage (GA, free plan supported)."
+        },
+        "dynamic_workers": {
+          "type": "boolean",
+          "description": "Dynamic Workers (concurrency raised 4 to 10 in Aug 2026)."
+        },
+        "access_for_workers": {
+          "type": "boolean",
+          "description": "Access policy attached directly to the Worker."
+        },
+        "worker_size_limit_mib": {
+          "type": "integer",
+          "description": "Uncompressed size limit in MiB (64 MiB for all plans since 2026-09-04)."
+        }
+      }
+    },
+    "mcp_handler": {
+      "type": "object",
+      "description": "MCP server exposure on this Worker per the 2026-07-28 stateless spec.",
+      "properties": {
+        "pattern": {
+          "type": "string",
+          "description": "'createMcpHandler' | 'McpAgent (obsolete)' | 'none' — plain Worker handler is the current pattern; McpAgent must be migrated."
+        },
+        "oauth_provider": {
+          "type": "string",
+          "description": "Workers OAuth Provider config; must include clientIdMetadataDocumentEnabled (CIMD) before DCR removal after summer 2027."
+        },
+        "header_routing": {
+          "type": "boolean",
+          "description": "Whether Mcp-Method/Mcp-Name headers are used for WAF/rate-limit routing."
+        },
+        "registry_published": {
+          "type": "boolean",
+          "description": "Whether server.json is published to the Official MCP Registry with verified reverse-DNS namespace."
+        }
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "platform",
+    "project_ref",
+    "deployment_target",
+    "version",
+    "environments",
+    "wrangler_config_path",
+    "deploy_steps",
+    "rollback_plan"
+  ],
+  "examples": [
+    {
+      "contract_type": "edge-deployment-spec",
+      "platform": "cloudflare",
+      "project_ref": "example-org/b2b-factory-catalog",
+      "deployment_target": "pages",
+      "version": "v2.4.1-seo-metadata",
+      "environments": [
+        "preview",
+        "production"
+      ],
+      "wrangler_config_path": "wrangler.jsonc",
+      "bindings": [
+        {
+          "type": "kv",
+          "binding_name": "SEO_CACHE",
+          "resource_id": "abc123def456",
+          "notes": "SEO metadata KV namespace"
+        }
+      ],
+      "dns_and_routing": {
+        "zones": [
+          "factory-direct.example.com"
+        ],
+        "routes": [
+          "factory-direct.example.com/*"
+        ],
+        "custom_domains": [
+          "factory-direct.example.com"
+        ],
+        "redirects": []
+      },
+      "cache_and_security": {
+        "cache_rules": [
+          "Cache /*.json for 3600s",
+          "Bypass cache for /admin/*"
+        ],
+        "turnstile_sites": [],
+        "waf_notes": "No WAF changes in this deployment"
+      },
+      "secret_names": [
+        "API_KEY_INTERNAL"
+      ],
+      "deploy_steps": [
+        {
+          "order": 1,
+          "action": "wrangler pages deploy dist/ --env production",
+          "is_destructive": false,
+          "owner": "cloudflare-engineer"
+        },
+        {
+          "order": 2,
+          "action": "Verify isitagentready.com score post-deploy",
+          "is_destructive": false,
+          "owner": "agent-discovery-engineer"
+        }
+      ],
+      "rollback_plan": {
+        "strategy": "previous_deployment",
+        "estimated_time_mins": 5,
+        "data_loss_risk": "none"
+      },
+      "smoke_tests": [
+        "GET factory-direct.example.com/auth.md returns 200",
+        "GET factory-direct.example.com/.well-known/mcp/server-card.json returns valid JSON"
+      ],
+      "documentation_deltas": [],
+      "residual_risks": []
+    }
+  ]
+}

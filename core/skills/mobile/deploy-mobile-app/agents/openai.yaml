@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy Mobile App"
+  short_description: "Configure and execute mobile deployment pipelines using EAS Build, native cod..."
+  default_prompt: "Use $deploy-mobile-app to execute deploy mobile app tasks in this codebase."

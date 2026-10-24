@@ -1,0 +1,12 @@
+{
+  "name": "Role Gate (agent-skills)",
+  "version": "1.0.0",
+  "description": "Before task execution begins, remind the agent to load core/rules/code.md, the active role file, and verify action-boundaries.yaml before any state-changing operation.",
+  "when": {
+    "type": "preTaskExecution"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Before proceeding: (1) confirm you have read core/rules/code.md and the active role from core/roles/<role>.md; (2) verify the planned action is allowed under core/policies/action-boundaries.yaml for the current role; (3) if any action is irreversible (data deletion, git push, deploy, secret rotation), stop and ask the user for explicit confirmation first. Do NOT proceed until these checks are satisfied."
+  }
+}

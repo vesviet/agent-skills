@@ -1,0 +1,13 @@
+{
+  "case_id": "REF-005",
+  "name": "Strangler Fig Migration Pattern for Legacy Monolith Service",
+  "work_type": "refactoring",
+  "role": "technical-lead",
+  "skill": "review-code",
+  "user_request": "Architect an incremental cutover from legacy monolithic billing to a modern microservice using Strangler Fig.",
+  "target": "gateway/routing_facade.ts",
+  "context": {
+    "legacy_system": "15-year old Rails monolith",
+    "new_service": "Go microservice handling new subscription plans"
+  }
+}

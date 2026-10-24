@@ -1,0 +1,33 @@
+{
+  "must_include": [
+    "tokenized",
+    "customer_id",
+    "payment_method_id",
+    "PCI-DSS",
+    "Zero-CDE"
+  ],
+  "must_not_include": [
+    "card_number",
+    "cvv",
+    "pan",
+    "expiration_date"
+  ],
+  "required_tokens": [
+    "tokenized",
+    "customer_id",
+    "payment_method_id",
+    "PCI-DSS",
+    "Zero-CDE"
+  ],
+  "forbidden_tokens": [
+    "card_number",
+    "cvv",
+    "pan",
+    "expiration_date"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

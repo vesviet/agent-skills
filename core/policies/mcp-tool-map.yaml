@@ -1,0 +1,302 @@
+# MCP / IDE tool name → policy action id for action-boundaries.yaml checks.
+# Used by agent-tool-orchestration and Cursor hooks.template.json.
+#
+# Resolution order for shell/terminal commands:
+#   1. Check destructive_patterns (matched by substring, highest priority)
+#   2. Fall back to tool_actions mapping
+#   3. Default: requires_approval (per default_policy in action-boundaries.yaml)
+
+tool_actions:
+  # File operations
+  read_file: read_file
+  view_file: read_file
+  open_file: read_file
+  write: write_file
+  write_file: write_file
+  edit_file: write_file
+  create_file: create_file
+  delete_file: delete_file
+  move_file: write_file
+
+  # Code navigation
+  search: search_code
+  grep: search_code
+  find_in_files: search_code
+  search_code: search_code
+
+  # Build / test / lint
+  run_build: run_build
+  run_tests: run_tests
+  run_linter: run_linter
+  run_dev_server: run_dev_server
+
+  # Terminal / shell (coarse fallback — check destructive_patterns first)
+  run_terminal_cmd: run_build
+  shell: run_build
+  execute_command: run_build
+
+  # Database / data
+  query_db: run_query
+  execute_query: run_query
+  read_database: read_database
+
+  # Network / MCP
+  mcp_call: read_file
+  fetch: read_file
+  http_get: read_file
+  http_post: write_file
+
+  # Deployment / infra
+  wrangler_deploy: run_deployment
+  wrangler_publish: run_deployment
+  deploy: run_deployment
+  terraform_apply: apply_iac
+  pulumi_up: apply_iac
+  cdk_deploy: apply_iac
+
+  # Agent delegation / sub-agent invocation
+  delegate_task: delegate_task
+  invoke_sub_agent: delegate_task
+  spawn_agent: delegate_task
+  a2a_send_task: delegate_task
+
+  # Data export
+  export_csv: export_data
+  download_file: export_data
+  export_data: export_data
+
+  # Dependency management
+  npm_install: install_dependency
+  pip_install: install_dependency
+  yarn_add: install_dependency
+  cargo_add: install_dependency
+  bun_install: install_dependency
+  pnpm_install: install_dependency
+  pnpm_add: install_dependency
+  composer_install: install_dependency
+  composer_require: install_dependency
+  composer_update: install_dependency
+  # Python (2026): uv is the recommended installer; poetry for project workflows; pipx for CLI tools
+  uv_add: install_dependency
+  uv_install: install_dependency
+  uv_run: run_build
+  uv_pip_install: install_dependency
+  poetry_add: install_dependency
+  poetry_install: install_dependency
+  poetry_update: install_dependency
+  pipx_install: install_dependency
+  # npx / pnpm dlx execute a package without installing it locally
+  npx: run_build
+  pnpm_dlx: run_build
+
+  # Laravel / PHP
+  php_artisan_serve: run_dev_server
+  php_artisan_test: run_tests
+  php_artisan_lint: run_linter
+  php_artisan_migrate: run_migration
+  php_artisan_tinker: run_query
+  php_artisan_make: create_file
+
+  # Bun / PNPM
+  bunx: run_build
+  pnpm_run_build: run_build
+  pnpm_run_test: run_tests
+  pnpm_run_lint: run_linter
+  pnpm_run_dev: run_dev_server
+
+  # Astro
+  astro_dev: run_dev_server
+  astro_build: run_build
+  astro_preview: run_dev_server
+  astro_check: run_linter
+
+destructive_patterns:
+  # Git operations
+  - pattern: "git push --force"
+    action: force_push
+  - pattern: "git push -f"
+    action: force_push
+  - pattern: "git push origin --force"
+    action: force_push
+  - pattern: "git push origin -f"
+    action: force_push
+  - pattern: "git push"
+    action: push_to_production
+  - pattern: "git commit"
+    action: write_file
+  - pattern: "git branch -D"
+    action: delete_branch_main
+  - pattern: "git push origin :main"
+    action: delete_branch_main
+  - pattern: "git push origin :master"
+    action: delete_branch_main
+
+  # Database destructive operations
+  - pattern: "drop database"
+    action: drop_database
+  - pattern: "drop table"
+    action: drop_database
+  - pattern: "truncate table"
+    action: drop_database
+
+  # AI / ML / Vector DB destructive operations
+  - pattern: "delete /collections/"
+    action: drop_database
+  - pattern: "drop_collection"
+    action: drop_database
+  - pattern: "pinecone delete"
+    action: drop_database
+  - pattern: "--override-model-weights"
+    action: deploy_ai_model
+  - pattern: "clear_memory"
+    action: clear_agent_memory
+
+  # Migrations
+  - pattern: "migrate"
+    action: run_migration
+  - pattern: "db:migrate"
+    action: run_migration
+  - pattern: "prisma migrate"
+    action: run_migration
+  - pattern: "knex migrate"
+    action: run_migration
+
+  # Dependency installation
+  - pattern: "npm install"
+    action: install_dependency
+  - pattern: "pip install"
+    action: install_dependency
+  - pattern: "yarn add"
+    action: install_dependency
+  - pattern: "cargo add"
+    action: install_dependency
+  - pattern: "gem install"
+    action: install_dependency
+  - pattern: "uv add"
+    action: install_dependency
+  - pattern: "uv pip install"
+    action: install_dependency
+  - pattern: "poetry add"
+    action: install_dependency
+  - pattern: "poetry install"
+    action: install_dependency
+  - pattern: "poetry update"
+    action: install_dependency
+  - pattern: "pipx install"
+    action: install_dependency
+  - pattern: "pipx run"
+    action: run_build
+  - pattern: "npx "
+    action: run_build
+  - pattern: "pnpm dlx"
+    action: run_build
+
+  # Deployment
+  - pattern: "wrangler deploy"
+    action: run_deployment
+  - pattern: "wrangler publish"
+    action: run_deployment
+  - pattern: "kubectl apply"
+    action: run_deployment
+  - pattern: "terraform apply"
+    action: apply_iac
+  - pattern: "pulumi up"
+    action: apply_iac
+  - pattern: "cdk deploy"
+    action: apply_iac
+
+  # Rollback
+  - pattern: "rollback"
+    action: rollback_deployment
+  - pattern: "wrangler rollback"
+    action: rollback_deployment
+
+  # DNS / cache
+  - pattern: "wrangler dns"
+    action: modify_dns_production
+  - pattern: "cloudflare cache purge"
+    action: purge_cache_zone
+
+  # Secrets
+  - pattern: "wrangler secret put"
+    action: modify_secrets
+  - pattern: "wrangler secret delete"
+    action: modify_secrets
+
+  # PHP / Laravel (2026)
+  - pattern: "php artisan migrate"
+    action: run_migration
+  - pattern: "php artisan migrate:fresh"
+    action: drop_database
+  - pattern: "php artisan migrate:reset"
+    action: drop_database
+  - pattern: "php artisan migrate:rollback"
+    action: run_migration
+  - pattern: "php artisan db:seed"
+    action: write_database
+  - pattern: "composer install"
+    action: install_dependency
+  - pattern: "composer require"
+    action: install_dependency
+  - pattern: "composer update"
+    action: install_dependency
+
+  # Bun (2026)
+  - pattern: "bun install"
+    action: install_dependency
+  - pattern: "bun add"
+    action: install_dependency
+  - pattern: "bunx"
+    action: run_build
+
+  # PNPM (2026)
+  - pattern: "pnpm install"
+    action: install_dependency
+  - pattern: "pnpm add"
+    action: install_dependency
+
+  # Astro deploy (2026)
+  - pattern: "astro deploy"
+    action: run_deployment
+
+  # Docker (2026)
+  - pattern: "docker run"
+    action: run_deployment
+  - pattern: "docker compose up"
+    action: run_deployment
+  - pattern: "docker-compose up"
+    action: run_deployment
+  - pattern: "docker push"
+    action: run_deployment
+  - pattern: "docker rmi"
+    action: terminate_instance
+  - pattern: "docker volume rm"
+    action: drop_storage_volume
+  - pattern: "docker network rm"
+    action: modify_network_topology_production
+
+  # Kubernetes (2026)
+  - pattern: "kubectl delete"
+    action: terminate_instance
+  - pattern: "kubectl rollout undo"
+    action: rollback_deployment
+  - pattern: "kubectl rollout restart"
+    action: run_deployment
+  - pattern: "kubectl scale"
+    action: modify_environment_config
+  - pattern: "kubectl exec"
+    action: run_deployment
+
+  # GitHub CLI (2026)
+  - pattern: "gh pr create"
+    action: push_to_production
+  - pattern: "gh pr merge"
+    action: push_to_production
+  - pattern: "gh release create"
+    action: push_to_production
+  - pattern: "gh repo delete"
+    action: delete_branch_main
+  - pattern: "gh secret set"
+    action: modify_secrets
+  - pattern: "gh secret remove"
+    action: modify_secrets

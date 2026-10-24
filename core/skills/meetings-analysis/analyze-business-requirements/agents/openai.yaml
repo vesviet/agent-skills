@@ -1,0 +1,4 @@
+interface:
+  display_name: "Analyze Business Requirements"
+  short_description: "Analyze and structure business requirements for delivery"
+  default_prompt: "Use $analyze-business-requirements for this task."

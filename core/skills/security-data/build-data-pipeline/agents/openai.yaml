@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build Data Pipeline"
+  short_description: "Design and implement ETL/ELT pipelines, warehouse modeling, orchestration, and data quality gates"
+  default_prompt: "Use $build-data-pipeline to design and implement an ingestion pipeline, dbt model, or data quality gate for this requirement."

@@ -1,0 +1,306 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ux-flow-spec",
+  "title": "UX Flow Specification",
+  "description": "Structured multi-screen flow handoff from UI/UX Designer to Frontend, QA, and Backend.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "ux-flow-spec"
+    },
+    "flow_id": {
+      "type": "string",
+      "description": "Stable slug for the flow (e.g. checkout-guest)."
+    },
+    "flow_name": {
+      "type": "string"
+    },
+    "feature_ticket_ref": {
+      "type": "string",
+      "description": "Path or id linking to feature-ticket.json when applicable."
+    },
+    "preserved_behavior": {
+      "type": "string"
+    },
+    "changed_behavior": {
+      "type": "string"
+    },
+    "user_goal": {
+      "type": "string"
+    },
+    "actors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "screens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "screen_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "entry_points": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "probabilistic_branches": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Paths when AI output is uncertain, rejected, or falls back. Points to other screen_ids."
+          }
+        },
+        "required": [
+          "screen_id",
+          "name"
+        ]
+      }
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from_screen_id": {
+            "type": "string"
+          },
+          "to_screen_id": {
+            "type": "string"
+          },
+          "trigger": {
+            "type": "string"
+          },
+          "conditions": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "from_screen_id",
+          "to_screen_id",
+          "trigger"
+        ]
+      }
+    },
+    "component_spec_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Component names or paths with matching ui-component-spec.json files."
+    },
+    "accessibility_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "analytics_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "event_name": {
+            "type": "string"
+          },
+          "trigger": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "event_name",
+          "trigger"
+        ]
+      }
+    },
+    "api_needs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "type": "string"
+          },
+          "endpoint_or_resource": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "purpose"
+        ]
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ai_interaction_patterns": {
+      "type": "object",
+      "description": "Flow-level AI interaction patterns (2025-2026 standards).",
+      "properties": {
+        "transparency_hooks": {
+          "type": "string",
+          "description": "Global rules for 'Why am I seeing this?' affordances in this flow."
+        },
+        "hitl_interface_flows": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "References to screen_ids that serve as Human-In-The-Loop reviewer interfaces."
+        },
+        "system_message_boundaries": {
+          "type": "string",
+          "description": "Capability limits and scope statements communicated to the user."
+        }
+      }
+    },
+    "taste_skill": {
+      "type": "object",
+      "description": "Taste-Skill anti-slop design configuration (Brief Inference & Three Dials).",
+      "properties": {
+        "design_read": {
+          "type": "string",
+          "description": "1-line synthesis of page kind, audience, vibe, and design system."
+        },
+        "three_dials": {
+          "type": "object",
+          "properties": {
+            "design_variance": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            },
+            "motion_intensity": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            },
+            "visual_density": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            }
+          },
+          "required": [
+            "design_variance",
+            "motion_intensity",
+            "visual_density"
+          ]
+        },
+        "anti_slop_checks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "flow_id",
+    "flow_name",
+    "user_goal",
+    "screens",
+    "component_spec_refs"
+  ],
+  "examples": [
+    {
+      "contract_type": "ux-flow-spec",
+      "flow_id": "store-order-assignment-dashboard",
+      "flow_name": "Store Manager - COD Order Assignment Dashboard",
+      "feature_ticket_ref": "2026-06-12-change-store-order-cod",
+      "preserved_behavior": "Non-COD order list view remains unchanged",
+      "changed_behavior": "COD orders with store_id now show store courier assignment status",
+      "user_goal": "Store manager can see which COD orders are assigned to their store courier and act on unassigned ones",
+      "actors": [
+        "Store Manager",
+        "System"
+      ],
+      "screens": [
+        {
+          "screen_id": "S-01",
+          "name": "COD Order List",
+          "purpose": "Shows COD orders filtered by store; highlights unassigned",
+          "entry_points": [
+            "dashboard/orders?type=cod&store_id=42"
+          ]
+        },
+        {
+          "screen_id": "S-02",
+          "name": "Order Detail",
+          "purpose": "Shows assignment status, courier info, and fallback indicator",
+          "entry_points": [
+            "S-01 row click"
+          ]
+        }
+      ],
+      "transitions": [
+        {
+          "from_screen_id": "S-01",
+          "to_screen_id": "S-02",
+          "trigger": "Click order row",
+          "conditions": "Any COD order"
+        }
+      ],
+      "component_spec_refs": [
+        "OrderRowComponent",
+        "CourierBadgeComponent"
+      ],
+      "accessibility_notes": [
+        "Courier assignment status badge must have aria-label"
+      ],
+      "analytics_events": [
+        {
+          "event_name": "cod_order_fallback_viewed",
+          "trigger": "Store manager views order with warehouse fallback",
+          "properties": "order_id, store_id, courier_type"
+        }
+      ],
+      "api_needs": [
+        {
+          "purpose": "List COD orders for store",
+          "endpoint_or_resource": "GET /api/v1/orders?type=cod&store_id=42",
+          "fields": [
+            "id",
+            "status",
+            "courier_id",
+            "courier_type",
+            "is_fallback"
+          ],
+          "notes": "is_fallback indicates warehouse fallback was triggered"
+        }
+      ],
+      "open_questions": [
+        "Show fallback reason to store manager or only to internal ops?"
+      ]
+    }
+  ]
+}

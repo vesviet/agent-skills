@@ -1,0 +1,8 @@
+{
+  "work_type": "feature",
+  "phase": "planning",
+  "user_request": "We need to add real-time notifications to the dashboard. The user wants it done this week.",
+  "context": {
+    "current_stack": "REST API, no WebSocket infrastructure yet"
+  }
+}

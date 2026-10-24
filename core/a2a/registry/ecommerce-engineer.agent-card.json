@@ -1,0 +1,141 @@
+{
+  "id": "pack://agent-skills/core/roles/ecommerce-engineer",
+  "contract_type": "agent-card",
+  "name": "ecommerce-engineer",
+  "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2026–2027, this extends to architecting dual-audience commerce systems serving both human shoppers and autonomous AI agents: implementing agentic commerce protocols (Universal Commerce Protocol UCP, Agent Payments Protocol AP2, Machine Payments Protocol MPP, x402, ACP) with cryptographic purchase mandates, enforcing strict PCI-DSS v4.1.0 controls (Req 6.4.3 script integrity and Req 11.6.1 tamper detection), building Alipay 610k TPS flash-sale hot-spot caching, atomic Redis 7.4+ Lua fencing token inventory reservations, balanced double-entry accounting ledgers, Shopee Traffic Shield bot mitigation, and Circular 200/133 AMIS sales revenue synchronization.",
+  "url": "pack://agent-skills/core/roles/ecommerce-engineer.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "integrate-payment-gateway",
+      "name": "Integrate Payment Gateway",
+      "description": "Integrate or extend a payment gateway (Stripe, VNPay, PayPal, Momo, etc.) into an e-commerce application. Use when adding, replacing, or auditing a payment provider's checkout, refund, or webhook flow.",
+      "tags": [
+        "commerce",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "handle-checkout-flow",
+      "name": "Handle Checkout Flow",
+      "description": "Design and implement the end-to-end checkout flow including cart management, tax and shipping calculation, discount/coupon application, and order confirmation. Use when building or fixing any step in the purchase funnel from cart to payment confirmation.",
+      "tags": [
+        "commerce",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "manage-product-catalog",
+      "name": "Manage Product Catalog",
+      "description": "Build or maintain a product catalog including product creation, variant management (size, color, SKU), pricing, and inventory synchronization across channels. Use when adding, updating, or structuring product data in an e-commerce system.",
+      "tags": [
+        "commerce",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "manage-order-fulfillment",
+      "name": "Manage Order Fulfillment",
+      "description": "Implement and manage the post-purchase order lifecycle including order status management, packing, shipping label generation, carrier tracking, and refund or return processing. Use when building or maintaining fulfillment workflows after a successful payment.",
+      "tags": [
+        "commerce",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    },
+    {
+      "id": "configure-agent-commerce",
+      "name": "Configure Agent Commerce",
+      "description": "Implements agentic commerce standards — x402 and Stripe's Machine Payments Protocol (MPP) for HTTP 402 machine payments, the Universal Commerce Protocol (UCP) for agent checkout, the Agentic Commerce Protocol (ACP), and Google's Agent Payments Protocol (AP2) for delegated purchase authorization — to make a service billable and discoverable by AI agents. Use when adding agent-to-agent payment, delegated purchase authorization, or agentic commerce directory registration to a web service.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "implementation-result.json"
+  ],
+  "role_file": "core/roles/ecommerce-engineer.md",
+  "policy_profile": "ecommerce-engineer"
+}

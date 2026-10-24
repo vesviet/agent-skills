@@ -1,0 +1,4 @@
+interface:
+  display_name: "Repurpose Content"
+  short_description: "Extract and format micro-content variants (social threads, newsletters, short..."
+  default_prompt: "Use $repurpose-content to execute repurpose content tasks in this codebase."

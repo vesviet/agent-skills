@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "solution-brief",
+  "title": "Solution Brief",
+  "description": "Primary machine-readable handoff from the Solution Architect. Produced before requirements or architecture are locked. Consumed by Technical Architect (for adr-spec.json), Business Analyst (for feature-ticket.json), Product Manager (go/no-go), and Agent Coordinator (solution scoping gate). Captures problem framing, capability gaps, build-vs-buy decision, AI feasibility, agent ROI, and compliance constraints.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "solution-brief",
+      "description": "Machine-readable contract discriminator."
+    },
+    "brief_id": {
+      "type": "string",
+      "description": "Unique identifier. Convention: sb-NNN-short-slug or YYYY-MM-DD-slug."
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "initiative": {
+      "type": "string",
+      "description": "Name of the initiative or business problem being scoped."
+    },
+    "problem_statement": {
+      "type": "object",
+      "description": "Business framing that all downstream roles must respect.",
+      "properties": {
+        "business_problem": { "type": "string" },
+        "stakeholder_goals": { "type": "array", "items": { "type": "string" } },
+        "constraints": { "type": "array", "items": { "type": "string" }, "description": "Budget, timeline, team, platform, or regulatory constraints." },
+        "success_criteria": { "type": "array", "items": { "type": "string" } },
+        "out_of_scope": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["business_problem", "stakeholder_goals"]
+    },
+    "capability_map": {
+      "type": "object",
+      "description": "Current vs required capability mapping consumed by Technical Architect for boundary scoping.",
+      "properties": {
+        "available": { "type": "array", "items": { "type": "string" } },
+        "partial": { "type": "array", "items": { "type": "string" }, "description": "Capabilities available with constraints (performance ceilings, licensing, ownership gaps)." },
+        "missing": { "type": "array", "items": { "type": "string" }, "description": "Gap items for Technical Architect." },
+        "reuse_candidates": { "type": "array", "items": { "type": "string" } },
+        "rebuild_candidates": { "type": "array", "items": { "type": "string" } },
+        "retirement_candidates": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "options_considered": {
+      "type": "array",
+      "description": "At least 2 options with explicit trade-offs. The recommendation must reference one of these.",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "approach": { "type": "string", "enum": ["build", "buy_saas", "partner", "mcp_marketplace_tool", "hybrid"] },
+          "business_value": { "type": "string" },
+          "integration_complexity": { "type": "string", "enum": ["low", "medium", "high"] },
+          "time_to_value": { "type": "string" },
+          "operational_cost": { "type": "string" },
+          "vendor_risk": { "type": "string" },
+          "reversibility": { "type": "string", "enum": ["reversible", "hard-to-reverse", "irreversible"] },
+          "team_capability_fit": { "type": "string" }
+        },
+        "required": ["name", "approach"]
+      }
+    },
+    "build_vs_buy_decision": {
+      "type": "object",
+      "properties": {
+        "decision": { "type": "string", "enum": ["build", "buy", "saas", "mcp_marketplace_tool", "partner", "hybrid", "deferred"] },
+        "rationale": { "type": "string" },
+        "vendor_lock_in": { "type": "string" },
+        "exit_cost": { "type": "string" },
+        "data_boundary": { "type": "string", "description": "What data leaves our system and where." },
+        "mcp_marketplace_evaluation": {
+          "type": "object",
+          "description": "Required when an MCP marketplace tool is a candidate.",
+          "properties": {
+            "registry_provenance": { "type": "string" },
+            "data_residency": { "type": "string" },
+            "rug_pull_risk_mitigation": { "type": "string" },
+            "exit_cost": { "type": "string" }
+          }
+        }
+      },
+      "required": ["decision", "rationale"]
+    },
+    "ai_solution_assessment": {
+      "type": "object",
+      "description": "Present when an AI/agentic approach is on the table.",
+      "properties": {
+        "business_value_justification": { "type": "string" },
+        "conventional_alternative_evaluated": { "type": "boolean" },
+        "confidence_threshold_required": { "type": "string" },
+        "hitl_requirement": { "type": "string" },
+        "explainability_requirement": { "type": "string" },
+        "fallback_behavior": { "type": "string" },
+        "eu_ai_act_risk_tier": { "type": "string", "enum": ["unacceptable", "high-risk", "limited-risk", "minimal-risk", "not-applicable"] },
+        "single_llm_vs_multi_agent": { "type": "string", "description": "Decision and rationale; default to the simpler single-LLM architecture unless multi-agent is explicitly justified." }
+      }
+    },
+    "agent_roi_estimate": {
+      "type": "object",
+      "description": "Required when recommending an agentic solution at CFO/board level. All four P&L-connected pillars.",
+      "properties": {
+        "cost_reduction": { "type": "string" },
+        "risk_compliance_savings": { "type": "string" },
+        "revenue_profit_growth": { "type": "string" },
+        "operational_resilience": { "type": "string" }
+      }
+    },
+    "compliance_constraints": {
+      "type": "object",
+      "properties": {
+        "regulations_in_scope": { "type": "array", "items": { "type": "string" }, "description": "e.g. GDPR, PDPA, EU AI Act, sector-specific." },
+        "named_constraints": { "type": "array", "items": { "type": "string" }, "description": "One per regulation: what the solution must do / must not do / must demonstrate." },
+        "requires_architectural_enforcement": { "type": "array", "items": { "type": "string" } },
+        "requires_operational_process": { "type": "array", "items": { "type": "string" } },
+        "compliance_blocker": { "type": "boolean" }
+      }
+    },
+    "recommendation": {
+      "type": "object",
+      "properties": {
+        "recommended_option": { "type": "string" },
+        "rationale": { "type": "string" },
+        "key_risks": { "type": "array", "items": { "type": "string" } },
+        "conditions_that_change_recommendation": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["recommended_option", "rationale"]
+    },
+    "stakeholder_summary": { "type": "string", "description": "Non-technical, decision-ready summary for business stakeholders." },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": { "type": "string" },
+          "owner": { "type": "string" },
+          "blocks": { "type": "string" }
+        },
+        "required": ["question"]
+      }
+    },
+    "handoff": {
+      "type": "object",
+      "properties": {
+        "to_technical_architect": { "type": "string" },
+        "to_business_analyst": { "type": "string" },
+        "to_product_manager": { "type": "string" },
+        "to_researcher": { "type": "string" }
+      }
+    }
+  },
+  "required": ["contract_type", "problem_statement", "options_considered", "build_vs_buy_decision", "recommendation"],
+  "examples": [
+    {
+      "contract_type": "solution-brief",
+      "brief_id": "sb-014-agent-support-triage",
+      "created_at": "2026-07-27T10:15:00+07:00",
+      "initiative": "AI-assisted support ticket triage",
+      "problem_statement": {
+        "business_problem": "Support triage takes 6+ hours median; SLA breaches rising 12% MoM.",
+        "stakeholder_goals": ["Cut median triage time under 1 hour", "Preserve human ownership of refund/credit decisions"],
+        "constraints": ["EU customer data must stay in-region", "No net-new headcount this quarter"],
+        "success_criteria": ["Median triage time < 60 min", "No increase in mis-routed tickets"],
+        "out_of_scope": ["Automated refunds", "Live chat replacement"]
+      },
+      "capability_map": {
+        "available": ["Ticket ingestion API", "Existing category taxonomy"],
+        "partial": ["Sentiment scoring (batch only, not real-time)"],
+        "missing": ["Real-time classification", "Confidence-gated routing"],
+        "reuse_candidates": ["Ticket ingestion API"],
+        "rebuild_candidates": [],
+        "retirement_candidates": ["Legacy keyword-rule router"]
+      },
+      "options_considered": [
+        {
+          "name": "Rule-based router refresh",
+          "approach": "build",
+          "business_value": "Deterministic, cheap, auditable",
+          "integration_complexity": "low",
+          "time_to_value": "2 weeks",
+          "operational_cost": "Low",
+          "vendor_risk": "None",
+          "reversibility": "reversible",
+          "team_capability_fit": "High"
+        },
+        {
+          "name": "LLM classifier with confidence-gated routing",
+          "approach": "hybrid",
+          "business_value": "Higher accuracy on ambiguous tickets",
+          "integration_complexity": "medium",
+          "time_to_value": "5 weeks",
+          "operational_cost": "Medium (inference)",
+          "vendor_risk": "Model provider dependency",
+          "reversibility": "reversible",
+          "team_capability_fit": "Medium"
+        }
+      ],
+      "build_vs_buy_decision": {
+        "decision": "build",
+        "rationale": "In-region data constraint and auditability favor an in-house hybrid classifier over SaaS triage tools that transit data out of region.",
+        "vendor_lock_in": "Low - provider-abstracted via internal gateway",
+        "exit_cost": "Low",
+        "data_boundary": "Ticket text stays in EU region; only category label returned"
+      },
+      "ai_solution_assessment": {
+        "business_value_justification": "LLM outperforms keyword rules on ambiguous, multi-intent tickets.",
+        "conventional_alternative_evaluated": true,
+        "confidence_threshold_required": "0.80 for auto-routing; below routes to human queue",
+        "hitl_requirement": "Refund/credit and account-closure categories always route to a human agent",
+        "explainability_requirement": "Show top category + confidence + matched signals to the agent",
+        "fallback_behavior": "Below-threshold or model-unavailable tickets fall back to the deterministic keyword router",
+        "eu_ai_act_risk_tier": "limited-risk",
+        "single_llm_vs_multi_agent": "Single LLM with tool access; multi-agent not justified for a single-step classification task"
+      },
+      "compliance_constraints": {
+        "regulations_in_scope": ["GDPR", "EU AI Act"],
+        "named_constraints": [
+          "GDPR: ticket text must not leave the EU region",
+          "EU AI Act (limited-risk): disclose AI-assisted triage to agents"
+        ],
+        "requires_architectural_enforcement": ["Region-pinned inference endpoint"],
+        "requires_operational_process": ["Agent-facing AI disclosure in the console"],
+        "compliance_blocker": false
+      },
+      "recommendation": {
+        "recommended_option": "LLM classifier with confidence-gated routing",
+        "rationale": "Meets accuracy goal within constraints; deterministic fallback preserves safety and reversibility.",
+        "key_risks": ["Model drift degrading classification accuracy over time"],
+        "conditions_that_change_recommendation": ["If in-region inference cost exceeds budget, revert to rule-based refresh"]
+      },
+      "stakeholder_summary": "We recommend an in-house AI triage assistant that keeps EU data in region, routes only high-confidence tickets automatically, and always sends refund and account decisions to a human. Deterministic rules remain as a safe fallback.",
+      "open_questions": [
+        { "question": "Which EU region endpoint has approved capacity?", "owner": "System Engineer", "blocks": "architecture" }
+      ],
+      "handoff": {
+        "to_technical_architect": "Capability gaps: real-time classification, confidence-gated routing. Enforce region-pinned inference boundary in the ADR.",
+        "to_business_analyst": "HITL categories (refund, credit, account closure) and the 0.80 confidence threshold must appear in acceptance criteria.",
+        "to_product_manager": "Trade-off: inference cost vs accuracy - go/no-go on the hybrid option."
+      }
+    }
+  ]
+}

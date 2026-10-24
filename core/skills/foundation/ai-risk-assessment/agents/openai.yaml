@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ai Risk Assessment"
+  short_description: "Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure/Manage) a..."
+  default_prompt: "Use $ai-risk-assessment to execute ai risk assessment tasks in this codebase."

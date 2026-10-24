@@ -1,0 +1,14 @@
+{
+  "case_id": "SEC-002",
+  "name": "Server-Side Request Forgery in Webhook Dispatcher (CWE-918)",
+  "work_type": "audit",
+  "role": "security-engineer",
+  "skill": "security-audit",
+  "user_request": "Audit the webhook notification dispatcher for SSRF risks when delivering events to user-specified endpoints.",
+  "target": "services/webhook/dispatcher.ts",
+  "context": {
+    "code_snippet": "export async function dispatchWebhook(targetUrl: string, payload: object) {\n  return await fetch(targetUrl, {\n    method: 'POST',\n    body: JSON.stringify(payload),\n    headers: { 'Content-Type': 'application/json' }\n  });\n}",
+    "auth_context": "tenant_admin",
+    "environment": "production"
+  }
+}

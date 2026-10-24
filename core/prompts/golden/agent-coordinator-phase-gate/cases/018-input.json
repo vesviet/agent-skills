@@ -1,0 +1,15 @@
+{
+  "work_type": "refactor",
+  "phase": "validation",
+  "user_request": "The multi-tenancy refactor of the authentication module is implemented. We need to validate nothing is broken across all three services.",
+  "context": {
+    "affected_services": [
+      "auth-service",
+      "user-service",
+      "api-gateway"
+    ],
+    "refactor_scope": "no new features — only restructuring for multi-tenancy support",
+    "test_status": "unit tests pass, integration tests in progress",
+    "pr_status": "open, awaiting validation"
+  }
+}

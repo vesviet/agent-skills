@@ -1,0 +1,158 @@
+{
+  "version": "1.0.0",
+  "type": "skill-index",
+  "root": ".",
+  "generated": "2026-09-25T08:00:00Z",
+  "skills": [
+    {
+      "name": "add-page-route",
+      "description": "Add or modify a page, screen, or route by following the repo's navigation, data-loading, layout, and auth patterns. Use when frontend work requires new route-level behavior or page wiring.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "run_dev_server",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "add-ui-component",
+      "description": "Add or evolve a reusable UI component by following the repo's design system, composition patterns, accessibility rules, and state boundaries. Use when building frontend components or shared presentation elements.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "run_dev_server",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "component-composition",
+      "description": "Architect scalable UI components using compound components, Radix-style asChild slot delegation, headless hook separation, and anti-boolean prop sprawl patterns. Use when designing reusable component libraries, refactoring prop-heavy components, or decoupling interaction state from presentation.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "run_dev_server",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "frontend-testing",
+      "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "implement-view-transitions",
+      "description": "Implement fluid, native-feeling page and state transitions using CSS View Transitions API, React 19 ViewTransition, Next.js App Router transitions, and shared element morphing without degrading Core Web Vitals. Use when adding route animations, shared element transitions, or layout morphs.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "run_dev_server",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "implement-webmcp",
+      "description": "Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when enabling in-browser AI agent interactions, DOM context sharing, or client-side action execution.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "mcp_call",
+        "run_tests",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "integrate-api-client",
+      "description": "Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handling, and state-management patterns. Use when a UI needs to read or mutate backend data.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "run_dev_server",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "setup-design-system",
+      "description": "Configure a scalable design system, styling framework, and component architecture for a frontend project. Use when initializing a new project, migrating to a unified CSS strategy, or setting up a component library (e.g., Tailwind, Storybook, Radix).",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "run_dev_server",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "setup-visual-regression",
+      "description": "Configure automated visual diffing for UI components and pages. Use when establishing pixel-level regression testing, cross-browser snapshot baselines, or CI visual gates.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "run_dev_server",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    }
+  ]
+}

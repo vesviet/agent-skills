@@ -1,0 +1,162 @@
+{
+  "id": "pack://agent-skills/core/roles/sre",
+  "contract_type": "agent-card",
+  "name": "sre",
+  "description": "keep systems reliable in production by balancing availability, operability, performance, and change safety. In 2026–2027, this embodies SOTA reliability engineering: Multi-Window Multi-Burn-Rate (MWMBR) error budget governance, automated release freeze gates, kernel-level eBPF socket and network flow telemetry without sidecar tax, OpenTelemetry v1.30+ GenAI semantic conventions (TTFT, token consumption, model drift), proactive chaos engineering (Chaos Mesh / Litmus steady-state verification), and interruptible automated runbooks with diagnostic decision trees.",
+  "url": "pack://agent-skills/core/roles/sre.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "debug-runtime-platform",
+      "name": "Debug Runtime Platform",
+      "description": "Investigate deployment, environment, runtime, and rollout issues that are not purely application-code bugs. Use when the service behaves differently across environments or when deployment health is unclear.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "incident-report.json"
+      ]
+    },
+    {
+      "id": "troubleshoot-service",
+      "name": "Troubleshoot Service",
+      "description": "Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the failing layer, validating assumptions, and confirming recovery. Use when a service fails, behaves unexpectedly, or differs across environments.",
+      "tags": [
+        "devops",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "incident-report.json"
+      ]
+    },
+    {
+      "id": "add-telemetry-instrumentation",
+      "name": "Add Telemetry Instrumentation",
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.tokens, gen_ai.response.model, TTFT), kernel-level eBPF socket telemetry, and MWMBR SLI recording rules.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "incident-report.json"
+      ]
+    },
+    {
+      "id": "performance-profiling",
+      "name": "Performance Profiling",
+      "description": "Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, and validating improvements with repo-local tools. Use when performance, capacity, or resource usage needs evidence-based diagnosis.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "incident-report.json"
+      ]
+    },
+    {
+      "id": "incident-report",
+      "name": "Incident Report",
+      "description": "Capture, structure, and communicate an incident from triage through resolution and prevention. Use when a production failure, degradation, or security event requires a formal timeline, impact assessment, root cause analysis, and follow-up action items.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "incident-report.json"
+      ]
+    },
+    {
+      "id": "orchestrate-chaos-experiment",
+      "name": "Orchestrate Chaos Experiment",
+      "description": "Plan, execute, and verify controlled chaos engineering experiments and game days. Use when validating system resilience, steady-state hypotheses, automated failover, blast radius containment, or disaster recovery under injected faults.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "incident-report.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "incident-report.json"
+  ],
+  "role_file": "core/roles/sre.md",
+  "policy_profile": "sre"
+}

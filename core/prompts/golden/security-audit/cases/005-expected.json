@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "CWE-798",
+    "hardcoded secret",
+    "environment variable",
+    "secret rotation",
+    "credential exposure"
+  ],
+  "must_not_include": [
+    "safe in repo",
+    "low severity"
+  ],
+  "required_tokens": [
+    "CWE-798",
+    "hardcoded secret",
+    "environment variable",
+    "secret rotation",
+    "credential exposure"
+  ],
+  "forbidden_tokens": [
+    "safe in repo",
+    "low severity"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/security-audit.json",
+    "contract_type": "security-audit"
+  }
+}

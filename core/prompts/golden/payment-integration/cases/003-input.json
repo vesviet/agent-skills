@@ -1,0 +1,13 @@
+{
+  "case_id": "PAY-003",
+  "name": "Webhook Replay Attack Guard with Tolerance Window (<300s)",
+  "work_type": "implementation",
+  "role": "ecommerce-engineer",
+  "skill": "integrate-payment-gateway",
+  "user_request": "Implement webhook timestamp validation middleware to reject replayed payment events older than 300 seconds.",
+  "target": "middleware/webhook_replay_guard.ts",
+  "context": {
+    "tolerance_seconds": 300,
+    "header": "Stripe-Signature timestamp (t=)"
+  }
+}

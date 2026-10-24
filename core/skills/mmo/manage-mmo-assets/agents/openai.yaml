@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Mmo Assets"
+  short_description: "Manage and share MMO assets (Business Managers, Via, Pixels/Datasets, Anti-De..."
+  default_prompt: "Use $manage-mmo-assets to execute manage mmo assets tasks in this codebase."

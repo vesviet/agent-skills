@@ -1,0 +1,12 @@
+{
+  "must_include": [
+    "reproduction status (confirmed / unconfirmed)",
+    "expected vs actual behavior",
+    "suspected scope or root-cause owner",
+    "impact radius or affected users"
+  ],
+  "must_not_include": [
+    "immediate code patch before triage is complete",
+    "push to production without approval"
+  ]
+}

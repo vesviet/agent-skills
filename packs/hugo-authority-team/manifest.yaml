@@ -1,0 +1,167 @@
+schema_version: "2"
+
+name: hugo-authority-team
+description: Content + SEO swarm pack for the Hugo twin sites. Enforces mandatory 100-round deep research before any article creation or upgrade, orchestrates a 4-role pipeline (@content-writer drafting, @content-manager & @technical-writer auditing editorial and technical depth, @seo-analyst auditing SEO/AEO/GEO authority), satisfies the Technical Article Standard 2027 (7 gates), maintains the 10 Anchor Pillar Hubs, and enforces the one-way learn-to-authority-blog authority flow.
+version: 5.0.0
+
+tags:
+  - core
+  - content
+  - seo
+  - geo-aeo
+  - ai-citation
+  - hub-and-spoke
+  - hugo
+  - masterclass
+  - deep-research
+  - multi-agent-swarm
+  - technical-article-2027
+author: user
+maintained_by: platform-team
+license: MIT
+homepage: https://github.com/example-org/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
+includes:
+  - core
+  - overlays/hugo-authority-content
+
+capabilities:
+  - content-strategy
+  - content-generation
+  - technical-article-2027-standard
+  - seo-authority-management
+  - seo
+  - geo-aeo
+  - ai-citation-tracking
+  - documentation
+  - technical-writing
+  - ai-search-optimization
+  - masterclass-batch-upgrade
+  - bilingual-twin-publishing
+  - deep-research-protocol
+  - multi-agent-content-swarm
+  - dual-audit-pipeline
+
+content_focus:
+  primary_roles:
+    - content-writer
+    - content-manager
+    - technical-writer
+    - seo-analyst
+  secondary_roles:
+    - reviewer
+    - task-planner
+    - agent-coordinator
+  drafting_skills:
+    - write-hugo-twin-content
+    - write-article
+    - write-tech-radar
+    - write-documentation
+  audit_skills:
+    - audit-technical-article
+    - optimize-seo
+    - audit-content
+    - review-code
+  standards:
+    - "hugo-authority-content rules: content-brand, technical-article-2027, seo-authority, link-topology"
+  workflows:
+    - article-creation-and-upgrade-lifecycle
+    - masterclass-batch-upgrade
+    - series-sync-upgrade
+    - content-audit-refresh
+    - affiliate-publishing
+    - publish-series
+    - seo-content-lifecycle
+    - content-publishing
+
+deep_research_protocol:
+  rounds: 100
+  mandatory_before_action: true
+  clusters: 5
+  rounds_per_cluster: 20
+  cluster_breakdown:
+    cluster_1: "Architecture Roots, Whitepapers & Historical Context (Rounds 01-20)"
+    cluster_2: "Core Algorithms, Distributed Models & Complexity Analysis (Rounds 21-40)"
+    cluster_3: "Quantitative Benchmarks, Hardware Conditions & Latency P95/P99 (Rounds 41-60)"
+    cluster_4: "Production Outages, Edge Cases & Failure Mode Retrospectives (Rounds 61-80)"
+    cluster_5: "Trade-off Matrices, Alternatives Rejected & SOTA 2026-2027 Standards (Rounds 81-100)"
+  output_dossier:
+    json: "reports/research/{slug}-dossier.json"
+    markdown: "reports/research/{slug}-research-notes.md"
+
+swarm_pipeline:
+  phase_1: "Deep Research (100 rounds across 5 clusters) -> research dossier"
+  phase_2: "Drafting / Upgrading (@content-writer) -> 7 Technical Content Gates"
+  phase_3: "Dual Audit: Editorial (@content-manager) + Technical Validity & Code (@technical-writer)"
+  phase_4: "SEO & Authority Audit (@seo-analyst) -> Answer-First, One-Way links, Schema"
+  phase_5: "Reviewer sign-off & Index synchronization"
+
+corpus:
+  snapshot: "2026-10-05"
+  authority_blog:
+    total_files: 9646
+    content_files: 380
+    posts: 66
+    series: 251
+    series_dirs: 25
+    series_files: 251
+    radar_files: 40
+    radar_editions: 32
+    categories: 16
+    reports: 358
+    pillar_hubs: 10
+    total_words: 1054728
+  learn:
+    total_files: 7534
+    content_files: 440
+    posts: 86
+    series: 251
+    series_dirs: 25
+    series_files: 251
+    radar_files: 76
+    radar_editions: 68
+    docs: 3
+    categories: 15
+    reports: 336
+    masterclass_batches_completed: 6
+    posts_upgraded: 75
+    total_words: 1450398
+  indexes:
+    - learn/plan/CONTENT_INDEX.md
+    - learn/reports/CONTENT_INDEX.md
+    - authority-blog/reports/CONTENT_INDEX.md
+
+data_classification: internal
+
+activation:
+  strategy: marker_first
+  markers:
+    - hugo.toml
+    - config.toml
+    - config/_default/hugo.toml
+    - authority-blog/
+    - learn/
+  glob_patterns:
+    - "authority-blog/content/**/*.md"
+    - "learn/content/**/*.md"
+    - "content/**/*.md"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - publish_to_production
+      - modify_secrets
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

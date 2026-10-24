@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "type": "skill-index",
+  "root": ".",
+  "generated": "2026-09-25T07:20:00Z",
+  "skills": [
+    {
+      "name": "analyze-business-requirements",
+      "description": "Analyze and write business requirements by making actors, business rules, state transitions, exceptions, preserved behavior, and downstream process impact explicit. Use when a feature, policy change, or bug fix needs implementation-ready requirements and testable acceptance criteria.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "analyze-data",
+      "description": "Explore analytical datasets using DuckDB/Polars, query canonical Semantic Metric Catalogs (dbt MetricFlow, Cube.js, Apache Ossie) to eliminate Text-to-SQL hallucinations, detect statistical distribution drift, track agent query costs as FinOps line item, and deliver quantitatively verified insights with explicit fact/interpretation separation. Use when answering business questions from data without owning production pipeline infrastructure.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "query_db",
+        "read_database",
+        "run_tests",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "meeting-review",
+      "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    }
+  ]
+}

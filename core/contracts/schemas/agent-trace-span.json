@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent-trace-span",
+  "title": "Agent Trace Span",
+  "description": "Lightweight observability span for agent sessions (OpenTelemetry GenAI-aligned fields).",
+  "type": "object",
+  "properties": {
+    "trace_id": {
+      "type": "string"
+    },
+    "span_id": {
+      "type": "string"
+    },
+    "parent_span_id": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "operation": {
+      "type": "string"
+    },
+    "start_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "end_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "error",
+        "unset"
+      ]
+    },
+    "span_kind": {
+      "type": "string",
+      "enum": [
+        "INTERNAL",
+        "SERVER",
+        "CLIENT",
+        "PRODUCER",
+        "CONSUMER"
+      ]
+    },
+    "resource": {
+      "type": "object",
+      "properties": {
+        "service.name": {
+          "type": "string"
+        },
+        "service.version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string"
+        },
+        "input_tokens": {
+          "type": "integer"
+        },
+        "output_tokens": {
+          "type": "integer"
+        },
+        "reasoning_tokens": {
+          "type": "integer"
+        },
+        "cache_read_tokens": {
+          "type": "integer"
+        },
+        "cache_creation_tokens": {
+          "type": "integer"
+        },
+        "finish_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cost_usd": {
+          "type": "number"
+        },
+        "error_type": {
+          "type": "string"
+        },
+        "task_id": {
+          "type": "string"
+        },
+        "tool_name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "trace_id",
+    "span_id",
+    "role",
+    "operation",
+    "status"
+  ],
+  "examples": [
+    {
+      "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736",
+      "span_id": "00f067aa0ba902b7",
+      "parent_span_id": "b3d19b6d3a9e53fb",
+      "name": "order.assignment.cod_store_routing",
+      "start_time": "2026-06-12T10:15:00.000Z",
+      "end_time": "2026-06-12T10:15:00.340Z",
+      "duration_ms": 340,
+      "status": "ok",
+      "attributes": {
+        "order_id": "78432",
+        "store_id": "42",
+        "courier_type": "store",
+        "is_fallback": false
+      },
+      "role": "agent-coordinator",
+      "operation": "validate"
+    }
+  ]
+}

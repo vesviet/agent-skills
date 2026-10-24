@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wrangler"
+  short_description: "Deploys, develops, and manages Cloudflare Workers and their bindings — KV, R2..."
+  default_prompt: "Use $wrangler to execute wrangler tasks in this codebase."

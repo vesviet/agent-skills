@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "crypto.timingSafeEqual",
+    "compare_digest",
+    "timing attack",
+    "constant-time"
+  ],
+  "must_not_include": [
+    "=== signature",
+    "== signature",
+    "string comparison"
+  ],
+  "required_tokens": [
+    "crypto.timingSafeEqual",
+    "compare_digest",
+    "timing attack",
+    "constant-time"
+  ],
+  "forbidden_tokens": [
+    "=== signature",
+    "== signature",
+    "string comparison"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

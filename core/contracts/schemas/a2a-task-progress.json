@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a2a-task-progress",
+  "title": "A2A Task Progress Event",
+  "description": "Server-Sent Event payload for streaming task updates (A2A Send Streaming Message / Antigravity agent.stream).",
+  "type": "object",
+  "properties": {
+    "event": {
+      "type": "string",
+      "enum": [
+        "task.created",
+        "task.status",
+        "task.message",
+        "task.artifact",
+        "task.completed",
+        "task.failed",
+        "task.canceled"
+      ]
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "submitted",
+        "working",
+        "input-required",
+        "completed",
+        "failed",
+        "canceled"
+      ]
+    },
+    "progress_percent": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "message": {
+      "type": "object",
+      "description": "a2a-message.json payload when event is task.message.",
+      "additionalProperties": true
+    },
+    "artifact_partial": {
+      "type": "object",
+      "description": "Incremental artifact fragment when event is task.artifact.",
+      "additionalProperties": true
+    },
+    "trace_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "event",
+    "task_id",
+    "timestamp"
+  ],
+  "examples": [
+    {
+      "task_id": "task-cod-store-routing-slice-01",
+      "state": "working",
+      "progress_percent": 60,
+      "message": {
+        "message_id": "msg-002",
+        "role": "worker",
+        "parts": [
+          {
+            "text": "Modified NewLogicAutoAssign.php; writing unit tests"
+          }
+        ]
+      },
+      "event": "task.status",
+      "timestamp": "2026-06-12T11:30:00Z"
+    }
+  ]
+}

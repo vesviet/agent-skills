@@ -1,0 +1,13 @@
+{
+  "case_id": "A2A-007",
+  "name": "Phase Gate Verification Prior to Downstream Phase Activation",
+  "work_type": "coordination",
+  "role": "agent-coordinator",
+  "skill": "agent-a2a-protocol",
+  "user_request": "Evaluate Phase 1 exit criteria before activating Phase 2 implementation.",
+  "target": "gates/phase_gate_evaluator.ts",
+  "context": {
+    "phase_1_exit": "validation-result.json clean, zero test regressions",
+    "phase_2": "Deployment and cutover"
+  }
+}

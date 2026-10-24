@@ -1,0 +1,4 @@
+interface:
+  display_name: "Develop Mobile App"
+  short_description: "Architect high-performance mobile applications using React Native New Archite..."
+  default_prompt: "Use $develop-mobile-app to execute develop mobile app tasks in this codebase."

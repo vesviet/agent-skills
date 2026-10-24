@@ -1,0 +1,4 @@
+interface:
+  display_name: "Analyze Data"
+  short_description: "Analyze data and produce insight reports"
+  default_prompt: "Use $analyze-data to analyze this dataset, query, or metric and produce structured findings and recommendations."

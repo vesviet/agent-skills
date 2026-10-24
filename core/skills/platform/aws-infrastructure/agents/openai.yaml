@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aws Infrastructure"
+  short_description: "Provision, configure, and optimize AWS managed services following IaC-first d..."
+  default_prompt: "Use $aws-infrastructure to execute aws infrastructure tasks in this codebase."

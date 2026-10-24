@@ -1,0 +1,13 @@
+{
+  "case_id": "REF-010",
+  "name": "Hot Path Performance Refactoring with Zero Latency Regression",
+  "work_type": "refactoring",
+  "role": "technical-lead",
+  "skill": "review-code",
+  "user_request": "Refactor in-memory cache buffer to reduce GC pressure and memory allocations without behavioral regression.",
+  "target": "services/cache/lru_buffer.ts",
+  "context": {
+    "throughput": "50,000 ops/sec",
+    "bottleneck": "Temporary object allocations causing frequent Gen0 GC pauses"
+  }
+}

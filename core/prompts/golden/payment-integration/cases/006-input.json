@@ -1,0 +1,13 @@
+{
+  "case_id": "PAY-006",
+  "name": "Zero Cardholder Data (Zero-CDE) Architecture Verification",
+  "work_type": "implementation",
+  "role": "ecommerce-engineer",
+  "skill": "integrate-payment-gateway",
+  "user_request": "Implement frontend checkout tokenization ensuring customer card data never touches our application servers.",
+  "target": "services/checkout/payment_token.ts",
+  "context": {
+    "compliance": "PCI-DSS v4.1.0 SAQ-A Zero-CDE Scope",
+    "sdk": "Stripe Elements / Payment Element"
+  }
+}

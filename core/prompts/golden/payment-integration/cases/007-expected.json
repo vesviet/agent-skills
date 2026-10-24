@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "idempotencyKey",
+    "UUID",
+    "double-billing prevention",
+    "retry-safe"
+  ],
+  "must_not_include": [
+    "charge without idempotency key",
+    "duplicate charge"
+  ],
+  "required_tokens": [
+    "idempotencyKey",
+    "UUID",
+    "double-billing prevention",
+    "retry-safe"
+  ],
+  "forbidden_tokens": [
+    "charge without idempotency key",
+    "duplicate charge"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

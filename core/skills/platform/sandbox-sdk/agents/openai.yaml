@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sandbox Sdk"
+  short_description: "Builds secure, isolated code execution environments on Cloudflare Workers usi..."
+  default_prompt: "Use $sandbox-sdk to execute sandbox sdk tasks in this codebase."

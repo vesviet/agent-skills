@@ -1,0 +1,13 @@
+{
+  "case_id": "PAY-005",
+  "name": "Queue-First Asynchronous Ingestion (<500ms Webhook SLA)",
+  "work_type": "implementation",
+  "role": "ecommerce-engineer",
+  "skill": "integrate-payment-gateway",
+  "user_request": "Implement webhook endpoint that immediately responds 200 OK within 500ms and offloads fulfillment to a message queue.",
+  "target": "api/webhooks/ingest.ts",
+  "context": {
+    "sla_ms": 500,
+    "queue": "BullMQ / SQS / Redis Queue"
+  }
+}

@@ -1,0 +1,117 @@
+schema_version: "2"
+
+name: hvac-content-team
+display_name: HVAC Content & Engineering Team
+description: High-authority content, SEO engineering, and Cloudflare Pages pack for HVAC Authority Portal (https://hvac-portal.example.com - HVAC knowledge & empirical review portal). Composes portable core with overlays/astro-cloudflare, overlays/hvac-authority-content, and overlays/seo-publishing. Enforces TCVN 7830:2021 CSPF standards, ASHRAE 55-2023 comfort metrics, empirical hardware power/acoustic testing (Hioki 3334 & RION NL-52), 7-category strict Silo link topology, 100% AnswerFirst GEO/AEO rigor, and a 4-role multi-agent delivery swarm.
+version: 5.0.0
+
+tags:
+  - core
+  - content
+  - seo
+  - hvac
+  - astro
+  - cloudflare
+  - geo-aeo
+  - vietnam
+  - engineering
+author: user
+maintained_by: platform-team
+license: MIT
+homepage: https://github.com/example-org/agent-skills
+
+compatibility:
+  min_pack_version: "4.0.0"
+  max_pack_version: "5.x"
+  requires_schema: "2"
+
+includes:
+  - core
+  - overlays/astro-cloudflare
+  - overlays/hvac-authority-content
+  - overlays/seo-publishing
+
+capabilities:
+  - content-strategy
+  - content-generation
+  - seo
+  - geo-aeo
+  - hvac-engineering
+  - product-catalog
+  - publishing-workflow
+  - empirical-content-upgrade
+  - silo-internal-linking
+
+content_focus:
+  primary_roles:
+    - content-writer
+    - seo-analyst
+    - task-planner
+    - content-manager
+  secondary_roles:
+    - technical-writer
+    - cloudflare-engineer
+    - frontend-developer
+    - reviewer
+  drafting_skills:
+    - write-hvac-authority-content
+    - write-article
+  audit_skills:
+    - optimize-seo
+    - audit-content
+    - audit-technical-seo
+    - implement-schema-markup
+  standards:
+    - "hvac-authority-content rules: content-schema, hvac-engineering-standards, silo-linking"
+    - "seo-publishing overlay: 7-day sprint boards, GEO/AEO AI citation tracking"
+  workflows:
+    - publish-hvac-content
+    - empirical-hvac-upgrade-lifecycle
+    - seo-content-lifecycle
+    - content-publishing
+    - seo-keyword-brief
+
+corpus:
+  snapshot: "2026-09-19"
+  hvac_portal:
+    posts: 300
+    products: 72
+    categories: 7
+    words: 1492749
+    author_personas: 14
+    answerfirst_coverage: "300/300"
+    anti_slop_coverage: "300/300"
+    indexes:
+      - hvac-portal/content_audit_master_index_2026.md
+      - hvac-portal/MASTER_AUDIT_REPORT.md
+      - hvac-portal/seo_audit_report.md
+      - hvac-portal/plan/content-inventory-index-2027.md
+
+data_classification: internal
+
+activation:
+  strategy: marker_first
+  markers:
+    - hvac-portal/
+    - src/data/product/
+    - src/data/post/
+  glob_patterns:
+    - "hvac-portal/src/data/**/*.md"
+    - "hvac-portal/src/data/**/*.mdx"
+    - "src/data/product/**/*.md"
+    - "src/data/post/**/*.md"
+
+governance:
+  eu_ai_act_tier: minimal_risk
+  audit_logging: required
+  audit_format: otel-json
+  retention_days: 90
+  secret_handling: env_only
+  human_oversight:
+    required: true
+    gate_actions:
+      - publish_to_production
+      - modify_secrets
+  data_policy: core/policies/data-classification.yaml
+  action_policy: core/policies/action-boundaries.yaml
+  review_cadence: quarterly

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Combinatorial Testing"
+  short_description: "Design pairwise and n-way combinatorial test suites using orthogonal arrays a..."
+  default_prompt: "Use $combinatorial-testing to execute combinatorial testing tasks in this codebase."

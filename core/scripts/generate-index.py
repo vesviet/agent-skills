@@ -1,0 +1,957 @@
+#!/usr/bin/env python3
+"""Generate complete INDEX.md and role-skill-index.json for agent-skills.
+
+Indexes every role, skill, workflow, and schema found on disk (counts are
+computed, never hard-coded) with alias mapping for seamless @role @skill
+invocation in Antigravity.
+
+Run with --check to verify that the generated artifacts are up to date
+without writing; exits 1 when any artifact is stale.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent.parent
+CORE_ROOT = ROOT / "core"
+ROLES_DIR = CORE_ROOT / "roles"
+SKILLS_DIR = CORE_ROOT / "skills"
+WORKFLOWS_DIR = CORE_ROOT / "workflows"
+SCHEMAS_DIR = CORE_ROOT / "contracts" / "schemas"
+REGISTRY_DIR = CORE_ROOT / "a2a" / ".well-known"
+VERSION_PATH = ROOT / "VERSION"
+
+
+def pack_version() -> str:
+    return VERSION_PATH.read_text(encoding="utf-8").strip()
+
+# Comprehensive Role Aliases
+ROLE_ALIASES = {
+    # Content & Writing
+    "writer": "content-writer",
+    "copywriter": "content-writer",
+    "author": "content-writer",
+    "article-writer": "content-writer",
+    "blog-writer": "content-writer",
+    "tech-writer": "technical-writer",
+    "doc-writer": "technical-writer",
+    "docs": "technical-writer",
+    "documentation-writer": "technical-writer",
+    
+    # Engineering / Development
+    "backend": "backend-developer",
+    "be": "backend-developer",
+    "backend-dev": "backend-developer",
+    "frontend": "frontend-developer",
+    "fe": "frontend-developer",
+    "frontend-dev": "frontend-developer",
+    "ui-developer": "frontend-developer",
+    "mobile": "mobile-engineer",
+    "flutter": "mobile-engineer",
+    "react-native": "mobile-engineer",
+    "ecommerce": "ecommerce-engineer",
+    "ecom": "ecommerce-engineer",
+    "3d": "3d-graphics-engineer",
+    "r3f": "3d-graphics-engineer",
+    "threejs": "3d-graphics-engineer",
+    "game-dev": "game-developer",
+    "gamedev": "game-developer",
+    "game": "game-developer",
+    "game-developer": "game-developer",
+    "game-engineer": "game-developer",
+    "gameplay-engineer": "game-developer",
+    
+    # DevOps, Cloud & Platform
+    "devops": "devops-engineer",
+    "infra": "devops-engineer",
+    "infrastructure": "devops-engineer",
+    "sre": "sre",
+    "reliability": "sre",
+    "sysadmin": "system-engineer",
+    "system": "system-engineer",
+    "systems-engineer": "system-engineer",
+    "cloudflare": "cloudflare-engineer",
+    "cf": "cloudflare-engineer",
+    "workers": "cloudflare-engineer",
+    "aws": "aws-engineer",
+    "cloud": "aws-engineer",
+    
+    # AI & Agent Swarm
+    "ai": "ai-systems-engineer",
+    "ml": "ai-systems-engineer",
+    "llm": "ai-systems-engineer",
+    "coordinator": "agent-coordinator",
+    "swarm-coordinator": "agent-coordinator",
+    "discovery": "agent-discovery-engineer",
+    "agent-discovery": "agent-discovery-engineer",
+    "prompt-engineer": "prompt-engineer",
+    "prompt": "prompt-engineer",
+    "promptops": "prompt-engineer",
+    
+    # Design & Product
+    "designer": "ui-ux-designer",
+    "ui": "ui-ux-designer",
+    "ux": "ui-ux-designer",
+    "ui-ux": "ui-ux-designer",
+    "uiux": "ui-ux-designer",
+    "pm": "product-manager",
+    "prod-mgr": "product-manager",
+    "product-owner": "product-manager",
+    "po": "product-manager",
+    "pjm": "project-manager",
+    "proj-mgr": "project-manager",
+    "scrum-master": "project-manager",
+    "planner": "task-planner",
+    "task-scheduler": "task-planner",
+    
+    # Architecture & Leadership
+    "architect": "solution-architect",
+    "solution-arch": "solution-architect",
+    "solutions-architect": "solution-architect",
+    "tech-architect": "technical-architect",
+    "enterprise-architect": "technical-architect",
+    "lead": "technical-lead",
+    "tech-lead": "technical-lead",
+    "engineering-lead": "technical-lead",
+    
+    # QA & Security & Review
+    "qa": "qa-engineer",
+    "tester": "qa-engineer",
+    "test-engineer": "qa-engineer",
+    "sdet": "sdet",
+    "test-automation": "sdet",
+    "automation-engineer": "sdet",
+    "security": "security-engineer",
+    "sec": "security-engineer",
+    "appsec": "security-engineer",
+    "secops": "security-engineer",
+    "reviewer": "reviewer",
+    "code-reviewer": "reviewer",
+    "pr-reviewer": "reviewer",
+    
+    # Data & Analytics & SEO
+    "da": "data-analyst",
+    "data-analytics": "data-analyst",
+    "de": "data-engineer",
+    "data-eng": "data-engineer",
+    "ba": "business-analyst",
+    "business": "business-analyst",
+    "seo": "seo-analyst",
+    "seo-specialist": "seo-analyst",
+    "seo-expert": "seo-analyst",
+    "research": "researcher",
+    "deep-research": "researcher",
+    
+    # Business & Domain
+    "accounting": "vietnam-accounting-specialist",
+    "accountant": "vietnam-accounting-specialist",
+    "ke-toan": "vietnam-accounting-specialist",
+    "vietnam-accounting": "vietnam-accounting-specialist",
+    "vietnam-legal-counsel": "vietnam-legal-counsel",
+    "lawyer": "vietnam-legal-counsel",
+    "luat-su": "vietnam-legal-counsel",
+    "legal": "vietnam-legal-counsel",
+    "legal-counsel": "vietnam-legal-counsel",
+    "mmo": "mmo-engineer",
+    "affiliate": "mmo-engineer",
+    "growth": "mmo-engineer",
+    "growth-lead": "mmo-engineer",
+    "growth-engineer": "mmo-engineer",
+    "media-buyer": "mmo-engineer",
+    "affiliate-marketer": "mmo-engineer",
+    "teacher": "teacher",
+    "instructor": "teacher",
+    "educator": "teacher",
+    "mentor": "teacher"
+}
+
+# Skill Aliases and Composite Mappings
+SKILL_ALIASES = {
+    # Composite combinations
+    "research_and_writing": ["conduct-research", "write-article"],
+    "research-and-writing": ["conduct-research", "write-article"],
+    "research_writing": ["conduct-research", "write-article"],
+    
+    # Common Short Names / Snake Case
+    "research": ["conduct-research"],
+    "conduct_research": ["conduct-research"],
+    "deep_research": ["conduct-research"],
+    "writing": ["write-article"],
+    "write_article": ["write-article"],
+    "write_article_vietnamese": ["write-article"],
+    "docs": ["write-documentation"],
+    "documentation": ["write-documentation"],
+    "write_doc": ["write-documentation"],
+    "write_docs": ["write-documentation"],
+    "write_documentation": ["write-documentation"],
+    "tech_radar": ["write-tech-radar"],
+    "write_tech_radar": ["write-tech-radar"],
+    "seo": ["optimize-seo"],
+    "optimize_seo": ["optimize-seo"],
+    "seo_optimization": ["optimize-seo"],
+    "audit_content": ["audit-content"],
+    "content_audit": ["audit-content"],
+    "repurpose_content": ["repurpose-content"],
+
+    # Technical SEO & Schema Markup
+    "technical_seo": ["audit-technical-seo"],
+    "technical_seo_audit": ["audit-technical-seo"],
+    "audit_technical_seo": ["audit-technical-seo"],
+    "audit-technical-seo": ["audit-technical-seo"],
+    "crawlability": ["audit-technical-seo"],
+    "schema_markup": ["implement-schema-markup"],
+    "implement_schema_markup": ["implement-schema-markup"],
+    "implement-schema-markup": ["implement-schema-markup"],
+    "schema_graph": ["implement-schema-markup"],
+    "structured_data": ["implement-schema-markup"],
+    "json_ld": ["implement-schema-markup"],
+
+    # Content Strategy & Copywriting
+    "copywriting": ["write-copy"],
+    "write_copy": ["write-copy"],
+    "write-copy": ["write-copy"],
+    "direct_response": ["write-copy"],
+    "marketing_copy": ["write-copy"],
+    "humanizer": ["write-copy"],
+    "content_strategy": ["design-content-strategy"],
+    "design_content_strategy": ["design-content-strategy"],
+    "design-content-strategy": ["design-content-strategy"],
+    "pillar_cluster": ["design-content-strategy"],
+    "editorial_calendar": ["design-content-strategy"],
+    
+    # Backend & API
+    "api": ["add-api-endpoint"],
+    "add_api_endpoint": ["add-api-endpoint"],
+    "create_api": ["add-api-endpoint"],
+    "new_endpoint": ["add-api-endpoint"],
+    "event_handler": ["add-event-handler"],
+    "add_event_handler": ["add-event-handler"],
+    "service_client": ["add-service-client"],
+    "add_service_client": ["add-service-client"],
+    "structured_outputs": ["implement-structured-outputs"],
+    "implement_structured_outputs": ["implement-structured-outputs"],
+    "mcp_server": ["build-mcp-server"],
+    "build_mcp_server": ["build-mcp-server"],
+    "scaffold_service": ["scaffold-new-service"],
+    "scaffold_new_service": ["scaffold-new-service"],
+    
+    # Database & Migrations
+    "migration": ["create-migration"],
+    "create_migration": ["create-migration"],
+    "database": ["database-maintenance"],
+    "db_maintenance": ["database-maintenance"],
+    "data_pipeline": ["build-data-pipeline"],
+    "build_data_pipeline": ["build-data-pipeline"],
+    "postgres": ["optimize-postgres"],
+    "postgresql": ["optimize-postgres"],
+    "optimize_postgres": ["optimize-postgres"],
+    "rls": ["optimize-postgres"],
+    "connection_pooling": ["optimize-postgres"],
+    
+    # OLAP Database Optimization
+    "optimize-olap-database": ["optimize-olap-database"],
+    "optimize_olap_database": ["optimize-olap-database"],
+    "olap_optimization": ["optimize-olap-database"],
+    "clickhouse_tuning": ["optimize-olap-database"],
+    "columnar_database_optimization": ["optimize-olap-database"],
+    "olap_tuning": ["optimize-olap-database"],
+    # Analytical Engine Querying
+    "query-analytical-engine": ["query-analytical-engine"],
+    "query_analytical_engine": ["query-analytical-engine"],
+    "analytical_sql": ["query-analytical-engine"],
+    "chdb_query": ["query-analytical-engine"],
+    "embedded_sql": ["query-analytical-engine"],
+    "cross_source_query": ["query-analytical-engine"],
+    
+    # Authentication & Authorization
+    "auth": ["implement-auth"],
+    "authentication": ["implement-auth"],
+    "implement_auth": ["implement-auth"],
+    "oauth": ["implement-auth"],
+    "session_management": ["implement-auth"],
+    
+    # Frontend & UI
+    "ui_component": ["add-ui-component"],
+    "add_ui_component": ["add-ui-component"],
+    "page_route": ["add-page-route"],
+    "add_page_route": ["add-page-route"],
+    "design_system": ["setup-design-system"],
+    "setup_design_system": ["setup-design-system"],
+    "visual_regression": ["setup-visual-regression"],
+    "setup_visual_regression": ["setup-visual-regression"],
+    "frontend_testing": ["frontend-testing"],
+    "composition": ["component-composition"],
+    "component_composition": ["component-composition"],
+    "component-composition": ["component-composition"],
+    "compound_components": ["component-composition"],
+    "compound-components": ["component-composition"],
+    "view_transitions": ["implement-view-transitions"],
+    "view-transitions": ["implement-view-transitions"],
+    "implement_view_transitions": ["implement-view-transitions"],
+    "implement-view-transitions": ["implement-view-transitions"],
+    "taste": ["setup-design-system"],
+    "shadcn": ["component-composition"],
+    "anti_slop": ["setup-design-system", "component-composition"],
+    "anti-slop": ["setup-design-system", "component-composition"],
+    "motion_physics": ["implement-view-transitions"],
+    "motion-physics": ["implement-view-transitions"],
+
+    # Game Development (20-Skill Standardized Taxonomy across 5 Pillars)
+    # Pillar 1: Core Architecture & Engine Lifecycles
+    "game_engine": ["integrate-game-engine"],
+    "game-engine": ["integrate-game-engine"],
+    "integrate_game_engine": ["integrate-game-engine"],
+    "integrate-game-engine": ["integrate-game-engine"],
+    "gameplay": ["develop-gameplay-systems"],
+    "gameplay_systems": ["develop-gameplay-systems"],
+    "gameplay-systems": ["develop-gameplay-systems"],
+    "develop_gameplay_systems": ["develop-gameplay-systems"],
+    "develop-gameplay-systems": ["develop-gameplay-systems"],
+    "ecs": ["architect-ecs-systems"],
+    "ecs_systems": ["architect-ecs-systems"],
+    "ecs-systems": ["architect-ecs-systems"],
+    "architect_ecs_systems": ["architect-ecs-systems"],
+    "architect-ecs-systems": ["architect-ecs-systems"],
+    "scene_lifecycle": ["manage-scene-lifecycle"],
+    "scene-lifecycle": ["manage-scene-lifecycle"],
+    "manage_scene_lifecycle": ["manage-scene-lifecycle"],
+    "manage-scene-lifecycle": ["manage-scene-lifecycle"],
+    "save_persistence": ["implement-save-persistence"],
+    "save-persistence": ["implement-save-persistence"],
+    "save_system": ["implement-save-persistence"],
+    "save-system": ["implement-save-persistence"],
+    "implement_save_persistence": ["implement-save-persistence"],
+    "implement-save-persistence": ["implement-save-persistence"],
+
+    # Pillar 2: Game Feel, Physics & Interaction
+    "game_feel": ["tune-game-feel"],
+    "game-feel": ["tune-game-feel"],
+    "tune_game_feel": ["tune-game-feel"],
+    "tune-game-feel": ["tune-game-feel"],
+    "juice": ["tune-game-feel"],
+    "physics": ["configure-physics-collision"],
+    "physics_collision": ["configure-physics-collision"],
+    "physics-collision": ["configure-physics-collision"],
+    "configure_physics_collision": ["configure-physics-collision"],
+    "configure-physics-collision": ["configure-physics-collision"],
+    "input_actions": ["abstract-input-actions"],
+    "input-actions": ["abstract-input-actions"],
+    "game_input": ["abstract-input-actions"],
+    "game-input": ["abstract-input-actions"],
+    "abstract_input_actions": ["abstract-input-actions"],
+    "abstract-input-actions": ["abstract-input-actions"],
+    "camera_systems": ["direct-camera-systems"],
+    "camera-systems": ["direct-camera-systems"],
+    "game_camera": ["direct-camera-systems"],
+    "game-camera": ["direct-camera-systems"],
+    "direct_camera_systems": ["direct-camera-systems"],
+    "direct-camera-systems": ["direct-camera-systems"],
+
+    # Pillar 3: AI, Gameplay Mechanics & UI/UX
+    "game_ai": ["author-game-ai"],
+    "game-ai": ["author-game-ai"],
+    "author_game_ai": ["author-game-ai"],
+    "author-game-ai": ["author-game-ai"],
+    "procgen": ["design-procedural-generation"],
+    "procedural_generation": ["design-procedural-generation"],
+    "procedural-generation": ["design-procedural-generation"],
+    "design_procedural_generation": ["design-procedural-generation"],
+    "design-procedural-generation": ["design-procedural-generation"],
+    "game_ui": ["build-game-ui-ux"],
+    "game-ui": ["build-game-ui-ux"],
+    "game_ui_ux": ["build-game-ui-ux"],
+    "game-ui-ux": ["build-game-ui-ux"],
+    "build_game_ui_ux": ["build-game-ui-ux"],
+    "build-game-ui-ux": ["build-game-ui-ux"],
+    "dialogue": ["integrate-dialogue-narrative"],
+    "narrative": ["integrate-dialogue-narrative"],
+    "dialogue_system": ["integrate-dialogue-narrative"],
+    "dialogue-system": ["integrate-dialogue-narrative"],
+    "integrate_dialogue_narrative": ["integrate-dialogue-narrative"],
+    "integrate-dialogue-narrative": ["integrate-dialogue-narrative"],
+
+    # Pillar 4: Graphics, Shaders & Technical Art
+    "game_shaders": ["program-game-shaders"],
+    "game-shaders": ["program-game-shaders"],
+    "program_game_shaders": ["program-game-shaders"],
+    "program-game-shaders": ["program-game-shaders"],
+    "blender_rigs": ["inspect-blender-rigs-motion"],
+    "blender-rigs": ["inspect-blender-rigs-motion"],
+    "inspect_blender_rigs_motion": ["inspect-blender-rigs-motion"],
+    "inspect-blender-rigs-motion": ["inspect-blender-rigs-motion"],
+    "webgl_threejs": ["render-webgl-threejs"],
+    "webgl-threejs": ["render-webgl-threejs"],
+    "render_webgl_threejs": ["render-webgl-threejs"],
+    "render-webgl-threejs": ["render-webgl-threejs"],
+    "asset_pipeline": ["generate-game-assets-pipeline"],
+    "asset-pipeline": ["generate-game-assets-pipeline"],
+    "generate_game_assets_pipeline": ["generate-game-assets-pipeline"],
+    "generate-game-assets-pipeline": ["generate-game-assets-pipeline"],
+
+    # Pillar 5: Audio, Performance & Publishing
+    "game_audio": ["mix-dynamic-game-audio"],
+    "game-audio": ["mix-dynamic-game-audio"],
+    "mix_dynamic_game_audio": ["mix-dynamic-game-audio"],
+    "mix-dynamic-game-audio": ["mix-dynamic-game-audio"],
+    "game_perf": ["profile-game-performance"],
+    "game-perf": ["profile-game-performance"],
+    "profile_game_performance": ["profile-game-performance"],
+    "profile-game-performance": ["profile-game-performance"],
+    "game_publishing": ["automate-game-publishing"],
+    "game-publishing": ["automate-game-publishing"],
+    "automate_game_publishing": ["automate-game-publishing"],
+    "automate-game-publishing": ["automate-game-publishing"],
+
+    # Business Analysis & Requirements Engineering
+    "ba": ["analyze-business-requirements", "elicit-requirements"],
+    "use_case": ["write-use-cases"],
+    "use-case": ["write-use-cases"],
+    "babok": ["elicit-requirements", "trace-requirements-impact"],
+    "requirements": ["analyze-business-requirements", "elicit-requirements"],
+    "rtm": ["trace-requirements-impact"],
+
+    # Product Management & Strategy
+    "pm": ["define-product-strategy", "prioritize-roadmap"],
+    "product_strategy": ["define-product-strategy"],
+    "product-strategy": ["define-product-strategy"],
+    "strategy": ["define-product-strategy"],
+    "pr_faq": ["define-product-strategy"],
+    "pr-faq": ["define-product-strategy"],
+    "working_backwards": ["define-product-strategy"],
+    "working-backwards": ["define-product-strategy"],
+    "7powers": ["define-product-strategy"],
+    "7_powers": ["define-product-strategy"],
+    "mom_test": ["define-product-strategy"],
+    "mom-test": ["define-product-strategy"],
+    "ost": ["define-product-strategy"],
+    "roadmap": ["prioritize-roadmap"],
+    "prioritize_roadmap": ["prioritize-roadmap"],
+    "prioritize-roadmap": ["prioritize-roadmap"],
+    "prioritization": ["prioritize-roadmap"],
+    "rice": ["prioritize-roadmap"],
+    "rice_scoring": ["prioritize-roadmap"],
+    "kano": ["prioritize-roadmap"],
+    "kano_model": ["prioritize-roadmap"],
+    "kill_early": ["prioritize-roadmap"],
+    "saas_metrics": ["model-saas-metrics"],
+    "saas-metrics": ["model-saas-metrics"],
+    "unit_economics": ["model-saas-metrics"],
+    "unit-economics": ["model-saas-metrics"],
+    "pricing_strategy": ["model-saas-metrics"],
+    "pricing-strategy": ["model-saas-metrics"],
+    "pricing": ["model-saas-metrics"],
+    "van_westendorp": ["model-saas-metrics"],
+    "story_map": ["build-story-map"],
+    "story-map": ["build-story-map"],
+    "story_mapping": ["build-story-map"],
+    "story-mapping": ["build-story-map"],
+    "cpm": ["build-story-map"],
+    "critical_path": ["build-story-map"],
+    "walking_skeleton": ["build-story-map"],
+    
+    # Testing & QA
+    "tests": ["write-tests"],
+    "write_tests": ["write-tests"],
+    "unit_tests": ["write-tests"],
+    "e2e_tests": ["write-tests"],
+    "test_report": ["write-tests"],
+    "systematic_debugging": ["systematic-debugging"],
+    "debugging": ["systematic-debugging"],
+    "rca": ["systematic-debugging"],
+    "combinatorial_testing": ["combinatorial-testing"],
+    "pairwise_testing": ["combinatorial-testing"],
+    "pict": ["combinatorial-testing"],
+    
+    # Security & Policy
+    "security": ["security-audit"],
+    "security_audit": ["security-audit"],
+    "secrets": ["manage-secrets"],
+    "manage_secrets": ["manage-secrets"],
+    "supply_chain": ["supply-chain-security"],
+    
+    # DevOps & Cloud
+    "deploy": ["setup-deployment"],
+    "deployment": ["setup-deployment"],
+    "setup_deployment": ["setup-deployment"],
+    "wrangler": ["wrangler"],
+    "workers_best_practices": ["workers-best-practices"],
+    "aws_infra": ["aws-infrastructure"],
+    "aws_infrastructure": ["aws-infrastructure"],
+    "deploy_aws_eks_workloads": ["deploy-aws-eks-workloads"],
+    "deploy-aws-eks-workloads": ["deploy-aws-eks-workloads"],
+    "aws_eks": ["deploy-aws-eks-workloads"],
+    "eks_workloads": ["deploy-aws-eks-workloads"],
+    "deploy_eks": ["deploy-aws-eks-workloads"],
+    "karpenter": ["deploy-aws-eks-workloads"],
+    "pod_identity": ["deploy-aws-eks-workloads"],
+    "vpc_lattice": ["deploy-aws-eks-workloads"],
+    "perf": ["performance-profiling"],
+    "performance": ["performance-profiling"],
+    "performance_profiling": ["performance-profiling"],
+    "telemetry": ["add-telemetry-instrumentation"],
+    "instrumentation": ["add-telemetry-instrumentation"],
+
+    # SRE & Reliability Engineering
+    "orchestrate_chaos_experiment": ["orchestrate-chaos-experiment"],
+    "orchestrate-chaos-experiment": ["orchestrate-chaos-experiment"],
+    "chaos": ["orchestrate-chaos-experiment"],
+    "chaos_engineering": ["orchestrate-chaos-experiment"],
+    "chaos-engineering": ["orchestrate-chaos-experiment"],
+    "chaos_experiment": ["orchestrate-chaos-experiment"],
+    "fault_injection": ["orchestrate-chaos-experiment"],
+    "game_day": ["orchestrate-chaos-experiment"],
+    "incident": ["incident-report"],
+    "incident_report": ["incident-report"],
+    "postmortem": ["incident-report"],
+    
+    # A2A & Swarm
+    "a2a": ["agent-a2a-protocol"],
+    "a2a_protocol": ["agent-a2a-protocol"],
+    "delegation": ["agent-delegation"],
+    "agent_delegation": ["agent-delegation"],
+    "orchestration": ["agent-graph-orchestration"],
+    "graph_orchestration": ["agent-graph-orchestration"],
+    "handoff": ["agent-handoff"],
+    "model_routing": ["agent-model-routing"],
+    "quality_gate": ["agent-quality-gate"],
+    "semantic_memory": ["agent-semantic-memory"],
+    "tool_orchestration": ["agent-tool-orchestration"],
+    "compact": ["agent-memory-compaction"],
+    "compact_memory": ["agent-memory-compaction"],
+    "compact-memory": ["agent-memory-compaction"],
+    "memory_compaction": ["agent-memory-compaction"],
+    "memory-compaction": ["agent-memory-compaction"],
+    "compaction": ["agent-memory-compaction"],
+    "agent_memory_compaction": ["agent-memory-compaction"],
+    "agent-memory-compaction": ["agent-memory-compaction"],
+    "memory_hygiene": ["memory-hygiene"],
+    "clean_memory": ["memory-hygiene"],
+    "clean-memory": ["memory-hygiene"],
+    "prune_memory": ["memory-hygiene"],
+    "memory-hygiene": ["memory-hygiene"],
+    
+    # Business & Vietnam Domain
+    "accounting": ["manage-vietnam-accounting"],
+    "vietnam_accounting": ["manage-vietnam-accounting"],
+    "manage-vietnam-legal": ["manage-vietnam-legal"],
+    "manage_vietnam_legal": ["manage-vietnam-legal"],
+    "legal": ["manage-vietnam-legal"],
+    "luat": ["manage-vietnam-legal"],
+    "vietnam_legal": ["manage-vietnam-legal"],
+    "vietnam-legal": ["manage-vietnam-legal"],
+    "legal_compliance": ["manage-vietnam-legal"],
+    "draft-legal-opinion": ["draft-legal-opinion"],
+    "draft_legal_opinion": ["draft-legal-opinion"],
+    "legal_opinion": ["draft-legal-opinion"],
+    "legal_opinion_drafting": ["draft-legal-opinion"],
+    "audit-ai-compliance": ["audit-ai-compliance"],
+    "audit_ai_compliance": ["audit-ai-compliance"],
+    "ai_law_audit": ["audit-ai-compliance"],
+    "ai_risk_classification": ["audit-ai-compliance"],
+    "vietnam_ai_compliance": ["audit-ai-compliance"],
+    "product_brief": ["write-product-brief"],
+    "write_product_brief": ["write-product-brief"],
+    "business_requirements": ["analyze-business-requirements"],
+    "analyze_business_requirements": ["analyze-business-requirements"],
+    "analyze_data": ["analyze-data"],
+
+    # Mobile Development
+    "develop_mobile_app": ["develop-mobile-app"],
+    "develop-mobile-app": ["develop-mobile-app"],
+    "mobile_app": ["develop-mobile-app"],
+    "react_native": ["develop-mobile-app"],
+    "expo": ["develop-mobile-app"],
+    "flashlist": ["develop-mobile-app"],
+    "hermes": ["develop-mobile-app"],
+    "deploy_mobile_app": ["deploy-mobile-app"],
+    "deploy-mobile-app": ["deploy-mobile-app"],
+    "eas_build": ["deploy-mobile-app"],
+    "eas_deploy": ["deploy-mobile-app"],
+    "eas_update": ["deploy-mobile-app"],
+    "app_store": ["deploy-mobile-app"],
+    "google_play": ["deploy-mobile-app"],
+    "store_compliance": ["deploy-mobile-app"],
+
+    # MCP Server Architecture & Agentic Decomposition
+    "architect_mcp_server": ["architect-mcp-server"],
+    "architect-mcp-server": ["architect-mcp-server"],
+    "mcp_builder": ["architect-mcp-server"],
+    "design_mcp_server": ["architect-mcp-server"],
+    "mcp_architecture": ["architect-mcp-server"],
+    "mcp_server_architecture": ["architect-mcp-server"],
+    "decompose_agentic_system": ["decompose-agentic-system"],
+    "decompose-agentic-system": ["decompose-agentic-system"],
+    "recursive_decomposition": ["decompose-agentic-system"],
+    "planning_with_files": ["decompose-agentic-system"],
+    "agentic_decomposition": ["decompose-agentic-system"],
+    "agentic_task_decomposition": ["decompose-agentic-system"],
+
+    # MMO & Growth Engineering
+    "roi": ["analyze-campaign-roi"],
+    "campaign_roi": ["analyze-campaign-roi"],
+    "analyze_campaign_roi": ["analyze-campaign-roi"],
+    "analyze-campaign-roi": ["analyze-campaign-roi"],
+    "ltv_roas": ["analyze-campaign-roi"],
+    "blended_roas": ["analyze-campaign-roi"],
+    "tracking": ["setup-tracking-system"],
+    "s2s_tracking": ["setup-tracking-system"],
+    "s2s": ["setup-tracking-system"],
+    "setup_tracking": ["setup-tracking-system"],
+    "setup_tracking_system": ["setup-tracking-system"],
+    "setup-tracking-system": ["setup-tracking-system"],
+    "capi": ["setup-tracking-system"],
+    "conversion_api": ["setup-tracking-system"],
+    "stealth_automation": ["create-automation-script"],
+    "stealth-automation": ["create-automation-script"],
+    "create_automation_script": ["create-automation-script"],
+    "create-automation-script": ["create-automation-script"],
+    "cdp_automation": ["create-automation-script"],
+    "anti_detect": ["create-automation-script"],
+    "mmo_infra": ["deploy-mmo-infrastructure"],
+    "mmo-infra": ["deploy-mmo-infrastructure"],
+    "deploy_mmo_infrastructure": ["deploy-mmo-infrastructure"],
+    "deploy-mmo-infrastructure": ["deploy-mmo-infrastructure"],
+    "residential_proxy": ["deploy-mmo-infrastructure"],
+    "proxy_fleet": ["deploy-proxyware-fleet"],
+    "proxy-fleet": ["deploy-proxyware-fleet"],
+    "proxyware": ["deploy-proxyware-fleet"],
+    "deploy_proxyware_fleet": ["deploy-proxyware-fleet"],
+    "deploy-proxyware-fleet": ["deploy-proxyware-fleet"],
+    "depin_bandwidth": ["deploy-proxyware-fleet"],
+    "bandwidth_monetization": ["deploy-proxyware-fleet"],
+    "mmo_content": ["generate-mmo-content"],
+    "mmo-content": ["generate-mmo-content"],
+    "generate_mmo_content": ["generate-mmo-content"],
+    "generate-mmo-content": ["generate-mmo-content"],
+    "pseo_landing": ["generate-mmo-content"],
+    "faceless_video": ["generate-mmo-content"],
+    "mmo_assets": ["manage-mmo-assets"],
+    "mmo-assets": ["manage-mmo-assets"],
+    "manage_mmo_assets": ["manage-mmo-assets"],
+    "manage-mmo-assets": ["manage-mmo-assets"],
+    "vcc_isolation": ["manage-mmo-assets"],
+    "totp_verification": ["manage-mmo-assets"],
+    "mmo_campaign": ["setup-tracking-system", "generate-mmo-content", "analyze-campaign-roi"],
+    "mmo_growth": ["deploy-mmo-infrastructure", "create-automation-script", "setup-tracking-system"],
+    "growth_stack": ["setup-tracking-system", "analyze-campaign-roi"],
+
+    # AI & Model Inference
+    "deploy_vllm_inference": ["deploy-vllm-inference"],
+    "deploy-vllm": ["deploy-vllm-inference"],
+    "vllm": ["deploy-vllm-inference"],
+    "vllm_inference": ["deploy-vllm-inference"],
+    "paged_attention": ["deploy-vllm-inference"],
+    "radix_cache": ["deploy-vllm-inference"],
+
+    # Document Processing Suite (Anthropic)
+    "docx": ["docx"],
+    "word": ["docx"],
+    "word_document": ["docx"],
+    "xlsx": ["xlsx"],
+    "excel": ["xlsx"],
+    "spreadsheet": ["xlsx"],
+    "pdf": ["pdf"],
+    "acroform": ["pdf"],
+    "pptx": ["pptx"],
+    "powerpoint": ["pptx"],
+    "slides": ["pptx"],
+
+    # Foundation additions
+    "discernment-nudge": ["discernment-nudge"],
+    "discernment_nudge": ["discernment-nudge"],
+    "socratic_nudge": ["discernment-nudge"],
+    "webapp-server-runner": ["webapp-server-runner"],
+    "webapp_server_runner": ["webapp-server-runner"],
+    "with_server": ["webapp-server-runner"],
+}
+
+
+def toolbox_skills(content: str) -> tuple[list[str], list[str]]:
+    """Split the Skill Toolbox into (primary, supporting) skill lists."""
+    match = re.search(r"## Skill Toolbox\s*\n(.*?)(?=\n## |\Z)", content, re.DOTALL)
+    if not match:
+        return [], []
+    toolbox = match.group(1)
+    supporting_split = re.split(r"### Supporting Skills", toolbox)
+    primary = re.findall(r"- `([a-z0-9-]+)`", supporting_split[0])
+    supporting = re.findall(r"- `([a-z0-9-]+)`", supporting_split[1]) if len(supporting_split) > 1 else []
+    return primary, supporting
+
+
+def parse_roles() -> dict:
+    roles = {}
+    for r_file in sorted(ROLES_DIR.glob("*.md")):
+        if r_file.name in ["README.md", "role-standard.md"]:
+            continue
+        content = r_file.read_text(encoding="utf-8")
+        title_m = re.search(r"^#\s+(.+)$", content, re.MULTILINE)
+        desc_m = re.search(r"^Mission:\s*(.+)$", content, re.MULTILINE | re.IGNORECASE)
+        if not desc_m:
+            desc_m = re.search(r"^>\s*(.+)$", content, re.MULTILINE)
+        skills = re.findall(r"- `([a-z0-9-]+)`", content)
+        primary_skills, supporting_skills = toolbox_skills(content)
+
+        irrev_m = re.search(r"## Irreversible Actions\s*\n((?:[^\n]+\n)+)", content)
+        irreversible = []
+        if irrev_m:
+            irreversible = [line.strip("- *").strip() for line in irrev_m.group(1).strip().splitlines() if line.strip()]
+
+        roles[r_file.stem] = {
+            "name": r_file.stem,
+            "title": title_m.group(1).strip() if title_m else r_file.stem,
+            "description": desc_m.group(1).strip() if desc_m else "",
+            "file": str(r_file.relative_to(ROOT)).replace("\\", "/"),
+            "skills": skills,
+            "primary_skills": primary_skills or skills,
+            "supporting_skills": supporting_skills,
+            "irreversible_actions": irreversible
+        }
+    return roles
+
+
+def parse_skills() -> dict:
+    skills = {}
+    for s_file in sorted((CORE_ROOT / "skills").glob("*/*/SKILL.md")):
+        cat = s_file.parent.parent.name
+        name = s_file.parent.name
+        content = s_file.read_text(encoding="utf-8")
+        desc_m = re.search(r"description:\s*(?:>-\s*)?([^\n\r]+(?:\n\s+[^\n\r]+)*)", content)
+        desc = desc_m.group(1).replace("\n", " ").strip() if desc_m else ""
+        skills[name] = {
+            "name": name,
+            "category": cat,
+            "type": "core",
+            "file": str(s_file.relative_to(ROOT)).replace("\\", "/"),
+            "description": desc
+        }
+
+    for s_file in sorted(ROOT.glob("overlays/*/skills/*/SKILL.md")):
+        ov_name = s_file.parent.parent.parent.name
+        name = s_file.parent.name
+        content = s_file.read_text(encoding="utf-8")
+        desc_m = re.search(r"description:\s*(?:>-\s*)?([^\n\r]+(?:\n\s+[^\n\r]+)*)", content)
+        desc = desc_m.group(1).replace("\n", " ").strip() if desc_m else ""
+        skills[name] = {
+            "name": name,
+            "category": f"overlay/{ov_name}",
+            "type": "overlay",
+            "file": str(s_file.relative_to(ROOT)).replace("\\", "/"),
+            "description": desc
+        }
+    return skills
+
+
+def parse_workflows() -> dict:
+    workflows = {}
+    for w_file in sorted(WORKFLOWS_DIR.glob("*.md")):
+        if w_file.name == "README.md":
+            continue
+        content = w_file.read_text(encoding="utf-8")
+        title_m = re.search(r"^#\s+(.+)$", content, re.MULTILINE)
+        workflows[w_file.stem] = {
+            "name": w_file.stem,
+            "title": title_m.group(1).strip() if title_m else w_file.stem,
+            "file": str(w_file.relative_to(ROOT)).replace("\\", "/")
+        }
+    return workflows
+
+
+def parse_schemas() -> dict:
+    schemas = {}
+    for s_file in sorted(SCHEMAS_DIR.glob("*.json")):
+        try:
+            data = json.loads(s_file.read_text(encoding="utf-8"))
+            title = data.get("title", s_file.stem)
+        except Exception:
+            title = s_file.stem
+        schemas[s_file.name] = {
+            "name": s_file.name,
+            "stem": s_file.stem,
+            "title": title,
+            "file": str(s_file.relative_to(ROOT)).replace("\\", "/")
+        }
+    return schemas
+
+
+def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas: dict) -> str:
+    version = pack_version()
+    core_count = sum(1 for s in skills.values() if s.get("type") == "core")
+    overlay_count = sum(1 for s in skills.values() if s.get("type") == "overlay")
+    md = []
+    md.append("# Agent-Skills Master Index & Router")
+    md.append("")
+    md.append(f"> **Location:** `core/` & `overlays/` | **Version:** `{version}` (A2A 1.0 + Antigravity)")
+    md.append(f"> **Total Catalog:** **{len(roles)} Roles** | **{len(skills)} Skills** ({core_count} Core + {overlay_count} Overlays) | **{len(workflows)} Workflows** | **{len(schemas)} Data Contracts**")
+    md.append("")
+    md.append("---")
+    md.append("")
+    md.append("## ⚡ Fast Invocation Protocol (`@<role>` & `@<skill>`)")
+    md.append("")
+    md.append("When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them immediately using this index:")
+    md.append("")
+    md.append("```markdown")
+    md.append("# Single Role + Skill Example")
+    md.append("@writer @research_and_writing - Viết bài hướng dẫn về Antigravity 2.0")
+    md.append("")
+    md.append("# Developer Example")
+    md.append("@backend @add_api_endpoint - Tạo REST API endpoint quản lý user orders")
+    md.append("")
+    md.append("# Swarm Coordinator Example")
+    md.append("@coordinator @a2a - Phối hợp @frontend và @backend hoàn thiện tính năng checkout")
+    md.append("```")
+    md.append("")
+    md.append("### Resolution Rules")
+    md.append("1. **Role Matching:** `@<role>` resolves by exact name (e.g., `@content-writer`) or common alias (e.g., `@writer` → `content-writer`, `@be` → `backend-developer`).")
+    md.append("2. **Skill Matching:** `@<skill>` resolves by exact name (e.g., `@conduct-research`), snake_case (e.g., `@conduct_research`), or composite alias (e.g., `@research_and_writing` → `conduct-research` + `write-article`).")
+    md.append("3. **Automatic Loading:** The agent loads `core/roles/<role>.md` and all resolved `core/skills/<cat>/<skill>/SKILL.md` before executing.")
+    md.append("4. **Contract Output:** Structured outputs must validate against `core/contracts/schemas/<schema>.json`.")
+    md.append("")
+    md.append("---")
+    md.append("")
+    md.append(f"## 🎭 Role Directory ({len(roles)} Roles)")
+    md.append("")
+    md.append("| Role Slug | Title | Common Aliases | Primary Skills | Role File |")
+    md.append("|:---|:---|:---|:---|:---|")
+    
+    role_to_aliases = {}
+    for alias, target in ROLE_ALIASES.items():
+        if alias != target:
+            role_to_aliases.setdefault(target, []).append(f"`@{alias}`")
+
+    for role_name, r in roles.items():
+        aliases_str = ", ".join(role_to_aliases.get(role_name, [])) or "—"
+        primary_list = r.get("primary_skills") or r["skills"]
+        skills_str = ", ".join(f"`{s}`" for s in primary_list[:3])
+        if len(primary_list) > 3:
+            skills_str += f" *(+{len(primary_list) - 3} more)*"
+        md.append(f"| **`@{role_name}`** | {r['title']} | {aliases_str} | {skills_str} | [`{r['file']}`](./{r['file']}) |")
+
+    md.append("")
+    md.append("---")
+    md.append("")
+    md.append(f"## 🛠️ Skill Directory ({len(skills)} Skills)")
+    md.append("")
+    
+    by_cat = {}
+    for sk_name, s in skills.items():
+        by_cat.setdefault(s["category"], []).append(s)
+
+    for cat_name in sorted(by_cat.keys()):
+        cat_skills = by_cat[cat_name]
+        md.append(f"### Category: `{cat_name}` ({len(cat_skills)} skills)")
+        md.append("")
+        md.append("| Skill Slug | Description | File |")
+        md.append("|:---|:---|:---|")
+        for s in sorted(cat_skills, key=lambda x: x["name"]):
+            desc = s["description"][:100] + ("..." if len(s["description"]) > 100 else "")
+            md.append(f"| **`@{s['name']}`** | {desc} | [`{s['file']}`](./{s['file']}) |")
+        md.append("")
+
+    md.append("---")
+    md.append("")
+    md.append("## 🔀 Composite & Short Skill Aliases Matrix")
+    md.append("")
+    md.append("| Mention / Shortcut | Resolves To Core Skills | Typical Role |")
+    md.append("|:---|:---|:---|")
+    for alias, targets in sorted(SKILL_ALIASES.items()):
+        targets_str = ", ".join(f"`{t}`" for t in targets)
+        md.append(f"| **`@{alias}`** | {targets_str} | Active `@role` |")
+
+    md.append("")
+    md.append("---")
+    md.append("")
+    md.append(f"## 🔄 Workflows ({len(workflows)} Workflows)")
+    md.append("")
+    md.append("| Workflow | Title | File |")
+    md.append("|:---|:---|:---|")
+    for wf_name, w in workflows.items():
+        md.append(f"| **`/{wf_name}`** | {w['title']} | [`{w['file']}`](./{w['file']}) |")
+
+    md.append("")
+    md.append("---")
+    md.append("")
+    md.append(f"## 📑 Data Contracts & Schemas ({len(schemas)} Data Contract Schemas)")
+    md.append("")
+    md.append("| Schema File | Schema Title | Path |")
+    md.append("|:---|:---|:---|")
+    for sc_name, sc in schemas.items():
+        md.append(f"| `{sc['name']}` | {sc['title']} | [`{sc['file']}`](./{sc['file']}) |")
+
+    return "\n".join(md)
+
+
+def generate_json_index(roles: dict, skills: dict, workflows: dict, schemas: dict) -> dict:
+    return {
+        "version": pack_version(),
+        "protocol": "A2A 1.0 + Antigravity",
+        "root": ".",
+        "stats": {
+            "roles": len(roles),
+            "skills": len(skills),
+            "workflows": len(workflows),
+            "schemas": len(schemas)
+        },
+        "role_aliases": ROLE_ALIASES,
+        "skill_aliases": SKILL_ALIASES,
+        "roles": roles,
+        "skills": skills,
+        "workflows": workflows,
+        "schemas": schemas
+    }
+
+
+def build_artifacts(roles: dict, skills: dict, workflows: dict, schemas: dict) -> dict[str, tuple[Path, str]]:
+    md = (ROOT / "INDEX.md", generate_markdown_index(roles, skills, workflows, schemas))
+    json_payload = json.dumps(generate_json_index(roles, skills, workflows, schemas), indent=2, ensure_ascii=False) + "\n"
+    registry_json = (REGISTRY_DIR / "role-skill-index.json", json_payload)
+    adapter_json = (ROOT / "adapters" / "antigravity" / "role-skill-index.json", json_payload)
+    return {"INDEX.md": md, "role-skill-index.json": registry_json, "adapters/antigravity/role-skill-index.json": adapter_json}
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Generate INDEX.md and role-skill-index.json.")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="verify generated artifacts are up to date without writing; exit 1 when stale",
+    )
+    args = parser.parse_args()
+
+    print("Parsing agent-skills pack...")
+    roles = parse_roles()
+    skills = parse_skills()
+    workflows = parse_workflows()
+    schemas = parse_schemas()
+
+    print(f"Loaded {len(roles)} roles, {len(skills)} skills, {len(workflows)} workflows, {len(schemas)} schemas.")
+
+    artifacts = build_artifacts(roles, skills, workflows, schemas)
+
+    if args.check:
+        stale = []
+        for label, (path, expected) in artifacts.items():
+            actual = path.read_text(encoding="utf-8") if path.is_file() else ""
+            if actual != expected:
+                stale.append(label)
+        if stale:
+            print("Stale generated artifacts: " + ", ".join(stale))
+            print("Run: python3 core/scripts/generate-index.py")
+            return 1
+        print("Generated artifacts are up to date.")
+        return 0
+
+    for label, (path, content) in artifacts.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+        print(f"Generated {path}")
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Turnstile Spin"
+  short_description: "Implements end-to-end Cloudflare Turnstile CAPTCHA protection — widget creati..."
+  default_prompt: "Use $turnstile-spin to execute turnstile spin tasks in this codebase."

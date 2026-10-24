@@ -1,0 +1,11 @@
+{
+  "work_type": "bug",
+  "phase": "handoff",
+  "user_request": "The OAuth bug fix has passed QA and code review. Please commit and push to main.",
+  "context": {
+    "original_bug": "Login fails after password reset for OAuth users",
+    "validation_status": "QA passed, reviewer approved",
+    "branch": "fix/oauth-login-reset",
+    "tests": "unit + regression coverage confirmed"
+  }
+}

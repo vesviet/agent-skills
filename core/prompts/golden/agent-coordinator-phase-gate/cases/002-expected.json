@@ -1,0 +1,12 @@
+{
+  "must_include": [
+    "acceptance criteria or success criteria",
+    "impacted surfaces or components",
+    "role plan with at least backend-developer",
+    "non-goals or out-of-scope items"
+  ],
+  "must_not_include": [
+    "git commit without user approval",
+    "implementation code before requirements confirmed"
+  ]
+}

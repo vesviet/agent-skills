@@ -1,0 +1,312 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mmo-roi-report",
+  "title": "MMO Campaign ROI Report",
+  "description": "Structured handoff report evaluating true campaign financial profitability, LTV projections, blended ROAS, CTIT fraud rejection metrics, and account die-rate amortized costs.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "mmo-roi-report",
+      "description": "Machine-readable contract discriminator."
+    },
+    "report_id": {
+      "type": "string",
+      "pattern": "^roi-[a-z0-9-]+$",
+      "description": "Unique identifier for this ROI audit report."
+    },
+    "campaign_id": {
+      "type": "string",
+      "description": "Identifier of the target MMO campaign being evaluated."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 generation timestamp."
+    },
+    "reporting_period": {
+      "type": "object",
+      "description": "Audit timeframe covered by the financial and attribution metrics.",
+      "properties": {
+        "start_date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end_date": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "start_date",
+        "end_date"
+      ]
+    },
+    "financial_metrics": {
+      "type": "object",
+      "description": "True campaign revenue, ad spend, operational costs, net profit, and ROAS calculations.",
+      "properties": {
+        "gross_revenue": {
+          "type": "number",
+          "description": "Total revenue including direct CPA, rebills, and tier overrides."
+        },
+        "ad_spend": {
+          "type": "number",
+          "description": "Direct media buying ad spend across all platforms."
+        },
+        "operational_costs": {
+          "type": "object",
+          "description": "Breakdown of non-media costs including proxies, AI APIs, die-rate depreciation, and fees.",
+          "properties": {
+            "proxy_bandwidth_cost": {
+              "type": "number",
+              "minimum": 0
+            },
+            "ai_token_api_cost": {
+              "type": "number",
+              "minimum": 0
+            },
+            "account_die_rate_amortized_cost": {
+              "type": "number",
+              "minimum": 0
+            },
+            "vcc_and_banking_fees": {
+              "type": "number",
+              "minimum": 0
+            },
+            "depin_hardware_depreciation": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "proxy_bandwidth_cost",
+            "ai_token_api_cost",
+            "account_die_rate_amortized_cost"
+          ]
+        },
+        "total_cost": {
+          "type": "number",
+          "description": "Sum of ad spend and all operational costs."
+        },
+        "net_profit": {
+          "type": "number",
+          "description": "Gross revenue minus total cost."
+        },
+        "true_roi_percentage": {
+          "type": "number",
+          "description": "Net profit divided by total cost multiplied by 100."
+        },
+        "blended_roas": {
+          "type": "number",
+          "description": "Gross revenue divided by ad spend."
+        },
+        "customer_ltv_projected": {
+          "type": "number",
+          "description": "Projected 90-day Customer Lifetime Value based on cohort retention."
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "gross_revenue",
+        "ad_spend",
+        "operational_costs",
+        "total_cost",
+        "net_profit",
+        "true_roi_percentage",
+        "blended_roas",
+        "currency"
+      ]
+    },
+    "attribution_and_tracking_health": {
+      "type": "object",
+      "description": "Attribution integrity metrics, Event Match Quality, and fraud filtration counts.",
+      "properties": {
+        "total_clicks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_conversions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "event_match_quality_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10.0
+        },
+        "ctit_sivt_excluded_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of fraudulent conversions rejected by Click-To-Install-Time filter (<2.5s)."
+        },
+        "discrepancy_rate_tracker_vs_network": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Percentage discrepancy between local tracker and affiliate network reports."
+        }
+      },
+      "required": [
+        "total_clicks",
+        "total_conversions",
+        "event_match_quality_score",
+        "ctit_sivt_excluded_count"
+      ]
+    },
+    "account_health_and_infra": {
+      "type": "object",
+      "description": "Fleet status, profile ban rates, and proxy pool reliability metrics.",
+      "properties": {
+        "active_profiles": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "banned_profiles_period": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "die_rate_percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100.0
+        },
+        "proxy_pool_success_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100.0
+        }
+      },
+      "required": [
+        "active_profiles",
+        "banned_profiles_period",
+        "die_rate_percentage"
+      ]
+    },
+    "optimization_decision": {
+      "type": "object",
+      "description": "Actionable decision for the campaign, budget allocation change, and role delegation.",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "scale",
+            "maintain",
+            "pause",
+            "remediate_tracking",
+            "pivot_creative"
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "next_budget_allocation": {
+          "type": "number",
+          "minimum": 0
+        },
+        "recommended_next_roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "type": "string"
+              },
+              "action_required": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "role",
+              "action_required"
+            ]
+          }
+        }
+      },
+      "required": [
+        "action",
+        "rationale",
+        "next_budget_allocation"
+      ]
+    },
+    "data_classification": {
+      "type": "string",
+      "enum": [
+        "restricted",
+        "confidential"
+      ],
+      "description": "Sensitive financial data classification tier."
+    }
+  },
+  "required": [
+    "contract_type",
+    "report_id",
+    "campaign_id",
+    "created_at",
+    "reporting_period",
+    "financial_metrics",
+    "attribution_and_tracking_health",
+    "account_health_and_infra",
+    "optimization_decision",
+    "data_classification"
+  ],
+  "examples": [
+    {
+      "contract_type": "mmo-roi-report",
+      "report_id": "roi-tiktok-affiliate-vn-week02",
+      "campaign_id": "mmo-tiktok-affiliate-vn-01",
+      "created_at": "2027-01-22T10:00:00Z",
+      "reporting_period": {
+        "start_date": "2027-01-15T00:00:00Z",
+        "end_date": "2027-01-21T23:59:59Z"
+      },
+      "financial_metrics": {
+        "gross_revenue": 5420.00,
+        "ad_spend": 2100.00,
+        "operational_costs": {
+          "proxy_bandwidth_cost": 85.00,
+          "ai_token_api_cost": 32.50,
+          "account_die_rate_amortized_cost": 90.00,
+          "vcc_and_banking_fees": 42.00,
+          "depin_hardware_depreciation": 0.00
+        },
+        "total_cost": 2349.50,
+        "net_profit": 3070.50,
+        "true_roi_percentage": 130.69,
+        "blended_roas": 2.58,
+        "customer_ltv_projected": 38.40,
+        "currency": "USD"
+      },
+      "attribution_and_tracking_health": {
+        "total_clicks": 14250,
+        "total_conversions": 434,
+        "event_match_quality_score": 8.6,
+        "ctit_sivt_excluded_count": 41,
+        "discrepancy_rate_tracker_vs_network": 1.2
+      },
+      "account_health_and_infra": {
+        "active_profiles": 28,
+        "banned_profiles_period": 1,
+        "die_rate_percentage": 3.57,
+        "proxy_pool_success_rate": 99.1
+      },
+      "optimization_decision": {
+        "action": "scale",
+        "rationale": "True ROI exceeds 130% with healthy EMQ (8.6) and low die rate (3.57%). Recommended +20% daily ad spend expansion.",
+        "next_budget_allocation": 360.00,
+        "recommended_next_roles": [
+          {
+            "role": "mmo-engineer",
+            "action_required": "Scale daily ad spend budget cap in ad manager by +20% and maintain proxy health probes."
+          },
+          {
+            "role": "content-writer",
+            "action_required": "Produce 3 new multimodal short-video hooks targeting winning audience segment."
+          }
+        ]
+      },
+      "data_classification": "restricted"
+    }
+  ]
+}

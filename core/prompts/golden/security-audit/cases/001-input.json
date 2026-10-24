@@ -1,0 +1,14 @@
+{
+  "case_id": "SEC-001",
+  "name": "SQL Injection via Unsanitized Order Filter (CWE-89)",
+  "work_type": "audit",
+  "role": "security-engineer",
+  "skill": "security-audit",
+  "user_request": "Review the new order search endpoint implementation for SQL injection and security vulnerabilities.",
+  "target": "api/orders/search.ts",
+  "context": {
+    "code_snippet": "export async function searchOrders(req: Request, db: Database) {\n  const { query } = req.json();\n  const sql = `SELECT * FROM orders WHERE customer_id = '${req.headers.get(\"x-user-id\")}' AND notes LIKE '%${query}%'`;\n  return await db.raw(sql);\n}",
+    "auth_context": "authenticated_user",
+    "environment": "production"
+  }
+}

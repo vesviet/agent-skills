@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Memory Compaction"
+  short_description: "Compact long conversations into a minimal working state"
+  default_prompt: "Use $agent-memory-compaction for this task."

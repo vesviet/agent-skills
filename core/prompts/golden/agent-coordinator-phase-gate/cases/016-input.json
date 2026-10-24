@@ -1,0 +1,10 @@
+{
+  "work_type": "chore",
+  "phase": "intake",
+  "user_request": "We need to upgrade all Node.js dependencies to their latest minor versions before the next release.",
+  "context": {
+    "scope": "package.json dependencies",
+    "user_facing_changes": "none expected",
+    "reason": "security patches and compatibility"
+  }
+}

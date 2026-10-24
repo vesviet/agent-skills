@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Hugo Twin Content"
+  short_description: "Hugo Markdown for authority blog and learn knowledge-base twin sites"
+  default_prompt: "Use $write-hugo-twin-content to draft or update Markdown under authority-blog/content or learn/content following local frontmatter and PaperMod patterns."

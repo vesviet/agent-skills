@@ -1,0 +1,530 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "test-report",
+  "title": "QA Test Report",
+  "description": "Structured output from QA Engineer using write-tests, frontend-testing, or review-service skills. Emitted after test execution. Consumed by Technical Lead, Reviewer, Project Manager, and Agent Coordinator as release confidence evidence. Complements code-review-finding.json \u2014 review catches code issues, test-report catches behavior risk.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "test-report",
+      "description": "Machine-readable contract discriminator."
+    },
+    "report_id": {
+      "type": "string",
+      "description": "Unique report identifier. Convention: YYYY-MM-DD-feature-slug."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ticket_ref": {
+      "type": "string",
+      "description": "feature-ticket.json ticket_id this report covers."
+    },
+    "delivery_plan_ref": {
+      "type": "string",
+      "description": "technical-delivery-plan.json plan_id this test run validates."
+    },
+    "environment": {
+      "type": "string",
+      "description": "Test environment name (e.g. staging, preview, local, production-canary)."
+    },
+    "test_types_executed": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "unit",
+          "integration",
+          "e2e",
+          "smoke",
+          "regression",
+          "performance",
+          "security",
+          "accessibility",
+          "manual"
+        ]
+      },
+      "description": "Types of tests run in this report."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "passed",
+        "failed",
+        "blocked",
+        "partial"
+      ],
+      "description": "Overall test run status."
+    },
+    "scenarios_executed": {
+      "type": "array",
+      "description": "One entry per AC scenario or test case executed.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Scenario name \u2014 should match feature-ticket AC scenario label when covering AC."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "unit",
+              "integration",
+              "e2e",
+              "smoke",
+              "manual",
+              "regression"
+            ]
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "evidence": {
+            "type": "string",
+            "description": "CI run link, screenshot path, log excerpt, or 'manual verified' description."
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "passed"
+        ]
+      }
+    },
+    "defects": {
+      "type": "array",
+      "description": "Defects found during testing. Empty array if none.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "defect_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "steps_to_reproduce": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "expected_behavior": {
+            "type": "string"
+          },
+          "actual_behavior": {
+            "type": "string"
+          },
+          "linked_code_finding": {
+            "type": "string",
+            "description": "code-review-finding.json finding_id if related."
+          }
+        },
+        "required": [
+          "title",
+          "severity",
+          "steps_to_reproduce",
+          "expected_behavior",
+          "actual_behavior"
+        ]
+      }
+    },
+    "coverage_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Behaviors or edge cases that could not be tested in this cycle and why."
+    },
+    "residual_risk": {
+      "type": "string",
+      "description": "Remaining risk that won't be covered before release \u2014 should be visible to Technical Lead and PM."
+    },
+    "release_recommendation": {
+      "type": "string",
+      "enum": [
+        "ship",
+        "hold",
+        "ship_with_mitigations"
+      ],
+      "description": "QA recommendation on whether to proceed with release."
+    },
+    "mitigation_notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Required when release_recommendation=ship_with_mitigations. Describe the mitigations."
+    },
+    "mutation_score": {
+      "type": "object",
+      "description": "Mutation testing verification results (e.g. Stryker, mutmut, go-mutesting).",
+      "properties": {
+        "score_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "threshold_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "mutants_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mutants_killed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mutants_survived": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tool": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "skipped"
+          ]
+        }
+      },
+      "required": [
+        "score_pct",
+        "threshold_pct",
+        "status"
+      ]
+    },
+    "sandbox_isolation_tier": {
+      "type": "string",
+      "enum": [
+        "tier_0_ephemeral_container",
+        "tier_1_isolated_microvm",
+        "tier_2_airgapped_sandbox",
+        "local_dev_workspace"
+      ],
+      "description": "Environment isolation tier where tests were executed."
+    },
+    "reproduction_test_verified": {
+      "type": "boolean",
+      "description": "For bug fixes: confirms that a failing reproduction test was verified Red prior to code modification."
+    },
+    "blast_radius_assessment": {
+      "type": "object",
+      "description": "Verification of bounded failure domain during test execution.",
+      "properties": {
+        "verified_failure_domain": {
+          "type": "string"
+        },
+        "cross_boundary_impact_detected": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verified_failure_domain",
+        "cross_boundary_impact_detected"
+      ]
+    },
+    "contract_testing": {
+      "type": "object",
+      "description": "Consumer-Driven Contract Testing (PactV3, buf breaking, oasdiff) verification.",
+      "properties": {
+        "pact_matrix_status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "skipped"
+          ]
+        },
+        "breaking_changes_detected": {
+          "type": "boolean"
+        },
+        "can_i_deploy": {
+          "type": "boolean"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "ai_evaluation": {
+      "type": "object",
+      "description": "Calibrated LLM and agentic evaluation metrics.",
+      "properties": {
+        "g_eval_alignment_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "rag_triad": {
+          "type": "object",
+          "properties": {
+            "faithfulness": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "context_precision": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "context_recall": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "answer_relevancy": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "agent_trajectory_passed": {
+          "type": "boolean"
+        },
+        "loop_detection_passed": {
+          "type": "boolean"
+        },
+        "promptfoo_redteam_passed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "observability_testing": {
+      "type": "object",
+      "description": "Observability-Driven Testing (Tracetest, OpenTelemetry, N+1 query counters).",
+      "properties": {
+        "trace_assertions_passed": {
+          "type": "boolean"
+        },
+        "w3c_traceparent_propagated": {
+          "type": "boolean"
+        },
+        "n_plus_one_queries_detected": {
+          "type": "boolean"
+        },
+        "query_budget_exceeded": {
+          "type": "boolean"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "accessibility_audit": {
+      "type": "object",
+      "description": "Automated and manual WCAG accessibility audit findings.",
+      "properties": {
+        "wcag_standard": {
+          "type": "string"
+        },
+        "violations_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "critical_violations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "chaos_injection": {
+      "type": "object",
+      "description": "Shift-left fault injection and resilience testing (Toxiproxy, Chaos Mesh).",
+      "properties": {
+        "fault_type": {
+          "type": "string"
+        },
+        "circuit_breaker_transition_verified": {
+          "type": "boolean"
+        },
+        "blast_radius_contained": {
+          "type": "boolean"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "performance_slo": {
+      "type": "object",
+      "description": "Performance and load test SLO gates (k6, Locust).",
+      "properties": {
+        "p95_latency_ms": {
+          "type": "number",
+          "minimum": 0
+        },
+        "p99_latency_ms": {
+          "type": "number",
+          "minimum": 0
+        },
+        "error_rate_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "slo_threshold_met": {
+          "type": "boolean"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "clean_architecture_verification": {
+      "type": "object",
+      "description": "Clean architecture, database parity, and concurrency verification.",
+      "properties": {
+        "race_detector_passed": {
+          "type": "boolean"
+        },
+        "goroutine_leak_clean": {
+          "type": "boolean"
+        },
+        "layer_isolation_verified": {
+          "type": "boolean"
+        },
+        "ephemeral_db_rollback_isolated": {
+          "type": "boolean"
+        },
+        "property_based_testing_passed": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "ticket_ref",
+    "environment",
+    "status",
+    "scenarios_executed",
+    "release_recommendation"
+  ],
+  "examples": [
+    {
+      "contract_type": "test-report",
+      "report_id": "2026-06-12-change-store-order-cod",
+      "created_at": "2026-06-12T14:00:00+07:00",
+      "ticket_ref": "2026-06-12-change-store-order-cod",
+      "delivery_plan_ref": "2026-06-12-change-store-order-cod",
+      "environment": "staging",
+      "test_types_executed": [
+        "unit",
+        "integration",
+        "smoke"
+      ],
+      "status": "passed",
+      "scenarios_executed": [
+        {
+          "name": "COD order assigned to store courier",
+          "type": "integration",
+          "passed": true,
+          "evidence": "CI run #1042, test NewLogicAutoAssignTest::testCodOrderAssignedToStoreCourier — passed",
+          "notes": null
+        },
+        {
+          "name": "COD order with no store courier falls back",
+          "type": "integration",
+          "passed": true,
+          "evidence": "CI run #1042, test NewLogicAutoAssignTest::testCodOrderFallsBackToWarehouse — passed; warning log verified",
+          "notes": null
+        },
+        {
+          "name": "Non-COD order unaffected",
+          "type": "unit",
+          "passed": true,
+          "evidence": "CI run #1042 — all existing non-COD tests pass without modification",
+          "notes": null
+        },
+        {
+          "name": "Store service 503 fallback (code-review F-01)",
+          "type": "integration",
+          "passed": true,
+          "evidence": "Manual test with store-service stub returning 503 — fallback to warehouse confirmed; error logged with order_id",
+          "notes": "Added after code-review finding F-01 raised by Reviewer"
+        }
+      ],
+      "defects": [],
+      "coverage_gaps": [
+        "Load test for COD routing under high batch volume — deferred to next sprint"
+      ],
+      "residual_risk": "Batch performance under > 500 concurrent COD orders not validated. Low risk given current store volume.",
+      "release_recommendation": "ship",
+      "mitigation_notes": null,
+      "mutation_score": {
+        "score_pct": 82.0,
+        "threshold_pct": 75.0,
+        "mutants_total": 50,
+        "mutants_killed": 41,
+        "mutants_survived": 9,
+        "tool": "Stryker",
+        "status": "passed"
+      },
+      "sandbox_isolation_tier": "tier_0_ephemeral_container",
+      "reproduction_test_verified": true,
+      "blast_radius_assessment": {
+        "verified_failure_domain": "order_fulfillment",
+        "cross_boundary_impact_detected": false
+      },
+      "contract_testing": {
+        "pact_matrix_status": "passed",
+        "breaking_changes_detected": false,
+        "can_i_deploy": true,
+        "tool": "PactV3"
+      },
+      "observability_testing": {
+        "trace_assertions_passed": true,
+        "w3c_traceparent_propagated": true,
+        "n_plus_one_queries_detected": false,
+        "query_budget_exceeded": false,
+        "tool": "Tracetest"
+      },
+      "chaos_injection": {
+        "fault_type": "latency_jitter",
+        "circuit_breaker_transition_verified": true,
+        "blast_radius_contained": true,
+        "tool": "Toxiproxy"
+      },
+      "clean_architecture_verification": {
+        "race_detector_passed": true,
+        "goroutine_leak_clean": true,
+        "layer_isolation_verified": true,
+        "ephemeral_db_rollback_isolated": true,
+        "property_based_testing_passed": true
+      }
+    }
+  ]
+}

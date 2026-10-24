@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "dead code elimination",
+    "YAGNI",
+    "safe removal",
+    "git history preserves",
+    "speculative generality"
+  ],
+  "must_not_include": [
+    "keep dead code commented out",
+    "in case we need it later"
+  ],
+  "required_tokens": [
+    "dead code elimination",
+    "YAGNI",
+    "safe removal",
+    "git history preserves",
+    "speculative generality"
+  ],
+  "forbidden_tokens": [
+    "keep dead code commented out",
+    "in case we need it later"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

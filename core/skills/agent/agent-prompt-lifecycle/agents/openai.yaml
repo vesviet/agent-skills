@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Prompt Lifecycle"
+  short_description: "Manage prompt assets through their full lifecycle including versioning, evalu..."
+  default_prompt: "Use $agent-prompt-lifecycle to execute agent prompt lifecycle tasks in this codebase."

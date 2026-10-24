@@ -1,0 +1,4 @@
+interface:
+  display_name: "Orchestrate Chaos Experiment"
+  short_description: "Plan, execute, and verify controlled chaos experiments and game days"
+  default_prompt: "Use $orchestrate-chaos-experiment to plan and execute a controlled fault injection experiment, steady-state hypothesis test, or game day drill."

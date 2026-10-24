@@ -1,0 +1,534 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "content-handoff",
+  "title": "Content Handoff",
+  "description": "Structured handoff from Content Writer to editor, SEO Analyst, or publisher upon completing an article, post, or content piece. Consumed by SEO Analyst (for post-draft audit), Reviewer (for editorial check), and the publishing workflow. Pairs with seo-metadata.json for final publication metadata. Includes GEO/AEO execution evidence, typed non-commodity value (unique POV / first-hand evidence; schema field names keep the information_gain prefix for compatibility), E-E-A-T signals, and aligned source credibility per the research-report.json source hierarchy.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "content-handoff",
+      "description": "Machine-readable contract discriminator."
+    },
+    "produced_by_role": {
+      "type": "string",
+      "description": "Role that emitted this handoff (e.g. content-writer)."
+    },
+    "image_provenance": {
+      "type": "array",
+      "description": "Provenance classification for every media asset in the draft. Required whenever the draft embeds images, diagrams, or screenshots.",
+      "items": {
+        "type": "object",
+        "required": [
+          "asset_path",
+          "provenance"
+        ],
+        "properties": {
+          "asset_path": {
+            "type": "string",
+            "description": "Repo-relative path of the media asset."
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "original_photo",
+              "ai_generated",
+              "licensed_stock",
+              "unknown"
+            ],
+            "description": "C2PA-aligned source classification. unknown is not publishable; resolve before handoff."
+          },
+          "alt_text": {
+            "type": "string",
+            "description": "Descriptive alt text (80-125 characters) for the asset."
+          }
+        }
+      }
+    },
+    "handoff_id": {
+      "type": "string",
+      "description": "Unique handoff identifier. Convention: YYYY-MM-DD-slug."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "site": {
+      "type": "string",
+      "description": "Target site slug (e.g. real-estate, hvac-portal, authority-blog, hugo-twin)."
+    },
+    "content_path": {
+      "type": "string",
+      "description": "Repo-relative path(s) to the content file(s) created or updated."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft_ready",
+        "needs_revision",
+        "approved",
+        "published"
+      ],
+      "description": "Content status at time of handoff."
+    },
+    "primary_keyword": {
+      "type": "string",
+      "description": "Primary SEO keyword targeted by this content."
+    },
+    "word_count": {
+      "type": "integer",
+      "description": "Approximate word count of the content body (excluding frontmatter)."
+    },
+    "editorial_passes": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of editorial passes completed before this handoff. Minimum 3 when editorial research was performed without Researcher delegation."
+    },
+    "research_sources": {
+      "type": "array",
+      "description": "Sources used in the content. Credibility aligned with research-report.json source hierarchy.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL or document reference path."
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable source name."
+          },
+          "credibility": {
+            "type": "string",
+            "enum": [
+              "Primary",
+              "Secondary",
+              "Tertiary",
+              "AI-generated"
+            ],
+            "description": "Source tier: Primary (gov/official/peer-reviewed), Secondary (reputable news/expert/industry), Tertiary (Wikipedia/reference), AI-generated (query-use only — never cite)."
+          }
+        },
+        "required": [
+          "url",
+          "credibility"
+        ]
+      }
+    },
+    "unverified_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Claims that could not be fully verified and may need fact-checking before publication."
+    },
+    "information_gain": {
+      "type": "object",
+      "description": "Typed non-commodity value (unique POV/first-hand evidence) gate — documents what unique value this article adds beyond existing top SERP results. Mandatory quality gate; not optional.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "original_data",
+            "firsthand_account",
+            "local_insight",
+            "expert_interview",
+            "unique_framework",
+            "contrarian_perspective"
+          ],
+          "description": "Primary type of non-commodity value (unique POV / first-hand evidence) this article delivers."
+        },
+        "description": {
+          "type": "string",
+          "description": "Specific explanation of what this content adds that is not present in the top 10 SERP results for the primary keyword."
+        },
+        "gate_passed": {
+          "type": "boolean",
+          "description": "True when non-commodity value (unique POV / first-hand evidence) is documented and the draft is not merely a rewrite of existing SERP content."
+        }
+      },
+      "required": [
+        "type",
+        "description",
+        "gate_passed"
+      ]
+    },
+    "geo_aeo_fields_applied": {
+      "type": "object",
+      "description": "Machine-readable GEO/AEO execution evidence. Consumed by SEO Analyst for post-draft audit and A2A pipeline validation.",
+      "properties": {
+        "answer_first_implemented": {
+          "type": "boolean",
+          "description": "Direct answer block (≤60 words) placed after each H2 heading for informational/commercial queries."
+        },
+        "query_fanout_covered": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "PAA-sourced and LLM-suggested sub-questions addressed in the article body."
+        },
+        "query_fanout_missed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Sub-questions from brief that were not covered — flagged for SEO Analyst review."
+        },
+        "answer_formats_used": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "definition_block",
+              "numbered_steps",
+              "comparison_table",
+              "bullet_list",
+              "faq_block"
+            ]
+          },
+          "description": "Answer formats applied per section, matching the seo-content-brief.json specification."
+        },
+        "fact_density_met": {
+          "type": "boolean",
+          "description": "True when ≥3 verifiable data points (statistics, specific numbers, sourced expert quotes) per 500 words."
+        },
+        "fact_density_notes": {
+          "type": "string",
+          "description": "Optional: note any sections where fact density fell short and why."
+        },
+        "faq_implemented": {
+          "type": "boolean",
+          "description": "True when FAQ block is present (brief or SERP competitors required it)."
+        },
+        "heading_hierarchy_clean": {
+          "type": "boolean",
+          "description": "True when H1 → H2 (query intent) → H3 (sub-questions) hierarchy is consistent."
+        }
+      },
+      "required": [
+        "answer_first_implemented",
+        "fact_density_met",
+        "faq_implemented"
+      ]
+    },
+    "eeat_signals": {
+      "type": "object",
+      "description": "E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) signal audit. Consumed by SEO Analyst and Reviewer.",
+      "properties": {
+        "experience_proof_type": {
+          "type": "string",
+          "enum": [
+            "original_photo",
+            "firsthand_account",
+            "documented_test",
+            "expert_interview",
+            "case_study",
+            "none_required"
+          ],
+          "description": "Type of experience proof signal specified by the SEO brief or required by the domain."
+        },
+        "experience_proof_implemented": {
+          "type": "boolean",
+          "description": "True when the required experience proof type is present in the draft."
+        },
+        "experience_proof_notes": {
+          "type": "string",
+          "description": "If not implemented, explain gap and escalation path. Never fabricate experience signals."
+        },
+        "author_entity_referenced": {
+          "type": "boolean",
+          "description": "True when author name and profile reference are included (required when brief specifies it)."
+        },
+        "trust_signals_present": {
+          "type": "boolean",
+          "description": "True when source citations with links, verifiable claims, and contact/policy references are in place."
+        },
+        "ymyl_domain": {
+          "type": "boolean",
+          "description": "True when content touches health, legal, financial, or safety domains. Elevated E-E-A-T and Researcher delegation required."
+        }
+      },
+      "required": [
+        "experience_proof_type",
+        "experience_proof_implemented",
+        "trust_signals_present",
+        "ymyl_domain"
+      ]
+    },
+    "internal_links_added": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Internal page paths linked from this content (minimum 3 when seo-content-brief.json specifies)."
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Open editorial or fact-checking questions for the next reviewer."
+    },
+    "recommended_next_roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "seo-analyst",
+          "reviewer",
+          "publisher",
+          "editor",
+          "technical-writer"
+        ]
+      },
+      "description": "Roles that should act on this content next. technical-writer when content must align with technical source-of-truth docs."
+    },
+    "source_data": {
+      "type": "string",
+      "description": "Reference to the primary structured input: research-report.json, seo-content-brief.json, or feature-ticket.json path/ID."
+    },
+    "publish_log_updated": {
+      "type": "boolean",
+      "description": "True when publish-log.md has been updated after confirmed publish (required when overlays/seo-publishing is active)."
+    },
+    "ai_semantic_flaw_score": {
+      "type": "object",
+      "description": "Anti-AI semantic flaw evaluation. Measures robotic patterns, blacklisted cliches, burstiness, and ungrounded claims.",
+      "properties": {
+        "flaw_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Composite penalty score from 0 (flawless) to 100 (heavily flawed). Max 15 allowed to pass."
+        },
+        "gate_passed": {
+          "type": "boolean",
+          "description": "True when flaw_score <= 15, zero blacklisted cliches detected, and active voice >= 85%."
+        },
+        "cliche_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of blacklisted AI clichés found ('delve', 'tapestry', 'testament', 'unlock', etc.). Must be 0."
+        },
+        "cliches_detected": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of specific AI clichés detected in the text."
+        },
+        "burstiness_std_dev": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Standard deviation of sentence lengths in words. Natural human cadence requires >= 6.5."
+        },
+        "active_voice_percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of sentences constructed in active voice. Target >= 85%."
+        },
+        "ungrounded_claims_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of factual claims lacking empirical sources or firsthand evidence. Must be 0."
+        }
+      },
+      "required": [
+        "flaw_score",
+        "gate_passed",
+        "cliche_count",
+        "active_voice_percentage"
+      ]
+    },
+    "information_gain_rating": {
+      "type": "string",
+      "enum": [
+        "exceptional",
+        "strong",
+        "moderate",
+        "low",
+        "zero"
+      ],
+      "description": "Information gain rating evaluated against Top 10 SERP competitors. 'exceptional' or 'strong' required for publish."
+    },
+    "geo_readiness_checklist": {
+      "type": "object",
+      "description": "Generative Engine Optimization (GEO) readiness checklist for AI Search visibility (Google AI Overviews, SearchGPT, Perplexity).",
+      "properties": {
+        "answer_first_bluf_verified": {
+          "type": "boolean",
+          "description": "All H2 sections begin with concise Bottom-Line-Up-Front answer <= 60 words."
+        },
+        "entity_salience_optimized": {
+          "type": "boolean",
+          "description": "Target entities and disambiguation attributes are placed in lead positions."
+        },
+        "structured_comparison_tables": {
+          "type": "boolean",
+          "description": "Quantitative data and trade-offs presented in markdown tables or structured lists."
+        },
+        "quotable_fact_density_met": {
+          "type": "boolean",
+          "description": ">= 3 verifiable data points per 500 words formatted for standalone quote extraction."
+        },
+        "schema_jsonld_prepared": {
+          "type": "boolean",
+          "description": "Structured data specifications (TechArticle, Person E-E-A-T, FAQPage) prepared."
+        },
+        "llms_txt_compatible": {
+          "type": "boolean",
+          "description": "Key takeaways formatted for ingestion into site llms.txt index."
+        },
+        "all_gates_cleared": {
+          "type": "boolean",
+          "description": "True when all required GEO readiness criteria are satisfied."
+        }
+      },
+      "required": [
+        "answer_first_bluf_verified",
+        "entity_salience_optimized",
+        "structured_comparison_tables",
+        "quotable_fact_density_met",
+        "all_gates_cleared"
+      ]
+    },
+    "gen_ai_visibility": {
+      "type": "object",
+      "description": "AI-surface visibility fields captured at/after publish (2027 reframe).",
+      "properties": {
+        "non_commodity_element": {
+          "type": "string",
+          "description": "The unique POV / first-hand evidence element that makes this piece non-commodity (replaces raw information-gain phrasing)."
+        },
+        "gen_ai_impressions_first_week": {
+          "type": "integer",
+          "description": "Search Console Gen AI report impressions for this URL in its first week post-publish (0 if not yet available)."
+        },
+        "citation_samples": {
+          "type": "integer",
+          "description": "Number of repeated citation sampling runs logged before any cited/not-cited conclusion (single-run conclusions are invalid)."
+        },
+        "authorship": {
+          "type": "object",
+          "properties": {
+            "byline_present": {
+              "type": "boolean"
+            },
+            "author_page_url": {
+              "type": "string"
+            },
+            "ai_assistance_disclosed": {
+              "type": "boolean",
+              "description": "Whether AI assistance is disclosed when reasonably expected."
+            }
+          }
+        },
+        "included_in_gen_ai_features": {
+          "type": "boolean",
+          "description": "Site confirmed included in 'Search generative AI features' eligibility in Search Console."
+        }
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "content_path",
+    "status"
+  ],
+  "examples": [
+    {
+      "contract_type": "content-handoff",
+      "handoff_id": "2026-06-13-danh-gia-may-lanh-funiki-inverter",
+      "created_at": "2026-06-13T21:00:00+07:00",
+      "site": "hvac-portal",
+      "content_path": "src/data/post/review/danh-gia-may-lanh-funiki-inverter-2026.mdx",
+      "status": "draft_ready",
+      "primary_keyword": "đánh giá máy lạnh Funiki inverter 2026",
+      "word_count": 2100,
+      "editorial_passes": 3,
+      "ai_semantic_flaw_score": {
+        "flaw_score": 0,
+        "gate_passed": true,
+        "cliche_count": 0,
+        "cliches_detected": [],
+        "burstiness_std_dev": 7.2,
+        "active_voice_percentage": 90.5,
+        "ungrounded_claims_count": 0
+      },
+      "information_gain_rating": "strong",
+      "geo_readiness_checklist": {
+        "answer_first_bluf_verified": true,
+        "entity_salience_optimized": true,
+        "structured_comparison_tables": true,
+        "quotable_fact_density_met": true,
+        "schema_jsonld_prepared": true,
+        "llms_txt_compatible": true,
+        "all_gates_cleared": true
+      },
+      "research_sources": [
+        {
+          "url": "https://funiki.com.vn/san-pham/dieu-hoa-treo-tuong",
+          "label": "Funiki Official Product Page",
+          "credibility": "Primary"
+        },
+        {
+          "url": "https://dienmaycholon.vn/may-lanh/funiki",
+          "label": "Dien May Cho Lon retail listing",
+          "credibility": "Secondary"
+        },
+        {
+          "url": "research-report/funiki-inverter-market-2026",
+          "label": "Researcher report — Funiki market position",
+          "credibility": "Primary"
+        }
+      ],
+      "unverified_claims": [
+        "Funiki inverter tiêu thụ điện ít hơn 40% so với dòng thường — cần xác nhận từ spec sheet chính thức"
+      ],
+      "information_gain": {
+        "type": "firsthand_account",
+        "description": "Bao gồm kết quả đo điện năng tiêu thụ thực tế sau 30 ngày sử dụng tại căn hộ 25m² — không có trong top 10 SERP cho từ khóa này",
+        "gate_passed": true
+      },
+      "geo_aeo_fields_applied": {
+        "answer_first_implemented": true,
+        "query_fanout_covered": [
+          "Máy lạnh Funiki inverter có tiết kiệm điện không?",
+          "So sánh Funiki inverter với Daikin cùng phân khúc",
+          "Bảo hành máy lạnh Funiki bao lâu?"
+        ],
+        "query_fanout_missed": [],
+        "answer_formats_used": [
+          "definition_block",
+          "comparison_table",
+          "bullet_list",
+          "faq_block"
+        ],
+        "fact_density_met": true,
+        "faq_implemented": true,
+        "heading_hierarchy_clean": true
+      },
+      "eeat_signals": {
+        "experience_proof_type": "documented_test",
+        "experience_proof_implemented": true,
+        "experience_proof_notes": "Kết quả đo điện năng thực tế 30 ngày được ghi nhận trong bài với ảnh đồng hồ điện",
+        "author_entity_referenced": true,
+        "trust_signals_present": true,
+        "ymyl_domain": false
+      },
+      "internal_links_added": [
+        "/may-lanh/may-lanh-inverter-la-gi",
+        "/may-lanh/so-sanh-may-lanh-gia-re",
+        "/may-lanh/huong-dan-chon-may-lanh-theo-dien-tich"
+      ],
+      "open_questions": [],
+      "recommended_next_roles": [
+        "seo-analyst"
+      ],
+      "source_data": "seo-content-brief/danh-gia-may-lanh-funiki-2026-06-10",
+      "publish_log_updated": false
+    }
+  ]
+}

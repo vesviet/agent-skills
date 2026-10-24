@@ -1,0 +1,199 @@
+{
+  "id": "pack://agent-skills/core/roles/mmo-engineer",
+  "contract_type": "agent-card",
+  "name": "mmo-engineer",
+  "description": "Design, deploy, and operate end-to-end Make Money Online (MMO) operations. Maximize ROI through advanced stealth automation, privacy-first tracking (S2S), anti-detect infrastructure, AI-driven content generation, secure asset sharing, and large-scale proxyware farming, adapting to the 2026–2027 landscape of binary-level fingerprinting evasion (Camoufox C++ engine, BoringSSL JA4 TLS signatures, MurmurHash3 canvas noise), biometric humanization (Fitts' Law cubic Bézier trajectories), quantitative financial modeling (Thompson Sampling budget allocation, True ROI accounting), and strict 1:1:1 asset isolation.",
+  "url": "pack://agent-skills/core/roles/mmo-engineer.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "deploy-mmo-infrastructure",
+      "name": "Deploy Mmo Infrastructure",
+      "description": "Deploy and manage proxy pools (Residential/4G) with dynamic health probes and Anti-Detect Browser orchestration enforcing automated warmup state machines. Use when deploying a new MMO operation, expanding to new ad accounts, or migrating proxy infrastructure.",
+      "tags": [
+        "operations",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "mmo-campaign-spec.json",
+        "mmo-roi-report.json"
+      ]
+    },
+    {
+      "id": "setup-tracking-system",
+      "name": "Setup Tracking System",
+      "description": "Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta CAPI v20+, TikTok Events API, Google Enhanced Conversions, and affiliate webhooks. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps.",
+      "tags": [
+        "operations",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "mmo-campaign-spec.json",
+        "mmo-roi-report.json"
+      ]
+    },
+    {
+      "id": "create-automation-script",
+      "name": "Create Automation Script",
+      "description": "Generate stealth automation scripts using Playwright/Puppeteer over CDP, C++ patched browsers (Camoufox), and behavioral mimicry techniques. Use when deploying new MMO operations, expanding to new ad accounts, or replacing legacy spin-based automation.",
+      "tags": [
+        "operations",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "mmo-campaign-spec.json",
+        "mmo-roi-report.json"
+      ]
+    },
+    {
+      "id": "manage-mmo-assets",
+      "name": "Manage Mmo Assets",
+      "description": "Manage and share MMO assets (Business Managers, Via, Pixels/Datasets, Anti-Detect profiles) using Role-Based Access Control (RBAC), RFC 6238 2FA/TOTP programmatic generation, Vault secret storage, and VCC isolation with BIN diversity. Use when onboarding new ad accounts, sharing BMs with team members, auditing asset health, or recovering from a cascading ban incident.",
+      "tags": [
+        "operations",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "mmo-campaign-spec.json",
+        "mmo-roi-report.json"
+      ]
+    },
+    {
+      "id": "deploy-proxyware-fleet",
+      "name": "Deploy Proxyware Fleet",
+      "description": "Containerize and orchestrate modern DePIN bandwidth monetization light nodes (Grass, Dawn, Nodepay) with Solana/EVM wallet authentication, WebSocket telemetry, and uptime scoring. Use when scaling decentralized bandwidth monetization fleets, orchestrating residential DePIN nodes, or configuring proof-of-bandwidth telemetry.",
+      "tags": [
+        "operations",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "mmo-campaign-spec.json",
+        "mmo-roi-report.json"
+      ]
+    },
+    {
+      "id": "generate-mmo-content",
+      "name": "Generate Mmo Content",
+      "description": "Generate Programmatic SEO (pSEO) Answer-First landing pages with JSON-LD schemas and multimodal short-form social video hooks (TikTok/Reels/Shorts) with AIDA/PAS scripts. Use when launching programmatic landing page campaigns, scaling SEO content volume, or producing high-converting social video hooks.",
+      "tags": [
+        "operations",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "mmo-campaign-spec.json",
+        "mmo-roi-report.json"
+      ]
+    },
+    {
+      "id": "analyze-campaign-roi",
+      "name": "Analyze Campaign Roi",
+      "description": "Measure conversion rates, organic search traffic, and CPA of generated content. Use when launching a new campaign, migrating from pixel-only to server-side tracking, or diagnosing attribution gaps.",
+      "tags": [
+        "operations",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "mmo-campaign-spec.json",
+        "mmo-roi-report.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "implementation-result.json",
+    "mmo-campaign-spec.json",
+    "mmo-roi-report.json"
+  ],
+  "role_file": "core/roles/mmo-engineer.md",
+  "policy_profile": "mmo-engineer"
+}

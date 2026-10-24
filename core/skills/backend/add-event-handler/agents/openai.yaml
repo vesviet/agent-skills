@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Event Handler"
+  short_description: "Add event publishers or consumers"
+  default_prompt: "Use $add-event-handler to add or modify event-driven behavior in this codebase."

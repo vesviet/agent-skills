@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "exit criteria",
+    "validation-result",
+    "phase gate",
+    "block on regression",
+    "prerequisites met"
+  ],
+  "must_not_include": [
+    "advance phase despite failures",
+    "skip exit criteria"
+  ],
+  "required_tokens": [
+    "exit criteria",
+    "validation-result",
+    "phase gate",
+    "block on regression",
+    "prerequisites met"
+  ],
+  "forbidden_tokens": [
+    "advance phase despite failures",
+    "skip exit criteria"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/coordination-plan.json",
+    "contract_type": "coordination-plan"
+  }
+}

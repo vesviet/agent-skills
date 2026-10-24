@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit AI Compliance"
+  short_description: "Audit AI systems for Vietnam Law No. 134/2025/QH15 compliance"
+  default_prompt: "Use $audit-ai-compliance to audit AI systems and agent workflows for Vietnam statutory compliance."

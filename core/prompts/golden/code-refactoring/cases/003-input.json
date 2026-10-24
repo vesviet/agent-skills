@@ -1,0 +1,13 @@
+{
+  "case_id": "REF-003",
+  "name": "Dependency Inversion & Interface Abstraction (SOLID DIP)",
+  "work_type": "refactoring",
+  "role": "technical-lead",
+  "skill": "review-code",
+  "user_request": "Refactor NotificationService to invert dependency on third-party SendGrid client via an abstraction interface.",
+  "target": "services/notifications/service.ts",
+  "context": {
+    "current_code": "class NotificationService { private client = new SendGridClient(); }",
+    "goal": "Decouple domain from vendor SDK to facilitate unit testing"
+  }
+}

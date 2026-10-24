@@ -1,0 +1,17 @@
+{
+  "case_id": "A2A-001",
+  "name": "Multi-Agent DAG Task Decomposition for Full-Stack Feature Delivery",
+  "work_type": "coordination",
+  "role": "agent-coordinator",
+  "skill": "agent-a2a-protocol",
+  "user_request": "Coordinate end-to-end implementation of multi-factor authentication feature across frontend, backend, and QA specialists.",
+  "target": "tasks/user-authentication-flow",
+  "context": {
+    "roles_involved": [
+      "backend-developer",
+      "frontend-developer",
+      "qa-engineer"
+    ],
+    "protocol": "A2A 1.0 DAG coordination"
+  }
+}

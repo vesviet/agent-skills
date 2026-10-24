@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a2a-task",
+  "title": "A2A Task Delegation",
+  "description": "Task unit for A2A 1.0 delegation (submit, stream, get, cancel). Extends pack delegation with full lifecycle.",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Unique identifier (UUID v4 recommended for Antigravity)."
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "submitted",
+        "working",
+        "input-required",
+        "completed",
+        "failed",
+        "canceled"
+      ],
+      "default": "submitted"
+    },
+    "delegator": {
+      "type": "string",
+      "description": "Role or agent identity of the delegating agent."
+    },
+    "assignee_role": {
+      "type": "string",
+      "description": "Required role of the receiving agent."
+    },
+    "assignee_agent_card": {
+      "type": "string",
+      "description": "Optional URI or registry key to worker Agent Card."
+    },
+    "task_description": {
+      "type": "string",
+      "description": "Clear, self-contained description of the work to perform."
+    },
+    "input_data": {
+      "type": "object",
+      "description": "All context the assignee needs. Must be self-contained.",
+      "additionalProperties": true
+    },
+    "output_schema_ref": {
+      "type": "string",
+      "description": "Reference to the JSON Schema the result must conform to."
+    },
+    "success_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Conditions that must be true for the task to be considered complete."
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Boundaries the assignee must not exceed."
+    },
+    "risk_tier": {
+      "type": "string",
+      "enum": [
+        "vibe",
+        "agentic",
+        "engineering"
+      ],
+      "description": "Level of rigor required for this task."
+    },
+    "interaction_mode": {
+      "type": "string",
+      "enum": [
+        "sync",
+        "stream",
+        "push"
+      ],
+      "default": "stream",
+      "description": "sync=blocking invoke; stream=SSE progress; push=webhook on completion."
+    },
+    "timeout_ms": {
+      "type": "integer",
+      "minimum": 1000,
+      "default": 30000,
+      "description": "Maximum task execution duration in milliseconds (supersedes timeout_minutes)."
+    },
+    "timeout_minutes": {
+      "type": "integer",
+      "description": "Maximum time allowed for task completion in minutes (legacy fallback)."
+    },
+    "retry_policy": {
+      "type": "object",
+      "description": "Resilient retry strategy with exponential backoff and jitter for transient task failures.",
+      "properties": {
+        "max_retries": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 3,
+          "description": "Maximum number of retry attempts before marking the task failed."
+        },
+        "initial_interval_ms": {
+          "type": "integer",
+          "minimum": 100,
+          "default": 1000,
+          "description": "Initial backoff delay in milliseconds."
+        },
+        "backoff_factor": {
+          "type": "number",
+          "minimum": 1.0,
+          "default": 2.0,
+          "description": "Multiplier for exponential backoff between retries."
+        },
+        "max_interval_ms": {
+          "type": "integer",
+          "minimum": 1000,
+          "default": 30000,
+          "description": "Maximum delay ceiling between retries in milliseconds."
+        },
+        "retryable_errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Error codes or failure categories eligible for retry."
+        },
+        "jitter": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "none",
+                "full",
+                "equal"
+              ]
+            }
+          ],
+          "default": true,
+          "description": "Whether or which jitter strategy to apply (boolean or enum ['none', 'full', 'equal'])."
+        }
+      }
+    },
+    "parent_task_id": {
+      "type": "string",
+      "description": "Parent task for scatter-gather or phased graphs."
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "description": "Conversation history (a2a-message.json objects)."
+    },
+    "push_notification_url": {
+      "type": "string",
+      "description": "Webhook when interaction_mode is push."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "task_id",
+    "delegator",
+    "assignee_role",
+    "task_description",
+    "output_schema_ref",
+    "success_criteria",
+    "risk_tier"
+  ],
+  "examples": [
+    {
+      "task_id": "task-cod-store-routing-slice-01",
+      "state": "submitted",
+      "delegator": "agent-coordinator",
+      "assignee_role": "backend-developer",
+      "task_description": "Implement COD store routing in NewLogicAutoAssign.php per slice-01 of technical-delivery-plan 2026-06-12-change-store-order-cod.",
+      "output_schema_ref": "contracts/schemas/implementation-result.json",
+      "success_criteria": [
+        "Implementation result validates against its contract."
+      ],
+      "risk_tier": "engineering",
+      "interaction_mode": "stream",
+      "timeout_ms": 30000,
+      "retry_policy": {
+        "max_retries": 3,
+        "initial_interval_ms": 1000,
+        "backoff_factor": 2.0,
+        "max_interval_ms": 30000,
+        "retryable_errors": [
+          "TIMEOUT",
+          "RATE_LIMITED",
+          "NETWORK_ERROR"
+        ],
+        "jitter": "full"
+      },
+      "messages": [
+        {
+          "message_id": "msg-000",
+          "role": "delegator",
+          "parts": [
+            {
+              "text": "Implement COD store routing in NewLogicAutoAssign.php per slice-01 of technical-delivery-plan 2026-06-12-change-store-order-cod"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

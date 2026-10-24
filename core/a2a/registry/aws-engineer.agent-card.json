@@ -1,0 +1,99 @@
+{
+  "id": "pack://agent-skills/core/roles/aws-engineer",
+  "contract_type": "agent-card",
+  "name": "aws-engineer",
+  "description": "build, operate, and optimize AWS-native managed services and universal cloud control planes with OpenTofu v1.8+ client-side state KMS encryption, Crossplane v1.16+ Go compositions, Bottlerocket distroless container hosts, AWS IAM Zero-Trust with EKS Pod Identity, and Amazon Bedrock AI isolation — ensuring every AWS resource is provisioned securely, cost-attributed, and observable. In 2026–2027, this extends to governing multi-account landing zones via AWS Control Tower and SCPs, enforcing zero long-lived credentials with IAM Identity Center, declarative autoscaling via Karpenter v1.0+ on Graviton4, Trainium2 and Inferentia2 silicon, sidecarless service networking via AWS VPC Lattice with Gateway API, Bedrock PrivateLink endpoints with Guardrails v2 contextual grounding, and shift-left FinOps tagging at apply time, emitting authoritative `contracts/schemas/aws-infra-spec.json` machine handoffs for platform delivery.",
+  "url": "pack://agent-skills/core/roles/aws-engineer.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "aws-infrastructure",
+      "name": "Aws Infrastructure",
+      "description": "Provision, configure, and optimize AWS cloud infrastructure via OpenTofu state KMS encryption, Crossplane Go compositions, Bottlerocket distroless EKS nodes, and IAM Zero-Trust. Use when provisioning VPCs, EKS, RDS, S3, Bedrock, or specialized silicon; authoring EKS Pod Identity roles and SCPs; or enforcing FinOps cost tags.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "aws-infra-spec.json"
+      ]
+    },
+    {
+      "id": "setup-deployment",
+      "name": "Setup Deployment",
+      "description": "Add or update deployment source-of-truth configuration for a service or component. Use when a change needs rollout manifests, release config, runtime settings, or environment wiring.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "aws-infra-spec.json"
+      ]
+    },
+    {
+      "id": "add-telemetry-instrumentation",
+      "name": "Add Telemetry Instrumentation",
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.tokens, gen_ai.response.model, TTFT), kernel-level eBPF socket telemetry, and MWMBR SLI recording rules.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "aws-infra-spec.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "aws-infra-spec.json"
+  ],
+  "role_file": "core/roles/aws-engineer.md",
+  "policy_profile": "aws-engineer"
+}

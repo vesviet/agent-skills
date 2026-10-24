@@ -1,0 +1,453 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "technical-delivery-plan",
+  "title": "Technical Delivery Plan",
+  "description": "Structured implementation plan produced by Technical Lead. Consumed by Backend Developer, Frontend Developer, Mobile Engineer, QA Engineer, Reviewer, Agent Coordinator, and Technical Writer. One plan per feature or major slice grouping. Slices map directly to implementation-result.json emits.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "technical-delivery-plan",
+      "description": "Machine-readable contract discriminator."
+    },
+    "plan_id": {
+      "type": "string",
+      "description": "Unique plan identifier. Convention: YYYY-MM-DD-slug or project-ref."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "work_title": {
+      "type": "string",
+      "description": "Human-readable plan title."
+    },
+    "feature_ticket_ref": {
+      "type": "string",
+      "description": "ticket_id from feature-ticket.json this plan implements."
+    },
+    "adr_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "ADR IDs or paths that constrain this implementation."
+    },
+    "goal_summary": {
+      "type": "string",
+      "description": "What must be true when this plan is done. Expressed as outcomes, not activities."
+    },
+    "preserved_behavior": {
+      "type": "string",
+      "description": "Behavior that must remain unchanged after all slices complete. Directly from feature-ticket.json."
+    },
+    "slices": {
+      "type": "array",
+      "description": "Ordered delivery slices. Each slice produces one implementation-result.json.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "slice_id": {
+            "type": "string",
+            "description": "Unique slice identifier within this plan."
+          },
+          "description": {
+            "type": "string",
+            "description": "What this slice does and what files/behavior it changes."
+          },
+          "owner_role": {
+            "type": "string",
+            "description": "Role responsible for this slice (e.g. backend-developer, frontend-developer)."
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "slice_ids that must complete before this slice starts."
+          },
+          "output_schema_ref": {
+            "type": "string",
+            "description": "Schema the slice owner must emit on completion (usually implementation-result)."
+          },
+          "risk_level": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ],
+            "description": "Risk level of this slice for reviewer prioritization."
+          },
+          "trust_zone": {
+            "type": "string",
+            "enum": [
+              "restricted",
+              "standard",
+              "low_risk"
+            ],
+            "description": "restricted = no AI autonomy, deep human review mandatory; standard = AI allowed with standard guardrails; low_risk = boilerplate/scaffolding."
+          },
+          "feature_flag_config": {
+            "type": "object",
+            "description": "Required for any user-visible slice to enforce feature flag-first delivery.",
+            "properties": {
+              "flag_name": {
+                "type": "string",
+                "description": "Name of the feature flag (e.g. 'enable-new-cod-routing')."
+              },
+              "kill_switch_config": {
+                "type": "string",
+                "description": "Config key or mechanism to force immediate disablement."
+              },
+              "rollout_plan": {
+                "type": "array",
+                "description": "Ordered phases of rollout.",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "internal",
+                    "canary",
+                    "ga"
+                  ]
+                }
+              },
+              "cleanup_target_date": {
+                "type": "string",
+                "format": "date",
+                "description": "Cleanup deadline in YYYY-MM-DD format."
+              }
+            },
+            "required": [
+              "flag_name",
+              "kill_switch_config",
+              "rollout_plan",
+              "cleanup_target_date"
+            ]
+          },
+          "agent_governance": {
+            "type": "object",
+            "description": "Execution parameters and human-in-the-loop gates for hybrid/agent slices.",
+            "properties": {
+              "compute_budget": {
+                "type": "object",
+                "properties": {
+                  "max_usd": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Max API usage budget in USD."
+                  },
+                  "max_iterations": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Max agentic run loops."
+                  }
+                },
+                "required": [
+                  "max_usd"
+                ]
+              },
+              "hitl_checkpoints": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "trigger": {
+                      "type": "string",
+                      "description": "Condition when agent must pause and await approval (e.g., 'pre-migration-apply', 'post-code-gen')."
+                    },
+                    "verification_required": {
+                      "type": "string",
+                      "description": "Description of what a human reviewer must inspect."
+                    }
+                  },
+                  "required": [
+                    "trigger",
+                    "verification_required"
+                  ]
+                }
+              },
+              "agent_output_gates": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Quality checks that must run and pass (e.g., 'golangci-lint pass', 'go test pass')."
+                }
+              }
+            },
+            "required": [
+              "compute_budget",
+              "hitl_checkpoints",
+              "agent_output_gates"
+            ]
+          },
+          "estimation": {
+            "type": "object",
+            "description": "AI estimation with explicit uncertainty bounds (P10/P50/P90).",
+            "properties": {
+              "confidence_level_percent": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Percentage representing confidence in the estimate."
+              },
+              "optimistic_hours": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Optimistic estimate (P10) - works if everything goes perfectly."
+              },
+              "expected_hours": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Expected estimate (P50) - most likely duration."
+              },
+              "pessimistic_hours": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Pessimistic estimate (P90) - worst-case duration."
+              }
+            },
+            "required": [
+              "confidence_level_percent",
+              "optimistic_hours",
+              "expected_hours",
+              "pessimistic_hours"
+            ]
+          }
+        },
+        "required": [
+          "slice_id",
+          "description",
+          "owner_role",
+          "estimation"
+        ]
+      }
+    },
+    "impact_radius": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Services, APIs, event consumers, clients, or teams affected by this change."
+    },
+    "quality_gates": {
+      "type": "object",
+      "description": "Minimum quality gate requirements before delivery is considered done.",
+      "properties": {
+        "tests": {
+          "type": "string",
+          "description": "Test coverage requirement (e.g. 'unit tests for all new business logic', 'integration test for COD routing')."
+        },
+        "review": {
+          "type": "string",
+          "description": "Review requirement (e.g. 'at least 1 Reviewer approval', 'Security Engineer review for auth changes')."
+        },
+        "build": {
+          "type": "string",
+          "description": "Build/CI requirement."
+        },
+        "security": {
+          "type": "string",
+          "description": "Security check requirement, or 'none' if not applicable."
+        },
+        "observability": {
+          "type": "string",
+          "description": "Instrumentation requirement (e.g. 'OTel spans on new integration points') or 'not_required'."
+        }
+      },
+      "required": [
+        "tests",
+        "review",
+        "build"
+      ]
+    },
+    "rollout_notes": {
+      "type": "string",
+      "description": "Deployment sequencing, feature flag requirements, canary strategy, or mixed-version considerations."
+    },
+    "rollback_notes": {
+      "type": "string",
+      "description": "How to revert if something goes wrong post-deploy. Include whether rollback is safe or destructive."
+    },
+    "documentation_deltas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Topics or pages requiring documentation updates — handed off to Technical Writer."
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Unresolved questions that could affect delivery — escalate to Technical Architect or BA if blocking."
+    },
+    "readiness_status": {
+      "type": "string",
+      "enum": [
+        "planning",
+        "in_progress",
+        "ready_for_review",
+        "blocked",
+        "completed"
+      ],
+      "description": "Current plan status for Agent Coordinator phase gate tracking."
+    },
+    "ai_assisted_development_policy": {
+      "type": "object",
+      "description": "Governance policy for AI-generated code in this delivery cycle.",
+      "properties": {
+        "ai_tooling_in_use": {
+          "type": "boolean",
+          "description": "Whether AI coding tools (Copilot, Cursor, agentic tools) will be used for this plan."
+        },
+        "trust_zones_defined": {
+          "type": "boolean",
+          "description": "Whether explicit trust zones have been assigned to all slices."
+        },
+        "review_focus": {
+          "type": "string",
+          "description": "Specific intent and assumption validations required during review."
+        }
+      },
+      "required": [
+        "ai_tooling_in_use",
+        "trust_zones_defined"
+      ]
+    },
+    "debt_governance": {
+      "type": "object",
+      "description": "Sprint capacity and compliance controls for technical, cognitive, and security debt.",
+      "properties": {
+        "debt_servicing_allocation_percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of capacity allocated to debt servicing. Role standard requires 15-20%."
+        },
+        "security_compliance": {
+          "type": "object",
+          "properties": {
+            "sbom_verified": {
+              "type": "boolean"
+            },
+            "sca_verified": {
+              "type": "boolean"
+            },
+            "hallucinated_package_check": {
+              "type": "boolean",
+              "description": "Verified no hallucinated imports from AI."
+            }
+          }
+        }
+      }
+    },
+    "dor_checklist_verified": {
+      "type": "boolean",
+      "description": "True if the Definition of Ready (DoR) checklist has been verified for all slices."
+    }
+  },
+  "required": [
+    "contract_type",
+    "work_title",
+    "goal_summary",
+    "slices",
+    "quality_gates",
+    "readiness_status"
+  ],
+  "examples": [
+    {
+      "contract_type": "technical-delivery-plan",
+      "plan_id": "2026-06-12-change-store-order-cod",
+      "created_at": "2026-06-12T09:30:00+07:00",
+      "work_title": "COD Store Order Assignment Logic — DMS Orders Service",
+      "feature_ticket_ref": "2026-06-12-change-store-order-cod",
+      "adr_refs": [],
+      "goal_summary": "COD orders with store_id route to store courier; non-COD orders unchanged; fallback to warehouse when no store courier available.",
+      "preserved_behavior": "Non-COD order auto-assign flow is unchanged end-to-end.",
+      "slices": [
+        {
+          "slice_id": "slice-01-command-logic",
+          "description": "Modify NewLogicAutoAssign.php to add COD store routing branch. Add store courier lookup. Implement fallback with warning log.",
+          "owner_role": "backend-developer",
+          "depends_on": [],
+          "output_schema_ref": "contracts/schemas/implementation-result.json",
+          "risk_level": "medium",
+          "trust_zone": "standard",
+          "agent_governance": {
+            "compute_budget": {
+              "max_usd": 2.50,
+              "max_iterations": 5
+            },
+            "hitl_checkpoints": [
+              {
+                "trigger": "pre-migration-apply",
+                "verification_required": "Verify the SQL migration script for store_id column indices."
+              }
+            ],
+            "agent_output_gates": [
+              "golangci-lint pass",
+              "go test ./... pass"
+            ]
+          },
+          "estimation": {
+            "confidence_level_percent": 90,
+            "optimistic_hours": 1.5,
+            "expected_hours": 3.0,
+            "pessimistic_hours": 6.0
+          }
+        },
+        {
+          "slice_id": "slice-02-unit-tests",
+          "description": "Write unit tests for COD routing branch: happy path, fallback, non-COD isolation.",
+          "owner_role": "backend-developer",
+          "depends_on": [
+            "slice-01-command-logic"
+          ],
+          "output_schema_ref": "contracts/schemas/implementation-result.json",
+          "risk_level": "low",
+          "trust_zone": "standard",
+          "agent_governance": {
+            "compute_budget": {
+              "max_usd": 1.00,
+              "max_iterations": 3
+            },
+            "hitl_checkpoints": [],
+            "agent_output_gates": [
+              "go test ./... pass"
+            ]
+          },
+          "estimation": {
+            "confidence_level_percent": 95,
+            "optimistic_hours": 1.0,
+            "expected_hours": 2.0,
+            "pessimistic_hours": 3.0
+          }
+        }
+      ],
+      "impact_radius": [
+        "DMS orders-service",
+        "Store courier assignment queue",
+        "Warehouse fallback assignment log"
+      ],
+      "quality_gates": {
+        "tests": "Unit tests for all 3 AC scenarios from feature ticket; PHPUnit pass",
+        "review": "1 Reviewer approval; check COD branch isolation from existing code path",
+        "build": "CI pipeline green",
+        "security": "none",
+        "observability": "not_required for this slice; add if store courier API call is external"
+      },
+      "rollout_notes": "No feature flag required. Change is additive. Deploy to staging first; run smoke test with COD + non-COD order samples.",
+      "rollback_notes": "Revert commit is safe — no migration, no schema change, no persistent side effects.",
+      "documentation_deltas": [
+        "Update DMS order assignment runbook with COD routing rules"
+      ],
+      "open_questions": [
+        "Confirm whether store manager notification on fallback is in scope for v1 or deferred."
+      ],
+      "readiness_status": "in_progress"
+    }
+  ]
+}

@@ -1,0 +1,1293 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "feature-ticket",
+  "title": "Feature Ticket Specification",
+  "description": "Structured output from Business Analyst. Consumed by Technical Architect (for adr-spec.json), Technical Lead (for technical-delivery-plan.json), and Backend/Frontend Developers as the source of truth for scope, acceptance criteria, and business rules. Also optionally triggers Data Analyst and SEO Analyst handoffs. For AI/LLM features, includes ai_feature_spec (probabilistic AC, HITL triggers, EU AI Act tier) and assumption_register (risk-scored assumptions).",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "feature-ticket",
+      "description": "Machine-readable contract discriminator."
+    },
+    "ticket_id": {
+      "type": "string",
+      "description": "Unique identifier. Convention: YYYY-MM-DD-short-slug or project-number."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "title": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "feature",
+        "bug",
+        "chore",
+        "spike",
+        "research"
+      ]
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low"
+      ],
+      "description": "Business priority \u2014 not technical complexity."
+    },
+    "business_value": {
+      "type": "string",
+      "description": "Why this work matters to the business or users. Expressed as outcome, not activity."
+    },
+    "preserved_behavior": {
+      "type": "string",
+      "description": "Behavior that must remain unchanged after this change. Required for bug fixes."
+    },
+    "changed_behavior": {
+      "type": "string",
+      "description": "Intended new or restored behavior. Expressed in user/system terms."
+    },
+    "actors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Human users, systems, or agent roles involved in this feature."
+    },
+    "business_rules": {
+      "type": "array",
+      "description": "Explicit business rules and invariants. Each rule must be testable.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Rule identifier for cross-referencing."
+          },
+          "rule": {
+            "type": "string",
+            "description": "The business rule, stated as a declarative sentence."
+          },
+          "exceptions": {
+            "type": "string",
+            "description": "Known exceptions or edge cases to this rule."
+          }
+        },
+        "required": [
+          "rule"
+        ]
+      }
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "description": "Testable acceptance scenarios in Given/When/Then format. For AI features, use ai_feature_spec for probabilistic AC \u2014 do not encode statistical thresholds in this plain GWT format.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "scenario": {
+            "type": "string",
+            "description": "Short label for this AC scenario."
+          },
+          "given": {
+            "type": "string",
+            "description": "Pre-condition state."
+          },
+          "when": {
+            "type": "string",
+            "description": "User or system action."
+          },
+          "then": {
+            "type": "string",
+            "description": "Expected observable outcome."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "BDD scenario tags (e.g. @smoke, @regression, @p1, @core)."
+          },
+          "and_conditions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Additional conjunction assertions for complex verification."
+          },
+          "stateful_invariants": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "System state invariants that must remain unbroken during and after scenario execution."
+          },
+          "failure_guarantee": {
+            "type": "string",
+            "description": "Explicit postcondition guarantee when execution fails or raises an exception."
+          }
+        },
+        "required": [
+          "scenario",
+          "then"
+        ]
+      }
+    },
+    "edge_cases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Edge cases that require special handling but aren't full AC scenarios."
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Other tickets, services, or teams this work depends on."
+    },
+    "out_of_scope": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Explicitly excluded from this ticket to prevent scope creep."
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Questions requiring clarification before or during implementation."
+    },
+    "process_impact": {
+      "type": "string",
+      "description": "Downstream teams, systems, workflows, or users affected beyond the core change."
+    },
+    "ai_feature_spec": {
+      "type": "object",
+      "description": "Required when the feature involves AI/LLM behavior. Owned by Business Analyst. Consumed by Technical Lead, QA Engineer, and Reviewer as AI acceptance criteria evidence. Binary pass/fail AC must NOT be used for AI features \u2014 use this block instead.",
+      "properties": {
+        "behavioral_boundaries": {
+          "type": "string",
+          "description": "Acceptable output range expressed as intent \u2014 not exact string match. E.g. 'Response must be professional in tone, contain no hallucinated product names, and cite only verified sources.'"
+        },
+        "probabilistic_ac": {
+          "type": "object",
+          "description": "Statistical acceptance criteria for AI behavior. Replaces binary pass/fail for non-deterministic outputs.",
+          "properties": {
+            "threshold_pct": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Minimum percentage of correct outcomes. E.g. 95 means \u226595% of N samples must meet the criteria."
+            },
+            "population": {
+              "type": "string",
+              "description": "The population or input distribution this threshold applies to."
+            },
+            "window_n": {
+              "type": "integer",
+              "description": "Sample window size for threshold evaluation (e.g. 100 evaluations per week)."
+            },
+            "evaluation_method": {
+              "type": "string",
+              "enum": [
+                "llm-as-judge",
+                "human-review-panel",
+                "golden-dataset",
+                "automated-harness",
+                "hybrid"
+              ],
+              "description": "How correctness is assessed."
+            },
+            "judge": {
+              "type": "string",
+              "description": "Who or what acts as the judge \u2014 specify model name, rubric reference, or reviewer role."
+            }
+          },
+          "required": [
+            "threshold_pct",
+            "evaluation_method"
+          ]
+        },
+        "hitl_trigger": {
+          "type": "object",
+          "description": "Human-in-the-Loop escalation specification. Required for any AI feature with high-stakes decisions (financial, legal, medical, safety, access control). AI-HITL-SPEC LOCK applies.",
+          "properties": {
+            "condition": {
+              "type": "string",
+              "description": "When does AI autonomy end? E.g. 'confidence_score < 0.85' or 'decision_category = credit'."
+            },
+            "action": {
+              "type": "string",
+              "description": "What happens when the trigger fires? E.g. 'pause decision, display Under Review status'."
+            },
+            "responsible_role": {
+              "type": "string",
+              "description": "Who receives the escalated decision?"
+            },
+            "sla": {
+              "type": "string",
+              "description": "Maximum response time after escalation. E.g. '24h', '4h for safety-critical'."
+            },
+            "audit_log_required": {
+              "type": "boolean",
+              "description": "Whether an immutable audit log must be written at the escalation point."
+            },
+            "audit_log_fields": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Fields required in the audit log: e.g. model_version, input_summary, output, confidence, human_decision, timestamp."
+            }
+          },
+          "required": [
+            "condition",
+            "action",
+            "responsible_role",
+            "sla",
+            "audit_log_required"
+          ]
+        },
+        "non_determinism": {
+          "type": "string",
+          "enum": [
+            "deterministic_required",
+            "controlled_variation",
+            "creative_generation"
+          ],
+          "description": "deterministic_required: identical inputs must produce identical outputs (temperature=0 or equivalent). controlled_variation: intentional A/B or seeded variation. creative_generation: open-ended generation acceptable."
+        },
+        "hybrid_architecture_intent": {
+          "type": "string",
+          "description": "Which components use deterministic rule-based logic vs AI/LLM? High-stakes actions (payment, legal notice, access revocation) must be deterministic."
+        },
+        "accountability_model": {
+          "type": "object",
+          "description": "Who owns AI decisions and how are they monitored post-launch.",
+          "properties": {
+            "decision_owner": {
+              "type": "string",
+              "description": "Accountable role for AI decisions in this feature."
+            },
+            "monitoring_metric": {
+              "type": "string",
+              "description": "KPI or metric used to detect degradation in production."
+            },
+            "review_cadence": {
+              "type": "string",
+              "description": "How often AI behavior is reviewed post-launch. E.g. 'weekly for 4 weeks, then monthly'."
+            },
+            "audit_log_requirements": {
+              "type": "string",
+              "description": "Immutable audit log spec: fields required per AI decision (model version, input summary, output, confidence, human intervention)."
+            }
+          },
+          "required": [
+            "decision_owner",
+            "monitoring_metric"
+          ]
+        },
+        "eu_ai_act_tier": {
+          "type": "string",
+          "enum": [
+            "high-risk",
+            "limited-risk",
+            "minimal-risk",
+            "not-applicable"
+          ],
+          "description": "EU AI Act risk tier classification. high-risk requires HITL, audit logging, conformity assessment, and Human Review Board availability. Must be classified before AC is locked."
+        },
+        "degradation_trigger": {
+          "type": "string",
+          "description": "Production degradation alert spec. E.g. 'If accuracy falls below 90% in any 7-day rolling window, raise P1 incident and suspend feature pending review.'"
+        }
+      },
+      "required": [
+        "behavioral_boundaries",
+        "eu_ai_act_tier"
+      ]
+    },
+    "assumption_register": {
+      "type": "array",
+      "description": "Risk-scored assumptions that underlie the requirements. Required for significant bets. Risk score = impact \u00d7 (6 \u2212 confidence). Highest-risk assumptions must be validated before build commitment. ASSUMPTION LOCK applies.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "assumption": {
+            "type": "string",
+            "description": "What must be true for this requirement to be valid? State as a declarative belief."
+          },
+          "impact": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "description": "If this assumption is wrong, how bad is the outcome? 1=trivial, 5=project-breaking."
+          },
+          "confidence": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "description": "How much evidence supports this assumption being true? 1=pure guess, 5=verified fact."
+          },
+          "risk_score": {
+            "type": "number",
+            "description": "Computed as impact \u00d7 (6 \u2212 confidence). Range 1\u201325. Scores \u226515 require validation before build commitment."
+          },
+          "validation_method": {
+            "type": "string",
+            "description": "How will this assumption be validated? E.g. 'user interview', 'analytics query', 'spike', 'legal review'."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "validated",
+              "invalidated",
+              "escalated"
+            ],
+            "description": "Current validation status. escalated = PM notified with build-cost comparison."
+          },
+          "outcome_note": {
+            "type": "string",
+            "description": "Result of validation or reason for escalation. Required when status is validated/invalidated/escalated."
+          }
+        },
+        "required": [
+          "assumption",
+          "impact",
+          "confidence",
+          "risk_score",
+          "status"
+        ]
+      }
+    },
+    "analytics_request": {
+      "type": "object",
+      "description": "Optional handoff block for Data Analyst \u2014 triggers data investigation request.",
+      "properties": {
+        "decision_supported": {
+          "type": "string",
+          "description": "What business decision will this data inform?"
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "proposed_metrics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "segments": {
+          "type": "string"
+        },
+        "time_range": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "sources_known": {
+          "type": "string"
+        },
+        "constraints": {
+          "type": "string"
+        },
+        "out_of_scope": {
+          "type": "string"
+        }
+      }
+    },
+    "seo_content_request": {
+      "type": "object",
+      "description": "Optional handoff block for SEO Analyst \u2014 triggers content or discoverability work.",
+      "properties": {
+        "business_outcome": {
+          "type": "string"
+        },
+        "audience": {
+          "type": "string"
+        },
+        "site_or_channel": {
+          "type": "string"
+        },
+        "topic_angle": {
+          "type": "string"
+        },
+        "proposed_primary_keyword": {
+          "type": "string"
+        },
+        "conversion_or_cta_goal": {
+          "type": "string"
+        },
+        "must_link_to": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "High-value paths (product, property, guides) BA wants emphasized."
+        },
+        "constraints": {
+          "type": "string"
+        },
+        "out_of_scope": {
+          "type": "string"
+        }
+      }
+    },
+    "research_request": {
+      "type": "object",
+      "description": "Optional handoff block for Researcher \u2014 triggers domain or compliance research. depth must align with researcher.md depth_mode: deep (10+ rounds, default) or scoped (3+ rounds, requires scope_waiver_note).",
+      "properties": {
+        "research_question": {
+          "type": "string",
+          "description": "Primary research question (singular framing). Use questions[] for numbered multi-part requests."
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Numbered research questions and boundaries. Preferred over research_question for multi-part requests."
+        },
+        "domain": {
+          "type": "string"
+        },
+        "depth": {
+          "type": "string",
+          "enum": [
+            "deep",
+            "scoped"
+          ],
+          "description": "deep: 10+ research rounds (default). scoped: minimum 3 rounds \u2014 requires scope_waiver_note explaining why deep is not needed."
+        },
+        "scope_waiver_note": {
+          "type": "string",
+          "description": "Required when depth = scoped. Explains why deep discovery is not needed for this request."
+        },
+        "output_contract": {
+          "type": "string",
+          "enum": [
+            "research-report.json",
+            "markdown-brief"
+          ],
+          "description": "Expected output format from Researcher. research-report.json for machine handoff; markdown-brief for quick synthesis."
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date"
+        },
+        "constraints": {
+          "type": "string"
+        }
+      }
+    },
+    "ai_interaction_requirements": {
+      "type": "object",
+      "description": "2026 PM Standard: Define HITL and fallback bounds.",
+      "properties": {
+        "human_in_the_loop_triggers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fallback_behavior": {
+          "type": "string"
+        }
+      }
+    },
+    "blast_radius_assessment": {
+      "type": "object",
+      "description": "Assessment of potential blast radius and failure domain impact.",
+      "properties": {
+        "impact_tier": {
+          "type": "string",
+          "enum": [
+            "isolated_component",
+            "service_level",
+            "cross_service",
+            "critical_infrastructure"
+          ]
+        },
+        "failure_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Bounded contexts or failure domains exposed to this change."
+        },
+        "downstream_consumers_affected": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Services, queues, or client apps dependent on changed behavior."
+        },
+        "data_blast_radius": {
+          "type": "string",
+          "enum": [
+            "read_only",
+            "isolated_write",
+            "schema_migration",
+            "irreversible_deletion"
+          ]
+        }
+      },
+      "required": [
+        "impact_tier",
+        "failure_domains"
+      ]
+    },
+    "sandbox_isolation_tier": {
+      "type": "string",
+      "enum": [
+        "tier_0_ephemeral_container",
+        "tier_1_isolated_microvm",
+        "tier_2_airgapped_sandbox",
+        "local_dev_workspace"
+      ],
+      "description": "Required execution environment isolation tier for code generation and testing."
+    },
+    "test_strategy_ref": {
+      "type": "object",
+      "description": "Testing strategy standards for this feature ticket.",
+      "properties": {
+        "red_green_required": {
+          "type": "boolean"
+        },
+        "mutation_score_threshold_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "reproduction_test_required": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "red_green_required"
+      ]
+    },
+    "vertical_slice_metadata": {
+      "type": "object",
+      "description": "Lean/Agile vertical slicing metadata according to SOTA decomposition patterns (Elephant Carpentry).",
+      "properties": {
+        "slice_pattern": {
+          "type": "string",
+          "enum": [
+            "workflow_step",
+            "business_rule_variation",
+            "data_channel",
+            "user_persona",
+            "major_effort_vs_variation",
+            "crud_operation",
+            "non_functional_sla",
+            "reversibility_tier"
+          ],
+          "description": "Primary slicing pattern used to decompose the feature."
+        },
+        "invest_criteria": {
+          "type": "object",
+          "properties": {
+            "independent": {
+              "type": "boolean"
+            },
+            "negotiable": {
+              "type": "boolean"
+            },
+            "valuable": {
+              "type": "boolean"
+            },
+            "estimable": {
+              "type": "boolean"
+            },
+            "small": {
+              "type": "boolean"
+            },
+            "testable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "independent",
+            "valuable",
+            "testable"
+          ]
+        },
+        "walking_skeleton": {
+          "type": "boolean",
+          "description": "Whether this slice serves as a thin end-to-end tracer bullet across all layers (UI, API, DB)."
+        },
+        "slice_order": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Sequential delivery sequence for this vertical slice."
+        }
+      }
+    },
+    "event_storming_context": {
+      "type": "object",
+      "description": "Domain-Driven Design (DDD) discovery context derived from collaborative Event Storming workshops.",
+      "properties": {
+        "bounded_context": {
+          "type": "string",
+          "description": "Explicit bounded context this feature belongs to."
+        },
+        "aggregate_root": {
+          "type": "string",
+          "description": "Aggregate root enforcing transactional consistency and invariants."
+        },
+        "domain_events": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Immutable business events emitted in past tense (e.g. OrderPlaced, PaymentSettled)."
+        },
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "User or system intents phrased in present imperative (e.g. SubmitOrder, SettlePayment)."
+        },
+        "read_models": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Query views and projections supporting decisions or UI display."
+        },
+        "business_policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "whenever_event": {
+                "type": "string"
+              },
+              "then_command": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "whenever_event",
+              "then_command"
+            ]
+          },
+          "description": "Reactive business policies (Whenever [Event] Then [Command])."
+        }
+      }
+    },
+    "agentic_feature_spec": {
+      "type": "object",
+      "description": "Governance and behavioral requirements for multi-agent workflows and MCP tool access.",
+      "properties": {
+        "autonomy_level": {
+          "type": "string",
+          "enum": [
+            "L1_assistive",
+            "L2_task_based",
+            "L3_conditional",
+            "L4_high_autonomy",
+            "L5_unbounded"
+          ],
+          "description": "Declared autonomy level. L3 (Conditional) is enterprise ceiling; L4/L5 requires special authorization."
+        },
+        "governance_justified_ceiling": {
+          "type": "string",
+          "description": "Justification for declared autonomy level based on reversibility and audit capabilities."
+        },
+        "agent_roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role_name": {
+                "type": "string"
+              },
+              "authority_scope": {
+                "type": "string"
+              },
+              "tool_allowlist": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "escalation_threshold": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "role_name",
+              "authority_scope"
+            ]
+          }
+        },
+        "mcp_tool_permissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tool_name": {
+                "type": "string"
+              },
+              "server_id": {
+                "type": "string"
+              },
+              "permission_level": {
+                "type": "string",
+                "enum": [
+                  "read",
+                  "write",
+                  "delete",
+                  "execute"
+                ]
+              },
+              "credential_mechanism": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "tool_name",
+              "permission_level"
+            ]
+          }
+        },
+        "forbidden_zones": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Hard actions the agent must never take regardless of user prompting."
+        },
+        "kill_switch": {
+          "type": "object",
+          "properties": {
+            "stop_mechanism": {
+              "type": "string"
+            },
+            "credential_revocation_sla": {
+              "type": "string"
+            },
+            "authority_to_invoke": {
+              "type": "string"
+            },
+            "state_preservation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "stop_mechanism",
+            "authority_to_invoke"
+          ]
+        },
+        "agent_registry_entry_required": {
+          "type": "boolean",
+          "description": "Whether an inventory registration gate must pass prior to production deployment."
+        }
+      },
+      "required": [
+        "autonomy_level",
+        "governance_justified_ceiling",
+        "kill_switch"
+      ]
+    },
+    "responsible_ai_spec": {
+      "type": "object",
+      "description": "Responsible AI requirements covering fairness, bias prevention, and explainability.",
+      "properties": {
+        "four_fifths_rule_dir_threshold": {
+          "type": "number",
+          "minimum": 0.8,
+          "maximum": 1.0,
+          "description": "Minimum Disparate Impact Ratio threshold (EEOC 80% rule)."
+        },
+        "protected_groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "disaggregated_error_rate_bounds": {
+          "type": "string",
+          "description": "Maximum allowable deviation of subgroup FNR/FPR from aggregate mean."
+        },
+        "xai_requirements": {
+          "type": "object",
+          "properties": {
+            "explanation_type": {
+              "type": "string",
+              "enum": [
+                "contrastive",
+                "feature_attribution",
+                "counterfactual"
+              ]
+            },
+            "intelligibility_criterion": {
+              "type": "string"
+            },
+            "faithfulness_criterion": {
+              "type": "string"
+            },
+            "actionability_criterion": {
+              "type": "string"
+            },
+            "inline_at_decision_point": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "explanation_type",
+            "intelligibility_criterion",
+            "faithfulness_criterion",
+            "actionability_criterion"
+          ]
+        }
+      }
+    },
+    "nfr_envelope": {
+      "type": "object",
+      "description": "Non-Functional Requirements envelope defining performance, scalability, and regulatory bounds.",
+      "properties": {
+        "latency_p99_ms": {
+          "type": "number",
+          "description": "Maximum allowable 99th percentile response time in milliseconds."
+        },
+        "max_error_rate_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Maximum acceptable error rate percentage."
+        },
+        "data_retention_days": {
+          "type": "integer",
+          "description": "Mandatory audit or data retention period in days."
+        },
+        "gdpr_article_6_legal_basis": {
+          "type": "string",
+          "enum": [
+            "consent",
+            "contract",
+            "legal_obligation",
+            "vital_interests",
+            "public_task",
+            "legitimate_interests",
+            "not_applicable"
+          ]
+        },
+        "right_to_erasure_propagation_sla": {
+          "type": "string",
+          "description": "Target SLA for full erasure propagation across downstream datastores."
+        },
+        "dpia_required": {
+          "type": "boolean",
+          "description": "Whether a formal Data Protection Impact Assessment is required prior to build."
+        }
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "title",
+    "type",
+    "acceptance_criteria"
+  ],
+  "examples": [
+    {
+      "contract_type": "feature-ticket",
+      "ticket_id": "2026-06-12-change-store-order-cod",
+      "created_at": "2026-06-12T09:00:00+07:00",
+      "title": "Change Order Assignment Logic for COD Store Orders",
+      "type": "feature",
+      "priority": "high",
+      "business_value": "Reduce failed COD delivery assignments by routing store orders to the nearest active store with COD capability, instead of the default warehouse courier route.",
+      "preserved_behavior": "Non-COD orders continue to use existing auto-assign logic unchanged.",
+      "changed_behavior": "COD orders with a store_id set are routed to the store's designated courier, bypassing warehouse assignment.",
+      "actors": [
+        "Order Management System",
+        "Store Manager",
+        "Delivery Courier"
+      ],
+      "business_rules": [
+        {
+          "id": "BR-01",
+          "rule": "A COD order with store_id must be assigned to a courier linked to that store.",
+          "exceptions": "If no active courier is linked to the store, fall back to warehouse assignment and log a warning."
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "scenario": "COD order assigned to store courier",
+          "given": "A COD order exists with store_id=42 and store 42 has an active courier",
+          "when": "The auto-assign command runs",
+          "then": "The order is assigned to the store 42 courier, not the warehouse courier"
+        },
+        {
+          "scenario": "COD order with no store courier falls back",
+          "given": "A COD order exists with store_id=99 and store 99 has no active courier",
+          "when": "The auto-assign command runs",
+          "then": "The order is assigned to the warehouse courier and a warning is logged"
+        },
+        {
+          "scenario": "Non-COD order unaffected",
+          "given": "A non-COD order exists",
+          "when": "The auto-assign command runs",
+          "then": "The order follows the existing auto-assign logic without entering the new branch"
+        }
+      ],
+      "edge_cases": [
+        "store_id is set but store record is soft-deleted",
+        "COD order arrives during store courier capacity blackout window"
+      ],
+      "assumption_register": [
+        {
+          "assumption": "Store courier lookup API returns results within 200ms p99 under current load",
+          "impact": 4,
+          "confidence": 3,
+          "risk_score": 12,
+          "validation_method": "Load test against staging Store service API with 2x current peak traffic",
+          "status": "pending"
+        },
+        {
+          "assumption": "Store Manager team will accept new courier assignment notifications without process change",
+          "impact": 3,
+          "confidence": 2,
+          "risk_score": 12,
+          "validation_method": "Interview 3 Store Managers before sprint planning",
+          "status": "validated",
+          "outcome_note": "Confirmed in stakeholder session 2026-06-10 \u2014 Store Managers prefer automated routing"
+        }
+      ],
+      "dependencies": [
+        "Store service API for courier lookup"
+      ],
+      "out_of_scope": [
+        "COD payment reconciliation",
+        "Store courier capacity management"
+      ],
+      "open_questions": [
+        "Should we notify the store manager when fallback occurs?"
+      ],
+      "process_impact": "Store operations team will see different courier assignments for COD orders starting from deploy date.",
+      "research_request": {
+        "questions": [
+          "What are the industry-standard SLA expectations for COD store courier assignment in Southeast Asian e-commerce platforms?",
+          "Are there regulatory requirements for COD assignment logging in Vietnam logistics regulations 2026?"
+        ],
+        "domain": "SEA e-commerce logistics, Vietnam COD regulations",
+        "depth": "scoped",
+        "scope_waiver_note": "Domain is narrow and well-defined; 3 targeted research passes sufficient before locking courier SLA AC.",
+        "output_contract": "research-report.json",
+        "deadline": "2026-06-15"
+      },
+      "blast_radius_assessment": {
+        "impact_tier": "isolated_component",
+        "failure_domains": [
+          "order_routing"
+        ],
+        "downstream_consumers_affected": [
+          "courier-mobile-app"
+        ],
+        "data_blast_radius": "isolated_write"
+      },
+      "sandbox_isolation_tier": "tier_0_ephemeral_container",
+      "test_strategy_ref": {
+        "red_green_required": true,
+        "mutation_score_threshold_pct": 75.0,
+        "reproduction_test_required": false
+      }
+    },
+    {
+      "contract_type": "feature-ticket",
+      "ticket_id": "2026-06-13-ai-credit-scoring-assistant",
+      "created_at": "2026-06-13T10:00:00+07:00",
+      "title": "AI Credit Scoring Assistant for Loan Applications",
+      "type": "feature",
+      "priority": "critical",
+      "business_value": "Reduce manual credit review time by 40% while maintaining accuracy above 95% through AI-assisted preliminary scoring with mandatory human confirmation for all decisions.",
+      "actors": [
+        "Loan Applicant",
+        "Credit Officer",
+        "AI Scoring Service",
+        "Risk Management System"
+      ],
+      "acceptance_criteria": [
+        {
+          "scenario": "AI score produced with high confidence",
+          "given": "A complete loan application with all required fields",
+          "when": "The AI scoring service processes the application",
+          "then": "A preliminary score and confidence rating are produced within 3 seconds"
+        },
+        {
+          "scenario": "Low-confidence application routed to human review",
+          "given": "AI confidence score < 0.85 for any application",
+          "when": "The scoring service completes processing",
+          "then": "Application is paused, status set to Under Review, and Credit Officer notified within 15 minutes"
+        }
+      ],
+      "ai_feature_spec": {
+        "behavioral_boundaries": "AI must produce a credit score band (A/B/C/D/F) and confidence score. It must not approve or reject loans autonomously. All preliminary scores require Credit Officer confirmation. Response must contain no hallucinated applicant data and must reference only verified financial fields from the application.",
+        "probabilistic_ac": {
+          "threshold_pct": 95,
+          "population": "Complete loan applications passing input validation",
+          "window_n": 200,
+          "evaluation_method": "human-review-panel",
+          "judge": "Senior Credit Officer panel reviewing 200 sampled applications weekly against ground truth"
+        },
+        "hitl_trigger": {
+          "condition": "AI confidence score < 0.85 OR loan_amount > 500,000,000 VND OR applicant_category = 'first-time-borrower'",
+          "action": "Pause decision, set status to 'Under Review', notify assigned Credit Officer via in-app alert and email",
+          "responsible_role": "Credit Officer (primary), Risk Manager (escalation if no response in 8h)",
+          "sla": "Credit Officer must confirm or override within 24h; Risk Manager escalation within 32h",
+          "audit_log_required": true,
+          "audit_log_fields": [
+            "model_version",
+            "application_id",
+            "input_field_hash",
+            "ai_score_band",
+            "ai_confidence",
+            "hitl_trigger_reason",
+            "credit_officer_id",
+            "human_decision",
+            "human_decision_timestamp",
+            "override_reason"
+          ]
+        },
+        "non_determinism": "deterministic_required",
+        "hybrid_architecture_intent": "AI/LLM handles preliminary scoring and risk factor summarization only. Deterministic rule engine handles: final approval/rejection execution, rate calculation, regulatory compliance checks, and all database writes for approved loans.",
+        "accountability_model": {
+          "decision_owner": "Credit Officer (all decisions); Risk Manager (escalated decisions); VP Credit (policy exceptions)",
+          "monitoring_metric": "Weekly accuracy rate vs ground truth; HITL trigger rate; Credit Officer override rate",
+          "review_cadence": "Weekly for first 8 weeks post-launch, then bi-weekly; quarterly model performance review",
+          "audit_log_requirements": "Immutable append-only log per decision: model_version, input_field_hash, ai_score_band, ai_confidence, human_decision, override_reason, timestamps. Retained 7 years per financial regulation."
+        },
+        "eu_ai_act_tier": "high-risk",
+        "degradation_trigger": "If weekly accuracy rate falls below 93% for any 7-day window, raise P1 incident, suspend AI scoring (revert to fully manual), and notify Risk Manager and VP Credit within 2h."
+      },
+      "assumption_register": [
+        {
+          "assumption": "Credit Officers will adopt AI-assisted workflow without significant process resistance",
+          "impact": 5,
+          "confidence": 2,
+          "risk_score": 20,
+          "validation_method": "Structured interview with 5 Credit Officers + 2-week pilot with shadow mode (AI scores hidden from officers until after their decision)",
+          "status": "escalated",
+          "outcome_note": "Risk score 20 \u2014 escalated to PM 2026-06-12. Pilot proposed before sprint commitment. Build commitment deferred pending pilot results."
+        },
+        {
+          "assumption": "AI model accuracy \u226595% is achievable with current training data volume (12 months)",
+          "impact": 5,
+          "confidence": 3,
+          "risk_score": 15,
+          "validation_method": "Offline evaluation on 6-month holdout dataset before feature build starts",
+          "status": "pending"
+        }
+      ],
+      "out_of_scope": [
+        "AI model training and retraining pipeline",
+        "Credit score appeal process",
+        "Regulatory filing for EU AI Act conformity assessment"
+      ],
+      "open_questions": [
+        "Has legal confirmed EU AI Act high-risk classification and conformity assessment timeline?",
+        "Who is the designated Human Review Board required under EU AI Act Article 14?"
+      ],
+      "blast_radius_assessment": {
+        "impact_tier": "isolated_component",
+        "failure_domains": [
+          "order_routing"
+        ],
+        "downstream_consumers_affected": [
+          "courier-mobile-app"
+        ],
+        "data_blast_radius": "isolated_write"
+      },
+      "sandbox_isolation_tier": "tier_0_ephemeral_container",
+      "test_strategy_ref": {
+        "red_green_required": true,
+        "mutation_score_threshold_pct": 75.0,
+        "reproduction_test_required": false
+      }
+    },
+    {
+      "contract_type": "feature-ticket",
+      "ticket_id": "2026-10-05-agentic-reconciliation-assistant",
+      "created_at": "2026-10-05T09:00:00+07:00",
+      "title": "Autonomous Multi-Agent Settlement Reconciliation with MCP Tool Auditing",
+      "type": "feature",
+      "priority": "high",
+      "business_value": "Automate 85% of multi-currency ledger reconciliation anomalies while maintaining double-entry conservation and full EU AI Act Article 50 transparency.",
+      "preserved_behavior": "Manual reconciliation workbench remains accessible with identical permission models.",
+      "changed_behavior": "Reconciliation Coordinator agent extracts ledger batches, analyzes discrepancy patterns, and drafts balancing journal entries for human sign-off.",
+      "actors": [
+        "Treasury Operations Officer",
+        "Reconciliation Coordinator Agent",
+        "Ledger Query Specialist Agent",
+        "Core Banking Settlement Engine"
+      ],
+      "business_rules": [
+        {
+          "id": "BR-REC-01",
+          "rule": "Total debit legs must equal total credit legs across all balancing journal transactions.",
+          "exceptions": "Exchange rate micro-rounding under 0.01 USD is absorbed into FX rounding reserve."
+        }
+      ],
+      "acceptance_criteria": [
+        {
+          "scenario": "Balanced anomaly reconciliation with automated journal draft",
+          "given": "An unreconciled ledger transaction batch exists with discrepancy equal to 12.50 USD",
+          "when": "The Reconciliation Coordinator agent analyzes the transaction legs",
+          "then": "A balancing journal voucher is drafted and presented to Treasury Officer with confidence score and feature attribution",
+          "tags": [
+            "@core",
+            "@smoke",
+            "@p1"
+          ],
+          "and_conditions": [
+            "Treasury Officer receives in-app approval notification within 30 seconds",
+            "Zero automated ledger balance mutations occur prior to explicit human sign-off"
+          ],
+          "stateful_invariants": [
+            "Sum(Debits) == Sum(Credits) across all proposed journal legs"
+          ],
+          "failure_guarantee": "On agent execution failure or timeout, reconciliation batch state reverts to PENDING_MANUAL_REVIEW with zero partial state committed"
+        }
+      ],
+      "vertical_slice_metadata": {
+        "slice_pattern": "workflow_step",
+        "invest_criteria": {
+          "independent": true,
+          "negotiable": true,
+          "valuable": true,
+          "estimable": true,
+          "small": true,
+          "testable": true
+        },
+        "walking_skeleton": true,
+        "slice_order": 1
+      },
+      "event_storming_context": {
+        "bounded_context": "treasury_reconciliation",
+        "aggregate_root": "ReconciliationBatch",
+        "domain_events": [
+          "ReconciliationBatchIngested",
+          "DiscrepancyAnalyzed",
+          "BalancingVoucherDrafted",
+          "ReconciliationCompleted"
+        ],
+        "commands": [
+          "IngestReconciliationBatch",
+          "DraftBalancingVoucher",
+          "ApproveReconciliationVoucher"
+        ],
+        "read_models": [
+          "UnreconciledBatchSummaryView"
+        ],
+        "business_policies": [
+          {
+            "whenever_event": "DiscrepancyAnalyzed",
+            "then_command": "DraftBalancingVoucher"
+          }
+        ]
+      },
+      "agentic_feature_spec": {
+        "autonomy_level": "L3_conditional",
+        "governance_justified_ceiling": "Agent coordinates data extraction, discrepancy correlation, and draft proposal generation; write actions are strictly gated by human approval.",
+        "agent_roles": [
+          {
+            "role_name": "CoordinatorAgent",
+            "authority_scope": "Decomposes batch analysis and routes tasks to Ledger Specialist",
+            "tool_allowlist": [
+              "ledger_query",
+              "fx_rate_lookup"
+            ],
+            "escalation_threshold": "Confidence score < 0.90"
+          }
+        ],
+        "mcp_tool_permissions": [
+          {
+            "tool_name": "ledger_query",
+            "server_id": "mcp-core-banking-gateway",
+            "permission_level": "read",
+            "credential_mechanism": "OAuth2 scoped JWT token evaluated per invocation"
+          },
+          {
+            "tool_name": "draft_journal_voucher",
+            "server_id": "mcp-core-banking-gateway",
+            "permission_level": "write",
+            "credential_mechanism": "Short-lived mTLS client certificate"
+          }
+        ],
+        "forbidden_zones": [
+          "Direct execution of ledger settlement without human approval signature",
+          "Modification of historical closed financial periods",
+          "Export of raw unmasked banking data outside corporate VPC"
+        ],
+        "kill_switch": {
+          "stop_mechanism": "Emergency API token revocation endpoint and webhook pause signal",
+          "credential_revocation_sla": "Under 30 seconds",
+          "authority_to_invoke": "Treasury Operations Lead, On-Call Security Engineer, Head of Compliance",
+          "state_preservation": "In-flight batch state persisted to S3 cold storage; running agent workers terminate gracefully within 10 seconds"
+        },
+        "agent_registry_entry_required": true
+      },
+      "responsible_ai_spec": {
+        "four_fifths_rule_dir_threshold": 0.85,
+        "protected_groups": [
+          "merchant_tier_small_business",
+          "merchant_tier_enterprise"
+        ],
+        "disaggregated_error_rate_bounds": "False discovery rate for anomaly classification must not deviate by > 3% across merchant tiers.",
+        "xai_requirements": {
+          "explanation_type": "contrastive",
+          "intelligibility_criterion": "Explanations readable by non-technical Treasury clerks in plain accounting terminology.",
+          "faithfulness_criterion": "Attribution scores strictly computed from SHAP values against model features.",
+          "actionability_criterion": "Specifies which specific transaction leg caused the reconciliation imbalance.",
+          "inline_at_decision_point": true
+        }
+      },
+      "nfr_envelope": {
+        "latency_p99_ms": 450.0,
+        "max_error_rate_pct": 0.05,
+        "data_retention_days": 2555,
+        "gdpr_article_6_legal_basis": "legal_obligation",
+        "right_to_erasure_propagation_sla": "Not applicable - Statutory financial audit retention exemption",
+        "dpia_required": false
+      },
+      "blast_radius_assessment": {
+        "impact_tier": "service_level",
+        "failure_domains": [
+          "treasury_reconciliation",
+          "core_ledger"
+        ],
+        "downstream_consumers_affected": [
+          "treasury-operations-portal",
+          "general-ledger-export-service"
+        ],
+        "data_blast_radius": "isolated_write"
+      },
+      "sandbox_isolation_tier": "tier_1_isolated_microvm",
+      "test_strategy_ref": {
+        "red_green_required": true,
+        "mutation_score_threshold_pct": 80.0,
+        "reproduction_test_required": true
+      }
+    }
+  ]
+}

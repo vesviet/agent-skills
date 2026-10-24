@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "automatic_payment_methods",
+    "enabled: true",
+    "dynamic payment methods"
+  ],
+  "must_not_include": [
+    "payment_method_types: ['card']",
+    "hardcoded card only"
+  ],
+  "required_tokens": [
+    "automatic_payment_methods",
+    "enabled: true",
+    "dynamic payment methods"
+  ],
+  "forbidden_tokens": [
+    "payment_method_types: ['card']",
+    "hardcoded card only"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

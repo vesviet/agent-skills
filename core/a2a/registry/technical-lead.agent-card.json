@@ -1,0 +1,183 @@
+{
+  "id": "pack://agent-skills/core/roles/technical-lead",
+  "contract_type": "agent-card",
+  "name": "technical-lead",
+  "description": "turn architecture and requirements into a delivery-ready technical plan, guide implementation quality, and keep engineering decisions aligned without losing sight of logic correctness, regression risk, or rollout impact. In 2025–2026, this includes governing AI-assisted development (LLM-generated code quality and risks), applying progressive delivery patterns to limit blast radius, and calibrating quality gates against the AI productivity paradox where higher velocity can mask quality degradation.",
+  "url": "pack://agent-skills/core/roles/technical-lead.md",
+  "version": "5.6.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "plan-technical-delivery",
+      "name": "Plan Technical Delivery",
+      "description": "Turn architecture decisions and requirements into a delivery-ready technical plan with slices, quality gates, impact radius, and rollout notes. Use when Technical Lead breaks down implementation work for developers, QA, and release.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "review-code",
+      "name": "Review Code",
+      "description": "Review a diff since a fixed point along two separate axes — Standards (does the code follow this repo's documented standards plus a fixed smell baseline?) and Spec (does it faithfully implement the originating issue or spec?). Runs both axes as parallel sub-agents and reports them side by side without reranking. Use for PR reviews, \"review since X\", local change reviews, and pre-merge audits.",
+      "tags": [
+        "devops",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "meeting-review",
+      "name": "Meeting Review",
+      "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky change by producing a decision-ready artifact with trade-offs, preserved behavior, impact radius, and next actions. Use when a user wants cross-functional review signal before deciding, building, shipping, or changing course.",
+      "tags": [
+        "analysis",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "agent-quality-gate",
+      "name": "Agent Quality Gate",
+      "description": "Run and interpret repository quality gates for agent-delivered changes, including validators, lint, tests, build checks, diff sanity checks, and phase-exit evidence. Use when reporting completion, advancing a bug or feature to the next phase, or declaring a pack, role, workflow, or code change ready.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "agent-prompt-lifecycle",
+      "name": "Agent Prompt Lifecycle",
+      "description": "Manage prompt assets through their full lifecycle including versioning, evaluation against golden datasets, drift detection, and controlled promotion across environments. Use when creating, updating, reviewing, or auditing prompt definitions in roles, skills, workflows, or system instructions to ensure measurable quality and safe deployment.",
+      "tags": [
+        "agent",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "ai-risk-assessment",
+      "name": "Ai Risk Assessment",
+      "description": "Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure/Manage) and NIST AI 600-1 GenAI Profile (12 risk categories), classify EU AI Act risk tiers, and produce an AI risk register covering hallucination thresholds, model degradation signals, bias exposure, and compliance drift. Use when onboarding a new AI feature, scoping an AI system for delivery, or conducting a periodic AI governance audit.",
+      "tags": [
+        "foundation",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    },
+    {
+      "id": "add-telemetry-instrumentation",
+      "name": "Add Telemetry Instrumentation",
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.tokens, gen_ai.response.model, TTFT), kernel-level eBPF socket telemetry, and MWMBR SLI recording rules.",
+      "tags": [
+        "platform",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "technical-delivery-plan.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "technical-delivery-plan.json"
+  ],
+  "role_file": "core/roles/technical-lead.md",
+  "policy_profile": "technical-lead"
+}

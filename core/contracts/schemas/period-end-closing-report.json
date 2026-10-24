@@ -1,0 +1,472 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "period-end-closing-report",
+  "title": "Period-End Closing Report",
+  "description": "Structured machine-readable report for Vietnam accounting period-end closing, subledger cut-offs, Account 911 zero-balance verification, financial statement package assembly, and HITL sign-off.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "period-end-closing-report"
+    },
+    "closing_id": {
+      "type": "string",
+      "description": "Unique identifier for the closing run (e.g., CLOSE-2026-Q3-VN01)."
+    },
+    "entity": {
+      "type": "object",
+      "properties": {
+        "legal_name": { "type": "string" },
+        "legal_form": { "type": "string" },
+        "entity_reference": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:/-]{0,200}$",
+          "description": "Opaque internal reference only. Never include taxpayer identifiers, account numbers, or PII."
+        }
+      },
+      "required": ["legal_name", "legal_form"]
+    },
+    "period": {
+      "type": "object",
+      "properties": {
+        "fiscal_year": { "type": "integer", "minimum": 2000, "maximum": 2100 },
+        "period_type": { "type": "string", "enum": ["month", "quarter", "year"] },
+        "period_number": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "from": { "type": "string", "format": "date" },
+        "to": { "type": "string", "format": "date" },
+        "closing_status": {
+          "type": "string",
+          "enum": ["in_progress", "reconciled", "closed", "locked", "reopened"]
+        }
+      },
+      "required": ["fiscal_year", "period_type", "period_number", "from", "to", "closing_status"]
+    },
+    "accounting_regime": {
+      "type": "object",
+      "properties": {
+        "regime_code": {
+          "type": "string",
+          "enum": ["TT-200-2014", "TT-133-2016", "TT-132-2018"]
+        },
+        "dual_reporting_vfrs": { "type": "boolean" },
+        "transition_roadmap_stage": {
+          "type": "string",
+          "enum": ["decision_345_voluntary", "decision_345_mandatory_listed", "full_vfrs_adoption", "not_applicable"]
+        }
+      },
+      "required": ["regime_code", "dual_reporting_vfrs"]
+    },
+    "subledger_reconciliations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ledger_name": {
+            "type": "string",
+            "enum": [
+              "accounts_receivable_131",
+              "accounts_payable_331",
+              "cash_and_bank_111_112",
+              "inventory_15x",
+              "fixed_assets_211_214",
+              "prepaid_expenses_242",
+              "payroll_334",
+              "statutory_taxes_333"
+            ]
+          },
+          "subledger_balance": { "type": "number" },
+          "general_ledger_balance": { "type": "number" },
+          "variance": { "type": "number" },
+          "status": {
+            "type": "string",
+            "enum": ["matched", "variance_reconciled", "unreconciled", "not_applicable"]
+          },
+          "reconciliation_notes": { "type": "string" }
+        },
+        "required": ["ledger_name", "subledger_balance", "general_ledger_balance", "variance", "status"]
+      },
+      "minItems": 1
+    },
+    "closing_adjustments": {
+      "type": "object",
+      "properties": {
+        "fixed_asset_depreciation": {
+          "type": "object",
+          "properties": {
+            "tk_214_depreciation_amount": { "type": "number", "minimum": 0 },
+            "circular_45_compliant": { "type": "boolean" },
+            "voucher_reference": { "type": "string" }
+          },
+          "required": ["tk_214_depreciation_amount", "circular_45_compliant", "voucher_reference"]
+        },
+        "prepaid_expense_allocation": {
+          "type": "object",
+          "properties": {
+            "tk_242_allocated_amount": { "type": "number", "minimum": 0 },
+            "max_36_month_cap_verified": { "type": "boolean" },
+            "voucher_reference": { "type": "string" }
+          },
+          "required": ["tk_242_allocated_amount", "max_36_month_cap_verified", "voucher_reference"]
+        },
+        "foreign_currency_revaluation": {
+          "type": "object",
+          "properties": {
+            "monetary_items_revalued": { "type": "boolean" },
+            "bank_rate_type": {
+              "type": "string",
+              "enum": ["commercial_bank_buying_rate", "commercial_bank_selling_rate", "not_applicable"]
+            },
+            "net_fx_gain_loss": { "type": "number" },
+            "voucher_reference": { "type": "string" }
+          },
+          "required": ["monetary_items_revalued", "bank_rate_type", "net_fx_gain_loss", "voucher_reference"]
+        },
+        "grni_accrual_balance": {
+          "type": "object",
+          "properties": {
+            "accrued_amount": { "type": "number", "minimum": 0 },
+            "voucher_reference": { "type": "string" }
+          },
+          "required": ["accrued_amount", "voucher_reference"]
+        }
+      },
+      "required": [
+        "fixed_asset_depreciation",
+        "prepaid_expense_allocation",
+        "foreign_currency_revaluation",
+        "grni_accrual_balance"
+      ]
+    },
+    "account_911_clearing": {
+      "type": "object",
+      "properties": {
+        "revenue_closing": {
+          "type": "object",
+          "properties": {
+            "gross_revenue_tk_511": { "type": "number" },
+            "revenue_deductions_tk_521": { "type": "number" },
+            "net_revenue_to_911": { "type": "number" },
+            "financial_income_tk_515_to_911": { "type": "number" },
+            "other_income_tk_711_to_911": { "type": "number" }
+          },
+          "required": [
+            "gross_revenue_tk_511",
+            "revenue_deductions_tk_521",
+            "net_revenue_to_911",
+            "financial_income_tk_515_to_911",
+            "other_income_tk_711_to_911"
+          ]
+        },
+        "expense_closing": {
+          "type": "object",
+          "properties": {
+            "cogs_tk_632_to_911": { "type": "number" },
+            "financial_expense_tk_635_to_911": { "type": "number" },
+            "selling_expense_tk_641_to_911": { "type": "number" },
+            "admin_expense_tk_642_to_911": { "type": "number" },
+            "other_expense_tk_811_to_911": { "type": "number" }
+          },
+          "required": [
+            "cogs_tk_632_to_911",
+            "financial_expense_tk_635_to_911",
+            "selling_expense_tk_641_to_911",
+            "admin_expense_tk_642_to_911",
+            "other_expense_tk_811_to_911"
+          ]
+        },
+        "tax_and_profit_closing": {
+          "type": "object",
+          "properties": {
+            "pre_tax_accounting_profit": { "type": "number" },
+            "corporate_income_tax_tk_8211": { "type": "number" },
+            "net_profit_transferred_tk_4212": { "type": "number" }
+          },
+          "required": [
+            "pre_tax_accounting_profit",
+            "corporate_income_tax_tk_8211",
+            "net_profit_transferred_tk_4212"
+          ]
+        },
+        "ending_911_balance": {
+          "type": "number",
+          "const": 0,
+          "description": "Ending balance of Account 911 must be strictly zero post-closing."
+        },
+        "clearing_verified": {
+          "type": "boolean",
+          "const": true
+        }
+      },
+      "required": [
+        "revenue_closing",
+        "expense_closing",
+        "tax_and_profit_closing",
+        "ending_911_balance",
+        "clearing_verified"
+      ]
+    },
+    "financial_statements_package": {
+      "type": "object",
+      "properties": {
+        "b01_dn_balance_sheet": {
+          "type": "object",
+          "properties": {
+            "total_assets": { "type": "number" },
+            "total_liabilities": { "type": "number" },
+            "owners_equity": { "type": "number" },
+            "is_balanced": { "type": "boolean", "const": true }
+          },
+          "required": ["total_assets", "total_liabilities", "owners_equity", "is_balanced"]
+        },
+        "b02_dn_income_statement": {
+          "type": "object",
+          "properties": {
+            "net_revenue": { "type": "number" },
+            "gross_profit": { "type": "number" },
+            "operating_profit": { "type": "number" },
+            "profit_after_tax": { "type": "number" }
+          },
+          "required": ["net_revenue", "gross_profit", "operating_profit", "profit_after_tax"]
+        },
+        "b03_dn_cash_flows": {
+          "type": "object",
+          "properties": {
+            "net_cash_operating": { "type": "number" },
+            "net_cash_investing": { "type": "number" },
+            "net_cash_financing": { "type": "number" },
+            "net_change_in_cash": { "type": "number" },
+            "closing_cash_balance": { "type": "number" }
+          },
+          "required": [
+            "net_cash_operating",
+            "net_cash_investing",
+            "net_cash_financing",
+            "net_change_in_cash",
+            "closing_cash_balance"
+          ]
+        },
+        "b09_dn_notes_completed": { "type": "boolean" }
+      },
+      "required": [
+        "b01_dn_balance_sheet",
+        "b02_dn_income_statement",
+        "b03_dn_cash_flows",
+        "b09_dn_notes_completed"
+      ]
+    },
+    "decree_132_related_party_summary": {
+      "type": "object",
+      "properties": {
+        "has_related_party_transactions": { "type": "boolean" },
+        "ebitda": { "type": "number" },
+        "net_interest_expense": { "type": "number" },
+        "interest_cap_30_pct_ebitda": { "type": "number" },
+        "disallowed_interest_current_year": { "type": "number" },
+        "carry_forward_interest": { "type": "number" }
+      },
+      "required": [
+        "has_related_party_transactions",
+        "ebitda",
+        "net_interest_expense",
+        "interest_cap_30_pct_ebitda",
+        "disallowed_interest_current_year",
+        "carry_forward_interest"
+      ]
+    },
+    "audit_trail": {
+      "type": "object",
+      "properties": {
+        "snapshot_hash_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Cryptographic SHA-256 digest of post-closing trial balance snapshot."
+        },
+        "ocsf_audit_event_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "immutable_lock": { "type": "boolean" }
+      },
+      "required": ["snapshot_hash_sha256", "ocsf_audit_event_id", "timestamp", "immutable_lock"]
+    },
+    "hitl_approval": {
+      "type": "object",
+      "properties": {
+        "chief_accountant_approved": { "type": "boolean" },
+        "chief_accountant_signature_token": { "type": "string" },
+        "legal_representative_approved": { "type": "boolean" },
+        "legal_representative_signature_token": { "type": "string" },
+        "signed_at": { "type": "string", "format": "date-time" },
+        "approval_status": {
+          "type": "string",
+          "enum": ["pending", "approved", "rejected"]
+        }
+      },
+      "required": [
+        "chief_accountant_approved",
+        "chief_accountant_signature_token",
+        "legal_representative_approved",
+        "legal_representative_signature_token",
+        "signed_at",
+        "approval_status"
+      ]
+    },
+    "data_classification": {
+      "type": "string",
+      "const": "restricted-metadata-only",
+      "description": "Artifact may contain only opaque references and non-sensitive metadata. Restricted values must remain in an approved secure system."
+    }
+  },
+  "required": [
+    "contract_type",
+    "closing_id",
+    "entity",
+    "period",
+    "accounting_regime",
+    "subledger_reconciliations",
+    "closing_adjustments",
+    "account_911_clearing",
+    "financial_statements_package",
+    "audit_trail",
+    "hitl_approval",
+    "data_classification"
+  ],
+  "examples": [
+    {
+      "contract_type": "period-end-closing-report",
+      "closing_id": "CLOSE-2026-Q3-VN01",
+      "entity": {
+        "legal_name": "Example Technology Vietnam LLC",
+        "legal_form": "limited-liability-company",
+        "entity_reference": "ENT-VN-2026-8891"
+      },
+      "period": {
+        "fiscal_year": 2026,
+        "period_type": "quarter",
+        "period_number": 3,
+        "from": "2026-07-01",
+        "to": "2026-09-30",
+        "closing_status": "closed"
+      },
+      "accounting_regime": {
+        "regime_code": "TT-200-2014",
+        "dual_reporting_vfrs": true,
+        "transition_roadmap_stage": "decision_345_voluntary"
+      },
+      "subledger_reconciliations": [
+        {
+          "ledger_name": "accounts_receivable_131",
+          "subledger_balance": 15400000000,
+          "general_ledger_balance": 15400000000,
+          "variance": 0,
+          "status": "matched",
+          "reconciliation_notes": "100% matched across 142 customer sub-accounts."
+        },
+        {
+          "ledger_name": "accounts_payable_331",
+          "subledger_balance": 8200000000,
+          "general_ledger_balance": 8200000000,
+          "variance": 0,
+          "status": "matched",
+          "reconciliation_notes": "All vendor statements confirmed; GRNI accrued."
+        },
+        {
+          "ledger_name": "cash_and_bank_111_112",
+          "subledger_balance": 24500000000,
+          "general_ledger_balance": 24500000000,
+          "variance": 0,
+          "status": "matched",
+          "reconciliation_notes": "Bank confirmation letters reconciled with GL 112."
+        }
+      ],
+      "closing_adjustments": {
+        "fixed_asset_depreciation": {
+          "tk_214_depreciation_amount": 450000000,
+          "circular_45_compliant": true,
+          "voucher_reference": "JV-2026-09-DEP-01"
+        },
+        "prepaid_expense_allocation": {
+          "tk_242_allocated_amount": 180000000,
+          "max_36_month_cap_verified": true,
+          "voucher_reference": "JV-2026-09-PRE-01"
+        },
+        "foreign_currency_revaluation": {
+          "monetary_items_revalued": true,
+          "bank_rate_type": "commercial_bank_buying_rate",
+          "net_fx_gain_loss": 32000000,
+          "voucher_reference": "JV-2026-09-FX-01"
+        },
+        "grni_accrual_balance": {
+          "accrued_amount": 125000000,
+          "voucher_reference": "JV-2026-09-GRNI-01"
+        }
+      },
+      "account_911_clearing": {
+        "revenue_closing": {
+          "gross_revenue_tk_511": 35000000000,
+          "revenue_deductions_tk_521": 500000000,
+          "net_revenue_to_911": 34500000000,
+          "financial_income_tk_515_to_911": 350000000,
+          "other_income_tk_711_to_911": 50000000
+        },
+        "expense_closing": {
+          "cogs_tk_632_to_911": 21000000000,
+          "financial_expense_tk_635_to_911": 420000000,
+          "selling_expense_tk_641_to_911": 3200000000,
+          "admin_expense_tk_642_to_911": 4800000000,
+          "other_expense_tk_811_to_911": 30000000
+        },
+        "tax_and_profit_closing": {
+          "pre_tax_accounting_profit": 5450000000,
+          "corporate_income_tax_tk_8211": 1090000000,
+          "net_profit_transferred_tk_4212": 4360000000
+        },
+        "ending_911_balance": 0,
+        "clearing_verified": true
+      },
+      "financial_statements_package": {
+        "b01_dn_balance_sheet": {
+          "total_assets": 68000000000,
+          "total_liabilities": 23640000000,
+          "owners_equity": 44360000000,
+          "is_balanced": true
+        },
+        "b02_dn_income_statement": {
+          "net_revenue": 34500000000,
+          "gross_profit": 13500000000,
+          "operating_profit": 5500000000,
+          "profit_after_tax": 4360000000
+        },
+        "b03_dn_cash_flows": {
+          "net_cash_operating": 6200000000,
+          "net_cash_investing": -2100000000,
+          "net_cash_financing": -1500000000,
+          "net_change_in_cash": 2600000000,
+          "closing_cash_balance": 24500000000
+        },
+        "b09_dn_notes_completed": true
+      },
+      "decree_132_related_party_summary": {
+        "has_related_party_transactions": true,
+        "ebitda": 6080000000,
+        "net_interest_expense": 420000000,
+        "interest_cap_30_pct_ebitda": 1824000000,
+        "disallowed_interest_current_year": 0,
+        "carry_forward_interest": 0
+      },
+      "audit_trail": {
+        "snapshot_hash_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ocsf_audit_event_id": "OCSF-CLOSE-20260930-99001",
+        "timestamp": "2026-09-30T18:00:00Z",
+        "immutable_lock": true
+      },
+      "hitl_approval": {
+        "chief_accountant_approved": true,
+        "chief_accountant_signature_token": "SIG-CA-VN-98214-CONFIRMED",
+        "legal_representative_approved": true,
+        "legal_representative_signature_token": "SIG-REP-VN-11029-APPROVED",
+        "signed_at": "2026-09-30T19:30:00Z",
+        "approval_status": "approved"
+      },
+      "data_classification": "restricted-metadata-only"
+    }
+  ]
+}

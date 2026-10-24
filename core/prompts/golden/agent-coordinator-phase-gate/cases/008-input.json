@@ -1,0 +1,9 @@
+{
+  "work_type": "feature",
+  "phase": "handoff",
+  "user_request": "Everything looks good. Can you create the commit and push to main?",
+  "context": {
+    "validation_status": "tests pass, review approved",
+    "branch": "feature/csv-export"
+  }
+}

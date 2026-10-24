@@ -1,0 +1,4 @@
+interface:
+  display_name: "Supply Chain Security"
+  short_description: "Implement software supply chain security by generating SBOMs (CycloneDX/SPDX)..."
+  default_prompt: "Use $supply-chain-security to execute supply chain security tasks in this codebase."

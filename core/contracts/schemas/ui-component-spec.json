@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ui-component-spec",
+  "title": "UI Component Specification",
+  "description": "Structured component spec for handoff between UI/UX Designer and Frontend Developer.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "ui-component-spec"
+    },
+    "component_name": {
+      "type": "string",
+      "description": "PascalCase name of the component."
+    },
+    "flow_id": {
+      "type": "string",
+      "description": "Links to parent ux-flow-spec.json flow_id."
+    },
+    "feature_ticket_ref": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "presentational",
+        "stateful",
+        "compositional",
+        "island"
+      ],
+      "description": "Component architecture type."
+    },
+    "props": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "required"
+        ]
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "string"
+          },
+          "when": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "when"
+        ]
+      },
+      "description": "Callbacks or DOM events the parent must handle."
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "default",
+          "loading",
+          "empty",
+          "error",
+          "disabled",
+          "success",
+          "hover",
+          "focus",
+          "active",
+          "generating",
+          "uncertain",
+          "fallback",
+          "overridden",
+          "corrected"
+        ]
+      }
+    },
+    "copy_per_state": {
+      "type": "object",
+      "description": "User-visible labels or messages keyed by state name."
+    },
+    "api_fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "field"
+        ]
+      },
+      "description": "Data fields the component displays or edits."
+    },
+    "accessibility": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string"
+        },
+        "keyboard_support": {
+          "type": "boolean"
+        },
+        "focus_trap": {
+          "type": "boolean"
+        },
+        "aria_labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aria_live": {
+          "type": "string",
+          "enum": [
+            "off",
+            "polite",
+            "assertive"
+          ],
+          "description": "Required for dynamic AI-generated content updates."
+        },
+        "alt_text_generation_rules": {
+          "type": "string",
+          "description": "Spec for context-aware alt text if component displays AI-generated media."
+        }
+      }
+    },
+    "responsive_breakpoints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "design_tokens": {
+      "type": "array",
+      "description": "W3C-compliant three-tier design tokens used by this component. No hardcoded values allowed.",
+      "items": {
+        "type": "object",
+        "required": [
+          "token_name",
+          "type",
+          "semantic_purpose"
+        ],
+        "properties": {
+          "token_name": {
+            "type": "string",
+            "examples": [
+              "color-bg-primary-hover"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "color",
+              "dimension",
+              "fontFamily",
+              "fontWeight",
+              "duration",
+              "cubicBezier",
+              "shadow",
+              "other"
+            ]
+          },
+          "semantic_purpose": {
+            "type": "string",
+            "description": "What this token signifies in the context of the component."
+          },
+          "primitive_reference": {
+            "type": "string",
+            "description": "The core primitive token this maps to (e.g. blue-500)."
+          }
+        }
+      }
+    },
+    "ai_confidence_indicators": {
+      "type": "object",
+      "description": "Visual and copy specifications for AI uncertainty states.",
+      "properties": {
+        "high_confidence_ui": {
+          "type": "string"
+        },
+        "medium_confidence_ui": {
+          "type": "string",
+          "examples": [
+            "'Suggested' badge with neutral color"
+          ]
+        },
+        "low_confidence_ui": {
+          "type": "string",
+          "examples": [
+            "'Unverified' badge with warning color + alternative action"
+          ]
+        },
+        "fallback_behavior": {
+          "type": "string",
+          "description": "Graceful degradation when AI fails entirely."
+        }
+      }
+    },
+    "anti_slop_properties": {
+      "type": "object",
+      "description": "Taste-Skill frontend mechanics and constraints.",
+      "properties": {
+        "viewport_constraint": {
+          "type": "string",
+          "enum": [
+            "min-h-[100dvh]",
+            "auto",
+            "fit-content"
+          ],
+          "description": "Viewport height constraint. Must use min-h-[100dvh] for full-height sections; h-screen is banned."
+        },
+        "continuous_motion_isolated": {
+          "type": "boolean",
+          "description": "True if continuous motion values bypass useState and use Motion hooks."
+        },
+        "tactile_feedback": {
+          "type": "string",
+          "description": "Active state transform simulation, e.g. scale-[0.98] or -translate-y-[1px]."
+        },
+        "cta_wrap_prevention": {
+          "type": "boolean",
+          "description": "True if desktop CTA label is constrained to a single line."
+        }
+      }
+    }
+  },
+  "required": [
+    "component_name",
+    "type",
+    "states"
+  ],
+  "examples": [
+    {
+      "contract_type": "ui-component-spec",
+      "component_id": "CourierBadgeComponent",
+      "component_name": "Courier Badge",
+      "flow_ref": "store-order-assignment-dashboard",
+      "description": "Shows courier type (store/warehouse) and fallback status for COD orders",
+      "props": [
+        {
+          "name": "courier_type",
+          "type": "string",
+          "required": true,
+          "description": "Either 'store' or 'warehouse'"
+        },
+        {
+          "name": "is_fallback",
+          "type": "boolean",
+          "required": true,
+          "description": "True when warehouse was used as fallback for COD store order"
+        },
+        {
+          "name": "courier_name",
+          "type": "string",
+          "required": false,
+          "description": "Display name of assigned courier"
+        }
+      ],
+      "states": [
+        "default (store courier)",
+        "fallback (warehouse)",
+        "unassigned"
+      ],
+      "accessibility": "aria-label must include courier type and fallback status",
+      "api_dependencies": [
+        "GET /api/v1/orders/:id"
+      ],
+      "design_tokens": [
+        "color.courier.store",
+        "color.courier.fallback.warning"
+      ],
+      "type": "presentational"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Conduct Research"
+  short_description: "Multi-pass research and source synthesis"
+  default_prompt: "Use $conduct-research to investigate this topic through multiple research passes, synthesize sources, and produce a structured research report."

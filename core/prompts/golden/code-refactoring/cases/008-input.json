@@ -1,0 +1,12 @@
+{
+  "case_id": "REF-008",
+  "name": "Pact v4 / Specmatic Contract Preservation During API Refactoring",
+  "work_type": "refactoring",
+  "role": "technical-lead",
+  "skill": "review-code",
+  "user_request": "Refactor user profile API internal structure while strictly verifying Pact consumer contract stability.",
+  "target": "api/v2/users/controller.ts",
+  "context": {
+    "consumers": "Mobile iOS app v3.2, Android app v4.0, Partner Webhook portal"
+  }
+}

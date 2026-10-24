@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build MCP Server"
+  short_description: "Scaffolds and implements a new Model Context Protocol (MCP) server"
+  default_prompt: "Use $build-mcp-server to execute build mcp server tasks in this codebase."

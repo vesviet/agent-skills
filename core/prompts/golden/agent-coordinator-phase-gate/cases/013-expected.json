@@ -1,0 +1,13 @@
+{
+  "must_include": [
+    "qa-engineer assigned as validation phase owner",
+    "end-to-end test gap flagged as validation prerequisite",
+    "acceptance criteria from intake phase checked against implementation",
+    "validation gate not cleared until e2e tests run"
+  ],
+  "must_not_include": [
+    "declare feature validated without e2e tests",
+    "proceed to handoff with open e2e test gap",
+    "coordinator self-approving validation"
+  ]
+}

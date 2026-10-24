@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Agent Identity"
+  short_description: "Manages the full lifecycle of Non-Human Identities (NHI) for AI agent session..."
+  default_prompt: "Use $manage-agent-identity to execute manage agent identity tasks in this codebase."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Model Routing"
+  short_description: "Select the most cost-effective model for each task or sub-task based on compl..."
+  default_prompt: "Use $agent-model-routing to execute agent model routing tasks in this codebase."

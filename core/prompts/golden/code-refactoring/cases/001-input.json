@@ -1,0 +1,13 @@
+{
+  "case_id": "REF-001",
+  "name": "Decompose 600-Line God Function via Extract Method (Long Method Smell)",
+  "work_type": "refactoring",
+  "role": "technical-lead",
+  "skill": "review-code",
+  "user_request": "Refactor monolithic processOrder function into cohesive, testable single-responsibility helper methods.",
+  "target": "services/order/processor.ts",
+  "context": {
+    "code_smell": "Fowler Long Method / God Function (600 lines doing validation, pricing, tax, db writes, email)",
+    "constraint": "Zero breaking changes to external signature"
+  }
+}

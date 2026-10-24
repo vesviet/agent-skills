@@ -1,0 +1,13 @@
+{
+  "case_id": "REF-002",
+  "name": "Replace Primitive Obsession with Immutable Value Objects",
+  "work_type": "refactoring",
+  "role": "technical-lead",
+  "skill": "review-code",
+  "user_request": "Refactor raw floating-point number fields representing currency amounts into a dedicated Money Value Object.",
+  "target": "domain/money.ts",
+  "context": {
+    "code_smell": "Primitive Obsession (numbers for currency causing rounding drift)",
+    "goal": "Introduce Money value object with integer cents and currency code"
+  }
+}

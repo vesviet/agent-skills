@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "strangler fig",
+    "facade",
+    "incremental cutover",
+    "routing proxy",
+    "canary release"
+  ],
+  "must_not_include": [
+    "big bang migration",
+    "all-at-once rewrite"
+  ],
+  "required_tokens": [
+    "strangler fig",
+    "facade",
+    "incremental cutover",
+    "routing proxy",
+    "canary release"
+  ],
+  "forbidden_tokens": [
+    "big bang migration",
+    "all-at-once rewrite"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

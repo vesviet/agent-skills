@@ -1,0 +1,4 @@
+interface:
+  display_name: "Setup Gpu Finops"
+  short_description: "Configure GPU telemetry, DCGM metrics, and Kubecost to attribute AI compute c..."
+  default_prompt: "Use $setup-gpu-finops to execute setup gpu finops tasks in this codebase."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Mmo Content"
+  short_description: "Use AI APIs to procedurally generate landing pages, creatives, and spin conte..."
+  default_prompt: "Use $generate-mmo-content to execute generate mmo content tasks in this codebase."

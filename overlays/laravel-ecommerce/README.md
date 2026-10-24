@@ -1,0 +1,39 @@
+# Laravel E-Commerce Overlay
+
+Project-specific conventions for the Laravel 13 e-commerce platform (~20 SKUs).
+
+**Depends on:** `overlays/laravel-filament` (generic Laravel 13 + Filament v4 + Livewire 3 rules)
+
+⚠️ **2026 Migration Status**: Upgrading from Laravel 11 → 13 and Filament v3 → v4.
+- Laravel 12 bug fix support ended Aug 13, 2026 — Laravel 13 migration required.
+- Filament v4 introduces unified `Schema` API — update all Resources.
+
+This overlay adds only what is unique to this project:
+
+- `rules/elomus-design-system.md` — Elomus Theme UI/UX: Deep Navy + Teal palette, Outfit font, product card hover effects, Slide-out Cart, Accordion PDP, VietQR, Mobile Sticky CTA
+- `rules/laravel-ecommerce-rules.md` — Project-specific conventions: Vietnamese slugs, specific models, cPanel deploy, queue config
+- `skills/develop-laravel-ecommerce-feature/` — Feature development skill with this project's exact file map and patterns
+
+Compose with `core` + `overlays/laravel-filament`, not standalone.
+
+## Standard 2026 Alignment
+
+This file is part of the agent-skills engineering pack. The 2026 upgrade
+pass added this footer so every prose file in the pack carries a
+consistent Standard 2026 pointer.
+
+- **OWASP ASI**: applied as described in `core/roles/role-standard.md`
+  (ASI01-ASI10) and the per-skill `## Security Guardrails (OWASP ASI)` sections.
+- **Failure Modes**: the rule in this file can be violated by drift, missing
+  context, or untracked exceptions. Concrete failure scenarios belong in the
+  related skill or workflow's `### Failure Modes` section.
+- **Output Contracts**: structured artifacts produced under this file must
+  conform to schemas in `core/contracts/schemas/`.
+- **Skill Toolbox Lock**: this file's rules are enforced by the role that
+  owns the affected action; the runtime gate is
+  `core/scripts/hooks/check-policy.py`.
+- **Commit / publish gate**: changes that affect user-visible behavior
+  follow the META-RULE in `core/rules/code.md` — no commit, no push, no
+  publish without explicit user confirmation.
+
+Last updated: 2026-09-01

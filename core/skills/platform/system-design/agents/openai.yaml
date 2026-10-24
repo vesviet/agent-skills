@@ -1,0 +1,4 @@
+interface:
+  display_name: "System Design"
+  short_description: "Design, specify, and document complex system architectures covering compute, ..."
+  default_prompt: "Use $system-design to execute system design tasks in this codebase."
