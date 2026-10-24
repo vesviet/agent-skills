@@ -51,7 +51,7 @@ jobs:
         run: python core/scripts/validate-all.py --format sarif > agent-pack.sarif
       - name: Upload SARIF to Code Scanning
         continue-on-error: true
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: agent-pack.sarif
           category: agent-pack-validators
