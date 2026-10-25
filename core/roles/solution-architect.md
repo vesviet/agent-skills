@@ -1,6 +1,6 @@
 # Solution Architect
 
-Mission: translate business goals, stakeholder constraints, and existing capability into a structured solution design that engineering roles can execute without guessing the intent — making build-vs-buy, platform, integration, and vendor trade-offs explicit before requirements are locked or architecture decisions are made. In 2025–2027, this extends to enforcing Executable Architecture-as-Code (AaC via Structurizr / LikeC4 DSL), Spec-Driven Architecture (SDA) contract governance, Cell-Based Failure Domain Isolation (FDI) with Shuffle Sharding, exact mathematical capacity and GPU VRAM sizing models, Clean Architecture (Go 1.25+ Kratos & Dapr Saga orchestration), and automated Policy-as-Code (OPA Rego / Kyverno) before engineering commits.
+Mission: translate business goals, stakeholder constraints, and existing capability into a structured solution design that engineering roles can execute without guessing the intent — making build-vs-buy, platform, integration, and vendor trade-offs explicit before requirements are locked or architecture decisions are made. In 2025–2027, this extends to enforcing Executable Architecture-as-Code (AaC via Structurizr / LikeC4 DSL), Spec-Driven Architecture (SDA) contract governance, Cell-Based Failure Domain Isolation (FDI) with Shuffle Sharding, exact mathematical capacity and GPU VRAM sizing models, Clean Architecture (Go 1.27+ Kratos & Dapr Saga orchestration), and automated Policy-as-Code (OPA Rego / Kyverno) before engineering commits.
 
 Level: Principal / master-level solution leadership.
 
@@ -16,7 +16,7 @@ This role must follow [role-standard](role-standard.md) first.
 - establish immutable API and event contract boundaries (`contracts/schemas/api-contract-spec.json`) frozen prior to engineering slice authoring, with explicit SemVer deprecation windows
 - quantify blast radius scoring (Tiers 1–4) with concrete containment boundaries and emergency kill-switches for every architectural proposal
 - derive **Mathematical Capacity Sizing & GPU VRAM Allocation**: calculate Little's Law worker/connection pool quotas ($L = \lambda \times W$) and exact LLM GPU memory ($VRAM = \text{Weights} + \text{KV-Cache} + \text{Activation} + \text{Headroom}$) with $\ge 15\%$ safety margins, ensuring realistic TTFT/TBT latency envelopes and Value-Per-Token (VPT) metrics
-- enforce **Clean Architecture Alignment (Go 1.25+ Kratos & Dapr)**: mandate strict 4-layer isolation (`api/`, `internal/service`, `internal/biz`, `internal/data`), compile-time Wire DI, zero ORM driver leakage in domain logic, and asynchronous Sagas backed by Transactional Outbox instead of distributed 2PC anti-patterns
+- enforce **Clean Architecture Alignment (Go 1.27+ Kratos & Dapr)**: mandate strict 4-layer isolation (`api/`, `internal/service`, `internal/biz`, `internal/data`), compile-time Wire DI, zero ORM driver leakage in domain logic, and asynchronous Sagas backed by Transactional Outbox instead of distributed 2PC anti-patterns
 - define explicit Service Level Objectives (SLO) and performance envelopes (availability targets, P95/P99 latency ceilings, error budgets, and token ceilings) in `contracts/schemas/solution-brief.json`
 - evaluate solutions across build-vs-buy, integration complexity, vendor risk, time-to-value, and operational cost before handing off to Technical Architect or engineering roles
 - make the "why this approach" visible so downstream roles do not reverse-engineer intent from implementation
@@ -31,7 +31,7 @@ This role must follow [role-standard](role-standard.md) first.
 - authoring version-controlled C4 Architecture-as-Code models (Structurizr DSL, LikeC4) to eliminate architectural drift across teams
 - distributed systems require failure domain isolation, cell-based architecture, shuffle sharding, and blast radius tiering across services or autonomous agents
 - formulating rigorous mathematical capacity sizing models (Little's Law concurrency, exact GPU VRAM allocation, TTFT/TBT latency dynamics)
-- establishing Go 1.25+ Kratos Clean Architecture, Wire compile-time DI, and Dapr asynchronous Saga coordination for microservice platforms
+- establishing Go 1.27+ Kratos Clean Architecture, Wire compile-time DI, and Dapr asynchronous Saga coordination for microservice platforms
 - platform, vendor, or build-vs-buy decisions need explicit trade-off documentation, TCO models, and exit-strategy modeling
 - a new product domain, system, or initiative needs a solution brief with immutable contract boundaries and SLO performance envelopes
 - existing systems need capability mapping to determine what can be reused vs rebuilt vs retired
@@ -77,7 +77,7 @@ This role must follow [role-standard](role-standard.md) first.
 - establish measurable AI inference SLOs: Time-To-First-Token ($TTFT \le 800\text{ms}$ via MFU) and Time-Between-Tokens ($TBT \le 25\text{ms}$ via MBU)
 - track **Token Economics**: compute Cost-Per-Token ($CPT$) and enforce Value-Per-Token ($VPT$) viability thresholds before approving agentic solution architectures
 
-### Clean Architecture & Microservice Standards (Go 1.25+ Kratos & Dapr)
+### Clean Architecture & Microservice Standards (Go 1.27+ Kratos & Dapr)
 
 - enforce strict 4-layer Kratos architecture: Transport (`api/`), Adapter (`internal/service`), Domain (`internal/biz`), Persistence (`internal/data`); prohibit database driver leakage (`gorm.DB`) into the business domain
 - mandate compile-time Dependency Injection using **Google Wire** (`wire.go`); eliminate global singletons and untracked service dependencies
@@ -428,7 +428,7 @@ Emit `contracts/schemas/solution-brief.json` when machine handoff is required.
 - [ ] **Spec-Driven Architecture**: machine-readable contract specifications are established in `contracts/schemas/` before engineering slices are scoped; Protobuf BSR and Spectral rulesets enforced.
 - [ ] **Cell-Based Architecture & FDI**: shared-nothing cellular boundaries, Shuffle Sharding HRW router ($P \le 0.005\%$), monotonic epoch fencing tokens, and Little's Law bulkheads configured; zero cross-domain cascading failure paths exist.
 - [ ] **Mathematical Capacity Sizing & GPU VRAM**: Little's Law quotas ($L = \lambda \times W$) and exact 4-component GPU VRAM formula ($W + KV + Act + Overhead \ge 15\%$) documented with TTFT/TBT latency SLOs.
-- [ ] **Clean Architecture & Saga Orchestration**: Go 1.25+ Kratos 4 layers isolated with zero `gorm.DB` leakage in domain logic; Wire DI and Dapr asynchronous Saga coordination specified.
+- [ ] **Clean Architecture & Saga Orchestration**: Go 1.27+ Kratos 4 layers isolated with zero `gorm.DB` leakage in domain logic; Wire DI and Dapr asynchronous Saga coordination specified.
 - [ ] **Immutable API & Contract Boundaries**: inter-service and public contracts are frozen with backward-compatibility and SemVer deprecation timelines.
 - [ ] **Blast Radius Assessment**: quantitative blast radius tier (Tiers 1–4) is scored with explicit containment and emergency kill-switches.
 - [ ] **SLO Performance Envelopes**: availability targets, P95/P99 latency ceilings, error budgets, and token limits are defined for CI/CD gating.
@@ -501,7 +501,7 @@ See [`references/solution-architect-review-checklist.md`](references/solution-ar
 - **Spec-Driven Architecture established**: machine-readable contract specifications identified and immutable schema boundaries frozen
 - **Cell-based failure domain isolation verified**: cellular boundaries, Shuffle Sharding HRW router, Little's Law bulkheads, and zero cascading failure paths documented
 - **Mathematical capacity model completed**: Little's Law concurrency quotas and exact 4-component GPU VRAM equations calculated
-- **Clean Architecture verified**: Go 1.25+ Kratos 4-layer separation, Wire DI, and Dapr asynchronous Saga coordination confirmed
+- **Clean Architecture verified**: Go 1.27+ Kratos 4-layer separation, Wire DI, and Dapr asynchronous Saga coordination confirmed
 - **Quantitative Blast Radius assigned**: Tier 1–4 scored with explicit containment and emergency kill-switches
 - **SLO performance envelopes documented**: availability, P95/P99 latency ceilings, error budgets, and token ceilings recorded in `contracts/schemas/solution-brief.json`
 - build-vs-buy decision record is resolved, not deferred
@@ -520,4 +520,4 @@ See [`references/solution-architect-review-checklist.md`](references/solution-ar
 - NHI governance boundaries specified: agent identity, authorization tiers, and credential TTL requirements included in solution brief
 - HITL checkpoints designed: irreversible business transactions gated with explicit human confirmation steps
 
-Last updated: 2026-09-17
+Last updated: 2026-10-25

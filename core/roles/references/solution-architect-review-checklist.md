@@ -33,7 +33,7 @@ This reference checklist provides detailed evaluation criteria for solution arch
 - **Inference Latency Dynamics**: Time-To-First-Token ($TTFT \le 800\text{ms}$ via MFU) and Time-Between-Tokens ($TBT \le 25\text{ms}$ via MBU) are documented before sizing GPU clusters.
 - **Token Economics & VPT**: Cost-Per-Token ($CPT$) is computed and Value-Per-Token ($VPT$) business viability thresholds are validated.
 
-### 5. Clean Architecture & Saga Orchestration (Go 1.25+ Kratos & Dapr)
+### 5. Clean Architecture & Saga Orchestration (Go 1.27+ Kratos & Dapr)
 - **Layer Separation**: Kratos 4-layer architecture strictly separates Transport (`api`), Adapter (`service`), Domain (`biz`), and Persistence (`data`).
 - **Zero ORM Leakage**: Database driver instances (`gorm.DB`) are prohibited from leaking into the `internal/biz` domain package.
 - **Compile-Time Wire DI**: Dependency injection is wired via `google/wire` AST code generation; untracked global singletons are rejected.
@@ -69,3 +69,8 @@ This reference checklist provides detailed evaluation criteria for solution arch
 - **Architectural vs Operational Controls**: Clear separation between controls enforced in code/architecture vs. organizational process.
 - **EU AI Act Timeline Alignment**: Scoping aligns with the Digital Omnibus timeline (Article 50 transparency live August 2026; Annex III high-risk deadline December 2027).
 - **Auditability & Traceability**: Solution incorporates tamper-evident logging, decision provenance, and 15-day decision reconstruction capability.
+
+### 10. 2026-10 Modernization Gates
+- **Stack-Currency Gate**: solution stack references follow the Backend Developer Stack Currency baseline — Go 1.27+ (1.27 released 2026-08), Python 3.14+, Node 26 LTS line, PostgreSQL 18; previous-generation language pins in new solution designs fail currency review; re-validate quarterly.
+- **MCP-Transport Gate**: adopted MCP servers (marketplace or in-house) speak Streamable HTTP (MCP spec 2025-03-26+); new HTTP+SSE deployments are rejected as deprecated transport.
+- **GPU-Sizing-Currency Gate**: VRAM sizing equations stay silicon-agnostic (weights + KV cache + activation + overhead with ≥15% headroom) and are re-benchmarked per accelerator generation (e.g., Graviton5/Trainium3-class or current NVIDIA lines) rather than pinned to a single hardware vintage.
