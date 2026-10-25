@@ -174,7 +174,7 @@ When this workflow completes, emit:
 
 ### Security Guardrails (OWASP ASI)
 
-- **ASI02 Excessive Agency**: require human educator review and verification before student assessment results or gradebook changes are published.
+- **ASI02 Tool Misuse & Exploitation**: require human educator review and verification before student assessment results or gradebook changes are published.
 - **ASI04 Model Inversion & Data Leakage**: sanitize and redact all student PII per FERPA/GDPR before sending context to AI models.
 - **ASI06 Context & Memory Poisoning**: prevent unvetted student prompt injection from altering rubric grading criteria or model system instructions.
 - **ASI07 Inter-Agent Communication**: exchange educational state strictly through validated contracts (`learning-assessment-report.json`, `learning-handoff.json`).

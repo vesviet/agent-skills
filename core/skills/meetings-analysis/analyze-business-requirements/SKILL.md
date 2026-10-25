@@ -115,7 +115,7 @@ Scenario: [Happy path scenario]
 ## Security Guardrails (OWASP ASI)
 
 - **ASI01 Goal Hijack**: cross-check refined requirements against original stakeholder intent.
-- **ASI02 Excessive Agency**: restrict agentic features to least-privilege MCP tool allowlists and mandatory kill-switches.
+- **ASI02 Tool Misuse & Exploitation**: restrict agentic features to least-privilege MCP tool allowlists and mandatory kill-switches.
 - **ASI07 Inter-Agent Communication**: hand off requirements strictly via validated `feature-ticket.json` schemas.
 - **ASI09 Human Oversight**: enforce mandatory human sign-off on AI-assisted requirements before sprint lock.
 

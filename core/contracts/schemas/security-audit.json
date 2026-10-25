@@ -20,7 +20,9 @@
         "code_review",
         "dependency_check",
         "architecture_review",
-        "penetration_test"
+        "penetration_test",
+        "agentic_ai_review",
+        "infrastructure_review"
       ]
     },
     "findings": {
@@ -49,6 +51,22 @@
           },
           "remediation": {
             "type": "string"
+          },
+          "exploit_path": {
+            "type": "string",
+            "description": "Concrete attack path from entry point to impact."
+          },
+          "blast_radius": {
+            "type": "string",
+            "description": "Assets, tenants, and systems reachable if exploited."
+          },
+          "owasp_ref": {
+            "type": "string",
+            "description": "OWASP mapping tag, e.g. 'A03:2025', 'LLM06:2025', or 'ASI02:2026'."
+          },
+          "status": {
+            "type": "string",
+            "enum": ["open", "mitigated", "verified_fixed", "accepted_risk"]
           }
         },
         "required": [
@@ -100,6 +118,91 @@
     "sbom_verification": {
       "type": "boolean",
       "description": "True if the Software Bill of Materials (SBOM) was verified for supply-chain integrity."
+    },
+    "owasp_baseline": {
+      "type": "string",
+      "enum": ["2021", "2025"],
+      "description": "OWASP Top 10 edition the audit was performed against; 2025 is the current edition."
+    },
+    "asi_review": {
+      "type": "object",
+      "description": "OWASP Top 10 for Agentic Applications 2026 coverage when agentic AI is in scope.",
+      "properties": {
+        "asi_items_checked": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ASI01",
+              "ASI02",
+              "ASI03",
+              "ASI04",
+              "ASI05",
+              "ASI06",
+              "ASI07",
+              "ASI08",
+              "ASI09",
+              "ASI10"
+            ]
+          }
+        },
+        "mcp_servers_pinned": {
+          "type": "boolean",
+          "description": "True if every integrated MCP server is pinned to an immutable version hash."
+        },
+        "max_blast_radius": {
+          "type": "string",
+          "description": "Worst-case combined blast radius across all agent-reachable tools."
+        }
+      },
+      "required": ["asi_items_checked"]
+    },
+    "pqc_readiness": {
+      "type": "object",
+      "description": "Post-quantum cryptography readiness (NIST IR 8547: deprecated 2030, disallowed 2035).",
+      "properties": {
+        "crypto_inventory_present": {
+          "type": "boolean",
+          "description": "True if a CBOM (CycloneDX 1.6) crypto inventory exists for in-scope systems."
+        },
+        "hybrid_tls_enabled": {
+          "type": "boolean",
+          "description": "True if server-side TLS termination supports hybrid X25519MLKEM768."
+        },
+        "migration_plan_present": {
+          "type": "boolean",
+          "description": "True if a documented migration path off quantum-vulnerable crypto exists for long-lived data."
+        }
+      },
+      "required": [
+        "crypto_inventory_present",
+        "hybrid_tls_enabled",
+        "migration_plan_present"
+      ]
+    },
+    "cra_compliance": {
+      "type": "object",
+      "description": "EU Cyber Resilience Act readiness for products in EU scope.",
+      "properties": {
+        "in_scope": {
+          "type": "boolean",
+          "description": "True if the audited product falls under EU CRA obligations."
+        },
+        "reporting_process_active": {
+          "type": "boolean",
+          "description": "True if the 24-hour ENISA/CSIRT vulnerability and incident reporting runbook is live (obligation since 2026-09-11)."
+        },
+        "support_period_months": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Declared security support period in months; CRA requires >= 60 or product lifetime."
+        },
+        "sbom_ready": {
+          "type": "boolean",
+          "description": "True if a machine-readable SBOM pipeline produces release evidence (full obligation 2027-12-11)."
+        }
+      },
+      "required": ["in_scope"]
     }
   },
   "required": [
@@ -112,20 +215,48 @@
   "examples": [
     {
       "contract_type": "security-audit",
-      "audit_id": "2026-06-12-cod-routing-security",
-    "scope": "NewLogicAutoAssign.php — COD store routing changes",
+      "target": "NewLogicAutoAssign.php — COD store routing changes",
       "audit_type": "code_review",
-      "overall_status": "pass",
       "findings": [],
-      "owasp_checks": {
-        "injection": "pass",
-        "broken_auth": "not_applicable",
-        "sensitive_data": "pass",
-        "security_misconfiguration": "pass"
+      "compliance_violations": [],
+      "overall_risk_score": "pass",
+      "owasp_baseline": "2025",
+      "ai_prompt_injection_check": false,
+      "sbom_verification": true
+    },
+    {
+      "contract_type": "security-audit",
+      "target": "support-copilot agent v2 — MCP toolchain",
+      "audit_type": "agentic_ai_review",
+      "findings": [
+        {
+          "vulnerability": "Unpinned MCP server dependency",
+          "severity": "high",
+          "description": "weather-tools MCP server is referenced by mutable tag; a rug-pull update would silently redefine tool schemas.",
+          "remediation": "Pin to an immutable version hash and alert on schema drift.",
+          "exploit_path": "registry push -> silent tool redefinition -> ASI02 tool misuse",
+          "owasp_ref": "ASI04:2026",
+          "status": "open"
+        }
+      ],
+      "overall_risk_score": "high",
+      "owasp_baseline": "2025",
+      "asi_review": {
+        "asi_items_checked": ["ASI01", "ASI02", "ASI03", "ASI04", "ASI06"],
+        "mcp_servers_pinned": false,
+        "max_blast_radius": "customer PII read + outbound email dispatch"
       },
-      "recommendation": "No security issues found. Store courier lookup uses prepared statements. No secrets exposed.",
-    "target": "NewLogicAutoAssign.php — COD store routing changes",
-      "overall_risk_score": "pass"
+      "pqc_readiness": {
+        "crypto_inventory_present": true,
+        "hybrid_tls_enabled": false,
+        "migration_plan_present": false
+      },
+      "cra_compliance": {
+        "in_scope": true,
+        "reporting_process_active": true,
+        "support_period_months": 60,
+        "sbom_ready": true
+      }
     }
   ]
 }

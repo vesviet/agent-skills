@@ -68,9 +68,9 @@ When architectural design is complete or ready for downstream implementation sli
 
 ## Security Guardrails (OWASP ASI + MCP Top 10)
 
-- **ASI02 Excessive Agency**: Limit tool capabilities to minimal required privilege; require human approval for irreversible write operations.
-- **ASI04 Supply Chain Abuse**: Verify MCP server packages against signed provenance manifests; prohibit unvetted registries.
-- **ASI05 Insecure Tool Execution**: Validate every input parameter against declared schemas; sanitize inputs before SQL, shell, or API dispatch.
+- **ASI02 Tool Misuse & Exploitation**: Limit tool capabilities to minimal required privilege; require human approval for irreversible write operations.
+- **ASI04 Agentic Supply Chain**: Verify MCP server packages against signed provenance manifests; prohibit unvetted registries.
+- **ASI05 Unexpected Code Execution**: Validate every input parameter against declared schemas; sanitize inputs before SQL, shell, or API dispatch.
 - **ASI07 Insecure Inter-Agent Communication**: Enforce mutual authentication and RFC 8707 audience restriction on all inter-service MCP calls.
 - **ASI08 Cascading Failures**: Implement circuit breakers, bulkhead isolation, and rate limiting across MCP gateways.
 - **ASI09 Over-Reliance**: Provide deterministic schema validation and error hints to prevent blind acceptance of incorrect tool outputs.

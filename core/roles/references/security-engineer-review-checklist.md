@@ -120,3 +120,11 @@ This reference checklist provides comprehensive security architecture, threat mo
 | **SPIFFE SVID Expiry** | TTL $\le 1\text{h}$ | `spire-agent api fetch x509` | Lifetime $\le 3600\text{s}$ |
 | **Audit Log Integrity** | WORM storage valid | S3 Object Lock configuration check | Immutability active, retention $\ge 180\text{d}$ |
 | **Audit Contract** | Valid `security-audit.json` | `python3 core/scripts/validate-contracts.py` | 100% schema compliant |
+
+### 10. 2026-10 Modernization Gates (`CRA-REPORTING LOCK`, `PQC-TRANSITION LOCK`)
+
+- **ASI Correctness Gate**: every agentic finding is tagged against the official OWASP Top 10 for Agentic Applications 2026 titles (ASI01 Agent Goal Hijack, ASI02 Tool Misuse & Exploitation, ASI03 Identity & Privilege Abuse, ASI04 Agentic Supply Chain, ASI05 Unexpected Code Execution, ASI06 Memory & Context Poisoning, ASI07 Insecure Inter-Agent Communication, ASI08 Cascading Failures, ASI09 Human-Agent Trust Exploitation, ASI10 Rogue Agents); invented titles such as "ASI08 Missing HITL" or "ASI02 Excessive Agency" fail review outright
+- **CRA Reporting Gate**: for products in EU scope, a tested 24-hour ENISA/CSIRT reporting runbook exists (obligation live since 2026-09-11); a declared support period ≥5 years precedes the 2026-12-11 main obligations; SBOM pipeline evidence is building toward the 2027-12-11 documentation gate
+- **PQC Transition Gate**: a CBOM crypto inventory exists for all cryptography in scope; server-side hybrid TLS (X25519MLKEM768) is enabled or exception-logged; no new quantum-vulnerable-only crypto protects data surviving past 2030 (NIST IR 8547)
+- **Red Teaming Alignment Gate**: agentic adversarial testing is structured per the OWASP GenAI Red Teaming Manual v1.0 (2026-10-20) and Agent Control Standard (2026-09-01), not ad-hoc prompt lists
+- **LLM Top 10 2025 Gate**: AI findings reference 2025-edition mappings (LLM06 Excessive Agency, LLM07 System Prompt Leakage, LLM10 Unbounded Consumption), not 2023 positions

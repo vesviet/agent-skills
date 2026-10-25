@@ -1,6 +1,7 @@
 ---
 name: prompt-injection-defense
 description: Use when safeguarding AI agents against direct and indirect prompt injection attacks, implementing bounded tool execution, enforcing structural delimiter isolation, and verifying canary token integrity.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter]
 ---
 
@@ -39,6 +40,7 @@ Harden LLM agents and autonomous tool execution chains against direct jailbreaks
 - **Dual-LLM / Sandwich Pattern**:
   - Sandwich untrusted input between the initial system constraints and a trailing reinforcement reminder at the prompt boundary.
   - Where high-privilege tools are invoked, route raw external content through a quarantined reader LLM to extract structured facts before presenting data to the privileged executor agent.
+- **CaMeL Capability Confinement (architectural SOTA)**: for agents acting on privileged data flows, adopt CaMeL-style system design (Google DeepMind, arXiv:2503.18813): a privileged planner LLM never touches raw untrusted content; a quarantined untrusted LLM extracts typed values; a security monitor enforces capability rules on provenance-tagged data flows. Prompt-level instructions alone are not a defense — the 2026 consensus is that injection is contained only by architecture, and since such architectures remain rare, their absence must be listed as residual risk instead of silently accepted.
 
 ## Suggested Process
 
@@ -84,6 +86,7 @@ When auditing prompt security or detecting injection anomalies, emit `contracts/
 - [ ] Trailing reinforcement instructions appended after untrusted context to prevent attention hijack
 - [ ] Maximum autonomous tool loop step limit enforced
 - [ ] Security audit log records all blocked injections and schema boundary violations
+- [ ] adversarial injection test suite aligned to the OWASP GenAI Red Teaming Manual v1.0 (2026-10-20) runs against the defended agent before production promotion
 
 ## Security Guardrails (OWASP ASI)
 

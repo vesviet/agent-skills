@@ -69,7 +69,7 @@ When decomposition and planning architecture is established:
 ## Security Guardrails (OWASP ASI)
 
 - **ASI01 Prompt Injection via External Context**: Sanitize file contents and tool outputs before feeding into sub-agent planning contexts.
-- **ASI02 Excessive Agency**: Restrict sub-agents to least-privilege tool allowlists; mandate HITL approval for schema drops, deployments, or credential access.
+- **ASI02 Tool Misuse & Exploitation**: Restrict sub-agents to least-privilege tool allowlists; mandate HITL approval for schema drops, deployments, or credential access.
 - **ASI03 Identity & Privilege Abuse**: Provision ephemeral, role-scoped NHI credentials; prohibit shared master credentials across sub-agents.
 - **ASI07 Insecure Inter-Agent Communication**: Validate contract schemas and signatures on all inter-agent messages and handoff artifacts.
 - **ASI08 Cascading Agent Failures**: Isolate sub-agent failure domains; halt DAG branch on invariant failure to prevent error propagation.

@@ -1,6 +1,7 @@
 ---
 name: manage-secrets
 description: Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-control, and rollout patterns. Use when code or deployment work touches credentials, tokens, keys, or sensitive configuration.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
@@ -26,6 +27,7 @@ Use this skill when a change involves creating, rotating, wiring, or auditing se
 - **WIMSE alignment (2027)**: for agent and workload identities, prefer SPIFFE/SVID issuance and short-lived WIMSE-style tokens (JOSE-based service-to-service chains) over static API keys; use RFC 8693 token exchange at trust boundaries — the first WIMSE RFCs are expected in 2027 as the IETF architecture (at IESG since July 2026) formalizes
 - **Secrets-less preference**: prefer payment-native or federated access patterns (e.g., x402) that remove standing credentials entirely where the integration allows; where secrets remain, they must be NHI-scoped, rotated, and inventory-tracked
 - maintain a **per-agent identity inventory**: every non-human identity (agent, service account, workload) recorded with owner, scope, and lifecycle state — untracked NHIs are prohibited
+- **PQC crypto-agility**: record each key's algorithm and rotation cadence in the secret/NHI inventory so quantum-vulnerable algorithms (RSA, ECDSA) can be enumerated into the CBOM and scheduled ahead of NIST IR 8547 deadlines (deprecated 2030, disallowed 2035); prefer hybrid-capable, algorithm-negotiable libraries for new key material
 - mitigate the elevated risk (2× secrets leakage rate) in AI-assisted code generation by enforcing automated pre-commit and CI pipeline scanning using Gitleaks or TruffleHog
 - evaluate secret storage provider choices (e.g., OpenBao vs. HashiCorp Vault) against the organization's governance policies, licensing models (MPL vs. BSL), and migration/support requirements
 - treat every secret rotation as an irreversible action that requires explicit user confirmation; never rotate a production credential without an approval gate
@@ -127,6 +129,7 @@ Confirm without exposing values:
 - [ ] OIDC workload identity federation configured for pipeline authentication
 - [ ] pre-commit and CI/CD secret scanning (Gitleaks/TruffleHog) active for AI-generated code validation
 - [ ] governance alignment (OpenBao vs HashiCorp Vault) reviewed and documented
+- [ ] crypto algorithm and rotation metadata recorded for CBOM/PQC inventory alignment
 
 ## Related Skills
 
