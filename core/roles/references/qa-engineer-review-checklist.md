@@ -100,8 +100,8 @@ This reference checklist provides detailed test engineering, quality gates, and 
   - Cilium Tetragon and Beyla sensors integrated in test environments to monitor system calls (`sys_enter_connect`, `sys_enter_execve`)
   - execution sandboxes verified to make zero unauthorized network egress connections or unexpected subprocess spawns
 
-### 7. Modern Web, Browser Automation & Accessibility (Playwright v1.48+)
-- **Playwright v1.48+ Automation Standards**:
+### 7. Modern Web, Browser Automation & Accessibility (Playwright v1.64+)
+- **Playwright v1.64+ Automation Standards**:
   - browser tests executed in isolated browser contexts with automated Trace Viewer capture on test failure
   - transport-level network interception enforced via Mock Service Worker (MSW v2) or HAR network replay; application-level monkey-patching of `window.fetch` strictly prohibited
   - arbitrary sleep calls (`page.waitForTimeout`) eliminated; Playwright web-first assertions with locator auto-waiting (`await expect(locator).toBeVisible()`) enforced
@@ -131,12 +131,12 @@ This reference checklist provides detailed test engineering, quality gates, and 
     - HTTP error rate $< 0.1\%$
   - k6 threshold rules configured to exit with non-zero exit code (exit code 99) upon SLO breach, blocking deployment
 
-### 9. Clean Architecture Multi-Language QA (Go 1.25+, Python, TypeScript)
-- **Go 1.25+ Kratos Clean Architecture Test Isolation**:
+### 9. Clean Architecture Multi-Language QA (Go 1.27+, Python, TypeScript)
+- **Go 1.27+ Kratos Clean Architecture Test Isolation**:
   - Kratos 4-layer separation strictly enforced: `api/` (contracts) $\rightarrow$ `internal/service` (adapters) $\rightarrow$ `internal/biz` (business invariants) $\rightarrow$ `internal/data` (GORM persistence)
   - zero database ORM (`gorm.DB`) leakage into `internal/biz`; domain invariants testable via pure unit tests with zero I/O
 - **Ephemeral Database Parity via Testcontainers-Go**:
-  - in-memory SQLite mocks replaced with real PostgreSQL 16 Alpine containers spun up programmatically via `testcontainers/testcontainers-go` managed by Ryuk reaper
+  - in-memory SQLite mocks replaced with real PostgreSQL 18 Alpine containers spun up programmatically via `testcontainers/testcontainers-go` managed by Ryuk reaper
   - complete engine feature parity ensured (JSONB operations, window functions, concurrency locks, indexing)
 - **Zero-Dirty State with GORM `InTx` Rollbacks**:
   - each database integration test wrapped in an explicit transaction (`tx := db.Begin()`), repository operations executed within the transaction, and deferred `tx.Rollback()` invoked on teardown
@@ -188,3 +188,8 @@ This reference checklist provides detailed test engineering, quality gates, and 
 - blast radius assessment verifies failure domain containment; zero cross-boundary impact detected
 - skipped checks and residual risk are explicit, justified, and documented in `contracts/schemas/test-report.json`
 - release confidence is supported by empirical evidence, not confidence language
+
+### 14. 2026-10 Modernization Gates
+- **Stack-Currency Gate**: ephemeral test parity runs on the 2026-10 baseline — Go 1.27+ (1.27 released 2026-08) and PostgreSQL 18 Testcontainers (PG 19 GA planned 2026-11-19); previous-generation Go or PostgreSQL pins fail currency review.
+- **Playwright-Currency Gate**: browser automation targets Playwright v1.64+ (1.64.1 released 2026-10-13; v1.62+ required for MCP-era features); v1.48-era pins fail currency review.
+- **Toolchain-Alignment Gate**: QA stack pins match the Backend Developer Stack Currency baseline (Go 1.27+, Python 3.14+, Node 26 LTS line, PostgreSQL 18) so test environments never drift from production runtimes; re-validate quarterly.

@@ -17,10 +17,10 @@ This role must follow [role-standard](role-standard.md) first.
 - enforce **Observability-Driven Testing (ODT) & Trace-Based Assertions**: utilize Kubeshop Tracetest to evaluate distributed OpenTelemetry trace DAGs as test oracles; assert span hierarchies (HTTP $\rightarrow$ Service $\rightarrow$ DB $\rightarrow$ Event broker), enforce span latency SLO budgets, and verify W3C traceparent context propagation across asynchronous message hops
 - enforce **Automated Database Efficiency & N+1 Prevention**: execute automated query count assertions per endpoint in integration tests; mandate $O(1)$ query scaling relative to collection size $N$, and assert zero unindexed sequential scans (`Seq Scan`) via automated `EXPLAIN ANALYZE` execution plan inspection
 - enforce **Shift-Left Chaos & Fault Injection**: conduct in-test network fault injection using Shopify Toxiproxy and Chaos Mesh to simulate latency, jitter, packet loss, and TCP resets; verify circuit breaker finite state transitions (`CLOSED` $\rightarrow$ `OPEN` $\rightarrow$ single-canary probe `HALF-OPEN` $\rightarrow$ `CLOSED`) and AWS full jitter exponential backoff; enforce Grafana k6 distributed performance gates with strict SLO thresholds (P95 $< 150\text{ms}$, P99 $< 300\text{ms}$, error rate $< 0.1\%$) failing CI on breach
-- enforce **Clean Architecture & Ephemeral Parity (Go 1.25+, Python, TypeScript)**: strictly isolate business invariants (`internal/biz`) from database ORMs (`gorm.DB`) and transport layers in Kratos clean architecture; enforce real PostgreSQL 16 Alpine containers via Testcontainers with GORM `InTx` uncommitted transactional rollbacks per test case; isolate test dependencies via Google Wire compile-time DI, and mandate zero data races (`go test -v -race`) and zero leaked goroutines (`uber-go/goleak`)
+- enforce **Clean Architecture & Ephemeral Parity (Go 1.27+, Python, TypeScript)**: strictly isolate business invariants (`internal/biz`) from database ORMs (`gorm.DB`) and transport layers in Kratos clean architecture; enforce real PostgreSQL 18 Alpine containers via Testcontainers with GORM `InTx` uncommitted transactional rollbacks per test case; isolate test dependencies via Google Wire compile-time DI, and mandate zero data races (`go test -v -race`) and zero leaked goroutines (`uber-go/goleak`)
 - enforce **Mutation Testing**: require minimum mutation scores ($\ge 75\text{--}80\%$ via Stryker, Mutmut, or cargo-mutants) on core business, authentication, and domain invariant logic to mathematically eliminate assertion theater
 - institutionalize **Property-Based Testing (PBT)**: verify mathematical invariants, serialization round-trips, and deterministic state transitions across thousands of randomized inputs using property testing frameworks (fast-check, Hypothesis, proptest)
-- enforce **Modern Web & Automated Accessibility Gates**: execute Playwright v1.48+ browser automation with transport-level network mocking via MSW v2; enforce automated WCAG 2.2 AA accessibility gates via `@axe-core/playwright` (zero critical or serious violations), modal keyboard focus traps, screen reader ARIA snapshots, and font-stabilized visual regression diffing (`document.fonts.ready`)
+- enforce **Modern Web & Automated Accessibility Gates**: execute Playwright v1.64+ browser automation with transport-level network mocking via MSW v2; enforce automated WCAG 2.2 AA accessibility gates via `@axe-core/playwright` (zero critical or serious violations), modal keyboard focus traps, screen reader ARIA snapshots, and font-stabilized visual regression diffing (`document.fonts.ready`)
 - enforce **OWASP ASI04 & ASI05 Gates**: audit lockfile integrity hashes, enforce immutable commit SHA pinning for all CI actions (ASI04), and test sandbox escape boundaries with restricted network egress for dynamic script runners (ASI05)
 - treat "no crash" as insufficient: verify data correctness, invariants, side effects, and observable outcomes
 - mentor teams through risk-based testing, better testability, and defect reports that lead to fast fixes
@@ -38,7 +38,7 @@ This role must follow [role-standard](role-standard.md) first.
 - implementing Observability-Driven Testing (ODT) with Kubeshop Tracetest to assert OpenTelemetry span DAGs and latency budgets
 - executing multi-dimensional testing for concurrency, race conditions (`go test -race`), goroutine leaks (`uber-go/goleak`), and automated N+1 query counters
 - executing shift-left chaos and resilience experiments via Toxiproxy (circuit breaker trip, fallback, exponential backoff) and k6 performance SLO gates
-- executing integration tests with real database parity using Testcontainers PostgreSQL 16, Wire DI test sets, and GORM `InTx` rollback isolation
+- executing integration tests with real database parity using Testcontainers PostgreSQL 18, Wire DI test sets, and GORM `InTx` rollback isolation
 - automating modern browser end-to-end flows, MSW v2 network interception, font-stabilized visual regression, and WCAG 2.2 AA accessibility audits
 - enforcing OWASP ASI04 (Supply Chain) and ASI05 (Execution Sandbox) security verification
 - preparing release confidence statements with `contracts/schemas/test-report.json` and `contracts/schemas/validation-result.json`
@@ -147,9 +147,9 @@ This role must follow [role-standard](role-standard.md) first.
   - integrate Cilium Tetragon and Beyla sensors in test environments to monitor system calls (`sys_enter_connect`, `sys_enter_execve`)
   - verify that execution sandboxes make zero unauthorized network egress connections or unexpected subprocess spawns
 
-### Pillar 4: Modern Web, Browser Automation & Accessibility (Playwright v1.48+)
+### Pillar 4: Modern Web, Browser Automation & Accessibility (Playwright v1.64+)
 
-- **Playwright v1.48+ Automation Standards**:
+- **Playwright v1.64+ Automation Standards**:
   - execute browser tests in isolated browser contexts with automated Trace Viewer capture on test failure
   - enforce transport-level network interception via Mock Service Worker (MSW v2) or HAR network replay; strictly prohibit application-level monkey-patching of `window.fetch`
   - eliminate arbitrary sleep calls (`page.waitForTimeout`); mandate Playwright web-first assertions with locator auto-waiting (`await expect(locator).toBeVisible()`)
@@ -179,13 +179,13 @@ This role must follow [role-standard](role-standard.md) first.
     - HTTP error rate $< 0.1\%$
   - configure k6 threshold rules to exit with non-zero exit code (exit code 99) upon SLO breach, blocking deployment
 
-### Pillar 6: Clean Architecture Multi-Language QA (Go 1.25+, Python, TypeScript)
+### Pillar 6: Clean Architecture Multi-Language QA (Go 1.27+, Python, TypeScript)
 
-- **Go 1.25+ Kratos Clean Architecture Test Isolation**:
+- **Go 1.27+ Kratos Clean Architecture Test Isolation**:
   - strictly enforce Kratos 4-layer separation: `api/` (contracts) $\rightarrow$ `internal/service` (adapters) $\rightarrow$ `internal/biz` (business invariants) $\rightarrow$ `internal/data` (GORM persistence)
   - assert zero database ORM (`gorm.DB`) leakage into `internal/biz`; domain invariants must be testable via pure unit tests with zero I/O
 - **Ephemeral Database Parity via Testcontainers-Go**:
-  - replace in-memory SQLite mocks with real PostgreSQL 16 Alpine containers spun up programmatically via `testcontainers/testcontainers-go` managed by Ryuk reaper
+  - replace in-memory SQLite mocks with real PostgreSQL 18 Alpine containers spun up programmatically via `testcontainers/testcontainers-go` managed by Ryuk reaper
   - ensure complete engine feature parity (JSONB operations, window functions, concurrency locks, indexing)
 - **Zero-Dirty State with GORM `InTx` Rollbacks**:
   - wrap each database integration test in an explicit transaction (`tx := db.Begin()`), execute repository operations within the transaction, and invoke deferred `tx.Rollback()` on teardown
@@ -395,7 +395,7 @@ This role must follow [role-standard](role-standard.md) first.
 - W3C Trace Context propagation: [Verified across async message hops]
 
 ## 4. Modern Web & Browser Automation Gate
-- Playwright v1.48+ test suite: [Passed with isolated browser contexts]
+- Playwright v1.64+ test suite: [Passed with isolated browser contexts]
 - Network layer interception: [MSW v2 transport-level mocks verified]
 - WCAG 2.2 AA accessibility audit: [`@axe-core/playwright` zero critical/serious violations]
 - Keyboard navigation & focus traps: [Tab order, modal containment, Escape restore verified]
@@ -410,8 +410,8 @@ This role must follow [role-standard](role-standard.md) first.
 - k6 distributed performance tests: [P95 < 150ms, P99 < 300ms, error rate < 0.1%]
 
 ## 6. Clean Architecture Multi-Language Integration Gate
-- Go 1.25+ Kratos Layer Isolation: [Zero gorm.DB leakage in internal/biz]
-- Ephemeral database parity: [PostgreSQL 16 via Testcontainers-go verified]
+- Go 1.27+ Kratos Layer Isolation: [Zero gorm.DB leakage in internal/biz]
+- Ephemeral database parity: [PostgreSQL 18 via Testcontainers-go verified]
 - Database state isolation: [GORM InTx transactional rollback per test case]
 - Dependency injection: [Wire DI test provider isolation verified]
 - Race detector: [`go test -v -race` clean with zero race conditions]
@@ -485,7 +485,7 @@ Emit `contracts/schemas/test-report.json` and `contracts/schemas/validation-resu
 - [ ] **Trace Context Propagation**: W3C traceparent headers verified across all asynchronous hops.
 
 ### Modern Web & Accessibility
-- [ ] **Playwright v1.48+ Isolation**: Browser tests run in isolated contexts with MSW v2 transport-level network interception.
+- [ ] **Playwright v1.64+ Isolation**: Browser tests run in isolated contexts with MSW v2 transport-level network interception.
 - [ ] **WCAG 2.2 AA Accessibility**: Automated `@axe-core/playwright` audit passes with zero critical/serious violations.
 - [ ] **Keyboard & ARIA Tree Verification**: Modal dialogs trap keyboard focus; screen reader accessibility tree verified via ARIA snapshots.
 - [ ] **Stabilized Visual Diffing**: Screenshot comparisons stabilized via `document.fonts.ready` with dynamic elements masked.
@@ -498,7 +498,7 @@ Emit `contracts/schemas/test-report.json` and `contracts/schemas/validation-resu
 
 ### Clean Architecture & Ephemeral Parity
 - [ ] **Clean Architecture Layer Isolation**: Business logic (`internal/biz`) is decoupled from database ORMs (`gorm.DB`).
-- [ ] **Ephemeral Database Parity**: Integration tests run against real PostgreSQL 16 containers via Testcontainers.
+- [ ] **Ephemeral Database Parity**: Integration tests run against real PostgreSQL 18 containers via Testcontainers.
 - [ ] **Transactional Rollback Isolation**: Multi-write tests wrap operations in GORM `InTx` transactions with deferred rollback.
 - [ ] **Wire DI Test Providers**: Dependencies isolated using compile-time Wire test sets.
 - [ ] **Property-Based Invariants**: Mathematical invariants and round-trip serialization proven via Hypothesis or fast-check.
@@ -517,7 +517,7 @@ See [`references/qa-engineer-review-checklist.md`](references/qa-engineer-review
 - **Uncalibrated Judge Drift**: an uncalibrated LLM judge exhibits verbosity or sycophancy bias, approving hallucinated or non-grounded outputs. **Mitigation:** enforce $\ge 85\%$ statistical agreement calibration against human ground truth before deploying judges to CI.
 - **Flaky Visual Regressions**: tests fail intermittently across different operating systems due to subpixel font anti-aliasing timing. **Mitigation:** await `document.fonts.ready` before snapshot capture, mask dynamic UI regions, and run visual diffs inside standardized Linux Docker containers.
 - **Cascading Outage on Recovery (Thundering Herd)**: a circuit breaker recovers from OPEN directly into full traffic, immediately crashing recovering downstream dependencies. **Mitigation:** enforce a single-canary probe lock in `HALF-OPEN` state, verified via Toxiproxy fault injection tests with full jitter backoff.
-- **Database Divergence via SQLite Mocks**: tests pass against in-memory SQLite but fail in production due to PostgreSQL-specific JSONB queries, window functions, or transaction isolation semantics. **Mitigation:** mandate ephemeral PostgreSQL 16 Alpine containers via Testcontainers with GORM `InTx` transactional rollbacks.
+- **Database Divergence via SQLite Mocks**: tests pass against in-memory SQLite but fail in production due to PostgreSQL-specific JSONB queries, window functions, or transaction isolation semantics. **Mitigation:** mandate ephemeral PostgreSQL 18 Alpine containers via Testcontainers with GORM `InTx` transactional rollbacks.
 - **Live LLM API in CI**: tests call live LLM providers, causing non-deterministic timeouts, budget depletion, and test flakiness. **Mitigation:** stub external model invocations with deterministic fixtures in CI; reserve live calls for calibrated evaluation benchmarks.
 - **Skipped tests reported as full coverage**: test runs silently skip critical test suites while reporting green checkmarks. **Mitigation:** require explicit reporting of executed vs skipped suites in `contracts/schemas/test-report.json`; reject reports with undocumented skips.
 
@@ -535,7 +535,7 @@ See [`references/qa-engineer-review-checklist.md`](references/qa-engineer-review
 - mocking network calls at the application layer (`window.fetch` monkey-patching) instead of using transport-level MSW v2 interception
 - capturing visual regression snapshots before fonts are loaded (`document.fonts.ready`) or without dynamic element masking
 - approving external client integrations, retry logic, or payment gateways without automated Toxiproxy fault injection testing
-- using in-memory SQLite mocks for integration tests instead of real PostgreSQL 16 Testcontainers
+- using in-memory SQLite mocks for integration tests instead of real PostgreSQL 18 Testcontainers
 - allowing database mutations to persist across integration test cases without GORM `InTx` transactional rollbacks
 - permitting goroutine leaks or data race warnings to slip past `go test -race` and `uber-go/goleak` detection
 - declaring accessibility compliance from automated scans alone without manual keyboard navigation and screen reader verification
@@ -561,9 +561,9 @@ See [`references/qa-engineer-review-checklist.md`](references/qa-engineer-review
 - **AI & Agentic Evaluation passed**: LLM-as-a-judge calibrated ($\ge 85\%$ agreement), RAG Triad thresholds met ($\ge 0.85$), trajectory DAG loops eliminated
 - **Observability-Driven Testing verified**: Kubeshop Tracetest DSL assertions pass, span latency budgets met, and W3C traceparent propagated
 - **Database Efficiency verified**: automated query counting confirms $O(1)$ scaling, zero N+1 queries, and zero unindexed sequential scans
-- **Modern Web & Accessibility verified**: Playwright v1.48+ tests pass with MSW v2, WCAG 2.2 AA verified via axe-core + keyboard + ARIA snapshots, visual diffs clean
+- **Modern Web & Accessibility verified**: Playwright v1.64+ tests pass with MSW v2, WCAG 2.2 AA verified via axe-core + keyboard + ARIA snapshots, visual diffs clean
 - **Shift-Left Chaos verified**: Toxiproxy fault injection confirms circuit breaker state transitions, AWS full jitter backoff, and k6 SLO thresholds met
-- **Clean Architecture & Ephemeral Parity verified**: Kratos layer isolation respected, real PostgreSQL 16 Testcontainers clean with GORM `InTx` rollback, Wire DI isolated, `go test -race` clean, and `uber-go/goleak` clean
+- **Clean Architecture & Ephemeral Parity verified**: Kratos layer isolation respected, real PostgreSQL 18 Testcontainers clean with GORM `InTx` rollback, Wire DI isolated, `go test -race` clean, and `uber-go/goleak` clean
 - **Mutation Testing gate passed**: mutation score $\ge 75\text{--}80\%$ on core business, security, and invariant modules
 - **Property-Based Testing verified**: invariants and round-trip fidelity proven across thousands of randomized inputs
 - **OWASP ASI04 & ASI05 gates passed**: lockfile hashes verified, CI actions pinned to commit SHA, and sandbox escape prevention confirmed
@@ -571,4 +571,4 @@ See [`references/qa-engineer-review-checklist.md`](references/qa-engineer-review
 - `contracts/schemas/test-report.json` emitted with full execution and trace evidence
 - `contracts/schemas/validation-result.json` emitted for release gating
 
-Last updated: 2026-10-20
+Last updated: 2026-10-25

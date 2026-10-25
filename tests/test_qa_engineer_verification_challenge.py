@@ -26,9 +26,9 @@ Validates and stress-tests:
      1. Calibrated AI & Agentic System Evaluation (G-Eval >= 85%, RAG Triad, Pydantic v2 schemas, trajectory DAG loop detection, Promptfoo).
      2. Consumer-Driven Contract Testing (PactV3 / Pact-Go v2, can-i-deploy, buf breaking with WIRE_JSON, oasdiff).
      3. Observability-Driven Testing (Tracetest OpenTelemetry span assertions, W3C traceparent, automated N+1 query counters, eBPF).
-     4. Modern Web & Accessibility (Playwright v1.48+, MSW v2, @axe-core/playwright WCAG 2.2 AA, font-stabilized visual diffing).
+     4. Modern Web & Accessibility (Playwright v1.64+, MSW v2, @axe-core/playwright WCAG 2.2 AA, font-stabilized visual diffing).
      5. Shift-Left Chaos & Performance Gates (Shopify Toxiproxy fault injection, circuit breaker state transitions, AWS full jitter, Grafana k6 SLO thresholds).
-     6. Clean Architecture Multi-Language QA (Go 1.25+ Kratos, Wire compile-time DI, real PostgreSQL 16 Testcontainers, GORM InTx rollbacks, go test -race, uber-go/goleak, Hypothesis, fast-check).
+     6. Clean Architecture Multi-Language QA (Go 1.27+ Kratos, Wire compile-time DI, real PostgreSQL 18 Testcontainers, GORM InTx rollbacks, go test -race, uber-go/goleak, Hypothesis, fast-check).
    - Guardrail Locks: BOUNDARY LOCK, SECURITY LOCK, IRREVERSIBLE ACTION LOCK, TRACE LOCK, UNCERTAINTY LOCK,
      SYSTEMATIC-DEBUGGING-LOCK, VERIFICATION-BEFORE-COMPLETION-LOCK, COMBINATORIAL-COVERAGE-LOCK,
      CHAOS-GATE LOCK, N1-QUERY-GATE LOCK, CALIBRATED-EVAL-GATE LOCK, CAN-I-DEPLOY-GATE LOCK,
@@ -318,11 +318,11 @@ class TestQAEngineerRoleInvariants(unittest.TestCase):
             self.assertIn(item, self.role_content, f"Missing RCA/VBC item: {item}")
 
     def test_05_clean_architecture_and_ephemeral_parity_invariants(self):
-        """Role must mandate Go 1.25+ Kratos, Testcontainers PostgreSQL 16, Wire DI, and GORM InTx rollback."""
+        """Role must mandate Go 1.27+ Kratos, Testcontainers PostgreSQL 18, Wire DI, and GORM InTx rollback."""
         arch_terms = [
             "Kratos 4-layer separation",
             "testcontainers/testcontainers-go",
-            "PostgreSQL 16",
+            "PostgreSQL 18",
             "InTx",
             "wire.Build",
             "go test -v -race",
@@ -381,9 +381,9 @@ class TestQAEngineerReviewChecklist(unittest.TestCase):
             "### 4. Pairwise Combinatorial Testing & Matrix Optimization",
             "### 5. Calibrated AI & Agentic System Evaluation",
             "### 6. Observability-Driven Testing (ODT) & Trace-Based Assertions",
-            "### 7. Modern Web, Browser Automation & Accessibility (Playwright v1.48+)",
+            "### 7. Modern Web, Browser Automation & Accessibility (Playwright v1.64+)",
             "### 8. Shift-Left Chaos, Resilience & Performance Gates",
-            "### 9. Clean Architecture Multi-Language QA (Go 1.25+, Python, TypeScript)",
+            "### 9. Clean Architecture Multi-Language QA (Go 1.27+, Python, TypeScript)",
             "### 10. Mutation Testing Infrastructure & OWASP ASI Security Gates",
             "### 11. MCP & Agent System Validation",
             "### 12. EU AI Act Compliance",
@@ -408,7 +408,7 @@ class TestQAEngineerReviewChecklist(unittest.TestCase):
             "W3C",
             "traceparent",
             "EXPLAIN ANALYZE",
-            "Playwright v1.48+",
+            "Playwright v1.64+",
             "MSW v2",
             "@axe-core/playwright",
             "document.fonts.ready",

@@ -1,6 +1,7 @@
 ---
 name: write-tests
 description: Add or update tests by following repo-local test conventions, choosing the right test scope, isolating dependencies, and validating risky paths before delivery. Use when behavior needs regression coverage or release confidence.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
@@ -16,7 +17,7 @@ Use this skill to author independent, property-verified, contract-driven, and fa
 - establishing Consumer-Driven Contract Testing (CDCT) across HTTP, gRPC, or messaging boundaries
 - enforcing Protobuf wire compatibility gates (`buf breaking`) or OpenAPI 3.1 diff validation
 - injecting in-test network chaos (latency, jitter, resets) to verify circuit breakers and retries
-- testing Go 1.25+ Kratos Clean Architecture services with Testcontainers and transactional rollbacks
+- testing Go 1.27+ Kratos Clean Architecture services with Testcontainers and transactional rollbacks
 - enforcing mutation test kill score thresholds (≥75–80%) on critical packages
 - verifying concurrent thread safety, data race freedom (`-race`), and goroutine leak absence
 - validating consumer-provider compatibility matrices using Pact Broker `can-i-deploy` prior to release
@@ -46,10 +47,10 @@ Use this skill to author independent, property-verified, contract-driven, and fa
   - assert circuit breaker state transitions (CLOSED $\to$ OPEN $\to$ HALF-OPEN $\to$ CLOSED) under degraded network conditions.
   - verify single-canary probe dispatch in the HALF-OPEN state and graceful fallback handling during the OPEN state.
   - enforce exponential backoff retries with full jitter to eliminate thundering herd problems.
-- **Go 1.25+ Kratos Clean Architecture ephemeral test isolation**:
+- **Go 1.27+ Kratos Clean Architecture ephemeral test isolation**:
   - enforce 4-layer separation (`api`/`service`/`biz`/`data`); `biz` layer must never leak database handlers (`gorm.DB`) or transport adapters.
   - isolate dependencies via compile-time Wire DI (`TestProviderSet`) injecting real ephemeral repositories.
-  - provision real PostgreSQL 16 Alpine containers via `testcontainers/testcontainers-go` with automated Ryuk cleanup.
+  - provision real PostgreSQL 18 Alpine containers via `testcontainers/testcontainers-go` with automated Ryuk cleanup.
   - execute table-driven subtests sequentially with GORM `InTx` transactional rollbacks (`tx := db.Begin()`, `t.Cleanup(func() { _ = tx.Rollback() })`) to guarantee zero dirty-state contamination without container restarts.
   - forbid global database instances; pass transactions and connections explicitly via context or repository constructors.
   - detect data races and concurrency hazards via `go test -race` and goroutine leaks via `uber-go/goleak`.
@@ -91,7 +92,7 @@ Use this skill to author independent, property-verified, contract-driven, and fa
 
 1. Formulate property-based invariants (round-trip serialization, idempotency, state transitions) using `Hypothesis` or `fast-check`.
 2. Configure automated shrinking to ensure failing executions yield minimal reproduction inputs.
-3. For Go Kratos data-layer tests, bootstrap an ephemeral PostgreSQL 16 Testcontainer and configure Wire DI test providers (`TestProviderSet`).
+3. For Go Kratos data-layer tests, bootstrap an ephemeral PostgreSQL 18 Testcontainer and configure Wire DI test providers (`TestProviderSet`).
 
 ### Step 4: In-Test Chaos Fault Injection & Resilience Probing
 
@@ -127,7 +128,7 @@ Use this skill to author independent, property-verified, contract-driven, and fa
 - [ ] Protobuf wire compatibility gates verified via buf breaking --against with WIRE_JSON rules
 - [ ] in-test chaos injected via Toxiproxy (latency, jitter, resets) verifying circuit breaker trip and recovery
 - [ ] single-canary probe dispatch verified during circuit breaker HALF-OPEN state transition
-- [ ] Go 1.25+ Kratos clean architecture tested with Testcontainers PostgreSQL 16 and Wire DI isolation
+- [ ] Go 1.27+ Kratos clean architecture tested with Testcontainers PostgreSQL 18 and Wire DI isolation
 - [ ] table-driven subtests isolated sequentially using GORM InTx transactional rollbacks with zero dirty state
 - [ ] data race detector passes cleanly via go test -race and goroutine leaks verified absent with goleak
 - [ ] edge case synthesis applied across numeric boundaries, Unicode, timezones, and null states
@@ -147,7 +148,7 @@ Skip emission for rapid local test iterations during interactive development.
 
 - **Tautological / co-leaked tests**: author writes implementation and assertions together, mirroring faulty assumptions. Mitigation: enforce independent specification-based test authoring and mandatory Red-phase failure verification.
 - **Coverage theater without mutation testing**: 100% line coverage masking absent or weak assertions. Mitigation: enforce mutation score ≥75–80% on critical packages.
-- **Database dirty-state contamination**: subtests pollute shared database tables, causing flaky sequential failures. Mitigation: enforce GORM `InTx` uncommitted transactional rollbacks per subtest with Testcontainers PostgreSQL 16.
+- **Database dirty-state contamination**: subtests pollute shared database tables, causing flaky sequential failures. Mitigation: enforce GORM `InTx` uncommitted transactional rollbacks per subtest with Testcontainers PostgreSQL 18.
 - **Unverified circuit breaker failure**: downstream service times out but client blocks indefinitely due to missing chaos testing. Mitigation: inject Toxiproxy latency and reset toxics in CI integration tests.
 - **Silent Protobuf wire drift**: schema changes alter wire tag numbering or JSON transcoding fields, breaking microservice consumers. Mitigation: execute `buf breaking --against` with `WIRE_JSON` in CI.
 - **Swallowed goroutine leaks**: unmanaged background workers remain active after test teardown, corrupting subsequent runs. Mitigation: enforce `uber-go/goleak` in test cleanup.
@@ -156,10 +157,10 @@ Skip emission for rapid local test iterations during interactive development.
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI01 Goal Hijack**: cross-check test assertions against source spec to prevent locking in unintentional drift or malicious scope changes.
-- **ASI04 Supply Chain**: validate test fixtures, VCR cassettes, and mocking libraries against project manifests; reject untrusted test packages.
-- **ASI05 RCE Guard**: test suites must run inside an isolated sandbox per `core/policies/execution-sandbox.md` without root privileges.
-- **ASI07 Inter-Agent Communication**: emit structured `test-report.json` for CI and reviewer verification.
+- **ASI01 Agent Goal Hijack**: cross-check test assertions against source spec to prevent locking in unintentional drift or malicious scope changes.
+- **ASI04 Agentic Supply Chain**: validate test fixtures, VCR cassettes, and mocking libraries against project manifests; reject untrusted test packages.
+- **ASI05 Unexpected Code Execution**: test suites must run inside an isolated sandbox per `core/policies/execution-sandbox.md` without root privileges.
+- **ASI07 Insecure Inter-Agent Communication**: emit structured `test-report.json` for CI and reviewer verification.
 - **ASI09 Human-Agent Trust Exploitation**: surface skipped tests, surviving mutants, and mock fidelity limitations transparently.
 
 ## Related Skills
