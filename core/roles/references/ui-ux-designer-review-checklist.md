@@ -112,3 +112,15 @@ This reference checklist provides operational design governance, anti-slop aesth
 | **Touch Target Size** | Size $\ge 24\text{px}$ + $8\text{px}$ margin| Chrome DevTools Elements audit | 0 sub-size tap targets |
 | **Design Tokens** | 0 hardcoded hex codes | `rg -i "#[0-9a-f]{3,6}" src/components/` | 0 direct hex codes |
 | **UI Spec Contract** | Valid `ui-spec.json` | `python3 core/scripts/validate-contracts.py` | 100% schema compliant |
+
+### 12. 2026-10 Modernization Gates (DTCG 2025.10, Dark Patterns, ADA Title II, Agents-as-Users)
+
+| Verification Gate | Target Invariant | Required Tool / Command | Pass Criteria |
+| :--- | :--- | :--- | :--- |
+| **DTCG Format Conformance** | Token files use Format Module 2025.10 `$value`/`$type` | DTCG format validator / Style Dictionary v4 DTCG mode | 0 legacy `{value}` syntax mixed in; files validate before pipeline adoption |
+| **Dark-Pattern Review** | Consent / cancellation / subscription / upsell flows reviewed | ux-flow-spec.json `dark_pattern_review` | 6 classes checked (nagging, obstruction, sneaking, forced action, confirmshaming, trick questions); findings recorded |
+| **ADA Title II (US public sector)** | WCAG 2.1 AA target + deadline stated | Flow spec accessibility notes | 2027-04-26 (≥50k) / 2028-04-26 (<50k) / HHS May-2026 flagged when in scope |
+| **Agents-as-Users Operability** | `agent_operability` declared when agents operate the UI | ux-flow-spec.json `agent_operability` | Entry points + machine-readable affordances + courtesy rules present |
+| **Autonomy Tier Declaration** | `agentic_autonomy.autonomy_tier` enum-conformant | ux-flow-spec.json `agentic_autonomy` | Tier declared for every agentic feature; tier ≤ earned trust (Autopilot Trap guard) |
+| **Usability Evidence Source** | Real-participant evidence for blocking decisions | Review notes / research-report.json | Synthetic-user results marked hypothesis-only; AI-moderated interviews admissible with tool + participant count recorded |
+| **WCAG 3.0 Readiness** | Findings phrased for future scoring conformance | Accessibility notes wording | WCAG 2.2 AA remains the target; no claims of "WCAG 3.0 conformance" |

@@ -1,6 +1,7 @@
 ---
 name: design-md-specification
 description: Use when generating machine-readable DESIGN.md documents, specifying YAML frontmatter design tokens, enforcing two-tier token architectures, calculating concentric radii, and codifying tabular-nums standards.
+version: 1.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_build]
 ---
 

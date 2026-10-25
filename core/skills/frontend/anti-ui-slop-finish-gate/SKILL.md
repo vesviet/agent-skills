@@ -1,6 +1,7 @@
 ---
 name: anti-ui-slop-finish-gate
 description: Use when conducting pre-staging UI finish reviews, enforcing 100% interaction state coverage, and applying the 13 universal escalation triggers.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_build]
 ---
 
@@ -17,6 +18,9 @@ Enforce rigorous pre-staging UI finish criteria, verifying 100% interaction stat
 - Auditing multi-viewport resilience across mobile ($320\text{px}$), tablet, and desktop viewports
 
 ## Core Rules
+
+- **Dark-Pattern Compliance (regulatory, distinct from aesthetic slop)**:
+  Consent, cancellation, subscription, and upsell surfaces must pass a dark-pattern review — nagging, obstruction, sneaking, forced action, confirmshaming, and trick questions — per DSA Art 25/26 and FTC enforcement standards; record the review in ux-flow-spec.json `dark_pattern_review`. A visually clean flow can still be a regulatory violation.
 
 - **100% Interaction State Coverage Standard**:
   Every interactive UI component or view must implement and verify all 6 discrete interaction states before staging handoff:
@@ -109,6 +113,7 @@ When completing an anti-UI-slop review, emit `contracts/schemas/ui-component-spe
 - [ ] Error messages state failure factually without exclamation marks and supply a recovery button
 - [ ] Keyboard navigation and visible focus rings verified; `outline: none` avoided
 - [ ] None of the 13 universal escalation triggers tripped in rendered markup
+- [ ] Dark-pattern review passed for consent, cancellation, subscription, and upsell surfaces (DSA Art 25/26, FTC)
 - [ ] Text passes APCA contrast thresholds ($L_c \ge 75$ body, $L_c \ge 60$ controls)
 - [ ] Viewport resilience verified at $320\text{px}$ mobile width and $200\%$ browser zoom
 - [ ] Fabricated SVG logos, fake testimonials, and synthetic headshots completely removed

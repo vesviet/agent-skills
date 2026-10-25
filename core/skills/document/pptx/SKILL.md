@@ -1,6 +1,7 @@
 ---
 name: pptx
 description: "Use when creating, editing, or inspecting PowerPoint (.pptx/.potx) presentations, authoring decks via pptxgenjs, generating visual slide thumbnail grids via thumbnail.py, duplicating layouts via add_slide.py, or pruning dead relationships via clean.py."
+version: 1.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 

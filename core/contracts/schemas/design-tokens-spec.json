@@ -43,6 +43,25 @@
       "enum": ["two-tier", "three-tier"],
       "description": "Token tier architecture standard (Tier 1 Primitives, Tier 2 Semantics, optional Tier 3 Component tokens)."
     },
+    "dtcg_format": {
+      "type": "object",
+      "description": "DTCG Design Tokens Format Module conformance (first stable release: 2025.10).",
+      "properties": {
+        "format_version": {
+          "type": "string",
+          "const": "2025.10",
+          "description": "DTCG Design Tokens Format Module version this token set conforms to."
+        },
+        "value_type_syntax": {
+          "type": "boolean",
+          "description": "True when token files use the DTCG $value/$type syntax (Style Dictionary v4 DTCG mode, Tokens Studio, Terrazzo compatible)."
+        },
+        "interchange_validated": {
+          "type": "boolean",
+          "description": "True when token files validate against the DTCG format before pipeline adoption."
+        }
+      }
+    },
     "color_palette": {
       "type": "object",
       "description": "Two-tier color system specifying Tier 1 primitives and Tier 2 semantic role assignments.",

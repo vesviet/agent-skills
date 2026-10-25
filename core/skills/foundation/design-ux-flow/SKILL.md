@@ -1,6 +1,7 @@
 ---
 name: design-ux-flow
 description: Design or refine a UX flow by defining user goals, preserved behavior, screen states, interaction rules, edge cases, and adjacent flow impact. Use when a feature, bug fix, or behavior change needs a UX/UI brief that frontend and QA can implement and validate reliably.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
@@ -28,7 +29,9 @@ Use this skill with the **UI/UX Designer** role when user-facing behavior must b
 - do not implement production UI — hand off specs to Frontend Developer
 - apply progressive disclosure to hide secondary options until primary actions are taken
 - design agent UX flows to include delegation confirmations, progress indicators, and recoverable interrupts — users must always have a cancel/undo path for agent-initiated state changes
-- use Figma Variables (linked to W3C DTCG tokens via Token Studio) to prototype dynamic, real-world data states including empty states and error messages; require interactive prototype for any flow with more than 2 screens
+- use Figma Variables (linked to DTCG Design Tokens Format Module 2025.10 tokens via Tokens Studio, `$value`/`$type` syntax) to prototype dynamic, real-world data states including empty states and error messages; require interactive prototype for any flow with more than 2 screens
+- design dual-audience operability when AI agents operate the UI alongside human users: declare `agent_operability` (agent entry points, machine-readable affordances, agent courtesy rules) in ux-flow-spec.json (Agents-as-Users, NN/g 2026)
+- run a dark-pattern compliance review on every flow: check nagging, obstruction, sneaking, forced action, confirmshaming, and trick questions against DSA Art 25/26 and FTC standards; record findings in ux-flow-spec.json `dark_pattern_review`
 
 
 ## Deliverable Decision
@@ -82,6 +85,13 @@ Publish UX handoff manifest (flow path + component paths) for Frontend and QA.
 - Create prototypes representing long names, empty states, and validation error messages before engineering handoff.
 - Link state transitions to interactive component parameters to test UX responsiveness.
 
+### 2026: Agents-as-Users (Dual-Audience Operability)
+
+- Treat AI agents as a second user class when they operate the product UI: every agent-operable action needs a semantic label, an ARIA role, and a machine-actionable endpoint (WebMCP where applicable).
+- Declare `agent_operability.agent_entry_points` in ux-flow-spec.json so Frontend and QA can test both audiences.
+- Specify agent courtesy rules (rate limits, idempotency keys, feedback surfaces) so agent traffic never degrades human UX.
+- Keep approval gates and undo for agent-initiated state changes; agents act on behalf of users, they do not inherit blanket consent.
+
 ### 2026: Progressive Disclosure UX Design
 
 - Keep the initial view clean by showing only the obvious primary action.
@@ -111,6 +121,8 @@ Markdown brief (see `core/roles/ui-ux-designer.md` template) **plus** JSON contr
 - [ ] handoff manifest complete
 - [ ] brief inference executed (1-line Design Read stated, Three Dials declared, anti-slop rules checked)
 - [ ] agent UX flow patterns (delegation confirmations, progress indicators, cancelability) specified
+- [ ] agents-as-users operability declared when agents operate the UI (agent_operability in ux-flow-spec.json)
+- [ ] dark-pattern compliance review recorded (dark_pattern_review in ux-flow-spec.json)
 - [ ] Figma variables used to prototype dynamic data states (empty states, errors, long values)
 - [ ] progressive disclosure applied to separate primary actions from advanced configuration options
 

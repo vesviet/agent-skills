@@ -1,6 +1,7 @@
 ---
 name: design-review
 description: Review UX flows, visual hierarchy, interaction patterns, and design-system alignment against specs and user goals. Use when validating ui-component-spec or ux-flow-spec before implementation, or critiquing marketing/product UI without reviewing application code.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
@@ -21,7 +22,7 @@ Use this skill with **UI/UX Designer** or **Reviewer** when the deliverable is d
 - consume `ux-flow-spec.json` and `ui-component-spec.json` when present; do not invent missing states
 - separate blocking UX defects from polish or preference; classify findings as blocking | should-fix | suggestion
 - every screen spec must define all 5 critical UI states: Empty, Loading/Skeleton, Populated, Error (with actionable recovery), and Unauthorized/Permission — specs missing any of these states are incomplete
-- verify design-system tokens — all styles must reference tokens; zero hardcoded hex colors, magic spacing numbers, or raw typography values are acceptable (W3C DTCG standard)
+- verify design-system tokens — all styles must reference tokens; zero hardcoded hex colors, magic spacing numbers, or raw typography values are acceptable (DTCG Design Tokens Format Module 2025.10, `$value`/`$type` syntax)
 - for AI-generated UI (v0.dev, Galileo, Builder.io, Copilot): run token conformance check (no hardcoded values), axe-core accessibility scan, and style namespace pollution check before development handoff
 - require interactive Figma prototype links for flows with more than 2 screens before Frontend implementation begins
 - do not implement UI; emit findings for Frontend or UI/UX to fix
@@ -73,6 +74,13 @@ Note spec gaps (missing state, missing api_field, ambiguous transition).
 - Conduct automated accessibility checks on the generated component outputs before development handoff.
 - Verify that generated component variations adhere strictly to the repository's styling conventions and do not pollute global CSS namespaces.
 
+### 2026: AI-Assisted Usability Research Review
+
+- AI-moderated interviews (real participants, AI asks unscripted follow-ups at scale) are admissible usability evidence; record tool, participant count, and method in the review notes.
+- **Synthetic-user validity lock**: results from simulated (synthetic) users may inform hypothesis generation only — never accept synthetic-user findings as evidence for blocking design decisions or compliance sign-off.
+- Prefer lightweight validated instruments for quantitative signals: UMUX-Lite or single-ease-question (SEQ) alongside task success rates; do not invent custom scores when a validated instrument exists.
+- Route deep research synthesis through the Researcher role (`research-report.json`); design review consumes it, it does not replace it.
+
 ### 2026: Dark Mode Review Checklist
 - Check semantic design tokens to ensure appropriate color contrast under dark mode.
 - Test UI components with OS-level dark mode forced settings to verify text readability and asset/image visibility.
@@ -100,6 +108,8 @@ Note spec gaps (missing state, missing api_field, ambiguous transition).
 - [ ] loading, empty, error, and permission paths reviewed
 - [ ] design-system or overlay tokens applied consistently
 - [ ] findings classified with severity and owner (design vs engineering)
+- [ ] usability evidence source identified (AI-moderated, human-moderated, or synthetic-hypothesis-only)
+- [ ] dark-pattern compliance review present when flow involves consent, cancellation, or upsell surfaces
 - [ ] no code review scope creep into style-only code nitpicks
 - [ ] handoff states whether Frontend may start implementation
 

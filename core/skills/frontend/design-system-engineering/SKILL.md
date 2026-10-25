@@ -1,6 +1,7 @@
 ---
 name: design-system-engineering
 description: Use when engineering design token architectures, calculating concentric border radii, establishing perceptual OKLCH color ramps, and verifying APCA contrast tables.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_build]
 ---
 
@@ -64,7 +65,8 @@ Engineer scalable design token architectures, calculate concentric border radii 
     - *Discernible non-text dividers and subtle borders*: $L_c \ge 15$.
     - *Placeholder / disabled text target*: $L_c \approx 30$.
 - **Token Portability & Syntax**:
-  - Tokens must be exported to CSS variables and W3C Design Tokens Community Group (DTCG) JSON format for seamless Figma Variables synchronization.
+  - Tokens must be exported to CSS variables and DTCG Design Tokens Format Module 2025.10 JSON (first stable release; `$value`/`$type` syntax) for seamless Figma Variables synchronization; Style Dictionary v4 DTCG mode, Tokens Studio, and Terrazzo are the reference interchange consumers.
+  - Validate every token file against the DTCG format before pipeline adoption; reject files that mix legacy `{value}` syntax with DTCG `$value`.
   - Avoid mixing styling paradigms; standardize on CSS custom properties or Tailwind `@theme` directives.
 
 ## Suggested Process
@@ -112,7 +114,7 @@ When producing design system specifications, emit `contracts/schemas/ui-componen
 - [ ] APCA contrast verified: body text achieves $L_c \ge 75$ and headlines/controls achieve $L_c \ge 60$
 - [ ] Semantic tokens define both light and dark surface modes without color inversion artifacts
 - [ ] Component tokens limited to $\le 3$ documented exceptions per component
-- [ ] Design tokens exported to W3C DTCG format for Figma and toolchain portability
+- [ ] Design tokens exported to DTCG Design Tokens Format Module 2025.10 (`$value`/`$type`) for Figma and toolchain portability
 
 ## Security Guardrails (OWASP ASI)
 

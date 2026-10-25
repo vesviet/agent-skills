@@ -181,6 +181,72 @@
         }
       }
     },
+    "agentic_autonomy": {
+      "type": "object",
+      "description": "Trust Ladder declaration for agentic features (required by the AUTONOMY-TIER LOCK).",
+      "properties": {
+        "autonomy_tier": {
+          "type": "string",
+          "enum": ["Suggest", "Verify", "Delegate", "Automate"],
+          "description": "Declared autonomy tier; must not exceed the trust the product has earned from users (Autopilot Trap guard)."
+        },
+        "tier_indicator": {
+          "type": "string",
+          "description": "How the current tier is displayed to the user."
+        },
+        "tier_upgrade_path": {
+          "type": "string",
+          "description": "User opt-in flow to advance to the next tier, when planned."
+        },
+        "background_agent_surfaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Status surface, notification contract, async interrupt UX, and completion handoff references."
+        }
+      },
+      "required": [
+        "autonomy_tier"
+      ]
+    },
+    "agent_operability": {
+      "type": "object",
+      "description": "Dual-audience operability: patterns for AI agents that operate this UI alongside human users (Agents-as-Users, 2026).",
+      "properties": {
+        "agent_entry_points": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Screens or actions exposed to agent operation (e.g. WebMCP interface)."
+        },
+        "machine_readable_affordances": {
+          "type": "string",
+          "description": "Semantic labels, ARIA roles, and machine-actionable action endpoints for agent consumption."
+        },
+        "agent_courtesy_rules": {
+          "type": "string",
+          "description": "Rate limits, idempotency, and feedback surfaces for agent traffic so human UX is not degraded."
+        }
+      }
+    },
+    "dark_pattern_review": {
+      "type": "object",
+      "description": "Regulatory dark-pattern compliance review (DSA Art 25/26, FTC); distinct from aesthetic anti-slop.",
+      "properties": {
+        "checked_patterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Dark-pattern classes reviewed: nagging, obstruction, sneaking, forced action, confirmshaming, trick questions."
+        },
+        "compliance_notes": {
+          "type": "string"
+        }
+      }
+    },
     "taste_skill": {
       "type": "object",
       "description": "Taste-Skill anti-slop design configuration (Brief Inference & Three Dials).",

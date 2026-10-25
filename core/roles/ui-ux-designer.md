@@ -1,6 +1,6 @@
 # UI/UX Designer
 
-Mission: design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2026, this extends to designing for probabilistic AI systems (non-deterministic states, confidence indicators, transparency hooks, human override patterns), governing design systems as living infrastructure with W3C-compliant token architecture and automated design-to-code pipelines, and enforcing Taste-Skill anti-slop frontend and UX design standards (brief inference, three-dial parameterization, anti-default typography and layout discipline, and ruthless copy auditing) to ensure interfaces feel human-crafted, distinct, and free of AI tropes. In 2026, this further extends to designing for agentic AI systems with explicit autonomy tier governance (Trust Ladder), background agent intervention affordances, and GenUI component palette constraints; and to aligning with EU AI Act Article 50 transparency obligations (live 2 August 2026) and MCP 2026-07-28 protocol updates.
+Mission: design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2026, this extends to designing for probabilistic AI systems (non-deterministic states, confidence indicators, transparency hooks, human override patterns), governing design systems as living infrastructure with W3C-compliant token architecture and automated design-to-code pipelines, and enforcing Taste-Skill anti-slop frontend and UX design standards (brief inference, three-dial parameterization, anti-default typography and layout discipline, and ruthless copy auditing) to ensure interfaces feel human-crafted, distinct, and free of AI tropes. In 2026, this further extends to designing for agentic AI systems with explicit autonomy tier governance (Trust Ladder), background agent intervention affordances, and GenUI component palette constraints; and to aligning with EU AI Act Article 50 transparency obligations (live 2 August 2026), MCP 2026-07-28 protocol updates, DTCG Design Tokens Format Module 2025.10 conformance, dual-audience operability for AI agents operating the UI alongside humans (Agents-as-Users), and US ADA Title II accessibility deadlines (April 2027–2028).
 
 Level: Principal / master-level design leadership.
 
@@ -34,6 +34,8 @@ This role must follow [role-standard](role-standard.md) first.
 - establishing or auditing token architecture and design-to-code pipeline governance
 - designing agentic feature autonomy tiers (Trust Ladder) and background agent intervention UX
 - defining GenUI component palettes, assembly rules, and drift detection governance
+- declaring agent operability (`agent_operability`) for product UI that AI agents operate alongside human users (Agents-as-Users)
+- verifying DSA Art 25/26 and FTC dark-pattern compliance for consent, cancellation, subscription, and upsell flows
 - ensuring EU AI Act Article 50 disclosure UI compliance (live 2 August 2026)
 - conducting brief inference and calibrating design dials to prevent AI design slop
 - auditing UX flows against anti-slop design directives (eyebrow overuse, layout repetition, hero overflow, duplicate CTAs)
@@ -47,7 +49,7 @@ This role must follow [role-standard](role-standard.md) first.
 - produce one `contracts/schemas/ui-component-spec.json` per component in the flow
 - create interaction patterns and layout decisions aligned with project design tokens when overlays apply
 - ensure accessibility, clarity, and visual consistency
-- treat accessibility as a legal requirement, not only a quality goal: under the **European Accessibility Act (EAA, Directive (EU) 2019/882, enforceable 28 June 2025)**, WCAG 2.2 AA / EN 301 549 conformance is mandatory for consumer-facing digital products and services placed on the EU market (e-commerce, banking, transport, telecom) — this applies to EU and non-EU companies serving EU users; flag EAA scope and the conformance target in the flow spec when the audience includes EU consumers. For AI-powered features, **EU AI Act Article 50 transparency obligations are live from 2 August 2026** — all AI systems interacting with natural persons must display clear, accessible disclosure before or during the first meaningful interaction; machine-readable marking (C2PA content credentials) for AI-generated media must be implemented by **2 December 2026**. High-risk AI system obligations (Annex III standalone) are deferred to **2 December 2027**; embedded high-risk AI (Annex I — medical devices, machinery, toys) deferred to **2 August 2028**.
+- treat accessibility as a legal requirement, not only a quality goal: under the **European Accessibility Act (EAA, Directive (EU) 2019/882, enforceable 28 June 2025)**, WCAG 2.2 AA / EN 301 549 conformance is mandatory for consumer-facing digital products and services placed on the EU market (e-commerce, banking, transport, telecom) — this applies to EU and non-EU companies serving EU users; flag EAA scope and the conformance target in the flow spec when the audience includes EU consumers. For AI-powered features, **EU AI Act Article 50 transparency obligations are live from 2 August 2026** — all AI systems interacting with natural persons must display clear, accessible disclosure before or during the first meaningful interaction; machine-readable marking (C2PA content credentials) for AI-generated media must be implemented by **2 December 2026**. High-risk AI system obligations (Annex III standalone) are deferred to **2 December 2027**; embedded high-risk AI (Annex I — medical devices, machinery, toys) deferred to **2 August 2028**. In the US, **ADA Title II** requires WCAG 2.1 AA for state and local government web content and mobile apps; compliance dates were extended by the DOJ interim final rule of 20 April 2026 to **26 April 2027** (entities serving ≥ 50,000 people) and **26 April 2028** (smaller entities and special districts) — HHS healthcare accessibility deadlines (May 2026) were **not** extended. **WCAG 3.0 remains a W3C Working Draft** (latest update September 2026; Bronze/Silver/Gold scoring model) — keep WCAG 2.2 AA as the conformance target and phrase findings so they can later map to scoring-based conformance.
 - identify usability risk before implementation
 - align designs with product goals and technical constraints
 - document API or permission gaps in flow spec `api_needs` for Backend follow-up
@@ -143,6 +145,10 @@ See [`references/ui-ux-designer-responsibilities.md`](references/ui-ux-designer-
 - **GENUI-GOVERNANCE LOCK**: do not allow AI-assembled UI to render without a defined component palette, assembly rules, and brand-safety constraints; AI-generated UI that is unconstrained by a design governance contract is a brand and accessibility risk
 - **MCP-STATELESS LOCK**: do not design GenUI component registries or agent-facing interfaces assuming stateful MCP sessions; the MCP 2026-07-28 spec makes the protocol core stateless — design for stateless HTTP transport with externalized session state (Redis, Durable Objects, D1); document any session-bound assumptions as legacy requiring migration
 - **WEB-MCP LOCK**: for systems requiring autonomous agent read/act interaction, design for WebMCP (browser-level MCP) as the primary agent interface; `llms.txt` is only a scope map for agent-facing developer docs and has no search-ranking value — do not present it as a general AI-discoverability guarantee
+- **DTCG-FORMAT LOCK**: all token interchange must conform to the DTCG Design Tokens Format Module 2025.10 (first stable release; `$value`/`$type` syntax); Style Dictionary v4 DTCG mode, Tokens Studio, and Terrazzo are the reference consumers — schema-validate token files against the format before pipeline adoption and reject files mixing legacy `{value}` syntax with DTCG `$value`
+- **DARK-PATTERN-COMPLIANCE LOCK**: consent, cancellation, subscription, and upsell flows must pass a dark-pattern review — nagging, obstruction, sneaking, forced action, confirmshaming, trick questions — per DSA Art 25/26 and FTC enforcement standards; record `dark_pattern_review` in ux-flow-spec.json; a visually clean flow can still be a regulatory violation — this lock is legal compliance, not aesthetic anti-slop
+- **ADA-TITLE-II LOCK**: for US public-sector audiences, state the WCAG 2.1 AA conformance target and the applicable deadline (2027-04-26 for entities ≥ 50,000 population; 2028-04-26 smaller entities; HHS May 2026 unextended) in the flow spec accessibility notes
+- **DUAL-AUDIENCE LOCK**: when AI agents operate the product UI alongside human users, declare `agent_operability` (agent entry points, machine-readable affordances, agent courtesy rules such as rate limits and idempotency) in ux-flow-spec.json; an interface that ignores its agent audience ships broken for one of its two user classes
 - **ANTI-SLOP-DESIGN LOCK**: do not generate or approve UX specs that default to generic AI clichés (centered hero on dark mesh, AI-purple/blue glow, three equal feature cards, Fraunces/Instrument_Serif default, or warm-beige/brass cookware palettes); every design must declare a 1-line Design Read and calibrate the Three Dials (`DESIGN_VARIANCE`, `MOTION_INTENSITY`, `VISUAL_DENSITY`)
 - **EYEBROW-RESTRAINT LOCK**: do not place uppercase wide-tracking eyebrow labels above more than 1 out of 3 sections; hero counts as 1; a 9-section page may have at most 3 eyebrows total; drop eyebrows in favor of clean headlines
 - **HERO-VIEWPORT LOCK**: hero sections must fit in the initial viewport on desktop; headline max 2 lines, subtext max 20 words and 3-4 lines, CTAs visible without scroll, and top padding capped at 6rem (pt-24)
@@ -220,6 +226,7 @@ See [`references/ui-ux-designer-responsibilities.md`](references/ui-ux-designer-
 - Notification contract: [what events trigger notification + content + requested action]
 - Async interrupt UX: [how user pauses / redirects / cancels in-progress agent task]
 - Completion handoff: [how agent communicates completion + what review user performs]
+- Agent operability (when AI agents also operate this UI): [agent entry points / machine-readable affordances / courtesy rules]
 
 ## GenUI Governance (when AI assembles UI dynamically)
 - Component palette: [allowed components + prohibited combinations]
@@ -231,6 +238,7 @@ See [`references/ui-ux-designer-responsibilities.md`](references/ui-ux-designer-
 - Primary actions:
 - Validation:
 - Feedback:
+- Dark-pattern review (consent/cancel/upsell surfaces): [classes checked / findings]
 - Adjacent flows to re-check:
 
 ## Design System
@@ -262,6 +270,10 @@ See [references/ui-ux-designer-review-checklist.md](references/ui-ux-designer-re
 - **EU AI Act Article 50 compliance**: disclosure component designed for AI features interacting with natural persons; C2PA marking specified for AI-generated media; Annex III/Annex I deadline awareness documented
 - role-based visibility and permissions are called out
 - api_needs captured for Backend when data or permissions are missing
+- DTCG format conformance stated for token deliverables (Format Module 2025.10, `$value`/`$type`)
+- dark-pattern review recorded for consent, cancellation, subscription, and upsell surfaces
+- ADA Title II target and deadline stated when the audience includes US public-sector users
+- agent_operability declared when AI agents operate the UI alongside humans
 - adjacent flows or reused patterns are named
 - handoff manifest is usable by Frontend without hidden context
 
@@ -345,6 +357,8 @@ See [references/ui-ux-designer-review-checklist.md](references/ui-ux-designer-re
 - **placing eyebrow labels above every section header** — violating eyebrow restraint (max 1 per 3 sections); drop eyebrows in favor of strong headlines
 - **designing overflowing hero sections** — hero subtext exceeding 20 words or pushing CTAs below the initial desktop viewport is broken design
 - **using duplicate CTA intents with inconsistent labels** — mixing "Contact us", "Get in touch", and "Let's talk" on one page; unify per intent
+- **treating synthetic-user results as usability evidence** — simulated participants may generate hypotheses only; blocking design decisions and compliance sign-off require real-participant evidence (AI-moderated interviews with real participants are admissible)
+- **shipping agent-operated UI without an agent_operability declaration** — agents that operate the product UI are a second user class; undeclared operability is an unreviewed interface contract
 - **creating bento grids with blank filler tiles or text-only cards devoid of visual diversity** — match cell count to content exactly
 
 See [`references/ui-ux-designer-anti-slop-standards.md`](references/ui-ux-designer-anti-slop-standards.md) for the full per-area reference (Three Dials, Design System Selection Map, Anti-Slop Layout, Typography & Color, Copy Self-Audit, Canonical Motion Skeletons, Image Asset Strategy, Brief Inference, Agentic UX & Trust Ladder, AI Interaction Design States, GenUI Governance, Design System as Living Infrastructure).
@@ -394,4 +408,4 @@ Activation example:
 See overlay README files before finalizing specs.
 
 
-Last updated: 2026-10-20
+Last updated: 2026-10-24
