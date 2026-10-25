@@ -1,14 +1,14 @@
 # Producer Contracts & Modern Lakehouse Storage — Reference
 
-This reference documents standards and implementation procedures for enforcing Open Data Contract Standard (ODCS v3.1.0) specifications at producer boundaries and managing transactional lakehouse architectures (Apache Iceberg and Delta Lake).
+This reference documents standards and implementation procedures for enforcing Open Data Contract Standard (ODCS v3.2.0) specifications at producer boundaries and managing transactional lakehouse architectures (Apache Iceberg and Delta Lake).
 
 ---
 
-## 1. Open Data Contract Standard (ODCS v3.1.0) at Producer Boundary
+## 1. Open Data Contract Standard (ODCS v3.2.0) at Producer Boundary
 
 Modern agentic data architectures replace fragile, undocumented data handoffs with explicit, machine-readable data contracts negotiated between data producers and consumers.
 
-### 1.1 ODCS v3.1.0 Contract Specification
+### 1.1 ODCS v3.2.0 Contract Specification
 Every ingested dataset must possess an active contract specifying four foundational pillars:
 
 ```yaml
@@ -74,8 +74,8 @@ Data pipelines must organize storage into transactional, ACID-compliant tiers us
 - **ACID Snapshot Isolation**: All write transactions commit atomically by updating the metadata pointer file (`metadata.json`). Readers query consistent snapshots without locking writers.
 - **File Sizing Standards**: Optimize Parquet file sizes between 128 MB and 512 MB to balance scan throughput with query planning latency.
 
-### 2.3 dbt 1.9 Microbatch Incremental Strategy
-For high-volume event streams, use dbt 1.9 microbatch models to enable partitioned backfills and granular auto-retries:
+### 2.3 dbt Core 2.0 Microbatch Incremental Strategy
+For high-volume event streams, use dbt Core 2.0 (Rust-engine GA; the 1.12+ line remains in active support until 2027-07) microbatch models to enable partitioned backfills and granular auto-retries:
 
 ```sql
 {{ config(

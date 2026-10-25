@@ -1,6 +1,7 @@
 ---
 name: database-maintenance
 description: Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/Delta 256MB bin-pack compaction merging Deletion Vectors, manifest rewriting, 7-day/50-snapshot expiration, 72h orphan vacuuming, and FinOps cost attribution. Use for cleanup, compaction, repair, and operational performance tasks.
+version: 1.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, query_db, read_database, run_tests]
 ---
 

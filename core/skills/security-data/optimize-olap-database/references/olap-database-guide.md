@@ -13,7 +13,7 @@ Columnar database engines organize data on physical storage by column rather tha
 
 ### Comparative Architectural Matrix
 
-| Dimension | ClickHouse (MergeTree) | DuckDB (v1.1+) | Apache Iceberg v3 |
+| Dimension | ClickHouse (MergeTree) | DuckDB (v1.5+) | Apache Iceberg v3 |
 | :--- | :--- | :--- | :--- |
 | **Primary Deployment** | Distributed high-throughput cluster & embedded chDB | In-process embedded engine | Open lakehouse format on object storage (S3/GCS) |
 | **Index Granularity** | 8,192 rows per granule (`index_granularity = 8192`) | 122,880 rows per standard Parquet Row Group | Manifest file file-level and column-level stats |
@@ -317,7 +317,7 @@ Unstructured operational documents (PDF/DOCX reports, regulatory filings) freque
 
 ### Extraction Architecture
 1. **Kreuzberg Engine**: High-throughput parsing detects table boundaries, multi-line headers, and cell alignments.
-2. **Schema & Contract Validation**: Extracted tabular structures are parsed into typed Apache Arrow RecordBatches and validated against Open Data Contract Standard (ODCS v3.1.0) definitions.
+2. **Schema & Contract Validation**: Extracted tabular structures are parsed into typed Apache Arrow RecordBatches and validated against Open Data Contract Standard (ODCS v3.2.0) definitions.
 3. **Deterministic Natural Keys**: Rows are assigned deterministic SHA-256 composite identifiers:
    ```
    natural_key = SHA256(document_hash || '|' || table_index || '|' || row_index)

@@ -44,7 +44,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
 - `system-design-spec.json` — System Engineer topology, capacity, and AI-infra design
 - `aws-infra-spec.json` — AWS Engineer managed-service and IAM infrastructure spec
 - `pull-request-spec.json` — Pull Request specification with blast radius, mutation score, execution proof, and review attestations
-- `data-pipeline-spec.json` — Data Pipeline Specification (ODCS v3.1.0 compatible data contract, freshness SLA, quality gates, quarantine policy, and compute budget)
+- `data-pipeline-spec.json` — Data Pipeline Specification (ODCS v3.2.0 compatible data contract, freshness SLA, quality gates, quarantine policy, and compute budget)
 
 ### Quality & Review
 - `agent-eval-report.json` — Agent evaluation benchmark report with rubrics, scoring, failure taxonomies, and release gates

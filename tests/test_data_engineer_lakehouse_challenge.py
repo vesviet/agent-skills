@@ -21,8 +21,8 @@ Validates and stress-tests:
    - 14 Invariant Guardrail Locks: DATA-CONTRACT-LOCK, IDEMPOTENCY-MERGE-LOCK, CIRCUIT-BREAKER-DLQ-LOCK,
      WAP-VERIFICATION-LOCK, FINOPS-PRUNING-LOCK, ZERO-TRUST-PII-LOCK, METADATA-MAINTENANCE-LOCK,
      OLAP-COLUMNAR-OPTIMIZATION LOCK, NATIVE-ENCRYPTION-LOCK, OPENLINEAGE-LOCK, ICEBERG-REST-PROTOCOL-LOCK, etc.
-   - Modern Lakehouse Invariants: Iceberg v4 metadata-only restructuring, Iceberg v3 RoaringBitmap DVs,
-     Delta Lake 4.0 UniForm, open REST Catalog, Variant type, S3 prefix hashing (write.object-storage.enabled = true),
+   - Modern Lakehouse Invariants: Iceberg v3 metadata-only restructuring with RoaringBitmap DVs,
+     Delta Lake 4.4 UniForm, open REST Catalog, Variant type (Iceberg v3), S3 prefix hashing (write.object-storage.enabled = true),
      atomic WAP, and DLQ circuit breaker ($Q_r > 2.0\\%, N \\ge 50$).
    - Absence of markdown backtick code traps on plain prose ('string blob', 'distributed mode').
 
@@ -198,9 +198,8 @@ class TestDataEngineerRoleInvariants(unittest.TestCase):
     def test_02_modern_lakehouse_standards_present(self):
         """Role must mandate 2026-2027 Lakehouse Architecture SOTA invariants."""
         invariants = [
-            "Apache Iceberg v4",
-            "Iceberg v3",
-            "Delta Lake 4.0 UniForm",
+            "Apache Iceberg v3",
+            "Delta Lake 4.4 UniForm",
             "Puffin RoaringBitmap",
             "Deletion Vectors",
             "spec_id",
@@ -297,7 +296,7 @@ class TestDataEngineerReviewChecklist(unittest.TestCase):
     def test_02_section_topics_covered(self):
         """Checklist sections must cover key SOTA domain topics."""
         topics = [
-            "Open Data Contract Standard (ODCS v3.1.0)",
+            "Open Data Contract Standard (ODCS v3.2.0)",
             "Modern Lakehouse Architecture",
             "Idempotency, Deterministic Upsert MERGE",
             "Circuit Breakers & Dead-Letter Queue",

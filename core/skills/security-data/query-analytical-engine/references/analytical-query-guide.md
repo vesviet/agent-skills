@@ -1,6 +1,6 @@
 # Analytical Query Engine & Cross-Source Federation Guide
 
-This reference provides technical architecture specifications, Python code patterns, and security guardrails for executing in-process analytical SQL (chDB, DuckDB v1.1+) and federating queries across disparate data sources without heavy ETL.
+This reference provides technical architecture specifications, Python code patterns, and security guardrails for executing in-process analytical SQL (chDB, DuckDB v1.5+) and federating queries across disparate data sources without heavy ETL.
 
 ---
 
@@ -91,7 +91,7 @@ finally:
 
 ---
 
-## 3. DuckDB v1.1+ Vectorized Engine & Out-of-Core Execution
+## 3. DuckDB v1.5+ Vectorized Engine & Out-of-Core Execution
 
 DuckDB is an embedded columnar OLAP engine designed for complex ANSI SQL, recursive CTEs, and deep integration with Apache Arrow and Parquet.
 
@@ -216,7 +216,7 @@ Unstructured documents (PDFs, Word documents, annual reports) contain valuable t
 ### 6.1 Extraction Mechanics
 - **Kreuzberg Rust Parser**: Extracts structural layout, tables, and bounding boxes at high throughput.
 - **Header & Merge Resolution**: Normalizes multi-level headers and merged cells into flat columnar schemas.
-- **Contract Enforcement**: Output is validated against Open Data Contract Standard (ODCS v3.1.0) definitions before storage.
+- **Contract Enforcement**: Output is validated against Open Data Contract Standard (ODCS v3.2.0) definitions before storage.
 
 ### 6.2 Ingestion Pattern
 ```python

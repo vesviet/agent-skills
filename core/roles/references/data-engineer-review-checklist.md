@@ -2,7 +2,7 @@
 
 This reference checklist provides detailed engineering, lakehouse architecture, data contract, and governance criteria for data engineering to meet 2027 Agentic SWE and Modern Data standards.
 
-### 1. Open Data Contract Standard (ODCS v3.1.0) & Boundary Enforcement
+### 1. Open Data Contract Standard (ODCS v3.2.0) & Boundary Enforcement
 - **Machine-Readable Contract Specification**: Pipeline contracts are formally declared using Open Data Contract Standard v3 (`contracts/schemas/data-pipeline-spec.json`) covering dataset grain, schema invariants, freshness SLAs, quality gates, and quarantine policies.
 - **Producer Boundary Gate Enforcement**: Automated schema validation runs at producer boundaries; invalid or non-compliant payloads fail closed prior to ingestion into Bronze/raw lakehouse tables.
 - **Strict SemVer Schema Evolution**: Schema mutations adhere to Semantic Versioning: additive nullable columns represent minor version bumps; breaking changes (column removal, type alterations, nullability changes) require major version increments with dual-write transition periods.
@@ -10,8 +10,8 @@ This reference checklist provides detailed engineering, lakehouse architecture, 
 - **Executable Quality Assertions**: Data contracts define unambiguous quality assertions (null rate ceilings, uniqueness constraints, value range checks, foreign key referential integrity) executed automatically during pipeline runs.
 - **Contract Ownership & Lineage**: Every dataset declares explicit producer and consumer owners, SLA tier, and upstream/downstream lineage graphs.
 
-### 2. Modern Lakehouse Architecture (Iceberg v4/v3 & Delta Lake UniForm)
-- **Table Format Standardization**: Lakehouse tables adopt Apache Iceberg v4 (metadata-only restructuring; never data rewrites for schema/partition evolution), Iceberg v3, or Delta Lake 4.0 UniForm formats, eliminating proprietary storage lock-in and unversioned file directories.
+### 2. Modern Lakehouse Architecture (Iceberg v3 & Delta Lake UniForm)
+- **Table Format Standardization**: Lakehouse tables adopt Apache Iceberg v3 (metadata-only restructuring; never data rewrites for schema/partition evolution; implemented by the 1.11+/1.12 line) or Delta Lake 4.4 UniForm formats, eliminating proprietary storage lock-in and unversioned file directories; the unratified Iceberg v4 spec is tracked as roadmap only and must not appear in production table configs.
 - **Row-Level Delete Optimization**: Iceberg v3 hardware-accelerated Deletion Vectors (DVs) encoded in Puffin RoaringBitmap format are deployed for all row-level mutations (<3% read amplification), deprecating legacy positional and equality deletes.
 - **Variant as Canonical Semi-Structured Path**: Semi-structured JSON payloads utilize the `VARIANT` type, eliminating string blob anti-patterns and enabling pushdown predicate evaluation on nested fields.
 - **Partition Evolution Without Rewrites**: Partition schemes evolve dynamically (e.g., migrating from daily to hourly partitioning) using integer `spec_id` metadata evolution without requiring multi-terabyte historical data rewrites.
@@ -75,3 +75,11 @@ This reference checklist provides detailed engineering, lakehouse architecture, 
 - **Column-Level Lineage Emission**: Automated pipeline tasks emit standard OpenLineage run and dataset facets across extraction, transformation, and load stages to maintain end-to-end provenance graphs.
 - **Catalog Lineage Integration**: OpenLineage events are integrated with open REST Catalogs (Apache Polaris, Unity Catalog OSS) for automated visual graph rendering and impact analysis.
 - **Upstream Deprecation & Impact Gating**: Upstream schema modifications and producer deprecations require automated impact analysis against registered downstream OpenLineage consumer nodes prior to production rollout.
+
+### 11. 2026-10 Modernization Gates
+- **Spec-Currency Gate**: no production config pins an unratified specification — Iceberg v4 (single-file commits, relative manifest paths, geospatial) is under active development and appears only as roadmap framing, never as a table format requirement; review fails any "standardize on Iceberg v4" instruction.
+- **Variant-Spec Gate**: Variant is an Iceberg v3 feature (per the official spec, "Support for Variant is added in Iceberg v3"); any document claiming Variant requires v4 fails review.
+- **Engine-Currency Gate**: stack pins reference generally available lines — Delta Lake 4.4 (Aug 2026), Spark 4.2+ (Jul 2026; quarterly cadence from 4.3.0), Flink 2.3 (Jun 2026), dbt Core 2.0 (Rust engine; 1.12+ active support until 2027-07), DuckDB 1.5+ with the 2.0 LTS line (GA 2026-10-21) adopted after soak.
+- **ODCS-Currency Gate**: data contracts reference ODCS v3.2.0 (current Bitol release, validated by the datacontract CLI); v3.1.0 references fail currency review.
+- **PostgreSQL-Baseline Gate**: relational maintenance runbooks target PostgreSQL 18 (PG 19 GA planned 2026-11-19); PG 16/17 upgrade paths fail the currency bar.
+- **Semantic-Layer Gate**: Apache Ossie is cited with its Apache Incubating status (ASF since 2026-07, formerly Open Semantic Interchange) alongside dbt MetricFlow on dbt Core 2.0 and Cube.js.

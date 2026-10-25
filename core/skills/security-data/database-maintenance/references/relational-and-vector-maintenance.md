@@ -67,15 +67,15 @@ Never execute plain `REINDEX TABLE` or `REINDEX INDEX` in production environment
 
 ---
 
-## 3. PostgreSQL 17 Zero-Downtime Upgrades
+## 3. PostgreSQL 18 Zero-Downtime Upgrades
 
-When executing major PostgreSQL version upgrades (e.g. Postgres 15/16 → Postgres 17):
+When executing major PostgreSQL version upgrades (e.g. Postgres 16/17 → Postgres 18):
 
 ### 3.1 Logical Replication via `pg_createsubscriber`
-1. **Provision Target Node**: Deploy new PostgreSQL 17 replica matching existing cluster specifications.
+1. **Provision Target Node**: Deploy new PostgreSQL 18 replica matching existing cluster specifications.
 2. **Convert to Subscriber**: Execute `pg_createsubscriber` to transform physical standby into logical subscriber:
    ```bash
-   pg_createsubscriber -D /var/lib/postgresql/17/data -P "host=primary-db port=5432 user=replicator"
+   pg_createsubscriber -D /var/lib/postgresql/18/data -P "host=primary-db port=5432 user=replicator"
    ```
 3. **Synchronize Sequences & DDL**: Manually replicate and apply DDL schema changes and advance sequence values.
-4. **Traffic Cutover**: Switch application connection pools to PostgreSQL 17 target with sub-second downtime.
+4. **Traffic Cutover**: Switch application connection pools to PostgreSQL 18 target with sub-second downtime.

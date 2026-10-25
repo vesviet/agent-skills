@@ -1,6 +1,7 @@
 ---
 name: build-data-pipeline
-description: Design and implement transactional lakehouse pipelines (Iceberg v4/v3/Delta 4.0), enforce ODCS v3.1.0 data contracts, execute Write-Audit-Publish (WAP) on isolated snapshot branches, route malformed records to DLQ with circuit breaker wired to contract SLA fields, enforce S3 prefix hashing, implement Iceberg REST protocol (scan planning, ETag, Idempotency-Key, credential vending), native table encryption (KMS), and OpenLineage explicit lineage. Use when building or maintaining reliable, contract-governed lakehouse data pipelines.
+description: Design and implement transactional lakehouse pipelines (Iceberg v3/Delta 4.4), enforce ODCS v3.2.0 data contracts, execute Write-Audit-Publish (WAP) on isolated snapshot branches, route malformed records to DLQ with circuit breaker wired to contract SLA fields, enforce S3 prefix hashing, implement Iceberg REST protocol (scan planning, ETag, Idempotency-Key, credential vending), native table encryption (KMS), and OpenLineage explicit lineage. Use when building or maintaining reliable, contract-governed lakehouse data pipelines.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, query_db, read_database, run_tests]
 ---
 
@@ -10,8 +11,8 @@ Use this skill when building or maintaining transactional lakehouse infrastructu
 
 ## When to Use
 
-- implementing transactional lakehouse pipelines with Apache Iceberg v4 (metadata-only restructuring), Iceberg v3, or Delta Lake 4.0 UniForm
-- enforcing Open Data Contract Standard (ODCS v3.1.0) at producer boundaries before ingestion
+- implementing transactional lakehouse pipelines with Apache Iceberg v3 (metadata-only restructuring, Variant type) or Delta Lake 4.4 UniForm
+- enforcing Open Data Contract Standard (ODCS v3.2.0) at producer boundaries before ingestion
 - staging writes to isolated snapshot branches (`wap_audit_<run_id>`) for atomic Write-Audit-Publish (WAP)
 - auditing branch data in-process via DuckDB zero-copy Arrow memory before publishing to `main`
 - routing poisoned or non-conforming records into Dead-Letter Queue (DLQ) quarantine with circuit breaker **wired to contract SLA fields**
@@ -25,10 +26,10 @@ Use this skill when building or maintaining transactional lakehouse infrastructu
 ## Core Rules
 
 - **Read-Only Sources**: treat all source inputs as read-only; never mutate upstream source files or CDC logs.
-- **ODCS v3.1.0 Contract Verification**: validate raw payloads against version-controlled ODCS v3.1.0 schemas at producer boundaries before ingestion; reject uncontracted schema drift.
+- **ODCS v3.2.0 Contract Verification**: validate raw payloads against version-controlled ODCS v3.2.0 schemas at producer boundaries before ingestion; reject uncontracted schema drift.
 - **Modern Lakehouse Table Formats**:
-  - standardize on **Apache Iceberg v4** with metadata-only restructuring (never data rewrites for schema/partition evolution) and **Iceberg v3** with Puffin RoaringBitmap Deletion Vectors (DVs) and integer `spec-id` partition evolution; avoid legacy position deletes.
-  - support **Delta Lake 4.0 UniForm** for universal Iceberg metadata compatibility and Liquid Clustering.
+  - standardize on **Apache Iceberg v3** (1.11+/1.12 implementation line) with metadata-only restructuring (never data rewrites for schema/partition evolution), Puffin RoaringBitmap Deletion Vectors (DVs), and integer `spec-id` partition evolution; avoid legacy position deletes; treat the unratified Iceberg v4 spec strictly as roadmap.
+  - support **Delta Lake 4.4 UniForm** for universal Iceberg metadata compatibility and Liquid Clustering.
   - **Variant as Canonical Semi-Structured Path**: adopt `VARIANT` type for schemaless JSON payloads, eliminating `string` blob anti-patterns and enabling pushdown predicate evaluation on nested fields.
   - coordinate catalog metadata through REST Catalogs (Polaris, Unity Catalog OSS, Lakekeeper) with short-lived STS tokens.
 - **Iceberg REST Catalog Protocol**: implement scan planning (`POST /v1/oauth/tokens`, `POST /v1/namespaces/{ns}/tables`), ETag-based freshness validation (`If-None-Match`), Idempotency-Key commits for exactly-once writes, and dynamic credential vending (`GET /v1/credentials`).
@@ -57,7 +58,7 @@ Use this skill when building or maintaining transactional lakehouse infrastructu
 ## Suggested Process
 
 ### 1. Ingest & Verify Producer Contract
-Validate incoming batch or streaming event schemas against the ODCS v3.1.0 contract in producer CI/CD before persisting to storage.
+Validate incoming batch or streaming event schemas against the ODCS v3.2.0 contract in producer CI/CD before persisting to storage.
 
 ### 2. Contract Validation, DLQ Quarantine & WAP Branch Staging
 Validate incoming batch records against the ODCS contract. Route non-compliant records to the DLQ with structured envelopes. Calculate quarantine ratio $Q_r = (N_{\text{quarantined}} / N_{\text{total}}) \times 100\%$. Write and stage only compliant, deduplicated records to an isolated Iceberg snapshot branch (`wap_audit_<run_id>`) with `write.object-storage.enabled = true`.
@@ -83,8 +84,8 @@ Validate outputs against `contracts/schemas/data-pipeline-spec.json`. Tag mainte
 ## Checklist
 
 - [ ] upstream source files and streaming CDC logs treated as strictly read-only
-- [ ] ODCS v3.1.0 producer contracts validated at perimeter before storage persistence
-- [ ] Iceberg v4 / v3 / Delta 4.0 UniForm configured with Puffin RoaringBitmap DVs and `spec-id` partition evolution
+- [ ] ODCS v3.2.0 producer contracts validated at perimeter before storage persistence
+- [ ] Iceberg v3 / Delta 4.4 UniForm configured with Puffin RoaringBitmap DVs and `spec-id` partition evolution
 - [ ] **Variant type adopted for semi-structured JSON payloads** (canonical path)
 - [ ] table property `write.object-storage.enabled = true` active to prevent AWS S3 503 Slow Down throttling
 - [ ] **Iceberg REST Catalog protocol implemented**: scan planning, ETag freshness, Idempotency-Key commits, credential vending
@@ -117,7 +118,7 @@ When emitting pipeline specifications for downstream consumers, orchestrators, o
 
 ## Failure Modes
 
-- **Silent schema poisoning**: unannounced upstream schema changes corrupt lakehouse tables. Mitigation: enforce ODCS v3.1.0 pre-ingestion validation; route non-conforming payloads to DLQ quarantine.
+- **Silent schema poisoning**: unannounced upstream schema changes corrupt lakehouse tables. Mitigation: enforce ODCS v3.2.0 pre-ingestion validation; route non-conforming payloads to DLQ quarantine.
 - **S3 partition throttling storm**: high-volume writes hit single S3 prefix limits causing 503 Slow Down errors. Mitigation: set table property `write.object-storage.enabled = true` for prefix hashing.
 - **Direct write corruption**: unvalidated rows written directly to `main`. Mitigation: mandate Write-Audit-Publish (WAP) isolated snapshot branches (`wap_audit_<run_id>`).
 - **DLQ poison overflow**: high-volume bad data floods quarantine silently. Mitigation: enforce circuit breaker halting ingestion when $Q_r > 2.0%$ ($N \ge 50$).
@@ -129,10 +130,10 @@ When emitting pipeline specifications for downstream consumers, orchestrators, o
 ## Security Guardrails (OWASP ASI)
 
 - **ASI03 Identity & Privilege Abuse**: classify PII with `data-classification.yaml`; enforce short-lived STS tokens via REST Catalog.
-- **ASI04 Supply Chain**: validate connectors, dbt packages, and Iceberg catalog drivers against approved manifests.
-- **ASI05 RCE Guard**: parameterize all dynamic SQL and partition paths; prohibit raw string interpolation.
-- **ASI06 Context & Memory Poisoning**: sanitize and provenance-tag document chunks before RAG vector ingestion.
-- **ASI07 Inter-Agent Communication**: emit structured `data-pipeline-spec.json` contracts for downstream agents.
+- **ASI04 Agentic Supply Chain**: validate connectors, dbt packages, and Iceberg catalog drivers against approved manifests.
+- **ASI05 Unexpected Code Execution**: parameterize all dynamic SQL and partition paths; prohibit raw string interpolation.
+- **ASI06 Memory & Context Poisoning**: sanitize and provenance-tag document chunks before RAG vector ingestion.
+- **ASI07 Insecure Inter-Agent Communication**: emit structured `data-pipeline-spec.json` contracts for downstream agents.
 - **ASI09 Human-Agent Trust Exploitation**: disclose residual ingestion risks, SLA deviations, and quality validation metrics truthfully.
 - **NATIVE-ENCRYPTION-LOCK**: all Iceberg and Delta Lake tables must enforce AES-256 encryption at rest via cloud KMS; encryption keys managed through catalog-integrated key management.
 - **OPENLINEAGE-LOCK**: all pipeline stages must emit column-level OpenLineage events for end-to-end traceability and impact analysis.
