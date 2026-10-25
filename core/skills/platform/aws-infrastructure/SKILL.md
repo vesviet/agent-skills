@@ -1,19 +1,20 @@
 ---
 name: aws-infrastructure
 description: Provision, configure, and optimize AWS cloud infrastructure via OpenTofu state KMS encryption, Crossplane Go compositions, Bottlerocket distroless EKS nodes, and IAM Zero-Trust. Use when provisioning VPCs, EKS, RDS, S3, Bedrock, or specialized silicon; authoring EKS Pod Identity roles and SCPs; or enforcing FinOps cost tags.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
 # AWS Infrastructure
 
-Use this skill when designing, provisioning, or operating AWS cloud infrastructure using OpenTofu v1.8+ with client-side KMS state encryption, Crossplane v1.16+ Go compositions, Bottlerocket distroless EKS nodes, AWS IAM Zero-Trust, Karpenter autoscaling, Graviton4/Trainium2/Inferentia2 compute, and Amazon Bedrock PrivateLink isolation.
+Use this skill when designing, provisioning, or operating AWS cloud infrastructure using OpenTofu v1.13+ with client-side KMS state encryption, Crossplane v2.4+ Go compositions, Bottlerocket distroless EKS nodes, AWS IAM Zero-Trust, Karpenter v1.x autoscaling (or managed EKS Auto Mode), Graviton5/Trainium3/Inferentia2 compute, and Amazon Bedrock PrivateLink isolation.
 
 ## When to Use
 
 - provisioning VPCs, Bottlerocket EKS clusters, Aurora/RDS, or S3 storage via OpenTofu or Crossplane
 - authoring IAM roles with EKS Pod Identity (v1.31+) or Control Tower Service Control Policies (SCPs)
 - deploying sidecarless service networking via AWS VPC Lattice (Gateway API) and IAM SigV4 auth
-- configuring Karpenter v1.0+ declarative autoscaling with Graviton4 (c8g, m8g, r8g) and Spot fleets
+- configuring Karpenter v1.x declarative autoscaling (EKS Auto Mode as the managed default) with Graviton5 (c9g, m9g, r9g) and Spot fleets
 - provisioning Amazon Bedrock PrivateLink VPC endpoints with Guardrails v2 (contextual grounding >= 0.7)
 - enforcing FinOps cost allocation tags (`team`, `service`, `environment`, `cost-center`) at apply time
 - emitting the `aws-infra-spec.json` machine handoff for downstream DevOps or System Engineers
@@ -45,12 +46,12 @@ terraform {
 
 ## Core Rules
 
-- **OPENTOFU-KMS-LOCK**: All IaC state and plans must be client-side encrypted in-memory via OpenTofu v1.8+ using AWS KMS (AES-GCM) with `enforced = true`; unencrypted remote state in S3 is prohibited.
-- **CROSSPLANE-COMPOSITION-LOCK**: Universal cloud control planes must use Crossplane v1.16+ Compositions powered by compiled Go functions (`function-go-templating`) or KCL; unstructured YAML patch-and-transform is banned.
+- **OPENTOFU-KMS-LOCK**: All IaC state and plans must be client-side encrypted in-memory via OpenTofu v1.13+ using AWS KMS (AES-GCM) with `enforced = true`; unencrypted remote state in S3 is prohibited.
+- **CROSSPLANE-COMPOSITION-LOCK**: Universal cloud control planes must use Crossplane v2.4+ Compositions powered by compiled Go functions (`function-go-templating`) or KCL; unstructured YAML patch-and-transform is banned.
 - **BOTTLEROCKET-LOCK**: EKS node pools must run AWS Bottlerocket distroless container OS (`amiFamily: Bottlerocket` in `EC2NodeClass`) with SELinux enforcing and dm-verity integrity; general-purpose Linux with shells is prohibited.
 - **AWS-IAM-ZERO-TRUST-LOCK**: Enforce IAM Identity Center for humans and EKS Pod Identity (v1.31+) with `pods.eks.amazonaws.com` for workloads; ban static IAM users and long-lived AKIA keys via root SCP.
-- **KARPENTER-AUTOSCALING-LOCK**: Compute autoscaling must use Karpenter v1.0+ `NodePool` manifests with `WhenEmptyOrUnderutilized` consolidation and disruption budgets; static node groups are prohibited.
-- **GRAVITON4-FIRST-LOCK**: Default compute to AWS Graviton4 (c8g, m8g, r8g); Trainium2 (trn2) and Inferentia2 (inf2) for AI/ML; enforce multi-architecture images (`linux/arm64,linux/amd64`) in CI/CD.
+- **KARPENTER-AUTOSCALING-LOCK**: Compute autoscaling must use EKS Auto Mode (managed Karpenter, default for new clusters) or self-managed Karpenter v1.x `NodePool` manifests with `WhenEmptyOrUnderutilized` consolidation and disruption budgets; static node groups are prohibited.
+- **GRAVITON5-FIRST-LOCK**: Default compute to AWS Graviton5 (c9g, m9g, r9g — all GA by 2026-08; Graviton4 only where a Graviton5 family lacks regional availability); Trainium3 (trn3) for AI training and Inferentia2 (inf2) for inference; enforce multi-architecture images (`linux/arm64,linux/amd64`) in CI/CD.
 - **VPC-LATTICE-LOCK**: Cross-VPC and cross-account service networking must route through AWS VPC Lattice via Gateway API (`amazon-vpc-lattice`) with IAM SigV4 auth; proxy sidecars are prohibited.
 - **BEDROCK-ISOLATION-LOCK**: Bedrock endpoints must route exclusively through PrivateLink VPC endpoints; enforce Guardrails v2 with contextual grounding >= 0.7 and token-level cost attribution.
 - **FINOPS-LOCK**: Apply mandatory cost allocation tags (`team`, `service`, `environment`, `cost-center`) enforced via SCP at creation time; review Compute Optimizer rightsizing monthly.
@@ -68,7 +69,7 @@ Configure multi-account landing zone SCPs, IAM Identity Center, VPC subnets, Pri
 Author customer-managed IAM roles with EKS Pod Identity trust policies (`pods.eks.amazonaws.com`). Submit IAM definitions to Security Engineer and validate with IAM Access Analyzer.
 
 ### Step 4: Provision Compute, Storage & Managed AI via IaC
-Deploy OpenTofu v1.8+ modules with KMS state encryption or Crossplane Go compositions. Configure Bottlerocket EKS clusters, Karpenter Graviton4 NodePools, Aurora Multi-AZ, and Bedrock PrivateLink endpoints.
+Deploy OpenTofu v1.13+ modules with KMS state encryption or Crossplane Go compositions. Configure Bottlerocket EKS clusters, Karpenter Graviton4 NodePools, Aurora Multi-AZ, and Bedrock PrivateLink endpoints.
 
 ### Step 5: Validate, Verify & Emit Machine Contract
 Verify CIS benchmarks via AWS Config and telemetry via ADOT/CloudWatch. Emit `contracts/schemas/aws-infra-spec.json` for downstream DevOps Engineer consumption.
@@ -79,7 +80,7 @@ Verify CIS benchmarks via AWS Config and telemetry via ADOT/CloudWatch. Emit `co
 - [ ] Crossplane Compositions authoring with compiled Go functions (`function-go-templating`) or KCL.
 - [ ] EKS worker nodes run Bottlerocket distroless OS with SELinux enforcing and dm-verity active.
 - [ ] Zero static AKIA access keys; workload credentials federated via EKS Pod Identity (v1.31+).
-- [ ] Karpenter v1.0+ autoscaling configured with Graviton4 and `WhenEmptyOrUnderutilized` consolidation.
+- [ ] Karpenter v1.x autoscaling (or EKS Auto Mode) configured with Graviton5 and `WhenEmptyOrUnderutilized` consolidation.
 - [ ] VPC Lattice Gateway API configured with IAM SigV4 authorization; zero proxy sidecars.
 - [ ] Bedrock accessed exclusively via PrivateLink; Guardrails v2 configured with grounding >= 0.7.
 - [ ] Mandatory cost allocation tags (`team`, `service`, `environment`, `cost-center`) enforced by SCP.
@@ -106,9 +107,9 @@ Skip emission for local sandbox experimentation where no cloud resources are pro
 ## Security Guardrails (OWASP ASI)
 
 - **ASI03 Identity & Privilege Abuse**: Enforce EKS Pod Identity and IAM Identity Center; reject wildcard permissions; run IAM Access Analyzer before apply.
-- **ASI04 Supply Chain**: Mandate Bottlerocket distroless AMI and ECR immutable KMS-encrypted repositories; verify Bedrock PrivateLink isolation.
-- **ASI05 RCE Guard**: Never execute unvalidated scripts on EC2 hosts; manage Bottlerocket via transactional `apiclient` API without interactive shells.
-- **ASI07 Inter-Agent Communication**: Treat `aws-infra-spec.json` as authoritative contract; validate schema before handing off to DevOps Engineer.
+- **ASI04 Agentic Supply Chain**: Mandate Bottlerocket distroless AMI and ECR immutable KMS-encrypted repositories; verify Bedrock PrivateLink isolation.
+- **ASI05 Unexpected Code Execution**: Never execute unvalidated scripts on EC2 hosts; manage Bottlerocket via transactional `apiclient` API without interactive shells.
+- **ASI07 Insecure Inter-Agent Communication**: Treat `aws-infra-spec.json` as authoritative contract; validate schema before handing off to DevOps Engineer.
 - **ASI09 Human-Agent Trust Exploitation**: Always surface wildcard permissions and unencrypted endpoints honestly; do not claim compliance without verification.
 
 ## Related Skills

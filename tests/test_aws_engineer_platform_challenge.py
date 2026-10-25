@@ -25,7 +25,7 @@ Validates and stress-tests:
    - The 4+ Mandatory Architectural Guardrail Locks:
      `OPENTOFU-KMS-LOCK`, `CROSSPLANE-COMPOSITION-LOCK`, `BOTTLEROCKET-LOCK`, `AWS-IAM-ZERO-TRUST-LOCK`.
    - Supplementary SOTA locks: `KARPENTER-AUTOSCALING-LOCK`, `VPC-LATTICE-LOCK`,
-     `GRAVITON4-FIRST-LOCK`, `BEDROCK-ISOLATION-LOCK`, `FINOPS-LOCK`, `GITOPS-LOCK`.
+     `GRAVITON5-FIRST-LOCK`, `BEDROCK-ISOLATION-LOCK`, `FINOPS-LOCK`, `GITOPS-LOCK`.
    - Core locks: `BOUNDARY LOCK`, `SECURITY LOCK`, `IRREVERSIBLE ACTION LOCK`, `TRACE LOCK`, `UNCERTAINTY LOCK`.
    - Clear boundary and handoff contract with `devops-engineer`.
    - Primary skills locked: `aws-infrastructure`, `setup-deployment`, `add-telemetry-instrumentation`.
@@ -211,7 +211,7 @@ class TestAWSInfrastructureSkillAndSchema(unittest.TestCase):
             "BOTTLEROCKET-LOCK",
             "AWS-IAM-ZERO-TRUST-LOCK",
             "KARPENTER-AUTOSCALING-LOCK",
-            "GRAVITON4-FIRST-LOCK",
+            "GRAVITON5-FIRST-LOCK",
             "VPC-LATTICE-LOCK",
             "BEDROCK-ISOLATION-LOCK",
             "FINOPS-LOCK",
@@ -273,7 +273,7 @@ class TestAWSEngineerRoleInvariants(unittest.TestCase):
         expected_locks = [
             "KARPENTER-AUTOSCALING-LOCK",
             "VPC-LATTICE-LOCK",
-            "GRAVITON4-FIRST-LOCK",
+            "GRAVITON5-FIRST-LOCK",
             "BEDROCK-ISOLATION-LOCK",
             "FINOPS-LOCK",
             "GITOPS-LOCK",
@@ -311,7 +311,7 @@ class TestAWSEngineerRoleInvariants(unittest.TestCase):
     def test_06_footer_maintenance_date(self):
         """Role must have authoritative maintenance date."""
         self.assertTrue(
-            "Last updated: 2026-10-05" in self.role_content or "Last updated: 2026-10-17" in self.role_content
+            "Last updated: 2026-10-05" in self.role_content or "Last updated: 2026-10-17" in self.role_content or "Last updated: 2026-10-25" in self.role_content
         )
 
 
@@ -327,13 +327,13 @@ class TestAWSEngineerReviewChecklist(unittest.TestCase):
     def test_01_all_14_sections_present(self):
         """Checklist must contain all 14 comprehensive SOTA verification sections."""
         expected_sections = [
-            "### 1. OpenTofu v1.8+ Client-Side State Encryption & IaC Architecture (`OPENTOFU-KMS-LOCK`)",
-            "### 2. Universal Cloud Control Planes & Crossplane v1.16+ Go Compositions (`CROSSPLANE-COMPOSITION-LOCK`)",
+            "### 1. OpenTofu v1.13+ Client-Side State Encryption & IaC Architecture (`OPENTOFU-KMS-LOCK`)",
+            "### 2. Universal Cloud Control Planes & Crossplane v2.4+ Go Compositions (`CROSSPLANE-COMPOSITION-LOCK`)",
             "### 3. Bottlerocket Distroless Node OS & EKS Host Security (`BOTTLEROCKET-LOCK`)",
             "### 4. AWS IAM Zero-Trust, Identity Center & Access Governance (`AWS-IAM-ZERO-TRUST-LOCK`)",
             "### 5. AWS EKS Pod Identity (v1.31+) & Workload Credential Federation",
-            "### 6. Karpenter v1.0+ Declarative Autoscaling & Compute Architecture",
-            "### 7. Graviton4, Trainium2 & Inferentia2 Compute Acceleration",
+            "### 6. Karpenter v1.x & EKS Auto Mode Declarative Autoscaling",
+            "### 7. Graviton5, Trainium3 & Inferentia2 Compute Acceleration",
             "### 8. Sidecarless Service Networking with AWS VPC Lattice (Gateway API)",
             "### 9. Enterprise Multi-Account Architecture, Control Tower & SCP Guardrails",
             "### 10. Cloud Storage, Database Resiliency & KMS Encryption at Rest",
@@ -358,8 +358,8 @@ class TestAWSEngineerReviewChecklist(unittest.TestCase):
             "IAM Identity Center",
             "Pod Identity",
             "Karpenter",
-            "Graviton4",
-            "Trainium2",
+            "Graviton5",
+            "Trainium3",
             "Inferentia2",
             "VPC Lattice",
             "Bedrock",

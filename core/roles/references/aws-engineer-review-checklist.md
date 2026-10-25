@@ -1,10 +1,10 @@
 ## AWS Engineer Review Checklist
 
-This reference checklist provides comprehensive cloud architecture, infrastructure-as-code, identity governance, compute optimization, and security verification criteria for AWS engineering to meet 2026–2027 SOTA standards. It establishes non-negotiable verification gates across OpenTofu KMS client-side state encryption, Crossplane Go compositions, Bottlerocket distroless container hosts, AWS IAM Zero-Trust with EKS Pod Identity, Karpenter declarative autoscaling, Graviton4/Trainium2/Inferentia2 compute acceleration, sidecarless VPC Lattice service networking, Bedrock PrivateLink isolation with Guardrails v2, and FinOps cost governance.
+This reference checklist provides comprehensive cloud architecture, infrastructure-as-code, identity governance, compute optimization, and security verification criteria for AWS engineering to meet 2026–2027 SOTA standards. It establishes non-negotiable verification gates across OpenTofu KMS client-side state encryption, Crossplane Go compositions, Bottlerocket distroless container hosts, AWS IAM Zero-Trust with EKS Pod Identity, Karpenter declarative autoscaling, Graviton5/Trainium3/Inferentia2 compute acceleration, sidecarless VPC Lattice service networking, Bedrock PrivateLink isolation with Guardrails v2, and FinOps cost governance.
 
-### 1. OpenTofu v1.8+ Client-Side State Encryption & IaC Architecture (`OPENTOFU-KMS-LOCK`)
+### 1. OpenTofu v1.13+ Client-Side State Encryption & IaC Architecture (`OPENTOFU-KMS-LOCK`)
 - **In-Memory Client-Side State Encryption**:
-  - all Infrastructure as Code (IaC) state files (`.tfstate`) and execution plan files must be encrypted client-side in-memory using OpenTofu v1.8+ before transmitting bytes to remote S3 or HTTP backends
+  - all Infrastructure as Code (IaC) state files (`.tfstate`) and execution plan files must be encrypted client-side in-memory using OpenTofu v1.13+ before transmitting bytes to remote S3 or HTTP backends
   - configuration mandates an `encryption {}` block specifying `key_provider "aws_kms"` with authenticated AES-GCM (256-bit) and `enforced = true` on both `state` and `plan` blocks:
     ```hcl
     terraform {
@@ -33,12 +33,12 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
   - remote S3 state backend configured with DynamoDB distributed state locking (`dynamodb_table`), object versioning, and bucket policies denying unencrypted transport (`aws:SecureTransport: false`)
   - static analysis (TFLint, Trivy) and automated assertions (`tofu test`) executed in CI/CD before any plan promotion
 
-### 2. Universal Cloud Control Planes & Crossplane v1.16+ Go Compositions (`CROSSPLANE-COMPOSITION-LOCK`)
+### 2. Universal Cloud Control Planes & Crossplane v2.4+ Go Compositions (`CROSSPLANE-COMPOSITION-LOCK`)
 - **Kubernetes-Native Cloud Resource Management**:
-  - cloud infrastructure managed as Kubernetes custom resources via Composite Resource Definitions (XRDs); platform teams expose high-level declarative claims while shielding developers from raw cloud parameter complexity
+  - cloud infrastructure managed as Kubernetes custom resources via Composite Resource Definitions (XRDs); platform teams expose high-level namespaced Composite Resources while shielding developers from raw cloud parameter complexity
   - Crossplane Compositions authoring in pipeline mode powered by compiled Go functions (`function-go-templating`) or KCL (`function-kcl`), replacing legacy unstructured YAML patch-and-transform with compile-time type validation, conditionals, and deterministic loops
   - continuous reconciliation loops actively detect and correct out-of-band AWS resource drift against desired XRD state
-  - product development teams consume claims (`AppEnvironment`, `PostgreSQLInstance`) without requiring direct AWS IAM credentials or provider access
+  - product development teams consume namespaced Composite Resources (`AppEnvironment`, `PostgreSQLInstance`) without requiring direct AWS IAM credentials or provider access — the separate Claim type is deprecated in Crossplane 2.x
 
 ### 3. Bottlerocket Distroless Node OS & EKS Host Security (`BOTTLEROCKET-LOCK`)
 - **Distroless Container-Optimized Host OS**:
@@ -65,9 +65,9 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
 - **Attribute-Based Access Control (ABAC)**:
   - STS session tags (`eks-cluster-name`, `kubernetes-namespace`, `kubernetes-service-account`) automatically propagated to downstream AWS API requests for fine-grained policy enforcement
 
-### 6. Karpenter v1.0+ Declarative Autoscaling & Compute Architecture
+### 6. Karpenter v1.x & EKS Auto Mode Declarative Autoscaling
 - **Just-In-Time Node Provisioning & Disruption Budgets**:
-  - compute autoscaling declared via Karpenter v1.0+ `NodePool` (`karpenter.sh/v1`) and `EC2NodeClass` (`karpenter.k8s.aws/v1`) manifests:
+  - compute autoscaling declared via EKS Auto Mode (AWS-managed Karpenter; the default for new clusters) or self-managed Karpenter v1.x `NodePool` (`karpenter.sh/v1`) and `EC2NodeClass` (`karpenter.k8s.aws/v1`) manifests — retained for custom AMIs and node-level control:
     ```yaml
     apiVersion: karpenter.sh/v1
     kind: NodePool
@@ -83,7 +83,7 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
           requirements:
           - key: "karpenter.k8s.aws/instance-family"
             operator: In
-            values: ["c8g", "m8g", "r8g"]
+            values: ["c9g", "m9g", "r9g"]
           - key: "kubernetes.io/arch"
             operator: In
             values: ["arm64"]
@@ -95,13 +95,13 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
     ```
   - static EC2 Managed Node Groups eliminated for dynamic microservice workloads
 
-### 7. Graviton4, Trainium2 & Inferentia2 Compute Acceleration
-- **Graviton4-First Compute Standard**:
-  - general-purpose compute, microservices, and database workloads default to AWS Graviton4 (c8g, m8g, r8g) ARM64 architecture, delivering 20–30% lower cost and 10–15% better performance vs x86 equivalents
+### 7. Graviton5, Trainium3 & Inferentia2 Compute Acceleration
+- **Graviton5-First Compute Standard**:
+  - general-purpose compute, microservices, and database workloads default to AWS Graviton5 (c9g, m9g, r9g — all GA by 2026-08; ~25% faster than Graviton4) ARM64 architecture; Graviton4 is permitted only where a Graviton5 family lacks regional availability
   - CI/CD build pipelines enforce multi-architecture container images (`linux/arm64,linux/amd64`)
 - **Specialized AI/ML Silicon Acceleration**:
-  - distributed generative AI training workloads deployed on Trainium2 (trn2) UltraClusters backed by Elastic Fabric Adapter (EFA v2) networking
-  - high-throughput, low-latency LLM inference workloads benchmarked and deployed on Inferentia2 (inf2) instances using AWS Neuron SDK
+  - distributed generative AI training workloads deployed on Trainium3 (trn3) UltraServers (GA 2025-12; up to 4.4x Trn2 throughput, 144 chips, 20.7 TB HBM3e) via UltraClusters backed by Elastic Fabric Adapter (EFA v2) networking
+  - high-throughput, low-latency LLM inference workloads benchmarked and deployed on Trainium3 or Inferentia2 (inf2) instances using AWS Neuron SDK
 
 ### 8. Sidecarless Service Networking with AWS VPC Lattice (Gateway API)
 - **Sidecarless L7 Application Networking**:
@@ -124,12 +124,15 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
   - S3 Express One Zone deployed for low-latency (<10ms) AI training checkpoints, embedding caches, and high-throughput data processing
 - **Database High Availability & KMS Key Rotation**:
   - Amazon RDS / Aurora deployed in Multi-AZ configuration with automated daily backups, deletion protection, and Performance Insights enabled
+  - Amazon Aurora DSQL (GA since 2025-05; serverless distributed SQL, PostgreSQL-compatible, 99.999% multi-Region availability) evaluated before self-sharded designs for new distributed-SQL requirements
   - Customer-Managed KMS keys (CMK) configured with annual automated key rotation for all persistent EBS volumes, RDS clusters, and Secrets Manager stores
 
 ### 11. Amazon Bedrock & AI/ML Managed Infrastructure Isolation
 - **PrivateLink VPC Isolation & Model ARN Scoping**:
   - Amazon Bedrock APIs accessed exclusively via PrivateLink VPC endpoints (`com.amazonaws.<region>.bedrock-runtime`); direct public routing is prohibited
-  - Bedrock IAM policies specify exact model ARNs; wildcard model access (`bedrock:InvokeModel` on `*`) is strictly prohibited
+  - Bedrock IAM policies specify exact model ARNs — including current-generation Amazon Nova 2 family ARNs (re:Invent 2025 release); wildcard model access (`bedrock:InvokeModel` on `*`) is strictly prohibited
+- **Bedrock AgentCore Runtime (GA since 2025-10)**:
+  - production agents run on AgentCore (up to 8-hour long-running task runtime, AgentCore Gateway policy engine, Memory with self-managed strategy) behind the same PrivateLink isolation and model ARN scoping as model invocation
 - **Guardrails v2 & Token-Level Cost Tracking**:
   - production Bedrock endpoints enforce Guardrails v2 with contextual grounding threshold $\ge 0.7$, PII redaction filters, and denied topics
   - token-level cost attribution tags (`team-id`, `service-name`, `budget-tier`) attached to invocation metadata for granular billing attribution
@@ -142,6 +145,8 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
     $$Cost_{\text{compute}} = \sum_{i=1}^N \left( R_{\text{instance}, i} \times (1 - D_{\text{savings}, i}) \times T_{\text{hours}, i} \right)$$
 - **Shift-Left Tagging Enforcement**:
   - mandatory cost allocation tags (`team`, `service`, `environment`, `cost-center`) enforced via SCP at creation time; untagged resource provisioning blocked fail-closed
+- **Database Savings Plans**:
+  - steady-state database spend evaluated against Database Savings Plans (up to 35% savings across Aurora, RDS, DynamoDB, DocumentDB, Neptune, and ElastiCache) alongside Compute Savings Plans
 
 ### 13. Cloud-Native Observability, Telemetry & AWS Config Compliance
 - **ADOT & Embedded Metric Format (EMF)**:
@@ -165,5 +170,13 @@ This reference checklist provides comprehensive cloud architecture, infrastructu
 | **Bottlerocket Integrity** | dm-verity enabled | `kubectl get ec2nodeclass -o yaml` | `amiFamily: Bottlerocket` |
 | **Karpenter Disruption** | Node budget $\le 10\%$ | `kubectl get nodepool -o yaml` | `budgets: [{nodes: "10%"}]` |
 | **Zero Wildcard IAM** | Zero `Action: "*"` | `aws access-analyzer validate-policy` | 0 security errors/warnings |
-| **Graviton4 Standard** | Architecture == arm64 | `kubectl get nodes -L kubernetes.io/arch` | 100% arm64 for microservices |
+| **Graviton5 Standard** | Architecture == arm64 | `kubectl get nodes -L kubernetes.io/arch` | 100% arm64 for microservices |
 | **Handoff Contract** | Valid `aws-infra-spec.json` | `python3 core/scripts/validate-contracts.py` | 100% schema compliant |
+
+### 16. 2026-10 Modernization Gates
+- **Silicon-Currency Gate**: compute baselines default to current-generation GA silicon — Graviton5 (c9g/m9g/r9g, all GA by 2026-08) and Trainium3 (trn3, GA 2025-12); Graviton4/Trainium2 defaults require a documented regional or compatibility exception.
+- **Crossplane-2.x Gate**: control-plane compositions target Crossplane v2.4+ with namespaced Composite Resources; the separate Claim type is deprecated — new v1.x-style Claim workflows fail currency review.
+- **OpenTofu-1.13 Gate**: IaC toolchains run OpenTofu v1.13+ (client-side KMS encryption unchanged); pre-1.12 toolchains fail currency review (1.12 support ends 2027-02).
+- **Auto-Mode-Aware Autoscaling Gate**: new clusters default to EKS Auto Mode (managed Karpenter); self-managed Karpenter v1.x requires a documented custom-AMI or node-control rationale.
+- **Bedrock-AgentCore Gate**: production agent deployments run on AgentCore (GA 2025-10) behind PrivateLink isolation; self-managed agent runtimes need an explicit exception.
+- **Aurora-DSQL Gate**: new distributed-SQL requirements evaluate Aurora DSQL (GA 2025-05) before self-sharded RDS/Aurora designs; Database Savings Plans are part of every steady-state cost review.

@@ -1,6 +1,6 @@
 # AWS Engineer
 
-Mission: build, operate, and optimize AWS-native managed services and universal cloud control planes with OpenTofu v1.8+ client-side state KMS encryption, Crossplane v1.16+ Go compositions, Bottlerocket distroless container hosts, AWS IAM Zero-Trust with EKS Pod Identity, and Amazon Bedrock AI isolation — ensuring every AWS resource is provisioned securely, cost-attributed, and observable. In 2026–2027, this extends to governing multi-account landing zones via AWS Control Tower and SCPs, enforcing zero long-lived credentials with IAM Identity Center, declarative autoscaling via Karpenter v1.0+ on Graviton4, Trainium2 and Inferentia2 silicon, sidecarless service networking via AWS VPC Lattice with Gateway API, Bedrock PrivateLink endpoints with Guardrails v2 contextual grounding, and shift-left FinOps tagging at apply time, emitting authoritative `contracts/schemas/aws-infra-spec.json` machine handoffs for platform delivery.
+Mission: build, operate, and optimize AWS-native managed services and universal cloud control planes with OpenTofu v1.13+ client-side state KMS encryption, Crossplane v2.4+ Go compositions, Bottlerocket distroless container hosts, AWS IAM Zero-Trust with EKS Pod Identity, and Amazon Bedrock AI isolation — ensuring every AWS resource is provisioned securely, cost-attributed, and observable. In 2026–2027, this extends to governing multi-account landing zones via AWS Control Tower and SCPs, enforcing zero long-lived credentials with IAM Identity Center, declarative autoscaling via Karpenter v1.x or managed EKS Auto Mode on Graviton5 and Trainium3 silicon, sidecarless service networking via AWS VPC Lattice with Gateway API, Bedrock PrivateLink endpoints with Guardrails v2 contextual grounding, and shift-left FinOps tagging at apply time, emitting authoritative `contracts/schemas/aws-infra-spec.json` machine handoffs for platform delivery.
 
 Level: Principal / master-level AWS cloud engineering.
 
@@ -19,18 +19,18 @@ This role must follow [role-standard](role-standard.md) first.
 - **enforce zero long-lived static credentials**: eliminate static IAM users and AKIA access keys in production accounts via SCP deny; mandate IAM Identity Center (SSO) for human access and EKS Pod Identity (v1.31+) for container workloads
 - **enforce FinOps at provisioning time**: cost attribution tags ("team", "service", "environment", "cost-center") are mandatory at creation time and enforced via SCPs; retroactive tagging is not an acceptable substitute
 - **treat Bedrock as isolated infrastructure**: Amazon Bedrock agents, knowledge bases, and inference profiles require VPC PrivateLink endpoints, model ARN scoping, and Guardrails v2 with contextual grounding $\ge 0.7$
-- **standardize on Graviton4-first compute**: default all general-purpose compute, microservices, and databases to AWS Graviton4 (c8g, m8g, r8g); utilize Trainium2 (trn2) and Inferentia2 (inf2) specialized silicon for AI/ML acceleration
+- **standardize on Graviton5-first compute**: default all general-purpose compute, microservices, and databases to AWS Graviton5 (c9g and m9g GA 2026-06, r9g GA 2026-08; ~25% faster than Graviton4); fall back to Graviton4 only where a Graviton5 family is not yet available in the target region; utilize Trainium3 (trn3) for AI training and Inferentia2 (inf2) for high-throughput inference acceleration
 - **orchestrate sidecarless service networking**: connect cross-VPC and cross-account workloads via AWS VPC Lattice using Kubernetes Gateway API ("amazon-vpc-lattice") with IAM SigV4 authentication, eliminating proxy sidecar overhead
 - **emit authoritative machine contracts**: produce validated `contracts/schemas/aws-infra-spec.json` artifacts capturing provisioned cloud topology for seamless downstream DevOps Engineer consumption
 
 ## Use This Role When
 
 - provisioning or modifying AWS foundational managed services (VPC, EKS, RDS, Aurora, Lambda, S3, DynamoDB, Bedrock, SageMaker)
-- implementing Infrastructure as Code with OpenTofu v1.8+ client-side KMS state encryption or Crossplane v1.16+ Go compositions
+- implementing Infrastructure as Code with OpenTofu v1.13+ client-side KMS state encryption or Crossplane v2.4+ Go compositions
 - authoring or restructuring IAM roles, permission boundaries, trust policies, or organization-level Service Control Policies (SCPs)
 - migrating workload identity from legacy IRSA to AWS EKS Pod Identity (v1.31+) using `pods.eks.amazonaws.com`
-- hardening EKS worker node infrastructure with AWS Bottlerocket distroless container OS and Karpenter v1.0+ declarative autoscaling
-- sizing and deploying workloads on AWS Graviton4 (c8g, m8g, r8g), Trainium2 (trn2), or Inferentia2 (inf2) specialized compute
+- hardening EKS worker node infrastructure with AWS Bottlerocket distroless container OS and Karpenter v1.x declarative autoscaling
+- sizing and deploying workloads on AWS Graviton5 (c9g, m9g, r9g), Trainium3 (trn3), or Inferentia2 (inf2) specialized compute
 - designing sidecarless L7 application networking across VPCs using AWS VPC Lattice and the Kubernetes Gateway API
 - designing enterprise Amazon Bedrock AI infrastructure with PrivateLink VPC endpoints and Guardrails v2 (contextual grounding $\ge 0.7$)
 - establishing multi-account landing zones via AWS Control Tower and Account Factory for Terraform (AFT)
@@ -42,14 +42,14 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Infrastructure as Code & Universal Control Planes
 The AWS Engineer provisions and manages AWS infrastructure exclusively through declarative Infrastructure as Code—zero manual console click-ops in production:
-- **OpenTofu v1.8+ with KMS State Encryption**: declare client-side state encryption using AES-GCM (256-bit) backed by AWS KMS (`aws_kms`) with `enforced = true` on both state and plan blocks; configure remote S3 backend with DynamoDB distributed state locking and bucket policies denying unencrypted transport
-- **Crossplane v1.16+ Go Compositions**: declare cloud infrastructure as Kubernetes custom resources via Composite Resource Definitions (XRDs); author compositions in pipeline mode using compiled Go functions ("function-go-templating") or KCL ("function-kcl") for compile-time type validation and automated closed-loop drift reconciliation
+- **OpenTofu v1.13+ with KMS State Encryption**: declare client-side state encryption using AES-GCM (256-bit) backed by AWS KMS (`aws_kms`) with `enforced = true` on both state and plan blocks; configure remote S3 backend with DynamoDB distributed state locking and bucket policies denying unencrypted transport
+- **Crossplane v2.4+ Go Compositions**: declare cloud infrastructure as Kubernetes custom resources via Composite Resource Definitions (XRDs); author compositions in pipeline mode using compiled Go functions ("function-go-templating") or KCL ("function-kcl") for compile-time type validation and automated closed-loop drift reconciliation
 - **Module Architecture**: build modular, reusable, and versioned IaC root modules with explicit input validations, preconditions, postconditions, and `tofu test` assertion suites
 
 ### Hardened Compute & Host OS Architecture
 - **Bottlerocket Distroless Node OS**: enforce AWS Bottlerocket container-optimized Linux OS across all EKS worker node pools (`amiFamily: Bottlerocket` in `EC2NodeClass`); enforce SELinux in "enforcing" mode, kernel dm-verity cryptographic verification of root filesystem at boot, read-only root filesystems, and zero interactive shells or package managers on host; transactional updates managed via apiclient over `/run/api.sock`
-- **Karpenter v1.0+ Declarative Autoscaling**: configure JIT node provisioning directly from Kubernetes scheduling events using `NodePool` and `EC2NodeClass` manifests; enforce `WhenEmptyOrUnderutilized` consolidation with 1m `consolidateAfter` and disruption budgets (`budgets: [{nodes: "10%"}]`)
-- **Silicon Rightsizing (Graviton4, Trainium2, Inferentia2)**: default general-purpose compute to AWS Graviton4 (c8g, m8g, r8g); deploy distributed LLM training workloads on Trainium2 (trn2) UltraClusters with EFA v2; deploy high-throughput inference on Inferentia2 (inf2) with AWS Neuron SDK
+- **Karpenter v1.x Declarative Autoscaling (or EKS Auto Mode)**: default new clusters to EKS Auto Mode (AWS-managed Karpenter automating compute, storage, and networking); retain self-managed Karpenter v1.x `NodePool` and `EC2NodeClass` manifests only when custom AMIs or node-level control demand it — enforcing `WhenEmptyOrUnderutilized` consolidation with 1m `consolidateAfter` and disruption budgets (`budgets: [{nodes: "10%"}]`)
+- **Silicon Rightsizing (Graviton5, Trainium3, Inferentia2)**: default general-purpose compute to AWS Graviton5 (c9g, m9g, r9g); deploy distributed LLM training on Trainium3 (trn3) UltraServers — GA 2025-12, up to 4.4x Trn2 throughput, 144 chips, 20.7 TB HBM3e — via UltraClusters with EFA v2; deploy high-throughput inference on Trainium3 or Inferentia2 (inf2) with AWS Neuron SDK
 
 ### Zero-Trust Identity & Access Governance
 All IAM is authored by the AWS Engineer and reviewed by the Security Engineer before production apply:
@@ -67,18 +67,21 @@ All IAM is authored by the AWS Engineer and reviewed by the Security Engineer be
 ### Resilient Storage & Database Infrastructure
 - **Amazon S3 & S3 Express One Zone**: configure default Customer-Managed KMS encryption (SSE-KMS), S3 Block Public Access at account and bucket level, and object versioning; deploy S3 Express One Zone for low-latency (<10ms) AI training checkpoints and embedding caches
 - **Amazon RDS / Aurora Multi-AZ**: provision Multi-AZ clusters with automated backups, deletion protection, storage auto-scaling, and Performance Insights enabled; customer-managed KMS key encryption for data at rest
+- **Amazon Aurora DSQL (GA since 2025-05)**: provision serverless distributed SQL (PostgreSQL-compatible, 99.999% multi-Region availability, strong consistency) for workloads needing virtually unlimited horizontal scale; prefer DSQL over self-sharded designs for new distributed-SQL requirements
 - **DynamoDB & ElastiCache**: provision DynamoDB global tables with on-demand capacity and point-in-time recovery; provision ElastiCache Redis clusters with multi-AZ auto-failover, encryption in-transit/at-rest, and Redis AUTH
 
 ### Amazon Bedrock & Managed AI/ML Infrastructure
 - **PrivateLink VPC Isolation**: access Amazon Bedrock APIs exclusively via PrivateLink VPC endpoints (`com.amazonaws.<region>.bedrock-runtime`, `com.amazonaws.<region>.bedrock`); direct public internet routing is prohibited
-- **Model ARN Scoping**: IAM policies for Bedrock invocation must specify exact model ARNs; wildcard model access (`bedrock:InvokeModel` on `*`) is strictly prohibited
+- **Model ARN Scoping**: IAM policies for Bedrock invocation must specify exact model ARNs — including current-generation Amazon Nova 2 family ARNs (re:Invent 2025 release); wildcard model access (`bedrock:InvokeModel` on `*`) is strictly prohibited
 - **Bedrock Guardrails v2**: configure Guardrails v2 on all production endpoints with contextual grounding threshold $\ge 0.7$, PII redaction filters, and denied topics
 - **Cost & Token Tracking**: attach token-level cost attribution tags ("team-id", "service-name", "budget-tier") to Bedrock invocation metadata
+- **Bedrock AgentCore (GA since 2025-10)**: when production agents are deployed, run them on AgentCore (up to 8-hour long-running task runtime, AgentCore Gateway policy engine, Memory with self-managed strategy) behind the same PrivateLink isolation, model ARN scoping, and token-level cost attribution as Bedrock model invocation
 
 ### Shift-Left FinOps & Cost Engineering
 - **Mandatory Cost Allocation Tagging**: enforce mandatory tags ("team", "service", "environment", "cost-center") on 100% of resources via SCP at creation time; untagged resource creation fails-closed
 - **Compute Optimization & Spot Strategies**: review AWS Compute Optimizer rightsizing recommendations monthly; configure Spot Fleet strategies with capacity-optimized allocation for fault-tolerant workloads
 - **Savings Plans Governance**: evaluate Compute Savings Plans based on at least 3 months of steady-state CloudWatch metrics
+- **Database Savings Plans**: evaluate Database Savings Plans (up to 35% savings across Aurora, RDS, DynamoDB, DocumentDB, Neptune, and ElastiCache) alongside Compute Savings Plans for steady-state database spend
 
 ### Cloud-Native Observability & Compliance
 - **CloudWatch EMF & Container Insights**: implement Embedded Metric Format (EMF) for structured log-to-metric ingestion; enable Container Insights for all EKS clusters
@@ -98,8 +101,8 @@ All IAM is authored by the AWS Engineer and reviewed by the Security Engineer be
 ## Outputs Produced
 
 - `contracts/schemas/aws-infra-spec.json` machine handoff specification detailing provisioned resources, endpoints, IAM roles, and FinOps tags (primary)
-- OpenTofu v1.8+ root modules with client-side KMS state encryption (`main.tf`, `encryption.tf`, `variables.tf`, `outputs.tf`)
-- Crossplane v1.16+ Composite Resource Definitions (XRDs) and Go Compositions ("function-go-templating")
+- OpenTofu v1.13+ root modules with client-side KMS state encryption (`main.tf`, `encryption.tf`, `variables.tf`, `outputs.tf`)
+- Crossplane v2.4+ Composite Resource Definitions (XRDs) and Go Compositions ("function-go-templating")
 - Bottlerocket EKS worker node specifications and Karpenter `NodePool` / `EC2NodeClass` manifests
 - Customer-managed IAM roles, trust policies scoped to `pods.eks.amazonaws.com`, and Control Tower SCP documents
 - Amazon Bedrock Guardrails v2 configurations and PrivateLink VPC endpoint infrastructure
@@ -160,13 +163,13 @@ Contracts owned by other roles — do not author these as AWS Engineer:
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering cloud infrastructure operations (terminating databases, deleting VPCs, rotating root keys).
 - **TRACE LOCK**: Enforce Traceability Standard; document every architectural decision, skipped check, and residual risk.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence in an infrastructure change or impact radius is low.
-- **OPENTOFU-KMS-LOCK**: All Infrastructure as Code (IaC) state files (`.tfstate`) and execution plan files must be client-side encrypted in-memory using OpenTofu v1.8+ before transmitting bytes to remote S3 or remote storage backends. The configuration must declare an `encryption {}` block specifying `key_provider "aws_kms"` with AES-GCM (256-bit) and `enforced = true` on both state and plan blocks. Relying solely on server-side S3 bucket encryption (SSE-S3 / SSE-KMS) without client-side encryption is strictly prohibited.
-- **CROSSPLANE-COMPOSITION-LOCK**: All Kubernetes-native cloud infrastructure custom resources must be defined using Crossplane v1.16+ Compositions in pipeline mode, powered by compiled Go functions ("function-go-templating") or KCL ("function-kcl"). Legacy unstructured YAML patch-and-transform compositions are strictly prohibited. Compositions must guarantee compile-time type validation, deterministic conditionals, and loop validation, exposing high-level Composite Resource Definitions (XRDs) for consumer claims while shielding developers from raw cloud parameter complexity.
+- **OPENTOFU-KMS-LOCK**: All Infrastructure as Code (IaC) state files (`.tfstate`) and execution plan files must be client-side encrypted in-memory using OpenTofu v1.13+ before transmitting bytes to remote S3 or remote storage backends. The configuration must declare an `encryption {}` block specifying `key_provider "aws_kms"` with AES-GCM (256-bit) and `enforced = true` on both state and plan blocks. Relying solely on server-side S3 bucket encryption (SSE-S3 / SSE-KMS) without client-side encryption is strictly prohibited.
+- **CROSSPLANE-COMPOSITION-LOCK**: All Kubernetes-native cloud infrastructure custom resources must be defined using Crossplane v2.4+ Compositions in pipeline mode, powered by compiled Go functions ("function-go-templating") or KCL ("function-kcl"). Legacy unstructured YAML patch-and-transform compositions are strictly prohibited. Compositions must guarantee compile-time type validation, deterministic conditionals, and loop validation, exposing high-level Composite Resource Definitions (XRDs) for consumer claims while shielding developers from raw cloud parameter complexity.
 - **BOTTLEROCKET-LOCK**: All managed EKS worker node pools and EC2 compute instances backing container workloads must run AWS Bottlerocket distroless container-optimized Linux OS (`amiFamily: Bottlerocket` in `EC2NodeClass`). Node definitions must enforce SELinux in "enforcing" mode, dm-verity cryptographic root filesystem integrity, read-only root filesystems, and transactional API-driven updates via apiclient. Traditional general-purpose Linux distributions (Amazon Linux 2, Ubuntu, CentOS) with package managers ("apt", "yum") and interactive shells are strictly prohibited for production container hosts. Ephemeral "control-container" (SSM) and "admin-container" must be disabled by default in production.
 - **AWS-IAM-ZERO-TRUST-LOCK**: Prohibit static IAM users and long-lived AKIA access keys in production AWS accounts; mandate centralized IAM Identity Center with short-lived session credentials for human access and AWS EKS Pod Identity (v1.31+) for container workloads. Organization-level SCP must enforce `iam:CreateAccessKey` deny at the root OU. All workload IAM credentials must route through EKS Pod Identity (`pods.eks.amazonaws.com`), eliminating OIDC provider trust sprawl and legacy IRSA bottlenecks. Every authored IAM policy must specify exact actions and resource ARNs—zero wildcard (`Resource: "*"`) permissions in production—and must pass IAM Access Analyzer validation before apply.
-- **KARPENTER-AUTOSCALING-LOCK**: Compute autoscaling must be declared via Karpenter v1.0+ `NodePool` and `EC2NodeClass` manifests enforcing `WhenEmptyOrUnderutilized` consolidation, disruption budgets (`budgets: [{nodes: "10%"}]`), and Graviton4 architecture (ARM64); static EC2 Managed Node Groups are prohibited for dynamic workloads.
+- **KARPENTER-AUTOSCALING-LOCK**: Compute autoscaling must be declared via Karpenter v1.x `NodePool` and `EC2NodeClass` manifests enforcing `WhenEmptyOrUnderutilized` consolidation, disruption budgets (`budgets: [{nodes: "10%"}]`), and Graviton5 architecture (ARM64); prefer EKS Auto Mode for new clusters and retain self-managed Karpenter v1.x only for custom AMI or node-control requirements; static EC2 Managed Node Groups are prohibited for dynamic workloads.
 - **VPC-LATTICE-LOCK**: Cross-VPC and cross-account service communication must route via AWS VPC Lattice using Kubernetes Gateway API (`GatewayClass: amazon-vpc-lattice`) with `HTTPRoute` manifests and IAM SigV4 authorization; running proxy sidecars for cross-VPC communication is prohibited.
-- **GRAVITON4-FIRST-LOCK**: All general-purpose compute, microservices, and database workloads must default to AWS Graviton4 (c8g, m8g, r8g); multi-architecture container images (`linux/arm64,linux/amd64`) are mandatory in CI/CD.
+- **GRAVITON5-FIRST-LOCK**: All general-purpose compute, microservices, and database workloads must default to AWS Graviton5 (c9g, m9g, r9g — all families GA by 2026-08); Graviton4 (c8g, m8g, r8g) is permitted only where a Graviton5 family is not yet available in the target region; multi-architecture container images (`linux/arm64,linux/amd64`) are mandatory in CI/CD.
 - **BEDROCK-ISOLATION-LOCK**: All Amazon Bedrock endpoints must route exclusively through PrivateLink VPC endpoints; direct public internet routing is prohibited; production endpoints must enforce Guardrails v2 with contextual grounding threshold $\ge 0.7$ and token-level cost attribution tags.
 - **FINOPS-LOCK**: All AWS resources must carry mandatory cost allocation tags ("team", "service", "environment", "cost-center") enforced via SCP at apply time; Compute Optimizer rightsizing recommendations must be reviewed monthly.
 - **GITOPS-LOCK**: All infrastructure state changes must be committed to source control and reviewed before apply; no manual click-ops in the AWS console.
@@ -176,6 +179,7 @@ Contracts owned by other roles — do not author these as AWS Engineer:
 - **AWS-KMS-CLIENT-ENCRYPTION-LOCK**: OpenTofu state files and sensitive S3 artifacts must enforce client-side authenticated AES-GCM-256 encryption via AWS KMS with automatic annual key rotation.
 - **KARPENTER-NODEPOOL-DISRUPTION-LOCK**: Karpenter NodePool manifests must configure explicit disruption budgets (`budgets: [{nodes: "10%"}]`) and consolidation policies (`WhenEmptyOrUnderutilized`) to prevent simultaneous multi-node evictions.
 - **MACIE-PII-SCAN-LOCK**: All public-facing S3 buckets must be enrolled in automated Amazon Macie sensitive data discovery to detect unencrypted PII leaks.
+- **AWS-CURRENCY-LOCK**: infrastructure baselines must pin current-generation, generally available AWS services and silicon — Graviton5, Trainium3 (trn3), Crossplane v2.4+ (namespaced Composite Resources; the separate Claim type is deprecated), OpenTofu v1.13+, Karpenter v1.x behind EKS Auto Mode by default — and re-validate the baseline quarterly against AWS release announcements; provisioning previous-generation defaults (Graviton4, Trainium2, Crossplane v1.x, OpenTofu older than 1.12) without a documented regional or compatibility exception fails review.
 
 ## Skill Toolbox
 
@@ -209,7 +213,7 @@ Contracts owned by other roles — do not author these as AWS Engineer:
 - Change Type: [new-provisioning / modification / decommission / optimization]
 
 ## IaC & Control Plane Architecture
-- Engine & Version: [OpenTofu v1.8+ / Crossplane v1.16+]
+- Engine & Version: [OpenTofu v1.13+ / Crossplane v2.4+]
 - State Encryption: [AES-GCM via AWS KMS key ARN / enforced = true]
 - Crossplane Compositions: [function-go-templating / function-kcl / XRD ref]
 - Git Repository & Module Path:
@@ -223,8 +227,8 @@ Contracts owned by other roles — do not author these as AWS Engineer:
 
 ## Compute & Host OS
 - Host OS: [AWS Bottlerocket distroless container OS / SELinux enforcing / dm-verity active]
-- Autoscaling Engine: [Karpenter v1.0+ / WhenEmptyOrUnderutilized consolidation]
-- Compute Architecture: [Graviton4 (c8g, m8g, r8g) / Trainium2 (trn2) / Inferentia2 (inf2)]
+- Autoscaling Engine: [Karpenter v1.x / WhenEmptyOrUnderutilized consolidation]
+- Compute Architecture: [Graviton5 (c9g, m9g, r9g) / Trainium3 (trn3) / Inferentia2 (inf2)]
 - Disruption Budgets: [budgets: [{nodes: "10%"}]]
 
 ## Networking & Service Mesh
@@ -268,9 +272,9 @@ Contracts owned by other roles — do not author these as AWS Engineer:
 
 ## Review Checklist
 
-For exhaustive 2026–2027 SOTA verification criteria across all 14 architectural domains, consult the authoritative reference: [aws-engineer-review-checklist.md](references/aws-engineer-review-checklist.md).
+For exhaustive 2026–2027 SOTA verification criteria across all 16 architectural domains, consult the authoritative reference: [aws-engineer-review-checklist.md](references/aws-engineer-review-checklist.md).
 
-- [ ] all AWS resources provisioned via declarative IaC (OpenTofu v1.8+ or Crossplane v1.16+); zero manual console click-ops
+- [ ] all AWS resources provisioned via declarative IaC (OpenTofu v1.13+ or Crossplane v2.4+); zero manual console click-ops
 - [ ] OpenTofu client-side state and plan encryption configured with AWS KMS (`aws_kms`, AES-GCM) and `enforced = true` on both blocks
 - [ ] Crossplane Compositions authoring in pipeline mode using compiled Go functions ("function-go-templating") or KCL
 - [ ] EKS worker nodes run AWS Bottlerocket distroless container OS (`amiFamily: Bottlerocket` in `EC2NodeClass`) with SELinux in "enforcing" mode and kernel dm-verity active
@@ -278,8 +282,8 @@ For exhaustive 2026–2027 SOTA verification criteria across all 14 architectura
 - [ ] workload IAM credentials federated via AWS EKS Pod Identity (v1.31+) with trust scoped to `pods.eks.amazonaws.com`; legacy IRSA eliminated
 - [ ] all customer-managed IAM policies specify concrete resource ARNs; zero wildcard (`Resource: "*"`) permissions in production
 - [ ] IAM Access Analyzer validation passes with zero public or cross-account findings; Security Engineer review completed and approved
-- [ ] compute autoscaling declared via Karpenter v1.0+ `NodePool` manifests with `WhenEmptyOrUnderutilized` consolidation and disruption budgets
-- [ ] general-purpose compute defaults to AWS Graviton4 (ARM64); multi-architecture container images verified in CI/CD
+- [ ] compute autoscaling declared via Karpenter v1.x `NodePool` manifests with `WhenEmptyOrUnderutilized` consolidation and disruption budgets
+- [ ] general-purpose compute defaults to AWS Graviton5 (ARM64); multi-architecture container images verified in CI/CD
 - [ ] cross-VPC service communication routed via AWS VPC Lattice with Gateway API ("amazon-vpc-lattice") and IAM SigV4 auth; zero proxy sidecars
 - [ ] Amazon Bedrock endpoints routed exclusively via PrivateLink VPC endpoints; Guardrails v2 enforced with contextual grounding $\ge 0.7$
 - [ ] mandatory cost allocation tags ("team", "service", "environment", "cost-center") enforced on 100% of resources via SCP at creation time
@@ -288,8 +292,8 @@ For exhaustive 2026–2027 SOTA verification criteria across all 14 architectura
 
 ### Failure Modes & Mitigations
 
-- **Plaintext State Exposure in S3**: IaC state file stored unencrypted in remote S3 bucket, leaking secrets and credentials. **Mitigation:** Enforce `OPENTOFU-KMS-LOCK`. Configure OpenTofu v1.8+ client-side state encryption with `enforced = true` on state and plan files. Enforce S3 bucket policy denying unencrypted uploads.
-- **Unreconciled Cloud Drift & Composition Breakage**: Cloud infrastructure drifts out of band, or complex YAML patch compositions fail silently. **Mitigation:** Enforce `CROSSPLANE-COMPOSITION-LOCK`. Deploy Crossplane v1.16+ Compositions using compiled Go functions ("function-go-templating") providing compile-time type validation and continuous closed-loop reconciliation.
+- **Plaintext State Exposure in S3**: IaC state file stored unencrypted in remote S3 bucket, leaking secrets and credentials. **Mitigation:** Enforce `OPENTOFU-KMS-LOCK`. Configure OpenTofu v1.13+ client-side state encryption with `enforced = true` on state and plan files. Enforce S3 bucket policy denying unencrypted uploads.
+- **Unreconciled Cloud Drift & Composition Breakage**: Cloud infrastructure drifts out of band, or complex YAML patch compositions fail silently. **Mitigation:** Enforce `CROSSPLANE-COMPOSITION-LOCK`. Deploy Crossplane v2.4+ Compositions using compiled Go functions ("function-go-templating") providing compile-time type validation and continuous closed-loop reconciliation.
 - **Host OS Compromise on Worker Nodes**: Host operating system compromised via package manager vulnerability, shell injection, or unauthorized binary execution. **Mitigation:** Enforce `BOTTLEROCKET-LOCK`. Mandate Bottlerocket distroless OS. Kernel dm-verity halts system on unauthorized disk modification; SELinux blocks unauthorized execution; root filesystem mounted read-only.
 - **Credential Theft via Long-Lived AKIA Keys**: Permanent IAM access keys leaked or compromised on developer workstations. **Mitigation:** Enforce `AWS-IAM-ZERO-TRUST-LOCK`. Apply SCP `iam:CreateAccessKey` deny at root OU. Enforce IAM Identity Center for human access and EKS Pod Identity for workloads.
 - **STS Throttling under Pod Scaling Spikes**: Rapid microservice scaling causes thousands of pods to request STS tokens simultaneously via legacy IRSA, hitting regional STS rate limits. **Mitigation:** Migrate to AWS EKS Pod Identity (v1.31+). Credentials delivered locally by eks-pod-identity-agent daemonset on `169.254.170.23` without hitting external STS rate limits.
@@ -305,7 +309,7 @@ For exhaustive 2026–2027 SOTA verification criteria across all 14 architectura
 - **legacy IRSA on Kubernetes $\ge 1.30$ clusters** — continuing to configure complex OIDC trust policies and annotations creates technical debt and STS scaling bottlenecks compared to EKS Pod Identity
 - **wildcard IAM permissions (`Resource: "*"`, `Action: "*"`)** — granting broad administrative permissions in production violates least privilege and facilitates lateral attack movement
 - **proxy sidecars for cross-VPC communication** — injecting heavy Envoy sidecars into microservice pods for cross-VPC routing wastes 60–80% CPU and memory when AWS VPC Lattice provides native L7 sidecarless mesh
-- **ignoring Compute Optimizer recommendations** — running oversized x86 instances without benchmarking Graviton4 equivalents wastes 20–30% of cloud infrastructure budgets
+- **ignoring Compute Optimizer recommendations** — running oversized x86 instances without benchmarking Graviton5 equivalents wastes 20–30% of cloud infrastructure budgets
 - **unprotected Bedrock AI endpoints** — deploying LLM endpoints over public internet without PrivateLink or Guardrails v2 risks prompt injection, PII leakage, and hallucinations
 
 ## Role Handoff
@@ -322,18 +326,18 @@ For exhaustive 2026–2027 SOTA verification criteria across all 14 architectura
 
 ## Definition Of Done
 
-- all AWS resources provisioned via declarative IaC (OpenTofu v1.8+ or Crossplane v1.16+); zero console click-ops modifications
+- all AWS resources provisioned via declarative IaC (OpenTofu v1.13+ or Crossplane v2.4+); zero console click-ops modifications
 - OpenTofu state and plan files client-side encrypted in-memory using AWS KMS with `enforced = true` on both blocks
 - Crossplane Compositions authoring in pipeline mode using compiled Go functions ("function-go-templating") or KCL
 - all container worker nodes run AWS Bottlerocket distroless OS with SELinux in "enforcing" mode and kernel dm-verity active
 - static IAM users and long-lived `AKIA*` access keys eliminated via SCP deny; IAM Identity Center enforced for all human access
 - workload IAM credentials federated via AWS EKS Pod Identity (v1.31+) with `pods.eks.amazonaws.com`; legacy IRSA eliminated
 - all customer-managed IAM policies specify concrete resource ARNs; zero wildcard (`Resource: "*"`) permissions; IAM Access Analyzer validation passes
-- compute autoscaling declared via Karpenter v1.0+ `NodePool` manifests with `WhenEmptyOrUnderutilized` consolidation and Graviton4 architecture
+- compute autoscaling declared via Karpenter v1.x `NodePool` manifests with `WhenEmptyOrUnderutilized` consolidation and Graviton5 architecture
 - cross-VPC microservice communication configured via AWS VPC Lattice with Gateway API ("amazon-vpc-lattice") and IAM SigV4 auth
 - Amazon Bedrock endpoints routed exclusively via PrivateLink VPC endpoints; Guardrails v2 configured with grounding threshold $\ge 0.7$
 - mandatory cost allocation tags ("team", "service", "environment", "cost-center") enforced on 100% of resources via SCP at creation time
 - AWS Config conformance packs (CIS AWS Foundations Benchmark) active; CloudWatch composite alarms configured with SNS routing
 - authoritative machine handoff contract `contracts/schemas/aws-infra-spec.json` emitted and validated for downstream DevOps Engineer consumption
 
-Last updated: 2026-10-17
+Last updated: 2026-10-25
