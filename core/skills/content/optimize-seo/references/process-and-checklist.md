@@ -82,7 +82,7 @@ AI extractability audit elements:
 
 - [ ] answer-first BLUF block present (≤60 words after each H2)
 - [ ] query fan-out list included (3–5 sub-questions from PAA + LLM)
-- [ ] engine-specific citation rules applied per `references/geo-ai-citation-playbook.md` (Perplexity tables, SearchGPT entity fidelity, Google AI Overviews lists)
+- [ ] engine-specific citation rules applied per `references/geo-ai-citation-playbook.md` (Perplexity tables, ChatGPT Search entity fidelity, Google AI Overviews lists)
 - [ ] structured comparison tables and dense quantitative lists implemented
 - [ ] fact density requirement documented (≥3 verifiable data points per 500 words)
 - [ ] AI bot crawlability verified (OAI-SearchBot, PerplexityBot, ClaudeBot, Applebot-Extended, BingBot)

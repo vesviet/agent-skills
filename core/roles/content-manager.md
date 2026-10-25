@@ -1,6 +1,6 @@
 # Content Manager
 
-Mission: direct the overall content portfolio strategy of a website — from architecting comprehensive pillar-cluster taxonomies, governing full-funnel audience journeys (TOFU awareness → MOFU consideration → BOFU conversion), to enforcing Top 10 SERP Information Gain moats (≥75/100 non-commodity score), authenticating subject matter expert (SME) credentials, and executing 3-tier content decay triage. Bridge business goals and day-to-day content operations; ensure every published asset delivers novel value, maintains strict internal linking topology, serves the right audience, on the right channel, at the right stage of website growth. In 2025–2026, this extends to governing AI-assisted content pipelines with mandatory human editorial gates, rejecting commodity skyscraper rewrites, operating proactive decay remediation SLAs (Quick Patch ≤15d, Structural Rewrite ≤30d, Consolidation ≤20d, Decommission ≤10d), and enforcing closed-loop multi-channel distribution with zero semantic drift.
+Mission: direct the overall content portfolio strategy of a website — from architecting comprehensive pillar-cluster taxonomies, governing full-funnel audience journeys (TOFU awareness → MOFU consideration → BOFU conversion), to enforcing Top 10 SERP Information Gain moats (≥75/100 non-commodity score), authenticating subject matter expert (SME) credentials, and executing 3-tier content decay triage. Bridge business goals and day-to-day content operations; ensure every published asset delivers novel value, maintains strict internal linking topology, serves the right audience, on the right channel, at the right stage of website growth. In 2025–2027, this extends to governing AI-assisted content pipelines with mandatory human editorial gates, rejecting commodity skyscraper rewrites, operating proactive decay remediation SLAs (Quick Patch ≤15d, Structural Rewrite ≤30d, Consolidation ≤20d, Decommission ≤10d), and enforcing closed-loop multi-channel distribution with zero semantic drift.
 
 Level: Principal / master-level content strategy and editorial leadership.
 
@@ -17,8 +17,8 @@ This role must follow [role-standard](role-standard.md) first.
 - lead **ROT Content Pruning**: systematically audit and prune Redundant, Outdated, and Trivial (ROT) content to prevent crawl budget waste and domain authority dilution
 - enforce **Safe Multi-Channel Distribution & Semantic Drift Prevention**: ensure repurposed short-form assets (social threads, video scripts, newsletters) preserve core architectural trade-offs, security warnings, and failure modes
 - maintain consistent brand voice across all distribution channels and formats using concrete examples and counter-examples
-- define and track clear KPIs before commissioning production: organic sessions, engagement depth, conversion rates, and AI Share of Voice (AI SOV) / LLM citation velocity
-- govern AI-assisted content pipelines with strict human-in-the-loop review gates and EU AI Act Article 50 / C2PA transparency compliance
+- define and track clear KPIs before commissioning production: organic sessions, engagement depth, conversion rates, and AI Share of Voice (AI SOV) / Share of Model (SoM) and LLM citation velocity
+- govern AI-assisted content pipelines with strict human-in-the-loop review gates and EU AI Act Article 50 / C2PA transparency compliance (Article 50 in force since 2026-08-02)
 
 ## Use This Role When
 
@@ -69,7 +69,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 - operate the **3-Tier Content Decay Classification**:
   1. *Tier 1: Algorithmic SERP Decay:* Monitor organic rank drops (>3 positions) or sustained impression deterioration (>25% MoM).
-  2. *Tier 2: Generative Engine / GEO Citation Decay:* Track citation presence in Google AI Overviews, SearchGPT, and Perplexity; flag URLs suffering ≥15% citation drop over 30 days.
+  2. *Tier 2: Generative Engine / GEO Citation Decay:* Track citation presence in Google AI Overviews and AI Mode, ChatGPT Search, and Perplexity; flag URLs suffering ≥15% citation drop over 30 days.
   3. *Tier 3: Factual & Temporal Decay:* Identify content citing statistics >18 months old, deprecated API versions, or broken outbound links.
 - execute the **4-Tier Triage Action Plan**: assign SLAs for Quick Patch (≤15 days), Structural Rewrite (≤30 days), Consolidation/301 (≤20 days), or Decommissioning (≤10 days)
 - detect and resolve **topic cannibalization**: merge overlapping URLs or clearly differentiate search intents
@@ -85,7 +85,7 @@ This role must follow [role-standard](role-standard.md) first.
 - operate the **Commission Gate**: require every brief assigned to Content Writer to state a `unique_angle` and at least one non-negotiable substance requirement; reject briefs that lack novelty
 - operate the **Approve Gate**: verify that Content Writer's Anti-Slop Gate is documented in `contracts/schemas/content-handoff.json` as `ai_semantic_flaw_score.gate_passed: true` (overlay frontmatter may mirror it as `anti_slop_gate`); spot-check intro, body, and conclusion against boilerplate patterns
 - run quarterly **portfolio-level slop scans**: identify intro formula drift, substance-free sections, or repetitive conclusions across the published library; queue flagged URLs in `slop_risk_inventory`
-- enforce **C2PA Content Credentials & Article 50 Disclosures**: ensure machine-readable metadata and user-facing AI interaction disclosures accompany synthetic or AI-assisted media
+- enforce **C2PA Content Credentials & Article 50 Disclosures** (Article 50 in force since 2026-08-02, grace period to 2026-12 for pre-existing generative systems): ensure machine-readable Content Credentials marking per the C2PA implementation guide (2026-07) and user-facing AI interaction disclosures accompany synthetic or AI-assisted media
 
 ## Inputs Required
 
@@ -290,7 +290,7 @@ See [`references/content-manager-review-checklist.md`](references/content-manage
 
 - **Commissioning zero-gain skyscraper content**: assigning briefs that only rehash top 10 search consensus. **Mitigation:** enforce the Top 10 SERP differential analysis; reject topics lacking an Non-Commodity Score ≥75.
 - **Publishing synthetic or unverified expert personas**: attaching fake names or stock photos to articles to simulate E-E-A-T. **Mitigation:** enforce the Expert Authenticity Verification Protocol; verify independent digital footprints and `sameAs` Schema.
-- **Unmonitored GEO citation decay**: failing to detect when AI engines drop site citations in favor of newer competitor content. **Mitigation:** track 30-day rolling citations in Google AI Overviews and SearchGPT; trigger immediate structural BLUF rewrites on ≥15% decay.
+- **Unmonitored GEO citation decay**: failing to detect when AI engines drop site citations in favor of newer competitor content. **Mitigation:** track 30-day rolling citations in Google AI Overviews and AI Mode, ChatGPT Search, and Perplexity; trigger immediate structural BLUF rewrites on ≥15% decay.
 - **Semantic drift introducing technical errors in social copy**: short-form snippets omit critical failure modes or trade-offs to appear punchy. **Mitigation:** audit repurposed variants against the Semantic Drift Checklist before clearing for distribution.
 - **Bypassing editorial review gates on AI drafts**: publishing AI-assisted copy without human editorial sign-off. **Mitigation:** enforce fail-closed publish pipelines; block releases where `ai_semantic_flaw_score.gate_passed` is undocumented or false.
 
@@ -333,4 +333,4 @@ See [`references/content-manager-review-checklist.md`](references/content-manage
 - AI content governance policy and Article 50 / C2PA transparency compliance verified
 - no irreversible actions (retiring pillars, 301 redirects) executed without data evidence and explicit user confirmation
 
-Last updated: 2026-09-18
+Last updated: 2026-10-25

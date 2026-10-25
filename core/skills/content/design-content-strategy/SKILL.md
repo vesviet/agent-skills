@@ -1,6 +1,7 @@
 ---
 name: design-content-strategy
 description: Design holistic content portfolio strategies, pillar-and-cluster architectures, topical authority models, audience funnel mappings (TOFU/MOFU/BOFU), editorial calendars, Top 10 SERP Information Gain gating (>=75/100 non-commodity score), 3-tier content decay triage, and safe multi-channel distribution loops. Use when establishing site content architecture, planning editorial calendars, structuring topic clusters, auditing portfolio decay, or defining omnichannel content flywheels.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
@@ -40,7 +41,7 @@ Use this skill with the **Content Manager** role to architect, govern, and optim
 ### 3-Tier Content Decay Monitoring & Lifecycle SLAs
 - continuously monitor content health across 3 distinct decay tiers:
   - *Tier 1: Algorithmic SERP Decay*: >3 position loss or >25% MoM organic traffic decline
-  - *Tier 2: Generative GEO Citation Decay*: ≥15% citation frequency drop in AI Overviews, SearchGPT, or Perplexity over 30 days
+  - *Tier 2: Generative GEO Citation Decay*: ≥15% citation frequency drop in AI Overviews, AI Mode, ChatGPT, or Perplexity over 30 days
   - *Tier 3: Factual & Temporal Decay*: statistics >18 months old, deprecated API versions, broken outbound links
 - assign and enforce remediation SLAs: Quick Patch (≤15 days), Structural Rewrite (≤30 days), Consolidation/301 (≤20 days), Decommission/410 (≤10 days)
 
@@ -93,10 +94,10 @@ When completing portfolio strategy planning, lifecycle audits, or editorial cale
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI01 Goal Hijack**: ensure content strategy aligns with authentic organizational mission; reject competitor-driven scope drift.
-- **ASI03 Identity & Confidentiality Abuse**: protect internal roadmap secrets, unreleased telemetry, and customer metrics in strategy plans.
-- **ASI07 Inter-Agent Communication**: emit machine-readable contracts (`content-audit-report.json`, `seo-weekly-board.json`) for seamless handoffs to Writers and SEO Analysts.
-- **ASI09 Trust Exploitation**: enforce authentic practitioner SME bylines and verifiable source citations; strictly prohibit synthetic author personas.
+- **ASI01 Agent Goal Hijack**: ensure content strategy aligns with authentic organizational mission; reject competitor-driven scope drift.
+- **ASI03 Identity & Privilege Abuse**: protect internal roadmap secrets, unreleased telemetry, and customer metrics in strategy plans.
+- **ASI07 Insecure Inter-Agent Communication**: emit machine-readable contracts (`content-audit-report.json`, `seo-weekly-board.json`) for seamless handoffs to Writers and SEO Analysts.
+- **ASI09 Human-Agent Trust Exploitation**: enforce authentic practitioner SME bylines and verifiable source citations; strictly prohibit synthetic author personas.
 
 ## Related Skills
 

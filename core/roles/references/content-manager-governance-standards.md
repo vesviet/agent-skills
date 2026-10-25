@@ -6,7 +6,7 @@ This reference document defines the operational governance standards for [`conte
 
 ## 1. Top 10 SERP Information Gain Differential Matrix
 
-Modern generative search engines (Google AI Overviews, SearchGPT, Perplexity) reward primary sources and discard commodity rewrites. Merely compiling or paraphrasing existing search results ("skyscraper content") produces zero non-commodity value, resulting in algorithmic devaluation or extraction suppression.
+Modern generative search engines (Google AI Overviews and AI Mode, ChatGPT Search, Perplexity) reward primary sources and discard commodity rewrites. Merely compiling or paraphrasing existing search results ("skyscraper content") produces zero non-commodity value, resulting in algorithmic devaluation or extraction suppression.
 
 ### 1.1 The 5 Information Gain Vectors
 
@@ -82,7 +82,7 @@ High-performing content deteriorates over time due to algorithmic search shifts,
    - *Detection:* Google Search Console shows an average position drop >3 spots or a sustained >25% MoM drop in organic search impressions over 60 days.
    - *Root Cause:* Competitor content out-optimizing intent, or search algorithms re-evaluating topical freshness.
 2. **Tier 2: Generative Engine / GEO Citation Decay:**
-   - *Detection:* Citations in Google AI Overviews, SearchGPT, or Perplexity decline by ≥15% over a rolling 30-day window; AI engines begin citing competing URLs for primary query fan-outs.
+   - *Detection:* Citations in Google AI Overviews and AI Mode, ChatGPT Search, or Perplexity decline by ≥15% over a rolling 30-day window; AI engines begin citing competing URLs for primary query fan-outs.
    - *Root Cause:* Answer-first structure degraded, schema broken, or facts superseded by more recent competitor benchmarks.
 3. **Tier 3: Factual & Temporal Decay:**
    - *Detection:* Article references statistics older than 18 months, documents deprecated CLI commands/APIs, or contains broken external outbound links.

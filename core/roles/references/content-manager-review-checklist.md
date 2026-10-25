@@ -35,7 +35,7 @@ This reference checklist provides actionable governance rubrics for evaluating p
 ### 3-Tier Content Decay Monitoring & Remediation SLAs
 - **Comprehensive Decay Scanning**: Regular monitoring scans active across all 3 tiers:
   - *Tier 1 (Algorithmic SERP Decay)*: Organic rank drops (>3 positions) or sustained impression deterioration (>25% MoM).
-  - *Tier 2 (GEO / AI Engine Citation Decay)*: Citation tracking across Google AI Overviews, SearchGPT, and Perplexity flagging URLs with ≥15% citation drop over 30 days.
+  - *Tier 2 (GEO / AI Engine Citation Decay)*: Citation tracking across Google AI Overviews and AI Mode, ChatGPT Search, and Perplexity flagging URLs with ≥15% citation drop over 30 days.
   - *Tier 3 (Factual & Temporal Decay)*: Outdated statistics (>18 months), deprecated tooling/API syntax, or broken outbound links.
 - **Enforced Remediation SLAs**:
   - *Action 1 — Quick Patch (≤15 days)*: Remediate outdated statistics, deprecated code snippets, and broken links.
@@ -66,3 +66,9 @@ This reference checklist provides actionable governance rubrics for evaluating p
 - **Pre-Production KPI Alignment**: Target business outcomes, organic session goals, and conversion metrics established prior to drafting.
 - **AI Share of Voice (AI SOV)**: Citation velocity and presence across generative answer engines tracked alongside traditional organic traffic.
 - **Data-Traceable Decisions**: Strategy pivots, content prunes, and calendar adjustments directly supported by historical performance telemetry.
+
+### 2026-10 Modernization Gates
+- **Article-50-Live Gate**: EU AI Act Article 50 transparency obligations are in force since 2026-08-02 (grace period to 2026-12 for generative systems already on the market) — machine-readable Content Credentials marking per the C2PA implementation guide (2026-07) and user-facing AI disclosures are verified on all synthetic or AI-assisted media; treating them as future compliance fails review.
+- **GEO-Engine-Currency Gate**: citation decay tracking covers Google AI Overviews and AI Mode, ChatGPT Search, and Perplexity; obsolete engine names or AI Mode omissions fail currency review.
+- **SoM-Metric Gate**: Share of Model (SoM) is tracked alongside AI Share of Voice (AI SOV) and traditional CTR so portfolio KPIs reflect AI-answer visibility, not only blue-link rankings.
+- **ASI-Title Gate**: content-skill security guardrails use the official OWASP ASI 2026 titles (ASI01 Agent Goal Hijack, ASI03 Identity & Privilege Abuse, ASI04 Agentic Supply Chain, ASI05 Unexpected Code Execution, ASI07 Insecure Inter-Agent Communication, ASI09 Human-Agent Trust Exploitation); truncated or invented labels fail review.

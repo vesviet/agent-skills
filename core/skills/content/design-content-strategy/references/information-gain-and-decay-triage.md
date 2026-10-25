@@ -6,7 +6,7 @@ This playbook establishes the operational protocols for enforcing the Top 10 SER
 
 ## 1. Top 10 SERP Information Gain Differential Protocol
 
-In an era saturated with automated AI paraphrasing, publishing articles that merely restate existing search engine results creates zero brand authority, risks algorithmic de-indexing (Google Helpful Content / Core Updates), and produces zero citations in generative AI engines (Google AI Overviews, SearchGPT, Perplexity).
+In an era saturated with automated AI paraphrasing, publishing articles that merely restate existing search engine results creates zero brand authority, risks algorithmic de-indexing (Google Helpful Content / Core Updates), and produces zero citations in generative AI engines (Google AI Overviews, ChatGPT Search, Perplexity).
 
 Every proposed content brief must pass the **Top 10 SERP Information Gain Gate** before production begins.
 
@@ -104,7 +104,7 @@ Content is a depreciating asset. Code samples become outdated, search algorithms
 
 ### 2.2 Tier 2: Generative Engine / GEO Citation Decay
 - **Diagnostic Triggers**:
-  - Citation frequency drops ≥15% across Google AI Overviews, SearchGPT, and Perplexity over a 30-day tracking window.
+  - Citation frequency drops ≥15% across Google AI Overviews, ChatGPT Search, and Perplexity over a 30-day tracking window.
   - Brand or domain disappears from generative comparison queries ("Best edge database for Astro").
 - **Root Causes**:
   - Missing atomic BLUF answer block (≤60 words) at section openings, preventing LLM passage extraction.

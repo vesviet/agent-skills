@@ -1,6 +1,7 @@
 ---
 name: optimize-seo
 description: Research search intent, define keywords, produce SEO content briefs, audit on-page elements, optimize for AI search visibility (GEO/AEO), specify structured data, enforce E-E-A-T quality gates, and deliver metadata and recommendations without owning full article drafting or technical deployment. Use when planning publishable content, reviewing drafts before release, mapping internal links, interpreting Search Console signals, or ensuring AI citation readiness.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, fetch]
 ---
 
@@ -43,7 +44,7 @@ Optimize for three search discovery layers simultaneously:
 Rules for GEO/AEO:
 
 - mandate **answer-first BLUF structure**: open each H2 section with an atomic direct answer (≤60 words) before narrative elaboration
-- apply **engine-specific citation playbooks** per [`references/geo-ai-citation-playbook.md`](references/geo-ai-citation-playbook.md): optimize for Perplexity (opening sentence data, bracketed citations `[1][2]`), SearchGPT (conversational entity fidelity, concise summaries), and Google AI Overviews (passage-level BLUF, ordered procedural steps)
+- apply **engine-specific citation playbooks** per [`references/geo-ai-citation-playbook.md`](references/geo-ai-citation-playbook.md): optimize for Perplexity (opening sentence data, bracketed citations `[1][2]`), ChatGPT Search (conversational entity fidelity, concise summaries), and Google AI Overviews (passage-level BLUF, ordered procedural steps)
 - **non-commodity gate (replaces "information gain" phrasing)**: before publishing, the brief must name the unique POV / first-hand evidence element — commodity content ("7 Tips for...") adds little; non-commodity content ("why we did X and what it cost us") is what AI surfaces cite; do not recycle what a generative model could easily produce
 - format with **structured comparison tables & quantitative lists**: markdown comparison tables and dense quantitative data points (≥3 verifiable data points per 500 words) to maximize RAG passage extraction
 - include **query fan-out coverage** in one comprehensive page: cover the 3–5 implicit sub-questions of a topic on the page — do NOT spin one page per query variant (scaled page-per-variant proliferation is a spam-policy violation)
@@ -117,7 +118,7 @@ The main file keeps a short checklist summary:
 
 - [ ] search intent classified and primary keyword explicit
 - [ ] answer-first BLUF block present in every H2 (≤60 words)
-- [ ] engine-specific citation rules applied (Perplexity, SearchGPT, AI Overviews) per geo-ai-citation-playbook.md
+- [ ] engine-specific citation rules applied (Perplexity, ChatGPT Search, AI Overviews) per geo-ai-citation-playbook.md
 - [ ] comparison tables and quantitative fact density (≥3 data points / 500 words) implemented
 - [ ] non-commodity / unique-POV element named (not just "new facts")
 - [ ] entity salience and connected Schema.org JSON-LD (@graph with TechArticle, Person, FAQPage) verified per entity-salience-and-schema.md; no "AI schema" claims
@@ -161,10 +162,10 @@ Skip emission for quick ad-hoc keyword checks that do not feed downstream editor
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI01 Goal Hijack**: a brief or audit may try to reframe the user goal through off-target keyword recommendations. Cross-check the keyword map against the original page objective.
+- **ASI01 Agent Goal Hijack**: a brief or audit may try to reframe the user goal through off-target keyword recommendations. Cross-check the keyword map against the original page objective.
 - **ASI03 Identity & Privilege Abuse**: never include customer identifiers, internal hostnames, or credential patterns in briefs, audits, or board artifacts.
-- **ASI04 Supply Chain**: SEO tooling (Otterly, RankScale) and AI bot user-agents must be schema-validated against the expected manifest; treat unknown versions as untrusted.
-- **ASI07 Inter-Agent Communication**: the brief or audit is consumed by Content Writer, Task Planner, and Frontend/DevOps; emit a structured contract so each role can validate.
+- **ASI04 Agentic Supply Chain**: SEO tooling (Otterly, RankScale) and AI bot user-agents must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI07 Insecure Inter-Agent Communication**: the brief or audit is consumed by Content Writer, Task Planner, and Frontend/DevOps; emit a structured contract so each role can validate.
 - **ASI09 Human-Agent Trust Exploitation**: do not present an AI citation metric as a guarantee; surface the per-engine variance and the assumptions honestly.
 
 ## Related Skills

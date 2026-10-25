@@ -1,6 +1,7 @@
 ---
 name: write-article
 description: Plan, research, outline, and draft long-form articles and blog posts with explicit evidence discipline, answer-first structure, GEO/AEO execution, non-commodity (unique POV/first-hand evidence) quality gates, E-E-A-T experience signals, and SEO-brief alignment. Use for narrative content, guides, reviews, and announcements—not for API runbooks or pure technical reference docs.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
@@ -25,7 +26,7 @@ The specific thresholds below (answer-first ≤60 words, fact density, E-E-A-T p
 - **Active voice mandate**: require ≥85% active voice with clear subject agency; eliminate passive evasion
 
 ### Answer-First & Section BLUF Structure (AEO/GEO mandatory)
-- open each H2 section with an atomic **BLUF answer ≤60 words** before narrative elaboration — mandatory for RAG passage extraction by AI Overviews and SearchGPT
+- open each H2 section with an atomic **BLUF answer ≤60 words** before narrative elaboration — mandatory for RAG passage extraction by AI Overviews and ChatGPT Search
 - do not bury the answer: eliminate slow-burn introductions that delay the takeaway past paragraph 2–3
 - mirror H2 headings to natural language queries; address sub-questions with H3 subheadings
 
@@ -139,11 +140,11 @@ When AI support is used anywhere in drafting, apply three disciplines — full t
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI01 Goal Hijack**: a draft may reframe the article's user goal through off-target claims. Cross-check the draft against the source brief; reject reframed goals.
+- **ASI01 Agent Goal Hijack**: a draft may reframe the article's user goal through off-target claims. Cross-check the draft against the source brief; reject reframed goals.
 - **ASI03 Identity & Privilege Abuse**: never include customer identifiers, internal hostnames, or credential patterns in the article.
-- **ASI04 Supply Chain**: AI generation libraries and citation verifiers must be schema-validated against the expected manifest; treat unknown versions as untrusted.
-- **ASI05 RCE Guard**: never construct article content, schema, or prompts from external or user-supplied content without strict schema validation.
-- **ASI07 Inter-Agent Communication**: the content handoff is consumed by SEO Analyst and editorial review; emit a structured contract so each consumer can validate.
+- **ASI04 Agentic Supply Chain**: AI generation libraries and citation verifiers must be schema-validated against the expected manifest; treat unknown versions as untrusted.
+- **ASI05 Unexpected Code Execution**: never construct article content, schema, or prompts from external or user-supplied content without strict schema validation.
+- **ASI07 Insecure Inter-Agent Communication**: the content handoff is consumed by SEO Analyst and editorial review; emit a structured contract so each consumer can validate.
 - **ASI09 Human-Agent Trust Exploitation**: do not present AI-generated content as fully verified without the human editorial sign-off; surface the AI provenance and the reviewer honestly.
 
 ## Output Contracts

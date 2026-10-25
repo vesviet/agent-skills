@@ -1,4 +1,4 @@
-# GEO AI Citation Playbook (Perplexity, SearchGPT, Google AI Overviews)
+# GEO AI Citation Playbook (Perplexity, ChatGPT Search, Google AI Overviews)
 
 Reference manual for `optimize-seo` and the `seo-analyst` role. Establishes generative engine optimization (GEO) mechanics, engine-specific citation triggers, and formatting standards for tables and quantitative data.
 
@@ -11,7 +11,7 @@ Different generative engines utilize distinct retrieval algorithms and passage e
 | AI Engine | Primary Retrieval Mechanics | Citation Trigger Standards | Optimization Formatting |
 | :--- | :--- | :--- | :--- |
 | **Perplexity** | Fast RAG scraping top organic URLs; weights opening paragraph statistics and structured comparisons. | Numbered source brackets `[1][2]` anchored directly to verified claims and quantitative data. | - Atomic H2 opening statements (≤60 words).<br>- Markdown comparison tables.<br>- Explicit numerical units (ms, %, QPS). |
-| **SearchGPT (OpenAI)** | Semantic index + Bing API retrieval; emphasizes conversational entity fidelity and structured microdata. | Inline footnote citations and domain attribution based on knowledge graph entities. | - Answer-first BLUF summaries.<br>- Connected Schema.org JSON-LD (`@graph`).<br>- Entity disambiguation (Wikidata QIDs). |
+| **ChatGPT Search (OpenAI)** | Semantic index + Bing API retrieval; emphasizes conversational entity fidelity and structured microdata. | Inline footnote citations and domain attribution based on knowledge graph entities. | - Answer-first BLUF summaries.<br>- Connected Schema.org JSON-LD (`@graph`).<br>- Entity disambiguation (Wikidata QIDs). |
 | **Google AI Overviews** | Gemini multi-modal RAG grounded in Google Knowledge Graph and Search index. | Synthesizes multi-source consensus; extracts lists and tables directly into top-of-SERP snapshots. | - Ordered `<ol>` lists for procedural queries.<br>- Markdown tables for multi-attribute specs.<br>- Fact density ≥3 verified numbers per 500 words. |
 
 ---

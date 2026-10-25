@@ -30,7 +30,7 @@ Total Information Gain Score = Vector 1 + Vector 2 + Vector 3 + Vector 4 + Vecto
 
 | Score Band | Rating | Gate Decision | Rationale & Action |
 | :---: | :--- | :---: | :--- |
-| **85 – 100** | **Exceptional** | **PASS** | High citability for Google AI Overviews and SearchGPT; industry-defining reference piece. |
+| **85 – 100** | **Exceptional** | **PASS** | High citability for Google AI Overviews and ChatGPT Search; industry-defining reference piece. |
 | **75 – 84** | **Strong** | **PASS** | Clear information gain verified against top 10 competitors; approved for publication. |
 | **50 – 74** | **Moderate** | **FAIL / HOLD** | Contains minor unique elements but largely overlaps with top 10 SERP; requires additional telemetry or benchmarks. |
 | **30 – 49** | **Low** | **FAIL / REJECT** | Derivative synthesis of existing articles; must not be published. |
