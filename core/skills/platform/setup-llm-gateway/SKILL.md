@@ -1,6 +1,7 @@
 ---
 name: setup-llm-gateway
 description: Configure a centralized LLM proxy gateway for token routing, budgeting, and failover. Use when deploying multi-model routing, enforcing token rate limits, managing provider credentials, or centralizing AI observability.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
@@ -26,6 +27,7 @@ Use this skill to implement an AI infrastructure gateway (e.g., LiteLLM, Portkey
 Evaluate and select the LLM gateway engine based on technical requirements:
 - LiteLLM Proxy for Python/Kubernetes native environments supporting 100+ LLM providers.
 - Portkey or Cloudflare AI Gateway for edge-deployed, managed caching and routing pipelines.
+- Agent Router (formerly Envoy AI Gateway; renamed 2026-09) for Kubernetes-native inference-aware routing via Gateway API Inference Extension (InferencePool, endpoint picking for KV/prefix-aware routing) when the gateway fronts self-hosted vLLM/SGLang fleets.
 - Verify support for streaming responses, function/tool calling passthrough, and structured JSON output constraints.
 
 ### 2. Deploy Gateway Infrastructure & Vault Credentials

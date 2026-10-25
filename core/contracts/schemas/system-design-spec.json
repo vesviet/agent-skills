@@ -191,6 +191,14 @@
             "edge_inference_criteria": { "type": "string" },
             "cloud_inference_criteria": { "type": "string" }
           }
+        },
+        "kv_cache_tiering": {
+          "type": "string",
+          "description": "KV-cache offloading tier decision for agentic/long-context workloads (GPU-only / GPU+CPU RAM / GPU+CPU+storage; vLLM-SGLang offloading, NVIDIA ICMS); scaling GPU count requires this evaluation first (KV-CACHE-TIERING LOCK)."
+        },
+        "speculative_decoding": {
+          "type": "string",
+          "description": "Speculative decoding decision (EAGLE-3/MTP): enabled/disabled with the measured draft acceptance rate that gates it (SPECULATIVE-DECODING-ACCEPTANCE LOCK; net loss below ~70% acceptance)."
         }
       },
       "required": ["in_scope"]
@@ -339,7 +347,7 @@
           "description": "GPU nodes for inference; CPU nodes for embedding and coordination",
           "instance_types": ["g5.12xlarge (4x A10G, 96GB VRAM total)", "c6i.4xlarge (CPU embedding)"],
           "replica_count": "2 GPU nodes minimum; 3 at peak",
-          "autoscaling_policy": "scale out at GPU utilization > 75% for 5min; scale in at < 30% for 30min"
+          "autoscaling_policy": "KEDA scale-out on inference queue depth > 32 or KV cache utilization > 85% for 3min; scale in below 10% for 30min (queue/KV signals per KEDA-NOT-HPA LOCK)"
         },
         "network": {
           "description": "Private subnet for GPU nodes; load balancer in public subnet",

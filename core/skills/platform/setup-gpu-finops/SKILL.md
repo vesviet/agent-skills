@@ -1,6 +1,7 @@
 ---
 name: setup-gpu-finops
 description: Configure GPU telemetry, DCGM metrics, and Kubecost to attribute AI compute costs to specific namespaces or teams. Use when managing GPU infrastructure budgets, tracking AI workload unit economics, or optimizing accelerator capacity.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
@@ -18,6 +19,9 @@ Use this skill to implement cost transparency for self-hosted AI models and GPU 
 - **MIG-MULTI-TENANT-ISOLATION**: For H100/A100/B200, configure NVIDIA MIG (Multi-Instance GPU) partitions to provide hardware-level isolation between teams sharing the same physical GPU — enforces memory and compute boundaries and prevents one tenant's OOM from affecting another's inference workload.
 - **KEDA-INFERENCE-AUTOSCALING**: Deploy KEDA ScaledObjects driven by vLLM or Triton inference queue depth metrics to scale model replicas to zero when queues are empty for >15 minutes — configure `cooldownPeriod: 900s` to prevent flapping.
 - **VLLM-APC-COST**: Enable vLLM v0.6+ Automatic Prefix Caching (APC) to reuse KV cache for repeated system prompts; structure prompts with static content first and dynamic user content last for maximum cache hit rate — reduces GPU compute cost by 20-60% for high-traffic repeated-context workloads.
+- **KV-CACHE-OFFLOAD-COST (2026)**: for agentic and long-context workloads, extend KV cache into CPU RAM / storage tiers (vLLM-SGLang offloading, NVIDIA ICMS, storage-backed KV) before scaling GPU count — offloaded KV turns idle GPU VRAM back into serving capacity; price the tiers separately in cost dashboards.
+- **SPECULATIVE-DECODING-THROUGHPUT (2026)**: EAGLE-3 / MTP draft models deliver up to 6.5x decode throughput on supported stacks (vLLM, SGLang; TPU support since 2026-10) — model the throughput-per-dollar gain using measured draft acceptance rate, and treat acceptance < ~70% as a net loss.
+- **RACK-SCALE-PRICING (2026)**: maintain pricing sheets for rack-scale Blackwell systems (GB300 NVL72: 72 GPUs, ~278GB HBM3e each, NVLink-pooled domain) with per-GPU fractional allocation math; track the Vera Rubin roadmap for refresh depreciation windows.
 
 ## Suggested Process
 

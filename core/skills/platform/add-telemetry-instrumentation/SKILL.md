@@ -1,6 +1,7 @@
 ---
 name: add-telemetry-instrumentation
 description: Add or update logging, metrics, and tracing by following the repo's observability patterns and OpenTelemetry (OTel) GenAI Semantic Conventions. Use when a service, feature, endpoint, job, or integration needs operational visibility — including AI/LLM features requiring token-level tracing (gen_ai.usage.tokens, gen_ai.response.model, TTFT), kernel-level eBPF socket telemetry, and MWMBR SLI recording rules.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
@@ -27,7 +28,7 @@ Use this skill when code changes need matching observability so operators can un
 - **EBPF-SOCKET-TELEMETRY**: deploy kernel-level eBPF socket profiling (Cilium Hubble, Grafana Beyla, Coroot) to capture L4/L7 flow telemetry, TCP retransmits, socket buffer queue drops, and DNS resolution latency directly from kernel space without injecting sidecar proxies
 - **OTEL-V130-GENAI-CONVENTIONS**: use stable OpenTelemetry GenAI conventions (opt in via `OTEL_SEMCONV_STABILITY_OPT_IN=genai`); mandate `gen_ai.system`, `gen_ai.request.model`, `gen_ai.response.model`, `gen_ai.usage.tokens`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, `gen_ai.response.finish_reasons`, and Time-To-First-Token (TTFT) for streaming responses
 - **MWMBR-SLI-RECORDING-RULES**: configure Prometheus/OTel metric recording rules supporting Multi-Window Multi-Burn-Rate (MWMBR) error budget alerting across short (5m, 30m, 2h) and long (1h, 6h, 3d) evaluation windows with empty-vector coalescing (`or on() vector(0)`)
-- **OTEL-PROFILING-4TH-PILLAR**: use continuous profiling (Pyroscope, Beyla) via OTLP profiling signal alongside logs/metrics/traces
+- **OTEL-PROFILING-4TH-PILLAR**: use continuous profiling via the OTLP profiling signal (public Alpha since 2026-03; eBPF agent collects most languages with zero code changes) alongside logs/metrics/traces — Pyroscope and Parca are the reference backends; treat the signal as alpha and keep a Parca/Pyroscope-native export path
 - **NATIVE-HISTOGRAMS**: prefer native exponential histograms for dynamic bucket resolution over fixed-bucket counts
 - **DORA-METRIC-SPANS**: emit CI/CD and deployment spans (`cicd.pipeline.run.*`, `deploy.environment`) for automated DORA metric computation
 

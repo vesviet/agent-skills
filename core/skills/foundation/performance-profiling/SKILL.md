@@ -1,6 +1,7 @@
 ---
 name: performance-profiling
 description: Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths, and validating improvements with repo-local tools. Use when performance, capacity, or resource usage needs evidence-based diagnosis.
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
@@ -20,13 +21,14 @@ Use this skill when investigating slow paths, memory growth, concurrency bottlen
 ## Core Rules
 
 - baseline before optimizing — no optimization may be merged without before/after flame graphs or benchmark evidence
-- profile the real hot path, not an assumed one; use eBPF zero-instrumentation profiling (OpenTelemetry Profiling SIG / Pyroscope) for always-on continuous profiling alongside traces
+- profile the real hot path, not an assumed one; use eBPF zero-instrumentation profiling (OTel Profiles — public Alpha since 2026-03 — with Pyroscope or Parca backends) for always-on continuous profiling alongside traces
 - prefer repo-local and language-native tooling first; escalate to eBPF agents when system-wide profiling across runtimes is needed
 - do not profile production without explicit approval and a safety plan — continuous profilers must stay under 1.5% CPU overhead with bounded memory limits
 - validate improvements with repeatable measurements, not intuition — report p50/p95/p99 before and after, not mean alone
 - correlate profiling data with distributed traces via `trace_id` using OTel Profiles OTLP format to avoid vendor lock-in
 - for AI inference paths: measure and baseline model latency p50/p95/p99 separately from service latency — LLM calls are often the dominant latency source
 - for GPU services (vLLM, Ollama, ONNX Runtime): profile GPU utilization, VRAM usage, KV cache hit rate, and time-to-first-token (TTFT) — use `nvitop` or PyTorch Profiler
+- when speculative decoding is enabled (EAGLE-3 / MTP drafters): profile draft acceptance rate — acceptance below ~70% makes speculative decoding a net throughput loss; report acceptance alongside TTFT/ITL
 - for batch inference services: profile queue depth and batch fill efficiency — under-batching wastes GPU; over-batching increases tail latency
 - for RAG / semantic search: measure embedding cache hit rate — redundant embedding calls are the most common preventable AI cost spike
 - report AI inference cost per request (\$ per call) alongside latency so optimization decisions weigh both UX and cost impact

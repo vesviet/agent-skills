@@ -122,3 +122,14 @@ This reference checklist provides operational systems architecture, kernel perfo
 | **cgroup v2 Controller**| Hierarchy valid | `cat /sys/fs/cgroup/cgroup.controllers` | `cpu memory io pids` active |
 | **Listen Drop Rate**   | Drops == 0 | Prometheus `ListenDrops` | 0 drops across all sockets |
 | **System Spec Schema** | Valid `system-design-spec.json` | `python3 core/scripts/validate-contracts.py` | 100% schema compliant |
+
+### 2026-10 Modernization Gates (KV-Cache Tiering, Speculative Decoding, DRA, Agent Router)
+
+| Verification Gate | Target Invariant | Pass Criteria |
+| :--- | :--- | :--- |
+| **KV-Cache Tiering** | Agentic/long-context workloads evaluate offloading tiers before GPU scaling | `ai_infrastructure.kv_cache_tiering` decision recorded (GPU / +CPU / +storage) |
+| **Speculative Decoding** | EAGLE-3/MTP enabled only with measured acceptance | `ai_infrastructure.speculative_decoding` recorded with draft acceptance rate; disabled below ~70% |
+| **DRA GPU Allocation** | K8s v1.34+ uses ResourceClaims, not opaque GPU integers | Structured VRAM requests via DRA (GA v1.34; admin-access/extended-resource GA v1.36/v1.37) + MIG where multi-tenant |
+| **Inference Routing** | KV/prefix-aware routing chosen before full disaggregation | Agent Router (ex-Envoy AI Gateway) InferencePool evaluated for K8s fleets; decision documented |
+| **Rack-Scale Capacity** | 2026 hardware horizon priced in capacity scenarios | GB300 NVL72 (~278GB HBM3e/GPU) and Vera Rubin roadmap reflected in 12-month forecasts |
+| **Continuous Profiling** | Profiling evidence via OTel Profiles (alpha) or Pyroscope/Parca | Backend + collection path stated; signal treated as alpha with native export fallback |

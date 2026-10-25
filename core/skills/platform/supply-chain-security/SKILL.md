@@ -1,6 +1,7 @@
 ---
 name: supply-chain-security
 description: Implement software supply chain security by generating SBOMs (CycloneDX/SPDX), enforcing SLSA build provenance levels, integrating artifact signing (Sigstore), and maintaining VEX context for vulnerability management. Use when hardening CI/CD pipelines, generating per-build inventory, achieving SLSA Level 2 or 3 compliance, or auditing third-party dependencies including MCP server registries.
+version: 1.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 

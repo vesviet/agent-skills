@@ -75,7 +75,7 @@ Capacity planning is a proactive design responsibility — not a reactive post-i
 AI inference infrastructure is a full system engineering domain — not an application concern. The System Engineer owns the AI infrastructure layer end-to-end:
 
 **GPU resource allocation and management:**
-- specify GPU instance types and counts based on model parameter size, context window length, and throughput requirements; a 70B parameter model at 4-bit quantization has fundamentally different VRAM requirements than a 7B dense model
+- specify GPU instance types and counts based on model parameter size, context window length, and throughput requirements; a 70B parameter model at 4-bit quantization has fundamentally different VRAM requirements than a 7B dense model; for 2026 planning horizons include rack-scale Blackwell GB300 NVL72 (72 GPUs, ~278GB HBM3e each, NVLink-pooled memory domain) and the Vera Rubin refresh roadmap in capacity scenarios
 - design GPU namespace allocation in Kubernetes: namespace-level GPU quotas, node affinity rules, and fractional GPU sharing policies (MIG for A100/H100)
 - model GPU memory requirements including: model weights + KV cache + activation memory + batch overhead; leaving less than 15% VRAM headroom causes OOM-kill under burst load
 - define GPU autoscaling policy: scale triggers based on GPU utilization, queue depth, and inference latency — not CPU/memory triggers which are indirect signals
@@ -91,10 +91,13 @@ AI inference infrastructure is a full system engineering domain — not an appli
 | **NVIDIA Dynamo** | Distributed, multi-node orchestration above vLLM/SGLang/TRT-LLM; disaggregated serving at scale | KV-aware routing, prefill/decode worker pools, NIXL KV transport (NVLink/InfiniBand) |
 | **Triton Inference Server** | Multi-model, multi-framework, ensemble pipelines | model repository layout, dynamic batching config, instance groups |
 | **Ollama** | Local/dev inference, small team deployments | model pull, NUMA configuration, context length |
+| **llm-d** | Day-2 distributed serving on Kubernetes across NVIDIA/AMD/Intel GPUs and TPUs (v1.0, Oct 2026) | prefill/decode disaggregation presets, prefix-aware routing, KEDA integration |
 
 - configure continuous batching parameters: batch size, max tokens per iteration, and prefill/decode ratio based on expected request mix
 - **disaggregated prefill/decode serving (2025-2026)**: for large-scale or latency-sensitive workloads, separate the compute-bound prefill phase and the memory-bandwidth-bound decode phase into independent GPU pools that scale independently (via NVIDIA Dynamo or SGLang/vLLM disaggregation); this requires a fast interconnect (RDMA/NVLink/InfiniBand) to transfer the KV cache between pools — document whether the interconnect justifies disaggregation, since it only pays off on the right infrastructure
-- pair disaggregation with **KV-aware / prefix-aware routing**: route a request to the replica that already holds its prefix in cache to avoid redundant prefill; this works on any hardware and is often the higher-ROI first step before full disaggregation
+- pair disaggregation with **KV-aware / prefix-aware routing**: route a request to the replica that already holds its prefix in cache to avoid redundant prefill; this works on any hardware and is often the higher-ROI first step before full disaggregation; for Kubernetes-native fleets, Agent Router (formerly Envoy AI Gateway, renamed 2026-09) provides inference-aware routing via Gateway API Inference Extension (InferencePool + endpoint picking)
+- **KV-cache offloading tiers (2026)**: for agentic and long-context workloads, extend the KV cache beyond GPU memory into CPU RAM and storage tiers (vLLM/SGLang offloading, NVIDIA ICMS, storage-backed KV) before scaling GPU count; document the tiering decision in system-design-spec.json `ai_infrastructure.kv_cache_tiering`
+- **speculative decoding as a capacity lever (2026)**: EAGLE-3 and MTP draft models deliver up to 6.5x decode throughput on supported stacks (vLLM, SGLang; TPU support since Oct 2026); gate the decision on measured draft acceptance rate — acceptance below ~70% makes speculative decoding a net loss — and record it in `ai_infrastructure.speculative_decoding`
 - define model warmup strategy: pre-load model at startup, warm with synthetic requests before receiving live traffic; cold-start LLM services are a reliability risk
 - configure KV cache size: balance between per-request context length support and concurrent request capacity
 
@@ -247,6 +250,8 @@ Contracts owned by other roles — do not author these as System Engineer:
 - **AGENT-IDENTITY-EPHEMERAL LOCK**: no AI agent or non-human identity (NHI) may use static API keys or long-lived secrets at rest in ConfigMaps/Secrets; all agent credentials MUST be SPIFFE SVIDs (max 24h TTL) or WIF-issued temporary cloud credentials
 - **EU-AI-ACT-AUDIT-LOG LOCK**: any system classified as high-risk under EU AI Act Annex III MUST have WORM-backed tamper-evident audit logs (Article 12) covering inputs, outputs, model versions, and decision identity with minimum 6-month retention
 - **KEDA-NOT-HPA LOCK**: do not scale LLM inference deployments with standard CPU/memory-based HPA; autoscaling MUST be event-driven via KEDA using request queue depth and KV cache utilization as primary scale signals
+- **KV-CACHE-TIERING LOCK**: do not scale GPU count for agentic or long-context workloads before evaluating KV-cache offloading tiers (GPU → CPU RAM → storage); document the tiering decision in system-design-spec.json — idle GPU VRAM used as a KV warehouse is the most expensive storage in the stack
+- **SPECULATIVE-DECODING-ACCEPTANCE LOCK**: treat speculative decoding as an evidence-gated capacity lever, not a default flag — enable it only with a measured draft acceptance rate (net throughput loss below ~70%) recorded in the design spec
 - **MCP-PROVENANCE LOCK**: no MCP server (third-party or internal) may be connected to production agent runtimes without a verified artifact signature, pinned version tag, and supply-chain security scan (OWASP ASI04)
 - **DAPR-DURABLE-REQUIRED LOCK**: agent workflows involving external I/O or multi-step reasoning MUST be implemented as Dapr Workflows or Dapr Virtual Actor state persistence instead of in-memory goroutines, guaranteeing crash recovery without lost state or duplicate side effects
 - apply role-standard.md OWASP ASI Top 10 2026 posture to all tool invocations, IaC execution, and A2A inter-agent communication
@@ -417,7 +422,7 @@ See [references/system-engineer-review-checklist.md](references/system-engineer-
 - **optimizing a non-bottleneck** — measuring only one layer and assuming it is the bottleneck without verifying the full stack wastes effort; profile all layers before committing to an optimization path
 - **waterfall dependency on Technical Architect** — waiting for TA to "finish" service design before beginning infrastructure design creates unnecessary lead time; SE and TA work in parallel with shared NFRs as the sync interface
 - **under-specifying vector index parameters** — deploying a vector database with default index parameters for production workloads produces unpredictable recall and latency; specify m, ef_construction, and ef (HNSW) or nprobe (IVFFlat) with documented rationale
-- **GPU over-provisioning via opaque integer requests** — assigning whole GPUs (`nvidia.com/gpu: 1`) without VRAM calculations wastes 70–95% of allocated accelerator capacity; use Dynamic Resource Allocation (DRA) with structured ResourceClaims and MIG partitioning
+- **GPU over-provisioning via opaque integer requests** — assigning whole GPUs (`nvidia.com/gpu: 1`) without VRAM calculations wastes 70–95% of allocated accelerator capacity; use Dynamic Resource Allocation with structured ResourceClaims (GA since Kubernetes v1.34; admin-access and extended-resource support GA in v1.36/v1.37) and MIG partitioning
 - **missing OTel GenAI spans (invisible LLMs)** — executing LLM calls without `gen_ai.*` spans obscures token costs, latency bottlenecks (TTFT vs ITL), and prevents EU AI Act Article 12 compliance traceability
 - **short timeouts on serverless/edge for multi-step agent workloads** — running long-running agentic workflows on 30s timeout workers leads to cascading execution aborts and orphaned state; use Dapr durable workflows or containerized runners
 - **scaling inference pods with standard CPU/memory HPA** — LLM inference is GPU-memory and KV-cache bound; CPU metrics remain near-idle while inference queues explode; autoscaling must use KEDA on queue depth and KV-cache saturation
@@ -462,4 +467,4 @@ See [references/system-engineer-review-checklist.md](references/system-engineer-
 - **MCP server supply-chain verified**: provenance, signature, and version pinning validated before connecting agent tools to production topology
 
 
-Last updated: 2026-08-21
+Last updated: 2026-10-24

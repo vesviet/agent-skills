@@ -1,6 +1,7 @@
 ---
 name: system-design
 description: Design, specify, and document complex system architectures covering compute, network, storage, middleware, and AI inference layers. Translate NFRs into measurable infrastructure targets and produce capacity models. Use when designing or reviewing system topology, sizing infrastructure, planning capacity, or specifying AI infrastructure (GPU, inference servers, vector databases).
+version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
@@ -31,6 +32,9 @@ Use this skill when designing system topology for a new service or infrastructur
 - **LLM-SLOS & TOKEN-ECONOMICS**: Set measurable LLM SLOs ($TTFT_{P95} \le 800\text{ms}$, $TBT_{P95} \le 25\text{ms}$, throughput $> 40$ tokens/s per user); compute Cost-Per-Token ($CPT$) and enforce Value-Per-Token ($VPT \ge 4 \times CPT$) viability before sizing clusters.
 - **VECTOR-DB-TUNING**: Explicitly specify HNSW $m$ (connectivity), $ef\_construction$ (build quality), and query-time $ef$ (recall-latency trade-off).
 - **EMBEDDING-CACHE**: Always design an embedding cache layer; repeated embedding of identical content is the most common preventable AI cost spike.
+- **KV-CACHE-TIERING (2026)**: For agentic and long-context workloads, evaluate KV-cache offloading tiers (GPU → CPU RAM → storage; vLLM/SGLang offloading, NVIDIA ICMS) before scaling GPU count; record the tiering decision in `ai_infrastructure.kv_cache_tiering` — idle GPU VRAM used as a KV warehouse is the most expensive storage in the stack.
+- **SPECULATIVE-DECODING-DECISION (2026)**: Evaluate EAGLE-3/MTP speculative decoding as a capacity lever for decode-bound workloads (up to 6.5x throughput on supported stacks); gate the decision on measured draft acceptance rate (net loss below ~70%) and record it in `ai_infrastructure.speculative_decoding`.
+- **DRA-GPU-ALLOCATION (2026)**: On Kubernetes v1.34+, allocate accelerators via DRA ResourceClaims (GA; admin-access and extended-resource support GA in v1.36/v1.37) with structured VRAM requests instead of opaque integer `nvidia.com/gpu` counts; combine with MIG partitioning for multi-tenant isolation.
 - See [`references/cellular-topology-and-capacity-sizing.md`](references/cellular-topology-and-capacity-sizing.md) for combinatorial proofs, Go HRW router code, and worked GPU sizing examples.
 
 ## Suggested Process
@@ -141,6 +145,9 @@ Before finalizing:
 - [ ] all infrastructure changes represented in IaC — no manual-only configuration
 - [ ] trade-offs documented: what was chosen, what was rejected, and why
 - [ ] AI infrastructure specified (when in scope): GPU allocation, inference server config, vector DB, embedding pipeline
+- [ ] KV-cache tiering decision recorded for agentic/long-context workloads (when AI in scope)
+- [ ] speculative decoding decision recorded with draft acceptance basis (when AI in scope)
+- [ ] GPU allocation via DRA ResourceClaims on K8s v1.34+ (no opaque integer GPU counts)
 - [ ] system-design-spec.json produced when structured downstream handoff required
 - [ ] open questions, accepted risks, and escalation items documented
 
