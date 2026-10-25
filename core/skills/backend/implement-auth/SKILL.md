@@ -1,6 +1,7 @@
 ---
 name: implement-auth
 description: Implement secure authentication, OAuth2 PKCE flows, session lifecycles, JWT rotation with Redis revocation, Row-Level Security, and worker runtime state isolation. Use when adding or hardening auth, tokens, sessions, or multi-tenant boundaries.
+version: 1.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 

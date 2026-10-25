@@ -12,7 +12,8 @@ This role must follow [role-standard](role-standard.md) first.
 - enforce **Red-Green TDD**: author independent failing tests asserting contract specifications before writing implementation code; verify the expected failure reason (Red), implement minimal logic (Green), and refactor under test coverage
 - enforce **Execution Sandbox Isolation (OWASP ASI05)**: execute all test runs, database migrations, seed scripts, and dynamic code evaluations inside ephemeral, hardened execution sandboxes with restricted network egress and limited filesystem access
 - defeat **Anti Vibe-Slop**: actively scrutinize code for superficial, plausible-looking implementations that pass trivial tests but contain hidden null pointer assumptions, unhandled boundary transitions, transaction leaks, or swallowed errors
-- enforce **Compile-Time Invariance & Clean Architecture (Go 1.25+, PHP 8.4+, Python 3.13+)**: strictly isolate business logic from transport (HTTP/gRPC) and database drivers; in Go, use Kratos 4-layer layout with Wire compile-time DI and zero `gorm.io/gorm` in `internal/biz`; in PHP, enforce DDD Invokable Actions with Spatie Data DTOs and FrankenPHP worker memory isolation; in Python, enforce FastAPI/Litestar with Dishka scoped IoC and SQLAlchemy 2.0 Async Unit of Work (zero web-framework leaks into use cases)
+- enforce **Compile-Time Invariance & Clean Architecture (Go 1.27+, PHP 8.5+, Python 3.14+)**: strictly isolate business logic from transport (HTTP/gRPC) and database drivers; in Go, use Kratos 4-layer layout with Wire compile-time DI and zero `gorm.io/gorm` in `internal/biz`; in PHP, enforce DDD Invokable Actions with Spatie Data DTOs and FrankenPHP worker memory isolation; in Python, enforce FastAPI/Litestar with Dishka scoped IoC and SQLAlchemy 2.0 Async Unit of Work (zero web-framework leaks into use cases)
+- enforce **Stack Currency (2026-10 baseline)**: Go 1.27+ (1.27 released 2026-08), Python 3.14+ (3.15 current since 2026-10-09, UTF-8-mode default, free-threaded builds officially supported since 3.14), PHP 8.5+ (released 2025-11-20: pipe operator, `clone with`), Node.js 26 LTS line (Active LTS 2026-10-28; Node 24 maintenance), PostgreSQL 18 (PG 19 GA planned 2026-11-19); re-validate the baseline quarterly and never adopt a day-one .0 release for production
 - enforce **Atomic InTx & Transactional Outbox**: eliminate dual-write consistency failures between databases and message brokers (Kafka, RabbitMQ, Dapr); write outbox records atomically with domain state in a single transaction, and dispatch asynchronously via non-blocking `SELECT ... FOR UPDATE SKIP LOCKED` daemons; decouple DB commit from broker network I/O
 - enforce **Mathematical Resilience & Fault Tolerance**: wrap downstream calls with token-bucket rate limiting, circuit breaker finite state machines with single-canary probe locks in `HALF-OPEN` (preventing thundering herd crashes), AWS full jitter exponential backoff ($Sleep = \text{random}(0, \min(M, B \times 2^{\text{attempt}}))$), and client-side UUID v4 idempotency keys
 - verify business logic, data transitions, and side effects instead of treating a passing endpoint call as proof
@@ -81,8 +82,8 @@ This role must follow [role-standard](role-standard.md) first.
 ### Clean Architecture & Multi-Language Standards
 
 - **Go Ecosystem**: build canonical dual-protocol (gRPC + HTTP) microservices using Protobuf contracts (`go-kratos/kratos`); declare dependency injection using compile-time AST code generation (`google/wire`); enforce zero database driver leakage in domain packages (`internal/biz`); wrap multi-write mutations in atomic `InTx` transactions
-- **PHP Ecosystem (Modern PHP 8.4+)**: structure business domains into single-responsibility Invokable Actions; validate boundary inputs with strongly-typed, immutable DTOs (`spatie/laravel-data`); run high-throughput services on in-memory worker runtimes (`dunglas/frankenphp` or `laravel/octane`); enforce container reset listeners to prevent multi-tenant memory/session bleeding; automate architectural boundaries with Pest `arch()` tests
-- **Python Ecosystem (Python 3.13+)**: implement async ASGI endpoints (FastAPI, Litestar) backed by framework-agnostic scoped IoC containers (`reagento/dishka`); decouple business use cases from `fastapi.Depends`; persist state via SQLAlchemy 2.0 Async Session using Repository and Unit of Work patterns; prohibit synchronous blocking I/O inside async event loops
+- **PHP Ecosystem (Modern PHP 8.5+)**: structure business domains into single-responsibility Invokable Actions; validate boundary inputs with strongly-typed, immutable DTOs (`spatie/laravel-data`); run high-throughput services on in-memory worker runtimes (`dunglas/frankenphp` or `laravel/octane`); enforce container reset listeners to prevent multi-tenant memory/session bleeding; automate architectural boundaries with Pest `arch()` tests; use the PHP 8.5 pipe operator and `clone with` for pipeline-style domain flows
+- **Python Ecosystem (Python 3.14+; 3.15 current since 2026-10)**: implement async ASGI endpoints (FastAPI, Litestar) backed by framework-agnostic scoped IoC containers (`reagento/dishka`); decouple business use cases from `fastapi.Depends`; persist state via SQLAlchemy 2.0 Async Session using Repository and Unit of Work patterns; prohibit synchronous blocking I/O inside async event loops; free-threaded (no-GIL) builds are officially supported since 3.14 — restrict them to CPU-bound workloads with verified third-party compatibility
 
 ### Transactional Outbox & Data Consistency
 
@@ -116,6 +117,7 @@ This role must follow [role-standard](role-standard.md) first.
 - establish PostgreSQL Row-Level Security (RLS) defense-in-depth on multi-tenant tables with transaction-scoped `set_config('app.current_tenant_id', ..., true)` under non-bypass database roles
 - profile query execution plans via `EXPLAIN (ANALYZE, BUFFERS)` to eliminate sequential scans, correct planner estimation errors, and size `work_mem` to prevent external merge disk spills
 - mandate zero-downtime DDL safeguards: declare `SET lock_timeout = '2s'` on all migrations, use `CREATE INDEX CONCURRENTLY` outside transaction blocks, detect and drop invalid indexes, and roll out constraints using two-phase `NOT VALID` and `VALIDATE CONSTRAINT`
+- track the PostgreSQL release line: PostgreSQL 18 is the current stable; PG 19 GA is planned for 2026-11-19 (delayed from September) — upgrade evaluations wait for the first point release, never a day-one .0
 
 ### AI-Assisted Development Governance
 
@@ -463,4 +465,4 @@ See [`references/backend-developer-review-checklist.md`](references/backend-deve
 - A2A receiver verified with Agent Card validation and PDP checks
 - Durable workflows configured for long-running tasks (>30s)
 
-Last updated: 2026-09-18
+Last updated: 2026-10-25

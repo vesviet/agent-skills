@@ -1,6 +1,7 @@
 ---
 name: optimize-postgres
 description: Optimize PostgreSQL performance, serverless connection pooling, ephemeral database branching, EXPLAIN ANALYZE execution plan tuning, and zero-downtime migrations. Use when tuning queries, configuring poolers, branching databases, or rolling out DDL.
+version: 1.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 
