@@ -51,7 +51,7 @@
     {
       "id": "query-analytical-engine",
       "name": "Query Analytical Engine",
-      "description": "Execute in-process analytical SQL with chDB and DuckDB v1.1+, orchestrate multi-step stateful pipelines via chdb.session, federate queries across S3 Parquet, PostgreSQL, MySQL, and Iceberg without heavy ETL, leverage Apache Arrow C Data Interface, and enforce safe read-only AST validation. Use when conducting fast in-process analytical queries, cross-source federation, or ad-hoc OLAP exploration.",
+      "description": "Execute in-process analytical SQL with chDB and DuckDB v1.5+, orchestrate multi-step stateful pipelines via chdb.session, federate queries across S3 Parquet, PostgreSQL, MySQL, and Iceberg without heavy ETL, leverage Apache Arrow C Data Interface, and enforce safe read-only AST validation. Use when conducting fast in-process analytical queries, cross-source federation, or ad-hoc OLAP exploration.",
       "tags": [
         "security",
         "pack"

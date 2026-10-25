@@ -43,7 +43,7 @@
     {
       "id": "aws-engineer",
       "name": "Aws Engineer",
-      "description": "build, operate, and optimize AWS-native managed services and universal cloud control planes with OpenTofu v1.8+ client-s"
+      "description": "build, operate, and optimize AWS-native managed services and universal cloud control planes with OpenTofu v1.13+ client-"
     },
     {
       "id": "backend-developer",

@@ -410,13 +410,13 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
-| **`@build-data-pipeline`** | Design and implement transactional lakehouse pipelines (Iceberg v4/v3/Delta 4.0), enforce ODCS v3.1.... | [`core/skills/security-data/build-data-pipeline/SKILL.md`](./core/skills/security-data/build-data-pipeline/SKILL.md) |
+| **`@build-data-pipeline`** | Design and implement transactional lakehouse pipelines (Iceberg v3/Delta 4.4), enforce ODCS v3.2.0 d... | [`core/skills/security-data/build-data-pipeline/SKILL.md`](./core/skills/security-data/build-data-pipeline/SKILL.md) |
 | **`@database-maintenance`** | Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/D... | [`core/skills/security-data/database-maintenance/SKILL.md`](./core/skills/security-data/database-maintenance/SKILL.md) |
 | **`@manage-secrets`** | Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-contr... | [`core/skills/security-data/manage-secrets/SKILL.md`](./core/skills/security-data/manage-secrets/SKILL.md) |
 | **`@manage-vietnam-accounting`** | Prepare and review Vietnam accounting controls, accounting-regime evidence, reconciliations, invoice... | [`core/skills/security-data/manage-vietnam-accounting/SKILL.md`](./core/skills/security-data/manage-vietnam-accounting/SKILL.md) |
-| **`@optimize-olap-database`** | Design high-throughput OLAP schemas for Iceberg v4/v3, tune ClickHouse/DuckDB columnar engines, conf... | [`core/skills/security-data/optimize-olap-database/SKILL.md`](./core/skills/security-data/optimize-olap-database/SKILL.md) |
+| **`@optimize-olap-database`** | Design high-throughput OLAP schemas for Iceberg v3, tune ClickHouse/DuckDB columnar engines, configu... | [`core/skills/security-data/optimize-olap-database/SKILL.md`](./core/skills/security-data/optimize-olap-database/SKILL.md) |
 | **`@prompt-injection-defense`** | Use when safeguarding AI agents against direct and indirect prompt injection attacks, implementing b... | [`core/skills/security-data/prompt-injection-defense/SKILL.md`](./core/skills/security-data/prompt-injection-defense/SKILL.md) |
-| **`@query-analytical-engine`** | Execute in-process analytical SQL with chDB and DuckDB v1.1+, orchestrate multi-step stateful pipeli... | [`core/skills/security-data/query-analytical-engine/SKILL.md`](./core/skills/security-data/query-analytical-engine/SKILL.md) |
+| **`@query-analytical-engine`** | Execute in-process analytical SQL with chDB and DuckDB v1.5+, orchestrate multi-step stateful pipeli... | [`core/skills/security-data/query-analytical-engine/SKILL.md`](./core/skills/security-data/query-analytical-engine/SKILL.md) |
 | **`@security-audit`** | Review code, configuration, and service behavior for security risks by checking trust boundaries, se... | [`core/skills/security-data/security-audit/SKILL.md`](./core/skills/security-data/security-audit/SKILL.md) |
 | **`@skill-preflight-ast-check`** | Use when performing zero-execution static AST security vetting of third-party agent skills, enforcin... | [`core/skills/security-data/skill-preflight-ast-check/SKILL.md`](./core/skills/security-data/skill-preflight-ast-check/SKILL.md) |
 
