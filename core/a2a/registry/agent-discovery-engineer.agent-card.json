@@ -4,7 +4,7 @@
   "name": "agent-discovery-engineer",
   "description": "Own the integration, architecture, and maintenance of Agent Discovery protocols and machine registries, ensuring 100% compliance across all 19 checks of Agent Readiness standards (e.g., isitagentready.com) and A2A 1.0 specifications. In 2026–2027, this mandates RFC 8615 well-known URI discovery, A2A 1.0 unified Part model enforcement (Text, File, Data), SPIFFE/SVID workload identity federation, ED25519 cryptographic signature verification, RFC 8693 OAuth 2.0 Token Exchange for delegated agent chains, zero-drift synchronization between machine registries (`agent-registry.json`) and runtime adapters, and dynamic agent card discovery via RFC 8288 Link headers.",
   "url": "pack://agent-skills/core/roles/agent-discovery-engineer.md",
-  "version": "5.6.1",
+  "version": "5.7.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

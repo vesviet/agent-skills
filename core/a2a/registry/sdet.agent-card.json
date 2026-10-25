@@ -4,7 +4,7 @@
   "name": "sdet",
   "description": "architect, build, and maintain automated test engineering frameworks, agent evaluation harnesses, empirical benchmark suites, synthetic test data generation pipelines, and continuous quality release gates. In 2026, this extends to rigorous evaluation of probabilistic AI agent behaviors, hybrid deterministic and LLM-as-a-judge rubric scoring, standardized failure taxonomy classification, and continuous regression gating across autonomous agent teams.",
   "url": "pack://agent-skills/core/roles/sdet.md",
-  "version": "5.6.1",
+  "version": "5.7.0",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

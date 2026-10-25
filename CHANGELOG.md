@@ -2,6 +2,41 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [5.7.0] - 2026-10-25
+
+Modernization of five roles and eleven skills to the verified 2026-10 platform, data, and compliance baseline, with regression-proof challenge tests for every change.
+
+### Data Engineering (ratified-spec correctness)
+
+- `data-engineer` and the `security-data` skills now standardize on the **ratified Apache Iceberg v3 spec** (1.11+/1.12 line); the unratified v4 spec is tracked strictly as roadmap and must never appear in production table configs. Variant is correctly attributed to Iceberg v3 per the official spec.
+- Engine pins verified against upstream releases: Delta Lake 4.4, Spark 4.2+, dbt Core 2.0 (1.12 floor, active support to 2027-07), DuckDB 1.5+ / 2.0 LTS (GA 2026-10-21), ODCS v3.2.0, Flink 2.3 (confirmed current).
+- Relational maintenance runbooks target PostgreSQL 18; `data-pipeline-spec.json` description updated to ODCS v3.2.0.
+- New `SPEC-CURRENCY-LOCK`, unratified-spec anti-pattern, and a 2026-10 modernization-gates section; `build-data-pipeline`, `optimize-olap-database`, and `query-analytical-engine` versioned 2.0.0, `database-maintenance` 1.0.0, all with official OWASP ASI guardrail titles.
+
+### AWS Engineering (silicon and toolchain generations)
+
+- `aws-engineer` and `aws-infrastructure` default to **Graviton5** (c9g/m9g/r9g, all GA by 2026-08) and **Trainium3** (trn3) UltraServers (GA 2025-12); `GRAVITON5-FIRST-LOCK` allows Graviton4 only as a documented regional fallback.
+- Toolchain: OpenTofu v1.13+, Crossplane v2.4+ (namespaced composite resources; claims deprecated), EKS Auto Mode as the default for new clusters with self-managed Karpenter v1.x retained for custom node control.
+- Adds Bedrock AgentCore (GA 2025-10) with Nova 2 ARN scoping, Aurora DSQL (GA 2025-05), Database Savings Plans, and `AWS-CURRENCY-LOCK` with quarterly re-validation.
+
+### Quality Engineering (stack parity)
+
+- `qa-engineer` ephemeral test parity moves to Go 1.27+ and PostgreSQL 18 Testcontainers; browser automation to Playwright v1.64+ (1.64.1, 2026-10-13). `write-tests` versioned 2.0.0 with official ASI titles. New stack-currency, playwright-currency, and toolchain-alignment gates.
+
+### Content Governance (live compliance)
+
+- EU AI Act **Article 50** transparency obligations are enforced as in force (2026-08-02, grace to 2026-12), with the C2PA implementation guide (2026-07) as the machine-readable marking path.
+- GEO citation tracking refreshed to Google AI Overviews and AI Mode, ChatGPT Search, and Perplexity; the obsolete SearchGPT naming is retired. Share of Model (SoM) is tracked alongside AI Share of Voice.
+- All six `content/*` skills versioned 2.0.0 with official ASI titles; new article-50-live, geo-engine-currency, som-metric, and asi-title gates.
+
+### Solution Architecture
+
+- Clean-architecture pins move from Go 1.25+ to Go 1.27+; new gates require Streamable HTTP for adopted MCP servers (HTTP+SSE rejected) and silicon-agnostic GPU sizing.
+
+### Tests
+
+- 79 new modernization challenge tests across five suites, including absence tests that block regression to superseded pins (unratified specs, previous-generation silicon and language versions, obsolete engine names, non-official ASI titles).
+
 ## [5.6.1] - 2026-10-24
 
 Patch release: npm distribution hardening and a token-free release pipeline.

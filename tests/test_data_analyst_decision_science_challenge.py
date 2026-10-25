@@ -325,7 +325,7 @@ class TestDataAnalystA2ACard(unittest.TestCase):
         data = json.loads(card_path.read_text(encoding="utf-8"))
         self.assertEqual(data.get("contract_type"), "agent-card")
         self.assertEqual(data.get("name"), "data-analyst")
-        self.assertIn(data.get("version"), ["5.0.0", "5.1.0", "5.2.0", "5.3.0", "5.4.0", "5.5.0", "5.6.0", "5.6.1"])
+        self.assertIn(data.get("version"), ["5.0.0", "5.1.0", "5.2.0", "5.3.0", "5.4.0", "5.5.0", "5.6.0", "5.6.1", "5.7.0"])
 
         skill_ids = [s["id"] for s in data.get("skills", [])]
         self.assertIn("analyze-data", skill_ids)

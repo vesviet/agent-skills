@@ -725,7 +725,7 @@ class TestResearcherA2ACard(unittest.TestCase):
         # Version must be within the supported releases
         self.assertIn(
             data.get("version"),
-            ["5.0.0", "5.1.0", "5.2.0", "5.3.0", "5.4.0", "5.5.0", "5.6.0", "5.6.1"],
+            ["5.0.0", "5.1.0", "5.2.0", "5.3.0", "5.4.0", "5.5.0", "5.6.0", "5.6.1", "5.7.0"],
         )
 
         skill_ids = [s["id"] for s in data.get("skills", [])]
