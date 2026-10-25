@@ -108,7 +108,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
-| **`@deploy-vllm-inference`** | Deploy, configure, scale, and optimize high-throughput LLM inference workloads using vLLM v1 PagedAt... | [`core/skills/ai/deploy-vllm-inference/SKILL.md`](./core/skills/ai/deploy-vllm-inference/SKILL.md) |
+| **`@deploy-vllm-inference`** | Deploy, configure, scale, and optimize high-throughput LLM inference workloads using the vLLM V1 eng... | [`core/skills/ai/deploy-vllm-inference/SKILL.md`](./core/skills/ai/deploy-vllm-inference/SKILL.md) |
 
 ### Category: `ai-agent` (3 skills)
 

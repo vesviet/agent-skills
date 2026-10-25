@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/ai-systems-engineer",
   "contract_type": "agent-card",
   "name": "ai-systems-engineer",
-  "description": "architect, deploy, evaluate, and optimize production-grade AI and LLM systems — bridging machine learning models with resilient backend serving infrastructure, intelligent LLM gateways, structured output enforcement, and empirical evaluation frameworks while enforcing GPU FinOps, hardware-partitioned accelerator orchestration, knowledge distillation from frontier models to Small Language Models (SLMs), and defense-in-depth against prompt injection and model drift.",
+  "description": "architect, deploy, evaluate, and optimize production-grade AI and LLM systems — bridging machine learning models with resilient backend serving infrastructure, intelligent LLM gateways, structured output enforcement, and empirical evaluation frameworks while enforcing GPU FinOps, hardware-partitioned accelerator orchestration, knowledge distillation from frontier models to Small Language Models (SLMs), defense-in-depth against prompt injection and model drift, and context engineering (compaction, just-in-time retrieval, durable agent memory) for long-running agents.",
   "url": "pack://agent-skills/core/roles/ai-systems-engineer.md",
   "version": "5.6.1",
   "protocol_version": "1.0",
@@ -30,7 +30,7 @@
     {
       "id": "deploy-vllm-inference",
       "name": "Deploy Vllm Inference",
-      "description": "Deploy, configure, scale, and optimize high-throughput LLM inference workloads using vLLM v1 PagedAttention. Use when serving self-hosted open models (DeepSeek-R1, Qwen2.5, Llama 3.3) on Kubernetes with Dynamic Resource Allocation (DRA), NVIDIA MIG slicing, dynamic chunked prefill, prefix caching, and multi-tier KV cache offloading.",
+      "description": "Deploy, configure, scale, and optimize high-throughput LLM inference workloads using the vLLM V1 engine (default since 2025, current v0.32+). Use when serving self-hosted open-weight models (GLM-5, DeepSeek-V4, Qwen3.8, Kimi K2/K3, gpt-oss) on Kubernetes with Dynamic Resource Allocation (DRA), NVIDIA MIG slicing, dynamic chunked prefill, prefix caching, and multi-tier KV cache offloading.",
       "tags": [
         "ai",
         "pack"

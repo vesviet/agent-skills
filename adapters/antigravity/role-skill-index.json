@@ -1593,7 +1593,7 @@
     "ai-systems-engineer": {
       "name": "ai-systems-engineer",
       "title": "AI Systems Engineer",
-      "description": "architect, deploy, evaluate, and optimize production-grade AI and LLM systems — bridging machine learning models with resilient backend serving infrastructure, intelligent LLM gateways, structured output enforcement, and empirical evaluation frameworks while enforcing GPU FinOps, hardware-partitioned accelerator orchestration, knowledge distillation from frontier models to Small Language Models (SLMs), and defense-in-depth against prompt injection and model drift.",
+      "description": "architect, deploy, evaluate, and optimize production-grade AI and LLM systems — bridging machine learning models with resilient backend serving infrastructure, intelligent LLM gateways, structured output enforcement, and empirical evaluation frameworks while enforcing GPU FinOps, hardware-partitioned accelerator orchestration, knowledge distillation from frontier models to Small Language Models (SLMs), defense-in-depth against prompt injection and model drift, and context engineering (compaction, just-in-time retrieval, durable agent memory) for long-running agents.",
       "file": "core/roles/ai-systems-engineer.md",
       "skills": [
         "deploy-vllm-inference",
@@ -2529,7 +2529,7 @@
     "security-engineer": {
       "name": "security-engineer",
       "title": "Security Engineer",
-      "description": "reduce security risk early by identifying weaknesses in design, code, configuration, dependencies, and operations before they become incidents. In 2025–2026, this extends to assessing AI/LLM-specific attack surfaces (prompt injection, training data poisoning, model output exploitation), enforcing shift-left security practices (threat modeling before design sign-off, SAST/DAST in CI), and treating AI systems as high-risk trust boundary additions that require explicit security review before deployment.",
+      "description": "reduce security risk early by identifying weaknesses in design, code, configuration, dependencies, and operations before they become incidents. In 2025–2026, this extends to assessing AI/LLM-specific attack surfaces (prompt injection, training data poisoning, model output exploitation), enforcing shift-left security practices (threat modeling before design sign-off, SAST/DAST in CI), treating AI systems as high-risk trust boundary additions that require explicit security review before deployment — and, as of late 2026, covering EU Cyber Resilience Act product readiness and post-quantum cryptography transition review.",
       "file": "core/roles/security-engineer.md",
       "skills": [
         "security-audit",
@@ -2951,7 +2951,7 @@
     "ui-ux-designer": {
       "name": "ui-ux-designer",
       "title": "UI/UX Designer",
-      "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2026, this extends to designing for probabilistic AI systems (non-deterministic states, confidence indicators, transparency hooks, human override patterns), governing design systems as living infrastructure with W3C-compliant token architecture and automated design-to-code pipelines, and enforcing Taste-Skill anti-slop frontend and UX design standards (brief inference, three-dial parameterization, anti-default typography and layout discipline, and ruthless copy auditing) to ensure interfaces feel human-crafted, distinct, and free of AI tropes. In 2026, this further extends to designing for agentic AI systems with explicit autonomy tier governance (Trust Ladder), background agent intervention affordances, and GenUI component palette constraints; and to aligning with EU AI Act Article 50 transparency obligations (live 2 August 2026) and MCP 2026-07-28 protocol updates.",
+      "description": "design usable, coherent, and outcome-focused experiences that reduce friction and make product behavior clear. In 2025–2026, this extends to designing for probabilistic AI systems (non-deterministic states, confidence indicators, transparency hooks, human override patterns), governing design systems as living infrastructure with W3C-compliant token architecture and automated design-to-code pipelines, and enforcing Taste-Skill anti-slop frontend and UX design standards (brief inference, three-dial parameterization, anti-default typography and layout discipline, and ruthless copy auditing) to ensure interfaces feel human-crafted, distinct, and free of AI tropes. In 2026, this further extends to designing for agentic AI systems with explicit autonomy tier governance (Trust Ladder), background agent intervention affordances, and GenUI component palette constraints; and to aligning with EU AI Act Article 50 transparency obligations (live 2 August 2026), MCP 2026-07-28 protocol updates, DTCG Design Tokens Format Module 2025.10 conformance, dual-audience operability for AI agents operating the UI alongside humans (Agents-as-Users), and US ADA Title II accessibility deadlines (April 2027–2028).",
       "file": "core/roles/ui-ux-designer.md",
       "skills": [
         "design-ux-flow",
@@ -3218,7 +3218,7 @@
       "category": "ai",
       "type": "core",
       "file": "core/skills/ai/deploy-vllm-inference/SKILL.md",
-      "description": "Deploy, configure, scale, and optimize high-throughput LLM inference workloads using vLLM v1 PagedAttention. Use when serving self-hosted open models (DeepSeek-R1, Qwen2.5, Llama 3.3) on Kubernetes with Dynamic Resource Allocation (DRA), NVIDIA MIG slicing, dynamic chunked prefill, prefix caching, and multi-tier KV cache offloading."
+      "description": "Deploy, configure, scale, and optimize high-throughput LLM inference workloads using the vLLM V1 engine (default since 2025, current v0.32+). Use when serving self-hosted open-weight models (GLM-5, DeepSeek-V4, Qwen3.8, Kimi K2/K3, gpt-oss) on Kubernetes with Dynamic Resource Allocation (DRA), NVIDIA MIG slicing, dynamic chunked prefill, prefix caching, and multi-tier KV cache offloading."
     },
     "agent-evaluation": {
       "name": "agent-evaluation",
