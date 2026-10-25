@@ -1,8 +1,8 @@
 ---
 name: deploy-vllm-inference
-description: Deploy, configure, scale, and optimize high-throughput LLM inference workloads using vLLM v1 PagedAttention. Use when serving self-hosted open models (DeepSeek-R1, Qwen2.5, Llama 3.3) on Kubernetes with Dynamic Resource Allocation (DRA), NVIDIA MIG slicing, dynamic chunked prefill, prefix caching, and multi-tier KV cache offloading.
+description: Deploy, configure, scale, and optimize high-throughput LLM inference workloads using the vLLM V1 engine (default since 2025, current v0.32+). Use when serving self-hosted open-weight models (GLM-5, DeepSeek-V4, Qwen3.8, Kimi K2/K3, gpt-oss) on Kubernetes with Dynamic Resource Allocation (DRA), NVIDIA MIG slicing, dynamic chunked prefill, prefix caching, and multi-tier KV cache offloading.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
-version: "1.0.0"
+version: "2.0.0"
 ---
 
 # Deploy vLLM Inference
@@ -11,7 +11,7 @@ Use this skill when deploying, configuring, scaling, and benchmarking production
 
 ## When to Use
 
-- deploying self-hosted open models (DeepSeek-R1, Qwen2.5, Llama 3.3) with vLLM v1
+- deploying self-hosted open-weight models (GLM-5, DeepSeek-V4, Qwen3.8, Kimi K2/K3, gpt-oss; DeepSeek-R1/Qwen2.5/Llama 3.3 are legacy generations) with the vLLM V1 engine
 - configuring PagedAttention v3 with FP8 KV cache memory bounds (<2.4% fragmentation)
 - configuring dynamic chunked prefill to eliminate decode latency jitter (TPOT)
 - enabling hierarchical Radix Tree prefix caching for multi-turn conversations
@@ -21,12 +21,12 @@ Use this skill when deploying, configuring, scaling, and benchmarking production
 
 ## Core Rules
 
-- **Enforce vLLM v1 Architecture**: set `VLLM_USE_V1=1` to utilize the standalone C++ engine core and lock-free SPSC ring buffers over `/dev/shm`.
+- **Enforce vLLM V1 Architecture**: the V1 engine with standalone C++ core is the default (since early 2025; current release line v0.32+) — `VLLM_USE_V1=1` is only needed to pin the deprecated legacy V0 path; never deploy new workloads on V0.
 - **Dynamic Chunked Prefill**: enable chunked prefill (`--enable-chunked-prefill=true`, `--max-num-batched-tokens 2048`) to interleave prompt prefill chunks (512–2048 tokens) with decode steps, locking TPOT jitter within ±2.0ms.
-- **Prefix Caching with Radix Trees**: enable `--enable-prefix-caching=true` with block size 32 (`--block-size 32`) to achieve $\ge 70\%$ cache hits on repeated prompts.
+- **Prefix Caching with Radix Trees**: keep `--enable-prefix-caching=true` with block size 32 (`--block-size 32`) — prefix caching is on by default in V1, so verify rather than assume — to achieve $\ge 70\%$ cache hits on repeated prompts.
 - **VRAM Utilization Safety Ceiling**: cap `--gpu-memory-utilization` between `0.88` and `0.90` to preserve headroom for PyTorch runtime activations and NCCL buffers.
-- **Hardware Isolation**: multi-tenant inference must use NVIDIA MIG (`3g.40gb`) or Kubernetes 1.31+ DRA with CEL device selectors; software time-slicing on production inference is prohibited.
-- **Queue-Depth Autoscaling**: autoscale pods on request queue depth (`vllm:num_requests_waiting`, target: 5), never solely on GPU compute utilization.
+- **Hardware Isolation**: multi-tenant inference must use NVIDIA MIG (`3g.40gb`) or Kubernetes Dynamic Resource Allocation (DRA — GA v1.34+, `resource.k8s.io/v1`) with CEL device selectors; software time-slicing on production inference is prohibited.
+- **Queue-Depth Autoscaling (KEDA fronting HPA)**: autoscale pods on request queue depth (`vllm:num_requests_waiting`, target: 5) via KEDA managing the HPA, never solely on GPU compute utilization (KEDA-NOT-HPA rule in `system-design`).
 - **Mandatory tmpfs `/dev/shm`**: mount an in-memory `tmpfs` volume of at least 16GiB on `/dev/shm` to prevent NCCL bus deadlocks.
 - refer to `references/vllm-production-guide.md` for production StatefulSet manifests, DRA ResourceClaims, and Prometheus HPA configs.
 
@@ -37,10 +37,10 @@ Model GPU memory requirements:
 $$\text{VRAM}_{\text{total}} = \text{Weights}_{\text{FP8/FP16}} + \text{KV-Cache}_{\text{FP8}} + \text{Activation-Workspace} + \text{Safety-Headroom (12\%)}$$
 For Llama-3.1-70B FP8 on 8x H100 (640GB total VRAM), allocate 70GB weights + 480GB KV cache + 90GB activation headroom.
 
-### 2. Claim GPU via Kubernetes 1.31+ DRA or NVIDIA MIG
-Declare a `ResourceClaim` requesting GPUs via CEL selectors:
+### 2. Claim GPU via Kubernetes DRA (GA v1.34+) or NVIDIA MIG
+Declare a `ResourceClaim` requesting GPUs via CEL selectors (GA API `resource.k8s.io/v1`; beta-era `v1alpha3` is retired):
 ```yaml
-apiVersion: resource.k8s.io/v1alpha3
+apiVersion: resource.k8s.io/v1
 kind: ResourceClaim
 metadata:
   name: vllm-h100-claim
@@ -87,8 +87,8 @@ volumes:
       medium: HugePages
 ```
 
-### 5. Configure Queue-Depth Driven HPA Autoscaler
-Bind HPA to custom queue depth metrics from Prometheus Adapter:
+### 5. Configure Queue-Depth Autoscaling (KEDA fronting HPA)
+Prefer a KEDA ScaledObject driving these queue/KV signals (it manages the HPA below); the raw HPA binding via Prometheus Adapter remains valid:
 ```yaml
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -125,8 +125,8 @@ curl -s http://localhost:8000/metrics | grep -E "vllm:num_requests_waiting|vllm:
 - [ ] Confirm `--enable-prefix-caching=true` is enabled with `--block-size 32`
 - [ ] Validate `--gpu-memory-utilization` is capped between 0.88 and 0.90
 - [ ] Verify container mounts tmpfs on `/dev/shm` with minimum 16GiB capacity
-- [ ] Ensure multi-tenant GPU allocation uses NVIDIA MIG or K8s 1.31+ DRA CEL selectors
-- [ ] Confirm HPA scales on request queue depth (`vllm_num_requests_waiting_per_pod`)
+- [ ] Ensure multi-tenant GPU allocation uses NVIDIA MIG or K8s DRA (GA v1.34+) CEL selectors
+- [ ] Confirm autoscaling (KEDA fronting HPA) scales on request queue depth (`vllm_num_requests_waiting_per_pod`)
 
 ## Output Contracts
 

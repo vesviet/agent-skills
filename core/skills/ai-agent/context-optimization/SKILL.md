@@ -2,6 +2,7 @@
 name: context-optimization
 description: Use when optimizing LLM agent context windows, allocating token budgets, pruning semantic duplicates, scoring relevance density, and ordering context to mitigate lost-in-the-middle degradation.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter]
+version: 2.0.0
 ---
 
 # Context Optimization
@@ -37,6 +38,12 @@ Maximize effective reasoning density in agent context windows by allocating stri
   - Every injected token must contribute directly to task resolution:
     $$\text{Density} = \frac{\text{Entity and Assertion Token Count}}{\text{Total Segment Token Count}}$$
   - Strip markdown decorative wrappers, repeated navigation headers, and verbose boilerplate when density falls below $0.40$.
+- **Context Engineering 2026 (Anthropic-aligned)**:
+  - *Context rot is real*: performance degrades as the window fills with low-value tokens — treat context as a scarce runtime resource, not free capacity.
+  - *Compaction over overflow*: near the window limit, summarize the conversation and reinitialize a fresh context; keep raw records with stable identifiers so compaction is recoverable.
+  - *Just-in-time retrieval over pre-loading*: fetch context at the moment of need via tools instead of stuffing everything upfront.
+  - *Durable notes over transcript replay*: persist structured notes/memory files (decisions, entity IDs, task state) outside the window; hydrate new sessions from notes, never full raw transcripts.
+  - *Sub-agent isolation*: dispatch heavy reading to fresh-context sub-agents; return only distilled results to the orchestrator window.
 
 ## Suggested Process
 
@@ -78,6 +85,8 @@ When context optimization produces structured task dispatches or plans, emit `co
 - [ ] Conversation history older than 3 turns compressed into milestone summaries
 - [ ] Static system prompt prefixes kept stable across turns to maximize prefix caching
 - [ ] Raw JSON and stack traces stripped of redundant whitespace and repeated log lines
+- [ ] Compaction with recoverable raw records replaces blind truncation near window limits
+- [ ] Just-in-time retrieval preferred over pre-loading; durable notes hydrate new sessions instead of transcript replay
 - [ ] Verified that all essential entity IDs, URLs, and contract requirements remain intact
 
 ## Security Guardrails (OWASP ASI)

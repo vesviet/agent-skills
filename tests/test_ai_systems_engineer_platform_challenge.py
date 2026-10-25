@@ -161,7 +161,9 @@ class TestAISystemsEngineerRoleInvariants(unittest.TestCase):
     def test_07_footer_maintenance_date(self):
         """Role must have authoritative maintenance date."""
         self.assertTrue(
-            "Last updated: 2026-10-05" in self.role_content or "Last updated: 2026-10-17" in self.role_content
+            "Last updated: 2026-10-05" in self.role_content
+            or "Last updated: 2026-10-17" in self.role_content
+            or "Last updated: 2026-10-25" in self.role_content
         )
 
 
@@ -470,7 +472,9 @@ class TestAdversarialEdgeCaseCoverage(unittest.TestCase):
             "## Anti-Patterns To Reject",
             "## Role Handoff",
             "## Definition Of Done",
-            "Last updated: 2026-10-17" if "Last updated: 2026-10-17" in self.role_content else "Last updated: 2026-10-05",
+            "Last updated: 2026-10-25" if "Last updated: 2026-10-25" in self.role_content else (
+                "Last updated: 2026-10-17" if "Last updated: 2026-10-17" in self.role_content else "Last updated: 2026-10-05"
+            ),
         ]
         indices = [self.role_content.find(s) for s in expected_ordered_sections]
         for s, idx in zip(expected_ordered_sections, indices):

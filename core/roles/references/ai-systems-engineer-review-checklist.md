@@ -1,6 +1,6 @@
 ## AI Systems Engineer Review Checklist
 
-This reference checklist provides detailed AI systems engineering, model serving infrastructure, accelerator virtualization, SLM distillation, and gateway governance criteria to meet 2026–2027 SOTA standards. It synthesizes high-throughput vLLM v1 PagedAttention serving, dynamic chunked prefill, Radix Tree prefix caching, NVIDIA MIG and Kubernetes 1.31+ DRA hardware slicing, DeepSeek-R1 SLM distillation, FastMCP tool integration, and LiteLLM spend governance.
+This reference checklist provides detailed AI systems engineering, model serving infrastructure, accelerator virtualization, SLM distillation, and gateway governance criteria to meet 2026–2027 SOTA standards. It synthesizes high-throughput vLLM v1 PagedAttention serving, dynamic chunked prefill, Radix Tree prefix caching, NVIDIA MIG and Kubernetes DRA hardware slicing (GA v1.34+), DeepSeek-R1 SLM distillation, FastMCP tool integration, and LiteLLM spend governance.
 
 ### 1. High-Throughput Model Serving Engine (vLLM v1 C++ Core & Lock-Free IPC)
 - **Standalone C++ Core Execution Loop**:
@@ -102,7 +102,7 @@ This reference checklist provides detailed AI systems engineering, model serving
 ### 10. Centralized AI Gateway Orchestration & LiteLLM Spend Governance
 - **Centralized Gateway Choke Point**:
   - 100% of application and agent LLM calls route through centralized proxy gateways (LiteLLM, Portkey); direct provider calls using hardcoded API keys are a strict policy violation
-  - gateway enforces automated multi-provider fallback chains (e.g. Anthropic Claude 3.5 Sonnet $\rightarrow$ OpenAI GPT-4o $\rightarrow$ local self-hosted vLLM) with exponential backoff
+  - gateway enforces automated multi-provider fallback chains (e.g. Anthropic Claude Opus 5.5 $\rightarrow$ OpenAI GPT-6 $\rightarrow$ local self-hosted vLLM v0.32+) with exponential backoff; re-validated quarterly as frontier generations turn over
 - **Token Budget Ceilings & FinOps Metadata**:
   - all requests carry mandatory cost-attribution headers (`x-team-id`, `x-service-name`, `x-budget-tier`)
   - autonomous agentic sessions bound to circuit breakers capping per-session token spend to $\le 10\%$ of the daily allocated budget to terminate circular execution loops
@@ -122,7 +122,7 @@ This reference checklist provides detailed AI systems engineering, model serving
 
 ### 13. GPU FinOps, DCGM Observability & Queue-Depth Autoscaling
 - **Queue-Depth Driven HPA Autoscaling**:
-  - Kubernetes Horizontal Pod Autoscaler (`autoscaling/v2`) scales on request queue depth custom metrics (`vllm:num_requests_waiting`, target: 5 requests per pod) and KV cache usage factor (`vllm:gpu_cache_usage_factor`, target: 0.80) via Prometheus Adapter:
+  - Kubernetes Horizontal Pod Autoscaler (`autoscaling/v2`) scales on request queue depth custom metrics (`vllm:num_requests_waiting`, target: 5 requests per pod) and KV cache usage factor (`vllm:gpu_cache_usage_factor`, target: 0.80) via Prometheus Adapter; prefer KEDA as the event-driven scaler fronting the HPA for queue/KV signals (KEDA-NOT-HPA rule in `system-design`):
     ```promql
     vllm:num_requests_waiting{job="vllm-serving"} > 5
     ```
@@ -149,3 +149,11 @@ This reference checklist provides detailed AI systems engineering, model serving
 | **TPOT Tail Jitter** | Jitter $\le \pm 1.8\text{ms}$ | vLLM benchmark client (`vllm bench`) | TPOT variance $\le 1.8\text{ms}$ |
 | **K8s DRA Device Claim** | CEL claim resolution | `kubectl get resourceclaims -n ai-serving` | Claim status: Bound |
 | **tmpfs Sizing** | `/dev/shm` $\ge 16\text{GiB}$ | `df -h /dev/shm` inside inference pod | Available $\ge 16\text{GiB}$ |
+
+### 16. 2026-10 Modernization Gates (`CONTEXT-ENGINEERING LOCK`)
+
+- **Model-Lineage Gate**: no 2024-era model pins (pre-GPT-5 OpenAI flagships, pre-Claude-4.5 Anthropic models, or Qwen2.5/Llama 3.3-class releases treated as current); fallback chains and distillation teachers reference the 2026 generation (GPT-6 family, Claude 5.x, Gemini 4; open-weight: GLM-5, DeepSeek-V4, Qwen3.8, Kimi K2/K3, gpt-oss) and are re-validated quarterly
+- **Engine-Currency Gate**: deployments track the current vLLM release line (v0.32+ as of 2026-10) with the V1 engine default (V0 deprecated; `VLLM_USE_V1` no longer required) and prefix caching verified on-by-default; DRA claims use the GA `resource.k8s.io/v1` API (GA v1.34), never beta `v1alpha3`
+- **Transport Gate**: MCP servers speak Streamable HTTP (MCP spec 2025-03-26+; FastMCP 2.x default); new HTTP+SSE deployments are rejected
+- **Context-Engineering Gate**: long-running agents enforce compaction near window limits with recoverable raw records, just-in-time retrieval over pre-loading, durable notes/memory outside the window, and sub-agent isolation for heavy reading; raw-transcript replay across sessions fails review
+- **Eval-Calibration Gate**: agent evals report pass^k reliability alongside single-pass scores and are calibrated against the current landscape (τ²-bench, Terminal-Bench 2.0 hard/unsaturated; SWE-bench Verified treated as saturated)

@@ -2,6 +2,7 @@
 name: agent-evaluation
 description: Use when constructing representative agent evaluation benchmark suites, defining scoring rubrics, implementing deterministic and LLM-as-a-judge graders, classifying failure taxonomies, and establishing reproducible agent release gates.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build]
+version: 2.0.0
 ---
 
 # Agent Evaluation
@@ -37,6 +38,9 @@ Establish empirical benchmark suites, calibrated multi-dimensional scoring rubri
     - Fail-Closed: Pass rate $< 80\%$, any safety/injection breach, or any structural contract invalidity.
 - **Structured Failure Taxonomy**:
   - Every failure must be categorized into standard defect classes: `hallucination`, `goal_hijack`, `schema_violation`, `trajectory_loop`, `tool_breach`, or `timeout`.
+- **2026 Benchmark Calibration & pass^k Reliability**:
+  - Calibrate internal suites against the current agentic landscape: τ²-bench (dual-control world state; τ-i18n/voice in Bench 2.0), Terminal-Bench 2.0 (hard and unsaturated), BrowseComp (near-saturated ~92%), SWE-bench Verified (saturated — ~1.7-point spread across top-5; prefer harder enterprise variants for discrimination).
+  - Report **pass^k** (k-run reliability) alongside single-pass scores — headline single-run scores are gameable and unreproducible; a release gate on pass^1 alone is not evidence of reliability.
 
 ## Suggested Process
 
@@ -83,6 +87,7 @@ When completing an evaluation benchmark, emit `contracts/schemas/agent-eval-repo
 - [ ] All test failures classified into standardized failure taxonomy categories
 - [ ] Output artifacts strictly validate against `agent-eval-report.json`
 - [ ] Automated gate blocks release upon safety violations or pass rate below 90%
+- [ ] pass^k reliability reported alongside single-pass scores; suite calibrated against the 2026 landscape (τ²-bench, Terminal-Bench 2.0)
 
 ## Security Guardrails (OWASP ASI)
 
