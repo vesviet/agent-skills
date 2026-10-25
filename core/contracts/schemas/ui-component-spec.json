@@ -296,17 +296,36 @@
         }
       ],
       "states": [
-        "default (store courier)",
-        "fallback (warehouse)",
-        "unassigned"
+        "default",
+        "fallback"
       ],
-      "accessibility": "aria-label must include courier type and fallback status",
+      "copy_per_state": {
+        "default": "Store courier assigned",
+        "fallback": "Warehouse fallback active"
+      },
+      "accessibility": {
+        "role": "status",
+        "keyboard_support": false,
+        "aria_labels": [
+          "Courier type and fallback status badge"
+        ]
+      },
       "api_dependencies": [
         "GET /api/v1/orders/:id"
       ],
       "design_tokens": [
-        "color.courier.store",
-        "color.courier.fallback.warning"
+        {
+          "token_name": "color.courier.store",
+          "type": "color",
+          "semantic_purpose": "Primary badge color for store courier",
+          "primitive_reference": "green-500"
+        },
+        {
+          "token_name": "color.courier.fallback.warning",
+          "type": "color",
+          "semantic_purpose": "Warning badge color for fallback courier",
+          "primitive_reference": "amber-500"
+        }
       ],
       "type": "presentational"
     }

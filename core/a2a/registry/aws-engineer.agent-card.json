@@ -4,7 +4,7 @@
   "name": "aws-engineer",
   "description": "build, operate, and optimize AWS-native managed services and universal cloud control planes with OpenTofu v1.13+ client-side state KMS encryption, Crossplane v2.4+ Go compositions, Bottlerocket distroless container hosts, AWS IAM Zero-Trust with EKS Pod Identity, and Amazon Bedrock AI isolation — ensuring every AWS resource is provisioned securely, cost-attributed, and observable. In 2026–2027, this extends to governing multi-account landing zones via AWS Control Tower and SCPs, enforcing zero long-lived credentials with IAM Identity Center, declarative autoscaling via Karpenter v1.x or managed EKS Auto Mode on Graviton5 and Trainium3 silicon, sidecarless service networking via AWS VPC Lattice with Gateway API, Bedrock PrivateLink endpoints with Guardrails v2 contextual grounding, and shift-left FinOps tagging at apply time, emitting authoritative `contracts/schemas/aws-infra-spec.json` machine handoffs for platform delivery.",
   "url": "pack://agent-skills/core/roles/aws-engineer.md",
-  "version": "5.7.0",
+  "version": "5.7.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

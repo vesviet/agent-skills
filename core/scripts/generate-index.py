@@ -17,6 +17,8 @@ import re
 import sys
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parent.parent.parent
 CORE_ROOT = ROOT / "core"
 ROLES_DIR = CORE_ROOT / "roles"
@@ -24,6 +26,8 @@ SKILLS_DIR = CORE_ROOT / "skills"
 WORKFLOWS_DIR = CORE_ROOT / "workflows"
 SCHEMAS_DIR = CORE_ROOT / "contracts" / "schemas"
 REGISTRY_DIR = CORE_ROOT / "a2a" / ".well-known"
+OVERLAYS_DIR = ROOT / "overlays"
+PACKS_DIR = ROOT / "packs"
 VERSION_PATH = ROOT / "VERSION"
 
 
@@ -38,6 +42,8 @@ ROLE_ALIASES = {
     "author": "content-writer",
     "article-writer": "content-writer",
     "blog-writer": "content-writer",
+    "content-mgr": "content-manager",
+    "content-lead": "content-manager",
     "tech-writer": "technical-writer",
     "doc-writer": "technical-writer",
     "docs": "technical-writer",
@@ -778,7 +784,63 @@ def parse_schemas() -> dict:
     return schemas
 
 
-def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas: dict) -> str:
+def parse_overlays() -> dict:
+    overlays = {}
+    for d in sorted(OVERLAYS_DIR.iterdir()):
+        if not d.is_dir():
+            continue
+        readme = d / "README.md"
+        rules_count = len(list((d / "rules").glob("*.md"))) if (d / "rules").is_dir() else 0
+        skills_count = len(list((d / "skills").glob("*/SKILL.md"))) if (d / "skills").is_dir() else 0
+        desc = ""
+        if readme.exists():
+            txt = readme.read_text(encoding="utf-8")
+            lines = [l.strip() for l in txt.splitlines() if l.strip() and not l.startswith("#")]
+            if lines:
+                desc = lines[0]
+        overlays[d.name] = {
+            "name": d.name,
+            "type": "Skill Overlay" if skills_count > 0 else "Rule-Only",
+            "description": desc,
+            "rules_count": rules_count,
+            "skills_count": skills_count,
+            "file": str(readme.relative_to(ROOT)).replace("\\", "/") if readme.exists() else str(d.relative_to(ROOT)).replace("\\", "/")
+        }
+    return overlays
+
+
+def parse_packs() -> dict:
+    packs = {}
+    for d in sorted(PACKS_DIR.iterdir()):
+        if not d.is_dir():
+            continue
+        manifest = d / "manifest.yaml"
+        if not manifest.exists():
+            continue
+        readme = d / "README.md"
+        content = manifest.read_text(encoding="utf-8")
+        try:
+            mdata = yaml.safe_load(content) or {}
+        except Exception:
+            mdata = {}
+        name = mdata.get("name", d.name)
+        desc = (mdata.get("description") or "").replace("\n", " ").strip()
+        includes = mdata.get("includes") or []
+        packs[d.name] = {
+            "name": name,
+            "description": desc,
+            "includes": includes,
+            "manifest_file": str(manifest.relative_to(ROOT)).replace("\\", "/"),
+            "readme_file": str(readme.relative_to(ROOT)).replace("\\", "/") if readme.exists() else None
+        }
+    return packs
+
+
+def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas: dict, overlays: dict | None = None, packs: dict | None = None) -> str:
+    if overlays is None:
+        overlays = parse_overlays()
+    if packs is None:
+        packs = parse_packs()
     version = pack_version()
     core_count = sum(1 for s in skills.values() if s.get("type") == "core")
     overlay_count = sum(1 for s in skills.values() if s.get("type") == "overlay")
@@ -865,6 +927,33 @@ def generate_markdown_index(roles: dict, skills: dict, workflows: dict, schemas:
     md.append("")
     md.append("---")
     md.append("")
+    md.append(f"## 🧩 Domain & Stack Overlays ({len(overlays)} Overlays)")
+    md.append("")
+    md.append("| Overlay | Type | Description | Rules | Skills | File |")
+    md.append("|:---|:---|:---|:---|:---|:---|")
+    for ov_name, ov in sorted(overlays.items()):
+        desc = ov["description"][:100] + ("..." if len(ov["description"]) > 100 else "")
+        rules_str = f"{ov['rules_count']} rule" if ov['rules_count'] == 1 else f"{ov['rules_count']} rules"
+        skills_str = f"{ov['skills_count']} skill" if ov['skills_count'] == 1 else f"{ov['skills_count']} skills"
+        md.append(f"| **`{ov['name']}`** | {ov['type']} | {desc} | {rules_str} | {skills_str} | [`{ov['file']}`](./{ov['file']}) |")
+
+    md.append("")
+    md.append("---")
+    md.append("")
+    md.append(f"## 📦 Engineering Packs ({len(packs)} Packs)")
+    md.append("")
+    md.append("| Pack | Description | Includes | Manifest | Documentation |")
+    md.append("|:---|:---|:---|:---|:---|")
+    for pk_name, p in sorted(packs.items()):
+        desc = p["description"][:100] + ("..." if len(p["description"]) > 100 else "")
+        includes_str = ", ".join(f"`{inc}`" for inc in p["includes"]) or "—"
+        manifest_link = f"[`manifest.yaml`](./{p['manifest_file']})"
+        readme_link = f"[`README.md`](./{p['readme_file']})" if p.get("readme_file") else "—"
+        md.append(f"| **`{p['name']}`** | {desc} | {includes_str} | {manifest_link} | {readme_link} |")
+
+    md.append("")
+    md.append("---")
+    md.append("")
     md.append(f"## 🔄 Workflows ({len(workflows)} Workflows)")
     md.append("")
     md.append("| Workflow | Title | File |")
@@ -905,8 +994,12 @@ def generate_json_index(roles: dict, skills: dict, workflows: dict, schemas: dic
     }
 
 
-def build_artifacts(roles: dict, skills: dict, workflows: dict, schemas: dict) -> dict[str, tuple[Path, str]]:
-    md = (ROOT / "INDEX.md", generate_markdown_index(roles, skills, workflows, schemas))
+def build_artifacts(roles: dict, skills: dict, workflows: dict, schemas: dict, overlays: dict | None = None, packs: dict | None = None) -> dict[str, tuple[Path, str]]:
+    if overlays is None:
+        overlays = parse_overlays()
+    if packs is None:
+        packs = parse_packs()
+    md = (ROOT / "INDEX.md", generate_markdown_index(roles, skills, workflows, schemas, overlays, packs))
     json_payload = json.dumps(generate_json_index(roles, skills, workflows, schemas), indent=2, ensure_ascii=False) + "\n"
     registry_json = (REGISTRY_DIR / "role-skill-index.json", json_payload)
     adapter_json = (ROOT / "adapters" / "antigravity" / "role-skill-index.json", json_payload)
@@ -927,10 +1020,12 @@ def main() -> int:
     skills = parse_skills()
     workflows = parse_workflows()
     schemas = parse_schemas()
+    overlays = parse_overlays()
+    packs = parse_packs()
 
     print(f"Loaded {len(roles)} roles, {len(skills)} skills, {len(workflows)} workflows, {len(schemas)} schemas.")
 
-    artifacts = build_artifacts(roles, skills, workflows, schemas)
+    artifacts = build_artifacts(roles, skills, workflows, schemas, overlays, packs)
 
     if args.check:
         stale = []

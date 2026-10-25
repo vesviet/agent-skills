@@ -52,4 +52,4 @@ When this workflow produces a structured handoff, emit:
 
 - **`contracts/schemas/seo-content-brief.json`** from Step 1, capturing the niche, the cluster, the supporting articles, and the commercial intent.
 - **`contracts/schemas/content-handoff.json`** (or markdown frontmatter block) from Step 3, capturing the publish event, the affiliate disclosure placement, and the structured data decision.
-- **`contracts/schemas/release-notes.json`** (or frontmatter block) from Step 4, capturing the distribution channels and the repurposed short-form content.
+- **`contracts/schemas/document-manifest.json`** (or frontmatter block) from Step 4, capturing the distribution channels and the repurposed short-form content.

@@ -446,27 +446,27 @@ class TestGovernanceAndContractDefects(unittest.TestCase):
 
     def test_02_seo_audit_schema_defect_investigation(self):
         """
-        EMPIRICAL FINDING: seo-audit-report.json bundled example sets
+        VERIFIED REMEDIATION: seo-audit-report.json bundled example sets
         conflicting_url: null and exception_rationale: null,
-        which are strictly typed as {"type": "string"} in the schema definition.
+        which are typed as ["string", "null"] in the schema definition.
         """
         schema_path = PROJECT_ROOT / "core" / "contracts" / "schemas" / "seo-audit-report.json"
         with open(schema_path, "r", encoding="utf-8") as f:
             schema = json.load(f)
 
-        # Check property definition
+        # Check property definition allows null
         cannibalization = schema["properties"]["cannibalization_check"]["properties"]
         conflicting_url_type = cannibalization["conflicting_url"]["type"]
-        self.assertEqual(conflicting_url_type, "string", "conflicting_url is typed as string without null")
+        self.assertIn("null", conflicting_url_type, "conflicting_url allows null")
 
-        # Confirm that validating an object with None/null fails against this property
+        # Confirm that validating an object with None/null succeeds against this property
         test_payload = {
             "conflicting_url": None,
-            "status": "clear"
+            "status": "clear",
+            "window_checked": "2026-06-05 to 2026-06-12"
         }
         sub_schema = schema["properties"]["cannibalization_check"]
-        with self.assertRaises(jsonschema.ValidationError):
-            jsonschema.validate(instance=test_payload, schema=sub_schema)
+        jsonschema.validate(instance=test_payload, schema=sub_schema)
 
     def test_03_check_posts_script_reality_vs_readme_claim(self):
         """

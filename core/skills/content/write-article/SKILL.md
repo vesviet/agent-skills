@@ -152,6 +152,7 @@ When AI support is used anywhere in drafting, apply three disciplines — full t
 When completing article drafting and preparing a publishable content handoff for editorial review, emit:
 
 - **`contracts/schemas/content-handoff.json`** — Emitted upon completing an article or editorial piece, documenting word counts, target keywords, E-E-A-T signals, answer-first/GEO/AEO compliance, and non-commodity (unique POV/evidence) additions. Set `produced_by_role: content-writer`.
+- **`contracts/schemas/series-article.json`** — Schema for a series article output, validating required frontmatter fields, weight, series taxonomy, and body structure before publishing. Set `produced_by_role: content-writer`.
 
 Skip emission for quick copy snippets or internal note drafting with no publishing workflow.
 

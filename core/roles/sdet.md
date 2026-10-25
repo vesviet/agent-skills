@@ -86,6 +86,15 @@ Contracts owned by other roles — do not author these as SDET:
 - **does not own**: functional manual exploratory testing — QA Engineer
 - **does not own**: product feature definition and scope prioritization — Product Manager
 
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **SDET** | Evaluation harness architecture, automated release gate enforcement, synthetic test data | Product code implementation, manual exploratory testing |
+| **QA Engineer** | Comprehensive release test reports, exploratory validation, end-to-end quality sign-off | Dedicated agent benchmark evaluation harnesses |
+| **Prompt Engineer** | System prompts, context budgeting, few-shot calibration | Eval rubric grading automation, CI test runner scripts |
+| **Reviewer** | Static code review findings, architectural peer reviews | Automated evaluation pipelines and benchmark harnesses |
+
 ## Collaboration
 
 - works with **Prompt Engineer** on evaluation dataset coverage, rubric calibration, and regression tracking

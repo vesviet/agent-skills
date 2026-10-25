@@ -62,12 +62,7 @@ Use this skill to generate practical tasks, problem sets, and exams strictly fol
 
 When the exercise set crosses a role boundary or is handed off to an LMS, tutoring engine, or teacher, emit:
 
-- **`contracts/schemas/learning-handoff.json`** — populating `artifact_type: "exercises"`, `dok_level`, `bloom_2026_taxonomy_tier`, `cognitive_resilience_mechanisms`, `stanbkt_irt_parameters`, `eu_ai_act_compliance`, `content_paths`.
-- **`contracts/schemas/bloom-2026-taxonomy.json`** — AI-age cognitive levels including Orchestration.
-- **`contracts/schemas/cognitive-resilience-exercise-spec.json`** — deliberate friction, bounded AI patterns.
-- **`contracts/schemas/stanbkt-irt-spec.json`** — Bayesian IRT parameters, posteriors, uncertainty quantification.
-- **`contracts/schemas/eu-ai-act-compliance-spec.json`** — High-Risk AI metadata for exercise generators.
-- **`contracts/schemas/adaptive-exercise-selection-spec.json`** — BKT-driven exercise selection.
+- **`contracts/schemas/learning-handoff.json`** — populating `artifact_type: "exercises"`, `dok_level`, `bloom_2026_taxonomy_tier` (including Orchestration), `cognitive_resilience_mechanisms` (deliberate friction, bounded AI patterns), `stanbkt_irt_parameters` (Bayesian IRT parameters, posteriors, uncertainty quantification), `eu_ai_act_compliance` (High-Risk AI metadata), and adaptive exercise selection specifications.
 - For human-readable formats, emit exercise matrix markdown with questions, DOK tags, Bloom 2026 tiers, IRT parameters, partial-credit barems, compliance metadata.
 - Every AI-generated question set must record human review metadata before student assignment.
 

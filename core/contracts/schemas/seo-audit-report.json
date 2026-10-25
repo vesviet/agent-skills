@@ -598,11 +598,17 @@
           "description": "Date range checked (e.g. 2026-06-05 to 2026-06-12)."
         },
         "conflicting_url": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "description": "URL of conflicting page if risk_found."
         },
         "exception_rationale": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "description": "If exception_documented, explain why publishing is still appropriate."
         }
       }

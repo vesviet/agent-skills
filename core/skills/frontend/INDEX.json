@@ -39,6 +39,19 @@
       "version": "1.0.0"
     },
     {
+      "name": "anti-ui-slop-finish-gate",
+      "description": "Use when conducting pre-staging UI finish reviews, enforcing 100% interaction state coverage, and applying the 13 universal escalation triggers.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_build"
+      ],
+      "version": "1.0.0"
+    },
+    {
       "name": "component-composition",
       "description": "Architect scalable UI components using compound components, Radix-style asChild slot delegation, headless hook separation, and anti-boolean prop sprawl patterns. Use when designing reusable component libraries, refactoring prop-heavy components, or decoupling interaction state from presentation.",
       "allowed-tools": [
@@ -51,6 +64,48 @@
         "run_linter",
         "run_build",
         "run_dev_server",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "design-md-specification",
+      "description": "Use when generating machine-readable DESIGN.md documents, specifying YAML frontmatter design tokens, enforcing two-tier token architectures, calculating concentric radii, and codifying tabular-nums standards.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_build"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "design-system-engineering",
+      "description": "Use when engineering design token architectures, calculating concentric border radii, establishing perceptual OKLCH color ramps, and verifying APCA contrast tables.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_build"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "frontend-micro-polish",
+      "description": "Use when applying micro-typographic polish, optical padding compensations, mobile input zoom guards, active tap scales, and 3-layer shadow elevations.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
         "execute_command"
       ],
       "version": "1.0.0"
@@ -121,6 +176,35 @@
       "version": "1.0.0"
     },
     {
+      "name": "interactive-component-workbench",
+      "description": "Use when building scratch-route component workbenches with search-param state switchers and multi-variant pickers for isolated multi-state UI testing.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "motion-performance-engineering",
+      "description": "Use when engineering 60fps/120fps hardware-accelerated animations, restricting transitions to composite-only properties, calibrating spring physics, and enforcing prefers-reduced-motion accessibility guards.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_build"
+      ],
+      "version": "1.0.0"
+    },
+    {
       "name": "setup-design-system",
       "description": "Configure a scalable design system, styling framework, and component architecture for a frontend project. Use when initializing a new project, migrating to a unified CSS strategy, or setting up a component library (e.g., Tailwind, Storybook, Radix).",
       "allowed-tools": [
@@ -151,6 +235,21 @@
         "run_build",
         "run_dev_server",
         "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "web-quality-audit",
+      "description": "Use when conducting Core Web Vitals audits, profiling Long Animation Frames and interaction responsiveness, auditing DOM depth and bundle bloat, and enforcing Lighthouse CI quality gates.",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build"
       ],
       "version": "1.0.0"
     }

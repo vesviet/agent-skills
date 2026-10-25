@@ -605,24 +605,21 @@ class TestDataContractsValidation(unittest.TestCase):
 
     def test_challenge_10_seo_audit_schema_defect_investigation(self):
         """
-        Empirically verify schema defect in seo-audit-report.json:
-        The bundled example in seo-audit-report.json crashes under Draft 2020-12 jsonschema.validate
-        because 'conflicting_url' and 'exception_rationale' are typed as 'string' rather than ['string', 'null'].
+        Verify schema remediation in seo-audit-report.json:
+        The bundled example in seo-audit-report.json validates cleanly under Draft 2020-12 jsonschema.validate
+        because 'conflicting_url' and 'exception_rationale' allow nullable strings ['string', 'null'].
         """
         schema = self.schemas["seo-audit-report.json"]
         bundled_example = schema["examples"][0]
 
-        # 1. Empirically prove bundled example crashes jsonschema.validate
-        with self.assertRaises(jsonschema.ValidationError) as ctx:
-            jsonschema.validate(instance=bundled_example, schema=schema)
-        self.assertIn("None is not of type 'string'", str(ctx.exception))
+        # 1. Bundled example with null values validates cleanly under Draft 2020-12
+        jsonschema.validate(instance=bundled_example, schema=schema)
 
-        # 2. Verify that removing the null values or replacing with string fixes validation
-        fixed_example = copy.deepcopy(bundled_example)
-        del fixed_example["cannibalization_check"]["conflicting_url"]
-        del fixed_example["cannibalization_check"]["exception_rationale"]
-        # Now validation succeeds cleanly
-        jsonschema.validate(instance=fixed_example, schema=schema)
+        # 2. Verify that string values also validate cleanly
+        string_example = copy.deepcopy(bundled_example)
+        string_example["cannibalization_check"]["conflicting_url"] = "https://example.com/conflict"
+        string_example["cannibalization_check"]["exception_rationale"] = "Approved exception"
+        jsonschema.validate(instance=string_example, schema=schema)
 
     def test_challenge_17_content_handoff_role_enum_mismatch(self):
         """

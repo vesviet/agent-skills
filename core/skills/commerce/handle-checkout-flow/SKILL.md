@@ -165,10 +165,7 @@ Effective July 1, 2026 (electronic ID verification from Jan 1, 2027):
 
 When the checkout flow is consumed by storefront, payment, or fulfillment agents, emit:
 
-- **`contracts/schemas/api-contract-spec.json`** describing the checkout endpoints, the request/response shapes, and the auth requirements.
-- **`contracts/schemas/agentic-commerce-spec.json`** for ACP/UCP endpoints, pre-auth gates, MoR assignment.
-- **`contracts/schemas/address-validation-spec.json`** for validation API contract.
-- **`contracts/schemas/tax-engine-spec.json`** for selected tax engine integration.
+- **`contracts/schemas/api-contract-spec.json`** describing the checkout endpoints, request/response shapes, auth requirements, agentic commerce interfaces (ACP/UCP pre-auth gates, MoR assignment), address validation contracts, and tax engine integration payloads.
 - For human-readable reports, a markdown summary of the flow, the failure modes, and the rollback path.
 
 Skip emission for single-checkout experiments that do not cross a role boundary.

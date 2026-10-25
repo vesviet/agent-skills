@@ -43,14 +43,9 @@ Use this skill when the task involves designing the data model or implementing t
 
 When the catalog change is consumed by a storefront, a marketplace sync, or a downstream analytics system, emit:
 
-- **`contracts/schemas/api-contract-spec.json`** describing the catalog entity shape, the variant structure, and the inventory model.
+- **`contracts/schemas/api-contract-spec.json`** describing the catalog entity shape, variant structure, inventory model, vector search endpoints, content governance review workflows, and seller verification gates.
+- **`contracts/schemas/data-pipeline-spec.json`** for Kafka event-sourced inventory adjustments, CDC feeds, knowledge graph ETL, and downstream consumer contracts.
 - **`contracts/schemas/deployment-plan.json`** when the catalog change is part of a coordinated multi-role rollout.
-- **`contracts/schemas/vector-search-spec.json`** for embedding pipeline and RRF fusion config.
-- **`contracts/schemas/ai-content-governance-spec.json`** for generation → review → publish workflow.
-- **`contracts/schemas/event-sourced-inventory-spec.json`** for Kafka event schema and consumer contracts.
-- **`contracts/schemas/product-knowledge-graph-spec.json`** for GraphRAG entities, relations, retrieval.
-- **`contracts/schemas/vn-seller-verification-spec.json`** for verification gate integration.
-- **`contracts/schemas/pydantic-catalog-schema.json`** for enforced entity/relation schemas.
 - For human-readable reports, a markdown diff of the affected SKUs and the rationale.
 
 Skip emission for read-only catalog queries that do not cross a role boundary.

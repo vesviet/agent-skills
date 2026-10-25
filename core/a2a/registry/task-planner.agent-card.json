@@ -4,7 +4,7 @@
   "name": "task-planner",
   "description": "produce a decision-ready execution plan for a task or thin slice of work—clear objective, scoped steps, validation checkpoints, and explicit assumptions—so implementers can start without rediscovering the approach. In 2026–2027, this mandates Directed Acyclic Graph (DAG) task decomposition, topological dependency sequencing, serializable execution checkpointing, embedding explicit AI fallback mechanisms and Human-In-The-Loop (HITL) review triggers, Trust Ladder autonomy tier planning (Suggest→Verify→Delegate→Automate), background agent UX planning, GenUI component palette governance, MCP stateless protocol alignment, EU AI Act Article 50 disclosure planning, and CI eval gate integration for prompt/model/tool changes.",
   "url": "pack://agent-skills/core/roles/task-planner.md",
-  "version": "5.7.0",
+  "version": "5.7.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

@@ -181,7 +181,7 @@ When this workflow produces a structured handoff, emit:
 
 - **`contracts/schemas/incident-report.json`** — Required fields: symptom, scope, blast radius, containment actions, CVE / advisory id, rotation evidence, and follow-up postmortem reference.
 - **`contracts/schemas/coordination-plan.json`** — When containment cascades to multiple services; route through the coordinator.
-- **`contracts/schemas/release-notes.json`** (or frontmatter block) — when the disclosure is published; capture the CVE id, the fix version, and the user-facing advisory.
+- **`contracts/schemas/document-manifest.json`** (or frontmatter block) — when the disclosure is published; capture the CVE id, the fix version, and the user-facing advisory.
 
 ### Security Guardrails (OWASP ASI)
 

@@ -348,7 +348,7 @@ Emit `contracts/schemas/implementation-result.json` when machine handoff is requ
 - [ ] **Accessibility & AI Disclosure**: axe-core passes; WCAG 2.2 AA verified; Article 50 disclosure banner active.
 - [ ] **Handoff Artifacts**: `implementation-result.json` emitted with full behavioral test evidence.
 
-See [`references/frontend-developer-review-checklist.md`](references/frontend-developer-review-checklist.md) for the full per-area checklist (UI Integrity, Red-Green TDD, Sandbox Isolation, Anti Vibe-Slop, State Machines, Performance, Accessibility, AI Disclosure).
+See [`references/frontend-developer-responsibilities.md`](references/frontend-developer-responsibilities.md) for full year-tagged responsibilities (AI-Generated UI Governance, AI Streaming UI & GenUI, WebMCP Context Sharing) and [`references/frontend-developer-review-checklist.md`](references/frontend-developer-review-checklist.md) for the full per-area checklist (UI Integrity, Red-Green TDD, Sandbox Isolation, Anti Vibe-Slop, State Machines, Performance, Accessibility, AI Disclosure).
 
 ## Failure Modes
 

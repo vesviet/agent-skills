@@ -123,4 +123,4 @@ When this workflow produces a structured handoff, emit:
 
 - **`contracts/schemas/content-handoff.json`** (or markdown frontmatter block) from each draft, capturing the part slug, the language, the frontmatter gate verdict, the AI Governance verdict, and the reviewer verdict.
 - **`contracts/schemas/coordination-plan.json`** from Step 5, capturing the parallel subagent dispatch and the translation order.
-- **`contracts/schemas/release-notes.json`** (or frontmatter block) from Step 7-8, capturing the published series, the languages, and the go-live commit hashes.
+- **`contracts/schemas/document-manifest.json`** (or frontmatter block) from Step 7-8, capturing the published series, the languages, and the go-live commit hashes.

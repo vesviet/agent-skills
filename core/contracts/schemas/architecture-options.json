@@ -35,7 +35,13 @@
           "option_id": {
             "type": "string"
           },
+          "title": {
+            "type": "string"
+          },
           "summary": {
+            "type": "string"
+          },
+          "description": {
             "type": "string"
           },
           "pros": {
@@ -93,6 +99,7 @@
         {
           "option_id": "A",
           "title": "Conditional branch in existing command",
+          "summary": "Conditional branch in existing command: Add if-block for COD+store_id inside existing NewLogicAutoAssign.php",
           "description": "Add if-block for COD+store_id inside existing NewLogicAutoAssign.php",
           "pros": [
             "Fast to ship; no new files"
@@ -100,12 +107,13 @@
           "cons": [
             "Increases complexity; harder to test in isolation"
           ],
-          "risk": "medium",
-          "effort": "low"
+          "migration_effort": "low",
+          "risk_notes": "medium - increases complexity; harder to test in isolation"
         },
         {
           "option_id": "B",
           "title": "Dedicated CodStoreRouter service class",
+          "summary": "Dedicated CodStoreRouter service class: Extract routing logic to separate class called from command",
           "description": "Extract routing logic to separate class called from command",
           "pros": [
             "Single responsibility; testable; extensible"
@@ -113,8 +121,8 @@
           "cons": [
             "More files; slightly higher initial cost"
           ],
-          "risk": "low",
-          "effort": "medium"
+          "migration_effort": "medium",
+          "risk_notes": "low - single responsibility, testable in isolation"
         }
       ],
       "recommendation": "A",

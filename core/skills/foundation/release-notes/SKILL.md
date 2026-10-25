@@ -164,7 +164,7 @@ Before publishing, verify:
 When the release notes are consumed by a CI pipeline, a release manager, or an
 external publication system, emit:
 
-- **`contracts/schemas/release-notes.json`** (or, when a stable schema is not yet available, a markdown frontmatter block listing `version`, `release_date`, `breaking_changes[]`, `new_features[]`, `deprecations[]`, `security_fixes[]`, `operator_notes[]`). The frontmatter block is the minimum-viable contract.
+- **`contracts/schemas/document-manifest.json`** (or a markdown frontmatter block listing `version`, `release_date`, `breaking_changes[]`, `new_features[]`, `deprecations[]`, `security_fixes[]`, `operator_notes[]`). The frontmatter block is the minimum-viable contract.
 - For human-readable publication, the markdown template already documented is the canonical format.
 - Every breaking change and deprecation must be machine-readable so downstream consumers can detect upgrade requirements without re-reading the prose.
 

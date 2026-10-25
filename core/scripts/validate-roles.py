@@ -29,6 +29,7 @@ REQUIRED_SECTIONS = (
     "## Outputs Produced",
     "## Deliverable Routing",
     "## Decision Boundaries",
+    "## Role Boundaries",
     "## Collaboration",
     "## Guardrails",
     "## Skill Toolbox",
@@ -124,6 +125,10 @@ def validate_role(path: Path, known_skills: set[str]) -> list[str]:
     deliverable_routing = section_text(body, "## Deliverable Routing", level_aware=True)
     if "## Deliverable Routing" in body and "| Situation |" not in deliverable_routing:
         errors.append("Deliverable Routing should include a '| Situation |' routing table")
+
+    role_boundaries = section_text(body, "## Role Boundaries", level_aware=True)
+    if "## Role Boundaries" in body and ("| Role |" not in role_boundaries or "| Owns |" not in role_boundaries):
+        errors.append("Role Boundaries should include a '| Role | Owns | Does not own |' table")
 
     footer_lines = [
         line for line in strip_fenced_blocks(body).splitlines()

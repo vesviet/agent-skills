@@ -10,8 +10,31 @@ from pathlib import Path
 from common import CORE_ROOT, ROOT
 
 
+try:
+    from jsonschema import Draft202012Validator
+    from referencing import Registry, Resource
+    HAS_JSONSCHEMA = True
+except ImportError:
+    HAS_JSONSCHEMA = False
+
 SCHEMAS_DIR = CORE_ROOT / "contracts" / "schemas"
 REQUIRED_META = ("$schema", "type", "$id", "title")
+
+
+def build_schema_registry(schemas: list[Path]) -> Registry | None:
+    if not HAS_JSONSCHEMA:
+        return None
+    resources = {}
+    for p in schemas:
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+            res = Resource.from_contents(data)
+            resources[p.name] = res
+            if "$id" in data:
+                resources[data["$id"]] = res
+        except Exception:
+            continue
+    return Registry().with_resources(resources.items())
 
 
 def validate_example(example: object, schema: dict, location: str) -> list[str]:
@@ -34,7 +57,7 @@ def validate_example(example: object, schema: dict, location: str) -> list[str]:
     return errors
 
 
-def validate_schema_file(path: Path) -> list[str]:
+def validate_schema_file(path: Path, registry: Registry | None = None) -> list[str]:
     rel = path.relative_to(ROOT)
     errors: list[str] = []
     try:
@@ -61,12 +84,30 @@ def validate_schema_file(path: Path) -> list[str]:
             f"{rel}: example[{index}]: {error}"
             for error in validate_example(example, data, "$")
         )
+
+    if HAS_JSONSCHEMA and registry is not None:
+        try:
+            Draft202012Validator.check_schema(data)
+        except Exception as exc:
+            errors.append(f"{rel}: schema definition failed Draft 2020-12 meta-schema: {exc}")
+
+        validator = Draft202012Validator(data, registry=registry)
+        for index, example in enumerate(examples if isinstance(examples, list) else []):
+            for err in validator.iter_errors(example):
+                if err.validator == "required" and not err.path:
+                    continue
+                loc = f"{rel}: example[{index}]"
+                if err.path:
+                    loc += f" at {list(err.path)}"
+                errors.append(f"{loc}: {err.message}")
+
     return errors
 
 
 def main() -> int:
     schemas = sorted(SCHEMAS_DIR.glob("*.json"))
-    errors = [error for path in schemas for error in validate_schema_file(path)]
+    registry = build_schema_registry(schemas)
+    errors = [error for path in schemas for error in validate_schema_file(path, registry=registry)]
     if not schemas:
         errors.append("no schemas found")
     if errors:

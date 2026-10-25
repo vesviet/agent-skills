@@ -3,7 +3,7 @@
 # Enforcement: agent-tool-orchestration checks this before state-changing actions.
 # Runtime hook: core/scripts/hooks/check-policy.py (text/json/sarif output, OCSF 99001 audit).
 #
-# 2026 coverage: 34 delivery roles x 46 action verbs. Roles that have no explicit entry for a
+# 2026 coverage: 38 delivery roles x 59 action verbs. Roles that have no explicit entry for a
 # given action fall through to `default_policy: requires_approval` (zero-trust fail-closed).
 # Unclassified actions in infra/deploy verbs (apply_iac, drop_storage_volume, terminate_instance,
 # modify_iam_policy, modify_network_topology_production, modify_payment_gateway_config,

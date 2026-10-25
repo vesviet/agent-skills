@@ -90,6 +90,15 @@ Contracts owned by other roles — do not author these as Prompt Engineer:
 - **does not own**: executing end-to-end automated QA release gates — SDET / QA Engineer
 - **does not own**: core application infrastructure or model hosting deployments — AI Systems Engineer / DevOps
 
+## Role Boundaries
+
+| Role | Owns | Does not own |
+| ---- | ---- | ------------ |
+| **Prompt Engineer** | System prompt templates, context token budgeting, few-shot calibration, delimiter isolation | Eval harness execution, production model serving infrastructure |
+| **SDET** | Evaluation harness architecture, automated benchmark release gates, synthetic test dataset generation | Prompt copywriting, prompt template design |
+| **Security Engineer** | Threat modeling, prompt injection red-teaming, jailbreak evasion testing | Context token optimization, few-shot prompt crafting |
+| **AI Systems Engineer** | Model deployment, inference runtime (vLLM/SGLang), KV cache optimization | Prompt template engineering, schema output formatting constraints |
+
 ## Collaboration
 
 - works with **AI Systems Engineer** on model latency, KV-cache infrastructure, and token throughput

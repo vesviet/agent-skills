@@ -162,13 +162,9 @@ Core: Architecture, Engineering, Risk. Optional: Product, QA, Operations, Data, 
 
 ## Output Contracts
 
-- `contracts/schemas/code-review-finding.json` (adapted): severity, owner, category
-- `contracts/schemas/coordination-plan.json` for follow-up phases
-- `contracts/schemas/gadr-adr-pipeline-spec.json` for agentic ADR generation
-- `contracts/schemas/nygard-adr-ai-controls-spec.json` for ADR with AI safeguards
-- `contracts/schemas/async-decision-protocol-spec.json` for RFC + comment window
-- `contracts/schemas/daci-decision-spec.json` for single-approver framing
-- `contracts/schemas/ai-perspective-guardrails-spec.json` for labeling/pruning rules
+- **`contracts/schemas/adr-spec.json`** for architectural decision records capturing Nygard format, AI controls & safeguards, DACI single-approver framing, and async decision protocols.
+- **`contracts/schemas/coordination-plan.json`** for follow-up phases and multi-role delegations.
+- **`contracts/schemas/code-review-finding.json`** (adapted): severity, owner, category.
 
 ## Failure Modes
 

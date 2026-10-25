@@ -1,6 +1,6 @@
 # Agent Skills — Engineering & Multi-Agent Pack
 
-**Version 5.7.0** · Portable engineering standards, principal-level agent roles, modular skills, structured data contracts, and end-to-end workflows for AI coding assistants and autonomous multi-agent swarms.
+**Version 5.7.1** · Portable engineering standards, principal-level agent roles, modular skills, structured data contracts, and end-to-end workflows for AI coding assistants and autonomous multi-agent swarms.
 
 > **Catalog**: **38 Roles** · **182 Skills** (167 Core + 15 Overlays) · **25 Workflows** · **60 JSON Schemas** · **17 Team Packs** · **21 Overlays**  
 > **Navigation**: [Master Index (`INDEX.md`)](INDEX.md) · [Machine Registry (`role-skill-index.json`)](core/a2a/.well-known/role-skill-index.json) · [Contributing Guide](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
@@ -58,7 +58,7 @@ git submodule add <repo-url> agent-skills
 | Directory | Purpose | Documentation |
 |---|---|---|
 | [`core/rules/`](core/rules/README.md) | Always-on engineering rules, code standards, and commit/release safety gates | [Rules Guide](core/rules/README.md) |
-| [`core/roles/`](core/roles/README.md) | 38 principal-level role definitions and 20 dedicated review checklists | [Roles Catalog](core/roles/README.md) |
+| [`core/roles/`](core/roles/README.md) | 38 principal-level role definitions and 38 dedicated review checklists | [Roles Catalog](core/roles/README.md) |
 | [`core/skills/`](core/skills/README.md) | 167 portable core skills organized across 22 engineering & domain categories | [Skills Inventory](core/skills/README.md) |
 | [`core/workflows/`](core/workflows/README.md) | 25 multi-step, role-tagged standard operating procedures | [Workflows Index](core/workflows/README.md) |
 | [`core/contracts/`](core/contracts/README.md) | 60 JSON Schema (Draft 2020-12) specifications for structured agent outputs | [Contracts Catalog](core/contracts/README.md) |

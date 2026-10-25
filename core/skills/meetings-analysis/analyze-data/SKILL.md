@@ -125,13 +125,8 @@ Populate the two-column Table of Evidence separating empirical data from narrati
 
 When delivering analysis to stakeholders, BI engineers, or downstream agent workflows, emit:
 
-- `contracts/schemas/data-analysis-report.json` — structured business context, metric definitions, dataset lineage, findings with fact/interpretation indices, anomalies, drift metrics, causal estimates, recommendations, **and agent query costs as FinOps line item**.
-- `contracts/schemas/apache-ossie-semantic-spec.json` — YAML model definitions for vendor-neutral portability
-- `contracts/schemas/dosi-ossie-agent-spec.json` — 10-min AI agent semantic layer setup
-- `contracts/schemas/fastmcp-sqlglot-spec.json` — AST validation configuration
-- `contracts/schemas/duckdb-v2-readiness-spec.json` — Migration readiness checklist
-- `contracts/schemas/dowhy-causal-spec.json` — DOT DAG + refutation configuration
-- `contracts/schemas/finops-agent-query-spec.json` — Cost tracking with per-agent budgets
+- **`contracts/schemas/data-analysis-report.json`** — structured business context, metric definitions, dataset lineage, findings with fact/interpretation indices, anomalies, drift metrics, causal estimates, recommendations, and agent query costs as FinOps line items (incorporating Apache Ossie semantic models, AST validation rules, and DoWhy causal configurations).
+- **`contracts/schemas/data-pipeline-spec.json`** — when data pipeline ingestion, DuckDB/Polars streaming configurations, or lakehouse ETL steps are required.
 - Markdown summary brief providing executive findings, narrative context, and recommended decisions.
 
 ## Failure Modes

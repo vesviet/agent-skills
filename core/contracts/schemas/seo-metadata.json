@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "contracts/schemas/seo-metadata.json",
   "title": "SEO Metadata",
   "description": "Publisher-ready metadata produced by SEO Analyst. Used at publish time to set title, meta description, slug, and social metadata. Does not include full article content — that is in content-handoff.json. Validates against seo-analyst.md Outputs Produced section and overlay slug/frontmatter rules.",
@@ -117,7 +117,10 @@
       "description": "Schema types recommended for this page. Frontend implements JSON-LD per these types. Article is always included."
     },
     "canonical_url": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Canonical URL if different from the published URL. Leave null if self-canonical."
     },
     "social": {

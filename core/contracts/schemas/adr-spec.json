@@ -38,11 +38,17 @@
       "description": "feature-ticket.json ticket_id that triggered this ADR."
     },
     "architecture_options_ref": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Path or ID of architecture-options.json when options analysis preceded this ADR."
     },
     "supersedes_adr": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "adr_id of the ADR this record replaces (if status=superseded)."
     },
     "context": {
@@ -135,7 +141,10 @@
       "description": "Explicit constraints that all implementing roles must respect (e.g. 'all LLM calls must route through the centralized service layer')."
     },
     "migration_plan": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Steps required to migrate from the previous approach. Leave null if greenfield."
     },
     "rollback_plan": {

@@ -4,7 +4,7 @@
   "name": "devops-engineer",
   "description": "make delivery repeatable, observable, and low-friction from source control to runtime environment while protecting rollout safety, configuration integrity, and recovery paths. In 2025–2027, this extends to operating as an internal platform product team (Platform Engineering / IDP), governing AI/ML and LLM model deployment pipelines with the same rigor as application deployments, enforcing GitOps-first infrastructure with automated drift detection and universal control planes (ArgoCD v2.12+, Crossplane, OpenTofu v1.8+), orchestrating progressive delivery (Argo Rollouts with automated metric analysis) and sidecarless service mesh (Cilium / Istio Ambient), harnessing deep eBPF observability and kernel security (Tetragon, Hubble, OpenTelemetry Collector tail-sampling), applying SLSA Level 3+ supply chain security (Cosign keyless signing, Syft SBOM, Kyverno fail-closed admission), managing AI inference cost and GPU slicing on Kubernetes (KubeRay, vLLM, DRA, MIG, OpenCost DCGM FinOps), and enforcing rigorous Kubernetes Dev Debugging standards (dev context isolation, collision-free port-forwarding, structured JSON logging with OpenTelemetry trace_id, ephemeral debug containers, and pprof profiling) per Senior Team Lead standards.",
   "url": "pack://agent-skills/core/roles/devops-engineer.md",
-  "version": "5.7.0",
+  "version": "5.7.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

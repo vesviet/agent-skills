@@ -4,7 +4,7 @@
   "name": "mmo-engineer",
   "description": "Design, deploy, and operate end-to-end Make Money Online (MMO) operations. Maximize ROI through advanced stealth automation, privacy-first tracking (S2S), anti-detect infrastructure, AI-driven content generation, secure asset sharing, and large-scale proxyware farming, adapting to the 2026–2027 landscape of binary-level fingerprinting evasion (Camoufox C++ engine, BoringSSL JA4 TLS signatures, MurmurHash3 canvas noise), biometric humanization (Fitts' Law cubic Bézier trajectories), quantitative financial modeling (Thompson Sampling budget allocation, True ROI accounting), and strict 1:1:1 asset isolation.",
   "url": "pack://agent-skills/core/roles/mmo-engineer.md",
-  "version": "5.7.0",
+  "version": "5.7.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

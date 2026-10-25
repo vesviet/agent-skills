@@ -62,15 +62,8 @@ Use this skill to evaluate student submissions against **BKT-informed 4-tier cri
 
 When the assessment result is handed off to a gradebook, LMS, student, or cross-agent workflow, emit:
 
-- **`contracts/schemas/learning-assessment-report.json`** — primary contract populating `student_token`, `overall_score`, `rubric_breakdown` (with line citations + executable verification), `cognitive_error_diagnosis`, `growth_mindset_feedback`, `zpd_progression`, `bkt_mastery_posteriors`, `stanbkt_uncertainty`, `ai_fluency_detection`, `audit_metadata`, `conformity_assessment_ref`.
-- **`contracts/schemas/learning-handoff.json`** — secondary contract for multi-agent educational state, learning plan progression, curriculum handoffs.
-- **`contracts/schemas/eu-ai-act-grading-spec.json`** — High-Risk grading system compliance metadata.
-- **`contracts/schemas/bkt-grading-spec.json`** — Mastery-informed assessment parameters.
-- **`contracts/schemas/executable-verification-spec.json`** — Code/prose validation pipeline config.
-- **`contracts/schemas/ai-fluency-detection-spec.json`** — LLM pattern markers.
-- **`contracts/schemas/socratic-tutor-spec.json`** — Hint ladder, attempt-before-hint constraints.
-- **`contracts/schemas/stanbkt-uncertainty-spec.json`** — Bayesian confidence intervals.
-- **`contracts/schemas/cognitive-diagnostic-dashboard-spec.json`** — Per-skill mastery, error category, ZPD, growth mindset indicators.
+- **`contracts/schemas/learning-assessment-report.json`** — primary contract populating `student_token`, `overall_score`, `rubric_breakdown` (with line citations + executable verification), `cognitive_error_diagnosis`, `growth_mindset_feedback`, `zpd_progression`, `bkt_mastery_posteriors`, `stanbkt_uncertainty` (Bayesian confidence intervals), `ai_fluency_detection` (LLM pattern markers), `audit_metadata`, and `conformity_assessment_ref` (High-Risk grading system compliance metadata).
+- **`contracts/schemas/learning-handoff.json`** — secondary contract for multi-agent educational state, learning plan progression, curriculum handoffs, and Socratic tutoring hint ladders.
 - For human-readable reports, emit markdown assessment summaries with BKT mastery trajectories, executable verification results, fluency detection flags, Socratic hint ladders, compliance evidence.
 
 ## Failure Modes

@@ -182,7 +182,7 @@ After the change is deployed:
 When this workflow produces a structured handoff, emit:
 
 - **`contracts/schemas/implementation-result.json`** — Required fields: `change_summary`, `files_touched[]`, and `validation_run` output proving the upgrade builds and tests pass.
-- **`contracts/schemas/release-notes.json`** (or frontmatter block) — when the upgrade ships; capture the version diff, the breaking changes, the deprecations, and the security fixes.
+- **`contracts/schemas/document-manifest.json`** (or frontmatter block) — when the upgrade ships; capture the version diff, the breaking changes, the deprecations, and the security fixes.
 - **`contracts/schemas/incident-report.json`** — When a CVE requires a hot upgrade; capture the CVE id, the affected version, the fix version, and the upgrade plan.
 
 ### Security Guardrails (OWASP ASI)

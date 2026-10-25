@@ -1,6 +1,6 @@
 # Agent-Skills Master Index & Router
 
-> **Location:** `core/` & `overlays/` | **Version:** `5.7.0` (A2A 1.0 + Antigravity)
+> **Location:** `core/` & `overlays/` | **Version:** `5.7.1` (A2A 1.0 + Antigravity)
 > **Total Catalog:** **38 Roles** | **182 Skills** (167 Core + 15 Overlays) | **25 Workflows** | **60 Data Contracts**
 
 ---
@@ -40,7 +40,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@backend-developer`** | Backend Developer | `@backend`, `@be`, `@backend-dev` | `add-api-endpoint`, `add-event-handler`, `add-service-client` *(+9 more)* | [`core/roles/backend-developer.md`](./core/roles/backend-developer.md) |
 | **`@business-analyst`** | Business Analyst | `@ba`, `@business` | `analyze-business-requirements`, `elicit-requirements`, `write-use-cases` *(+3 more)* | [`core/roles/business-analyst.md`](./core/roles/business-analyst.md) |
 | **`@cloudflare-engineer`** | Cloudflare Engineer | `@cloudflare`, `@cf`, `@workers` | `wrangler`, `durable-objects`, `agents-sdk` *(+11 more)* | [`core/roles/cloudflare-engineer.md`](./core/roles/cloudflare-engineer.md) |
-| **`@content-manager`** | Content Manager | — | `design-content-strategy`, `audit-content` | [`core/roles/content-manager.md`](./core/roles/content-manager.md) |
+| **`@content-manager`** | Content Manager | `@content-mgr`, `@content-lead` | `design-content-strategy`, `audit-content` | [`core/roles/content-manager.md`](./core/roles/content-manager.md) |
 | **`@content-writer`** | Content Writer | `@writer`, `@copywriter`, `@author`, `@article-writer`, `@blog-writer` | `write-article`, `write-copy`, `repurpose-content` *(+1 more)* | [`core/roles/content-writer.md`](./core/roles/content-writer.md) |
 | **`@data-analyst`** | Data Analyst | `@da`, `@data-analytics` | `analyze-data`, `query-analytical-engine`, `xlsx` | [`core/roles/data-analyst.md`](./core/roles/data-analyst.md) |
 | **`@data-engineer`** | Data Engineer | `@de`, `@data-eng` | `build-data-pipeline`, `database-maintenance`, `create-migration` *(+1 more)* | [`core/roles/data-engineer.md`](./core/roles/data-engineer.md) |
@@ -872,6 +872,58 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@write_tests`** | `write-tests` | Active `@role` |
 | **`@writing`** | `write-article` | Active `@role` |
 | **`@xlsx`** | `xlsx` | Active `@role` |
+
+---
+
+## 🧩 Domain & Stack Overlays (21 Overlays)
+
+| Overlay | Type | Description | Rules | Skills | File |
+|:---|:---|:---|:---|:---|:---|
+| **`astro-cloudflare`** | Rule-Only | Generic, reusable conventions for any Astro v5/6/7 project deployed to Cloudflare Pages/Workers. Thi... | 1 rule | 0 skills | [`overlays/astro-cloudflare/README.md`](./overlays/astro-cloudflare/README.md) |
+| **`b2b-catalog-golf`** | Skill Overlay | Project-specific conventions for the B2B Golf niche catalog website — golf apparel and resort wear c... | 1 rule | 1 skill | [`overlays/b2b-catalog-golf/README.md`](./overlays/b2b-catalog-golf/README.md) |
+| **`b2b-factory-catalog`** | Skill Overlay | Project-specific conventions for the B2B Factory Direct corporate website — the master brand site fo... | 1 rule | 1 skill | [`overlays/b2b-factory-catalog/README.md`](./overlays/b2b-factory-catalog/README.md) |
+| **`b2b-sport-catalog`** | Rule-Only | Project-specific conventions for the B2B Sport niche catalog — custom sportswear, athletic uniforms,... | 1 rule | 0 skills | [`overlays/b2b-sport-catalog/README.md`](./overlays/b2b-sport-catalog/README.md) |
+| **`cad-projection`** | Skill Overlay | Composable overlay for the `3d-graphics-engineer` role when generating precision engineering line ar... | 1 rule | 1 skill | [`overlays/cad-projection/README.md`](./overlays/cad-projection/README.md) |
+| **`data-analyst-stack`** | Rule-Only | Stack overlay for the `data-analyst` role. Extends `core/roles/data-analyst.md` with conventions for... | 2 rules | 0 skills | [`overlays/data-analyst-stack/README.md`](./overlays/data-analyst-stack/README.md) |
+| **`data-warehouse`** | Rule-Only | Omnichannel retail data warehouse overlay extending `core/roles/data-engineer.md`, `core/roles/data-... | 4 rules | 0 skills | [`overlays/data-warehouse/README.md`](./overlays/data-warehouse/README.md) |
+| **`ecommerce-microservices`** | Rule-Only | **Status: planned** — reserved placeholder not yet populated with rules or skills. | 1 rule | 0 skills | [`overlays/ecommerce-microservices/README.md`](./overlays/ecommerce-microservices/README.md) |
+| **`fintech-compliance`** | Skill Overlay | Composable overlay for the `data-analyst` and financial risk modeling roles when developing regulato... | 1 rule | 1 skill | [`overlays/fintech-compliance/README.md`](./overlays/fintech-compliance/README.md) |
+| **`go-microservices`** | Rule-Only | Language-level and architecture-level conventions for Go (Golang) microservices. Bridges the portabl... | 1 rule | 0 skills | [`overlays/go-microservices/README.md`](./overlays/go-microservices/README.md) |
+| **`hugo-authority-content`** | Skill Overlay | Content + SEO overlay for the authority blog (English flagship, authority-blog.example.com) and `lea... | 4 rules | 2 skills | [`overlays/hugo-authority-content/README.md`](./overlays/hugo-authority-content/README.md) |
+| **`hvac-authority-content`** | Skill Overlay | This overlay provides domain-specific engineering rules, HVAC technical schemas, and publishing work... | 3 rules | 1 skill | [`overlays/hvac-authority-content/README.md`](./overlays/hvac-authority-content/README.md) |
+| **`laravel-ecommerce`** | Skill Overlay | Project-specific conventions for the Laravel 13 e-commerce platform (~20 SKUs). | 2 rules | 1 skill | [`overlays/laravel-ecommerce/README.md`](./overlays/laravel-ecommerce/README.md) |
+| **`laravel-filament`** | Skill Overlay | Generic, reusable conventions for any Laravel 13+ project using Filament v4 admin, Livewire 3 intera... | 1 rule | 1 skill | [`overlays/laravel-filament/README.md`](./overlays/laravel-filament/README.md) |
+| **`livestream-web`** | Rule-Only | Project-specific conventions for the web-first live-streaming platform with desktop-priority UX. | 1 rule | 0 skills | [`overlays/livestream-web/README.md`](./overlays/livestream-web/README.md) |
+| **`obj-configurator`** | Skill Overlay | Project-specific conventions for the 3D Product Configurator — an interactive WebGL application for ... | 1 rule | 1 skill | [`overlays/obj-configurator/README.md`](./overlays/obj-configurator/README.md) |
+| **`r3f-stack`** | Skill Overlay | React Three Fiber / Three.js / WebGL+WebGPU skill cluster. Provides 3D rendering skills for projects... | 1 rule | 3 skills | [`overlays/r3f-stack/README.md`](./overlays/r3f-stack/README.md) |
+| **`real-estate-content`** | Skill Overlay | This overlay contains content-specific extensions for the Real Estate Portal and HVAC Portal Astro c... | 3 rules | 1 skill | [`overlays/real-estate-content/README.md`](./overlays/real-estate-content/README.md) |
+| **`security-research`** | Skill Overlay | Composable overlay for the `security-engineer` role when conducting binary disassembly, decompilatio... | 1 rule | 1 skill | [`overlays/security-research/README.md`](./overlays/security-research/README.md) |
+| **`seo-publishing`** | Rule-Only | Publishing overlay for recurring SEO content on **Real Estate Portal** and **HVAC Authority Portal**... | 4 rules | 0 skills | [`overlays/seo-publishing/README.md`](./overlays/seo-publishing/README.md) |
+| **`ui-design-system`** | Rule-Only | Composable overlay for the `ui-ux-designer` role when work must follow a **brand or project design s... | 1 rule | 0 skills | [`overlays/ui-design-system/README.md`](./overlays/ui-design-system/README.md) |
+
+---
+
+## 📦 Engineering Packs (17 Packs)
+
+| Pack | Description | Includes | Manifest | Documentation |
+|:---|:---|:---|:---|:---|
+| **`affiliate-cashback-team`** | Tri-Engine Affiliate & Cashback Growth Engineering Pack for CashbackHub ecosystem (deal-bot-dispatch... | `core`, `overlays/seo-publishing`, `overlays/ui-design-system` | [`manifest.yaml`](./packs/affiliate-cashback-team/manifest.yaml) | [`README.md`](./packs/affiliate-cashback-team/README.md) |
+| **`b2b-catalog-team`** | Global engineering core plus Astro v6/v7 + Cloudflare Workers conventions plus B2B Factory Direct ma... | `core`, `overlays/astro-cloudflare`, `overlays/b2b-factory-catalog` | [`manifest.yaml`](./packs/b2b-catalog-team/manifest.yaml) | — |
+| **`b2b-golf-team`** | Global engineering core plus Astro v6/v7 + Cloudflare conventions plus B2B Golf niche catalog overla... | `core`, `overlays/astro-cloudflare`, `overlays/b2b-catalog-golf` | [`manifest.yaml`](./packs/b2b-golf-team/manifest.yaml) | — |
+| **`b2b-sport-team`** | Global engineering core plus Astro v6/v7 + Cloudflare conventions plus B2B Sport niche catalog overl... | `core`, `overlays/astro-cloudflare`, `overlays/b2b-sport-catalog` | [`manifest.yaml`](./packs/b2b-sport-team/manifest.yaml) | — |
+| **`content-sprint-team`** | Global engineering core plus SEO publishing sprint cadence overlay for generic dual-site sprints. Co... | `core`, `overlays/seo-publishing` | [`manifest.yaml`](./packs/content-sprint-team/manifest.yaml) | — |
+| **`data-analyst-team`** | Global engineering core plus DuckDB, Metabase, dbt Core 1.9, and Apache Iceberg analytics stack over... | `core`, `overlays/data-analyst-stack` | [`manifest.yaml`](./packs/data-analyst-team/manifest.yaml) | — |
+| **`data-warehouse`** | Comprehensive engineering pack for teams building, scaling, and maintaining the Omnichannel Retail D... | `core`, `overlays/data-warehouse` | [`manifest.yaml`](./packs/data-warehouse/manifest.yaml) | — |
+| **`ecommerce-team`** | Global engineering core plus Go 1.25/Kratos v3 microservices conventions and Ecommerce Microservices... | `core`, `overlays/go-microservices`, `overlays/ecommerce-microservices` | [`manifest.yaml`](./packs/ecommerce-team/manifest.yaml) | — |
+| **`global-engineering`** | Portable global engineering pack without repo-specific overlays. Loads for any project that does not... | `core` | [`manifest.yaml`](./packs/global-engineering/manifest.yaml) | — |
+| **`hugo-authority-team`** | Content + SEO swarm pack for the Hugo twin sites. Enforces mandatory 100-round deep research before ... | `core`, `overlays/hugo-authority-content` | [`manifest.yaml`](./packs/hugo-authority-team/manifest.yaml) | [`README.md`](./packs/hugo-authority-team/README.md) |
+| **`hvac-content-team`** | High-authority content, SEO engineering, and Cloudflare Pages pack for HVAC Authority Portal (https:... | `core`, `overlays/astro-cloudflare`, `overlays/hvac-authority-content`, `overlays/seo-publishing` | [`manifest.yaml`](./packs/hvac-content-team/manifest.yaml) | [`README.md`](./packs/hvac-content-team/README.md) |
+| **`landing-pages-team`** | High-converting single-product landing page engine and merchant SaaS platform pack (landing-builder.... | `core`, `overlays/go-microservices`, `overlays/ui-design-system`, `overlays/seo-publishing` | [`manifest.yaml`](./packs/landing-pages-team/manifest.yaml) | [`README.md`](./packs/landing-pages-team/README.md) |
+| **`laravel-ecommerce-team`** | Global engineering core plus Laravel 13 + Filament v4 + Livewire 3 conventions plus Laravel E-Commer... | `core`, `overlays/laravel-filament`, `overlays/laravel-ecommerce` | [`manifest.yaml`](./packs/laravel-ecommerce-team/manifest.yaml) | — |
+| **`livestream-team`** | Global engineering core plus Livestream Platform web-first livestream UX overlay. Covers desktop-fir... | `core`, `overlays/livestream-web` | [`manifest.yaml`](./packs/livestream-team/manifest.yaml) | — |
+| **`mmo-growth-team`** | Full-spectrum MMO growth engineering and traffic arbitrage swarm pack. Enforces 2027 SOTA standards ... | `core` | [`manifest.yaml`](./packs/mmo-growth-team/manifest.yaml) | [`README.md`](./packs/mmo-growth-team/README.md) |
+| **`obj-team`** | Global engineering core plus Astro v6/v7 + Cloudflare conventions plus OBJ 3D Configurator overlay. ... | `core`, `overlays/astro-cloudflare`, `overlays/obj-configurator` | [`manifest.yaml`](./packs/obj-team/manifest.yaml) | — |
+| **`real-estate-team`** | High-authority content engineering and SEO publishing pack for Real Estate Portal (https://real-esta... | `core`, `overlays/real-estate-content`, `overlays/seo-publishing` | [`manifest.yaml`](./packs/real-estate-team/manifest.yaml) | [`README.md`](./packs/real-estate-team/README.md) |
 
 ---
 

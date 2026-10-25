@@ -2,6 +2,30 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [5.7.1] - 2026-10-25
+
+Repository-wide deep research, comprehensive audit, schema hardening, and registry reconciliation across all 38 roles, 182 skills, 21 overlays, 17 packs, 5 policies, and 60 contract schemas.
+
+### Roles & Governance Hardening
+- Added standardized `## Role Boundaries` matrices to `prompt-engineer` and `sdet` roles.
+- Hardened `validate-roles.py` to strictly enforce role boundary table requirements across all cataloged roles.
+- Linked orphaned `frontend-developer-responsibilities.md` in `frontend-developer.md` and synchronized checklist counts to 38.
+
+### Data Contracts & Schema Validation
+- Remapped 42 broken and stale schema references across 10 skills to canonical JSON contract schemas.
+- Bound previously orphaned schemas (`amis-voucher-contract.json`, `stock-audit-session.json`, `series-article.json`) to their owning domain skills.
+- Upgraded `validate-contracts.py` with `referencing.Registry` and strict `Draft202012Validator`.
+- Resolved all 14 schema example validation errors across 5 schemas (`adr-spec`, `architecture-options`, `seo-audit-report`, `seo-metadata`, `ui-component-spec`).
+
+### Indexing & Discovery Registries
+- Extended `generate-index.py` to index all 21 overlays and all 17 engineering packs in `INDEX.md`.
+- Regenerated machine discovery catalogs: `role-skill-index.json`, `agent-registry.json`, `agent-card.json`, and `ai-catalog.json`.
+- Maintained 100% SHA-256 bitwise twin parity between `core/a2a/.well-known/role-skill-index.json` and `adapters/antigravity/role-skill-index.json`.
+
+### Verification & Audit
+- Published authoritative 543-line audit report at `reports/repository-audit-and-drift-analysis-2026-10-25.md` with full RSK-01 to RSK-12 risk matrices and remediation work packages.
+- All 19 repository validation checks, 849 pytest cases, and 7 npm test suites pass with zero regressions.
+
 ## [5.7.0] - 2026-10-25
 
 Modernization of five roles and eleven skills to the verified 2026-10 platform, data, and compliance baseline, with regression-proof challenge tests for every change.

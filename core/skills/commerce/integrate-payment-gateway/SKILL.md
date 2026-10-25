@@ -158,12 +158,8 @@ Answer before building:
 
 When the payment integration is consumed by storefront, checkout, or fulfillment agents, emit:
 
-- **`contracts/schemas/api-contract-spec.json`** describing the gateway endpoints, the request/response shapes, and the auth requirements.
+- **`contracts/schemas/api-contract-spec.json`** describing the gateway endpoints, request/response shapes, and auth requirements (including MPP endpoints, HTTP 402 flows, x402 payment, BNPL elements, and A2A settlement webhook state machines).
 - **`contracts/schemas/edge-deployment-spec.json`** when the integration is part of a coordinated deploy handoff.
-- **`contracts/schemas/mpp-payment-spec.json`** for MPP endpoints and HTTP 402 flow.
-- **`contracts/schemas/x402-payment-spec.json`** for x402 crypto payment flow.
-- **`contracts/schemas/bnpl-messaging-spec.json`** for BNPL element integration.
-- **`contracts/schemas/a2a-settlement-spec.json`** for A2A webhook state machine.
 
 Skip emission for local sandbox experiments that do not cross a role boundary.
 

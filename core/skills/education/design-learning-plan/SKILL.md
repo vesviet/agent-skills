@@ -63,20 +63,13 @@ Use this skill to structure personalized, adaptive study plans adhering to Vygot
 - [ ] **RAG-enhanced content**: Accurate contextual retrieval with citation requirements, verified knowledge base.
 - [ ] **Multi-modal pathways**: Code, diagram, text, oral, peer-collaborative formats per learning objective.
 - [ ] **EU AI Act High-Risk compliance**: Conformity assessment completed (internal Annex VI or third-party Annex VII), human oversight model (HITL/HOTL/HIC), automation bias mitigation, Article 12 automatic logging, CE marking verified.
-- [ ] Structured contracts emitted: `learning-handoff.json`, `bkt-learning-plan-spec.json`, `es-llms-orchestrator-spec.json`, `cognitive-load-budget-spec.json`, `adaptive-spaced-repetition-spec.json`, `growth-mindset-integration-spec.json`, `peer-matching-spec.json`, `eu-ai-act-learning-plan-spec.json`.
+- [ ] Structured contracts emitted: `learning-handoff.json` (capturing BKT adaptation, ES-LLMs orchestrator config, cognitive load budgets, and EU AI Act compliance).
 
 ## Output Contracts
 
 When the learning plan is handed off to an educator, automated tutor, or LMS, emit:
 
-- **`contracts/schemas/learning-handoff.json`** — populating `artifact_type: "learning_plan"`, `zpd_assessment`, `smart_objectives`, `formative_scaffolding_tiers`, `spaced_repetition_schedule`, `bkt_mastery_posteriors`, `es_llms_orchestrator_config`, `cognitive_load_budget`, `growth_mindset_strategies`, `peer_matching_config`, `eu_ai_act_compliance`.
-- **`contracts/schemas/bkt-learning-plan-spec.json`** — Mastery-driven plan adaptation parameters.
-- **`contracts/schemas/es-llms-orchestrator-spec.json`** — Agent coordination, constraint enforcement rules.
-- **`contracts/schemas/cognitive-load-budget-spec.json`** — Per-block intrinsic/extraneous load planning.
-- **`contracts/schemas/adaptive-spaced-repetition-spec.json`** — BKT-driven review intervals with pForget modulation.
-- **`contracts/schemas/growth-mindset-integration-spec.json`** — Metacognitive strategies, feedback templates, safe culture config.
-- **`contracts/schemas/peer-matching-spec.json`** — Social learning, BKT similarity matching.
-- **`contracts/schemas/eu-ai-act-learning-plan-spec.json`** — High-Risk compliance metadata.
+- **`contracts/schemas/learning-handoff.json`** — populating `artifact_type: "learning_plan"`, `zpd_assessment`, `smart_objectives`, `formative_scaffolding_tiers`, `spaced_repetition_schedule`, `bkt_mastery_posteriors`, `es_llms_orchestrator_config`, `cognitive_load_budget`, `growth_mindset_strategies`, `peer_matching_config`, and `eu_ai_act_compliance`.
 - For human-readable reports, emit markdown learning plans with timeline tables, Feynman checkpoints, graduated hint prompts, BKT mastery trajectories, cognitive load budgets.
 
 ## Failure Modes

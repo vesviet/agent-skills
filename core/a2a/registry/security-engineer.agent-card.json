@@ -4,7 +4,7 @@
   "name": "security-engineer",
   "description": "reduce security risk early by identifying weaknesses in design, code, configuration, dependencies, and operations before they become incidents. In 2025–2026, this extends to assessing AI/LLM-specific attack surfaces (prompt injection, training data poisoning, model output exploitation), enforcing shift-left security practices (threat modeling before design sign-off, SAST/DAST in CI), treating AI systems as high-risk trust boundary additions that require explicit security review before deployment — and, as of late 2026, covering EU Cyber Resilience Act product readiness and post-quantum cryptography transition review.",
   "url": "pack://agent-skills/core/roles/security-engineer.md",
-  "version": "5.7.0",
+  "version": "5.7.1",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

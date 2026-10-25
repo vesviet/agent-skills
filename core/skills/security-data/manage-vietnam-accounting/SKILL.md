@@ -27,6 +27,8 @@ When completing a scoped accounting review or period close, emit the appropriate
 
 - **`contracts/schemas/accounting-compliance-review.json`** — Machine-readable compliance review with source versions, gates, findings, retention classification, required approvals, assumptions, exceptions, and a scoped disclaimer. Set `produced_by_role: vietnam-accounting-specialist`.
 - **`contracts/schemas/period-end-closing-report.json`** — Machine-readable financial period-end closing report capturing trial balance reconciliations, closing entries, Account 911 clearing, financial statements, and HITL approval token. Set `produced_by_role: vietnam-accounting-specialist`.
+- **`contracts/schemas/amis-voucher-contract.json`** — Enterprise financial schema for multi-channel retail vouchers exported to MISA AMIS ERP, enforcing VAS 14 revenue recognition, pre-tax VAT decomposition, and strict debit-credit balance verification. Set `produced_by_role: vietnam-accounting-specialist`.
+- **`contracts/schemas/stock-audit-session.json`** — Physical inventory stocktake contract governing the audit lifecycle, tolerance thresholds, blind recounts, variance reconciliation, TK 1381/3381 suspense accounting, and sign-offs. Set `produced_by_role: vietnam-accounting-specialist`.
 
 ## Suggested Process
 
@@ -82,7 +84,7 @@ Assemble B01-DN, B02-DN, B03-DN, B09-DN with balance equality checks. Emit SHA-2
 - [ ] TK 242 allocation $\le$ 36 months, TK 214 depreciation within Circular 45 brackets, and Account 911 cleared to zero
 - [ ] financial statements satisfy balance equality equations (B01, B02, B03, B09)
 - [ ] immutable WORM snapshot generated, OCSF 99001 logged, and Chief Accountant HITL token verified
-- [ ] output contract emitted: `accounting-compliance-review.json` or `period-end-closing-report.json`
+- [ ] output contract emitted: `accounting-compliance-review.json`, `period-end-closing-report.json`, `amis-voucher-contract.json`, or `stock-audit-session.json`
 
 ## Related Skills
 
