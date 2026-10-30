@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 168 portable core skills under `core/skills/` + 15 overlay skills under `overlays/*/skills/` = **183 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 169 portable core skills under `core/skills/` + 15 overlay skills under `overlays/*/skills/` = **184 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -40,11 +40,12 @@ Configuration and compliance skills for agentic-ready web presence (MCP, RFC 972
 - `manage-api-catalog`
 - `manage-auth-md`
 
-### AI (1)
+### AI (2)
 
 High-throughput LLM inference serving, GPU resource allocation, and distributed acceleration:
 
 - `deploy-vllm-inference`
+- `openrouter-task`
 
 ### AI Agent (3)
 

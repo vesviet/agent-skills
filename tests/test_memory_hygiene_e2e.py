@@ -387,8 +387,8 @@ class TestTier1FeatureCoverage(unittest.TestCase):
         assert skills_readme.is_file(), f"Missing skills README at {skills_readme}"
         content = skills_readme.read_text(encoding="utf-8")
 
-        self.assertTrue(any(s in content for s in ["182 total", "183 total"]))
-        self.assertTrue(any(s in content for s in ["167 portable core", "168 portable core"]))
+        self.assertTrue(any(s in content for s in ["182 total", "183 total", "184 total"]))
+        self.assertTrue(any(s in content for s in ["167 portable core", "168 portable core", "169 portable core"]))
         self.assertIn("memory-hygiene", content)
 
     def test_t1_f5_dms_bundle_and_memory_sync(self):

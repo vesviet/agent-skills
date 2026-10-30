@@ -4,7 +4,7 @@
   "root": ".",
   "stats": {
     "roles": 39,
-    "skills": 182,
+    "skills": 183,
     "workflows": 25,
     "schemas": 60
   },
@@ -1605,6 +1605,7 @@
       "file": "core/roles/ai-systems-engineer.md",
       "skills": [
         "deploy-vllm-inference",
+        "openrouter-task",
         "setup-llm-gateway",
         "setup-gpu-finops",
         "implement-structured-outputs",
@@ -1623,6 +1624,7 @@
       ],
       "primary_skills": [
         "deploy-vllm-inference",
+        "openrouter-task",
         "setup-llm-gateway",
         "setup-gpu-finops",
         "implement-structured-outputs",
@@ -3268,6 +3270,13 @@
       "type": "core",
       "file": "core/skills/ai/deploy-vllm-inference/SKILL.md",
       "description": "Deploy, configure, scale, and optimize high-throughput LLM inference workloads using the vLLM V1 engine (default since 2025, current v0.32+). Use when serving self-hosted open-weight models (GLM-5, DeepSeek-V4, Qwen3.8, Kimi K2/K3, gpt-oss) on Kubernetes with Dynamic Resource Allocation (DRA), NVIDIA MIG slicing, dynamic chunked prefill, prefix caching, and multi-tier KV cache offloading."
+    },
+    "openrouter-task": {
+      "name": "openrouter-task",
+      "category": "ai",
+      "type": "core",
+      "file": "core/skills/ai/openrouter-task/SKILL.md",
+      "description": "Offload lightweight tasks, boilerplate code generation, unit tests, summarization, and data transformations to OpenRouter FREE LLMs pool (:free) using the local environment key at D:\\myproject\\.agents\\.env to preserve Google Gemini quota. Use when running secondary, repetitive, or lightweight coding and data transformation tasks via free model rotation."
     },
     "agent-evaluation": {
       "name": "agent-evaluation",

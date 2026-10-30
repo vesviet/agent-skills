@@ -51,6 +51,29 @@
       ]
     },
     {
+      "id": "openrouter-task",
+      "name": "Openrouter Task",
+      "description": "Offload lightweight tasks, boilerplate code generation, unit tests, summarization, and data transformations to OpenRouter FREE LLMs pool (:free) using the local environment key at D:\\myproject\\.agents\\.env to preserve Google Gemini quota. Use when running secondary, repetitive, or lightweight coding and data transformation tasks via free model rotation.",
+      "tags": [
+        "ai",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "performance-audit.json",
+        "system-design-spec.json",
+        "test-report.json"
+      ]
+    },
+    {
       "id": "setup-llm-gateway",
       "name": "Setup Llm Gateway",
       "description": "Configure a centralized LLM proxy gateway for token routing, budgeting, and failover. Use when deploying multi-model routing, enforcing token rate limits, managing provider credentials, or centralizing AI observability.",

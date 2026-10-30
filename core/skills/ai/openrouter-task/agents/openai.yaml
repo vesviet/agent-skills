@@ -1,0 +1,5 @@
+interface:
+  display_name: "OpenRouter Task"
+  short_description: "Offload lightweight coding, unit tests, and data transformation tasks to OpenRouter free models pool."
+  default_prompt: "Use $openrouter-task to offload lightweight tasks to the OpenRouter free LLM rotation pool."
+

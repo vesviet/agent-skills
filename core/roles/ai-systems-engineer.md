@@ -224,6 +224,7 @@ Contracts owned by other roles — do not author these as AI Systems Engineer:
 ### Primary Skills
 
 - `deploy-vllm-inference`
+- `openrouter-task`
 - `setup-llm-gateway`
 - `setup-gpu-finops`
 - `implement-structured-outputs`

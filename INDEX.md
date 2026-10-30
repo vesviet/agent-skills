@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `5.7.2` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **39 Roles** | **182 Skills** (167 Core + 15 Overlays) | **25 Workflows** | **60 Data Contracts**
+> **Total Catalog:** **39 Roles** | **183 Skills** (168 Core + 15 Overlays) | **25 Workflows** | **60 Data Contracts**
 
 ---
 
@@ -35,7 +35,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@3d-graphics-engineer`** | 3D Graphics Engineer | `@3d`, `@r3f`, `@threejs` | `debug-3d-scene`, `integrate-r3f-three-legacy`, `optimize-3d-assets` | [`core/roles/3d-graphics-engineer.md`](./core/roles/3d-graphics-engineer.md) |
 | **`@agent-coordinator`** | Agent Coordinator | `@coordinator`, `@swarm-coordinator` | `agent-a2a-protocol`, `agent-delegation`, `agent-graph-orchestration` *(+10 more)* | [`core/roles/agent-coordinator.md`](./core/roles/agent-coordinator.md) |
 | **`@agent-discovery-engineer`** | Agent Discovery Engineer | `@discovery`, `@agent-discovery` | `manage-auth-md`, `configure-oauth-metadata`, `debug-identity-provider` *(+5 more)* | [`core/roles/agent-discovery-engineer.md`](./core/roles/agent-discovery-engineer.md) |
-| **`@ai-systems-engineer`** | AI Systems Engineer | `@ai`, `@ml`, `@llm` | `deploy-vllm-inference`, `setup-llm-gateway`, `setup-gpu-finops` *(+2 more)* | [`core/roles/ai-systems-engineer.md`](./core/roles/ai-systems-engineer.md) |
+| **`@ai-systems-engineer`** | AI Systems Engineer | `@ai`, `@ml`, `@llm` | `deploy-vllm-inference`, `openrouter-task`, `setup-llm-gateway` *(+3 more)* | [`core/roles/ai-systems-engineer.md`](./core/roles/ai-systems-engineer.md) |
 | **`@aws-engineer`** | AWS Engineer | `@aws`, `@cloud` | `aws-infrastructure`, `setup-deployment`, `add-telemetry-instrumentation` | [`core/roles/aws-engineer.md`](./core/roles/aws-engineer.md) |
 | **`@backend-developer`** | Backend Developer | `@backend`, `@be`, `@backend-dev` | `add-api-endpoint`, `add-event-handler`, `add-service-client` *(+9 more)* | [`core/roles/backend-developer.md`](./core/roles/backend-developer.md) |
 | **`@business-analyst`** | Business Analyst | `@ba`, `@business` | `analyze-business-requirements`, `elicit-requirements`, `write-use-cases` *(+3 more)* | [`core/roles/business-analyst.md`](./core/roles/business-analyst.md) |
@@ -74,7 +74,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🛠️ Skill Directory (182 Skills)
+## 🛠️ Skill Directory (183 Skills)
 
 ### Category: `agent` (24 skills)
 
@@ -105,11 +105,12 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@manage-api-catalog`** | Use when publishing and maintaining RFC 9727 API Catalog registries for automated API discovery by a... | [`core/skills/agent/manage-api-catalog/SKILL.md`](./core/skills/agent/manage-api-catalog/SKILL.md) |
 | **`@manage-auth-md`** | Use when creating, updating, or auditing the /auth.md file at the repository or domain root to ensur... | [`core/skills/agent/manage-auth-md/SKILL.md`](./core/skills/agent/manage-auth-md/SKILL.md) |
 
-### Category: `ai` (1 skills)
+### Category: `ai` (2 skills)
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
 | **`@deploy-vllm-inference`** | Deploy, configure, scale, and optimize high-throughput LLM inference workloads using the vLLM V1 eng... | [`core/skills/ai/deploy-vllm-inference/SKILL.md`](./core/skills/ai/deploy-vllm-inference/SKILL.md) |
+| **`@openrouter-task`** | Offload lightweight tasks, boilerplate code generation, unit tests, summarization, and data transfor... | [`core/skills/ai/openrouter-task/SKILL.md`](./core/skills/ai/openrouter-task/SKILL.md) |
 
 ### Category: `ai-agent` (3 skills)
 
