@@ -2,7 +2,7 @@
 
 This directory defines reusable roles for the full software delivery lifecycle.
 
-> **Master Roles Inventory**: **38 Roles** | **38 Dedicated Review Checklists** (in `references/`) | **A2A 1.0 JSON-RPC/SSE Native**  
+> **Master Roles Inventory**: **39 Roles** | **39 Dedicated Review Checklists** (in `references/`) | **A2A 1.0 JSON-RPC/SSE Native**  
 > **SOTA 2026–2027 Standards**: Flagship Tier 1 roles equipped with 12–24 Architectural Guardrail Locks, production tech stacks, and dedicated challenge test suites  
 > **Authoritative Audit Matrix**: [`reports/role-skill-matrix-sota-audit-2026-2027.md`](../../reports/role-skill-matrix-sota-audit-2026-2027.md)
 
@@ -74,6 +74,7 @@ All roles in this pack are expected to:
 - [game-developer](game-developer.md)
 - [ecommerce-engineer](ecommerce-engineer.md)
 - [security-engineer](security-engineer.md)
+- [reverse-engineer](reverse-engineer.md)
 - [prompt-engineer](prompt-engineer.md)
 
 ### Platform, Infrastructure & Systems
@@ -145,6 +146,7 @@ All roles in this pack are expected to:
 - E-commerce Engineer
 - Technical Lead
 - Security Engineer
+- Reverse Engineer
 - System Engineer
 - AI Systems Engineer
 
@@ -156,6 +158,7 @@ All roles in this pack are expected to:
 - Reviewer
 - Mobile Engineer
 - Technical Lead
+- Reverse Engineer
 - Vietnam Accounting Specialist
 - AI Systems Engineer
 
@@ -235,6 +238,7 @@ All roles in this pack are expected to:
 | Prompt Engineer | `/add-new-feature`, `/troubleshooting`, `/refactoring` |
 | Reviewer | `/service-review-release`, `/tech-repo-review` |
 | Security Engineer | `/service-review-release`, `/hotfix-production`, `/security-incident-response`, `/dependency-upgrade` |
+| Reverse Engineer | `/troubleshooting`, `/service-review-release`, `/qa-validation`, `/tech-repo-review` |
 | System Engineer | `/setup-new-service`, `/build-deploy`, `/revert-deployment`, `/troubleshooting`, `/tech-repo-review` |
 | AWS Engineer | `/setup-new-service`, `/build-deploy`, `/troubleshooting`, `/refactoring` |
 | DevOps Engineer | `/build-deploy`, `/setup-new-service`, `/revert-deployment`, `/dependency-upgrade` |

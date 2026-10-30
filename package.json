@@ -1,7 +1,7 @@
 {
   "name": "@vesviet/agent-skills",
-  "version": "5.7.1",
-  "description": "Engineering skill pack for AI-assisted delivery: 182 skills, 38 roles, 25 workflows, 60 data contracts, with a CLI to install skills into your agent platform.",
+  "version": "5.7.2",
+  "description": "Engineering skill pack for AI-assisted delivery: 183 skills, 39 roles, 25 workflows, 60 data contracts, with a CLI to install skills into your agent platform.",
   "license": "Apache-2.0",
   "type": "module",
   "bin": {

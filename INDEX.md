@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
-> **Location:** `core/` & `overlays/` | **Version:** `5.7.1` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **38 Roles** | **182 Skills** (167 Core + 15 Overlays) | **25 Workflows** | **60 Data Contracts**
+> **Location:** `core/` & `overlays/` | **Version:** `5.7.2` (A2A 1.0 + Antigravity)
+> **Total Catalog:** **39 Roles** | **182 Skills** (167 Core + 15 Overlays) | **25 Workflows** | **60 Data Contracts**
 
 ---
 
@@ -28,7 +28,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🎭 Role Directory (38 Roles)
+## 🎭 Role Directory (39 Roles)
 
 | Role Slug | Title | Common Aliases | Primary Skills | Role File |
 |:---|:---|:---|:---|:---|
@@ -49,12 +49,13 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@frontend-developer`** | Frontend Developer | `@frontend`, `@fe`, `@frontend-dev`, `@ui-developer` | `accessibility-review`, `add-page-route`, `add-ui-component` *(+12 more)* | [`core/roles/frontend-developer.md`](./core/roles/frontend-developer.md) |
 | **`@game-developer`** | Game Developer | `@game-dev`, `@gamedev`, `@game`, `@game-engineer`, `@gameplay-engineer` | `integrate-game-engine`, `develop-gameplay-systems`, `architect-ecs-systems` *(+17 more)* | [`core/roles/game-developer.md`](./core/roles/game-developer.md) |
 | **`@mmo-engineer`** | MMO Engineer | `@mmo`, `@affiliate`, `@growth`, `@growth-lead`, `@growth-engineer`, `@media-buyer`, `@affiliate-marketer` | `deploy-mmo-infrastructure`, `setup-tracking-system`, `create-automation-script` *(+4 more)* | [`core/roles/mmo-engineer.md`](./core/roles/mmo-engineer.md) |
-| **`@mobile-engineer`** | Mobile Engineer | `@mobile`, `@flutter`, `@react-native` | `develop-mobile-app`, `deploy-mobile-app`, `add-ui-component` *(+5 more)* | [`core/roles/mobile-engineer.md`](./core/roles/mobile-engineer.md) |
+| **`@mobile-engineer`** | Mobile Engineer | `@mobile`, `@flutter`, `@react-native` | `develop-mobile-app`, `deploy-mobile-app`, `add-ui-component` *(+6 more)* | [`core/roles/mobile-engineer.md`](./core/roles/mobile-engineer.md) |
 | **`@product-manager`** | Product Manager | `@pm`, `@prod-mgr`, `@product-owner`, `@po` | `define-product-strategy`, `prioritize-roadmap`, `model-saas-metrics` *(+2 more)* | [`core/roles/product-manager.md`](./core/roles/product-manager.md) |
 | **`@project-manager`** | Project Manager | `@pjm`, `@proj-mgr`, `@scrum-master` | `meeting-review` | [`core/roles/project-manager.md`](./core/roles/project-manager.md) |
 | **`@prompt-engineer`** | Prompt Engineer | `@prompt`, `@promptops` | `context-optimization`, `memory-hygiene` | [`core/roles/prompt-engineer.md`](./core/roles/prompt-engineer.md) |
 | **`@qa-engineer`** | QA Engineer | `@qa`, `@tester`, `@test-engineer` | `write-tests`, `frontend-testing`, `systematic-debugging` *(+9 more)* | [`core/roles/qa-engineer.md`](./core/roles/qa-engineer.md) |
 | **`@researcher`** | Researcher | `@research`, `@deep-research` | `conduct-research` | [`core/roles/researcher.md`](./core/roles/researcher.md) |
+| **`@reverse-engineer`** | Reverse Engineer | `@reverse-engineering`, `@re`, `@rev`, `@binary-analyst`, `@malware-analyst` | `reverse-engineer-binary` | [`core/roles/reverse-engineer.md`](./core/roles/reverse-engineer.md) |
 | **`@reviewer`** | Reviewer | `@code-reviewer`, `@pr-reviewer` | `review-code`, `review-service`, `configure-mcp` *(+2 more)* | [`core/roles/reviewer.md`](./core/roles/reviewer.md) |
 | **`@sdet`** | SDET | `@test-automation`, `@automation-engineer` | `agent-evaluation` | [`core/roles/sdet.md`](./core/roles/sdet.md) |
 | **`@security-engineer`** | Security Engineer | `@security`, `@sec`, `@appsec`, `@secops` | `security-audit`, `manage-secrets`, `supply-chain-security` *(+4 more)* | [`core/roles/security-engineer.md`](./core/roles/security-engineer.md) |

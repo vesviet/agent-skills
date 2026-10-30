@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 167 portable core skills under `core/skills/` + 15 overlay skills under `overlays/*/skills/` = **182 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 168 portable core skills under `core/skills/` + 15 overlay skills under `overlays/*/skills/` = **183 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -244,7 +244,7 @@ E-commerce catalog, checkout, payment, and fulfillment:
 - `manage-product-catalog`
 - `manage-order-fulfillment`
 
-### Security And Data (9)
+### Security And Data (10)
 
 - `manage-secrets`
 - `database-maintenance`
@@ -255,6 +255,7 @@ E-commerce catalog, checkout, payment, and fulfillment:
 - `query-analytical-engine`
 - `skill-preflight-ast-check`
 - `prompt-injection-defense`
+- `reverse-engineer-binary`
 
 ### Documentation (3)
 

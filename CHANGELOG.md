@@ -2,6 +2,26 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [5.7.2] - 2026-10-30
+
+Introduction of `reverse-engineer` (role #39), promotion of `reverse-engineer-binary` to core skill, CVE/CVSS triage remediation across developer roles, and dedicated challenge test verification.
+
+### Reverse Engineering & Binary Analysis (Role #39)
+- Added `reverse-engineer` (role #39) with comprehensive SOTA binary analysis, dynamic instrumentation (Frida, eBPF), deobfuscation, malware triage, and protocol reverse engineering.
+- Enforced 12 architectural guardrail locks including `ETHICAL-REVERSE-ENGINEERING LOCK`, `AIR-GAP LOCK`, and `CLEAN-ROOM LOCK`.
+- Promoted `reverse-engineer-binary` to core skill under `core/skills/security-data/` (168 core skills, 183 total skills).
+- Added 1:1 verification checklist `core/roles/references/reverse-engineer-review-checklist.md`.
+- Authored dedicated challenge suite `tests/test_reverse_engineer_challenge.py` (28 tests across 6 classes, 100% pass).
+
+### Developer Roles CVE & CVSS Modernization
+- Upgraded `backend-developer`, `frontend-developer`, `mobile-engineer`, and `game-developer` roles with active CVE remediation ownership and `security-audit` skill integration.
+- Enforced 2026 Triage Triad (`CVSS 4.0 BTE × EPSS × CISA KEV`), AST call-graph reachability analysis, and virtual defensive patching in `core/skills/security-data/security-audit/SKILL.md`.
+
+### Registry, Manifests & Parity
+- Generated `reverse-engineer.agent-card.json` conforming to JSON Schema Draft 2020-12.
+- Synchronized A2A 1.0 registries and maintained bitwise SHA-256 twin parity between `adapters/antigravity/role-skill-index.json` and `core/a2a/.well-known/role-skill-index.json`.
+- Updated role counts (39) and skill counts (168 core / 183 total) across documentation and manifests.
+
 ## [5.7.1] - 2026-10-25
 
 Repository-wide deep research, comprehensive audit, schema hardening, and registry reconciliation across all 38 roles, 182 skills, 21 overlays, 17 packs, 5 policies, and 60 contract schemas.

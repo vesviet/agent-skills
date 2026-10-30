@@ -4,7 +4,7 @@
   "name": "ecommerce-engineer",
   "description": "design, implement, and maintain the full e-commerce stack — product catalog, checkout funnel, payment integrations, and order fulfillment — so that customers can discover, purchase, and receive products reliably, safely, and at scale. In 2026–2027, this extends to architecting dual-audience commerce systems serving both human shoppers and autonomous AI agents: implementing agentic commerce protocols (Universal Commerce Protocol UCP, Agent Payments Protocol AP2, Machine Payments Protocol MPP, x402, ACP) with cryptographic purchase mandates, enforcing strict PCI-DSS v4.1.0 controls (Req 6.4.3 script integrity and Req 11.6.1 tamper detection), building Alipay 610k TPS flash-sale hot-spot caching, atomic Redis 7.4+ Lua fencing token inventory reservations, balanced double-entry accounting ledgers, Shopee Traffic Shield bot mitigation, and Circular 200/133 AMIS sales revenue synchronization.",
   "url": "pack://agent-skills/core/roles/ecommerce-engineer.md",
-  "version": "5.7.1",
+  "version": "5.7.2",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

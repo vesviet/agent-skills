@@ -2,7 +2,7 @@
 
 This guide defines the contribution standards and verification protocols for the `agent-skills` engineering pack.
 
-The pack operates at SOTA 2026–2027 standards with **38 Roles**, **182 Skills** (167 portable core + 15 overlays across 22 categories), **25 Workflows**, **60 JSON Contract Schemas**, **20 Dedicated Review Checklists** (in `core/roles/references/`), **17 Packs**, **21 Overlays**, and **18 Core Pack Validators**. It is engineered for autonomous multi-agent swarms, native A2A 1.0 (JSON-RPC 2.0 / SSE) orchestration, and runtime adapters including Google Antigravity (AGY).
+The pack operates at SOTA 2026–2027 standards with **39 Roles**, **183 Skills** (168 portable core + 15 overlays across 22 categories), **25 Workflows**, **60 JSON Contract Schemas**, **39 Dedicated Review Checklists** (in `core/roles/references/`), **17 Packs**, **21 Overlays**, and **19 Core Pack Validators**. It is engineered for autonomous multi-agent swarms, native A2A 1.0 (JSON-RPC 2.0 / SSE) orchestration, and runtime adapters including Google Antigravity (AGY).
 
 Every component has a strict structural standard, non-negotiable architectural guardrail locks, and automated validators. **Changes are not complete until all 18 core validators pass and dual indexes are synchronized with zero drift.**
 
@@ -19,7 +19,7 @@ Every component has a strict structural standard, non-negotiable architectural g
 | **Contract (Schema)** | `core/contracts/README.md` → When To Create A Schema | `validate-contracts.py` & `validate-contract-coverage.py` | JSON Schema draft 2020-12, bundled validation examples, A2A 1.0 Part compatibility |
 | **Pack** | `packs/README.md` → Pack Authoring Rules | `validate-packs.py` | Valid `manifest.yaml`, overlay dependencies, portable skill lists |
 | **Overlay** | `overlays/README.md` → Overlay Authoring Rules | `validate-overlays.py` | `README.md` with tech stack, isolated `rules/` and `skills/`, no core pollution |
-| **Policy / Boundaries** | `core/policies/action-boundaries.yaml` | `validate-policy-consistency.py` | Zero pre-authorized irreversible actions, complete 38-role classification, tool mapping |
+| **Policy / Boundaries** | `core/policies/action-boundaries.yaml` | `validate-policy-consistency.py` | Zero pre-authorized irreversible actions, complete 39-role classification, tool mapping |
 | **A2A / Agent Cards** | `core/a2a/registry/` & `.well-known/` | `validate-a2a-compliance.py` & `validate-agent-cards.py` | A2A 1.0 protocol conformance, agent cards matching role files |
 | **Golden Prompt Evals** | `core/prompts/README.md` | `validate-golden-evals.py` | Valid `manifest.yaml`, $\ge 10$ case pairs (`cases/`), rubric-based expected outputs |
 | **Platform Challenge** | `tests/test_*_platform_challenge.py` | `python -m unittest tests/test_<name>.py` | Empirical verification of SOTA 2026–2027 invariants, locks, and DoD |

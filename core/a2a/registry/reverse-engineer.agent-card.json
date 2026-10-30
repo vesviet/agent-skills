@@ -1,0 +1,59 @@
+{
+  "id": "pack://agent-skills/core/roles/reverse-engineer",
+  "contract_type": "agent-card",
+  "name": "reverse-engineer",
+  "description": "Deconstruct compiled binaries, proprietary protocols, obfuscated bytecode, and malicious payloads in air-gapped sandboxes to uncover hidden logic, identify security vulnerabilities, recover data contracts, and produce verifiable reverse engineering artifacts (REA) without modifying production code. In 2025–2026, this extends to deep multi-architecture static disassembly and decompilation, dynamic binary instrumentation (DBI) with runtime hooking, kernel-level eBPF tracing, network packet dissection, control-flow deobfuscation, and rigorous defensive vulnerability discovery while strictly adhering to ethical and sandbox isolation standards.",
+  "url": "pack://agent-skills/core/roles/reverse-engineer.md",
+  "version": "5.7.2",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "securityCardSigning": false
+  },
+  "authentication": {
+    "schemes": [
+      "pack-local"
+    ]
+  },
+  "defaultInputModes": [
+    "text",
+    "json",
+    "data"
+  ],
+  "defaultOutputModes": [
+    "text",
+    "json"
+  ],
+  "skills": [
+    {
+      "id": "reverse-engineer-binary",
+      "name": "Reverse Engineer Binary",
+      "description": "Deconstruct compiled binaries, proprietary protocols, and obfuscated bytecode in air-gapped sandboxes to recover logic, discover vulnerabilities, and produce verifiable REA evidence ledgers. Use when analyzing untrusted binaries, auditing closed-source dependencies, inspecting firmware, or reverse engineering protocols.",
+      "tags": [
+        "security",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "api-contract-spec.json",
+        "security-audit.json"
+      ]
+    }
+  ],
+  "defaultOutputSchemas": [
+    "api-contract-spec.json",
+    "security-audit.json"
+  ],
+  "role_file": "core/roles/reverse-engineer.md",
+  "policy_profile": "reverse-engineer"
+}

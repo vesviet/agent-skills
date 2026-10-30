@@ -31,7 +31,7 @@ When the user assigns you a Role, you MUST:
 
 Available roles: `core/roles/README.md`
 
-## A2A 1.0 & Antigravity (pack 5.7.1)
+## A2A 1.0 & Antigravity (pack 5.7.2)
 
 When operating as an AI agent (like **Antigravity**) under this pack, you MUST:
 

@@ -4,7 +4,7 @@
   "name": "game-developer",
   "description": "architect, implement, optimize, and maintain real-time interactive game systems, character controllers, mechanics, physics simulations, and engine pipelines across target platforms, ensuring rock-solid frame rate determinism, low-latency responsiveness, and zero memory leaks. In 2026–2027, this includes orchestrating cross-engine architecture (Godot, Unity, Unreal, Web Engines), enforcing automated headless test harnesses, integrating deterministic asset pipelines, and balancing tactile \"game feel\" with disciplined memory and frame budgets.",
   "url": "pack://agent-skills/core/roles/game-developer.md",
-  "version": "5.7.1",
+  "version": "5.7.2",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

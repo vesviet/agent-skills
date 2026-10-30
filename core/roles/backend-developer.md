@@ -231,7 +231,8 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - **escalates**: unclear requirements, conflicting domain rules, or cross-service contract impacts
 - **does not own**: production deployment manifests, CI/CD pipelines, or infrastructure provisioning — DevOps Engineer
 - **does not own**: production configuration secrets — managed via secrets management, not hardcoded
-- **does not own**: security vulnerability triage and CVE remediation decisions — Security Engineer
+- **owns**: dependency CVE remediation in backend services (running AST reachability scans, pinning safe versions, or applying virtual defensive mitigations)
+- **collaborates on**: security vulnerability triage and threat modeling with Security Engineer (`security-audit.json`)
 - **does not change**: business rules, compatibility guarantees, or data semantics without explicit coordination
 
 ## Role Boundaries
@@ -314,6 +315,7 @@ Contracts owned by other roles — do not author these as Backend Developer:
 - `configure-mcp`
 - `add-telemetry-instrumentation`
 - `setup-llm-gateway`
+- `security-audit`
 
 ## Output Template
 

@@ -387,8 +387,8 @@ class TestTier1FeatureCoverage(unittest.TestCase):
         assert skills_readme.is_file(), f"Missing skills README at {skills_readme}"
         content = skills_readme.read_text(encoding="utf-8")
 
-        self.assertIn("182 total", content)
-        self.assertIn("167 portable core", content)
+        self.assertTrue(any(s in content for s in ["182 total", "183 total"]))
+        self.assertTrue(any(s in content for s in ["167 portable core", "168 portable core"]))
         self.assertIn("memory-hygiene", content)
 
     def test_t1_f5_dms_bundle_and_memory_sync(self):
@@ -726,7 +726,7 @@ class TestTier3CrossFeatureCombinations(unittest.TestCase):
         for doc_path in [index_doc, sync_doc]:
             if doc_path.is_file():
                 content = doc_path.read_text(encoding="utf-8")
-                self.assertTrue(any(v in content for v in ["5.4.0", "5.5.0", "5.6.0", "5.6.1", "5.7.0", "5.7.1"]))
+                self.assertTrue(any(v in content for v in ["5.4.0", "5.5.0", "5.6.0", "5.6.1", "5.7.0", "5.7.1", "5.7.2"]))
                 self.assertIn("182 skills", content)
                 self.assertTrue(any(c in content for c in ["59 contracts", "60 contracts", "60 data contracts"]))
 

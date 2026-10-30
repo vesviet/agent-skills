@@ -461,7 +461,7 @@ class TestBusinessAnalystA2ARegistryAndDiscovery(unittest.TestCase):
         """Agent card must have correct metadata and reference valid skill IDs."""
         self.assertEqual(self.card.get("contract_type"), "agent-card")
         self.assertEqual(self.card.get("name"), "business-analyst")
-        self.assertIn(self.card.get("version"), ["5.0.0", "5.1.0", "5.2.0", "5.3.0", "5.4.0", "5.5.0", "5.6.0", "5.6.1", "5.7.0", "5.7.1"])
+        self.assertIn(self.card.get("version"), ["5.0.0", "5.1.0", "5.2.0", "5.3.0", "5.4.0", "5.5.0", "5.6.0", "5.6.1", "5.7.0", "5.7.1", "5.7.2"])
         card_skills = [s["id"] for s in self.card.get("skills", [])]
         expected_skills = [
             "analyze-business-requirements",

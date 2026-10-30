@@ -19,7 +19,7 @@ Modern agentic systems separate concerns across two orthogonal protocol layers:
                                      │ (Delegates tasks to specialized roles)
 ┌────────────────────────────────────▼────────────────────────────────────┐
 │                       PORTABLE ROLES & AGENT CARDS                      │
-│   38 Distinct Role Definitions (Primary / Supporting Skill Toolboxes)    │
+│   39 Distinct Role Definitions (Primary / Supporting Skill Toolboxes)    │
 └────────────────────────────────────┬────────────────────────────────────┘
                                      │ (Executes skills using tools)
 ┌────────────────────────────────────▼────────────────────────────────────┐
@@ -41,13 +41,13 @@ core/a2a/
 ├── README.md                          # This architecture specification
 ├── .well-known/
 │   ├── agent-card.json                # Canonical pack-level Agent Card (IANA permanent URI)
-│   ├── agent-registry.json            # Internal registry cataloging all 38 role cards
+│   ├── agent-registry.json            # Internal registry cataloging all 39 role cards
 │   ├── ai-catalog.json                # Google AI Catalog 2026 meta-index (ARD standard)
 │   └── role-skill-index.json          # Machine-readable skill/role index for client runtime
 └── registry/
     ├── agent-coordinator.agent-card.json
     ├── backend-developer.agent-card.json
-    ├── ... (38 per-role Agent Cards)
+    ├── ... (39 per-role Agent Cards)
     └── vietnam-accounting-specialist.agent-card.json
 ```
 

@@ -1,6 +1,6 @@
 {
   "contract_type": "agent-registry",
-  "pack_version": "5.7.1",
+  "pack_version": "5.7.2",
   "protocol_version": "1.0",
   "generated_from": "core/roles",
   "agents": [
@@ -141,6 +141,12 @@
       "agent_card": "core/a2a/registry/researcher.agent-card.json",
       "url": "pack://agent-skills/core/roles/researcher.md",
       "description": "run deep, iterative investigation and deliver triangulated, structured findings that downstream roles can act on without"
+    },
+    {
+      "role": "reverse-engineer",
+      "agent_card": "core/a2a/registry/reverse-engineer.agent-card.json",
+      "url": "pack://agent-skills/core/roles/reverse-engineer.md",
+      "description": "Deconstruct compiled binaries, proprietary protocols, obfuscated bytecode, and malicious payloads in air-gapped sandboxe"
     },
     {
       "role": "reviewer",

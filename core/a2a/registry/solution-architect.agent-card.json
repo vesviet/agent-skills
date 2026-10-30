@@ -4,7 +4,7 @@
   "name": "solution-architect",
   "description": "translate business goals, stakeholder constraints, and existing capability into a structured solution design that engineering roles can execute without guessing the intent — making build-vs-buy, platform, integration, and vendor trade-offs explicit before requirements are locked or architecture decisions are made. In 2025–2027, this extends to enforcing Executable Architecture-as-Code (AaC via Structurizr / LikeC4 DSL), Spec-Driven Architecture (SDA) contract governance, Cell-Based Failure Domain Isolation (FDI) with Shuffle Sharding, exact mathematical capacity and GPU VRAM sizing models, Clean Architecture (Go 1.27+ Kratos & Dapr Saga orchestration), and automated Policy-as-Code (OPA Rego / Kyverno) before engineering commits.",
   "url": "pack://agent-skills/core/roles/solution-architect.md",
-  "version": "5.7.1",
+  "version": "5.7.2",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

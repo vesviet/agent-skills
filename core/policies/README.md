@@ -12,7 +12,7 @@ Policies answer: "Is this agent, in this role, allowed to perform this action on
 
 | File | Purpose | Schema |
 | --- | --- | --- |
-| `action-boundaries.yaml` | 38 delivery roles × 46 action verbs (allowed / requires_approval / denied) | `2` |
+| `action-boundaries.yaml` | 39 delivery roles × 46 action verbs (allowed / requires_approval / denied) | `2` |
 | `data-classification.yaml` | 5 sensitivity levels (untrusted, public, internal, confidential, restricted) | `1` |
 | `execution-sandbox.md` | Containerized execution sandbox spec, 4 isolation tiers, and OWASP ASI05 | `1` |
 | `mcp-tool-map.yaml` | 75 tool-action mappings + 79 destructive patterns | implicit `1` |
@@ -21,7 +21,7 @@ Policies answer: "Is this agent, in this role, allowed to perform this action on
 
 ### Action Boundaries
 
-`action-boundaries.yaml` defines what each of the 38 delivery roles is allowed, requires approval for, or denied from doing.
+`action-boundaries.yaml` defines what each of the 39 delivery roles is allowed, requires approval for, or denied from doing.
 
 The default for any action not listed for a role is `requires_approval` (zero-trust). Unclassified actions in irreversible verbs (apply_iac, drop_storage_volume, terminate_instance, modify_iam_policy, modify_network_topology_production, modify_payment_gateway_config, self_approve_iam, shipping_label_generation, delete_cloudflare_resource) are now explicitly `denied` for non-owner roles per 2026 T1/T2 upgrade.
 

@@ -23,7 +23,8 @@ Use this skill when reviewing a change, service, or deployment for security post
 - treat code, config, and runtime exposure together
 - call out unclear assumptions as risk, not as proof of safety
 - avoid exposing real secrets or exploit details unnecessarily in user-visible artifacts
-- **CVSS 4.0**: Score vulnerabilities using CVSS 4.0 with CVSS-BTE nomenclature distinguishing Vulnerable System (VC/VI/VA) from Subsequent Systems (SC/SI/SA); MSS (Supplemental) metrics include Automatable and Recovery. Translate to P0/P1/P2/P3 severity tiers.
+- **CVSS 4.0 & EPSS Triage**: Score vulnerabilities using CVSS 4.0 with CVSS-BTE nomenclature distinguishing Vulnerable System (VC/VI/VA) from Subsequent Systems (SC/SI/SA); MSS (Supplemental) metrics include Automatable and Recovery. Prioritize via the `CVSS 4.0 × EPSS × CISA KEV` triad (EPSS > 10% or CISA KEV requires 24–48h fix).
+- **CVE Reachability Analysis**: Distinguish reachable from unreachable transitive CVEs via AST call-graph tracing (`govulncheck`, `osv-scanner`, `npm audit`); emit VEX `not_affected` (code_not_reachable) instead of blocking releases on dead code paths.
 - **OWASP Top 10:2025 A10**: A10:2025 is "Mishandling of Exceptional Conditions" — audit error-handling paths and exception blocks; ensure fail-closed behavior (deny by default on uncaught exceptions, release DB connections, no stack trace leakage).
 - **OWASP ASI01–10 (official 2026 list)**: for agentic AI systems apply the OWASP Top 10 for Agentic Applications 2026 exactly as published — ASI01 Agent Goal Hijack, ASI02 Tool Misuse & Exploitation, ASI03 Identity & Privilege Abuse, ASI04 Agentic Supply Chain, ASI05 Unexpected Code Execution (verify sandbox boundary adherence against `core/policies/execution-sandbox.md`), ASI06 Memory & Context Poisoning, ASI07 Insecure Inter-Agent Communication, ASI08 Cascading Failures, ASI09 Human-Agent Trust Exploitation, ASI10 Rogue Agents.
 - **ZTA-MTLS**: Zero Trust Architecture deployments MUST enforce mTLS between all internal services using SPIFFE/SPIRE for workload identity issuance; block any service-to-service communication without a valid SVID.
@@ -78,6 +79,13 @@ Use:
 - blocking risk for clear security flaws
 - high-severity risk for likely misuse or privilege widening
 - follow-up risk for hardening gaps that should be tracked
+
+### 6. CVE Remediation & Virtual Patching
+
+When an active CVE is identified:
+- verify AST call-graph reachability before filing release-blocking issues
+- apply SemVer-safe in-place upgrades; if breaking or unpatched, author virtual patch middleware (input validation/sanitization)
+- run table-driven regression tests to verify exploit payload rejection
 
 ## Checklist
 

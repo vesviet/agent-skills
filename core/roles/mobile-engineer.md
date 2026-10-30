@@ -273,6 +273,7 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - `integrate-api-client`
 - `write-tests`
 - `frontend-testing`
+- `security-audit`
 - `commit-code`
 - `navigate-service`
 

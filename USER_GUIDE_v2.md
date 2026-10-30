@@ -1,10 +1,10 @@
 # Agent-Skills User Guide (A2A 1.0 + Antigravity)
 
-> Pack version **5.7.1**. This guide covers the core concepts of the multi-agent system. For the full A2A lifecycle and Antigravity adapter setup, see `adapters/antigravity/ANTIGRAVITY.md`.
+> Pack version **5.7.2**. This guide covers the core concepts of the multi-agent system. For the full A2A lifecycle and Antigravity adapter setup, see `adapters/antigravity/ANTIGRAVITY.md`.
 >
 > **Note:** The filename keeps its `_v2` suffix for link stability; it will be renamed to `USER_GUIDE.md` at the next major version.
 
-Welcome to the **Agent-Skills** ecosystem (pack 5.7.1). This system transforms standard AI coding assistants into an **Autonomous Swarm Environment**. Instead of having one general AI try to do everything, you now have a team of highly specialized, policy-driven "Virtual Employees" that can talk to each other using strict Data Contracts.
+Welcome to the **Agent-Skills** ecosystem (pack 5.7.2). This system transforms standard AI coding assistants into an **Autonomous Swarm Environment**. Instead of having one general AI try to do everything, you now have a team of highly specialized, policy-driven "Virtual Employees" that can talk to each other using strict Data Contracts.
 
 > **Node.js users:** install the pack with `npm install @vesviet/agent-skills` and copy skills
 > into your platform with `npx agent-skills install --target zcode|claude` (or `--path <dir>`).

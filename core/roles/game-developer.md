@@ -142,6 +142,7 @@ Contracts owned by other roles — do not author these as Game Developer:
 - `systematic-debugging`
 - `write-tests`
 - `review-code`
+- `security-audit`
 
 ## Output Template
 

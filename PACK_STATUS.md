@@ -1,7 +1,7 @@
-# Pack Status (post-5.7.1 standards-2027 upgrade)
+# Pack Status (post-5.7.2 standards-2027 upgrade)
 
 **Validators:** 19/19 pass, 0 errors, 0 warnings.
-**Catalog:** 38 roles, 182 skills (167 core + 15 overlay), 25 workflows, 60 contracts, 17 packs, 21 overlays.
+**Catalog:** 39 roles, 183 skills (168 core + 15 overlay), 25 workflows, 60 contracts, 17 packs, 21 overlays.
 
 ## 0. Standards-2027 upgrade summary (5.1.0, 2026-10-15)
 
@@ -20,8 +20,8 @@ Grounded in five-track deep research (sources through October 2026):
 
 | Area | Status |
 |---|---|
-| Skills (167 core + 15 overlay) | 100% have `## Failure Modes` + `## Output Contracts` + `## Security Guardrails (OWASP ASI)` |
-| Roles (38) | 100% have `## Failure Modes` + OWASP + contract refs + Last updated footer |
+| Skills (168 core + 15 overlay) | 100% have `## Failure Modes` + `## Output Contracts` + `## Security Guardrails (OWASP ASI)` |
+| Roles (39) | 100% have `## Failure Modes` + OWASP + contract refs + Last updated footer |
 | Policies (3 YAML + 1 hook + 1 README) | `## Failure Modes` not applicable (YAML); README has Failure Modes + Standard 2026 footer |
 | Workflows (25 core + overlay) | 100% have `### Failure Modes` + `### Output Contracts` + `### Security Guardrails (OWASP ASI)` |
 | Overlay rules | 100% have Standard 2026 footer |
@@ -32,11 +32,11 @@ Grounded in five-track deep research (sources through October 2026):
 | `core/adapter-parity.md` + `packs/README.md` | 100% Tier A upgraded |
 | `core/*` READMEs (14) | 100% have Standard 2026 footer |
 | `.cursorrules` | 100% has Standard 2026 footer |
-| VERSION | `5.7.1` consistent across registry, cards, adapters, changelog |
-| CHANGELOG | `[5.7.1]` entry complete |
+| VERSION | `5.7.2` consistent across registry, cards, adapters, changelog |
+| CHANGELOG | `[5.7.2]` entry complete |
 | 17 pack manifests | All have version, schema_version, governance, includes, capabilities (incl. affiliate-cashback-team) |
-| 38 agent cards | All regenerated, version 5.7.1, A2A 1.0 |
-| A2A registry, ai-catalog, agent-card.json | All 5.7.1 / 1.1 |
+| 39 agent cards | All regenerated, version 5.7.2, A2A 1.0 |
+| A2A registry, ai-catalog, agent-card.json | All 5.7.2 / 1.1 |
 | Generated artifacts (INDEX, role-skill-index × 2, capability-map) | All consistent |
 
 *Active packs inventory (17):* `affiliate-cashback-team`, `b2b-catalog-team`, `b2b-golf-team`, `b2b-sport-team`, `content-sprint-team`, `data-analyst-team`, `data-warehouse`, `ecommerce-team`, `global-engineering`, `hugo-authority-team`, `hvac-content-team`, `landing-pages-team`, `laravel-ecommerce-team`, `livestream-team`, `mmo-growth-team`, `obj-team`, `real-estate-team`.

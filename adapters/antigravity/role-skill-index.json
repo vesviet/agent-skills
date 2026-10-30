@@ -1,9 +1,9 @@
 {
-  "version": "5.7.1",
+  "version": "5.7.2",
   "protocol": "A2A 1.0 + Antigravity",
   "root": ".",
   "stats": {
-    "roles": 38,
+    "roles": 39,
     "skills": 182,
     "workflows": 25,
     "schemas": 60
@@ -96,6 +96,12 @@
     "sec": "security-engineer",
     "appsec": "security-engineer",
     "secops": "security-engineer",
+    "reverse-engineer": "reverse-engineer",
+    "reverse-engineering": "reverse-engineer",
+    "re": "reverse-engineer",
+    "rev": "reverse-engineer",
+    "binary-analyst": "reverse-engineer",
+    "malware-analyst": "reverse-engineer",
     "reviewer": "reviewer",
     "code-reviewer": "reviewer",
     "pr-reviewer": "reviewer",
@@ -1698,7 +1704,8 @@
         "agent-delegation",
         "configure-mcp",
         "add-telemetry-instrumentation",
-        "setup-llm-gateway"
+        "setup-llm-gateway",
+        "security-audit"
       ],
       "primary_skills": [
         "add-api-endpoint",
@@ -1721,7 +1728,8 @@
         "agent-delegation",
         "configure-mcp",
         "add-telemetry-instrumentation",
-        "setup-llm-gateway"
+        "setup-llm-gateway",
+        "security-audit"
       ],
       "irreversible_actions": []
     },
@@ -2094,6 +2102,7 @@
         "configure-mcp",
         "web-perf",
         "add-telemetry-instrumentation",
+        "security-audit",
         "design-md-specification",
         "web-quality-audit"
       ],
@@ -2123,6 +2132,7 @@
         "configure-mcp",
         "web-perf",
         "add-telemetry-instrumentation",
+        "security-audit",
         "design-md-specification",
         "web-quality-audit"
       ],
@@ -2158,7 +2168,8 @@
         "performance-profiling",
         "systematic-debugging",
         "write-tests",
-        "review-code"
+        "review-code",
+        "security-audit"
       ],
       "primary_skills": [
         "integrate-game-engine",
@@ -2187,7 +2198,8 @@
         "performance-profiling",
         "systematic-debugging",
         "write-tests",
-        "review-code"
+        "review-code",
+        "security-audit"
       ],
       "irreversible_actions": []
     },
@@ -2236,6 +2248,7 @@
         "integrate-api-client",
         "write-tests",
         "frontend-testing",
+        "security-audit",
         "commit-code",
         "navigate-service",
         "accessibility-review",
@@ -2252,6 +2265,7 @@
         "integrate-api-client",
         "write-tests",
         "frontend-testing",
+        "security-audit",
         "commit-code",
         "navigate-service"
       ],
@@ -2457,6 +2471,39 @@
         "agent-quality-gate",
         "write-documentation",
         "optimize-seo"
+      ],
+      "irreversible_actions": []
+    },
+    "reverse-engineer": {
+      "name": "reverse-engineer",
+      "title": "Reverse Engineer",
+      "description": "Deconstruct compiled binaries, proprietary protocols, obfuscated bytecode, and malicious payloads in air-gapped sandboxes to uncover hidden logic, identify security vulnerabilities, recover data contracts, and produce verifiable reverse engineering artifacts (REA) without modifying production code. In 2025–2026, this extends to deep multi-architecture static disassembly and decompilation, dynamic binary instrumentation (DBI) with runtime hooking, kernel-level eBPF tracing, network packet dissection, control-flow deobfuscation, and rigorous defensive vulnerability discovery while strictly adhering to ethical and sandbox isolation standards.",
+      "file": "core/roles/reverse-engineer.md",
+      "skills": [
+        "reverse-engineer-binary",
+        "security-audit",
+        "systematic-debugging",
+        "skill-preflight-ast-check",
+        "supply-chain-security",
+        "prompt-injection-defense",
+        "review-code",
+        "performance-profiling",
+        "conduct-research",
+        "agent-delegation"
+      ],
+      "primary_skills": [
+        "reverse-engineer-binary"
+      ],
+      "supporting_skills": [
+        "security-audit",
+        "systematic-debugging",
+        "skill-preflight-ast-check",
+        "supply-chain-security",
+        "prompt-injection-defense",
+        "review-code",
+        "performance-profiling",
+        "conduct-research",
+        "agent-delegation"
       ],
       "irreversible_actions": []
     },
@@ -4188,6 +4235,13 @@
       "file": "core/skills/security-data/query-analytical-engine/SKILL.md",
       "description": "Execute in-process analytical SQL with chDB and DuckDB v1.5+, orchestrate multi-step stateful pipelines via chdb.session, federate queries across S3 Parquet, PostgreSQL, MySQL, and Iceberg without heavy ETL, leverage Apache Arrow C Data Interface, and enforce safe read-only AST validation. Use when conducting fast in-process analytical queries, cross-source federation, or ad-hoc OLAP exploration."
     },
+    "reverse-engineer-binary": {
+      "name": "reverse-engineer-binary",
+      "category": "overlay/security-research",
+      "type": "overlay",
+      "file": "overlays/security-research/skills/reverse-engineer-binary/SKILL.md",
+      "description": "Use when deconstructing compiled binaries, Electron bundles, and firmware images in air-gapped sandboxes to produce structured REA evidence ledgers."
+    },
     "security-audit": {
       "name": "security-audit",
       "category": "security-data",
@@ -4313,13 +4367,6 @@
       "type": "overlay",
       "file": "overlays/real-estate-content/skills/write-real-estate-astro-data/SKILL.md",
       "description": "Draft or update Astro Content Collection Markdown/MDX for the Real Estate and HVAC portals. Use when editing files under `src/data` (paths relative to the workspace root)."
-    },
-    "reverse-engineer-binary": {
-      "name": "reverse-engineer-binary",
-      "category": "overlay/security-research",
-      "type": "overlay",
-      "file": "overlays/security-research/skills/reverse-engineer-binary/SKILL.md",
-      "description": "Use when deconstructing compiled binaries, Electron bundles, and firmware images in air-gapped sandboxes to produce structured REA evidence ledgers."
     }
   },
   "workflows": {

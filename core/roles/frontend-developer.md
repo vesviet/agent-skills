@@ -275,6 +275,7 @@ Contracts owned by other roles — do not author these as Frontend Developer:
 - `configure-mcp`
 - `web-perf`
 - `add-telemetry-instrumentation`
+- `security-audit`
 - `design-md-specification`
 - `web-quality-audit`
 

@@ -1,8 +1,8 @@
 # Agent Skills — Engineering & Multi-Agent Pack
 
-**Version 5.7.1** · Portable engineering standards, principal-level agent roles, modular skills, structured data contracts, and end-to-end workflows for AI coding assistants and autonomous multi-agent swarms.
+**Version 5.7.2** · Portable engineering standards, principal-level agent roles, modular skills, structured data contracts, and end-to-end workflows for AI coding assistants and autonomous multi-agent swarms.
 
-> **Catalog**: **38 Roles** · **182 Skills** (167 Core + 15 Overlays) · **25 Workflows** · **60 JSON Schemas** · **17 Team Packs** · **21 Overlays**  
+> **Catalog**: **39 Roles** · **183 Skills** (168 Core + 15 Overlays) · **25 Workflows** · **60 JSON Schemas** · **17 Team Packs** · **21 Overlays**  
 > **Navigation**: [Master Index (`INDEX.md`)](INDEX.md) · [Machine Registry (`role-skill-index.json`)](core/a2a/.well-known/role-skill-index.json) · [Contributing Guide](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
 ---
@@ -11,7 +11,7 @@
 
 Modern AI-assisted engineering shifts from ad-hoc prompting to **Context Engineering**, **PromptOps**, and **Autonomous Multi-Agent Swarms**:
 
-- **Strict Role & Skill Boundaries**: 38 specialized roles with enforced Primary/Supporting Skill Toolboxes, architectural `*-LOCK` guardrails, and dedicated review checklists.
+- **Strict Role & Skill Boundaries**: 39 specialized roles with enforced Primary/Supporting Skill Toolboxes, architectural `*-LOCK` guardrails, and dedicated review checklists.
 - **Contract-First Handoffs (A2A 1.0)**: Native Agent-to-Agent (JSON-RPC 2.0 / SSE) discovery and handoffs validated against 60 JSON Schema (Draft 2020-12) contracts.
 - **Fail-Closed Policy Governance**: Machine-readable action boundaries (`core/policies/action-boundaries.yaml`), data classification, and OWASP ASI01–ASI10 guardrails.
 - **Portable Core + Modular Overlays**: Keep `core/` 100% stack- and brand-agnostic while layering project- or domain-specific rules via `overlays/` and `packs/`.
@@ -58,12 +58,12 @@ git submodule add <repo-url> agent-skills
 | Directory | Purpose | Documentation |
 |---|---|---|
 | [`core/rules/`](core/rules/README.md) | Always-on engineering rules, code standards, and commit/release safety gates | [Rules Guide](core/rules/README.md) |
-| [`core/roles/`](core/roles/README.md) | 38 principal-level role definitions and 38 dedicated review checklists | [Roles Catalog](core/roles/README.md) |
-| [`core/skills/`](core/skills/README.md) | 167 portable core skills organized across 22 engineering & domain categories | [Skills Inventory](core/skills/README.md) |
+| [`core/roles/`](core/roles/README.md) | 39 principal-level role definitions and 39 dedicated review checklists | [Roles Catalog](core/roles/README.md) |
+| [`core/skills/`](core/skills/README.md) | 168 portable core skills organized across 22 engineering & domain categories | [Skills Inventory](core/skills/README.md) |
 | [`core/workflows/`](core/workflows/README.md) | 25 multi-step, role-tagged standard operating procedures | [Workflows Index](core/workflows/README.md) |
 | [`core/contracts/`](core/contracts/README.md) | 60 JSON Schema (Draft 2020-12) specifications for structured agent outputs | [Contracts Catalog](core/contracts/README.md) |
 | [`core/policies/`](core/policies/README.md) | Zero-trust action boundaries, data classification, and execution sandbox specs | [Policies Guide](core/policies/README.md) |
-| [`core/a2a/`](core/a2a/README.md) | A2A 1.0 JSON-RPC/SSE protocol specs, `.well-known` discovery, and 38 Agent Cards | [A2A Architecture](core/a2a/README.md) |
+| [`core/a2a/`](core/a2a/README.md) | A2A 1.0 JSON-RPC/SSE protocol specs, `.well-known` discovery, and 39 Agent Cards | [A2A Architecture](core/a2a/README.md) |
 | [`core/prompts/`](core/prompts/README.md) | Golden prompt evaluation suites and PromptOps lifecycle assets | [PromptOps Guide](core/prompts/README.md) |
 | [`overlays/`](overlays/README.md) | 21 optional stack, project, and domain extensions (15 overlay skills) | [Overlays Index](overlays/README.md) |
 | [`packs/`](packs/README.md) | 17 ready-to-deploy team manifests combining `core/` with targeted `overlays/` | [Team Packs](packs/README.md) |
@@ -72,7 +72,7 @@ git submodule add <repo-url> agent-skills
 
 ## Core Catalog Overview
 
-### 1. Skills by Domain (182 Total: 167 Core + 15 Overlays)
+### 1. Skills by Domain (183 Total: 168 Core + 15 Overlays)
 
 Full searchable inventory: [`core/skills/README.md`](core/skills/README.md)
 

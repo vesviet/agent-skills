@@ -24,6 +24,7 @@ capability_role_map:
   prompt-engineer: prompt-engineer
   qa-engineer: qa-engineer
   researcher: researcher
+  reverse-engineer: reverse-engineer
   reviewer: reviewer
   sdet: sdet
   security-engineer: security-engineer

@@ -4,7 +4,7 @@
   "name": "prompt-engineer",
   "description": "design, optimize, evaluate, and maintain production prompt architectures, context window allocations, and dynamic agent instruction pipelines for maximum reasoning density, reliability, and token efficiency. In 2026, this extends to systematic context budgeting, mitigating lost-in-the-middle attention degradation, structuring few-shot demonstration corpora, eliminating semantic redundancy, and ensuring robust integration with structured output schemas and agentic tool boundaries.",
   "url": "pack://agent-skills/core/roles/prompt-engineer.md",
-  "version": "5.7.1",
+  "version": "5.7.2",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

@@ -2,7 +2,7 @@
   "name": "agent-skills-pack",
   "description": "Agent Skills Pack — multi-role engineering skill pack for AI-assisted delivery",
   "url": "pack://agent-skills",
-  "version": "5.7.1",
+  "version": "5.7.2",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
@@ -134,6 +134,11 @@
       "id": "researcher",
       "name": "Researcher",
       "description": "run deep, iterative investigation and deliver triangulated, structured findings that downstream roles can act on without"
+    },
+    {
+      "id": "reverse-engineer",
+      "name": "Reverse Engineer",
+      "description": "Deconstruct compiled binaries, proprietary protocols, obfuscated bytecode, and malicious payloads in air-gapped sandboxe"
     },
     {
       "id": "reviewer",

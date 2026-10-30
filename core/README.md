@@ -2,7 +2,7 @@
 
 This directory is the portable source of truth for the global engineering pack.
 
-> **Core Catalog**: **38 Roles** | **167 Portable Core Skills** (across 22 categories) | **25 Workflows** | **60 Data Contract Schemas**  
+> **Core Catalog**: **39 Roles** | **168 Portable Core Skills** (across 22 categories) | **25 Workflows** | **60 Data Contract Schemas**  
 > **Master Index & Discovery**: [`INDEX.md`](../INDEX.md) | **Machine Registry**: [`a2a/.well-known/role-skill-index.json`](a2a/.well-known/role-skill-index.json)  
 > **Authoritative SOTA Audit**: [`reports/role-skill-matrix-sota-audit-2026-2027.md`](../reports/role-skill-matrix-sota-audit-2026-2027.md)
 
@@ -17,8 +17,8 @@ Everything in `core/` satisfies these invariants:
 ## Structure
 
 - [rules](rules/README.md): global always-on engineering rules and code guidelines
-- [roles](roles/README.md): 38 principal-level role definitions with 20 dedicated review checklists
-- [skills](skills/README.md): 167 portable skills across 22 categories
+- [roles](roles/README.md): 39 principal-level role definitions with 39 dedicated review checklists
+- [skills](skills/README.md): 168 portable skills across 22 categories
 - [workflows](workflows/README.md): 25 end-to-end multi-agent operating procedures
 - [contracts](contracts/README.md): 60 JSON Schema Draft 2020-12 data contract specifications
 - [policies](policies/README.md): machine-readable action boundaries and data classification

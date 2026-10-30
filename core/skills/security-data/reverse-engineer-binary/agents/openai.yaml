@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reverse Engineer Binary"
+  short_description: "Deconstruct compiled binaries, proprietary protocols, and obfuscated bytecode..."
+  default_prompt: "Use $reverse-engineer-binary to execute reverse engineer binary tasks in this codebase."

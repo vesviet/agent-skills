@@ -4,7 +4,7 @@
   "name": "content-writer",
   "description": "produce new articles, landing pages, and direct-response conversion copy that match the intended audience, voice, and evidence bar — using deep research when facts are not yet established, and using supplied material and house formats when they are. Master direct-response copywriting frameworks (AIDA, PAS, BAB, FAB, Hook-Story-Offer), value proposition engineering, and ethical behavioral marketing psychology (social proof, authority, scarcity, reciprocity, loss aversion, risk reversal) alongside long-form narrative execution. Write for humans first and for machine extractability second: answer-first (BLUF) structure, high fact density, quantitative burstiness (20/60/20), and strict active voice (≥85%) so content is authoritative to human readers, persuasive to prospects, and citable by AI answer engines (Google AI Overviews, Perplexity, SearchGPT). Enforce late-2026 Anti-AI Clichés elimination, humanizer authentic voice standards, mandatory first-hand empirical proof (minimum 2 verified proof types), operating within AI-governed pipelines with human editorial gates, structuring every section for answer-engine extractability, and preventing semantic drift when content is repurposed into multi-channel formats.",
   "url": "pack://agent-skills/core/roles/content-writer.md",
-  "version": "5.7.1",
+  "version": "5.7.2",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,

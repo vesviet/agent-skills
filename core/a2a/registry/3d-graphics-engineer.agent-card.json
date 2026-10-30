@@ -4,7 +4,7 @@
   "name": "3d-graphics-engineer",
   "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGPU/WebGL implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility. In 2026–2027, this mandates WebGPU-first architectures with WebGL2 fallback, WGSL (WebGPU Shading Language) compute shader pipelines, Three.js WebGPURenderer / TSL (Three Shading Language), 3D Gaussian Splatting (3DGS) real-time rasterization within strict VRAM ceilings ($VRAM_{\\text{textures}} = \\sum (W_i \\times H_i \\times Bpp_i \\times 1.333)$), Meshopt/Draco asset delivery ($\\le 2\\text{MB}$ payload), and governing AI-generated 3D assets with automated memory and fidelity gates.",
   "url": "pack://agent-skills/core/roles/3d-graphics-engineer.md",
-  "version": "5.7.1",
+  "version": "5.7.2",
   "protocol_version": "1.0",
   "capabilities": {
     "streaming": true,
