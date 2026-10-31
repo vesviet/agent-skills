@@ -2,7 +2,7 @@ schema_version: "2"
 
 name: real-estate-team
 display_name: Real Estate Content & SEO Team
-description: High-authority content engineering and SEO publishing pack for Real Estate Portal (https://real-estate.example.com - Astro v5 + Cloudflare Pages). Composes portable core with overlays/real-estate-content and overlays/seo-publishing. Enforces the 5-Pillar Housing Content Framework (Intelligence, Information, Insights, Neighborhoods, Integration), 2026/2027 GEO/AEO standards (<AnswerFirst> component, fact density >=3 points/500w, anti-slop gating), 8-batch empirical AEO upgrade discipline, 98-persona E-E-A-T authorship, property-post cross-linking (61 luxury portfolios x 482 guides), and a 4-role multi-agent delivery pipeline.
+description: High-authority content engineering and SEO publishing pack for Real Estate Portal (https://real-estate.example.com - Astro v5 + Cloudflare Pages). Composes portable core with overlays/real-estate-content and overlays/seo-publishing. Enforces the 5-Pillar Housing Content Framework (Intelligence, Information, Insights, Neighborhoods, Integration), 2026/2027 GEO/AEO standards (<AnswerFirst> component, fact density >=3 points/500w, anti-slop gating), 8-batch empirical AEO upgrade discipline, 17-persona E-E-A-T authorship (133 frontmatter aliases), property-post cross-linking (61 luxury portfolios x 482 guides), and a 4-role multi-agent delivery pipeline.
 version: 5.0.0
 
 tags:
@@ -78,7 +78,7 @@ corpus:
     empirical_batches_completed: 8
     posts_at_masterclass: 100
     answerfirst_coverage: "482/482"
-    author_registry_personas: 98
+    author_registry_personas: 17
     indexes:
       - real-estate/plan/CONTENT_INDEX.md
       - real-estate/plan/LAW_CONTENT_INDEX_AND_AUDIT_2026.md
