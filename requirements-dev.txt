@@ -1,5 +1,5 @@
 # Development, Testing, and Validation Dependencies for agent-skills
-duckdb>=1.1.0
+duckdb>=2.0.0
 filelock>=4.2.4
 jsonschema>=4.23.0
 pyarrow>=17.0.0
