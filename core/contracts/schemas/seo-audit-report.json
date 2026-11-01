@@ -44,6 +44,7 @@
         "hvac-portal",
         "authority-blog",
         "hugo-twin",
+        "vesviet",
         "other"
       ]
     },
@@ -598,10 +599,7 @@
           "description": "Date range checked (e.g. 2026-06-05 to 2026-06-12)."
         },
         "conflicting_url": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": "string",
           "description": "URL of conflicting page if risk_found."
         },
         "exception_rationale": {
@@ -1037,7 +1035,7 @@
       "cannibalization_check": {
         "status": "clear",
         "window_checked": "2026-06-05 to 2026-06-12",
-        "conflicting_url": null,
+        "conflicting_url": "https://real-estate.example.com/post/neighborhood/conflicting-guide",
         "exception_rationale": null
       },
       "technical_escalations": [
