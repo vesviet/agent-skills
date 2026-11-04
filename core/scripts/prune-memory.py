@@ -196,7 +196,16 @@ def extract_candidate_paths(text: str) -> list[str]:
             continue
         if re.match(r"^\d+(\.\d+)*$", p) or re.match(r"^\d{4}-\d{2}-\d{2}", p):
             continue
-        if re.match(r"^\d+/\d+$", p):
+        if re.match(r"^\d+/\d+(?:/\d+)?$", p):
+            continue
+        # Skip IP CIDR notation (e.g. 202.181.90.0/24, 10.0.0.0/8)
+        if re.match(r"^\d{1,3}(?:\.\d{1,3}){3}/\d{1,2}$", p):
+            continue
+        # Skip common MIME types (e.g. application/json, text/plain)
+        if re.match(r"^(?:application|text|image|audio|video|multipart)/[a-zA-Z0-9_\-\.\+]+$", p, re.IGNORECASE):
+            continue
+        # Skip HTTP API endpoints (e.g. /v1/..., /api/..., /graphql, /webhook)
+        if re.match(r"^/(?:v\d+|api|graphql|health|metrics|oauth|webhook)/", p, re.IGNORECASE):
             continue
         has_slash = "/" in p
         suffix = Path(p).suffix.lower()

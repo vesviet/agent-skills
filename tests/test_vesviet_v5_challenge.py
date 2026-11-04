@@ -446,22 +446,21 @@ class TestGovernanceAndContractDefects(unittest.TestCase):
 
     def test_02_seo_audit_schema_defect_investigation(self):
         """
-        VERIFIED REMEDIATION: seo-audit-report.json bundled example sets
-        conflicting_url: null and exception_rationale: null,
-        which are typed as ["string", "null"] in the schema definition.
+        VERIFIED REMEDIATION: seo-audit-report.json defines conflicting_url as string
+        and exception_rationale as nullable ["string", "null"].
         """
         schema_path = PROJECT_ROOT / "core" / "contracts" / "schemas" / "seo-audit-report.json"
         with open(schema_path, "r", encoding="utf-8") as f:
             schema = json.load(f)
 
-        # Check property definition allows null
+        # Check property definition is string
         cannibalization = schema["properties"]["cannibalization_check"]["properties"]
         conflicting_url_type = cannibalization["conflicting_url"]["type"]
-        self.assertIn("null", conflicting_url_type, "conflicting_url allows null")
+        self.assertEqual("string", conflicting_url_type, "conflicting_url is typed as string")
 
-        # Confirm that validating an object with None/null succeeds against this property
+        # Confirm that validating an object with valid string URL succeeds against this property
         test_payload = {
-            "conflicting_url": None,
+            "conflicting_url": "https://example.com/conflict",
             "status": "clear",
             "window_checked": "2026-06-05 to 2026-06-12"
         }

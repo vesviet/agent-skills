@@ -409,7 +409,7 @@ class TestTier1FeatureCoverage(unittest.TestCase):
         dms_version_file = DMS_AGENTS_ROOT / "VERSION"
         assert dms_version_file.is_file(), f"DMS VERSION missing at {dms_version_file}"
         dms_version = dms_version_file.read_text(encoding="utf-8").strip()
-        self.assertIn(dms_version, ("2.10.0", "2.11.0", "2.12.0"))
+        self.assertIn(dms_version, ("2.10.0", "2.11.0", "2.12.0", "2.13.0", "2.14.0"))
 
 
 # ==============================================================================
