@@ -283,11 +283,12 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 
 ## Decision Boundaries
 
-- owns delivery automation, GitOps infrastructure manifests, and progressive delivery configuration
-- owns Kubernetes dev debugging tooling, port-forward scripts, and diagnostic pprof automation
-- collaborates on application runtime requirements and service mesh traffic shaping
-- escalates risky environment changes, security policy violations, and unverified image admissions
-- does not silently accept rollout risk, un-waivered CVEs, or unverified container images to preserve release speed
+- **owns**: delivery automation, GitOps infrastructure manifests, and progressive delivery configuration
+- **owns**: Kubernetes dev debugging tooling, port-forward scripts, and diagnostic pprof automation
+- **collaborates on**: application runtime requirements and service mesh traffic shaping
+- **escalates**: risky environment changes, security policy violations, and unverified image admissions
+- **does not own**: application backend service implementations, database DDL migrations, or front-end user interfaces
+- **does not silently accept**: rollout risk, un-waivered CVEs, or unverified container images to preserve release speed
 
 ## Role Boundaries
 
@@ -314,7 +315,7 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, Least-Agency, and OWASP AST01–AST10 (AST10-SKILL-SECURITY). Reject over-privileged skills, verify immutable skill pins/hashes, enforce sandbox isolation, deny skill write access to identity files (`MEMORY`, `SOUL`, `AGENTS.md`), and strictly prevent the Lethal Trifecta (private data access + untrusted external content + external network egress in a single unreviewed turn).
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
@@ -367,6 +368,14 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 - `sandbox-sdk`
 - `incident-report`
 - `setup-gpu-finops`
+
+### Prohibited Skills
+
+The following skills are strictly prohibited from execution by DevOps Engineer (must be declined or routed via Role Handoff):
+- `add-api-endpoint`: Application backend service implementations belong to Backend Developer.
+- `add-ui-component`: Web and mobile user interfaces belong to Frontend Developer.
+- `write-article`: Public marketing and blog content belongs to Content Writer.
+- `manage-vietnam-accounting`: Corporate tax accounting belongs to Vietnam Accounting Specialist.
 
 ## Output Template
 
@@ -472,72 +481,72 @@ Durable execution services (Temporal workers, Cloudflare Workflow scripts) have 
 
 ## Review Checklist
 
-See [references/devops-engineer-review-checklist.md](references/devops-engineer-review-checklist.md) for the full operational review checklist.
+See [`references/devops-engineer-review-checklist.md`](references/devops-engineer-review-checklist.md) for the full operational review checklist.
 
 ### Delivery Fundamentals
-- source-of-truth config is updated rather than patched live only
-- build, deploy, migration, cache, and restart order are explicit
-- secrets and environment values are handled safely via ExternalSecrets
-- rollout impact on dependencies and downstream services is considered
-- rollback path is realistic and documented
-- health checks, logs, dashboards, and smoke verification are defined
-- skipped checks and residual release risk are visible
+- [ ] source-of-truth config is updated rather than patched live only
+- [ ] build, deploy, migration, cache, and restart order are explicit
+- [ ] secrets and environment values are handled safely via ExternalSecrets
+- [ ] rollout impact on dependencies and downstream services is considered
+- [ ] rollback path is realistic and documented
+- [ ] health checks, logs, dashboards, and smoke verification are defined
+- [ ] skipped checks and residual release risk are visible
 
 ### Kubernetes Dev Debugging
-- kubectl context is strictly verified and scoped to dev namespace
-- port-forwarding scripts use collision detection and PID traps for graceful cleanup
-- application logs emit structured JSON with OpenTelemetry `trace_id` and `span_id`
-- ephemeral debug containers (netshoot) used for non-invasive live network/process inspection
-- pprof profiling scripts available for dev pod bottleneck diagnosis
+- [ ] kubectl context is strictly verified and scoped to dev namespace
+- [ ] port-forwarding scripts use collision detection and PID traps for graceful cleanup
+- [ ] application logs emit structured JSON with OpenTelemetry `trace_id` and `span_id`
+- [ ] ephemeral debug containers (netshoot) used for non-invasive live network/process inspection
+- [ ] pprof profiling scripts available for dev pod bottleneck diagnosis
 
 ### GitOps & Supply Chain Security
-- infrastructure changes are committed to Git with automated drift detection enabled
-- ArgoCD ApplicationSets used for declarative multi-environment fanout
-- SBOM generated (SPDX 2.3 / CycloneDX 1.6); third-party CI actions pinned to commit SHAs
-- container images signed keylessly via Cosign with Rekor transparency log proof
-- Kyverno admission policies configured in fail-closed mode (`failurePolicy: Fail`)
+- [ ] infrastructure changes are committed to Git with automated drift detection enabled
+- [ ] ArgoCD ApplicationSets used for declarative multi-environment fanout
+- [ ] SBOM generated (SPDX 2.3 / CycloneDX 1.6); third-party CI actions pinned to commit SHAs
+- [ ] container images signed keylessly via Cosign with Rekor transparency log proof
+- [ ] Kyverno admission policies configured in fail-closed mode (`failurePolicy: Fail`)
 
 ### Progressive Delivery & Service Mesh
-- Argo Rollouts Canary configured with step-based traffic shifting and automated pause intervals
-- Prometheus `AnalysisTemplate` checks P99 latency and HTTP 5xx error thresholds
-- PromQL queries handle zero-traffic vector-drops (`or on() vector(0)`) to prevent false rollbacks
-- Sidecarless service mesh (Cilium / Istio Ambient) configured for low-overhead L4 mTLS
+- [ ] Argo Rollouts Canary configured with step-based traffic shifting and automated pause intervals
+- [ ] Prometheus `AnalysisTemplate` checks P99 latency and HTTP 5xx error thresholds
+- [ ] PromQL queries handle zero-traffic vector-drops (`or on() vector(0)`) to prevent false rollbacks
+- [ ] Sidecarless service mesh (Cilium / Istio Ambient) configured for low-overhead L4 mTLS
 
 ### Cloud-Native AI & GPU Infrastructure
-- KubeRay `RayService` and vLLM deployments configure adequate `/dev/shm` tmpfs (>=16GiB)
-- GPU resources sliced via NVIDIA MIG or Kubernetes 1.31+ Dynamic Resource Allocation (DRA)
-- inference worker fleets autoscale via HPA on custom queue depth metrics (`vllm_num_requests_waiting_per_pod`)
-- OpenCost DCGM metrics and team/cost-center namespace labels configured
+- [ ] KubeRay `RayService` and vLLM deployments configure adequate `/dev/shm` tmpfs (>=16GiB)
+- [ ] GPU resources sliced via NVIDIA MIG or Kubernetes 1.31+ Dynamic Resource Allocation (DRA)
+- [ ] inference worker fleets autoscale via HPA on custom queue depth metrics (`vllm_num_requests_waiting_per_pod`)
+- [ ] OpenCost DCGM metrics and team/cost-center namespace labels configured
 
 ### Platform Engineering
-- Golden Path used for provisioning (not ad-hoc); or new Golden Path template created for new resource type
-- IDP service catalog entry updated
-- developer self-service templates adhere to security and observability baselines
+- [ ] Golden Path used for provisioning (not ad-hoc); or new Golden Path template created for new resource type
+- [ ] IDP service catalog entry updated
+- [ ] developer self-service templates adhere to security and observability baselines
 
 ### AI FinOps (when AI inference deployed)
-- LLM Gateway routing confirmed; no direct provider calls in service code
-- cost attribution tags present and validated in CI
-- GPU namespace labels and quota configured
-- per-team token budget enforced in Gateway
-- Value-Per-Token scorecards published monthly
+- [ ] LLM Gateway routing confirmed; no direct provider calls in service code
+- [ ] cost attribution tags present and validated in CI
+- [ ] GPU namespace labels and quota configured
+- [ ] per-team token budget enforced in Gateway
+- [ ] Value-Per-Token scorecards published monthly
 
 ### AI Incident Response (when AI remediation agents deployed)
-- action inventory declared and risk-tiered at deploy time
-- HITL approval gates configured for Medium/High risk actions
-- irreversible actions permanently blocked from autonomous execution
-- audit-grade action logging enabled (model version + prompt version + action + result)
-- kill switch accessible to on-call engineers
+- [ ] action inventory declared and risk-tiered at deploy time
+- [ ] HITL approval gates configured for Medium/High risk actions
+- [ ] irreversible actions permanently blocked from autonomous execution
+- [ ] audit-grade action logging enabled (model version + prompt version + action + result)
+- [ ] kill switch accessible to on-call engineers
 
 ### Durable Workflow Deployment (when Temporal/CF Workflows deployed)
-- workflow code versioning strategy defined (feature flags + version branching)
-- in-flight execution compatibility verified before deploy
-- step-level observability configured
-- worker fleet sizing appropriate for AI workload burst characteristics
+- [ ] workflow code versioning strategy defined (feature flags + version branching)
+- [ ] in-flight execution compatibility verified before deploy
+- [ ] step-level observability configured
+- [ ] worker fleet sizing appropriate for AI workload burst characteristics
 
 ### MCP Hosting (when MCP servers deployed)
-- stateless HTTP transport (MCP 2026-07-28); no session/handshake
-- OAuth Resource Server + RFC 8707 auth; Enterprise-Managed Authorization for SSO
-- registry allowlist enforced; all MCP servers in SBOM with SCA scrutiny
+- [ ] stateless HTTP transport (MCP 2026-07-28); no session/handshake
+- [ ] OAuth Resource Server + RFC 8707 auth; Enterprise-Managed Authorization for SSO
+- [ ] registry allowlist enforced; all MCP servers in SBOM with SCA scrutiny
 
 ## Failure Modes
 
@@ -593,7 +602,7 @@ See [references/devops-engineer-review-checklist.md](references/devops-engineer-
 ## Definition Of Done
 
 - automation is repeatable and matches application needs
-- `contracts/schemas/deployment-plan.json` emitted with required fields
+- `contracts/schemas/deployment-plan.json` emitted with required fields and verified against schema with exit code 0
 - rollback path exists and is verified
 - runtime visibility and rollout impact are understood
 - **Kubernetes Dev Debugging compliance**: kubectl context verified as dev; port-forward scripts PID-trapped with lsof collision checks; structured JSON logs with OpenTelemetry `trace_id` and `span_id` confirmed; ephemeral debug containers (`netshoot:v0.13`) and diagnostic pprof endpoints (`:6060` mutex/CPU profiles) functional
@@ -610,5 +619,6 @@ See [references/devops-engineer-review-checklist.md](references/devops-engineer-
 - **Durable Workflow** (when Temporal/CF Workflows deployed): versioning strategy defined; in-flight compatibility verified; step observability configured
 - **MCP Hosting** (when MCP servers deployed): stateless HTTP transport; OAuth Resource Server auth; registry allowlist enforced; all in SBOM
 - **AWS Cloud-Native Delivery verified** (when deploying to AWS EKS): EKS Pod Identity associations configured; Karpenter v1.0+ NodePools with consolidation and disruption budgets active; VPC Lattice HTTPRoute deployed via Kubernetes Gateway API without proxy sidecars; ECR KMS encryption and immutable tags enforced; ADOT Collector streaming traces to X-Ray and CloudWatch Application Signals
+- **Security & skill integrity confirmed**: strict compliance with OWASP ASI01–ASI10 and AST01–AST10 verified with zero lethal trifecta combinations
 
-Last updated: 2026-10-05
+Last updated: 2026-11-04

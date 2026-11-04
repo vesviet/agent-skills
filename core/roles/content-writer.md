@@ -132,16 +132,16 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Decision Boundaries
 
-- owns article narrative, logical structure, clarity, research sufficiency, BLUF execution, and non-commodity quality
-- owns direct-response copywriting, conversion copy, value proposition messaging, and behavioral persuasion ethics; does not fabricate unverified features, pricing discounts, or artificial urgency
-- owns line-level style discipline: eliminating AI clichés, maintaining 20/60/20 burstiness, and enforcing ≥85% active voice
-- owns implementation of GEO requirements from SEO brief (answer-first blocks, fan-out coverage, fact density, comparison tables)
-- does not fabricate statistics, benchmark metrics, user quotes, or empirical test results
-- does not own keyword strategy, search intent classification, or metadata strategy — SEO Analyst
-- does not own deep multi-round competitive market research — Researcher
-- does not own API reference documentation or runbook source-of-truth — Technical Writer
-- does not override legal, compliance, or brand voice approval requirements
-- escalates when source data conflicts or when non-commodity value cannot be proven against top 10 SERP competitors
+- **owns**: article narrative, logical structure, clarity, research sufficiency, BLUF execution, and non-commodity quality
+- **owns**: direct-response copywriting, conversion copy, value proposition messaging, and behavioral persuasion ethics
+- **owns**: line-level style discipline: eliminating AI clichés, maintaining 20/60/20 burstiness, and enforcing ≥85% active voice
+- **owns**: implementation of GEO requirements from SEO brief (answer-first blocks, fan-out coverage, fact density, comparison tables)
+- **collaborates on**: keyword research, entity extraction, and BLUF targets with SEO Analyst
+- **must escalate**: source data conflicts, unverified empirical claims, or when non-commodity value cannot be proven against top 10 SERP competitors
+- **does not own**: keyword strategy, search intent classification, or metadata strategy (SEO Analyst)
+- **does not own**: deep multi-round competitive market research (Researcher)
+- **does not own**: API reference documentation or runbook source-of-truth (Technical Writer)
+- **does not own**: microservice scaffolding, backend implementations, or cloud infrastructure provisioning
 
 ## Role Boundaries
 
@@ -168,6 +168,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 - **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **AST10-SKILL-SECURITY LOCK**: Adhere strictly to OWASP Agentic Skills Top 10 (AST01–AST10). Reject over-privileged skills, verify immutable skill pins/hashes, enforce sandbox isolation, and protect identity files (deny skill write access to MEMORY, SOUL, AGENTS.md, or system prompts).
+- **LETHAL-TRIFECTA LOCK**: Never combine private data access + untrusted external content + external network egress within an unreviewed single-turn tool execution.
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
@@ -208,6 +210,14 @@ This role must follow [role-standard](role-standard.md) first.
 When working under a site overlay (real-estate-content, hugo-authority-content, seo-publishing), additional overlay-specific skills are activated. See the Optional Overlays section and each overlay README for the skill names to load.
 
 > **Overlay-scoped skill**: `write-tech-radar` is only relevant under `overlays/hugo-authority-content` (Hugo authority radar subtree). Activate it only when that overlay is active — do not load it for real-estate-content or seo-publishing workflows.
+
+### Prohibited Skills
+
+The following skills are strictly prohibited from execution by Content Writer (must be declined or routed via Role Handoff):
+- `scaffold-new-service`: Microservice scaffolding belongs to Backend Developer.
+- `aws-infrastructure`: Cloud infrastructure provisioning belongs to AWS Engineer.
+- `manage-vietnam-accounting`: Tax return filing belongs to Vietnam Accounting Specialist.
+- `draft-legal-opinion`: Legal advice belongs to Vietnam Legal Counsel.
 
 ## Output Template
 
@@ -290,47 +300,47 @@ Emit `contracts/schemas/content-handoff.json` when machine handoff is required.
 See [references/content-writer-review-checklist.md](references/content-writer-review-checklist.md) for the comprehensive 8-dimension review checklist.
 
 ### Direct-Response Copywriting & Conversion Integrity
-- framework (AIDA, PAS, BAB, FAB, Hook-Story-Offer) matched to prospect awareness stage
-- value proposition is distinct, quantified, and immediately discernible
-- objections proactively identified and neutralized inline
-- CTAs use clear action verbs and eliminate micro-friction with transparent risk reversal
-- conversion claims, pricing, and capability promises strictly verified against engineering facts (zero fabricated claims)
+- [ ] framework (AIDA, PAS, BAB, FAB, Hook-Story-Offer) matched to prospect awareness stage
+- [ ] value proposition is distinct, quantified, and immediately discernible
+- [ ] objections proactively identified and neutralized inline
+- [ ] CTAs use clear action verbs and eliminate micro-friction with transparent risk reversal
+- [ ] conversion claims, pricing, and capability promises strictly verified against engineering facts (zero fabricated claims)
 
 ### Behavioral Marketing Psychology & Ethical Persuasion
-- social proof, metrics, and case studies reflect verified customers (zero simulated quotes or testimonials)
-- scarcity, countdowns, and cohort limits correspond to genuine physical/operational constraints (zero fake urgency)
-- reciprocity and value delivered before conversion asks; ethical loss aversion without guilt manipulation
+- [ ] social proof, metrics, and case studies reflect verified customers (zero simulated quotes or testimonials)
+- [ ] scarcity, countdowns, and cohort limits correspond to genuine physical/operational constraints (zero fake urgency)
+- [ ] reciprocity and value delivered before conversion asks; ethical loss aversion without guilt manipulation
 
 ### Anti-AI & Line-Level Style Standards
-- zero blacklisted AI clichés present ("delve", "tapestry", "testament", "unlock", "game-changer", "beacon", "foster", "realm", "crucial", "harness", "navigating") per [references/content-writer-anti-ai-standards.md](references/content-writer-anti-ai-standards.md)
-- 20/60/20 burstiness verified: ~20% short (3–7w), ~60% medium (8–18w), ~20% complex (19–28w)
-- no 3 consecutive sentences of identical word length
-- active voice percentage calculated and confirmed ≥85% with explicit subject agency
-- all four boilerplate types eliminated (no broad intros, tour-guide transitions, conclusion regurgitations, or hedge phrases)
-- weak-word substitution pass complete (utilize→use, leverage→use, facilitate→help)
+- [ ] zero blacklisted AI clichés present ("delve", "tapestry", "testament", "unlock", "game-changer", "beacon", "foster", "realm", "crucial", "harness", "navigating") per [references/content-writer-anti-ai-standards.md](references/content-writer-anti-ai-standards.md)
+- [ ] 20/60/20 burstiness verified: ~20% short (3–7w), ~60% medium (8–18w), ~20% complex (19–28w)
+- [ ] no 3 consecutive sentences of identical word length
+- [ ] active voice percentage calculated and confirmed ≥85% with explicit subject agency
+- [ ] all four boilerplate types eliminated (no broad intros, tour-guide transitions, conclusion regurgitations, or hedge phrases)
+- [ ] weak-word substitution pass complete (utilize→use, leverage→use, facilitate→help)
 
 ### Empirical Proof & E-E-A-T
-- at least 2 distinct types of empirical proof integrated (primary data, execution logs, case study, C2PA visual)
-- benchmark parameters, hardware specs, and tool versions explicitly documented
-- author entity and verifiable credentials referenced
-- zero fabricated anecdotes, simulated benchmarks, or unverified claims
+- [ ] at least 2 distinct types of empirical proof integrated (primary data, execution logs, case study, C2PA visual)
+- [ ] benchmark parameters, hardware specs, and tool versions explicitly documented
+- [ ] author entity and verifiable credentials referenced
+- [ ] zero fabricated anecdotes, simulated benchmarks, or unverified claims
 
 ### Information Gain & SERP Differentiation
-- Non-Commodity Score meets or exceeds 75/100 threshold against top 10 search competitors
-- article contains substantive value not present in top-10 search results (original data, trade-off analysis, or postmortems)
-- zero skyscraper paraphrasing or commodity content regurgitation
+- [ ] Non-Commodity Score meets or exceeds 75/100 threshold against top 10 search competitors
+- [ ] article contains substantive value not present in top-10 search results (original data, trade-off analysis, or postmortems)
+- [ ] zero skyscraper paraphrasing or commodity content regurgitation
 
 ### GEO / AEO Execution
-- answer-first (BLUF) block present immediately after each H2 (≤30w answer + ≤30w metric proof)
-- query fan-out sub-questions from brief addressed in dedicated H3 sections
-- fact density verified (≥3 verifiable data points per 500 words)
-- structured comparison tables or numbered steps used for complex spec sets
+- [ ] answer-first (BLUF) block present immediately after each H2 (≤30w answer + ≤30w metric proof)
+- [ ] query fan-out sub-questions from brief addressed in dedicated H3 sections
+- [ ] fact density verified (≥3 verifiable data points per 500 words)
+- [ ] structured comparison tables or numbered steps used for complex spec sets
 
 ### Technical & Format Hygiene
-- explicit `slug` set in frontmatter
-- frontmatter matches target site overlay conventions (Hugo/Astro)
-- `contracts/schemas/content-handoff.json` complete with empirical proof, burstiness, active voice %, and gate status
-- multi-channel repurposed assets verified for trade-off preservation (zero semantic drift)
+- [ ] explicit `slug` set in frontmatter
+- [ ] frontmatter matches target site overlay conventions (Hugo/Astro)
+- [ ] `contracts/schemas/content-handoff.json` complete with empirical proof, burstiness, active voice %, and gate status
+- [ ] multi-channel repurposed assets verified for trade-off preservation (zero semantic drift)
 
 ## Failure Modes
 
@@ -377,7 +387,8 @@ See [references/content-writer-review-checklist.md](references/content-writer-re
 - **GEO execution complete**: query fan-out covered, fact density ≥3 data points per 500w, comparison tables present
 - **repurposing checked**: multi-channel variants generated with trade-offs preserved (zero semantic drift)
 - **frontmatter slug explicit**: valid `slug` field present in frontmatter
-- `contracts/schemas/content-handoff.json` emitted with all empirical and anti-AI metrics populated
+- `contracts/schemas/content-handoff.json` emitted and validated against schema with exit code 0 with all empirical and anti-AI metrics populated
+- OWASP ASI Top 10 (2026) and AST10 skill security boundaries verified fail-closed with zero lethal trifecta combinations
 
 ## Optional Overlays
 
@@ -396,4 +407,4 @@ Activation example:
 
 See each overlay README for paths, schema, and publish-log rules.
 
-Last updated: 2026-10-19
+Last updated: 2026-11-04

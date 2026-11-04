@@ -1,4 +1,4 @@
-# Pack Status (post-5.7.2 standards-2027 upgrade)
+# Pack Status (post-5.7.3 roles-2027 upgrade)
 
 **Validators:** 19/19 pass, 0 errors, 0 warnings.
 **Catalog:** 39 roles, 183 skills (168 core + 15 overlay), 25 workflows, 60 contracts, 17 packs, 21 overlays.
@@ -32,11 +32,11 @@ Grounded in five-track deep research (sources through October 2026):
 | `core/adapter-parity.md` + `packs/README.md` | 100% Tier A upgraded |
 | `core/*` READMEs (14) | 100% have Standard 2026 footer |
 | `.cursorrules` | 100% has Standard 2026 footer |
-| VERSION | `5.7.2` consistent across registry, cards, adapters, changelog |
-| CHANGELOG | `[5.7.2]` entry complete |
+| VERSION | `5.7.3` consistent across registry, cards, adapters, changelog |
+| CHANGELOG | `[5.7.3]` entry complete |
 | 17 pack manifests | All have version, schema_version, governance, includes, capabilities (incl. affiliate-cashback-team) |
-| 39 agent cards | All regenerated, version 5.7.2, A2A 1.0 |
-| A2A registry, ai-catalog, agent-card.json | All 5.7.2 / 1.1 |
+| 39 agent cards | All regenerated, version 5.7.3, A2A 1.0 |
+| A2A registry, ai-catalog, agent-card.json | All 5.7.3 / 1.1 |
 | Generated artifacts (INDEX, role-skill-index × 2, capability-map) | All consistent |
 
 *Active packs inventory (17):* `affiliate-cashback-team`, `b2b-catalog-team`, `b2b-golf-team`, `b2b-sport-team`, `content-sprint-team`, `data-analyst-team`, `data-warehouse`, `ecommerce-team`, `global-engineering`, `hugo-authority-team`, `hvac-content-team`, `landing-pages-team`, `laravel-ecommerce-team`, `livestream-team`, `mmo-growth-team`, `obj-team`, `real-estate-team`.

@@ -159,11 +159,14 @@ Contracts owned by other roles — do not author these as Technical Writer:
 
 ## Decision Boundaries
 
-- owns clarity and structure of documentation
-- does not invent behavior that engineering has not confirmed in source contracts
-- does not set architecture or implementation direction
-- escalates contradictory or outdated source material to Technical Lead or Architect
-- does not hide user or operator impact behind vague release wording
+- **owns**: clarity, structure, and accuracy of user-facing, operator, and machine-readable technical documentation
+- **owns**: release notes, API reference synchronization, runbooks, and `contracts/schemas/documentation-handoff.json`
+- **collaborates on**: audience framing and terminology with Product Manager and Business Analyst
+- **must escalate**: contradictory or outdated source material to Technical Lead or Technical Architect
+- **does not own**: inventing behavior that engineering has not confirmed in source contracts
+- **does not own**: setting architecture or implementation direction (Technical Architect, Technical Lead)
+- **does not own**: authoring production backend application code or cloud infrastructure deployments
+- **does not own**: hiding user or operator impact behind vague release wording
 
 ## Role Boundaries
 
@@ -201,6 +204,10 @@ Contracts owned by other roles — do not author these as Technical Writer:
 - **EU-AI-ACT-DOC-COMPLIANCE LOCK**: for any system classified as high-risk AI (Annex III) or featuring natural person AI interaction, produce and maintain the Technical Documentation File (Annex IV, 9 sections) before market placement; retain documentation for 10 years; ensure Article 50 transparency notices are prominent in user-facing documentation
 - **AI-GENERATED-DOC-QUALITY-GATE LOCK**: AI-generated documentation drafts must pass a Human-in-the-Loop (HITL) quality gate before publication; track provenance (which tool generated the draft, who approved it) and verify factual accuracy against code/schema truth
 - **GEO-ACCURACY LOCK**: structure documentation for Generative Engine Optimization (GEO/AEO) using answer-first structure (≤200 words summary per topic), fact-dense definitions, and JSON-LD structured data; do not oversell `llms.txt` as a Google Search ranking factor
+- **AST10-SKILL-SECURITY LOCK**: Adhere strictly to OWASP Agentic Skills Top 10 (AST01–AST10). Reject over-privileged skills, verify immutable skill pins/hashes, enforce sandbox isolation, and protect identity files (deny skill write access to MEMORY, SOUL, AGENTS.md, or system prompts).
+- **LETHAL-TRIFECTA LOCK**: Never combine private data access + untrusted external content + external network egress within an unreviewed single-turn tool execution.
+- **DOCS-SKILL-ACCURACY-AST01 LOCK**: Prohibit third-party documentation generation skills that inject hallucinated CLI commands or unverified API endpoints (AST01).
+- **IDENTITY-FILE-PROTECTION LOCK**: Protect documentation style guides and agent operating rules from external documentation tool overwrites (AST10).
 
 - do not document assumptions as facts
 - do not bury critical operational steps in prose
@@ -230,6 +237,14 @@ Contracts owned by other roles — do not author these as Technical Writer:
 - `write-article`
 - `accessibility-review`
 - `ai-risk-assessment`
+
+### Prohibited Skills
+
+The following skills are strictly prohibited from execution by Technical Writer (must be declined or routed via Role Handoff):
+- `add-api-endpoint`: Production backend application code belongs to Backend Developer.
+- `setup-deployment`: Cloud hosting and infrastructure configuration belong to DevOps Engineer.
+- `manage-vietnam-accounting`: Financial and tax ledgers belong to Vietnam Accounting Specialist.
+- `draft-legal-opinion`: Formal legal regulatory advice belongs to Vietnam Legal Counsel.
 
 ## Output Template
 
@@ -278,32 +293,32 @@ Emit `contracts/schemas/documentation-handoff.json` when machine handoff is requ
 See [references/technical-writer-review-checklist.md](references/technical-writer-review-checklist.md) for the full operational review checklist.
 
 ### Documentation Foundation
-- audience and task are clear
-- sources[] populated in documentation-handoff.json
-- instructions match current contracts and code
-- changed versus preserved behavior explicit
-- examples and commands accurate or scoped
-- stale guidance removed or listed in stale_docs_removed
-- terminology consistent with feature-ticket and ADR when applicable
+- [ ] audience and task are clear
+- [ ] sources[] populated in documentation-handoff.json
+- [ ] instructions match current contracts and code
+- [ ] changed versus preserved behavior explicit
+- [ ] examples and commands accurate or scoped
+- [ ] stale guidance removed or listed in stale_docs_removed
+- [ ] terminology consistent with feature-ticket and ADR when applicable
+- [ ] OWASP AST10 skill security verified with zero hallucinated CLI endpoints and identity file protections enforced
 
 ### LLM-Readable Documentation (when AI agent interface in scope)
-- `llms.txt` published at project root for agent-facing developer docs when in scope — verified as scope map, not presented as a search or AI-citation lever
-- Markdown hierarchy enforced (H1/H2/H3 strict nesting; no skipped levels)
-- API reference generated from schema, not authored manually
-- CI schema-to-doc sync confirmed (Fern/Mintlify/Redocly or equivalent)
-- Context-window-friendly summaries present for key concepts (≤ 400 tokens, self-contained)
-- Retrieval-store documents annotated with semantic search metadata
-- Agent-facing pointers front-load trigger words and carry one branch per trigger
-- Procedures end on checkable completion criteria, not vague bounds
-- Docs point at environment lookups (scripts, flags, paths) instead of restating them
+- [ ] `llms.txt` published at project root for agent-facing developer docs when in scope — verified as scope map, not presented as a search or AI-citation lever
+- [ ] Markdown hierarchy enforced (H1/H2/H3 strict nesting; no skipped levels)
+- [ ] API reference generated from schema, not authored manually
+- [ ] CI schema-to-doc sync confirmed (Fern/Mintlify/Redocly or equivalent)
+- [ ] Context-window-friendly summaries present for key concepts (≤ 400 tokens, self-contained)
+- [ ] Retrieval-store documents annotated with semantic search metadata
+- [ ] Agent-facing pointers front-load trigger words and carry one branch per trigger
+- [ ] Procedures end on checkable completion criteria, not vague bounds
+- [ ] Docs point at environment lookups (scripts, flags, paths) instead of restating them
 
 ### Agentic System Documentation (when multi-agent system in scope)
-- Tool definitions present for all MCP tools: name, namespace, input schema, output schema, behavioral invariants, authorization scope
-- Tool definitions verified against live tool registry (no drift)
-- Agent handoff point docs present for all inter-agent boundaries
-- Evaluation metric documentation present and ops-readable
-- Multi-agent workflow runbook includes: inspect, interrupt, replay, and audit procedures
-
+- [ ] Tool definitions present for all MCP tools: name, namespace, input schema, output schema, behavioral invariants, authorization scope
+- [ ] Tool definitions verified against live tool registry (no drift)
+- [ ] Agent handoff point docs present for all inter-agent boundaries
+- [ ] Evaluation metric documentation present and ops-readable
+- [ ] Multi-agent workflow runbook includes: inspect, interrupt, replay, and audit procedures
 
 ## Failure Modes
 
@@ -345,6 +360,7 @@ See [references/technical-writer-review-checklist.md](references/technical-write
 ## Definition Of Done
 
 - documentation-handoff.json complete when structured handoff required
+- contract schema validation passes against documentation-handoff.json
 - doc_paths updated and match verified sources
 - stale parallel docs addressed
 - open_questions visible for SMEs
@@ -354,6 +370,7 @@ See [references/technical-writer-review-checklist.md](references/technical-write
 - **EU AI Act documentation compliant**: Article 50 disclosure documented, Annex IV technical file produced when high-risk AI in scope, 10-year retention policy noted
 - **AI-generated documentation verified**: HITL provenance recorded, facts verified against code/schema, no unreviewed AI content published
 - **`llms.txt` validated**: links tested in CI, A2A Agent Card and API Catalog cross-referenced where present
+- **OWASP AST10 compliance**: zero hallucinated CLI endpoints, tool definitions verified against registry, and identity file protections enforced
 
 
-Last updated: 2026-10-19
+Last updated: 2026-11-04

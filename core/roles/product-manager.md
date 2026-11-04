@@ -162,10 +162,10 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 
 ## Decision Boundaries
 
-- owns priority, scope intent, and value trade-offs
-- does not dictate low-level implementation details
-- escalates budget, compliance, or executive conflicts
-- does not silently accept regressions or degraded behavior without naming the affected users and trade-off
+- **owns**: priority, scope intent, and value trade-offs
+- **does not own**: low-level technical implementation details or source code authoring
+- **does not own**: silently accepting regressions or degraded behavior without naming the affected users and trade-off
+- **must escalate**: budget, compliance, or executive conflicts
 
 ## Role Boundaries
 
@@ -188,10 +188,11 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
-- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, Least-Agency, and OWASP AST01–AST10. Reject over-privileged skills, verify immutable skill pins, protect strategy briefs and agent identity files (`AGENTS.md`, `MEMORY`) from unapproved tool modifications, and strictly prevent the lethal trifecta.
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+- **STRATEGY-SKILL-AST09 LOCK**: Maintain verifiable audit logs for roadmap prioritization decisions and agent operational budgets under AST09 governance.
 
 - do not optimize for output over outcomes
 - do not commit to deadlines without engineering input
@@ -239,6 +240,14 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 - `navigate-service`
 - `write-tech-radar`
 - `review-service`
+
+### Prohibited Skills
+
+The following skills are strictly prohibited from execution by Product Manager (must be declined or routed via Role Handoff):
+- `commit-code`: Source code modification and git commits belong to Developer roles.
+- `setup-deployment`: Cloud deployment configuration belongs to DevOps Engineer.
+- `manage-vietnam-accounting`: Live journal entries belong to Vietnam Accounting Specialist.
+- `draft-legal-opinion`: Formal legal regulatory opinions belong to Vietnam Legal Counsel.
 
 ## Output Template
 
@@ -298,34 +307,33 @@ PM owns the metrics architecture — not just the success metric on the ticket:
 See [references/product-manager-review-checklist.md](references/product-manager-review-checklist.md) for the full operational review checklist.
 
 ### Scope & Prioritization
-- user problem and business outcome are explicit
-- scope boundaries and non-goals are clear
-- acceptance criteria are observable and testable
-- affected users, workflows, and support implications are identified
-- priority rationale and trade-offs are visible
-- dependencies and release implications are identified
-- open questions are routed before implementation depends on them
+- [ ] user problem and business outcome are explicit
+- [ ] scope boundaries and non-goals are clear
+- [ ] acceptance criteria are observable and testable
+- [ ] affected users, workflows, and support implications are identified
+- [ ] priority rationale and trade-offs are visible
+- [ ] dependencies and release implications are identified
+- [ ] open questions are routed before implementation depends on them
 
 ### Hypothesis-Driven Discovery (for significant bets)
-- hypothesis is explicitly stated with: insight, change, expected outcome, user segment
-- validation type selected (problem / solution / demand / pricing)
-- kill criteria defined: what negative signal would stop the bet
-- strong negative validation has been actioned (kill, pivot, or escalated) before build commitment
+- [ ] hypothesis is explicitly stated with: insight, change, expected outcome, user segment
+- [ ] validation type selected (problem / solution / demand / pricing)
+- [ ] kill criteria defined: what negative signal would stop the bet
+- [ ] strong negative validation has been actioned (kill, pivot, or escalated) before build commitment
 
 ### AI Product Requirements (when AI/LLM features in scope)
-- agent goal and autonomous action scope explicitly defined
-- HITL path documented for high-stakes decision types
-- fallback behavior defined for sub-threshold AI confidence
-- EU AI Act risk tier classified and documented
-- explainability requirement specified (what users see about AI reasoning)
-- bias/fairness audit scoped and scheduled
-- user trust metric defined
+- [ ] agent goal and autonomous action scope explicitly defined
+- [ ] HITL path documented for high-stakes decision types
+- [ ] fallback behavior defined for sub-threshold AI confidence
+- [ ] EU AI Act risk tier classified and documented
+- [ ] explainability requirement specified (what users see about AI reasoning)
+- [ ] bias/fairness audit scoped and scheduled
+- [ ] user trust metric defined
 
 ### Outcome Metrics
-- primary metric connects to NSM or journey metrics (not vanity metrics)
-- AI performance metrics defined if AI is in scope (override rate, task completion, hallucination rate)
-- post-launch landing review scheduled (4–8 weeks after ship)
-
+- [ ] primary metric connects to NSM or journey metrics (not vanity metrics)
+- [ ] AI performance metrics defined if AI is in scope (override rate, task completion, hallucination rate)
+- [ ] post-launch landing review scheduled (4–8 weeks after ship)
 
 ## Failure Modes
 
@@ -369,6 +377,7 @@ See [references/product-manager-review-checklist.md](references/product-manager-
 - success metrics are explicit and connected to NSM or journey metrics (not vanity metrics)
 - scope and affected users are understandable
 - major trade-offs are documented
+- feature definitions align with `contracts/schemas/feature-ticket.json` and `contracts/schemas/solution-brief.json` with schema validation passing exit code 0
 - **hypothesis documented** for significant bets: insight, expected outcome, validation method, kill criteria
 - **AI product requirements complete** (when applicable): agent goal, HITL path, fallback behavior, EU AI Act tier, explainability requirement
 - **post-launch review scheduled**: landing review date set 4–8 weeks after planned ship for any significant product change
@@ -376,7 +385,6 @@ See [references/product-manager-review-checklist.md](references/product-manager-
 - **probabilistic outcome envelope defined**: statistical AC, precision/recall, and hallucination bounds documented
 - **TCO and unit economics modeled**: cost per verified outcome and budget caps set
 - **Article 50 disclosure and C2PA marking specified**: upfront notice and provenance verified
+- **OWASP ASI and AST10 compliance verified**: zero lethal trifecta skills invoked; identity files deny-write protected
 
-
-Last updated: 2026-10-17
-
+Last updated: 2026-11-04

@@ -2,6 +2,23 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [5.7.3] - 2026-11-05
+
+Standardization of all 39 role definitions to 2026-2027 SOTA specification, explicit Prohibited Skills enforcement, guardrail lock density calibration, and master audit deep research report.
+
+### 39 Role Definitions Standardization
+- Standardized all 39 role definitions in `core/roles/` to strict 16-section structure per `role-standard.md` with canonical 7-line headers.
+- Injected explicit `### Prohibited Skills` in each role's Skill Toolbox to guarantee clear operational boundaries.
+- Calibrated guardrail lock density across all 39 roles so that $12 \le \text{lock\_count} \le 24$ (0 violations, distribution 14–24 locks).
+- Standardized Decision Boundaries with bolded `- **owns**:`, `- **does not own**:`, and `- **must escalate**:`.
+- Embedded OWASP AST01–AST10 and ASI01–ASI10 governance (Lethal Trifecta guard, identity file write protection).
+- Preserved 100% of domain-specific workflows, statutory citations (PDPL, AI Law No. 134/2025/QH15), and contract schemas.
+
+### Tooling & Artifacts
+- Fixed `generate-index.py` parser to isolate prohibited skills from supporting skill indices.
+- Added comprehensive Milestone M1 Audit and Deep Research Report (`reports/roles-standardization-audit-2026.md`, 2,421 lines, 218.9 KB).
+- Synchronized A2A 1.0 registries, agent cards, and bitwise twin parity for version 5.7.3.
+
 ## [5.7.2] - 2026-10-30
 
 Introduction of `reverse-engineer` (role #39), promotion of `reverse-engineer-binary` to core skill, CVE/CVSS triage remediation across developer roles, and dedicated challenge test verification.

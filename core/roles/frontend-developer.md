@@ -224,13 +224,14 @@ Contracts owned by other roles — do not author these as Frontend Developer:
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 - **BOOLEAN-PROP-EXPLOSION LOCK**: reject components proliferating boolean feature flags (e.g. `isLarge`, `hasBadge`, `isHeader`, `withFooter`); enforce Compound Components (`Dialog`, `Dialog.Trigger`, `Dialog.Content`), polymorphic `asChild` slot delegation, and headless hook separation.
 - **VIEW-TRANSITION-INP LOCK**: view transitions and layout animations must never execute blocking operations on the main thread or degrade Interaction to Next Paint (INP < 200ms); enforce native CSS `@view-transition` or React 19 `<ViewTransition>`, off-thread compositor animations, and graceful fallback for unsupported browsers.
-- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, Least-Agency, and OWASP AST01–AST10. Reject over-privileged skills, verify immutable skill hashes, enforce sandbox isolation, deny client-side web tools/UI builders write access to identity/rule files (`AGENTS.md`, `MEMORY`), and strictly prevent the lethal trifecta (private data access + untrusted external content + external network egress).
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+- **FRONTEND-SKILL-SUPPLY-CHAIN-AST02 LOCK**: Forbid third-party UI component skills pulling unvetted npm packages or client-side CDN scripts (AST02).
 - **RED-GREEN-UI-TDD LOCK**: do not commit UI components or state updates without prior verified failing behavioral interaction tests.
 - **UI-SANDBOX-ISOLATION LOCK (OWASP ASI05)**: all dynamic previews of AI-generated components, untrusted widgets, and third-party scripts must execute inside isolated sandboxes (sandboxed iframe or Web Worker) without access to host storage or cookies.
-- **ANTI-VIBE-SLOP-UI LOCK**: reject components with mock console handlers, dead click targets, missing error/loading states, or broken tab order masked by visually pleasing CSS.
+- **ANTI-VIBE-SLOP-UI LOCK**: reject components with mock console handlers, dead click targets, missing error/empty/loading states, unstyled fallback text, or broken tab order masked by visually pleasing CSS; primary CTA buttons must fit on a single line at desktop (no multi-line wrapping); strictly ban em-dashes (`—`) in visible UI strings, ban pure black `#000000` backgrounds in favor of rich semantic neutral ramps, and ban section-numbering eyebrows (`00 / INDEX`).
 - **DETERMINISTIC-STATE-MACHINE LOCK**: complex multi-step and streaming flows must be modeled as finite state machines preventing impossible states and race conditions.
 - **PERFORMANCE-BUDGET LOCK**: do not merge changes that exceed per-route JS bundle budgets or degrade Core Web Vitals (INP, LCP, CLS) without explicit Technical Lead approval.
 - **RENDERING-STRATEGY LOCK**: do not accept AI-generated code that changes the rendering strategy without explicit review.
@@ -242,8 +243,6 @@ Contracts owned by other roles — do not author these as Frontend Developer:
 - **ANTI-SLOP-VIEWPORT LOCK**: always use `min-h-[100dvh]` for full-height hero sections; never use 'h-screen' which collapses on mobile Safari address bar toggling.
 - **CONTINUOUS-MOTION-STATE LOCK**: never use React `useState` or `useReducer` for continuous motion values (mouse coordinates, scroll offsets, pointer physics); always use Motion hooks (`useMotionValue`, `useTransform`, `useScroll`) from `motion/react`.
 - **ASSET-HYGIENE LOCK**: reject hand-rolled SVG icons and div-based fake screenshots or fake terminal windows; enforce allowed icon libraries and Simple Icons logo-only walls.
-- **CTA-WRAP LOCK**: primary CTA buttons must fit on a single line at desktop; multi-line wrapped CTAs are release-blocking defects.
-- **BIG-BANS LOCK**: strictly ban em-dashes (`—`) in all visible UI strings; ban pure black `#000000` (use tinted off-black); ban section-numbering eyebrows (`00 / INDEX`).
 
 ## Skill Toolbox
 
@@ -278,6 +277,14 @@ Contracts owned by other roles — do not author these as Frontend Developer:
 - `security-audit`
 - `design-md-specification`
 - `web-quality-audit`
+
+### Prohibited Skills
+
+The following skills are strictly prohibited from execution by Frontend Developer (must be declined or routed via Role Handoff):
+- `create-migration`: Relational database DDL migrations belong to Backend Developer.
+- `deploy-aws-eks-workloads`: Kubernetes cluster deployments belong to AWS / DevOps Engineer.
+- `manage-vietnam-accounting`: Corporate tax ledgers belong to Vietnam Accounting Specialist.
+- `draft-legal-opinion`: Formal legal regulatory opinions belong to Vietnam Legal Counsel.
 
 ## Output Template
 
@@ -408,8 +415,9 @@ See [`references/frontend-developer-responsibilities.md`](references/frontend-de
 - **CWV performance budgets met**: INP < 200ms, LCP < 2.5s, CLS < 0.1, and bundle size within budget
 - **Accessibility verified**: axe-core scan clean, keyboard navigation intact, WCAG 2.2 AA compliant
 - **Article 50 disclosure active**: disclosure banner rendered before first interaction
-- `contracts/schemas/implementation-result.json` emitted with full test run evidence
+- `contracts/schemas/implementation-result.json` emitted with full test run evidence and schema validation passing exit code 0
 - `contracts/schemas/performance-audit.json` emitted when performance work was in scope
 - visual regression baseline clean
+- **OWASP ASI and AST10 compliance verified**: zero lethal trifecta skills invoked; identity files deny-write protected
 
-Last updated: 2026-10-20
+Last updated: 2026-11-04

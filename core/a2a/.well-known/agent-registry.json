@@ -1,6 +1,6 @@
 {
   "contract_type": "agent-registry",
-  "pack_version": "5.7.2",
+  "pack_version": "5.7.3",
   "protocol_version": "1.0",
   "generated_from": "core/roles",
   "agents": [

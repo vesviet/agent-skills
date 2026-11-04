@@ -689,7 +689,9 @@ def toolbox_skills(content: str) -> tuple[list[str], list[str]]:
     if not match:
         return [], []
     toolbox = match.group(1)
-    supporting_split = re.split(r"### Supporting Skills", toolbox)
+    # Truncate before Prohibited Skills so prohibited skills are never parsed as supporting
+    allowed_toolbox = re.split(r"### Prohibited Skills", toolbox)[0]
+    supporting_split = re.split(r"### Supporting Skills", allowed_toolbox)
     primary = re.findall(r"- `([a-z0-9-]+)`", supporting_split[0])
     supporting = re.findall(r"- `([a-z0-9-]+)`", supporting_split[1]) if len(supporting_split) > 1 else []
     return primary, supporting
@@ -705,8 +707,8 @@ def parse_roles() -> dict:
         desc_m = re.search(r"^Mission:\s*(.+)$", content, re.MULTILINE | re.IGNORECASE)
         if not desc_m:
             desc_m = re.search(r"^>\s*(.+)$", content, re.MULTILINE)
-        skills = re.findall(r"- `([a-z0-9-]+)`", content)
         primary_skills, supporting_skills = toolbox_skills(content)
+        skills = primary_skills + [s for s in supporting_skills if s not in primary_skills]
 
         irrev_m = re.search(r"## Irreversible Actions\s*\n((?:[^\n]+\n)+)", content)
         irreversible = []

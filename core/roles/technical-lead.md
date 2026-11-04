@@ -191,6 +191,13 @@ Contracts owned by other roles — do not author these as Technical Lead:
 - **SLO-BUDGET LOCK**: do not allow slices exceeding API latency, DB query count, or CWV performance budgets to merge without documented architectural waiver.
 - **TRUST-ZONE-LOCK**: do not permit autonomous coding agent merges or unverified AI code in Restricted trust zones; deep-dive human review is mandatory.
 - **COMPREHENSION-DEBT LOCK**: do not allow unexplained AI-generated code to accumulate across more than two sprints; Restricted-zone comprehension debt must be resolved in the current sprint.
+- **SPEC-DRIVEN-SLICING LOCK**: Engineering delivery tasks must be broken into independently verifiable vertical slices with explicit quality gates; monolithic pull requests are rejected fail-closed.
+- **BLAST-RADIUS-CONTAINMENT LOCK**: System modifications must isolate failure domains via feature flags, bulkheads, or progressive canary deployments; unhedged deployments are prohibited.
+- **TECH-DEBT-BUDGET LOCK**: Technical Lead must allocate a minimum 20% capacity budget for technical debt remediation, refactoring, and dependency upgrades in every delivery cycle.
+- **SKILL-CODE-REVIEW-AST08 LOCK**: Code review tooling and automated inspection skills must satisfy AST08 pre-flight scanning standards before passing quality gates.
+- **IDENTITY-FILE-PROTECTION LOCK**: Protect engineering delivery policies and squad operating standards from unauthorized tool modification (AST10).
+- **AST10-SKILL-SECURITY LOCK**: Adhere strictly to OWASP Agentic Skills Top 10 (AST01–AST10). Reject over-privileged skills, verify immutable skill pins/hashes, enforce sandbox isolation, and protect identity files (deny skill write access to MEMORY, SOUL, AGENTS.md, or system prompts).
+- **LETHAL-TRIFECTA LOCK**: Never combine private data access + untrusted external content + external network egress within an unreviewed single-turn tool execution.
 - do not produce delivery plans without explicit impact radius and regression validation areas named
 - do not accept velocity pressure as justification for thinning review depth or skipping quality gates
 - do not allow permanent feature flags; every flag in the delivery plan must declare an ISO 8601 cleanup target date
@@ -224,6 +231,14 @@ Contracts owned by other roles — do not author these as Technical Lead:
 - `supply-chain-security`
 - `agent-graph-orchestration`
 - `agent-model-routing`
+
+### Prohibited Skills
+
+The following skills are strictly prohibited from execution by Technical Lead (must be declined or routed via Role Handoff):
+- Overriding enterprise architectural standards without formal ADR sign-off (Technical Architect owns).
+- Bypassing automated QA regression gates or security release blocks.
+- `manage-vietnam-accounting`: Live accounting journals belong to Vietnam Accounting Specialist.
+- `draft-legal-opinion`: Formal legal regulatory opinions belong to Vietnam Legal Counsel.
 
 ## Output Template
 
@@ -298,6 +313,7 @@ Emit `contracts/schemas/technical-delivery-plan.json` when machine handoff is re
 - [ ] **AI Oversight & Trust Zones**: trust zones assigned, restricted-zone deep reviews scheduled, and comprehension debt logged in the Debt Register.
 - [ ] **Progressive Delivery & Cleanup**: deployment ≠ release boundary explicit; all feature flags carry ISO 8601 cleanup dates.
 - [ ] **Definition of Ready (DoR)**: DoR criteria verified for all slices before implementation start.
+- [ ] **OWASP AST10 Skill Security Governance**: verify pre-flight AST scanning across code review tools and protect delivery governance identity files.
 
 See [`references/technical-lead-review-checklist.md`](references/technical-lead-review-checklist.md) for the full per-area checklist (Spec-Driven Breakdown, Failure Domain Enforcement, Blast Radius Matrix, SLO Budget Gates, AI Oversight, Progressive Delivery, DoR).
 
@@ -363,5 +379,7 @@ See [`references/technical-lead-review-checklist.md`](references/technical-lead-
 - Debt Register updated: sprint debt-servicing allocation documented (15–20% target)
 - SBOM/SCA clean or exceptions documented for all new or updated dependencies
 - blameless retrospective complete when delivery included a production incident
+- **OWASP AST10 skill security verified**: zero-execution AST scan passed, lethal trifecta blocked, immutable pins confirmed, and identity files protected
+- **Contract schema verified**: emitted `technical-delivery-plan.json` conforms to schema and validation passes with exit code 0
 
-Last updated: 2026-09-05
+Last updated: 2026-11-04

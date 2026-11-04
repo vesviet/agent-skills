@@ -91,11 +91,12 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Decision Boundaries
 
-- owns Cloudflare edge config, Wrangler source of truth, and edge deploy execution
-- collaborates on Astro app code and API handler logic — does not own business rules in handlers
-- does not rotate or paste secret values in chat, commits, or handoffs
-- does not purge entire zone cache or change production DNS without approval
-- escalates org-wide WAF, Zero Trust, and billing/account changes
+- **owns**: Cloudflare edge configuration, `wrangler.toml` source of truth, edge bindings (KV, D1, R2, Vectorize), Workers AI routes, and edge deploy execution
+- **collaborates on**: Astro app code and API handler logic with Frontend and Backend Developers
+- **collaborates on**: edge-to-origin networking and health checks with System Engineer and SRE
+- **must escalate**: org-wide WAF, Zero Trust policies, billing/account changes, or full-zone cache purges
+- **does not own**: business rules in application API handlers or generic frontend/backend application code
+- **does not own**: origin server infrastructure, OS configuration, or cloud VPC networking
 
 ## Role Boundaries
 
@@ -123,6 +124,8 @@ This role must follow [role-standard](role-standard.md) first.
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 - **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **AST10-SKILL-SECURITY LOCK**: Adhere strictly to OWASP Agentic Skills Top 10 (AST01–AST10). Reject over-privileged skills, verify immutable skill pins/hashes, enforce sandbox isolation, and protect identity files (deny skill write access to MEMORY, SOUL, AGENTS.md, or system prompts).
+- **LETHAL-TRIFECTA LOCK**: Never combine private data access + untrusted external content + external network egress within an unreviewed single-turn tool execution.
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
@@ -172,6 +175,14 @@ This role must follow [role-standard](role-standard.md) first.
 - `troubleshoot-service`
 - `agent-delegation`
 
+### Prohibited Skills
+
+The following skills are strictly prohibited from execution by Cloudflare Engineer (must be declined or routed via Role Handoff):
+- `aws-infrastructure`: AWS VPC and EKS infrastructure belongs to AWS Engineer.
+- `develop-mobile-app`: Native iOS and Android app code belongs to Mobile Engineer.
+- `draft-legal-opinion`: Statutory legal opinions belong to Vietnam Legal Counsel.
+- `manage-vietnam-accounting`: Financial accounting entries belong to Vietnam Accounting Specialist.
+
 ## Output Template
 
 ```markdown
@@ -208,18 +219,18 @@ This role must follow [role-standard](role-standard.md) first.
 
 See [references/cloudflare-engineer-review-checklist.md](references/cloudflare-engineer-review-checklist.md) for the full operational review checklist.
 
-- wrangler config matches code env access and overlay conventions
-- bindings declared for every runtime resource the app uses
-- secret names only in handoffs and commits
-- preview exercised before production when risk warrants
-- rollback_plan and smoke_tests documented in edge-deployment-spec.json
-- DNS/cache/security changes scoped and approved when required
-- application-layer bugs escalated with evidence, not patched blindly at edge
-- **Workers AI routes via LLM Gateway** (no direct provider calls)
-- **Token budgets enforced** at edge with 429 + Retry-After
-- **MCP servers use stateless HTTP** (MCP 2026-07-28); externalized session state
-- **AI eval gate passed** for Workers AI/MCP changes (golden dataset, calibrated judge)
-- **MCP registry allowlist** verified for all edge MCP dependencies
+- [ ] wrangler config matches code env access and overlay conventions
+- [ ] bindings declared for every runtime resource the app uses
+- [ ] secret names only in handoffs and commits
+- [ ] preview exercised before production when risk warrants
+- [ ] rollback_plan and smoke_tests documented in edge-deployment-spec.json
+- [ ] DNS/cache/security changes scoped and approved when required
+- [ ] application-layer bugs escalated with evidence, not patched blindly at edge
+- [ ] **Workers AI routes via LLM Gateway** (no direct provider calls)
+- [ ] **Token budgets enforced** at edge with 429 + Retry-After
+- [ ] **MCP servers use stateless HTTP** (MCP 2026-07-28); externalized session state
+- [ ] **AI eval gate passed** for Workers AI/MCP changes (golden dataset, calibrated judge)
+- [ ] **MCP registry allowlist** verified for all edge MCP dependencies
 
 
 ## Failure Modes
@@ -266,7 +277,7 @@ See [references/cloudflare-engineer-review-checklist.md](references/cloudflare-e
 ## Definition Of Done
 
 - Wrangler and repo deploy source of truth updated
-- `contracts/schemas/edge-deployment-spec.json`
+- `contracts/schemas/edge-deployment-spec.json` emitted and validated against schema with exit code 0
 - bindings verified in preview or documented residual risk
 - rollback path and smoke tests defined for production-impacting changes
 - no secret values in user-visible artifacts
@@ -275,6 +286,7 @@ See [references/cloudflare-engineer-review-checklist.md](references/cloudflare-e
 - **MCP servers use stateless HTTP transport** (MCP 2026-07-28) with externalized state
 - **AI eval gate passed** for Workers AI/MCP changes (golden dataset, calibrated LLM-as-Judge)
 - **MCP registry allowlist** verified; all dependencies in SBOM with SCA scrutiny
+- OWASP ASI Top 10 (2026) and AST10 skill security boundaries verified fail-closed with zero lethal trifecta combinations
 
 ## Optional Overlays
 
@@ -295,4 +307,4 @@ Activation example:
 Read overlay README and `astro-cloudflare-conventions.md` before changing Wrangler or bindings.
 
 
-Last updated: 2026-10-19
+Last updated: 2026-11-04

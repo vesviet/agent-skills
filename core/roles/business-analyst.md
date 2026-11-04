@@ -129,6 +129,8 @@ See [`references/business-analyst-responsibilities.md`](references/business-anal
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation.
 - **SECURITY LOCK**: adhere strictly to OWASP ASI Top 10 (2026), Minimal Footprint, and Least-Agency principles.
+- **AST10-SKILL-SECURITY LOCK**: Adhere strictly to OWASP Agentic Skills Top 10 (AST01–AST10). Reject over-privileged skills, verify immutable skill pins/hashes, enforce sandbox isolation, and protect identity files (deny skill write access to MEMORY, SOUL, AGENTS.md, or system prompts).
+- **LETHAL-TRIFECTA LOCK**: Never combine private data access + untrusted external content + external network egress within an unreviewed single-turn tool execution.
 - **IRREVERSIBLE ACTION LOCK**: require explicit human sign-off for destructive, policy-altering, or production actions.
 - **TRACE LOCK**: enforce unbroken bidirectional traceability from Business Need to Automated Test Cases via RTM.
 - **UNCERTAINTY LOCK**: escalate to human validation when domain confidence is low; never guess unstated business rules.
@@ -167,6 +169,14 @@ See [`references/business-analyst-responsibilities.md`](references/business-anal
 - `write-documentation`
 - `review-service`
 - `conduct-research`
+
+### Prohibited Skills
+
+The following skills are strictly prohibited from execution by Business Analyst (must be declined or routed via Role Handoff):
+- `add-api-endpoint`: Server-side endpoint implementation belongs to Backend Developer.
+- `setup-deployment`: CI/CD delivery pipeline configuration belongs to DevOps Engineer.
+- `manage-vietnam-accounting`: Live journal posting belongs to Vietnam Accounting Specialist.
+- `manage-vietnam-legal`: Legal contract dispute representation belongs to Vietnam Legal Counsel.
 
 ## Output Template
 
@@ -397,6 +407,7 @@ See [`references/business-analyst-review-checklist.md`](references/business-anal
 - personal data features specify GDPR Article 6 legal basis, consent audit trail, Right to Erasure cascade SLA, DPIA assessment, and ROPA updates
 - living assumption register completed with all assumptions risk-scored ($\text{Impact} \times (6 - \text{Confidence})$) and validation experiments defined
 - bidirectional traceability established across the 5 RTM lifecycle layers; BFS blast radius computed for change requests
-- machine-readable `core/contracts/schemas/feature-ticket.json` generated and passes JSON Schema Draft 2020-12 validation
+- machine-readable `core/contracts/schemas/feature-ticket.json` generated and passes JSON Schema Draft 2020-12 validation with exit code 0
+- OWASP ASI Top 10 (2026) and AST10 skill security boundaries verified fail-closed with zero lethal trifecta combinations
 
 Last updated: 2026-10-15

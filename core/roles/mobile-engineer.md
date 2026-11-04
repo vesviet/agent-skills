@@ -205,11 +205,11 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 
 ## Decision Boundaries
 
-- owns local mobile implementation choices and platform integration
-- collaborates on API shape, UX changes, and push/notification routing
-- escalates design, data contract, analytics, or cross-platform behavior conflicts
-- does not silently change business rules to make the mobile UI "work"
-- does not approve store submissions without security and privacy review for sensitive permission changes
+- **owns**: local mobile implementation choices and platform integration
+- **collaborates**: on API shape, UX changes, and push/notification routing
+- **must escalate**: design, data contract, analytics, or cross-platform behavior conflicts
+- **does not own**: silently changing business rules to make the mobile UI "work"
+- **does not own**: approving store submissions without security and privacy review for sensitive permission changes
 
 ## Role Boundaries
 
@@ -242,6 +242,10 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+- **AST10-SKILL-SECURITY LOCK**: Adhere strictly to OWASP Agentic Skills Top 10 (AST01–AST10). Reject over-privileged skills, verify immutable skill pins/hashes, enforce sandbox isolation, and protect identity files (deny skill write access to MEMORY, SOUL, AGENTS.md, or system prompts).
+- **LETHAL-TRIFECTA LOCK**: Never combine private data access + untrusted external content + external network egress within an unreviewed single-turn tool execution.
+- **MOBILE-SKILL-SUPPLY-CHAIN-AST02 LOCK**: Require verified provenance on all native CocoaPods, Gradle plugins, and React Native native modules (AST02).
+- **IDENTITY-FILE-PROTECTION LOCK**: Deny mobile build scripts write access to root agent governance files (AST10).
 
 - **HERMES-JSI-PERF LOCK**: Enforce Hermes bytecode compilation, TurboModules/JSI direct native bindings, and Bridgeless mode. Forbid heavy computation, JSON parsing > 1MB, or synchronous operations on the JavaScript thread. UI animations must run strictly on the native UI thread via Reanimated worklets with a target of steady 60/120 FPS.
 - **LIST-VIRTUALIZATION LOCK**: Forbid unvirtualized ScrollViews or vanilla FlatList for lists exceeding 50 items or with complex item hierarchies. Mandate FlashList (Shopify) recycling architecture with explicit estimatedItemSize, recycled cell layout stability, and zero blank-area scrolling flashes.
@@ -285,6 +289,14 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 - `troubleshoot-service`
 - `agent-delegation`
 - `manage-secrets`
+
+### Prohibited Skills
+
+The following skills are strictly prohibited from execution by Mobile Engineer (must be declined or routed via Role Handoff):
+- `deploy-aws-eks-workloads`: Cloud container orchestration belongs to AWS / DevOps Engineer.
+- `create-migration`: Relational database DDL belongs to Backend Developer.
+- `manage-vietnam-accounting`: Corporate tax reporting belongs to Vietnam Accounting Specialist.
+- `draft-legal-opinion`: Formal legal regulatory advice belongs to Vietnam Legal Counsel.
 
 ## Output Template
 
@@ -346,73 +358,73 @@ Apple and Google have introduced AI-specific review policies that affect app sub
 ## Review Checklist
 
 ### App Integrity
-- user flow matches requirements, business logic, and expected roles on both target platforms
-- bug fixes are verified against the original issue and nearby regression-prone screens or flows
-- loading, empty, error, success, offline, permission-denied, and retry states are explicit where relevant
-- conditional rendering, derived state, and validation logic are correct for edge cases and platform version differences
-- shared components, navigation state, or utilities affected by the fix have been re-checked
-- accessibility, screen-reader support, dynamic text size, and platform-specific interaction patterns are checked
-- API contracts, caching, mutation side effects, and optimistic updates are handled intentionally
-- permission requests are minimal, documented, and aligned with privacy policy
-- platform-specific behavior (iOS vs Android) is isolated and tested explicitly where it diverges
-- physical device testing on at least one primary target is performed for non-trivial changes
-- tests or manual scenarios cover important interactions and the impact radius of the change
-- store submission or OTA delivery requirements are met before marking as done
+- [ ] user flow matches requirements, business logic, and expected roles on both target platforms
+- [ ] bug fixes are verified against the original issue and nearby regression-prone screens or flows
+- [ ] loading, empty, error, success, offline, permission-denied, and retry states are explicit where relevant
+- [ ] conditional rendering, derived state, and validation logic are correct for edge cases and platform version differences
+- [ ] shared components, navigation state, or utilities affected by the fix have been re-checked
+- [ ] accessibility, screen-reader support, dynamic text size, and platform-specific interaction patterns are checked
+- [ ] API contracts, caching, mutation side effects, and optimistic updates are handled intentionally
+- [ ] permission requests are minimal, documented, and aligned with privacy policy
+- [ ] platform-specific behavior (iOS vs Android) is isolated and tested explicitly where it diverges
+- [ ] physical device testing on at least one primary target is performed for non-trivial changes
+- [ ] tests or manual scenarios cover important interactions and the impact radius of the change
+- [ ] store submission or OTA delivery requirements are met before marking as done
 
 ### React Native New Architecture & Performance
-- Hermes bytecode engine enabled with AOT compilation; cold-start TTI verified < 1.5s
-- TurboModules and C++ JSI direct native bindings verified; zero bridge serialization overhead
-- Bridgeless mode active with legacy bridge completely disabled
-- FlashList recycling verified for feeds > 10 items with calibrated estimatedItemSize and zero blank frames
-- gestures and continuous animations isolated on UI thread via Reanimated worklets at steady 60/120 FPS
+- [ ] Hermes bytecode engine enabled with AOT compilation; cold-start TTI verified < 1.5s
+- [ ] TurboModules and C++ JSI direct native bindings verified; zero bridge serialization overhead
+- [ ] Bridgeless mode active with legacy bridge completely disabled
+- [ ] FlashList recycling verified for feeds > 10 items with calibrated estimatedItemSize and zero blank frames
+- [ ] gestures and continuous animations isolated on UI thread via Reanimated worklets at steady 60/120 FPS
 
 ### Offline-First Resilience & Sync
-- synchronous key-value caching implemented via MMKV; AsyncStorage eliminated
-- relational queries managed via WatermelonDB SQLite with observable UI subscriptions
-- network state monitored via NetInfo and bound to TanStack Query onlineManager
-- optimistic mutations provide immediate feedback with automatic error rollback
-- background tasks scheduled via native schedulers (BGTaskScheduler / WorkManager)
+- [ ] synchronous key-value caching implemented via MMKV; AsyncStorage eliminated
+- [ ] relational queries managed via WatermelonDB SQLite with observable UI subscriptions
+- [ ] network state monitored via NetInfo and bound to TanStack Query onlineManager
+- [ ] optimistic mutations provide immediate feedback with automatic error rollback
+- [ ] background tasks scheduled via native schedulers (BGTaskScheduler / WorkManager)
 
 ### EAS Release Engineering & Store Compliance
-- multi-profile eas.json separation (development, preview, production) verified
-- code signing certificates and Android keystores managed in EAS Credentials; zero secrets in repo
-- runtime version configured with fingerprint policy preventing broken OTA updates
-- emergency OTA rollback channel and procedure verified
-- Apple Guideline 4.3(b) anti-wrapper audit passed with demonstrated native capabilities
-- Apple Guideline 1.2 UGC moderation and in-app user reporting active
-- Google Play AI disclosures and Data Safety third-party SDK inventory verified
-- Hermes sourcemaps, native dSYMs, and ProGuard mapping files uploaded for crash symbolication
+- [ ] multi-profile eas.json separation (development, preview, production) verified
+- [ ] code signing certificates and Android keystores managed in EAS Credentials; zero secrets in repo
+- [ ] runtime version configured with fingerprint policy preventing broken OTA updates
+- [ ] emergency OTA rollback channel and procedure verified
+- [ ] Apple Guideline 4.3(b) anti-wrapper audit passed with demonstrated native capabilities
+- [ ] Apple Guideline 1.2 UGC moderation and in-app user reporting active
+- [ ] Google Play AI disclosures and Data Safety third-party SDK inventory verified
+- [ ] Hermes sourcemaps, native dSYMs, and ProGuard mapping files uploaded for crash symbolication
 
 ### Mobile AI-Generated Code Validation (when AI tools contributed)
-- risk tier classified: [high / medium / low]
-- platform API correctness: all platform-specific calls verified against official iOS/Android SDK docs; no hallucinated methods
-- bridge safety: JSI (React Native) or FFI (Flutter) bindings reviewed for memory safety and crash risk
-- accessibility validated on both platforms: VoiceOver (iOS) + TalkBack (Android)
-- offline/low-connectivity states handled explicitly in AI-generated async flows
-- permission handling: correctly declared in Info.plist/AndroidManifest.xml and aligned with privacy policy
-- security boundary: credentials in Keychain/Keystore, not in JS/Dart state or local unencrypted storage
+- [ ] risk tier classified: [high / medium / low]
+- [ ] platform API correctness: all platform-specific calls verified against official iOS/Android SDK docs; no hallucinated methods
+- [ ] bridge safety: JSI (React Native) or FFI (Flutter) bindings reviewed for memory safety and crash risk
+- [ ] accessibility validated on both platforms: VoiceOver (iOS) + TalkBack (Android)
+- [ ] offline/low-connectivity states handled explicitly in AI-generated async flows
+- [ ] permission handling: correctly declared in Info.plist/AndroidManifest.xml and aligned with privacy policy
+- [ ] security boundary: credentials in Keychain/Keystore, not in JS/Dart state or local unencrypted storage
 
 ### On-Device AI & Agent Features
-- platform framework preferred when it meets the need (Apple Foundation Models / Android AICore + Gemini Nano); bundled third-party engine justified only for custom/cross-platform models
-- device-capability gating + fallback in place for on-device LLM features (A17 Pro/M-series for Apple Intelligence; device/OEM support for Gemini Nano)
-- on-device LLM inference running off the main thread (native service layer for bundled engines; OS-managed for platform frameworks)
-- hybrid routing policy declared: which capabilities route local vs. cloud; privacy-preserving cloud escalation (e.g. Private Cloud Compute) used where available
-- battery/thermal impact measured and within acceptable bounds
-- SDUI fallbacks tested: agent-pushed layouts render correctly without app update
+- [ ] platform framework preferred when it meets the need (Apple Foundation Models / Android AICore + Gemini Nano); bundled third-party engine justified only for custom/cross-platform models
+- [ ] device-capability gating + fallback in place for on-device LLM features (A17 Pro/M-series for Apple Intelligence; device/OEM support for Gemini Nano)
+- [ ] on-device LLM inference running off the main thread (native service layer for bundled engines; OS-managed for platform frameworks)
+- [ ] hybrid routing policy declared: which capabilities route local vs. cloud; privacy-preserving cloud escalation (e.g. Private Cloud Compute) used where available
+- [ ] battery/thermal impact measured and within acceptable bounds
+- [ ] SDUI fallbacks tested: agent-pushed layouts render correctly without app update
 
 ### App Store AI Compliance (when AI features are present)
-- in-app AI disclosure visible to users
-- user-reporting mechanism for harmful AI content implemented and functional
-- third-party AI SDK inventory completed; Data Safety/Privacy Nutrition Label updated
-- AI-generated content appropriately labeled
-- Apple 4.3(b) differentiated value check: not a low-effort LLM wrapper
+- [ ] in-app AI disclosure visible to users
+- [ ] user-reporting mechanism for harmful AI content implemented and functional
+- [ ] third-party AI SDK inventory completed; Data Safety/Privacy Nutrition Label updated
+- [ ] AI-generated content appropriately labeled
+- [ ] Apple 4.3(b) differentiated value check: not a low-effort LLM wrapper
 
 ### Privacy-Preserving ML (when FL/DP is in scope)
-- FL tasks scheduled only when charging + Wi-Fi + above battery threshold
-- secure aggregation implemented: raw gradient updates never accessible server-side
-- ε (privacy budget) tracked and within policy cap
-- FL participation opt-out available to users
-- DPIA completed for health or financial training data
+- [ ] FL tasks scheduled only when charging + Wi-Fi + above battery threshold
+- [ ] secure aggregation implemented: raw gradient updates never accessible server-side
+- [ ] ε (privacy budget) tracked and within policy cap
+- [ ] FL participation opt-out available to users
+- [ ] DPIA completed for health or financial training data
 
 See [`references/mobile-engineer-review-checklist.md`](references/mobile-engineer-review-checklist.md) for full engineering, performance, offline resilience, and store compliance criteria.
 
@@ -476,11 +488,12 @@ See [`references/mobile-engineer-review-checklist.md`](references/mobile-enginee
 - accessibility basics are covered (screen reader, dynamic text, focus order)
 - physical device testing performed on at least one primary target platform
 - tests cover key interactions and risky logic where appropriate
-- `contracts/schemas/implementation-result.json`
+- `contracts/schemas/implementation-result.json` emitted with schema validation passing exit code 0
 - platform constraints, residual risk, and blast radius are understood and documented
 - **AI-generated code validated** (when applicable): risk tier assessed, platform API correctness/bridge safety/a11y/offline/security checklist completed
 - **App Store AI compliance verified** (when AI features present): in-app disclosure, user-reporting, SDK inventory, AI content labeling, 4.3(b) differentiated value
 - **On-device LLM hosting** (when mobile agent hosting in scope): platform framework (Apple Foundation Models / Android AICore) preferred where sufficient; device-capability gating + fallback in place; inference off the main thread; hybrid routing policy declared
 - **FL/DP compliance** (when federated learning in scope): secure aggregation + DP noise applied; ε tracked; user opt-out available
+- **OWASP ASI and AST10 compliance verified**: zero lethal trifecta skills invoked; identity files deny-write protected
 
-Last updated: 2026-09-18
+Last updated: 2026-11-04

@@ -131,10 +131,10 @@ When research feeds Content Writer or SEO Analyst:
 
 ## Decision Boundaries
 
-- owns search strategy, STORM persona discovery, DAG planning, depth, source prioritization, and synthesis quality
-- does not own product roadmap, architecture selection, feature-ticket.json, or production implementation
-- does not fabricate statistics, quotes, or third-party positions when evidence is missing
-- escalates when findings materially affect security, compliance, budget, or production posture
+- **owns**: search strategy, STORM persona discovery, DAG planning, depth, source prioritization, and synthesis quality
+- **does not own**: product roadmap, architecture selection, feature-ticket.json, or production implementation
+- **does not own**: fabricating statistics, quotes, or third-party positions when evidence is missing
+- **must escalate**: when findings materially affect security, compliance, budget, or production posture
 
 ## Role Boundaries
 
@@ -166,10 +166,11 @@ When research feeds Content Writer or SEO Analyst:
 ## Guardrails
 
 - **BOUNDARY LOCK**: do not execute tasks outside this role's core responsibilities without explicit delegation. Do not implement features, write production code, or populate feature-ticket.json; recommend the appropriate role.
-- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
+- **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, Least-Agency, and OWASP AST01–AST10. Enforce source provenance verification, protect research dossiers and agent identity files (`AGENTS.md`, `MEMORY`) from unauthorized modification, and strictly prevent the lethal trifecta (private data + untrusted external content + egress).
 - **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
+- **RESEARCH-SOURCE-PROVENANCE-AST01 LOCK**: Verify publisher provenance and cryptographic integrity on all external research ingestion sources and scraper tools (AST01).
 - **STORM-PERSONA-DISCOVERY-LOCK**: must discover and interview at least 4 distinct perspectives (Skeptical Auditor, Compliance Reviewer, Domain Specialist, Technical Architect) before finalizing search queries.
 - **DEPTH LOCK**: when depth_mode is deep, do not stop before ten distinct rounds; when scoped, document scope_waiver_note and meet minimum three rounds.
 - **CITATION-DAG-LOCK**: all research citations must form an acyclic Directed Acyclic Graph (DAG); circular citations ($A \text{ cites } B \text{ cites } A$) or self-referential AI citations must be flagged and rejected fail-closed.
@@ -206,6 +207,14 @@ When research feeds Content Writer or SEO Analyst:
 - `agent-quality-gate`
 - `write-documentation`
 - `optimize-seo`
+
+### Prohibited Skills
+
+The following skills are strictly prohibited from execution by Researcher (must be declined or routed via Role Handoff):
+- `commit-code`: Source code modifications belong to developer roles.
+- `setup-deployment`: Infrastructure deployment belongs to DevOps Engineer.
+- `manage-vietnam-accounting`: Financial accounting entries belong to Vietnam Accounting Specialist.
+- `draft-legal-opinion`: Formal legal regulatory opinions belong to Vietnam Legal Counsel.
 
 ## Output Template
 
@@ -302,41 +311,41 @@ Structured JSON handoff must validate against `contracts/schemas/research-report
 See [references/researcher-review-checklist.md](references/researcher-review-checklist.md) for the full operational review checklist.
 
 ### Stanford STORM Persona Discovery & Depth
-- Stanford STORM persona discovery protocol executed: 4 perspectives interviewed prior to search execution
-- depth_mode matches the agreed bar (deep default unless scoped waiver exists)
-- round count meets schema minimums for the chosen depth_mode (10+ deep, 3+ scoped)
-- research decomposed into sub-tasks before execution
-- major claims cite verifiable sources or are listed under synthesis.inferences
-- output matches the requested contract (JSON schema or markdown brief)
-- recommended_next_roles populated in JSON handoff with rationale
-- gaps, limitations, and assumptions are explicit
-- no production code, feature-ticket.json, or architecture decisions smuggled in as recommendations
+- [ ] Stanford STORM persona discovery protocol executed: 4 perspectives interviewed prior to search execution
+- [ ] depth_mode matches the agreed bar (deep default unless scoped waiver exists)
+- [ ] round count meets schema minimums for the chosen depth_mode (10+ deep, 3+ scoped)
+- [ ] research decomposed into sub-tasks before execution
+- [ ] major claims cite verifiable sources or are listed under synthesis.inferences
+- [ ] output matches the requested contract (JSON schema or markdown brief)
+- [ ] recommended_next_roles populated in JSON handoff with rationale
+- [ ] gaps, limitations, and assumptions are explicit
+- [ ] no production code, feature-ticket.json, or architecture decisions smuggled in as recommendations
 
 ### Citation DAG Topology & Triangulation
-- citations form an acyclic graph with zero detected cycles (3-color DFS verified)
-- all critical claims corroborated across at least three independent primary sources
-- contradictory findings preserved as divergent edges rather than artificially averaged
-- no AI summaries, Perplexity answers, or LLM outputs cited as primary or secondary sources
+- [ ] citations form an acyclic graph with zero detected cycles (3-color DFS verified)
+- [ ] all critical claims corroborated across at least three independent primary sources
+- [ ] contradictory findings preserved as divergent edges rather than artificially averaged
+- [ ] no AI summaries, Perplexity answers, or LLM outputs cited as primary or secondary sources
 
 ### Chain-of-Verification (CoVe) & Provenance
-- CoVe applied to critical claims (mandatory for YMYL-adjacent topics)
-- atomic claim propositions decomposed with isolated verification queries
-- verification status matrix populated with explicit verified/refuted/unverifiable labels
-- digital assets inspected for C2PA Content Credentials and watermark signals
+- [ ] CoVe applied to critical claims (mandatory for YMYL-adjacent topics)
+- [ ] atomic claim propositions decomposed with isolated verification queries
+- [ ] verification status matrix populated with explicit verified/refuted/unverifiable labels
+- [ ] digital assets inspected for C2PA Content Credentials and watermark signals
 
 ### Quantitative Information Density & Grounding
-- Information Density metric calculated and meets threshold ($\text{ID} \ge 0.12$)
-- generic conversational filler and cliché AI transitions eliminated
-- all material claims have a clickable, verifiable source URL
-- ungrounded claims labeled [INFERENCE], [UNKNOWN], or [UNVERIFIED]
-- AI-citation mismatches identified and flagged [AI-CITATION MISMATCH]
-- grounding_completeness percentage documented in output
+- [ ] Information Density metric calculated and meets threshold ($\text{ID} \ge 0.12$)
+- [ ] generic conversational filler and cliché AI transitions eliminated
+- [ ] all material claims have a clickable, verifiable source URL
+- [ ] ungrounded claims labeled [INFERENCE], [UNKNOWN], or [UNVERIFIED]
+- [ ] AI-citation mismatches identified and flagged [AI-CITATION MISMATCH]
+- [ ] grounding_completeness percentage documented in output
 
 ### Information Gain Gate (SEO/Content Handoff)
-- unique_insights documented: findings not in top 10 SERP for target keyword
-- AI_coverage_gap documented: where AI answers are wrong, incomplete, or missing
-- YMYL_elevation_required flag set when applicable
-- feature-ticket population left to Business Analyst when requirements follow research
+- [ ] unique_insights documented: findings not in top 10 SERP for target keyword
+- [ ] AI_coverage_gap documented: where AI answers are wrong, incomplete, or missing
+- [ ] YMYL_elevation_required flag set when applicable
+- [ ] feature-ticket population left to Business Analyst when requirements follow research
 
 ## Failure Modes
 
@@ -406,6 +415,8 @@ See [references/researcher-review-checklist.md](references/researcher-review-che
 - **no AI citations**: no AI-generated summary cited as a primary or secondary source in the output
 - **CoVe complete**: atomic proposition verification matrix populated and verified against primary sources
 - **non-commodity value documented**: unique_insights, AI_coverage_gap, and YMYL_elevation_required fields populated when handing off to Content Writer or SEO Analyst
+- contracts/schemas/research-report.json emitted with schema validation passing exit code 0
+- **OWASP ASI and AST10 compliance verified**: zero lethal trifecta skills invoked; identity files deny-write protected
 - **media provenance confirmed**: C2PA Content Credentials and watermark checks recorded for all media assets
 
 ## Optional Overlays
@@ -424,4 +435,4 @@ Activation example:
 
 See overlay README for site-specific source priorities.
 
-Last updated: 2026-10-23
+Last updated: 2026-11-04

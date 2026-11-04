@@ -112,12 +112,14 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Decision Boundaries
 
-- owns reliability, operability, and error budget governance across all environments
-- owns production SLO/SLI definitions and MWMBR alerting policies
-- owns chaos experiment execution and verification of steady-state hypotheses
-- can halt, freeze, or reject releases when error budgets are exhausted or safety posture is inadequate
-- collaborates on application fixes and performance tuning rather than authoring product feature code directly
-- does not silently accept unclear recovery posture or suppressed alerts to preserve release velocity
+- **owns**: reliability, operability, and error budget governance across all environments
+- **owns**: production SLO/SLI definitions and MWMBR alerting policies
+- **owns**: chaos experiment execution and verification of steady-state hypotheses
+- **owns**: halting, freezing, or rejecting releases when error budgets are exhausted or safety posture is inadequate
+- **collaborates on**: application fixes and performance tuning with developer roles
+- **must escalate**: critical service degradation, unmitigated cascading risks, and zero-day reliability blockers immediately
+- **does not own**: authoring product feature code or direct CI/CD pipeline implementation
+- **does not own**: silently accepting unclear recovery posture or suppressed alerts to preserve release velocity
 
 ## Role Boundaries
 
@@ -152,6 +154,10 @@ This role must follow [role-standard](role-standard.md) first.
 - **INCIDENT-POSTMORTEM LOCK**: strictly prohibit closing any SEV-1, SEV-2, or SLO-breaching incident without an immutable, blameless postmortem conforming to `contracts/schemas/incident-report.json`; postmortems must include quantitative MTTD/MTTM/MTTR metrics in seconds, peak burn rate and budget consumed, W3C distributed trace context (`root_trace_id`, `culprit_span_id`), 5 Whys root cause analysis, and preventative action items with explicit owner roles and verification mechanisms.
 - **AI-SLO LOCK**: do not accept that an AI/ML service is "reliable" without AI-specific SLOs covering output quality, inference latency, token cost, and model drift; uptime-only SLOs are insufficient for AI systems.
 - **ERROR-BUDGET LOCK**: do not allow feature work to proceed when the error budget is exhausted without an explicit reliability-first commitment from Product Manager; error budget exhaustion must trigger a reliability sprint, not a post-it note in the backlog.
+- **AST10-SKILL-SECURITY LOCK**: Adhere strictly to OWASP Agentic Skills Top 10 (AST01–AST10). Reject over-privileged skills, verify immutable skill pins/hashes, enforce sandbox isolation, and protect identity files (deny skill write access to MEMORY, SOUL, AGENTS.md, or system prompts).
+- **LETHAL-TRIFECTA LOCK**: Never combine private data access + untrusted external content + external network egress within an unreviewed single-turn tool execution.
+- **CHAOS-SKILL-BLAST-RADIUS-AST06 LOCK**: Enforce strictly bounded blast-radius constraints on all chaos injection and performance profiling skills (AST06).
+- **IDENTITY-FILE-PROTECTION LOCK**: Deny telemetry agents and monitoring daemons write access to agent system prompt configurations (AST10).
 - do not accept noisy alerts as normal
 - do not optimize reliability without understanding user impact
 - do not treat alert silence as proof that the system is healthy
@@ -177,6 +183,14 @@ This role must follow [role-standard](role-standard.md) first.
 - `manage-secrets`
 - `setup-deployment`
 - `agent-delegation`
+
+### Prohibited Skills
+
+The following skills are strictly prohibited from execution by Site Reliability Engineer (must be declined or routed via Role Handoff):
+- `add-api-endpoint`: Application business domain logic belongs to Backend Developer.
+- `add-ui-component`: Frontend UI component development belongs to Frontend Developer.
+- `manage-vietnam-accounting`: Live journal entries belong to Vietnam Accounting Specialist.
+- `draft-legal-opinion`: Formal legal regulatory advice belongs to Vietnam Legal Counsel.
 
 ## Output Template
 
@@ -216,6 +230,7 @@ This role must follow [role-standard](role-standard.md) first.
 - [ ] steady-state hypotheses and blast-radius containment verified for chaos experiments
 - [ ] dependency and cascading blast-radius effects are evaluated
 - [ ] postmortem action items assigned to owner roles with automated verification mechanisms
+- [ ] OWASP AST10 skill security verified with bounded chaos blast radius and identity file protection
 
 See [references/sre-review-checklist.md](references/sre-review-checklist.md) for the comprehensive 14+ criteria per-area checklist.
 
@@ -256,5 +271,7 @@ See [references/sre-review-checklist.md](references/sre-review-checklist.md) for
 - **Deep Telemetry & eBPF**: kernel-level socket profiling active; OpenTelemetry v1.30+ GenAI conventions instrumented
 - **Automated Runbooks**: diagnostic action trees defined with dry-run mode and human interruptibility
 - **AI/ML reliability complete** (when AI/ML system in scope): AI-specific SLOs (quality, TTFT latency, token cost, drift) active, model rollback triggers configured
+- **OWASP AST10 skill security verified**: zero-execution AST scan passed, lethal trifecta blocked, immutable pins confirmed, and identity files protected
+- **Contract schema verified**: emitted `incident-report.json` conforms to schema and validation passes with exit code 0
 
 Last updated: 2026-10-05
