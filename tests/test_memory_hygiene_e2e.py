@@ -270,7 +270,7 @@ class TestTier1FeatureCoverage(unittest.TestCase):
         index_content = index_file.read_text(encoding="utf-8")
 
         self.assertIn("memory-audit-report.json", index_content)
-        self.assertTrue(any(s in index_content for s in ["59 schemas", "60 schemas"]))
+        self.assertTrue(any(s in index_content for s in ["59 schemas", "60 schemas", "63 schemas"]))
 
         contracts_readme = CORE_DIR / "contracts" / "README.md"
         if contracts_readme.is_file():
@@ -728,7 +728,7 @@ class TestTier3CrossFeatureCombinations(unittest.TestCase):
                 content = doc_path.read_text(encoding="utf-8")
                 self.assertTrue(any(v in content for v in ["5.4.0", "5.5.0", "5.6.0", "5.6.1", "5.7.0", "5.7.1", "5.7.2", "5.7.3"]))
                 self.assertIn("182 skills", content)
-                self.assertTrue(any(c in content for c in ["59 contracts", "60 contracts", "60 data contracts"]))
+                self.assertTrue(any(c in content for c in ["59 contracts", "60 contracts", "60 data contracts", "63 contracts", "63 data contracts"]))
 
     def test_t3_dms_memory_pruner_audit_validates(self):
         """Verify running prune-memory.py on DMS memory.md produces compliant report."""

@@ -17,9 +17,16 @@
         "input-required",
         "completed",
         "failed",
-        "canceled"
+        "canceled",
+        "TASK_STATE_SUBMITTED",
+        "TASK_STATE_WORKING",
+        "TASK_STATE_INPUT_REQUIRED",
+        "TASK_STATE_COMPLETED",
+        "TASK_STATE_FAILED",
+        "TASK_STATE_CANCELED"
       ],
-      "default": "submitted"
+      "default": "submitted",
+      "description": "Monotonic execution lifecycle state."
     },
     "delegator": {
       "type": "string",
@@ -87,7 +94,8 @@
     },
     "timeout_minutes": {
       "type": "integer",
-      "description": "Maximum time allowed for task completion in minutes (legacy fallback)."
+      "deprecated": true,
+      "description": "DEPRECATED: Use timeout_ms instead. Carried for v0.x backward compatibility."
     },
     "retry_policy": {
       "type": "object",

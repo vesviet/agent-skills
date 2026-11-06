@@ -73,7 +73,7 @@ class TestGeneratorExecutionAndIdempotence:
             check=False,
         )
         assert result.returncode == 0, f"generate-index.py failed:\n{result.stderr}\n{result.stdout}"
-        assert re.search(r"Loaded (?:35|36|38|39) roles, (?:137|138|146|158|168|169|175|181|182|183|184) skills, 25 workflows, (?:54|55|56|58|59|60) schemas\.", result.stdout) is not None, f"Unexpected generate-index output: {result.stdout}"
+        assert re.search(r"Loaded (?:35|36|38|39) roles, (?:137|138|146|158|168|169|175|181|182|183|184) skills, 25 workflows, (?:54|55|56|58|59|60|63) schemas\.", result.stdout) is not None, f"Unexpected generate-index output: {result.stdout}"
 
     def test_generate_index_check_flag(self):
         result = subprocess.run(

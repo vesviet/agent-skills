@@ -19,83 +19,82 @@ Maximize effective reasoning density in agent context windows by allocating stri
 
 ## Core Rules
 
+- **Deterministic 6-Layer Prompt Prefix Caching**:
+  To maximize KV cache hit rates (yielding up to 90% read latency and cost reductions), assemble prompts in strict static-to-dynamic volatility order:
+  1. *Layer 1: Static System Invariants & Global Rules*: Fixed repository rules, safety constraints, action policies (100% KV cache hit rate across all agents).
+  2. *Layer 2: Role Identity & Core Tool Contracts*: Role definition, instructions, and tool definitions deterministically sorted alphabetically by name (Anthropic Breakpoint 1).
+  3. *Layer 3: Domain & Repository Architectural Cards*: Knowledge cards, domain boundaries, project layouts (Anthropic Breakpoint 2; shared across repo tasks).
+  4. *Layer 4: Session Durable Working State*: Anchored 10-slot state (`compact-working-state.json`), verified decisions, and immutable entity IDs (Anthropic Breakpoint 3).
+  5. *Layer 5: Dynamic Turn History with Head-Tail TOC*: Rolling dialogue history and tool outputs compacted via 20% Head / 80% Tail syntax-aware TOC (Anthropic Breakpoint 4 rolling).
+  6. *Layer 6: Dynamic Ephemeral Payload*: Current turn user prompt, ephemeral context, and dynamic UTC timestamps (uncached).
+- **Provider-Specific Cache Control Configurations**:
+  - *Anthropic*: Explicit ephemeral breakpoints using `cache_control: {"type": "ephemeral", "ttl": "5m" | "1h"}`. Enforce hard ceiling of max 4 breakpoints per request; sequence across `tools` $\rightarrow$ `system` $\rightarrow$ `messages`; minimum 1,024 prefix tokens.
+  - *OpenAI*: Automatic caching for prompts $\ge 1,024$ tokens quantized to 128-token boundaries. Use `prompt_cache_key` for sticky cluster routing; track cache telemetry in `usage.prompt_tokens_details.cached_tokens`.
+  - *vLLM / SGLang*: Enable server-side prefix caching via `--enable-prefix-caching` and `--block-size 16|32`. Utilizes PagedAttention block alignment and RadixAttention Radix Tree LRU cache reuse.
+- **Cache-Busting Anti-Pattern Mitigations**:
+  - *Zero Dynamic Headers*: Never inject dynamic UTC timestamps, random UUIDs, or ephemeral session IDs into Layer 1–3 system headers. Keep dynamic values strictly in Layer 6.
+  - *Deterministic Tool Ordering*: Always sort tool definitions alphabetically by name prior to serialization to prevent dictionary key shuffling between turns.
+  - *Tenant Salt KV Isolation*: Partition shared cache trees cryptographically using $H_0 = \text{HMAC-SHA256}(\text{TenantID} \parallel \text{Domain}, \text{Salt})$ to prevent cross-tenant cache probing.
 - **Five-Tier Token Budget Allocation**:
-  - Context capacity must be partitioned into strict deterministic slices:
-    1. *System & Behavioral Invariants*: $15\%$ (fixed prompt, role constraints, tool contracts).
-    2. *Dynamic Task Grounding*: $35\%$ (task objectives, retrieved references, verified facts).
-    3. *Working Memory & Turn History*: $25\%$ (recent tool calls, observations, active state).
-    4. *Scratchpad & Intermediate Reasoning*: $10\%$ (scratch notes, plan checklists).
-    5. *Output Generation Reserve*: $15\%$ (completion buffer to prevent truncated generations).
+  Context capacity must be partitioned into strict deterministic slices:
+  1. *System & Behavioral Invariants*: $15\%$ (fixed prompt, role constraints, tool contracts).
+  2. *Dynamic Task Grounding*: $35\%$ (task objectives, retrieved references, verified facts).
+  3. *Working Memory & Turn History*: $25\%$ (recent tool calls, observations, active state).
+  4. *Scratchpad & Intermediate Reasoning*: $10\%$ (scratch notes, plan checklists).
+  5. *Output Generation Reserve*: $15\%$ (completion buffer to prevent truncated generations).
 - **Lost-in-the-Middle Priority Ordering**:
-  - Frontier LLMs demonstrate highest attention retrieval accuracy at the extreme prompt boundaries (primacy and recency effects).
-  - *Boundary Placement*: Position mandatory constraints, system instructions, and schema definitions at the very top ($0\%-15\%$).
-  - *Recency Placement*: Position current turn objective, active input parameters, and explicit completion format triggers at the very bottom ($85\%-100\%$).
-  - *Middle Zone*: Confine secondary reference data, supporting documentation, and historical tool logs to the central window ($15\%-85\%$).
-- **Semantic & Syntactic Deduplication**:
-  - Compute sliding 4-gram overlaps across retrieved documents; drop paragraphs with $> 70\%$ verbatim overlap.
-  - Apply vector cosine thresholding: if $\text{sim}(e_a, e_b) \ge 0.88$, merge or discard the lower-relevance passage.
-- **Relevance Density Scoring**:
-  - Every injected token must contribute directly to task resolution:
-    $$\text{Density} = \frac{\text{Entity and Assertion Token Count}}{\text{Total Segment Token Count}}$$
-  - Strip markdown decorative wrappers, repeated navigation headers, and verbose boilerplate when density falls below $0.40$.
+  Frontier LLMs demonstrate highest attention accuracy at prompt boundaries (primacy and recency). Place mandatory constraints at the top ($0\%-15\%$) and active turn triggers at the bottom ($85\%-100\%$). Confine secondary data to the middle zone ($15\%-85\%$).
 - **Context Engineering 2026 (Anthropic-aligned)**:
   - *Context rot is real*: performance degrades as the window fills with low-value tokens — treat context as a scarce runtime resource, not free capacity.
   - *Compaction over overflow*: near the window limit, summarize the conversation and reinitialize a fresh context; keep raw records with stable identifiers so compaction is recoverable.
-  - *Just-in-time retrieval over pre-loading*: fetch context at the moment of need via tools instead of stuffing everything upfront.
-  - *Durable notes over transcript replay*: persist structured notes/memory files (decisions, entity IDs, task state) outside the window; hydrate new sessions from notes, never full raw transcripts.
-  - *Sub-agent isolation*: dispatch heavy reading to fresh-context sub-agents; return only distilled results to the orchestrator window.
+  - *just-in-time retrieval over pre-loading*: fetch context at the moment of need via tools instead of stuffing everything upfront.
+  - *Durable notes over transcript replay*: persist structured notes/memory files outside the window; hydrate new sessions from notes, never full raw transcripts.
+  - *Sub-agent isolation*: dispatch heavy reading to fresh-context sub-agents; return only distilled results to orchestrator.
 
 ## Suggested Process
 
-1. **Calculate In-Flight Token Consumption**:
-   - Tokenize prompt components using target model tokenizers (e.g. tiktoken cl100k or o200k).
-   - Evaluate available window margin against output reserve requirements.
-2. **Prune and Deduplicate Ingested Content**:
-   - Run n-gram and semantic similarity deduplication across candidate context passages.
-   - Collapse repetitious error logs, stack traces, and identical tool call arguments into summarized counts.
-3. **Restructure Passage Sequences**:
-   - Reorder retrieved documents: place highest-relevance evidence at the top and immediate query grounding at the bottom.
-   - Isolate secondary background material in the middle tier.
-4. **Compress Conversation and Memory Turns**:
-   - For dialogues exceeding 8 turns, summarize completed subtask milestones into an immutable context summary.
-   - Retain only the last 3 turns of verbatim raw tool invocations and results.
-5. **Verify Context Integrity**:
-   - Verify that all schema requirements, critical entity IDs, and active task objectives survived pruning.
-
-## Output Contracts
-
-When context optimization produces structured task dispatches or plans, emit `contracts/schemas/coordination-plan.json`:
-- `plan_id`: Unique identifier for the optimized orchestration dispatch.
-- `phases`: Sliced execution stages respecting token budget allocations.
-- `handoffs`: Minimized context payloads carrying only verified entity references.
-
-## Failure Modes
-
-- **Lost-in-the-Middle Forgetting**: Placing critical safety constraints in the center of a 100k token window where attention fades. Mitigation: anchor non-negotiable rules at the top and repeat key invariants directly preceding the final user prompt.
-- **Aggressive Over-Pruning**: Truncating necessary domain terminology or schema fields during compression. Mitigation: preserve structured contract JSON definitions intact; compress only unstructured prose.
-- **Context Window Thrashing**: Expanding and contracting context dynamically between turns, causing unstable cache hit rates. Mitigation: standardize static prompt prefix boundaries to leverage prefix prompt caching.
-- **Boilerplate Token Bloat**: Passing raw web HTML or unparsed API responses into context. Mitigation: extract pure text and structured data tables prior to prompt assembly.
+1. **Assemble Prefix Layers 1–3**: Concatenate Static System Invariants, deterministically sorted Role Tools, and Domain Knowledge Cards. Set Provider Cache Breakpoints 1 and 2.
+2. **Hydrate Layer 4 Durable Working State**: Load anchored `compact-working-state.json` notes and set Breakpoint 3.
+3. **Compress Layer 5 History with Head-Tail TOC**: Apply 20% Head / 80% Tail syntax-aware TOC to tool outputs and set Breakpoint 4.
+4. **Append Layer 6 Ephemeral Turn**: Append current user prompt and dynamic UTC timestamp.
+5. **Prune and Deduplicate Ingested Content**: Strip n-gram overlaps ($>70\%$) and apply vector cosine thresholding ($\ge 0.88$).
+6. **Verify Context Integrity**: Confirm critical entity IDs, schema fields, and safety boundaries survived optimization.
 
 ## Checklist
 
-- [ ] Token budget partitions configured (system, grounding, memory, scratchpad, reserve)
-- [ ] Output generation reserve of at least 15% preserved to prevent response truncation
-- [ ] Primacy and recency ordering verified: critical rules at top, immediate task trigger at bottom
-- [ ] Syntactic n-gram and semantic similarity deduplication applied to retrieved documents
-- [ ] Conversation history older than 3 turns compressed into milestone summaries
-- [ ] Static system prompt prefixes kept stable across turns to maximize prefix caching
-- [ ] Raw JSON and stack traces stripped of redundant whitespace and repeated log lines
-- [ ] Compaction with recoverable raw records replaces blind truncation near window limits
-- [ ] Just-in-time retrieval preferred over pre-loading; durable notes hydrate new sessions instead of transcript replay
-- [ ] Verified that all essential entity IDs, URLs, and contract requirements remain intact
+- [ ] 6-layer prefix caching sequence enforced (System -> Role -> Domain -> State -> History -> Ephemeral).
+- [ ] Anthropic ephemeral breakpoints configured (at most 4 breakpoints, ordered tools -> system -> messages).
+- [ ] OpenAI prompts aligned to 128-token boundaries with `prompt_cache_key` sticky routing.
+- [ ] vLLM / SGLang prefix caching enabled with PagedAttention Radix Tree block alignment.
+- [ ] Dynamic UTC timestamps and UUIDs confined strictly to Layer 6 ephemeral payload.
+- [ ] Tool definitions deterministically sorted alphabetically by name.
+- [ ] Token budget partitions configured with $\ge 15\%$ output generation reserve.
+- [ ] Compaction with recoverable raw records replaces blind truncation near window limits.
+- [ ] just-in-time retrieval preferred over pre-loading; durable notes hydrate new sessions.
+- [ ] Essential entity IDs, contracts, and schema requirements verified intact.
+
+## Output Contracts
+
+When context optimization produces structured task dispatches or plans, emit:
+
+- **`contracts/schemas/coordination-plan.json`**: Sliced execution stages respecting token budget allocations and prefix cache boundaries.
+- **`contracts/schemas/compact-working-state.json`**: Anchored 10-slot durable working state preserving verified facts across turns.
+
+## Failure Modes
+
+- **Cache-Busting Prefix Invalidation**: Line-1 dynamic timestamp invalidates KV cache for all downstream tokens. Mitigation: Relocate all volatile timestamps to Layer 6.
+- **Tool Shuffling Invalidation**: Unsorted tool maps yield different token streams each turn. Mitigation: Enforce deterministic alphabetical sorting of tools by name.
+- **Breakpoint Overflow**: Setting $> 4$ Anthropic cache breakpoints causes API rejection. Mitigation: Strict limiter capping breakpoints at 4.
+- **Lost-in-the-Middle Forgetting**: Safety rules placed in center of large context. Mitigation: Anchor rules in Layer 1 and repeat active trigger in Layer 6.
+- **Aggressive Over-Pruning**: Truncating necessary contract schema fields. Mitigation: Keep JSON schemas intact; prune only prose.
 
 ## Security Guardrails (OWASP ASI)
 
-- **ASI01 Goal Hijack**: pruning or reordering promotes middle-zone untrusted content toward the prompt boundary while dropping the system invariants that constrain it. Mitigation: never compress, relocate, or trim the system-and-invariants tier; keep untrusted content confined to the middle zone inside its delimiters.
-- **ASI04 Supply Chain**: token counts computed with a different tokenizer than the target model (or an unpinned embedding model for cosine dedup) silently mis-size every budget slice. Mitigation: pin the tokenizer version (cl100k/o200k) matching the deployed model and use one pinned embedding model for similarity scoring.
-- **ASI06 Context & Memory Poisoning**: density scoring strips provenance tags and trust delimiters from retrieved passages, erasing the trusted/untrusted boundary in the assembled window. Mitigation: exclude trust markers and provenance metadata from density scoring; never strip `<untrusted_data>` wrappers during compression.
-- **ASI07 Inter-Agent Communication**: summarized handoff payloads pass unverified facts downstream as established grounding. Mitigation: `handoffs` in `coordination-plan.json` must carry only verified entity references and preserve the fact/assumption boundary for receiving agents.
-- **ASI09 Human-Agent Trust Exploitation**: reporting token savings while critical schema fields or entity IDs were truncated during pruning. Mitigation: complete the integrity verification (schema requirements, entity IDs, active objectives survived) before reporting any savings figure.
+- **ASI01 Goal Hijack**: Reordering promotes untrusted content to prefix boundary. Mitigation: Keep untrusted inputs confined to Layer 6 inside boundary delimiters.
+- **ASI04 Supply Chain**: Token count mismatch across tokenizer versions. Mitigation: Pin target tokenizer version (cl100k/o200k) and embedding models.
+- **ASI06 Context & Memory Poisoning**: Density scoring strips provenance tags and trust delimiters. Mitigation: Exclude trust wrappers from density pruning.
+- **ASI07 Inter-Agent Communication**: Summarized handoffs passing unverified claims. Mitigation: `coordination-plan.json` must carry only verified facts.
+- **ASI09 Human-Agent Trust Exploitation**: Reporting token savings while truncating schema fields. Mitigation: Complete integrity verification before reporting savings.
 
 ## Related Skills
 

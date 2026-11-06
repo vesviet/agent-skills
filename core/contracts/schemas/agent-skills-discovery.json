@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent-skills-discovery",
+  "title": "agentskills.io Discovery Manifest Schema",
+  "description": "Standard discovery index for progressive disclosure of agent capabilities (RFC 8615 well-known resource).",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "agent-skills-discovery",
+      "description": "Contract discriminator for structured outputs."
+    },
+    "$schema": {
+      "type": "string",
+      "const": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+      "description": "Normative schema URI per agentskills.io 0.2.0 specification."
+    },
+    "skills": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Array of capability descriptor objects.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+            "description": "Stable kebab-case identifier matching directory and SKILL.md name."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "skill-md",
+              "archive"
+            ],
+            "description": "Asset packaging type."
+          },
+          "description": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 1024,
+            "description": "Operational summary with explicit 'Use when...' trigger clause."
+          },
+          "url": {
+            "type": "string",
+            "format": "uri-reference",
+            "description": "Relative path or absolute HTTPS URL to the full SKILL.md or archive."
+          },
+          "digest": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$",
+            "description": "Cryptographic SHA-256 digest of target asset for AST02 integrity verification."
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "description",
+          "url",
+          "digest"
+        ]
+      }
+    }
+  },
+  "required": [
+    "$schema",
+    "skills"
+  ],
+  "examples": [
+    {
+      "contract_type": "agent-skills-discovery",
+      "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+      "skills": [
+        {
+          "name": "configure-agent-skills",
+          "type": "skill-md",
+          "description": "Creates and manages the agentskills.io manifest index at /.well-known/agent-skills/index.json. Use when publishing capabilities.",
+          "url": "core/skills/agent/configure-agent-skills/SKILL.md",
+          "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "agent-a2a-protocol",
+          "type": "skill-md",
+          "description": "Implements the full A2A 1.0 task lifecycle including Agent Card discovery and JSON-RPC invoke/stream. Use for agent coordination.",
+          "url": "core/skills/agent/agent-a2a-protocol/SKILL.md",
+          "digest": "sha256:d41d8cd98f00b204e9800998ecf8427e00000000000000000000000000000000"
+        }
+      ]
+    }
+  ]
+}

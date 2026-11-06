@@ -6,7 +6,7 @@
     "roles": 39,
     "skills": 183,
     "workflows": 25,
-    "schemas": 60
+    "schemas": 63
   },
   "role_aliases": {
     "writer": "content-writer",
@@ -4578,6 +4578,12 @@
       "title": "Agent Evaluation Report",
       "file": "core/contracts/schemas/agent-eval-report.json"
     },
+    "agent-skills-discovery.json": {
+      "name": "agent-skills-discovery.json",
+      "stem": "agent-skills-discovery",
+      "title": "agentskills.io Discovery Manifest Schema",
+      "file": "core/contracts/schemas/agent-skills-discovery.json"
+    },
     "agent-trace-span.json": {
       "name": "agent-trace-span.json",
       "stem": "agent-trace-span",
@@ -4631,6 +4637,12 @@
       "stem": "compact-working-state",
       "title": "Compact Working State Specification",
       "file": "core/contracts/schemas/compact-working-state.json"
+    },
+    "compliance-report.json": {
+      "name": "compliance-report.json",
+      "stem": "compliance-report",
+      "title": "Agent Discovery & Readiness Compliance Report",
+      "file": "core/contracts/schemas/compliance-report.json"
     },
     "content-audit-report.json": {
       "name": "content-audit-report.json",
@@ -4733,6 +4745,12 @@
       "stem": "legal-opinion-contract",
       "title": "Vietnam Legal Opinion Contract",
       "file": "core/contracts/schemas/legal-opinion-contract.json"
+    },
+    "mcp-server-card.json": {
+      "name": "mcp-server-card.json",
+      "stem": "mcp-server-card",
+      "title": "Model Context Protocol (MCP) Server Card",
+      "file": "core/contracts/schemas/mcp-server-card.json"
     },
     "memory-audit-report.json": {
       "name": "memory-audit-report.json",

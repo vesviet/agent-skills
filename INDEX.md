@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `5.7.3` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **39 Roles** | **183 Skills** (168 Core + 15 Overlays) | **25 Workflows** | **60 Data Contracts**
+> **Total Catalog:** **39 Roles** | **183 Skills** (168 Core + 15 Overlays) | **25 Workflows** | **63 Data Contracts**
 
 ---
 
@@ -961,7 +961,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 📑 Data Contracts & Schemas (60 Data Contract Schemas)
+## 📑 Data Contracts & Schemas (63 Data Contract Schemas)
 
 | Schema File | Schema Title | Path |
 |:---|:---|:---|
@@ -977,6 +977,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | `adr-spec.json` | Architecture Decision Record | [`core/contracts/schemas/adr-spec.json`](./core/contracts/schemas/adr-spec.json) |
 | `agent-card.json` | A2A Agent Card | [`core/contracts/schemas/agent-card.json`](./core/contracts/schemas/agent-card.json) |
 | `agent-eval-report.json` | Agent Evaluation Report | [`core/contracts/schemas/agent-eval-report.json`](./core/contracts/schemas/agent-eval-report.json) |
+| `agent-skills-discovery.json` | agentskills.io Discovery Manifest Schema | [`core/contracts/schemas/agent-skills-discovery.json`](./core/contracts/schemas/agent-skills-discovery.json) |
 | `agent-trace-span.json` | Agent Trace Span | [`core/contracts/schemas/agent-trace-span.json`](./core/contracts/schemas/agent-trace-span.json) |
 | `ai-risk-register.json` | AI Risk Register | [`core/contracts/schemas/ai-risk-register.json`](./core/contracts/schemas/ai-risk-register.json) |
 | `amis-voucher-contract.json` | AMIS Accounting Voucher Contract | [`core/contracts/schemas/amis-voucher-contract.json`](./core/contracts/schemas/amis-voucher-contract.json) |
@@ -986,6 +987,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | `aws-infra-spec.json` | AWS Infrastructure Specification | [`core/contracts/schemas/aws-infra-spec.json`](./core/contracts/schemas/aws-infra-spec.json) |
 | `code-review-finding.json` | Code Review Finding | [`core/contracts/schemas/code-review-finding.json`](./core/contracts/schemas/code-review-finding.json) |
 | `compact-working-state.json` | Compact Working State Specification | [`core/contracts/schemas/compact-working-state.json`](./core/contracts/schemas/compact-working-state.json) |
+| `compliance-report.json` | Agent Discovery & Readiness Compliance Report | [`core/contracts/schemas/compliance-report.json`](./core/contracts/schemas/compliance-report.json) |
 | `content-audit-report.json` | Content Audit Report | [`core/contracts/schemas/content-audit-report.json`](./core/contracts/schemas/content-audit-report.json) |
 | `content-handoff.json` | Content Handoff | [`core/contracts/schemas/content-handoff.json`](./core/contracts/schemas/content-handoff.json) |
 | `coordination-plan.json` | Coordination Plan | [`core/contracts/schemas/coordination-plan.json`](./core/contracts/schemas/coordination-plan.json) |
@@ -1003,6 +1005,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | `learning-handoff.json` | Learning Handoff | [`core/contracts/schemas/learning-handoff.json`](./core/contracts/schemas/learning-handoff.json) |
 | `legal-compliance-review.json` | Vietnam Legal Compliance Review | [`core/contracts/schemas/legal-compliance-review.json`](./core/contracts/schemas/legal-compliance-review.json) |
 | `legal-opinion-contract.json` | Vietnam Legal Opinion Contract | [`core/contracts/schemas/legal-opinion-contract.json`](./core/contracts/schemas/legal-opinion-contract.json) |
+| `mcp-server-card.json` | Model Context Protocol (MCP) Server Card | [`core/contracts/schemas/mcp-server-card.json`](./core/contracts/schemas/mcp-server-card.json) |
 | `memory-audit-report.json` | Memory Audit Report | [`core/contracts/schemas/memory-audit-report.json`](./core/contracts/schemas/memory-audit-report.json) |
 | `mmo-campaign-spec.json` | MMO Campaign Specification | [`core/contracts/schemas/mmo-campaign-spec.json`](./core/contracts/schemas/mmo-campaign-spec.json) |
 | `mmo-roi-report.json` | MMO Campaign ROI Report | [`core/contracts/schemas/mmo-roi-report.json`](./core/contracts/schemas/mmo-roi-report.json) |

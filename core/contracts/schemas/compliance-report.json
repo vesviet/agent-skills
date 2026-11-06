@@ -1,0 +1,255 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "compliance-report",
+  "title": "Agent Discovery & Readiness Compliance Report",
+  "description": "Authoritative readiness evaluation of an agent service across A2A, MCP, agentskills.io, auth.md, and security specifications.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "compliance-report",
+      "description": "Machine-readable contract discriminator."
+    },
+    "report_id": {
+      "type": "string",
+      "pattern": "^cr-[a-f0-9]{8,32}$",
+      "description": "Unique report identifier prefixed with cr- followed by 8-32 lowercase hex characters."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of audit execution."
+    },
+    "target_domain": {
+      "type": "string",
+      "format": "uri",
+      "description": "Target service domain or endpoint audited."
+    },
+    "overall_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Aggregate readiness score across evaluated dimensions (0-100)."
+    },
+    "compliance_status": {
+      "type": "string",
+      "enum": [
+        "compliant",
+        "partially_compliant",
+        "non_compliant"
+      ],
+      "description": "Overall compliance verdict."
+    },
+    "evaluations": {
+      "type": "object",
+      "description": "Dimensional compliance evaluations across 5 pillars.",
+      "properties": {
+        "a2a_protocol": {
+          "type": "object",
+          "properties": {
+            "compliant": {
+              "type": "boolean"
+            },
+            "version": {
+              "type": "string"
+            },
+            "agent_card_endpoint": {
+              "type": "string"
+            },
+            "streaming_supported": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "compliant",
+            "version",
+            "agent_card_endpoint"
+          ]
+        },
+        "mcp_stateless": {
+          "type": "object",
+          "properties": {
+            "compliant": {
+              "type": "boolean"
+            },
+            "server_card_found": {
+              "type": "boolean"
+            },
+            "stateless_http_verified": {
+              "type": "boolean"
+            },
+            "mrtr_header_present": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "compliant",
+            "server_card_found",
+            "stateless_http_verified"
+          ]
+        },
+        "agentskills_discovery": {
+          "type": "object",
+          "properties": {
+            "compliant": {
+              "type": "boolean"
+            },
+            "manifest_url": {
+              "type": "string"
+            },
+            "schema_version": {
+              "type": "string"
+            },
+            "skill_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "digests_verified": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "compliant",
+            "manifest_url",
+            "skill_count",
+            "digests_verified"
+          ]
+        },
+        "auth_md": {
+          "type": "object",
+          "properties": {
+            "compliant": {
+              "type": "boolean"
+            },
+            "auth_md_url": {
+              "type": "string"
+            },
+            "oauth_metadata_valid": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "compliant",
+            "auth_md_url"
+          ]
+        },
+        "security_governance": {
+          "type": "object",
+          "properties": {
+            "owasp_asi_compliant": {
+              "type": "boolean"
+            },
+            "ast10_preflight_passed": {
+              "type": "boolean"
+            },
+            "lethal_trifecta_free": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "owasp_asi_compliant",
+            "ast10_preflight_passed",
+            "lethal_trifecta_free"
+          ]
+        }
+      },
+      "required": [
+        "a2a_protocol",
+        "mcp_stateless",
+        "agentskills_discovery",
+        "auth_md",
+        "security_governance"
+      ]
+    },
+    "remediation_actions": {
+      "type": "array",
+      "description": "Actionable remediation items for non-compliant dimensions.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "standard": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "remediation_target_file": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "standard",
+          "severity",
+          "description"
+        ]
+      }
+    }
+  },
+  "required": [
+    "contract_type",
+    "report_id",
+    "timestamp",
+    "target_domain",
+    "overall_score",
+    "compliance_status",
+    "evaluations"
+  ],
+  "examples": [
+    {
+      "contract_type": "compliance-report",
+      "report_id": "cr-1a2b3c4d5e6f7a8b",
+      "timestamp": "2026-11-05T14:30:00Z",
+      "target_domain": "https://api.example.com",
+      "overall_score": 96.5,
+      "compliance_status": "compliant",
+      "evaluations": {
+        "a2a_protocol": {
+          "compliant": true,
+          "version": "1.0.1",
+          "agent_card_endpoint": "https://api.example.com/.well-known/agent-card.json",
+          "streaming_supported": true
+        },
+        "mcp_stateless": {
+          "compliant": true,
+          "server_card_found": true,
+          "stateless_http_verified": true,
+          "mrtr_header_present": true
+        },
+        "agentskills_discovery": {
+          "compliant": true,
+          "manifest_url": "https://api.example.com/.well-known/agent-skills/index.json",
+          "schema_version": "0.2.0",
+          "skill_count": 184,
+          "digests_verified": true
+        },
+        "auth_md": {
+          "compliant": true,
+          "auth_md_url": "https://api.example.com/auth.md",
+          "oauth_metadata_valid": true
+        },
+        "security_governance": {
+          "owasp_asi_compliant": true,
+          "ast10_preflight_passed": true,
+          "lethal_trifecta_free": true
+        }
+      },
+      "remediation_actions": [
+        {
+          "standard": "MCP Revision 2026-07-28",
+          "severity": "low",
+          "description": "Deprecate legacy session handle header in staging gateway.",
+          "remediation_target_file": "adapters/cloudflare/_headers"
+        }
+      ]
+    }
+  ]
+}

@@ -27,8 +27,13 @@
         "tasks/get",
         "tasks/list",
         "tasks/cancel",
-        "agent/getCard"
-      ]
+        "agent/getCard",
+        "message/send",
+        "message/stream",
+        "tasks/send",
+        "tasks/stream"
+      ],
+      "description": "A2A wire method (AAIF v1.0.1+ standard message/tasks methods or Antigravity agent.* methods)."
     },
     "params": {
       "type": "object",

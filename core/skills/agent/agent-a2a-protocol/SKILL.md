@@ -36,105 +36,37 @@ Use this skill for **complete A2A 1.0** behavior beyond single-hop `agent-delega
 - target the current protocol floor **A2A v1.0.1 (2026-05-26)** and treat governance references as **AAIF/Linux Foundation** (A2A joined the Agentic AI Foundation on 2026-08-27 alongside MCP, goose, AGENTS.md, and agentgateway)
 - when paginating coordinator dashboards, use `ListTasks` with cursor pagination instead of unbounded task dumps
 
-**Spec vs pack convention.** The A2A specification streams `TaskStatusUpdateEvent` and `TaskArtifactUpdateEvent` over SSE, with task states named `TASK_STATE_*`. The `task.*` event names and the `agent.invoke` / `agent.stream` JSON-RPC methods used throughout this pack are the **Antigravity adapter binding**, not spec wire names — the spec operations are `message/send`, `message/stream`, `tasks/get`, and `tasks/cancel`. When targeting a non-Antigravity A2A peer, use the spec names and treat this pack's names as a local alias layer.
+## Dual-Stack Wire Protocol Transformers
 
-## A2A Operations Map
+The dual-stack architecture bridges local Antigravity runtime bindings and AAIF A2A v1.0.1+ wire operations:
 
-| Operation | Pack artifact | When |
-|-----------|---------------|------|
-| Discover | `agent-card.json` / registry | Before delegate |
-| Submit task | `a2a-task.json` | Delegate work |
-| Stream progress | `a2a-task-progress.json` | `interaction_mode: stream` |
-| Get status | `a2a-task-status.json` | Poll or audit |
-| List tasks | `a2a-task-status.json[]` | Coordinator dashboards |
-| Cancel | update status `canceled` | User abort / timeout |
-| Deliver | `a2a-artifact.json` | Worker completion |
+| Antigravity Local Binding | AAIF A2A v1.0.1 Wire Operation | Transport | Local State | Wire Enum State |
+|---|---|---|---|---|
+| `agent.invoke` | `message/send` (unary RPC) | HTTP POST | `submitted` | `TASK_STATE_SUBMITTED` |
+| `agent.stream` | `message/stream` (SSE stream) | HTTP Chunked | `working` | `TASK_STATE_WORKING` |
+| `task.status` | `tasks/get` (status poll) | HTTP GET/POST | `input-required` | `TASK_STATE_INPUT_REQUIRED` |
+| `task.cancel` | `tasks/cancel` (cancellation) | HTTP POST | `completed` | `TASK_STATE_COMPLETED` |
+| `tasks/list` | `tasks/list` (paginated query) | HTTP POST | `failed` | `TASK_STATE_FAILED` |
+| `agent/getCard` | `GET /.well-known/agent-card.json` | HTTP GET | `canceled` | `TASK_STATE_CANCELED` |
 
-## Reference Documentation
-
-- `./references/a2a-spec.md` — signed Agent Cards (JWS/JWK), streaming transport (SSE vs pack binding), full spec-event-to-pack-event mapping, webhook push notification auth, scatter-gather pattern, and the raw JSON-RPC wire example
-
-Load the reference file when you need the exact spec-vs-pack mapping behind a Core Rule above — the rules already state the pack-local aliases; the reference has the full spec text they summarize.
-
-## Antigravity Integration
-
-1. Load `core/a2a/.well-known/agent-registry.json`.
-2. Resolve `assignee_role` → `core/a2a/registry/<role>.agent-card.json`.
-3. Set `assignee_agent_card` on the task when using registry discovery.
-4. Prefer `agent.stream` for engineering-tier tasks; `agent.invoke` for short sync work.
-5. Apply `.antigravity/rules.md` from `adapters/antigravity/rules.template.md`.
-
-Config template: `adapters/antigravity/a2a-config.template.yaml`.
+SSE events map symmetrically: `task.status` $\leftrightarrow$ `TaskStatusUpdateEvent`, `task.artifact` $\leftrightarrow$ `TaskArtifactUpdateEvent`, `task.heartbeat` $\leftrightarrow$ `TaskHeartbeatEvent`.
 
 ## Suggested Process
 
-### 1. Discover Worker Capabilities
-
-Read Agent Card:
-
-- `skills[].id` and `output_schema_refs`
-- `capabilities.streaming`
-- `policy_profile` for action boundaries
-
-### 2. Submit Task
-
-Compose `a2a-task.json`:
-
-- `state: submitted`
-- `interaction_mode`: `sync` | `stream` | `push`
-- full `input_data`, `success_criteria`, `constraints`
-- `parent_task_id` when part of `coordination-plan.json`
-
-### 3. Monitor (Stream Or Poll)
-
-**Stream:** emit progress events:
-
-```json
-{"event":"task.status","task_id":"...","state":"working","progress_percent":40}
-```
-
-**Poll:** build `a2a-task-status.json` with `messages` history.
-
-### 4. Handle input-required
-
-If worker needs delegator decision:
-
-- set `state: input-required`
-- append `a2a-message.json` with question
-- resume with new message and `state: working`
-
-### 5. Complete Or Fail
-
-Worker returns `a2a-artifact.json`:
-
-- set `status` and mirror `state`
-- populate `parts` for multimodal results
-- include `trace_id` and `token_usage`
-
-Delegator validates `result` against `output_schema_ref`.
-
-### 6. Cancel
-
-On timeout or user abort:
-
-- compose `a2a-task-cancel.json` with `task_id`, `cancel_reason`, optional `force`
-- apply via `tasks/cancel` (JSON-RPC) or file update → `a2a-task-status.json` with `state: canceled`
-
-### 7. Push Notifications (Long-Running)
-
-When the client cannot hold SSE open:
-
-- attach `a2a-push-notification-config.json` to the task
-- worker emits terminal event to `callback_url` on completed / failed / canceled
-
-### 8. Three-Layer Error Recovery
-
-When a task fails or drops:
-- **Layer 1 (Schema Error):** Feed the schema validation error back into the worker model in an immediate correction turn.
-- **Layer 2 (Transient Drop):** Retry HTTP/SSE connection with exponential backoff and randomized jitter.
-- **Layer 3 (Semantic Failure):** After 3 failed attempts, trip circuit breaker and escalate to human review (HITL).
-
-See `./references/a2a-spec.md` for signed Agent Card verification, the full streaming/event spec-to-pack mapping, webhook auth details, the scatter-gather coordinator pattern, and the raw JSON-RPC wire example.
+1. **Discover Worker Capabilities**: Resolve `assignee_role` via `core/a2a/.well-known/agent-registry.json` or fetch `/.well-known/agent-card.json` to verify `skills[].id`, `output_schema_refs`, streaming support, and `policy_profile`.
+2. **Submit Task**: Compose `a2a-task.json` with unique `task_id` (UUID v4), `state: TASK_STATE_SUBMITTED` (`submitted`), `interaction_mode` (`sync` | `stream` | `push`), and schema constraints.
+3. **Monitor Stream or Poll**: For streaming, emit SSE events (`TaskStatusUpdateEvent` / `task.status`). For polling, query `tasks/get` and build `a2a-task-status.json` with message history.
+4. **Handle input-required**: If worker requires input, transition to `TASK_STATE_INPUT_REQUIRED` (`input-required`), append `a2a-message.json`, and resume with `TASK_STATE_WORKING`.
+5. **Complete or Fail with Unified Parts**: Emit `a2a-artifact.json` with monotonic terminal state (`TASK_STATE_COMPLETED` or `TASK_STATE_FAILED`) and unified `parts` (discriminate by `"text"`, `"data"`, `"file"` without `kind`).
+6. **Cancel Task**: Post `tasks/cancel` (`task.cancel`) with `cancel_reason` and transition state to `TASK_STATE_CANCELED` (`canceled`).
+7. **Three-Layer Error Recovery & Wire Errors**:
+   - *Layer 1 (Schema Error)*: Immediate prompt reflection loop for invalid schemas.
+   - *Layer 2 (Transient Drop)*: Exponential backoff with full jitter for connection drops.
+   - *Layer 3 (Semantic Failure)*: Circuit breaker escalation to HITL after $N=3$ consecutive failures.
+   - Wire errors are encoded as `google.rpc.Status` with typed `google.rpc.ErrorInfo`:
+     ```json
+     {"jsonrpc":"2.0","id":"req-1","error":{"code":-32000,"message":"Task rejected","data":{"@type":"type.googleapis.com/google.rpc.Status","code":3,"message":"INVALID_ARGUMENT","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"SCHEMA_VIOLATION","domain":"a2a-protocol.org","metadata":{"taskId":"uuid","field":"payload"}}]}}}
+     ```
 
 ## Checklist
 

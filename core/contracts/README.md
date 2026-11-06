@@ -25,7 +25,7 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
             → validation-result.json ← Agent Coordinator (phase gate)
 ```
 
-## All Schemas (60 total)
+## All Schemas (63 total)
 
 ### Solution & Governance
 - `solution-brief.json` — Solution Architect scoping handoff (build-vs-buy, capability gaps, AI feasibility, compliance)
@@ -102,8 +102,11 @@ solution-brief.json          ← Solution Architect (when solution scoping prece
 
 ### Agent Infrastructure
 - `agent-card.json` — Agent capability descriptor
+- `agent-skills-discovery.json` — agentskills.io 0.2.0 capability discovery manifest schema (`/.well-known/agent-skills/index.json`)
 - `agent-trace-span.json` — OpenTelemetry trace span
 - `compact-working-state.json` — Anchored 10-slot working state checkpoint for in-flight context compaction
+- `compliance-report.json` — Agent readiness audit deliverable evaluating compliance across A2A, MCP, agentskills.io, auth.md, and security governance
+- `mcp-server-card.json` — Model Context Protocol (MCP) server card descriptor for stateless remote servers (`/.well-known/mcp/server-card.json`)
 
 ## Usage In Skills
 

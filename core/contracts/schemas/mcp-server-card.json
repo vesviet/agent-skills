@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mcp-server-card",
+  "title": "Model Context Protocol (MCP) Server Card",
+  "description": "Stateless discovery card describing remote MCP server capabilities, transports, and security requirements.",
+  "type": "object",
+  "properties": {
+    "contract_type": {
+      "type": "string",
+      "const": "mcp-server-card",
+      "description": "Contract discriminator for structured outputs."
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Server identifier in kebab-case."
+    },
+    "version": {
+      "type": "string",
+      "description": "Server implementation version."
+    },
+    "description": {
+      "type": "string",
+      "description": "Server capability summary."
+    },
+    "protocol_revision": {
+      "type": "string",
+      "enum": [
+        "2026-07-28",
+        "2026-04-15",
+        "2025-11-25"
+      ],
+      "default": "2026-07-28",
+      "description": "MCP protocol specification revision."
+    },
+    "transport": {
+      "type": "object",
+      "description": "Transport connection parameters.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "streamable-http",
+            "stateless-http",
+            "websocket",
+            "stdio"
+          ],
+          "default": "stateless-http",
+          "description": "Transport protocol type."
+        },
+        "endpoint": {
+          "type": "string",
+          "format": "uri",
+          "description": "Absolute HTTP(S) endpoint URL."
+        },
+        "stateless": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether server is connectionless/stateless."
+        },
+        "supports_mrtr": {
+          "type": "boolean",
+          "default": true,
+          "description": "Multi-Route Tool Routing (SEP-2322) support."
+        }
+      },
+      "required": [
+        "type",
+        "endpoint",
+        "stateless"
+      ]
+    },
+    "authentication": {
+      "type": "object",
+      "description": "Authentication parameters.",
+      "properties": {
+        "required": {
+          "type": "boolean",
+          "description": "Whether authentication is required."
+        },
+        "schemes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Bearer",
+              "OAuth2",
+              "SPIFFE",
+              "mTLS",
+              "none"
+            ]
+          },
+          "description": "Supported authentication schemes."
+        },
+        "resource_metadata_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to RFC 8707 / OAuth resource metadata."
+        }
+      },
+      "required": [
+        "required",
+        "schemes"
+      ]
+    },
+    "tools": {
+      "type": "array",
+      "description": "Exposed tools catalog.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+_[a-z0-9_]+$",
+            "description": "Must follow <domain>_<action> naming convention."
+          },
+          "description": {
+            "type": "string",
+            "description": "Tool functionality summary."
+          },
+          "input_schema": {
+            "type": "object",
+            "description": "JSON Schema for tool parameters."
+          },
+          "is_state_changing": {
+            "type": "boolean",
+            "default": false,
+            "description": "Mutation flag for policy enforcement."
+          },
+          "target_policy_action": {
+            "type": "string",
+            "description": "Mapped action in action-boundaries.yaml."
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "input_schema"
+        ]
+      }
+    }
+  },
+  "required": [
+    "name",
+    "version",
+    "protocol_revision",
+    "transport",
+    "authentication",
+    "tools"
+  ],
+  "examples": [
+    {
+      "contract_type": "mcp-server-card",
+      "name": "developer-tools-server",
+      "version": "1.2.0",
+      "description": "Stateless remote MCP server providing filesystem and code search tools.",
+      "protocol_revision": "2026-07-28",
+      "transport": {
+        "type": "stateless-http",
+        "endpoint": "https://mcp.example.com/api/v1",
+        "stateless": true,
+        "supports_mrtr": true
+      },
+      "authentication": {
+        "required": true,
+        "schemes": [
+          "Bearer",
+          "OAuth2"
+        ],
+        "resource_metadata_url": "https://mcp.example.com/.well-known/oauth-protected-resource"
+      },
+      "tools": [
+        {
+          "name": "fs_read_file",
+          "description": "Read file contents from workspace repository.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ]
+          },
+          "is_state_changing": false,
+          "target_policy_action": "read_file"
+        }
+      ]
+    }
+  ]
+}

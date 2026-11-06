@@ -17,7 +17,13 @@
         "input-required",
         "completed",
         "failed",
-        "canceled"
+        "canceled",
+        "TASK_STATE_SUBMITTED",
+        "TASK_STATE_WORKING",
+        "TASK_STATE_INPUT_REQUIRED",
+        "TASK_STATE_COMPLETED",
+        "TASK_STATE_FAILED",
+        "TASK_STATE_CANCELED"
       ],
       "description": "Terminal or in-progress task state mirrored on artifact."
     },
@@ -56,13 +62,14 @@
           },
           "kind": {
             "type": "string",
+            "deprecated": true,
             "enum": [
               "text",
               "file",
               "data",
               "json"
             ],
-            "description": "Legacy discriminator from A2A v0.x (optional for backwards compatibility; v1.0 discriminates by member presence)."
+            "description": "DEPRECATED: Legacy discriminator from A2A v0.x. Carried for backwards compatibility; v1.0+ discriminates by member presence (text, data, file, file_ref)."
           },
           "metadata": {
             "type": "object",

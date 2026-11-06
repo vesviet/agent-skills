@@ -14,8 +14,12 @@
         "task.artifact",
         "task.completed",
         "task.failed",
-        "task.canceled"
-      ]
+        "task.canceled",
+        "TaskStatusUpdateEvent",
+        "TaskArtifactUpdateEvent",
+        "TaskHeartbeatEvent"
+      ],
+      "description": "Streaming progress event type (standard SSE event or Antigravity task.* event)."
     },
     "task_id": {
       "type": "string"
@@ -32,8 +36,15 @@
         "input-required",
         "completed",
         "failed",
-        "canceled"
-      ]
+        "canceled",
+        "TASK_STATE_SUBMITTED",
+        "TASK_STATE_WORKING",
+        "TASK_STATE_INPUT_REQUIRED",
+        "TASK_STATE_COMPLETED",
+        "TASK_STATE_FAILED",
+        "TASK_STATE_CANCELED"
+      ],
+      "description": "Monotonic execution lifecycle state."
     },
     "progress_percent": {
       "type": "integer",

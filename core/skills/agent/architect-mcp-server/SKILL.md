@@ -11,22 +11,29 @@ Architect enterprise-grade Model Context Protocol (MCP) servers, tool surfaces, 
 
 ## Core Rules
 
-- **Stateless-First Architecture**: Default to stateless streamable HTTP transport adhering to MCP spec revision 2026-07-28; reserve stdio strictly for local development and CLI environments.
-- **Action-Oriented Domain Prefixes**: Name tools with explicit verb-noun domain syntax (`<domain>_<action>`, e.g., `crm_search_customers`, `billing_issue_refund`); avoid vague names.
-- **Strict Schema Validation**: Define strict input parameters and return types using Zod (TypeScript) or Pydantic v2 (Python); prohibit untyped JSON blobs or generic string inputs.
+- **Stateless HTTP Architecture (MCP Revision 2026-07-28)**: Default to Stateless HTTP transport. Completely abolish all legacy session header identifiers and session handshakes (`initialize`, `notifications/initialized`). Every HTTP POST request is connectionless, standalone, and self-contained; reserve stdio strictly for local CLI development.
+- **Client Metadata Injection (`params._meta`)**: Mandate per-request client metadata injected via JSON-RPC `params._meta`:
+  - `trace_parent`: W3C distributed trace context (`traceparent` header / metadata).
+  - `auth_context`: Authenticated caller identity, tenant ID, or SPIFFE SVID token.
+  - `idempotency_key`: Client-generated UUIDv7/hash preventing duplicate execution of mutating tools.
+- **Multi-Route Tool Routing (MRTR SEP-2322)**: Mandate `Mcp-Tool-Route: <domain>_<action>` (or `Mcp-Name`) HTTP headers so API gateways route individual tools directly to microservices without parsing JSON bodies. For interactive workflows, servers return `resultType: "input_required"` with `stateHandle` and `expectedFields`.
+- **State Externalization (SEP-2567)**: Externalize multi-turn state, continuation tokens, and pagination cursors to durable remote storage (Redis, Cloudflare D1/KV) keyed by opaque `stateHandle` with 900s TTL. Zero in-memory server session affinity.
+- **Stateless Gateway Routing Headers**:
+  `Mcp-Protocol-Version: 2026-07-28`, `Mcp-Method: tools/call`, `Mcp-Name: <domain>_<action>`, `Mcp-Tool-Route: <domain>_<action>`, `Accept: text/event-stream, application/json`.
+- **Action-Oriented Domain Prefixes**: Name tools with explicit verb-noun domain syntax (`<domain>_<action>`, e.g., `fs_read_file`, `billing_issue_refund`).
+- **Strict Schema Validation**: Define strict input parameters and return types using Zod or Pydantic v2; prohibit untyped JSON blobs or generic string inputs.
 - **OutputSchema & Structured Content**: Constrain returned payloads with `outputSchema` and emit `structuredContent` separating structured JSON from textual explanations.
-- **Actionable Error Ergonomics**: Error responses MUST return typed error categories, machine-readable error codes, and explicit remediation hints enabling autonomous agent recovery.
-- **State Externalization (SEP-2567)**: Externalize session state, pagination cursors, and continuation tokens to durable stores (Redis, Cloudflare D1); prohibit sticky server memory.
+- **Actionable Error Ergonomics**: Error responses MUST return typed error categories, machine-readable error codes, and explicit remediation hints enabling autonomous recovery.
 - **OAuth 2.1 RFC 8707 Resource Indicators**: Require clients to specify target MCP server URIs in authorization requests to prevent token forwarding and replay attacks.
 - **Registry Allowlisting & Supply Chain**: Production MCP servers must originate from vetted registries with publisher verification, code-signing, and SBOM audits (`MCP-REGISTRY LOCK`).
-- **Shadow MCP Governance**: Enforce network proxy and gateway inspection to detect and block unregistered, rogue MCP servers communicating with AI runtimes (`MCP-GATEWAY LOCK`).
+- **Shadow MCP Governance**: Enforce gateway inspection to detect and block unregistered, rogue MCP servers (`MCP-GATEWAY LOCK`).
 
 ## When to Use
 
 - Architecting enterprise MCP server boundaries, tool surfaces, and input/output contracts
-- Selecting and specifying transport architectures (stateless streamable HTTP vs. stdio)
-- Standardizing schema granularity, Zod/Pydantic validation, and actionable error envelopes
-- Externalizing session handles (SEP-2567) for serverless edge and distributed cluster deployments
+- Specifying MCP Revision 2026-07-28 Stateless HTTP transport and gateway routing headers
+- Standardizing per-request client metadata injection (`params._meta`)
+- Configuring Multi-Route Tool Routing (MRTR SEP-2322) and SEP-2567 external state handles
 - Designing OAuth 2.1 RFC 8707 Resource Indicators and Enterprise-Managed Authorization
 - Establishing Shadow MCP discovery, gateway routing, and supply-chain allowlisting
 
@@ -35,36 +42,39 @@ Architect enterprise-grade Model Context Protocol (MCP) servers, tool surfaces, 
 1. **Define Domain Boundary & Tool Surface**: Inventory operations, apply `<domain>_<action>` naming, calibrate granularity (single-action atomic vs. composite), and describe disambiguating triggers.
 2. **Specify Strict Input & Output Schemas**: Author Zod or Pydantic schemas with field descriptions, validation constraints, enum values, and explicit `outputSchema` declarations.
 3. **Design Actionable Error Envelopes**: Format error returns with `is_error`, `error_code`, `message`, `remediation_hint`, and `is_retriable` flags for agent self-correction.
-4. **Select Transport & Externalize State**: Specify stateless streamable HTTP headers (`Accept: text/event-stream`, `Mcp-Method`), and externalize multi-turn state via SEP-2567 handles.
+4. **Configure Stateless HTTP & Routing**: Specify stateless HTTP headers (`Mcp-Protocol-Version: 2026-07-28`, `Mcp-Tool-Route`), inject `params._meta` (`trace_parent`, `auth_context`, `idempotency_key`), and externalize state via SEP-2567 handles (900s TTL).
 5. **Architect Resources & Prompts**: Declare URI-addressable resources (`system://metrics/{host}`) and reusable prompt workflows (`prompts/get`) with parameter validation.
 6. **Enforce Auth & RFC 8707 Scoping**: Configure OAuth 2.1 authorization servers with PKCE, audience-restricted Resource Indicators, and Enterprise-Managed Authorization policies.
-7. **Establish Governance & Emit Contracts**: Validate against OWASP ASI and MCP Top 10 guardrails, define gateway telemetry, and emit `adr-spec.json` and `architecture-options.json`.
+7. **Establish Governance & Emit Contracts**: Validate against OWASP ASI and MCP Top 10 guardrails, define gateway telemetry, and emit `mcp-server-card.json`, `adr-spec.json`, and `architecture-options.json`.
 
 ## Checklist
 
+- [ ] Production transport adheres to MCP Revision 2026-07-28 Stateless HTTP (zero session IDs, zero handshakes).
 - [ ] Tool names adhere to action-oriented domain prefix naming (`<domain>_<action>`).
 - [ ] Every tool defines strict Zod/Pydantic input schemas and explicit `outputSchema` contracts.
+- [ ] Per-request client metadata injected via `params._meta` (`trace_parent`, `auth_context`, `idempotency_key`).
+- [ ] Multi-Route Tool Routing (MRTR SEP-2322) configured with `Mcp-Tool-Route` HTTP headers.
+- [ ] Multi-turn session handles and pagination cursors externalized via SEP-2567 to Redis/D1 (900s TTL).
 - [ ] Output responses separate typed JSON from natural language via `structuredContent`.
 - [ ] Error responses supply machine-readable error codes and self-correction remediation hints.
-- [ ] Production transport defaults to stateless streamable HTTP (MCP 2026-07-28 revision).
-- [ ] Multi-turn session handles and pagination cursors externalized via SEP-2567 to Redis or D1.
 - [ ] OAuth 2.1 RFC 8707 Resource Indicators bound to target MCP server URI.
-- [ ] Registry vetting, SBOM verification, and Shadow MCP gateway detection policies documented.
-- [ ] Architecture decision record emitted conforming to `contracts/schemas/adr-spec.json`.
+- [ ] Architecture decision record emitted conforming to `contracts/schemas/mcp-server-card.json` and `adr-spec.json`.
 
 ## Output Contracts
 
 When architectural design is complete or ready for downstream implementation slices:
 
-- **`contracts/schemas/adr-spec.json`**: Primary architectural decision record detailing MCP server contracts, transport choices, state externalization, and trust boundaries.
+- **`contracts/schemas/mcp-server-card.json`**: Primary stateless server card discovery contract defining transports, MRTR support, tools, and auth schemes.
+- **`contracts/schemas/adr-spec.json`**: Architectural decision record detailing MCP server contracts, transport choices, state externalization, and trust boundaries.
 - **`contracts/schemas/architecture-options.json`**: Comparative options evaluation documenting trade-offs between transport modes, schema strategies, and authorization patterns.
 
 ## Failure Modes
 
-- **Vague Tool Naming**: Tools with overlapping names (e.g., `query_data` vs `fetch_info`) cause model confusion and wrong tool invocation. Mitigation: Mandate strict `<domain>_<action>` naming with explicit negative triggers ("do NOT use for...").
-- **Unstructured Error Returns**: Raw stack traces or generic "500 Error" messages cause agents to abort or loop endlessly. Mitigation: Standardize typed JSON error envelopes with remediation hints.
-- **In-Memory Session Affinity**: Relying on server RAM for multi-turn conversational state causes failure during autoscaling and rolling deploys. Mitigation: Enforce SEP-2567 external state handles.
-- **Token Replay Vulnerability**: Downstream MCP tools forwarding caller tokens to upstream services without audience restriction. Mitigation: Enforce OAuth 2.1 RFC 8707 Resource Indicators.
+- **Session Affinity Regression**: Relying on legacy session headers or server memory causes failure on serverless edge runtimes. Mitigation: Enforce connectionless HTTP POST with SEP-2567 external state handles.
+- **Gateway Routing Failure**: Omitting `Mcp-Tool-Route` header forces API gateways to parse request bodies. Mitigation: Mandate `Mcp-Tool-Route: <domain>_<action>` header on every tool call.
+- **Expired State Handle**: Client supplies expired continuation token. Mitigation: Return typed `HANDLE_EXPIRED` (`is_retriable: false`) with hint to restart flow.
+- **Vague Tool Naming**: Tools with overlapping names cause model confusion. Mitigation: Mandate `<domain>_<action>` naming with explicit negative triggers.
+- **Token Replay Vulnerability**: Forwarding caller tokens without audience restriction. Mitigation: Enforce OAuth 2.1 RFC 8707 Resource Indicators.
 
 ## Security Guardrails (OWASP ASI + MCP Top 10)
 
@@ -78,10 +88,8 @@ When architectural design is complete or ready for downstream implementation sli
 
 ## Related Skills
 
-- **build-mcp-server**: Implement the backend code, handlers, and tests specified by this architectural design
-- **configure-mcp**: Publish server discovery cards and browser WebMCP provider components
-- **system-design**: Plan overall system topologies, compute sizing, and infrastructure resilience
-- **decompose-agentic-system**: Decompose complex agentic workflows into sub-agent DAG execution scopes
-- **agent-tool-orchestration**: Orchestrate tool call sequences, fallback chains, and parameter injection
-- **security-audit**: Audit MCP authentication flows, token scopes, and transport encryption
-- **add-telemetry-instrumentation**: Instrument MCP gateways with OpenTelemetry tracing and error metrics
+- **build-mcp-server**: Implement the backend code, handlers, and tests specified by this architectural design.
+- **configure-mcp**: Publish server discovery cards and browser WebMCP provider components.
+- **system-design**: Plan overall system topologies, compute sizing, and infrastructure resilience.
+- **agent-tool-orchestration**: Orchestrate tool call sequences, fallback chains, and parameter injection.
+- **security-audit**: Audit MCP authentication flows, token scopes, and transport encryption.

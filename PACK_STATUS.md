@@ -1,7 +1,7 @@
 # Pack Status (post-5.7.3 roles-2027 upgrade)
 
 **Validators:** 19/19 pass, 0 errors, 0 warnings.
-**Catalog:** 39 roles, 183 skills (168 core + 15 overlay), 25 workflows, 60 contracts, 17 packs, 21 overlays.
+**Catalog:** 39 roles, 183 skills (168 core + 15 overlay), 25 workflows, 63 contracts, 17 packs, 21 overlays.
 
 ## 0. Standards-2027 upgrade summary (5.1.0, 2026-10-15)
 

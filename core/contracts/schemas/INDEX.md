@@ -1,6 +1,6 @@
 # Contract Schemas Index
 
-**60 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 60/60
+**63 schemas** | Bundled examples checked by `validate-contracts.py` | Examples: 63/63
 
 These schemas define machine-readable handoff contracts between agent roles. Each schema follows the `contract_type` discriminator convention for structured outputs.
 
@@ -77,8 +77,11 @@ These schemas define machine-readable handoff contracts between agent roles. Eac
 | `coordination-plan.json` | Coordination Plan | ✅ | ✅ |
 | **Agent Infrastructure** | | | |
 | `agent-card.json` | A2A Agent Card | ✅ | — |
+| `agent-skills-discovery.json` | agentskills.io Discovery Manifest Schema | ✅ | ✅ |
 | `agent-trace-span.json` | Agent Trace Span | ✅ | — |
 | `compact-working-state.json` | Compact Working State Specification | ✅ | ✅ |
+| `compliance-report.json` | Agent Discovery & Readiness Compliance Report | ✅ | ✅ |
+| `mcp-server-card.json` | Model Context Protocol (MCP) Server Card | ✅ | ✅ |
 
 ---
 
@@ -223,5 +226,8 @@ legal-compliance-review.json
 | `a2a-task-progress.json` | Any agent role | Agent Coordinator |
 | `a2a-artifact.json` | Any agent role | Agent Coordinator, receiving agent |
 | `agent-card.json` | Agent Infrastructure | Agent Coordinator, client systems |
+| `agent-skills-discovery.json` | Agent Discovery Engineer, Cloudflare Engineer | Agent Coordinator, external orchestrators, client SDKs |
 | `agent-trace-span.json` | Any instrumented role | Agent Coordinator, SRE, Observability stack |
 | `compact-working-state.json` | Agent Coordinator, Prompt Engineer | Agent Coordinator, Reviewer, Researcher, Prompt Engineer |
+| `compliance-report.json` | Agent Discovery Engineer | Agent Coordinator, Security Engineer, Cloudflare Engineer, Solution Architect |
+| `mcp-server-card.json` | Agent Discovery Engineer, Technical Architect | Agent Coordinator, MCP clients, Tool consumers |

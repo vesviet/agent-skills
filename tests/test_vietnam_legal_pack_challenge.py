@@ -699,7 +699,7 @@ class TestVietnamLegalRegistryConsistency:
             stats = index_doc.get("stats", {})
             assert stats.get("roles") >= 35, f"{name} role-skill-index roles stat mismatch: got {stats.get('roles')}, expected >= 35"
             assert stats.get("skills") >= 133, f"{name} role-skill-index skills stat mismatch: got {stats.get('skills')}, expected >= 133"
-            assert stats.get("schemas") in (54, 55, 56, 58, 59, 60), f"{name} role-skill-index schemas stat mismatch: got {stats.get('schemas')}, expected 54, 55, 56, 58, 59, or 60"
+            assert stats.get("schemas") in (54, 55, 56, 58, 59, 60, 63), f"{name} role-skill-index schemas stat mismatch: got {stats.get('schemas')}, expected 54, 55, 56, 58, 59, 60, or 63"
 
     def test_index_md_header_counts(self):
         """INDEX.md header must declare Total Catalog with at least 35 Roles, 25 Workflows, 54 Data Contracts."""
@@ -710,6 +710,8 @@ class TestVietnamLegalRegistryConsistency:
         # Strip bold asterisks for uniform matching
         stripped = content.replace("**", "")
         expected_headers = [
+            "Total Catalog: 39 Roles | 183 Skills (168 Core + 15 Overlays) | 25 Workflows | 63 Data Contracts",
+            "Total Catalog: 39 Roles | 184 Skills (169 Core + 15 Overlays) | 25 Workflows | 63 Data Contracts",
             "Total Catalog: 39 Roles | 184 Skills (169 Core + 15 Overlays) | 25 Workflows | 60 Data Contracts",
             "Total Catalog: 39 Roles | 182 Skills (167 Core + 15 Overlays) | 25 Workflows | 60 Data Contracts",
             "Total Catalog: 39 Roles | 183 Skills (168 Core + 15 Overlays) | 25 Workflows | 60 Data Contracts",
@@ -776,11 +778,11 @@ class TestVietnamLegalRegistryConsistency:
 
         # 6. Schemas in core/contracts/schemas/
         schema_files = list(SCHEMAS_DIR.glob("*.json"))
-        assert len(schema_files) in (54, 55, 56, 58, 59, 60), f"Expected 54, 55, 56, 58, 59, or 60 schema files, got {len(schema_files)}"
-        assert core_index["stats"]["schemas"] in (54, 55, 56, 58, 59, 60)
-        assert len(core_index.get("schemas", [])) in (54, 55, 56, 58, 59, 60)
-        assert adapter_index["stats"]["schemas"] in (54, 55, 56, 58, 59, 60)
-        assert len(adapter_index.get("schemas", [])) in (54, 55, 56, 58, 59, 60)
+        assert len(schema_files) in (54, 55, 56, 58, 59, 60, 63), f"Expected 54, 55, 56, 58, 59, 60, or 63 schema files, got {len(schema_files)}"
+        assert core_index["stats"]["schemas"] in (54, 55, 56, 58, 59, 60, 63)
+        assert len(core_index.get("schemas", [])) in (54, 55, 56, 58, 59, 60, 63)
+        assert adapter_index["stats"]["schemas"] in (54, 55, 56, 58, 59, 60, 63)
+        assert len(adapter_index.get("schemas", [])) in (54, 55, 56, 58, 59, 60, 63)
 
         for s in core_index.get("schemas", []):
             assert (SCHEMAS_DIR / s).is_file(), f"Schema file missing: {s}"
