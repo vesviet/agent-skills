@@ -39,43 +39,57 @@ a2a:
 
   # Map Antigravity capability ids to pack role slugs.
   # Keys are capability identifiers used in agent invocation; values are role slugs.
-  # The generated full map is at adapters/antigravity/capability-role-map.generated.yaml
+  # Authoritative 39-role mapping covering all active engineering and domain roles.
+  # Synchronized with: reports/ROADMAP_2026_2027.md (Section 5.2)
   capability_role_map:
-    # Coordination
+    # Coordination & Discovery
     coordinate-delivery: agent-coordinator
     discover-agents: agent-discovery-engineer
 
-    # Engineering
+    # Software Engineering & Implementation
     backend-implement: backend-developer
     frontend-implement: frontend-developer
     mobile-implement: mobile-engineer
     cloudflare-deploy: cloudflare-engineer
     devops-deploy: devops-engineer
     graphics-3d: 3d-graphics-engineer
+    ai-systems: ai-systems-engineer
+    aws-infrastructure: aws-engineer
+    ecommerce-commerce: ecommerce-engineer
+    game-development: game-developer
+    mmo-operations: mmo-engineer
+    reverse-engineering: reverse-engineer
+    prompt-engineering: prompt-engineer
+    system-engineering: system-engineer
 
-    # Quality & Review
+    # Quality Assurance, Reliability & Security
     review-code: reviewer
     run-qa: qa-engineer
+    run-sdet: sdet
     security-audit: security-engineer
     sre-reliability: sre
 
-    # Architecture & Planning
+    # Architecture, Leadership & Planning
     architect-system: technical-architect
+    architect-solution: solution-architect
     lead-delivery: technical-lead
     plan-task: task-planner
     manage-project: project-manager
     manage-product: product-manager
 
-    # Analysis & Research
+    # Analysis, Data & Research
     analyze-business: business-analyst
     analyze-data: data-analyst
     engineer-data: data-engineer
     deep-research: researcher
+    accounting-vietnam: vietnam-accounting-specialist
+    legal-vietnam: vietnam-legal-counsel
 
-    # Content & Documentation
+    # Content, Education & Documentation
     write-article: content-writer
     optimize-seo: seo-analyst
     write-docs: technical-writer
+    manage-content: content-manager
     teach-lesson: teacher
 
     # Design

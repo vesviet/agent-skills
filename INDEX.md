@@ -23,7 +23,11 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 ### Resolution Rules
 1. **Role Matching:** `@<role>` resolves by exact name (e.g., `@content-writer`) or common alias (e.g., `@writer` → `content-writer`, `@be` → `backend-developer`).
 2. **Skill Matching:** `@<skill>` resolves by exact name (e.g., `@conduct-research`), snake_case (e.g., `@conduct_research`), or composite alias (e.g., `@research_and_writing` → `conduct-research` + `write-article`).
-3. **Automatic Loading:** The agent loads `core/roles/<role>.md` and all resolved `core/skills/<cat>/<skill>/SKILL.md` before executing.
+3. **Two-Tier Progressive Disclosure & JIT Retrieval:**
+   - **Tier 1 (Startup / Passive Discovery):** The agent loads only its assigned role file (`core/roles/<role>.md`) and the lightweight discovery manifest (`adapters/antigravity/INDEX_TIER1.json`, strictly $< 5\text{ KB}$ or $\approx 40$ tokens/skill, total $\approx 7.3\text{k}$ tokens, achieving $97.3\%$ context reduction). No full `SKILL.md` instruction bodies are loaded upfront.
+   - **Tier 2 (On-Demand / JIT Asset Retrieval):** When a task intent or `@<skill>` requires specialized execution instructions, the agent fetches the specific `SKILL.md` payload Just-In-Time (JIT) (scoped strictly to 1–3 active skills, ~2,000–4,500 tokens), cryptographically verifies its SHA-256 digest against `INDEX_TIER1.json`, and activates it within the session sandbox.
+   - **Candidate Ranking & Escalation:** Candidate skills are matched via hybrid scoring: $S_{\text{match}} = 0.45 \cdot \text{BM25}(S_{\text{desc}}, Q) + 0.55 \cdot \text{DenseSim}(\vec{E}_{S_{\text{desc}}}, \vec{E}_Q)$. If $\max(S_{\text{match}}) < 0.72$, the router halts and triggers Human-in-the-Loop clarification rather than hallucinating an arbitrary skill.
+   - **Prohibited Skills Exclusion:** Candidate skills listed in the active role's `### Prohibited Skills` list are immediately disqualified.
 4. **Contract Output:** Structured outputs must validate against `core/contracts/schemas/<schema>.json`.
 
 ---

@@ -2,7 +2,7 @@
 
 Use this adapter when running **Google Antigravity IDE v2.5.5+** (or Antigravity-compatible IDEs) with the agent-skills engineering pack.
 
-> **Master Discovery**: **39 Roles** | **183 Skills** (168 Core + 15 Overlays) | **25 Workflows** | **60 Data Contract Schemas**  
+> **Master Discovery**: **39 Roles** | **183 Skills** (168 Core + 15 Overlays) | **25 Workflows** | **63 Data Contract Schemas**  
 > **Antigravity Registry**: [`adapters/antigravity/role-skill-index.json`](role-skill-index.json)  
 > **Master Index & Router**: [`../../INDEX.md`](../../INDEX.md)  
 > **Authoritative SOTA Audit**: [`../../reports/role-skill-matrix-sota-audit-2026-2027.md`](../../reports/role-skill-matrix-sota-audit-2026-2027.md)
@@ -47,7 +47,9 @@ python3 core/scripts/generate-a2a-registry.py
 When operating under this pack in Antigravity:
 
 1. Read `core/rules/code.md` before state-changing actions.
-2. Read `core/roles/role-standard.md` then `core/roles/<role>.md` when a role is assigned.
+2. **Two-Tier JIT Skill Discovery:**
+   - **Tier 1 (Startup):** Load assigned `core/roles/<role>.md` and the passive index `adapters/antigravity/INDEX_TIER1.json` (< 5 KB footprint). Do NOT pre-load all skills.
+   - **Tier 2 (JIT Execution):** When a specific sub-task or delegation requires a skill, retrieve `core/skills/<cat>/<skill>/SKILL.md` on demand, verify its SHA-256 digest against `INDEX_TIER1.json`, and inject into working state.
 3. Emit **structured JSON contracts** from `core/contracts/schemas/` for handoffs — not prose-only.
 4. Use **A2A full lifecycle** via `agent-a2a-protocol` and `agent-delegation`:
    - Submit: `a2a-task.json` (`state: submitted`)
@@ -56,6 +58,86 @@ When operating under this pack in Antigravity:
    - Cancel: set `state: canceled` with `cancel_reason`
 5. Discover workers via `core/a2a/.well-known/agent-registry.json` and per-role `*.agent-card.json`.
 6. Obey `core/policies/action-boundaries.yaml` and `data-classification.yaml`.
+
+## Two-Tier JIT Skill Discovery Architecture
+
+To prevent context window bloat and eliminate prompt degradation (mitigating OWASP ASI06 / Lost-in-the-Middle), the Antigravity adapter implements **Two-Tier Just-In-Time (JIT) Skill Discovery**:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                   TWO-TIER JIT DISCOVERY ENGINE ARCHITECTURE                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  [Turn 1: Agent Initialization]                                              │
+│        │                                                                    │
+│        ▼                                                                    │
+│  ┌─────────────────────────┐     ┌──────────────────────────────────────┐   │
+│  │   Role Specification    │  +  │      Tier 1 Discovery Index          │   │
+│  │ `core/roles/<role>.md`  │     │ `adapters/antigravity/INDEX_TIER1`   │   │
+│  │   (~3.5 KB / ~800 tok)  │     │       (< 5 KB / ~1,200 tok)          │   │
+│  └─────────────────────────┘     └──────────────────┬───────────────────┘   │
+│                                                     │                       │
+│  [Turn 2+: Dynamic Capability Resolution]           │                       │
+│        │                                            │                       │
+│        ▼                                            ▼                       │
+│  ┌──────────────────────────────────────────────────────────────────────┐   │
+│  │ Hybrid Candidate Ranking:                                            │   │
+│  │   S_match = 0.45 * BM25(Q, S_desc) + 0.55 * DenseSim(E(Q), E(S_desc)) │   │
+│  └──────────────────────────────────┬───────────────────────────────────┘   │
+│                                     │                                       │
+│                       ┌─────────────┴─────────────┐                         │
+│                       │ S_match >= 0.72 Threshold │                         │
+│                       └──────┬─────────────┬──────┘                         │
+│                              │ YES         │ NO (< 0.72)                    │
+│                              │             ▼                                │
+│                              │       [Trigger Human-in-the-Loop Clarify]    │
+│                              ▼                                              │
+│  ┌──────────────────────────────────────────────────────────────────────┐   │
+│  │ SHA-256 Digest Verification (OWASP AST02 Supply Chain Check):         │   │
+│  │   Digest(SKILL.md) == Tier1_Digest                                    │   │
+│  └──────────────────────────────────┬───────────────────────────────────┘   │
+│                                     │ PASS                                  │
+│                                     ▼                                       │
+│  ┌──────────────────────────────────────────────────────────────────────┐   │
+│  │ Tier 2 JIT Payload Injection:                                        │   │
+│  │   Inject verified SKILL.md into context Layer 4 (Working State).     │   │
+│  │   Evict/compact on subtask completion.                               │   │
+│  └──────────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 1. Token Budget Enforcement (< 5 KB Tier 1 Footprint)
+* **Legacy Monolithic Overhead:** Loading all 183 skills and full indices upfront consumes $> 274,000$ tokens, exceeding initial KV-cache thresholds and degrading reasoning performance.
+* **Tier 1 Budget Constraint:** The Tier 1 manifest (`adapters/antigravity/INDEX_TIER1.json`) generated by `core/scripts/generate-tier1-index.py` is strictly constrained to $< 5\text{ KB}$ (average $\approx 40$ tokens per skill, $\le 7,500$ tokens for the entire catalog), achieving a **97.3% reduction** in startup overhead.
+* **Entry Schema in Tier 1 Index:**
+  ```json
+  {
+    "name": "integrate-payment-gateway",
+    "desc": "Integrate or extend payment gateway (Stripe, VNPay, PayPal, Momo) checkout and webhooks.",
+    "url": "core/skills/commerce/integrate-payment-gateway/SKILL.md",
+    "digest": "sha256:7b2e...c814"
+  }
+  ```
+
+### 2. Hybrid Candidate Ranking Formula
+When resolving unmapped task requirements to skills, the candidate ranking engine scores skills using:
+
+$$S_{\text{match}}(Q, S) = 0.45 \cdot \text{BM25}(Q, S_{\text{desc}}) + 0.55 \cdot \text{DenseSim}(E(Q), E(S_{\text{desc}}))$$
+
+Where:
+* **$\text{BM25}(Q, S_{\text{desc}})$:** Normalized Okapi BM25 score measuring exact keyword and token overlap between the task query $Q$ and skill description $S_{\text{desc}}$.
+* **$\text{DenseSim}(E(Q), E(S_{\text{desc}}))$:** Cosine similarity $\frac{E(Q) \cdot E(S_{\text{desc}})}{\|E(Q)\| \|E(S_{\text{desc}})\|}$ between semantic vector embeddings.
+* **Confidence Threshold Gate ($\tau = 0.72$):**
+  $$\text{Action} = \begin{cases} \text{Load Candidate Skill } S & \text{if } \max(S_{\text{match}}) \ge 0.72 \\ \text{Trigger HITL Clarification} & \text{if } \max(S_{\text{match}}) < 0.72 \end{cases}$$
+* **Role Boundary Invariant & Prohibited Skills Exclusion:** A candidate skill $S$ is eligible for direct JIT activation only if $S$ belongs to the assigned role's `Primary Skills` or `Supporting Skills`, or if an explicit A2A task delegation is initiated. Candidate skills listed under the active role's `### Prohibited Skills` are disqualified unconditionally regardless of $S_{\text{match}}$.
+
+### 3. Progressive Disclosure 6-Step Lifecycle
+1. **Query Ingestion:** Parse user prompt and extract intent, explicit `@skill` handles, and required capabilities.
+2. **Tier 1 Candidate Evaluation:** Match query against `INDEX_TIER1.json` using the hybrid formula $S_{\text{match}}$.
+3. **Threshold Gate:** If $\max(S_{\text{match}}) \ge 0.72$, select the top candidate ($k \le 3$). If $< 0.72$, halt and ask user for clarification.
+4. **Cryptographic Verification (AST02):** Compute SHA-256 hash of target `SKILL.md` and verify exact match with `digest` in `INDEX_TIER1.json`.
+5. **Tier 2 Context Loading:** Load the verified `SKILL.md` body into session memory Layer 4.
+6. **Task Eviction:** Upon task completion, evict skill body and emit structured output contract (`a2a-artifact.json`).
 
 ## A2A Config Block
 
@@ -116,6 +198,9 @@ Guardrails to match the rest of the pack.
 - **Antigravity agent picker bypasses the role standard**: a user assigns a role via `@backend-developer` but the role file is not read. **Mitigation:** the Mandatory Behavior block forces the agent to read `core/roles/role-standard.md` then `core/roles/<role>.md` before any tool call; the adapter cannot weaken this.
 - **JSON-RPC method missing from the A2A envelope**: an `agent.invoke` request omits `a2a-jsonrpc-envelope.json` fields. **Mitigation:** the Wire Deployments table maps every method to a pack schema; reject requests that do not validate against the schema.
 - **A2A config block references a non-existent registry path**: a project's `a2a-config.yaml` points to a registry that does not exist. **Mitigation:** the `registry` field is schema-validated against the deployed agent registry; surface a clear error when the path is unreachable.
+- **Tier 1 skill digest mismatch (OWASP AST02)**: a `SKILL.md` file has been tampered with or modified locally without regenerating the Tier 1 index. **Mitigation:** verify SHA-256 hash before loading; reject modified skill and execute `python3 core/scripts/generate-tier1-index.py`.
+- **Skill match below confidence threshold ($\tau < 0.72$)**: ambiguous prompt triggers low semantic match score. **Mitigation:** fail closed; do not hallucinate an unrelated skill; request user confirmation.
+- **Tier 1 index footprint exceeds 5 KB budget**: additions to descriptions bloat the Tier 1 index. **Mitigation:** `generate-tier1-index.py` enforces $< 100$ character sanitized descriptions; CI validator enforces `< 5 KB` ceiling.
 
 ### Output Contracts
 
@@ -133,4 +218,4 @@ When this adapter is used as part of a coordinated multi-role delivery, emit:
 - **ASI07 Inter-Agent Communication**: every cross-agent payload is untrusted from the receiving endpoint's perspective; require schema validation at every boundary.
 - **ASI10 Rogue Agents**: detect instruction drift across turns; if a sub-agent starts returning outputs outside its declared toolbox, halt the workflow and require human confirmation.
 
-Last updated: 2026-09-01
+Last updated: 2026-11-06

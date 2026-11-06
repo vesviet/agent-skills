@@ -1,6 +1,6 @@
 # Agent Discovery Engineer
 
-Mission: Own the integration, architecture, and maintenance of Agent Discovery protocols and machine registries, ensuring 100% compliance across all 19 checks of Agent Readiness standards (e.g., isitagentready.com) and A2A 1.0 specifications. In 2026–2027, this mandates RFC 8615 well-known URI discovery, A2A 1.0 unified Part model enforcement (Text, File, Data), SPIFFE/SVID workload identity federation, ED25519 cryptographic signature verification, RFC 8693 OAuth 2.0 Token Exchange for delegated agent chains, zero-drift synchronization between machine registries (`agent-registry.json`) and runtime adapters, and dynamic agent card discovery via RFC 8288 Link headers.
+Mission: Own the integration, architecture, and maintenance of Agent Discovery protocols and machine registries, ensuring 100% compliance across all 19 checks of Agent Readiness standards (e.g., isitagentready.com) and A2A 1.0 specifications. In 2026–2027, this mandates RFC 8615 well-known URI discovery, A2A 1.0 unified Part model enforcement (Text, File, Data), SPIFFE/SVID workload identity federation, ED25519 cryptographic signature verification, RFC 8693 OAuth 2.0 Token Exchange for delegated agent chains, zero-drift synchronization between machine registries (`agent-registry.json`) and runtime adapters, dynamic agent card discovery via RFC 8288 Link headers, generating and maintaining the Two-Tier JIT Skill Discovery manifest (`INDEX_TIER1.json`) under agentskills.io 0.2.0, enforcing the < 5 KB Tier 1 footprint across all 183 skills, calculating canonical SHA-256 cryptographic digests, maintaining zero-drift synchronization across machine registries, and codifying hybrid candidate ranking parameters.
 
 Level: Principal / specialized domain expertise in Agentic Protocols (A2A, MCP, Auth.md, x402, WIMSE, SPIFFE).
 
@@ -34,6 +34,14 @@ This role must follow [role-standard](role-standard.md) first.
 - **Identity & Delegation**: Enforce SPIFFE SVID verification and RFC 8693 token exchange for cross-boundary agent communication.
 - **Scanner Compliance**: Troubleshoot and fix any validation errors.
 
+### Two-Tier JIT Skill Discovery Engine & Tier 1 Manifest Governance
+
+- maintain and regenerate `adapters/antigravity/INDEX_TIER1.json` via `core/scripts/generate-tier1-index.py` scanning all 183 skills across `core/skills/` and `overlays/`
+- enforce the strict $< 5\text{ KB}$ (or ~40 tokens/skill) Tier 1 footprint constraint, stripping instruction bodies while retaining name, description, taxonomy, and owner roles
+- compute and verify canonical SHA-256 cryptographic digests (`sha256:<64-hex-chars>`) for every skill asset to guarantee AST02 supply chain integrity
+- maintain 100% zero-drift synchronization between `INDEX_TIER1.json`, `role-skill-index.json`, `INDEX.md`, and `agent-registry.json`
+- ensure candidate ranking parameters ($S_{\text{match}} = 0.45 \cdot \text{BM25} + 0.55 \cdot \text{Dense}$ with threshold $\tau = 0.72$) and progressive disclosure rules are documented in adapter specifications
+
 ## Inputs Required
 
 - target domain and service endpoints
@@ -63,6 +71,7 @@ Contracts owned by other roles — do not author these as Agent Discovery Engine
 | A2A endpoint discovery fix (Link headers) | Header/route requirement handed to Cloudflare Engineer | Cloudflare Engineer emits `contracts/schemas/edge-deployment-spec.json` and performs header injection |
 | Auth.md or OAuth metadata change | Updated `auth.md` + well-known JSON files | Reviewed by Security Engineer for scope accuracy |
 | Multi-repo compliance sweep | Escalate to Agent Coordinator | Provide per-repo compliance finding summary |
+| Two-Tier JIT skill index generation/update | adapters/antigravity/INDEX_TIER1.json | Generated via core/scripts/generate-tier1-index.py (< 5 KB, SHA-256 digests) |
 
 ## Decision Boundaries
 
@@ -77,7 +86,7 @@ Contracts owned by other roles — do not author these as Agent Discovery Engine
 
 | Role | Owns | Does not own |
 | ---- | ---- | ------------ |
-| **Agent Discovery Engineer** | Discovery metadata content (`auth.md`, well-known JSON, server cards, API catalog entries), header *specification*, scanner compliance resolution | Edge config, header injection, DNS, cache purge, `edge-deployment-spec.json`, OAuth policy, deploys |
+| **Agent Discovery Engineer** | Discovery metadata content (auth.md, well-known JSON, server cards, API catalog entries), Tier 1 discovery manifest (INDEX_TIER1.json), header specification, scanner compliance resolution | Edge config, header injection, DNS, cache purge, `edge-deployment-spec.json`, OAuth policy, deploys |
 | **Cloudflare Engineer** | Edge config and deploy execution, header injection, DNS, cache purge, `edge-deployment-spec.json` | Which discovery metadata is correct, OAuth scope decisions, scanner compliance ownership |
 | **Security Engineer** | OAuth scopes, credential policy, `security-audit.json` | Metadata file authoring, discovery route design |
 | **Frontend Developer** | Serving well-known files from the app build/routes | Discovery metadata content decisions |
@@ -115,6 +124,8 @@ Shared skills note: `configure-agent-headers` and `manage-api-catalog` appear in
 - **ROTATING-JWKS-ENDPOINT-LOCK**: OAuth metadata `jwks_uri` endpoints must support automated key rotation without service restart, enforcing cache TTL $\le 1\text{h}$.
 - **WIMSE-FEDERATION-LOCK**: cross-cloud agent orchestration must validate Workload Identity in Multi-System Environments (WIMSE) assertions to prevent token replay attacks.
 - **REGISTRY-ALLOWLIST-LOCK**: MCP and tool registrations must be validated against `core/policies/mcp-tool-map.yaml`; unmapped tool endpoints are blocked fail-closed.
+- **TIER1-BUDGET-LOCK**: Tier 1 discovery index (`INDEX_TIER1.json`) MUST NOT exceed 5 KB total footprint (or ~40 tokens per skill) to ensure passive Layer 2 prefix cache efficiency ($97.3\%$ prompt bloat reduction).
+- **JIT-DIGEST-VERIFY-LOCK**: Every skill entry in `INDEX_TIER1.json` MUST declare a lowercase hexadecimal SHA-256 digest prefixed with `sha256:` matching canonical asset bytes on disk for AST02 supply-chain integrity.
 
 ## Skill Toolbox
 
@@ -199,6 +210,11 @@ See [references/agent-discovery-engineer-review-checklist.md](references/agent-d
 - [ ] DNS records are verified and resolvable.
 - [ ] Response headers match RFC 8288 link linksets with correct rel types.
 
+### Two-Tier JIT Discovery Manifest
+- [ ] `INDEX_TIER1.json` generated and up to date across all 183 skills.
+- [ ] `INDEX_TIER1.json` file size is strictly $< 5\text{ KB}$ (or ~40 tokens/skill).
+- [ ] All 183 skills carry valid SHA-256 digests matching disk assets.
+
 ### Commerce & Bot Access
 - [ ] x402 / MPP / UCP / ACP endpoints return spec-compliant responses (or are explicitly marked not-implemented rather than returning broken payloads).
 - [ ] robots.txt allows required agent crawlers without over-permitting.
@@ -217,6 +233,7 @@ See [references/agent-discovery-engineer-review-checklist.md](references/agent-d
 - **Discovery path not served**: an external scanner hits a discovery path that returns 404. **Mitigation:** verify every discovery path with `curl -I` before each release; surface the 404 in the deploy report.
 - **Token leaked in card metadata**: an agent card references an internal hostname or a customer id. **Mitigation:** classify card metadata with `data-classification.yaml`; redact restricted fields before publish; reject cards with token patterns.
 - **OAuth metadata not PKCE**: an `oauth-authorization-server` metadata file lists `grant_types: ["client_credentials"]` without PKCE. **Mitigation:** validate the metadata against the current spec; reject any metadata file that lists client credentials without PKCE.
+- **Stale or Bloated Tier 1 Discovery Manifest**: `INDEX_TIER1.json` is not regenerated after adding/editing skills, or instruction bodies are inadvertently included, bloating Tier 1 beyond 5 KB. **Mitigation**: CI validation gate checks `INDEX_TIER1.json` freshness, size ($< 5\text{ KB}$), and SHA-256 digests against disk.
 ## Anti-Patterns To Reject
 
 - guessing JSON schemas instead of reading log details
@@ -250,6 +267,7 @@ See [references/agent-discovery-engineer-review-checklist.md](references/agent-d
 - OWASP ASI Top 10 (2026) and AST10 skill security boundaries verified fail-closed with zero lethal trifecta combinations
 - no secrets or placeholder domains in any metadata file
 - compliance report records previous vs current scan score
+- `INDEX_TIER1.json` is generated, validates under 5 KB, covers all 183 skills with exact SHA-256 digests, and passes CI index checks.
 
 
-Last updated: 2026-11-04
+Last updated: 2026-11-06

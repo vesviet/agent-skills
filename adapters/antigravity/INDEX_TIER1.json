@@ -1,0 +1,1287 @@
+{
+  "contract_type": "agent-skills-discovery",
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "abstract-input-actions",
+      "type": "skill-md",
+      "description": "Abstracts hardware-agnostic input action mappings, chorded and buffered inputs, radial analog dea...",
+      "url": "core/skills/gamedev/abstract-input-actions/SKILL.md",
+      "digest": "sha256:4dee90f4c1840fae1e79fb351ca1829d0d1f0a8cfde4fe621183d6298875d200"
+    },
+    {
+      "name": "accessibility-review",
+      "type": "skill-md",
+      "description": "Audit UI for keyboard navigation, focus order, screen-reader labels, color contrast, motion prefe...",
+      "url": "core/skills/foundation/accessibility-review/SKILL.md",
+      "digest": "sha256:862d9c2424b06088c63ebd3d1598affddf608ed88d36030039ea4c286cb88ab7"
+    },
+    {
+      "name": "add-api-endpoint",
+      "type": "skill-md",
+      "description": "Add or modify a service endpoint by updating the local API contract, boundary validation, handler...",
+      "url": "core/skills/backend/add-api-endpoint/SKILL.md",
+      "digest": "sha256:964aa39044d973b5a6663c3ae560beba8ec6335e8879ab81a27eb41b3e91e8da"
+    },
+    {
+      "name": "add-event-handler",
+      "type": "skill-md",
+      "description": "Add or modify event publishers, consumers, or subscriber flows by following the repo's event cont...",
+      "url": "core/skills/backend/add-event-handler/SKILL.md",
+      "digest": "sha256:c5116f60e1a2cde8fa6a2f21f9b5fb4d7a8ba060ccd6f59980088a02bb31449c"
+    },
+    {
+      "name": "add-page-route",
+      "type": "skill-md",
+      "description": "Add or modify a page, screen, or route by following the repo's navigation, data-loading, layout,...",
+      "url": "core/skills/frontend/add-page-route/SKILL.md",
+      "digest": "sha256:b591c806b0d6d7be32bb39408344318286735ea5f472a369fd7bb3ce1765f304"
+    },
+    {
+      "name": "add-service-client",
+      "type": "skill-md",
+      "description": "Add or modify a service-to-service client or downstream integration by following the repo's trans...",
+      "url": "core/skills/backend/add-service-client/SKILL.md",
+      "digest": "sha256:405af6ac8adc0caaecfb6844004945fc147d40a85d2485eb213f46396a5fe373"
+    },
+    {
+      "name": "add-telemetry-instrumentation",
+      "type": "skill-md",
+      "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and Op...",
+      "url": "core/skills/platform/add-telemetry-instrumentation/SKILL.md",
+      "digest": "sha256:a35faec8e6b7103a7b57cca19fbb6ae4aa02ce7d9d73e5706b726dad6f3305be"
+    },
+    {
+      "name": "add-ui-component",
+      "type": "skill-md",
+      "description": "Add or evolve a reusable UI component by following the repo's design system, composition patterns...",
+      "url": "core/skills/frontend/add-ui-component/SKILL.md",
+      "digest": "sha256:5e67f60cbc9e1aefb35c8e5e8eb98bc011f23f55d63d59fcd9b688479ffcfb2d"
+    },
+    {
+      "name": "agent-a2a-protocol",
+      "type": "skill-md",
+      "description": "Implement the full A2A 1.0 task lifecycle including Agent Card discovery, JSON-RPC invoke/stream,...",
+      "url": "core/skills/agent/agent-a2a-protocol/SKILL.md",
+      "digest": "sha256:20aa9c5e0d5fc7294b9135f37fd4fc0847113cc3a3ca0bc2403a50a5cfaefee6"
+    },
+    {
+      "name": "agent-context-management",
+      "type": "skill-md",
+      "description": "Manage working context across long or multi-step agent tasks by tracking user intent, current pha...",
+      "url": "core/skills/agent/agent-context-management/SKILL.md",
+      "digest": "sha256:a646359c35cdb9ec15ac9ef78dc6fff4021338d0a59eaa344caa016f3017232f"
+    },
+    {
+      "name": "agent-delegation",
+      "type": "skill-md",
+      "description": "Delegate scoped sub-tasks from a supervisor agent to specialist worker agents using structured A2...",
+      "url": "core/skills/agent/agent-delegation/SKILL.md",
+      "digest": "sha256:d4bf36fd7fcecfc2ef602875f05fd75510bb147a514e68ab93e7d6e418acd4ad"
+    },
+    {
+      "name": "agent-evaluation",
+      "type": "skill-md",
+      "description": "Use when constructing representative agent evaluation benchmark suites, defining scoring rubrics,...",
+      "url": "core/skills/ai-agent/agent-evaluation/SKILL.md",
+      "digest": "sha256:77b364757a00d47d1b6c5c3b12bccf668124e42e92ca0d49030e5477d8abade0"
+    },
+    {
+      "name": "agent-graph-orchestration",
+      "type": "skill-md",
+      "description": "Model multi-phase delivery as a directed graph with parallel branches, phase gates, and A2A deleg...",
+      "url": "core/skills/agent/agent-graph-orchestration/SKILL.md",
+      "digest": "sha256:8f1437d5c646e1372a466010027235ca442f0ccb49c108fa3b10230e81dbcd54"
+    },
+    {
+      "name": "agent-handoff",
+      "type": "skill-md",
+      "description": "Produce concise agent handoffs, status updates, and completion summaries that preserve phase stat...",
+      "url": "core/skills/agent/agent-handoff/SKILL.md",
+      "digest": "sha256:7ed7313d32970c54edfe28e2d7cca9b9998a66a53b7b6a92dbb97c544ce1d7a8"
+    },
+    {
+      "name": "agent-memory-compaction",
+      "type": "skill-md",
+      "description": "Use when compacting long-running agent conversation context into an anchored 10-slot working stat...",
+      "url": "core/skills/agent/agent-memory-compaction/SKILL.md",
+      "digest": "sha256:d0810abe5d7898b6adde6b1f4559529ed1d73173b82e031b96a461539a4d4a58"
+    },
+    {
+      "name": "agent-model-routing",
+      "type": "skill-md",
+      "description": "Select the most cost-effective model for each task or sub-task based on complexity, risk tier, an...",
+      "url": "core/skills/agent/agent-model-routing/SKILL.md",
+      "digest": "sha256:98ad5a5b48e421502419150320bfb705f663820587ac3ee6c3fb728aee7fa02d"
+    },
+    {
+      "name": "agent-observability",
+      "type": "skill-md",
+      "description": "Trace agent reasoning chains, tool call sequences, context injections, and token costs to enable...",
+      "url": "core/skills/agent/agent-observability/SKILL.md",
+      "digest": "sha256:878042de61b21eb342460e55b904f027eeab8c378884cb721edcf0f26a0780fe"
+    },
+    {
+      "name": "agent-panel-meeting",
+      "type": "skill-md",
+      "description": "Orchestrate a 6-round, multi-role cross-examination panel meeting to debate architecture, code, o...",
+      "url": "core/skills/agent/agent-panel-meeting/SKILL.md",
+      "digest": "sha256:67dc577f81f085987f73fc746c18fc9afcff35447cc02c02ab99abd2f08058c8"
+    },
+    {
+      "name": "agent-prompt-lifecycle",
+      "type": "skill-md",
+      "description": "Manage prompt assets through their full lifecycle including versioning, evaluation against golden...",
+      "url": "core/skills/agent/agent-prompt-lifecycle/SKILL.md",
+      "digest": "sha256:08f23bfdfd5b55229eb7d23ca8267836b2a64f1562e56b2221db066406202e93"
+    },
+    {
+      "name": "agent-quality-gate",
+      "type": "skill-md",
+      "description": "Run and interpret repository quality gates for agent-delivered changes, including validators, lin...",
+      "url": "core/skills/agent/agent-quality-gate/SKILL.md",
+      "digest": "sha256:93f81b71f9f1c495e59dcf5b0f256a9d44769f9ae617c2c9006693a1e917c891"
+    },
+    {
+      "name": "agent-semantic-memory",
+      "type": "skill-md",
+      "description": "Read from and write to persistent memory stores so agents retain codebase patterns, past fixes, a...",
+      "url": "core/skills/agent/agent-semantic-memory/SKILL.md",
+      "digest": "sha256:5f7abf2bf5a89705a7b8d3acbe0d674a283f546813aa499ea109f7728ca86b52"
+    },
+    {
+      "name": "agent-tool-orchestration",
+      "type": "skill-md",
+      "description": "Plan and sequence agent tool use by choosing the smallest reliable tool, controlling work phase b...",
+      "url": "core/skills/agent/agent-tool-orchestration/SKILL.md",
+      "digest": "sha256:1fbd76fed3e9a18cb90a2c4e1308bbfdb7cdc13332d28df4bbf81a341c8ebb00"
+    },
+    {
+      "name": "agents-sdk",
+      "type": "skill-md",
+      "description": "Builds, deploys, and maintains stateful AI agents on Cloudflare Workers and Durable Objects using...",
+      "url": "core/skills/platform/agents-sdk/SKILL.md",
+      "digest": "sha256:71ab23f43dcd320de3180e072b30b14bd021a8683653b903c7428d5f6941d0e3"
+    },
+    {
+      "name": "ai-risk-assessment",
+      "type": "skill-md",
+      "description": "Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure/Manage) and NIST AI 600-1 Gen...",
+      "url": "core/skills/foundation/ai-risk-assessment/SKILL.md",
+      "digest": "sha256:fe41fdd4c0f2222e02aba1cd93576354d1e1f117d5a3da3a8724916e5e4c8d57"
+    },
+    {
+      "name": "analyze-business-requirements",
+      "type": "skill-md",
+      "description": "Analyze and write business requirements by making actors, business rules, state transitions, exce...",
+      "url": "core/skills/meetings-analysis/analyze-business-requirements/SKILL.md",
+      "digest": "sha256:df3ea3a1c2f2b01f2c91b0a89a2d7f7631a5f4ca2a21f9ebbe34dd33a7d78d71"
+    },
+    {
+      "name": "analyze-campaign-roi",
+      "type": "skill-md",
+      "description": "Measure conversion rates, organic search traffic, and CPA of generated content. Use when launchin...",
+      "url": "core/skills/mmo/analyze-campaign-roi/SKILL.md",
+      "digest": "sha256:d00efde768c7aac46b86b1670abb44f6c43248f9813105c77fde96fed1a9b965"
+    },
+    {
+      "name": "analyze-data",
+      "type": "skill-md",
+      "description": "Explore analytical datasets using DuckDB/Polars, query canonical Semantic Metric Catalogs (dbt Me...",
+      "url": "core/skills/meetings-analysis/analyze-data/SKILL.md",
+      "digest": "sha256:e76972867fee6c85f27d4b4eef2bf6f433ad16646abfff9cdaace3f2ce19dbef"
+    },
+    {
+      "name": "anti-ui-slop-finish-gate",
+      "type": "skill-md",
+      "description": "Use when conducting pre-staging UI finish reviews, enforcing 100% interaction state coverage, and...",
+      "url": "core/skills/frontend/anti-ui-slop-finish-gate/SKILL.md",
+      "digest": "sha256:8e93d9bfb8c840608c4a1818d42dc0f4b5ecf344bffb6c370b6900243dab9b2c"
+    },
+    {
+      "name": "architect-ecs-systems",
+      "type": "skill-md",
+      "description": "Architect data-oriented Entity Component System (ECS) architectures, archetype storages, and cach...",
+      "url": "core/skills/gamedev/architect-ecs-systems/SKILL.md",
+      "digest": "sha256:fe38a9c28c825aca727478b5630770ff062ebefadff43d789f2a7aa888b61914"
+    },
+    {
+      "name": "architect-mcp-server",
+      "type": "skill-md",
+      "description": "Architect enterprise-grade Model Context Protocol (MCP) servers, tool surfaces, schemas, transpor...",
+      "url": "core/skills/agent/architect-mcp-server/SKILL.md",
+      "digest": "sha256:cd33312b451217ba3a591759666dc39070a12771867e3857692c8b8d15856c3a"
+    },
+    {
+      "name": "audit-ai-compliance",
+      "type": "skill-md",
+      "description": "Use when auditing AI systems, agentic workflows, or automated decision engines for compliance wit...",
+      "url": "core/skills/legal-compliance/audit-ai-compliance/SKILL.md",
+      "digest": "sha256:f8610927a0508bb0fd283f0d4e8f01625006ddfee5d6b7b5ee6de71b69c1bc49"
+    },
+    {
+      "name": "audit-content",
+      "type": "skill-md",
+      "description": "Run a structured content refresh cycle on an existing published piece — audit current performance...",
+      "url": "core/skills/content/audit-content/SKILL.md",
+      "digest": "sha256:3b4f612d23987c70e6687ac42c742c47a3c525452337210e09e92524b209477f"
+    },
+    {
+      "name": "audit-technical-article",
+      "type": "skill-md",
+      "description": "Audit a technical article or series part on authority-blog/learn against the 7 Technical Content...",
+      "url": "overlays/hugo-authority-content/skills/audit-technical-article/SKILL.md",
+      "digest": "sha256:399f9d4d921b2aa48fecf8a415d0105f1fb56e6e3efd64599a56f7cbec94c4df"
+    },
+    {
+      "name": "audit-technical-seo",
+      "type": "skill-md",
+      "description": "Audit crawl budgets, search and AI bot access in robots.txt (Googlebot, Bingbot, OAI-SearchBot, P...",
+      "url": "core/skills/seo/audit-technical-seo/SKILL.md",
+      "digest": "sha256:1d99eddd147cd92a25828ccafc2f53ea85a9c77760c559bc056c06f7e7ab8c6b"
+    },
+    {
+      "name": "author-game-ai",
+      "type": "skill-md",
+      "description": "Authors modular game AI architectures using Behavior Trees (BT), shared and local blackboards, Ut...",
+      "url": "core/skills/gamedev/author-game-ai/SKILL.md",
+      "digest": "sha256:7ef12870444a508c87c0f84d48b65b9a49e08f305c0fabfad68195ba7d4060ce"
+    },
+    {
+      "name": "automate-game-publishing",
+      "type": "skill-md",
+      "description": "Automate headless cross-platform game builds, Steamworks SteamPipe depot uploads, itch.io Butler...",
+      "url": "core/skills/gamedev/automate-game-publishing/SKILL.md",
+      "digest": "sha256:a0e03abefbe56d18c1fdf59b4bd1d7ea085792460466fc7e2e3bc36cb45b85fc"
+    },
+    {
+      "name": "aws-infrastructure",
+      "type": "skill-md",
+      "description": "Provision, configure, and optimize AWS cloud infrastructure via OpenTofu state KMS encryption, Cr...",
+      "url": "core/skills/platform/aws-infrastructure/SKILL.md",
+      "digest": "sha256:6b921eb4a0b2d5587dec802059a506eefa198d9eb95f17b8cdc96271d7ccbdfa"
+    },
+    {
+      "name": "build-credit-scorecard",
+      "type": "skill-md",
+      "description": "Use when building regulatory credit risk scorecards, performing monotonic WOE binning, evaluating...",
+      "url": "overlays/fintech-compliance/skills/build-credit-scorecard/SKILL.md",
+      "digest": "sha256:ee2e95ca3a86a19e4b5275b51323c4ac4080ad298b515a0ae11f3804ac83d594"
+    },
+    {
+      "name": "build-data-pipeline",
+      "type": "skill-md",
+      "description": "Design and implement transactional lakehouse pipelines (Iceberg v3/Delta 4.4), enforce ODCS v3.2....",
+      "url": "core/skills/security-data/build-data-pipeline/SKILL.md",
+      "digest": "sha256:d0d318d2b09d0f200db27ce0ef2393ec42f1ace363645c8efe4c4297394088c5"
+    },
+    {
+      "name": "build-game-ui-ux",
+      "type": "skill-md",
+      "description": "Builds responsive game UI and HUD architectures featuring multi-resolution canvas scaling, 9-slic...",
+      "url": "core/skills/gamedev/build-game-ui-ux/SKILL.md",
+      "digest": "sha256:fee539f1e42a5dcfff9a121c278e76027c7dcf8ac4c099907ca720b9fefcaea2"
+    },
+    {
+      "name": "build-mcp-server",
+      "type": "skill-md",
+      "description": "Scaffolds and implements a new Model Context Protocol (MCP) server. Use when exposing new backend...",
+      "url": "core/skills/backend/build-mcp-server/SKILL.md",
+      "digest": "sha256:621aeb4a78a0eeb90123bfdb4ab62ced01227ae55e9f0d2887d23942c635b63d"
+    },
+    {
+      "name": "build-story-map",
+      "type": "skill-md",
+      "description": "Structure and visualize product backlogs using Jeff Patton User Story Mapping, MoSCoW release swi...",
+      "url": "core/skills/product/build-story-map/SKILL.md",
+      "digest": "sha256:f74e54c455961dcbdf2bf50767a0be846fb4de7b9df675cd46a75b03d2061512"
+    },
+    {
+      "name": "cloudflare-email-service",
+      "type": "skill-md",
+      "description": "Send and receive transactional emails with Cloudflare Email Service (Email Sending + Email Routin...",
+      "url": "core/skills/platform/cloudflare-email-service/SKILL.md",
+      "digest": "sha256:0f5a4faab723e8d0f9771e0d9f13f56bed3d6fb7c12878b79988c7efecc8c767"
+    },
+    {
+      "name": "combinatorial-testing",
+      "type": "skill-md",
+      "description": "Design pairwise and n-way combinatorial test suites using orthogonal arrays and covering paramete...",
+      "url": "core/skills/foundation/combinatorial-testing/SKILL.md",
+      "digest": "sha256:6e2aba7e8fc765f154f2eef411cf9e2c20e48f0d5aed8164baf9a1c70ff017c3"
+    },
+    {
+      "name": "commit-code",
+      "type": "skill-md",
+      "description": "Validate and package a finished change into a clean commit by following repo-local validation, ge...",
+      "url": "core/skills/repo-ops/commit-code/SKILL.md",
+      "digest": "sha256:105bda88e8d8d201d27b04b4b94ef6c976697748ace94c98b36c288d96ce43fb"
+    },
+    {
+      "name": "component-composition",
+      "type": "skill-md",
+      "description": "Architect scalable UI components using compound components, Radix-style asChild slot delegation,...",
+      "url": "core/skills/frontend/component-composition/SKILL.md",
+      "digest": "sha256:ebe74e272e455041e22d7ac397e743d5fb9300695f3e889322ef4a2051c7b16f"
+    },
+    {
+      "name": "conduct-research",
+      "type": "skill-md",
+      "description": "Execute iterative, deeply-verified research to discover, validate, and synthesize complex informa...",
+      "url": "core/skills/foundation/conduct-research/SKILL.md",
+      "digest": "sha256:9ed61570b394f5f662385e245b2efceb1af9c0c85e2b395fc1f29f747f6d87ec"
+    },
+    {
+      "name": "configure-agent-commerce",
+      "type": "skill-md",
+      "description": "Implements agentic commerce standards — x402 and Stripe's Machine Payments Protocol (MPP) for HTT...",
+      "url": "core/skills/agent/configure-agent-commerce/SKILL.md",
+      "digest": "sha256:a8b348e4447e4ecf8139fe4045a247746fc4b3ec04306631375f7a32a792b336"
+    },
+    {
+      "name": "configure-agent-headers",
+      "type": "skill-md",
+      "description": "Exposes well-known agentic endpoints via RFC 8288 HTTP Link headers and optional DNS-AID SVCB rec...",
+      "url": "core/skills/agent/configure-agent-headers/SKILL.md",
+      "digest": "sha256:3e87ee40e2871796fa3691ee5e54dad1fe77cd9d95df8cd5c63a12fe1e6650a8"
+    },
+    {
+      "name": "configure-agent-skills",
+      "type": "skill-md",
+      "description": "Creates and manages the agentskills.io manifest index at `/.well-known/agent-skills/index.json`,...",
+      "url": "core/skills/agent/configure-agent-skills/SKILL.md",
+      "digest": "sha256:7cbb54de2183822d2920b978515736f3a8e393f4d37f490337762e5d411c41f8"
+    },
+    {
+      "name": "configure-llms-txt",
+      "type": "skill-md",
+      "description": "Create and maintain the llms.txt and llms-full.txt files for a domain or project, making document...",
+      "url": "core/skills/documentation/configure-llms-txt/SKILL.md",
+      "digest": "sha256:ff09c967a92f7a1f71f031898c54b6df57de67e14b8adf3a7f0a99a364acb201"
+    },
+    {
+      "name": "configure-mcp",
+      "type": "skill-md",
+      "description": "Sets up the full MCP presence for a web service — experimental Server Card discovery, WebMCP brow...",
+      "url": "core/skills/agent/configure-mcp/SKILL.md",
+      "digest": "sha256:c4972acc7bf4b423a9d0e366ce416d99aae077d5ae455d0f37cba187e40f084a"
+    },
+    {
+      "name": "configure-oauth-metadata",
+      "type": "skill-md",
+      "description": "Configures well-known OAuth 2.0 and OpenID Connect discovery endpoints (`oauth-protected-resource...",
+      "url": "core/skills/agent/configure-oauth-metadata/SKILL.md",
+      "digest": "sha256:360a4aa496df7a76640f4604e0895ec8ca60ea39d435ad01d3601cf2fe3078d1"
+    },
+    {
+      "name": "configure-physics-collision",
+      "type": "skill-md",
+      "description": "Configures deterministic fixed timestep tuning, Continuous Collision Detection (CCD), spatial que...",
+      "url": "core/skills/gamedev/configure-physics-collision/SKILL.md",
+      "digest": "sha256:b77c15c6d5c63bcf1d1c7d7c719410abb264fc0cdfbe5dea27480a6e3273c160"
+    },
+    {
+      "name": "context-optimization",
+      "type": "skill-md",
+      "description": "Use when optimizing LLM agent context windows, allocating token budgets, pruning semantic duplica...",
+      "url": "core/skills/ai-agent/context-optimization/SKILL.md",
+      "digest": "sha256:48bd2f5715766943d256a381e176e0c5d0c7efc049cc5ffbb110d22cf6f215eb"
+    },
+    {
+      "name": "create-automation-script",
+      "type": "skill-md",
+      "description": "Generate stealth automation scripts using Playwright/Puppeteer over CDP, C++ patched browsers (Ca...",
+      "url": "core/skills/mmo/create-automation-script/SKILL.md",
+      "digest": "sha256:39d3832bc33190b0e79a9d0abe22767d2d7cc65e3e7a56415a8f92f266a32372"
+    },
+    {
+      "name": "create-exercises",
+      "type": "skill-md",
+      "description": "Design educational assignments, practice tests, and quizzes following designated curriculum matri...",
+      "url": "core/skills/education/create-exercises/SKILL.md",
+      "digest": "sha256:8db0aaeff40eea78f8fc2902b4bd8856d4ad95fcede569797e02d71ae8f809b8"
+    },
+    {
+      "name": "create-migration",
+      "type": "skill-md",
+      "description": "Create safe schema or data migrations by following the repo's local migration tool, naming rules,...",
+      "url": "core/skills/foundation/create-migration/SKILL.md",
+      "digest": "sha256:ba08287cec8365634453dd4bc0bcc3e64f7ba8659c60b27d3769e049d94c04cc"
+    },
+    {
+      "name": "database-maintenance",
+      "type": "skill-md",
+      "description": "Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceber...",
+      "url": "core/skills/security-data/database-maintenance/SKILL.md",
+      "digest": "sha256:a0fce0a825fa72fb1fc39d97db9af3dceb7804364e12b3b4278d09fc5f4cfb4b"
+    },
+    {
+      "name": "debug-3d-scene",
+      "type": "skill-md",
+      "description": "Debug 3D scene behavior by tracing scene graph structure, transforms, raycasting, decals, materia...",
+      "url": "overlays/r3f-stack/skills/debug-3d-scene/SKILL.md",
+      "digest": "sha256:40d6f824821f7b660b7fd587f5413ac6f17078ad0e025d65e11fc7a2ac675584"
+    },
+    {
+      "name": "debug-identity-provider",
+      "type": "skill-md",
+      "description": "Diagnoses and resolves failures reported by WorkOS Agentic Registration scanners, `isitagentready...",
+      "url": "core/skills/agent/debug-identity-provider/SKILL.md",
+      "digest": "sha256:35f1bdbae1caac21c456e700eef2d61d967ba1598b0ea3a463841d20253649a7"
+    },
+    {
+      "name": "debug-runtime-platform",
+      "type": "skill-md",
+      "description": "Investigate deployment, environment, runtime, and rollout issues that are not purely application-...",
+      "url": "core/skills/platform/debug-runtime-platform/SKILL.md",
+      "digest": "sha256:f98668ceb252547302411312abaec28b92873a1359eff8072324970fd59427f6"
+    },
+    {
+      "name": "debug-workers-edge",
+      "type": "skill-md",
+      "description": "Diagnose Cloudflare Pages and Workers failures at the edge — 5xx, binding errors, Wrangler deploy...",
+      "url": "core/skills/platform/debug-workers-edge/SKILL.md",
+      "digest": "sha256:ec186eaa7be3b2ef69c777e53e1bffd098e8436b68d53c6684d4c1d59e2b121e"
+    },
+    {
+      "name": "decompose-agentic-system",
+      "type": "skill-md",
+      "description": "Architect recursive system and task decomposition for large-scale multi-agent architectures (100+...",
+      "url": "core/skills/agent/decompose-agentic-system/SKILL.md",
+      "digest": "sha256:919a43ec9d5e33e691d0331794bc164c0f8300d619a984a57504905ba841e5f1"
+    },
+    {
+      "name": "define-product-strategy",
+      "type": "skill-md",
+      "description": "Formulate, stress-test, and document product strategy using Amazon Working Backwards (PR/FAQ), Ha...",
+      "url": "core/skills/product/define-product-strategy/SKILL.md",
+      "digest": "sha256:e2b6e82f9027253f9695ededa4500c3a9cabb0ebc78746ebc63bcad349831f5b"
+    },
+    {
+      "name": "deploy-aws-eks-workloads",
+      "type": "skill-md",
+      "description": "Deploy, scale, and govern cloud-native application workloads on Amazon EKS using SOTA 2026-2027 A...",
+      "url": "core/skills/platform/deploy-aws-eks-workloads/SKILL.md",
+      "digest": "sha256:98432fb8d593150330871b8c3ac0143142f8f14449fe4121a8e86bda6d5ffa7b"
+    },
+    {
+      "name": "deploy-mmo-infrastructure",
+      "type": "skill-md",
+      "description": "Deploy and manage proxy pools (Residential/4G) with dynamic health probes and Anti-Detect Browser...",
+      "url": "core/skills/mmo/deploy-mmo-infrastructure/SKILL.md",
+      "digest": "sha256:16c2a53f8e831037f1bf635cbf64f4dbac1c8f2fffff7b064cd3717db8012f32"
+    },
+    {
+      "name": "deploy-mobile-app",
+      "type": "skill-md",
+      "description": "Configure and execute mobile deployment pipelines using EAS Build, native code signing credential...",
+      "url": "core/skills/mobile/deploy-mobile-app/SKILL.md",
+      "digest": "sha256:1245a4b7968a976b282ffb52a21c7c8c8f0ed0f7827c54b27443d3b1d8c0e263"
+    },
+    {
+      "name": "deploy-proxyware-fleet",
+      "type": "skill-md",
+      "description": "Containerize and orchestrate modern DePIN bandwidth monetization light nodes (Grass, Dawn, Nodepa...",
+      "url": "core/skills/mmo/deploy-proxyware-fleet/SKILL.md",
+      "digest": "sha256:ca27a386107c1b3efd111fa346655425849bc0f7593d111500346ae88c77b896"
+    },
+    {
+      "name": "deploy-vllm-inference",
+      "type": "skill-md",
+      "description": "Deploy, configure, scale, and optimize high-throughput LLM inference workloads using the vLLM V1...",
+      "url": "core/skills/ai/deploy-vllm-inference/SKILL.md",
+      "digest": "sha256:9003b6dbdaef172c64ad33708ce2f26932e2a2487eae33bd7632aa981cec562b"
+    },
+    {
+      "name": "design-content-strategy",
+      "type": "skill-md",
+      "description": "Design holistic content portfolio strategies, pillar-and-cluster architectures, topical authority...",
+      "url": "core/skills/content/design-content-strategy/SKILL.md",
+      "digest": "sha256:2f6c1d16611baa57be22e73ca5f4f1e4ad29958b74f45244a828b83810bef891"
+    },
+    {
+      "name": "design-learning-plan",
+      "type": "skill-md",
+      "description": "Create a structured, curriculum-aligned learning plan or syllabus following ZPD pathways, SMART o...",
+      "url": "core/skills/education/design-learning-plan/SKILL.md",
+      "digest": "sha256:2f3430634259a5b056ef44453aab13a2ec7919f94ddbf36ac24c3cc4d7b463fa"
+    },
+    {
+      "name": "design-md-specification",
+      "type": "skill-md",
+      "description": "Use when generating machine-readable DESIGN.md documents, specifying YAML frontmatter design toke...",
+      "url": "core/skills/frontend/design-md-specification/SKILL.md",
+      "digest": "sha256:b8b867206a326a66c56b20df6f6a4fc46640989781c45693d8cfaaaa04974786"
+    },
+    {
+      "name": "design-procedural-generation",
+      "type": "skill-md",
+      "description": "Designs deterministic procedural content generation (PCG) pipelines using seeded PRNG streams, mu...",
+      "url": "core/skills/gamedev/design-procedural-generation/SKILL.md",
+      "digest": "sha256:e99cc80f216e9f01fe2afbd37cb8d97da167580f3a96298d40a784928ce2b260"
+    },
+    {
+      "name": "design-review",
+      "type": "skill-md",
+      "description": "Review UX flows, visual hierarchy, interaction patterns, and design-system alignment against spec...",
+      "url": "core/skills/foundation/design-review/SKILL.md",
+      "digest": "sha256:af1b7411e8526667f3486d72d0df5a3da190fc037e40fa9768166013102b95a1"
+    },
+    {
+      "name": "design-system-engineering",
+      "type": "skill-md",
+      "description": "Use when engineering design token architectures, calculating concentric border radii, establishin...",
+      "url": "core/skills/frontend/design-system-engineering/SKILL.md",
+      "digest": "sha256:337288279d39fc35c174372cd4387c7cc86aee9f6e65589f2a4d28df1af8dcb6"
+    },
+    {
+      "name": "design-ux-flow",
+      "type": "skill-md",
+      "description": "Design or refine a UX flow by defining user goals, preserved behavior, screen states, interaction...",
+      "url": "core/skills/foundation/design-ux-flow/SKILL.md",
+      "digest": "sha256:768584d0247d99317c3cf62d1b4d578024bc1d439db7a5a517ce4de7a35b92f4"
+    },
+    {
+      "name": "develop-b2b-catalog-feature",
+      "type": "skill-md",
+      "description": "Develop features for the B2B factory direct catalog — an Astro v5 B2B manufacturing catalog on Cl...",
+      "url": "overlays/b2b-factory-catalog/skills/develop-b2b-catalog-feature/SKILL.md",
+      "digest": "sha256:d294b2c251bd27cc49b012b9b3be4abd5dceea4c3694b821adc62069885190a3"
+    },
+    {
+      "name": "develop-b2b-golf-feature",
+      "type": "skill-md",
+      "description": "Develop features for the B2B Golf niche catalog — an Astro v5 golf apparel site on Cloudflare Pag...",
+      "url": "overlays/b2b-catalog-golf/skills/develop-b2b-golf-feature/SKILL.md",
+      "digest": "sha256:acb319725dca31dacd8df4070124da1860703fad1970f57c7b7b9fae1c052974"
+    },
+    {
+      "name": "develop-gameplay-systems",
+      "type": "skill-md",
+      "description": "Build deterministic, high-performance gameplay systems, character controllers, state machines, an...",
+      "url": "core/skills/gamedev/develop-gameplay-systems/SKILL.md",
+      "digest": "sha256:521f80ac923824ad509915a257f9e48672260b2c46dc45b41742519046e7f63e"
+    },
+    {
+      "name": "develop-laravel-ecommerce-feature",
+      "type": "skill-md",
+      "description": "Develop features for Laravel 13 + Filament v4 e-commerce. Use when adding Filament admin resource...",
+      "url": "overlays/laravel-ecommerce/skills/develop-laravel-ecommerce-feature/SKILL.md",
+      "digest": "sha256:a2c415c7be5e3210f2e1ea5d1bf14615ff1fa08cb9797ac24de3e99bb6b6e3bd"
+    },
+    {
+      "name": "develop-laravel-feature",
+      "type": "skill-md",
+      "description": "Develop features in a Laravel 13 + Filament v4 + Livewire 3 monolith. Use when adding admin resou...",
+      "url": "overlays/laravel-filament/skills/develop-laravel-feature/SKILL.md",
+      "digest": "sha256:f0fb1590c801bc703f511e374b37fb55a1b329e730a1ee10effa72bb090d66a5"
+    },
+    {
+      "name": "develop-mobile-app",
+      "type": "skill-md",
+      "description": "Architect high-performance mobile applications using React Native New Architecture, Hermes byteco...",
+      "url": "core/skills/mobile/develop-mobile-app/SKILL.md",
+      "digest": "sha256:1b3189ebc6aba04bf346eef53ce59a5ebccaf5224d5e6c98fbd53a12f74724b2"
+    },
+    {
+      "name": "develop-obj-feature",
+      "type": "skill-md",
+      "description": "Develop features for the OBJ 3D Product Configurator — an Astro + React Three Fiber app with Thre...",
+      "url": "overlays/obj-configurator/skills/develop-obj-feature/SKILL.md",
+      "digest": "sha256:2090494b75c07016a5fe2c06bbc0045f3e57762f8c30d6394274f7f5354cef30"
+    },
+    {
+      "name": "direct-camera-systems",
+      "type": "skill-md",
+      "description": "Directs 2D and 3D virtual camera systems including frame-rate independent smooth dampening, deadz...",
+      "url": "core/skills/gamedev/direct-camera-systems/SKILL.md",
+      "digest": "sha256:3a8dda00015a7a96e0d191d2a982d46bb082fee6f7a313581a9c7ff418ec915e"
+    },
+    {
+      "name": "discernment-nudge",
+      "type": "skill-md",
+      "description": "Use when evaluating high-stakes architectural plans, financial projections, or critical code revi...",
+      "url": "core/skills/foundation/discernment-nudge/SKILL.md",
+      "digest": "sha256:f8e9bd355d252703eb35d7dedf90d77891b0f7f010e3ae6c61573a6844c2e95d"
+    },
+    {
+      "name": "docx",
+      "type": "skill-md",
+      "description": "Use when creating, editing, inspecting, or formatting Microsoft Word (.docx) documents, enforcing...",
+      "url": "core/skills/document/docx/SKILL.md",
+      "digest": "sha256:13bbf9a6d2ca485f1d3797a93cf0a5a832270776279f5e341a8bf11026b9ab21"
+    },
+    {
+      "name": "draft-legal-opinion",
+      "type": "skill-md",
+      "description": "Use when drafting a structured formal legal opinion on a Vietnamese legal matter — covering quest...",
+      "url": "core/skills/legal-compliance/draft-legal-opinion/SKILL.md",
+      "digest": "sha256:9a8f619596feebed988cd6d650339754dcdc19393c1f83ecbfe998f82fc440b5"
+    },
+    {
+      "name": "durable-objects",
+      "type": "skill-md",
+      "description": "Create and review Cloudflare Durable Objects. Use when building stateful coordination (chat rooms...",
+      "url": "core/skills/platform/durable-objects/SKILL.md",
+      "digest": "sha256:08a6a1c02f7163215d5b2209d39d5ad5ddb3f8ce3935e11cd6f7869b76802987"
+    },
+    {
+      "name": "elicit-requirements",
+      "type": "skill-md",
+      "description": "Elicit business requirements from stakeholders using Funnel Questioning (Open, Probing, Closed),...",
+      "url": "core/skills/business/elicit-requirements/SKILL.md",
+      "digest": "sha256:5ff9b1b89c7543beb04b36278a5c639ed5eca729faba34dada0e693f453525c2"
+    },
+    {
+      "name": "frontend-micro-polish",
+      "type": "skill-md",
+      "description": "Use when applying micro-typographic polish, optical padding compensations, mobile input zoom guar...",
+      "url": "core/skills/frontend/frontend-micro-polish/SKILL.md",
+      "digest": "sha256:d3cb011dcf16bdf28e8ea107583d88aff0b4081a5d4973b60aa97f706ccf9c96"
+    },
+    {
+      "name": "frontend-testing",
+      "type": "skill-md",
+      "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling,...",
+      "url": "core/skills/frontend/frontend-testing/SKILL.md",
+      "digest": "sha256:3b858879f30362e01d4d11960e0ad8ff99355f6f7c3ef0df8a7f6e0025cd72a8"
+    },
+    {
+      "name": "generate-game-assets-pipeline",
+      "type": "skill-md",
+      "description": "Automate procedural and AI-assisted game asset pipelines including pixel sprite sheets, texture a...",
+      "url": "core/skills/gamedev/generate-game-assets-pipeline/SKILL.md",
+      "digest": "sha256:76b53f028bfbb4a6779af03ad5fd45928f19bf7af99aab0f0b5cba77ee6fc413"
+    },
+    {
+      "name": "generate-mmo-content",
+      "type": "skill-md",
+      "description": "Generate Programmatic SEO (pSEO) Answer-First landing pages with JSON-LD schemas and multimodal s...",
+      "url": "core/skills/mmo/generate-mmo-content/SKILL.md",
+      "digest": "sha256:bf4f3d8a64e7450375510ad4f2c855e35e7f3a260ca37d0223472f3304cab047"
+    },
+    {
+      "name": "grade-and-review",
+      "type": "skill-md",
+      "description": "Evaluate learner work and provide constructive feedback on the designated grading scale. Use when...",
+      "url": "core/skills/education/grade-and-review/SKILL.md",
+      "digest": "sha256:f205b4c2461a1af5e10d53af0b4cba299b4c4cd04b8a23f5a4cfc2ab228a1401"
+    },
+    {
+      "name": "handle-checkout-flow",
+      "type": "skill-md",
+      "description": "Design and implement the end-to-end checkout flow including cart management, tax and shipping cal...",
+      "url": "core/skills/commerce/handle-checkout-flow/SKILL.md",
+      "digest": "sha256:bbc832efc378a9e53906142208b0e1c9be3802ee8e4480c2e9385f283cdb86df"
+    },
+    {
+      "name": "hostile-component-stress-testing",
+      "type": "skill-md",
+      "description": "Use when subjecting UI components to hostile edge-case inputs across 6 scenario axes on an isolat...",
+      "url": "core/skills/foundation/hostile-component-stress-testing/SKILL.md",
+      "digest": "sha256:f9e8048d9b2e8437b45b9b0c2fd680820ee457cb25dabfc14a6a93348d694356"
+    },
+    {
+      "name": "implement-auth",
+      "type": "skill-md",
+      "description": "Implement secure authentication, OAuth2 PKCE flows, session lifecycles, JWT rotation with Redis r...",
+      "url": "core/skills/backend/implement-auth/SKILL.md",
+      "digest": "sha256:12a9874aef232de53574151eeecb7ebcfce4eecec979bf572a945f829953afe8"
+    },
+    {
+      "name": "implement-save-persistence",
+      "type": "skill-md",
+      "description": "Implements monotonic save schemas, version migration pipelines, cryptographic integrity checksums...",
+      "url": "core/skills/gamedev/implement-save-persistence/SKILL.md",
+      "digest": "sha256:e64f5455a555d23d046c0561705d478e436831bb3fd7214c3506f01430cc447c"
+    },
+    {
+      "name": "implement-schema-markup",
+      "type": "skill-md",
+      "description": "Architect, generate, and validate connected Schema.org @graph JSON-LD structured data linking Web...",
+      "url": "core/skills/seo/implement-schema-markup/SKILL.md",
+      "digest": "sha256:deff912f1f2e77ebc19c12273453008a254890e58e3686949686f593a378a04f"
+    },
+    {
+      "name": "implement-structured-outputs",
+      "type": "skill-md",
+      "description": "Implements strict constrained decoding and validation for LLM responses. Use when enforcing JSON...",
+      "url": "core/skills/backend/implement-structured-outputs/SKILL.md",
+      "digest": "sha256:b56c37fa79f7fc307135d1a21dae4ef18347d90148f1b2c9690141c716d85ed0"
+    },
+    {
+      "name": "implement-view-transitions",
+      "type": "skill-md",
+      "description": "Implement fluid, native-feeling page and state transitions using CSS View Transitions API, React...",
+      "url": "core/skills/frontend/implement-view-transitions/SKILL.md",
+      "digest": "sha256:c5a941eee602c07ebd4087da25a017b4ff648b562506391ba542b3e5aa8006ba"
+    },
+    {
+      "name": "implement-webmcp",
+      "type": "skill-md",
+      "description": "Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when ena...",
+      "url": "core/skills/frontend/implement-webmcp/SKILL.md",
+      "digest": "sha256:c5f0806cccdae5ee836ae526b41ff1e3fa65f219a0a5936f4dd7b097a9400f2e"
+    },
+    {
+      "name": "incident-report",
+      "type": "skill-md",
+      "description": "Capture, structure, and communicate an incident from triage through resolution and prevention. Us...",
+      "url": "core/skills/foundation/incident-report/SKILL.md",
+      "digest": "sha256:cc6bd8854fff21d41dece73b54ae29bdfe661069a486de88ba21463db093f3f8"
+    },
+    {
+      "name": "inspect-blender-rigs-motion",
+      "type": "skill-md",
+      "description": "Diagnose and repair Blender armatures, bone roll alignment, animation retargeting hierarchies, an...",
+      "url": "core/skills/gamedev/inspect-blender-rigs-motion/SKILL.md",
+      "digest": "sha256:728ff49aa3efdac1bbb0bfd0fbe46318f8007131a965abce07aacb02b402b793"
+    },
+    {
+      "name": "integrate-api-client",
+      "type": "skill-md",
+      "description": "Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handl...",
+      "url": "core/skills/frontend/integrate-api-client/SKILL.md",
+      "digest": "sha256:d2f7953ce53a1e113eaf97980feca71d7a26966dbb159abb550decacbd467da3"
+    },
+    {
+      "name": "integrate-dialogue-narrative",
+      "type": "skill-md",
+      "description": "Integrates branching narrative trees, deterministic condition flag evaluators, localization strin...",
+      "url": "core/skills/gamedev/integrate-dialogue-narrative/SKILL.md",
+      "digest": "sha256:b963454c4896d596c11d9711a569b4fbc179335f9e50b8741f296cde5109f3c3"
+    },
+    {
+      "name": "integrate-game-engine",
+      "type": "skill-md",
+      "description": "Bridge game architecture across engines, manage headless test runners, configure export pipelines...",
+      "url": "core/skills/gamedev/integrate-game-engine/SKILL.md",
+      "digest": "sha256:02b84ceb9472f4ea0a2b85ee3885c301d97f40601401ffe3de6a651a9af5b054"
+    },
+    {
+      "name": "integrate-payment-gateway",
+      "type": "skill-md",
+      "description": "Integrate or extend a payment gateway (Stripe, VNPay, PayPal, Momo, etc.) into an e-commerce appl...",
+      "url": "core/skills/commerce/integrate-payment-gateway/SKILL.md",
+      "digest": "sha256:0cac901454cd7807e6954c2962d590d397c6114e116f5348a4bee2ca597f9b3f"
+    },
+    {
+      "name": "integrate-r3f-three-legacy",
+      "type": "skill-md",
+      "description": "Integrate or migrate between React Three Fiber and legacy imperative Three.js code by controlling...",
+      "url": "overlays/r3f-stack/skills/integrate-r3f-three-legacy/SKILL.md",
+      "digest": "sha256:56c6eb07b1d96c8c31230b68a224ef445e0e21bb396a46cde79ef686b47f5509"
+    },
+    {
+      "name": "interactive-component-workbench",
+      "type": "skill-md",
+      "description": "Use when building scratch-route component workbenches with search-param state switchers and multi...",
+      "url": "core/skills/frontend/interactive-component-workbench/SKILL.md",
+      "digest": "sha256:fddf3ae1b9039dddc8118bf457b8f027e2275307faa871a43f3205b43631800d"
+    },
+    {
+      "name": "isometric-svg-projection",
+      "type": "skill-md",
+      "description": "Use when generating precision isometric vector diagrams, engineering schematics, and CAD projecti...",
+      "url": "overlays/cad-projection/skills/isometric-svg-projection/SKILL.md",
+      "digest": "sha256:174cf86b89b833535c04009a93dcab8a8e681d976d67d5c255c1f5d1d66c522c"
+    },
+    {
+      "name": "manage-agent-identity",
+      "type": "skill-md",
+      "description": "Manages the full lifecycle of Non-Human Identities (NHI) for AI agent sessions — including provis...",
+      "url": "core/skills/agent/manage-agent-identity/SKILL.md",
+      "digest": "sha256:8e771688774c7cf77e08847e079c009eb4e33b2314c32fd07a3482bb7da08559"
+    },
+    {
+      "name": "manage-api-catalog",
+      "type": "skill-md",
+      "description": "Use when publishing and maintaining RFC 9727 API Catalog registries for automated API discovery b...",
+      "url": "core/skills/agent/manage-api-catalog/SKILL.md",
+      "digest": "sha256:59edb250a46208b97291a9e25c39049e96179eb2e8d4b88c5bcb623dc0681dd9"
+    },
+    {
+      "name": "manage-auth-md",
+      "type": "skill-md",
+      "description": "Use when creating, updating, or auditing the /auth.md file at the repository or domain root to en...",
+      "url": "core/skills/agent/manage-auth-md/SKILL.md",
+      "digest": "sha256:2da423ed0d3657159506850d1fa181b2548d25561709959e266b95ebb0bfb227"
+    },
+    {
+      "name": "manage-mmo-assets",
+      "type": "skill-md",
+      "description": "Manage and share MMO assets (Business Managers, Via, Pixels/Datasets, Anti-Detect profiles) using...",
+      "url": "core/skills/mmo/manage-mmo-assets/SKILL.md",
+      "digest": "sha256:0fcd3436d42241c01ae3c726625c78a7b3993e456b50f5702cb996dd8488886a"
+    },
+    {
+      "name": "manage-order-fulfillment",
+      "type": "skill-md",
+      "description": "Implement and manage the post-purchase order lifecycle including order status management, packing...",
+      "url": "core/skills/commerce/manage-order-fulfillment/SKILL.md",
+      "digest": "sha256:f895dac94a85d8cd08485c1c3ca1198619643ed32d7467865e1a74e66c8b9d42"
+    },
+    {
+      "name": "manage-product-catalog",
+      "type": "skill-md",
+      "description": "Build or maintain a product catalog including product creation, variant management (size, color,...",
+      "url": "core/skills/commerce/manage-product-catalog/SKILL.md",
+      "digest": "sha256:414b9080614ea58e8d13dfdac62d36db3f23e8b9093d2c3bce880f734b98bb9c"
+    },
+    {
+      "name": "manage-scene-lifecycle",
+      "type": "skill-md",
+      "description": "Orchestrate scene hierarchies, asynchronous level streaming, additive scene loading, and resource...",
+      "url": "core/skills/gamedev/manage-scene-lifecycle/SKILL.md",
+      "digest": "sha256:c2edda66bc0406dadd576d57fa9a89888d9a277ec2e8b6a14ab5e5928ce67e32"
+    },
+    {
+      "name": "manage-secrets",
+      "type": "skill-md",
+      "description": "Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-co...",
+      "url": "core/skills/security-data/manage-secrets/SKILL.md",
+      "digest": "sha256:6b8ad6e8b3ed458cdb09b5bb79700e6e897c3ed472a8653beae21c3a66f24c9f"
+    },
+    {
+      "name": "manage-vietnam-accounting",
+      "type": "skill-md",
+      "description": "Prepare and review Vietnam accounting controls, accounting-regime evidence, reconciliations, invo...",
+      "url": "core/skills/security-data/manage-vietnam-accounting/SKILL.md",
+      "digest": "sha256:8e8c4fa60083f0c97614d3b42037745f861759aa1cbbeb5a6e2a6d2067809b23"
+    },
+    {
+      "name": "manage-vietnam-legal",
+      "type": "skill-md",
+      "description": "Use when assessing Vietnamese statutory compliance, vetting commercial contracts, auditing Person...",
+      "url": "core/skills/legal-compliance/manage-vietnam-legal/SKILL.md",
+      "digest": "sha256:aa99492df1e2a3e6e6208f2cd88bbf211aad3928c5a73ae2af3f4d4269c3b766"
+    },
+    {
+      "name": "meeting-review",
+      "type": "skill-md",
+      "description": "Run a structured multi-perspective review of a topic, proposal, code area, bug, feature, or risky...",
+      "url": "core/skills/meetings-analysis/meeting-review/SKILL.md",
+      "digest": "sha256:b04d24b75fd1925718095e1d14cc9ad4c933cba041fc682de26eca0439598c1d"
+    },
+    {
+      "name": "memory-hygiene",
+      "type": "skill-md",
+      "description": "Use when auditing, triaging, compacting, and archiving agent persistent memory stores (MEMORY.md,...",
+      "url": "core/skills/ai-agent/memory-hygiene/SKILL.md",
+      "digest": "sha256:611378f26aa7c9298532bc40c8fffb55c17670cb78733bae346ab145f78f9214"
+    },
+    {
+      "name": "mix-dynamic-game-audio",
+      "type": "skill-md",
+      "description": "Architect dynamic game audio hierarchies, bus mixers, sidechain ducking, adaptive music stem cros...",
+      "url": "core/skills/gamedev/mix-dynamic-game-audio/SKILL.md",
+      "digest": "sha256:ab58fcac0469250d99747a5d4499854e9bdf8333d71ac87ef50afa14d2d1c133"
+    },
+    {
+      "name": "model-saas-metrics",
+      "type": "skill-md",
+      "description": "Model SaaS unit economics, deterministic financial metrics, Van Westendorp price sensitivity, and...",
+      "url": "core/skills/product/model-saas-metrics/SKILL.md",
+      "digest": "sha256:08f7c33408c71fda22d2e0249ca371b82b6456eb12045b8544b7ba43c090cbe9"
+    },
+    {
+      "name": "motion-performance-engineering",
+      "type": "skill-md",
+      "description": "Use when engineering 60fps/120fps hardware-accelerated animations, restricting transitions to com...",
+      "url": "core/skills/frontend/motion-performance-engineering/SKILL.md",
+      "digest": "sha256:735204174648d0861894071a8461641f5d8076d2238948c4b526609b304d5d3c"
+    },
+    {
+      "name": "navigate-service",
+      "type": "skill-md",
+      "description": "Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencie...",
+      "url": "core/skills/repo-ops/navigate-service/SKILL.md",
+      "digest": "sha256:f8996e6182f458c3f0e882cb485182dbc4f045daa2dc73f4cee624c4dc6a9c73"
+    },
+    {
+      "name": "openrouter-task",
+      "type": "skill-md",
+      "description": "Offload lightweight tasks, boilerplate code generation, unit tests, summarization, and data trans...",
+      "url": "core/skills/ai/openrouter-task/SKILL.md",
+      "digest": "sha256:6ed9286d7253450b79c9d346c2cc6ef3f15fd6713028c8625c423353f164bbbf"
+    },
+    {
+      "name": "optimize-3d-assets",
+      "type": "skill-md",
+      "description": "Optimize 3D assets and rendering inputs by reviewing model formats, geometry density, texture mem...",
+      "url": "overlays/r3f-stack/skills/optimize-3d-assets/SKILL.md",
+      "digest": "sha256:268db48544cb081b1ed1da0c61077028d97c83e2be12b39bc1096bd3ae92fc1d"
+    },
+    {
+      "name": "optimize-olap-database",
+      "type": "skill-md",
+      "description": "Design high-throughput OLAP schemas for Iceberg v3, tune ClickHouse/DuckDB columnar engines, conf...",
+      "url": "core/skills/security-data/optimize-olap-database/SKILL.md",
+      "digest": "sha256:6bf51716d41b1c8a6d73d145469f010287fff783c159de3a5f9d4f985cbcc3b8"
+    },
+    {
+      "name": "optimize-postgres",
+      "type": "skill-md",
+      "description": "Optimize PostgreSQL performance, serverless connection pooling, ephemeral database branching, EXP...",
+      "url": "core/skills/backend/optimize-postgres/SKILL.md",
+      "digest": "sha256:1dc5c1eb9d90816c0a5990f6eacb02ef4b898e01309cb4598fcce3989125f87f"
+    },
+    {
+      "name": "optimize-seo",
+      "type": "skill-md",
+      "description": "Research search intent, define keywords, produce SEO content briefs, audit on-page elements, opti...",
+      "url": "core/skills/content/optimize-seo/SKILL.md",
+      "digest": "sha256:0a82f81c363e99ec0be9fca81f31da8b3be4f72438ad68673285236a67758cd2"
+    },
+    {
+      "name": "orchestrate-chaos-experiment",
+      "type": "skill-md",
+      "description": "Plan, execute, and verify controlled chaos engineering experiments and game days. Use when valida...",
+      "url": "core/skills/platform/orchestrate-chaos-experiment/SKILL.md",
+      "digest": "sha256:c91744d95cdc223d38f51abaedbf446bbebcec3726af39f2e67308bcb5f4a75e"
+    },
+    {
+      "name": "pdf",
+      "type": "skill-md",
+      "description": "Use when reading, extracting, creating, or modifying PDF documents, parsing text and tables via p...",
+      "url": "core/skills/document/pdf/SKILL.md",
+      "digest": "sha256:e2a853fef2e453d9163b8501c057758b48444f5223c01ad817dde7615fa1128b"
+    },
+    {
+      "name": "performance-profiling",
+      "type": "skill-md",
+      "description": "Investigate latency, throughput, memory, and contention issues by baselining, profiling hot paths...",
+      "url": "core/skills/foundation/performance-profiling/SKILL.md",
+      "digest": "sha256:900154ae07bc10d89f6d4b6fccff486bfe0ae9b31d4892d32900ebfaf40681c7"
+    },
+    {
+      "name": "plan-technical-delivery",
+      "type": "skill-md",
+      "description": "Turn architecture decisions and requirements into a delivery-ready technical plan with slices, qu...",
+      "url": "core/skills/foundation/plan-technical-delivery/SKILL.md",
+      "digest": "sha256:3f3046b0135409a425bc6835f93470c096a0c91667223a69b8793fc95afc453a"
+    },
+    {
+      "name": "playwright-evidence-qa",
+      "type": "skill-md",
+      "description": "Use when diagnosing Playwright test failures using tripartite evidence triage (screenshot, DOM sn...",
+      "url": "core/skills/foundation/playwright-evidence-qa/SKILL.md",
+      "digest": "sha256:5791cae02f0953d3c391c88212703b2fe26d80a04b127450e4679c8ff6035687"
+    },
+    {
+      "name": "pptx",
+      "type": "skill-md",
+      "description": "Use when creating, editing, or inspecting PowerPoint (.pptx/.potx) presentations, authoring decks...",
+      "url": "core/skills/document/pptx/SKILL.md",
+      "digest": "sha256:dc15e79ca28ac569f317209b77d37ab306b954a6a00edf340b54d34c41a223e5"
+    },
+    {
+      "name": "prioritize-roadmap",
+      "type": "skill-md",
+      "description": "Score, sequence, and balance product roadmaps using calibrated quantitative RICE, WSJF, Kano clas...",
+      "url": "core/skills/product/prioritize-roadmap/SKILL.md",
+      "digest": "sha256:ceec37c1bd6b8324675ede95020a7e25582ea1560fb4c5ea932be2f8429fde1e"
+    },
+    {
+      "name": "profile-game-performance",
+      "type": "skill-md",
+      "description": "Profile and optimize CPU/GPU frame budgets, eliminate garbage collection stalls, batch draw calls...",
+      "url": "core/skills/gamedev/profile-game-performance/SKILL.md",
+      "digest": "sha256:82c2fe37d49f8dea0ec98fc7de2547dfc2debf8c49a65ebe08e2d2481410d4ab"
+    },
+    {
+      "name": "program-game-shaders",
+      "type": "skill-md",
+      "description": "Author high-performance vertex and fragment shaders across GLSL, HLSL, and Godot Shader Language...",
+      "url": "core/skills/gamedev/program-game-shaders/SKILL.md",
+      "digest": "sha256:5a2b8f5c31ff256dbdd6a9977abaefab45dbceb5201a8be7d663e12c0713279b"
+    },
+    {
+      "name": "prompt-injection-defense",
+      "type": "skill-md",
+      "description": "Use when safeguarding AI agents against direct and indirect prompt injection attacks, implementin...",
+      "url": "core/skills/security-data/prompt-injection-defense/SKILL.md",
+      "digest": "sha256:15afd0bd4ad8e30c9998b9df1203b1d5702917a5e8f2c5764330f0742d7dad79"
+    },
+    {
+      "name": "query-analytical-engine",
+      "type": "skill-md",
+      "description": "Execute in-process analytical SQL with chDB and DuckDB v1.5+, orchestrate multi-step stateful pip...",
+      "url": "core/skills/security-data/query-analytical-engine/SKILL.md",
+      "digest": "sha256:620230afd94f0aa685faf7eeb567b7ef7812c566ea806ac79fb0e7feb43a8e84"
+    },
+    {
+      "name": "release-notes",
+      "type": "skill-md",
+      "description": "Draft, structure, and review release notes for a software change so that users, operators, and do...",
+      "url": "core/skills/foundation/release-notes/SKILL.md",
+      "digest": "sha256:60243716ed90f3f9f34f68fe59cbbc3cf0128eeee7a524b500de2d928ed51765"
+    },
+    {
+      "name": "render-webgl-threejs",
+      "type": "skill-md",
+      "description": "Architect interactive WebGL2 and WebGPU 3D scenes using Three.js or React Three Fiber with compre...",
+      "url": "core/skills/gamedev/render-webgl-threejs/SKILL.md",
+      "digest": "sha256:f223977e486cbaf4e2c435844bb96744ab9e3a39822a30f587fa743c5a7fa81f"
+    },
+    {
+      "name": "repurpose-content",
+      "type": "skill-md",
+      "description": "Extract and format micro-content variants (social threads, newsletters, short video scripts) from...",
+      "url": "core/skills/content/repurpose-content/SKILL.md",
+      "digest": "sha256:d3b6bd8e0a71d03b9f0baa6d61c85afe8669fed952fdfb5c58f3128cf83f7386"
+    },
+    {
+      "name": "reverse-engineer-binary",
+      "type": "skill-md",
+      "description": "Use when deconstructing compiled binaries, Electron bundles, and firmware images in air-gapped sa...",
+      "url": "overlays/security-research/skills/reverse-engineer-binary/SKILL.md",
+      "digest": "sha256:7eedb2dfee31c97ca6964092f8f0fcabf14c6adf324635fc8701637089d8be2d"
+    },
+    {
+      "name": "review-code",
+      "type": "skill-md",
+      "description": "Review a diff since a fixed point along two separate axes — Standards (does the code follow this...",
+      "url": "core/skills/repo-ops/review-code/SKILL.md",
+      "digest": "sha256:87279ab758360e75dd233d8d46854a078d333d113216490680a96df48f9487a1"
+    },
+    {
+      "name": "review-service",
+      "type": "skill-md",
+      "description": "Review an entire service for release readiness. Use for full-service audits, production-readiness...",
+      "url": "core/skills/repo-ops/review-service/SKILL.md",
+      "digest": "sha256:fba8def74dc1959913f560553ef40352aff8f130190ae5a64a2e6c69529ffa49"
+    },
+    {
+      "name": "sandbox-sdk",
+      "type": "skill-md",
+      "description": "Builds secure, isolated code execution environments on Cloudflare Workers using the Cloudflare Sa...",
+      "url": "core/skills/platform/sandbox-sdk/SKILL.md",
+      "digest": "sha256:40e9f7219e0da76a8bd57e44ef6970c8bbc534621c1db99992821d89b0228abf"
+    },
+    {
+      "name": "scaffold-new-service",
+      "type": "skill-md",
+      "description": "Bootstrap a new service or bounded component from repo-local templates and conventions. Use when...",
+      "url": "core/skills/backend/scaffold-new-service/SKILL.md",
+      "digest": "sha256:81f2c333d8c0178aa7e211539eb3b83fb42ec93c6cb27df374160189b8b35fbf"
+    },
+    {
+      "name": "security-audit",
+      "type": "skill-md",
+      "description": "Review code, configuration, and service behavior for security risks by checking trust boundaries,...",
+      "url": "core/skills/security-data/security-audit/SKILL.md",
+      "digest": "sha256:095980103c708bbf687c3b788eaf271c1e75d4137a53b54df1206fbfc3c584dc"
+    },
+    {
+      "name": "setup-deployment",
+      "type": "skill-md",
+      "description": "Add or update deployment source-of-truth configuration for a service or component. Use when a cha...",
+      "url": "core/skills/platform/setup-deployment/SKILL.md",
+      "digest": "sha256:6f815dcd8ebb8699e710e2e2b85ee4dfdf7a0ac49f5c2a7a2766a2149f9f4baa"
+    },
+    {
+      "name": "setup-design-system",
+      "type": "skill-md",
+      "description": "Configure a scalable design system, styling framework, and component architecture for a frontend...",
+      "url": "core/skills/frontend/setup-design-system/SKILL.md",
+      "digest": "sha256:532803722c332d02dd73ec2d73424caef490936ed6b92551456adf39d1b521ab"
+    },
+    {
+      "name": "setup-gpu-finops",
+      "type": "skill-md",
+      "description": "Configure GPU telemetry, DCGM metrics, and Kubecost to attribute AI compute costs to specific nam...",
+      "url": "core/skills/platform/setup-gpu-finops/SKILL.md",
+      "digest": "sha256:59e7b1ed895bee19f9dbc0454e06f989fb1fa38fda3ee1c75ba08329e9714546"
+    },
+    {
+      "name": "setup-llm-gateway",
+      "type": "skill-md",
+      "description": "Configure a centralized LLM proxy gateway for token routing, budgeting, and failover. Use when de...",
+      "url": "core/skills/platform/setup-llm-gateway/SKILL.md",
+      "digest": "sha256:c9c03900cf01a1c40d470558472e2bc684067e89e2e47c15628a8b80c8530a54"
+    },
+    {
+      "name": "setup-tracking-system",
+      "type": "skill-md",
+      "description": "Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta CAPI v...",
+      "url": "core/skills/mmo/setup-tracking-system/SKILL.md",
+      "digest": "sha256:8357c6c5414f3d136e77990c17e5cff31d3d2521be01593815825c0533d5f94a"
+    },
+    {
+      "name": "setup-visual-regression",
+      "type": "skill-md",
+      "description": "Configure automated visual diffing for UI components and pages. Use when establishing pixel-level...",
+      "url": "core/skills/frontend/setup-visual-regression/SKILL.md",
+      "digest": "sha256:2ba3703826c701d912b3e627ad2e3ee4943a309e1f3b4773bc65965f60fbe35a"
+    },
+    {
+      "name": "skill-preflight-ast-check",
+      "type": "skill-md",
+      "description": "Use when performing zero-execution static AST security vetting of third-party agent skills, enfor...",
+      "url": "core/skills/security-data/skill-preflight-ast-check/SKILL.md",
+      "digest": "sha256:8cd55d8346a25aef80c64253f9b0364425eea5244ccd421bb796144b0064da51"
+    },
+    {
+      "name": "supply-chain-security",
+      "type": "skill-md",
+      "description": "Implement software supply chain security by generating SBOMs (CycloneDX/SPDX), enforcing SLSA bui...",
+      "url": "core/skills/platform/supply-chain-security/SKILL.md",
+      "digest": "sha256:fcc7eb669691309c2c132fbd4f4ce572380d8f8491f3d5aaf06db4b325e020ba"
+    },
+    {
+      "name": "system-design",
+      "type": "skill-md",
+      "description": "Design, specify, and document complex system architectures covering compute, network, storage, mi...",
+      "url": "core/skills/platform/system-design/SKILL.md",
+      "digest": "sha256:4228d0eaa6e1dc8ae85633483baf87343fcbd5cb6e8c7935803648abf7c0ca7b"
+    },
+    {
+      "name": "systematic-debugging",
+      "type": "skill-md",
+      "description": "Apply 4-phase systematic root cause analysis (Observe, Hypothesize, Test, Fix) and verification-b...",
+      "url": "core/skills/foundation/systematic-debugging/SKILL.md",
+      "digest": "sha256:38eabfab5bfec4175d3b7ae9cec0197ac234e79fa26a50aa3295ba145db7bd83"
+    },
+    {
+      "name": "trace-requirements-impact",
+      "type": "skill-md",
+      "description": "Build Requirements Traceability Matrices (RTM), run BFS change-request impact analysis across req...",
+      "url": "core/skills/business/trace-requirements-impact/SKILL.md",
+      "digest": "sha256:bec294f9703098eecf507833d7e8c209f2884ac36ca7785d16742ccfc57c0bc6"
+    },
+    {
+      "name": "troubleshoot-service",
+      "type": "skill-md",
+      "description": "Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the faili...",
+      "url": "core/skills/repo-ops/troubleshoot-service/SKILL.md",
+      "digest": "sha256:391ebc7f400f31579b12ecf97197eb9133074cd09ab3d5118f0ed1a3363aef34"
+    },
+    {
+      "name": "tune-game-feel",
+      "type": "skill-md",
+      "description": "Tune responsiveness, input buffering, screen shake, hit-stop, and audiovisual juice to maximize g...",
+      "url": "core/skills/gamedev/tune-game-feel/SKILL.md",
+      "digest": "sha256:7e944ad5d36b0c6bf1a1c442e773fdd58a26442ccf6a3727b375457774ebd859"
+    },
+    {
+      "name": "turnstile-spin",
+      "type": "skill-md",
+      "description": "Implements end-to-end Cloudflare Turnstile CAPTCHA protection — widget creation, managed siteveri...",
+      "url": "core/skills/platform/turnstile-spin/SKILL.md",
+      "digest": "sha256:44c7794a70942a087d53baf1e9689d9ae4708ef10ae3dfcbdb1b73f5305f3fdb"
+    },
+    {
+      "name": "web-perf",
+      "type": "skill-md",
+      "description": "Analyzes web page performance using Chrome DevTools MCP — measuring Core Web Vitals (LCP, INP, CL...",
+      "url": "core/skills/platform/web-perf/SKILL.md",
+      "digest": "sha256:d920342d0f5618528dd8ab7e47c1a2339ba69cb9e4db2616a35296578bad82ba"
+    },
+    {
+      "name": "web-quality-audit",
+      "type": "skill-md",
+      "description": "Use when conducting Core Web Vitals audits, profiling Long Animation Frames and interaction respo...",
+      "url": "core/skills/frontend/web-quality-audit/SKILL.md",
+      "digest": "sha256:d1b4db9b8ea4ee87a5337c3c8cbf17b50b470ccfc9b61ec69a1c58f572489d18"
+    },
+    {
+      "name": "webapp-server-runner",
+      "type": "skill-md",
+      "description": "Use when executing local web application test suites, managing multi-server background lifecycles...",
+      "url": "core/skills/foundation/webapp-server-runner/SKILL.md",
+      "digest": "sha256:7c7952085c6d9f063f725d9ab87ea940a8e7c3ce5b8aee8295d8c07e1c5e65ef"
+    },
+    {
+      "name": "workers-best-practices",
+      "type": "skill-md",
+      "description": "Reviews and authors Cloudflare Workers code against production best practices — covering async pa...",
+      "url": "core/skills/platform/workers-best-practices/SKILL.md",
+      "digest": "sha256:99df5c9dc903e70f873c772aac8002be8e9460d7bdf7952ad2383431a4eb4171"
+    },
+    {
+      "name": "wrangler",
+      "type": "skill-md",
+      "description": "Deploys, develops, and manages Cloudflare Workers and their bindings — KV, R2, D1, Vectorize, Hyp...",
+      "url": "core/skills/platform/wrangler/SKILL.md",
+      "digest": "sha256:994d137cc0065931bf27750c0b16d096da7f01b4e347caae5cd580102fa822e1"
+    },
+    {
+      "name": "write-article",
+      "type": "skill-md",
+      "description": "Plan, research, outline, and draft long-form articles and blog posts with explicit evidence disci...",
+      "url": "core/skills/content/write-article/SKILL.md",
+      "digest": "sha256:2705f65b1e75afb8ee434b80a34da381d34d822545d86cfc222b425a980f47ef"
+    },
+    {
+      "name": "write-copy",
+      "type": "skill-md",
+      "description": "Craft high-conversion direct-response marketing copy, landing pages, sales funnels, email sequenc...",
+      "url": "core/skills/content/write-copy/SKILL.md",
+      "digest": "sha256:62ba06a02f3d7e4be7fae9a7356000e55b61bf64cc8723d2ab2fe934aeaa3eb3"
+    },
+    {
+      "name": "write-documentation",
+      "type": "skill-md",
+      "description": "Draft or update technical documentation by following the repo's existing doc structure, audience...",
+      "url": "core/skills/documentation/write-documentation/SKILL.md",
+      "digest": "sha256:b6eacc4d21e110c0c613679b09167d1d871c5bbcd250ca59c640c538a4a7b329"
+    },
+    {
+      "name": "write-hugo-twin-content",
+      "type": "skill-md",
+      "description": "Draft or update Hugo Markdown for the authority blog or the learn notes site. Use when creating o...",
+      "url": "overlays/hugo-authority-content/skills/write-hugo-twin-content/SKILL.md",
+      "digest": "sha256:91502d44075814fe7e9b247963d47890061cb2686d728ed35cc5781005399ba2"
+    },
+    {
+      "name": "write-hvac-authority-content",
+      "type": "skill-md",
+      "description": "Draft, optimize, and update technical HVAC Astro Content Collection Markdown/MDX for HVAC Authori...",
+      "url": "overlays/hvac-authority-content/skills/write-hvac-authority-content/SKILL.md",
+      "digest": "sha256:b2ab2339c4820d2b9bdb78c7bec6ffff1dfc9ee9e22dee6197d7d00dccde485d"
+    },
+    {
+      "name": "write-product-brief",
+      "type": "skill-md",
+      "description": "Write or refine a product brief that makes user value, business outcome, preserved behavior, affe...",
+      "url": "core/skills/foundation/write-product-brief/SKILL.md",
+      "digest": "sha256:0d7ef5b10afada8801607a7225b32529b6d72e44dcbb8bae97b614ea82d266c2"
+    },
+    {
+      "name": "write-real-estate-astro-data",
+      "type": "skill-md",
+      "description": "Draft or update Astro Content Collection Markdown/MDX for the Real Estate and HVAC portals. Use w...",
+      "url": "overlays/real-estate-content/skills/write-real-estate-astro-data/SKILL.md",
+      "digest": "sha256:f2d6545636e8fd2465ad8f07ecfb1aea97a8aa8fa9434218f21bf987f4c06b1d"
+    },
+    {
+      "name": "write-tech-radar",
+      "type": "skill-md",
+      "description": "Draft or update a technology radar entry by summarizing context, trade-offs, recommendation, and...",
+      "url": "core/skills/documentation/write-tech-radar/SKILL.md",
+      "digest": "sha256:d201794411d705052e5e14a101c3526f436cb05fb577878f6ab3c1ed98fb2b69"
+    },
+    {
+      "name": "write-tests",
+      "type": "skill-md",
+      "description": "Add or update tests by following repo-local test conventions, choosing the right test scope, isol...",
+      "url": "core/skills/foundation/write-tests/SKILL.md",
+      "digest": "sha256:e611ffe07f0868682cb8e5dc485697f95546133b38640caaddd872334ce509d6"
+    },
+    {
+      "name": "write-use-cases",
+      "type": "skill-md",
+      "description": "Scope, structure, and document production-grade Use Cases using Karl Wiegers 13-field template, A...",
+      "url": "core/skills/business/write-use-cases/SKILL.md",
+      "digest": "sha256:c9dcbbdc28fdef08b3e7f4ce69a6f2fd94840fe73a52792da6b2e059732e6cb4"
+    },
+    {
+      "name": "xlsx",
+      "type": "skill-md",
+      "description": "Use when creating, analyzing, or modifying Microsoft Excel (.xlsx/.xlsm) workbooks, enforcing the...",
+      "url": "core/skills/document/xlsx/SKILL.md",
+      "digest": "sha256:6ddabf4dc5e76780b558837b50b39fde32a3e8a30c85e314d0be08157e553dc7"
+    }
+  ]
+}

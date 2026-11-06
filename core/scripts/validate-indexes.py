@@ -20,6 +20,7 @@ OVERLAYS_INDEX = ROOT / "overlays" / "README.md"
 PACKS_INDEX = ROOT / "packs" / "README.md"
 ROOT_README = ROOT / "README.md"
 GENERATOR = CORE_ROOT / "scripts" / "generate-index.py"
+TIER1_GENERATOR = CORE_ROOT / "scripts" / "generate-tier1-index.py"
 
 
 def core_skills_by_category() -> dict[str, list[str]]:
@@ -172,6 +173,22 @@ def check_generated_index() -> list[str]:
     return []
 
 
+def check_tier1_index() -> list[str]:
+    """adapters/antigravity/INDEX_TIER1.json is generated; verify it is not stale."""
+    if not TIER1_GENERATOR.is_file():
+        return ["missing core/scripts/generate-tier1-index.py"]
+    result = subprocess.run(
+        [sys.executable, str(TIER1_GENERATOR), "--check"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        output = (result.stdout + result.stderr).strip()
+        return [f"INDEX_TIER1.json out of date: {output}"]
+    return []
+
+
 def main() -> int:
     errors: list[str] = []
     errors += check_skills_index()
@@ -179,6 +196,7 @@ def main() -> int:
     errors += check_overlays_and_packs()
     errors += check_role_and_workflow_indexes()
     errors += check_generated_index()
+    errors += check_tier1_index()
 
     if errors:
         print("Index validation failed:")
