@@ -38,6 +38,16 @@ try:
 except ImportError:
     Draft202012Validator = None
 
+# Ensure robust UTF-8 encoding across Windows runners and non-UTF8 consoles
+if sys.platform == "win32":
+    try:
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        if hasattr(sys.stderr, "reconfigure"):
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 OBSERVABILITY_DIR = REPO_ROOT / "core" / "observability"
@@ -395,6 +405,21 @@ def print_spans_tree(spans: list[dict[str, Any]], summary: dict[str, Any] | None
     print(f" AGENT TRACE RUNNER: {trace_id}")
     print("=" * 80)
 
+    def safe_print(text: str) -> None:
+        try:
+            print(text)
+        except UnicodeEncodeError:
+            ascii_text = (
+                text.replace("✓", "[OK]")
+                .replace("✗", "[FAIL]")
+                .replace("└── ", "`-- ")
+                .replace("├── ", "|-- ")
+                .replace("│   ", "|   ")
+                .replace("│", "|")
+                .replace("—", "-")
+            )
+            print(ascii_text.encode("ascii", errors="replace").decode("ascii"))
+
     def render_node(node: dict[str, Any], prefix: str = "", is_last: bool = True) -> None:
         attrs = node.get("attributes", {})
         status_icon = "✓" if node.get("status") == "ok" else "✗"
@@ -411,7 +436,7 @@ def print_spans_tree(spans: list[dict[str, Any]], summary: dict[str, Any] | None
             f"{prefix}{connector}[{status_icon}] {op} ({role}) {detail} "
             f"— {dur}ms | {tokens} tok | ${cost:.5f}"
         )
-        print(line)
+        safe_print(line)
 
         new_prefix = prefix + ("    " if is_last else "│   ")
         children = children_map.get(node["span_id"], [])

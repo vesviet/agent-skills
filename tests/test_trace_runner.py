@@ -169,14 +169,22 @@ class TestTraceRunnerSpanLifecycle:
 class TestTraceRunnerCLI:
     """Validate CLI execution and commands."""
 
-    def test_cli_demo_and_validate(self):
-        result = subprocess.run(
-            [sys.executable, str(TRACE_RUNNER_PATH), "demo"],
+    def _run_cli(self, args: list[str]) -> subprocess.CompletedProcess:
+        env = os.environ.copy()
+        env["PYTHONIOENCODING"] = "utf-8"
+        return subprocess.run(
+            [sys.executable, str(TRACE_RUNNER_PATH)] + args,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
+            env=env,
             cwd=str(REPO_ROOT),
         )
-        assert result.returncode == 0
+
+    def test_cli_demo_and_validate(self):
+        result = self._run_cli(["demo"])
+        assert result.returncode == 0, f"Demo failed: {result.stderr}"
         assert "AGENT TRACE RUNNER" in result.stdout
         assert "SUMMARY: 9 Spans" in result.stdout
 
@@ -190,59 +198,38 @@ class TestTraceRunnerCLI:
         assert trace_id is not None, "Failed to extract trace_id from demo"
 
         # Validate saved trace
-        val_result = subprocess.run(
-            [sys.executable, str(TRACE_RUNNER_PATH), "validate", trace_id],
-            capture_output=True,
-            text=True,
-            cwd=str(REPO_ROOT),
-        )
-        assert val_result.returncode == 0
+        val_result = self._run_cli(["validate", trace_id])
+        assert val_result.returncode == 0, f"Validate failed: {val_result.stderr}"
         assert "All 9 spans conform strictly to agent-trace-span schema Draft 2020-12" in val_result.stdout
 
     def test_cli_stats(self):
-        result = subprocess.run(
-            [sys.executable, str(TRACE_RUNNER_PATH), "stats"],
-            capture_output=True,
-            text=True,
-            cwd=str(REPO_ROOT),
-        )
-        assert result.returncode == 0
+        result = self._run_cli(["stats"])
+        assert result.returncode == 0, f"Stats failed: {result.stderr}"
         assert "OBSERVABILITY & FINOPS DASHBOARD" in result.stdout
         assert "FINOPS ATTRIBUTION BY ROLE:" in result.stdout
         assert "MODEL DISTRIBUTION:" in result.stdout
 
     def test_cli_exec(self):
-        result = subprocess.run(
-            [
-                sys.executable,
-                str(TRACE_RUNNER_PATH),
-                "exec",
-                "--role",
-                "backend-developer",
-                "--tool",
-                "echo_test",
-                "--",
-                sys.executable,
-                "-c",
-                "print('hello trace runner')",
-            ],
-            capture_output=True,
-            text=True,
-            cwd=str(REPO_ROOT),
-        )
-        assert result.returncode == 0
+        result = self._run_cli([
+            "exec",
+            "--role",
+            "backend-developer",
+            "--tool",
+            "echo_test",
+            "--",
+            sys.executable,
+            "-c",
+            "print('hello trace runner')",
+        ])
+        assert result.returncode == 0, f"Exec failed: {result.stderr}"
         assert "hello trace runner" in result.stdout
         assert "AGENT TRACE RUNNER:" in result.stdout
         assert "SUMMARY: 2 Spans" in result.stdout
 
     def test_cli_export(self):
         # Run demo first to ensure we have a fresh trace
-        demo_res = subprocess.run(
-            [sys.executable, str(TRACE_RUNNER_PATH), "demo"],
-            capture_output=True,
-            text=True,
-            cwd=str(REPO_ROOT),
-        )
+        demo_res = self._run_cli(["demo"])
+        assert demo_res.returncode == 0, f"Demo failed: {demo_res.stderr}"
         lines = demo_res.stdout.splitlines()
         trace_id = None
         for line in lines:
@@ -252,12 +239,7 @@ class TestTraceRunnerCLI:
 
         assert trace_id is not None
 
-        exp_result = subprocess.run(
-            [sys.executable, str(TRACE_RUNNER_PATH), "export", trace_id, "--format", "otlp"],
-            capture_output=True,
-            text=True,
-            cwd=str(REPO_ROOT),
-        )
-        assert exp_result.returncode == 0
+        exp_result = self._run_cli(["export", trace_id, "--format", "otlp"])
+        assert exp_result.returncode == 0, f"Export failed: {exp_result.stderr}"
         parsed = json.loads(exp_result.stdout)
         assert "resourceSpans" in parsed
