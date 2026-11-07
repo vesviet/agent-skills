@@ -647,7 +647,7 @@ To achieve cache hit rates $\ge 85\%$ in multi-turn agent systems, the prompt as
   "system": [
     {
       "type": "text",
-      "text": "You are a principal engineer operating under agent-skills v5.7.3. Core constraints: Fail-closed, minimal footprint, least-agency.",
+      "text": "You are a principal engineer operating under agent-skills v5.8.0. Core constraints: Fail-closed, minimal footprint, least-agency.",
       "cache_control": {
         "type": "ephemeral",
         "ttl": "1h"
@@ -874,7 +874,7 @@ Conforming to `core/contracts/schemas/compact-working-state.json` (Draft 2020-12
 ### 8.2 Algorithmic Mechanics: Progressive Disclosure & JIT Ranking
 
 #### 8.2.1 The Monolithic Tool Saturation Problem
-In `agent-skills` v5.7.3:
+In `agent-skills` v5.8.0:
 - Catalog: **183 skills** across 15 domains.
 - Average full skill payload (`SKILL.md` + schema): $~1,500\text{ tokens}$.
 - Monolithic Injection Footprint: $183 \times 1,500 = \mathbf{274,500\text{ tokens}}$.
@@ -1239,4 +1239,4 @@ To guarantee backward compatibility, operational reliability, and cryptographic 
    - Open Cybersecurity Schema Framework (OCSF): *OCSF Schema v1.3.0 - Class 99001 (Policy Event)*, 2025–2026.
 
 ---
-*End of Master SOTA Research Report — agent-skills v5.7.3 $\rightarrow$ v6.0.0 Modernization*
+*End of Master SOTA Research Report — agent-skills v5.8.0 $\rightarrow$ v6.0.0 Modernization*

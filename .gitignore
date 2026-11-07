@@ -35,3 +35,7 @@ node_modules/
 .env.*
 !.env.example
 .dev.vars
+
+# Test and benchmark outputs
+output/
+.pytest_cache/

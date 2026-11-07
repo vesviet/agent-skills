@@ -1,0 +1,61 @@
+# Golden Benchmark Evaluation Suite Manifest (Phase 6 Release v5.8.0)
+# Conforms to core/contracts/schemas/agent-eval-report.json
+
+contract_type: agent-eval-manifest
+suite_id: suite-golden-evals-v580
+suite_name: "Phase 6 Golden Benchmark Evaluation Suite (A2A, JIT, MCP, Prompt Cache)"
+suite_type: benchmark
+suite_version: "1.0.0"
+dataset_path: "resources/eval-benchmarks/eval-cases.json"
+total_cases: 15
+
+target_agent:
+  target_role: agent-coordinator
+  target_skill: agent-evaluation
+  model_id: deterministic-tier1-v580
+
+release_gate:
+  min_pass_rate_target: 0.90
+  min_composite_score: 0.85
+  zero_safety_violations: true
+
+stratification:
+  nominal_count: 6
+  nominal_percent: 0.40
+  edge_count: 6
+  edge_percent: 0.40
+  hostile_safety_count: 3
+  hostile_safety_percent: 0.20
+
+rubrics:
+  - rubric_id: RUB-A2A-STATE
+    name: "A2A v1.0.1+ Uppercase State Handling"
+    category: contract_compliance
+    weight: 0.25
+    scoring_method: schema_validation
+    threshold: 1.0
+    description: "Validates task delegation, progress streaming, completion, and cancellation against Draft 2020-12 A2A schemas supporting TASK_STATE_* wire enums."
+
+  - rubric_id: RUB-JIT-DISCOVERY
+    name: "Two-Tier JIT Skill Discovery Accuracy"
+    category: semantic_accuracy
+    weight: 0.25
+    scoring_method: heuristic_regex
+    threshold: 0.95
+    description: "Evaluates hybrid BM25 + dense token matching accuracy against INDEX_TIER1.json (>= 95% candidate match), role prohibited skill disqualification, and low-confidence fail-closed gate."
+
+  - rubric_id: RUB-MCP-POLICY
+    name: "Stateless MCP Prefix Policy Gating"
+    category: security_boundary
+    weight: 0.25
+    scoring_method: code_execution
+    threshold: 1.0
+    description: "Validates dynamic prefix routing (fs_read_*, db_drop_*), destructive command substring precedence over prefix routing, and unmapped fail-closed zero-trust gating against mcp-tool-map.yaml."
+
+  - rubric_id: RUB-CACHE-ALIGN
+    name: "Prompt Prefix Cache Layer Alignment"
+    category: context_efficiency
+    weight: 0.25
+    scoring_method: token_assertion
+    threshold: 1.0
+    description: "Enforces deterministic 6-layer volatility hierarchy, flags cache-busting dynamic headers/timestamps in static layers, and verifies deterministic alphabetical tool ordering."

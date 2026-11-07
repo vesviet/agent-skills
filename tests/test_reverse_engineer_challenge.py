@@ -520,7 +520,7 @@ class TestReverseEngineerRegistryAndAdapters(unittest.TestCase):
         self.assertEqual(len(errors), 0, f"agent-card.json validation errors: {[e.message for e in errors]}")
 
         self.assertEqual(card.get("protocol_version"), "1.0")
-        self.assertIn(card.get("version"), ["5.7.2", "5.7.3"])
+        self.assertIn(card.get("version"), ["5.7.2", "5.7.3", "5.8.0"])
         skill_ids = [s["id"] for s in card.get("skills", [])]
         self.assertIn("reverse-engineer-binary", skill_ids)
         self.assertIn("security-audit.json", card.get("defaultOutputSchemas", []))

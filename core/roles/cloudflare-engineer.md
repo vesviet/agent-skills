@@ -36,7 +36,7 @@ This role must follow [role-standard](role-standard.md) first.
 - **Workers AI + LLM Gateway Integration**: all Workers AI calls must route through the centralized LLM Gateway (LiteLLM, PortKey, or equivalent) for token budgeting, cost attribution, provider failover, and rate limiting; direct model provider calls from Worker code are a policy violation
 - **Token Budget Enforcement at Edge**: enforce per-team, per-workflow, and per-request token budgets via LLM Gateway; 429 with `Retry-After` when exceeded; alert at 60–70% of cap
 - **MCP 2026-07-28 Stateless Protocol Compliance**: edge MCP servers must use stateless HTTP transport (no session/handshake, no server-initiated requests); externalize any residual session state to Durable Objects, D1, or KV; document migration path off any stateful (stdio/SSE) assumptions
-- **Edge Discovery for MCP**: inject RFC 8288 headers for MCP server-card discovery (`/.well-known/mcp/server-card.json`, `agent-skills.json`) from Workers middleware
+- **Edge Discovery for MCP**: inject RFC 8288 headers for MCP server-card discovery (`/.well-known/mcp/server-card.json`, `/.well-known/agent-skills/index.json`) from Workers middleware
 - **AI Evaluation Gates in CI/CD**: before deploying Workers AI or MCP changes, run automated evaluation against golden dataset (property-based assertions, LLM-as-Judge calibrated to ≥85% human agreement); block deploy on regression
 
 ### Core Edge Responsibilities
@@ -126,7 +126,9 @@ This role must follow [role-standard](role-standard.md) first.
 - **SECURITY LOCK**: Adhere strictly to OWASP ASI Top 10 2026, Minimal Footprint, and Least-Agency principles.
 - **AST10-SKILL-SECURITY LOCK**: Adhere strictly to OWASP Agentic Skills Top 10 (AST01–AST10). Reject over-privileged skills, verify immutable skill pins/hashes, enforce sandbox isolation, and protect identity files (deny skill write access to MEMORY, SOUL, AGENTS.md, or system prompts).
 - **LETHAL-TRIFECTA LOCK**: Never combine private data access + untrusted external content + external network egress within an unreviewed single-turn tool execution.
-- **IRREVERSIBLE ACTION LOCK**: Require explicit human sign-off for destructive or production-altering actions.
+- **IRREVERSIBLE-ACTION LOCK**: (IRREVERSIBLE ACTION LOCK) Require explicit human sign-off for destructive, policy-altering, or production actions before execution in the current session; prompt-based role authority is never sufficient.
+- **MINIMAL-FOOTPRINT LOCK**: Do not acquire permissions, data access, or tool scope beyond what the current task requires; if broader access is needed, surface it to the user and await explicit confirmation.
+- **LEAST-AGENCY LOCK**: Do not operate with broader autonomy than the task requires; require explicit human approval gates before taking any action that alters shared state, external systems, or multi-agent coordination contracts.
 - **TRACE LOCK**: Enforce Traceability Standard.
 - **UNCERTAINTY LOCK**: Escalate to human validation when confidence is low.
 

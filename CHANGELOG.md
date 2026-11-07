@@ -2,6 +2,33 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [5.8.0] - 2026-11-07
+
+Phase 6 release: Automated Testing, Golden Evals & Release Cut — expansion of master CI validators to 21 automated checks, addition of 15 A2A/JIT/MCP/Prompt-Cache golden benchmark evals, 100% SHA-256 twin parity verification across 38 architectural knowledge cards, and full registry version synchronization.
+
+### Master CI Validation Expansion (21 Validators)
+- Integrated `validate-discovery-manifests.py` into `validate-all.py` as validator #21.
+- Validates `adapters/antigravity/INDEX_TIER1.json` schema, SHA-256 checksums, and token budgets against `agent-skills-discovery.json`.
+- 100% passing rate across all 21 core pack validators.
+
+### Golden Benchmark Evaluation Evals
+- Added 15 new golden evaluation test cases in `core/skills/ai-agent/agent-evaluation/`.
+- Comprehensive test coverage for:
+  - A2A v1.0.1+ uppercase state handling (`STATE_SUBMITTED`, `STATE_WORKING`, `STATE_PAUSED`, `STATE_COMPLETED`, `STATE_FAILED`, `STATE_CANCELLED`).
+  - Two-Tier JIT skill discovery accuracy (>= 95% candidate match against `INDEX_TIER1.json`).
+  - Stateless MCP prefix policy gating (`mcp__<server>__<tool>` namespace isolation).
+  - Prompt prefix cache layer alignment for deterministic KV caching.
+
+### SOTA Architectural Knowledge Base Parity
+- Verified 100% SHA-256 bitwise twin parity between `vesviet/reports` and `learn/reports` for all 38 knowledge cards across 6 domains (`ai-slm-agentic`, `banking-fintech`, `cloud-infrastructure`, `distributed-systems`, `ecommerce`, `ride-hailing-geospatial`).
+- Root `reports/` directory cleanliness enforced with <= 5 authoritative platform files and zero loose scratch files.
+- Clean pass for `python learn/tests/verify_knowledge_base_sota.py` (6/6 checks).
+
+### Release Cut & Version Synchronization
+- Atomic version bump to `5.8.0` across `VERSION`, `package.json`, `INDEX.md`, `README.md`, `pyproject.toml`, and all pinned config files (`adapters/antigravity/a2a-config.template.yaml`, `adapters/claude/CLAUDE_ADAPTER.md`, `AGENTS.md`, `USER_GUIDE_v2.md`, `CLAUDE.md`, `.cursorrules`, `core/codex/.a2a-config.json`).
+- Regenerated machine registries via `python core/scripts/generate-a2a-registry.py` updating 39 agent cards, `agent-registry.json`, `agent-card.json`, `ai-catalog.json`, and `capability-role-map.generated.yaml`.
+- Verified zero drift with `python core/scripts/validate-version-sync.py` (exit code 0).
+
 ## [5.7.3] - 2026-11-05
 
 Standardization of all 39 role definitions to 2026-2027 SOTA specification, explicit Prohibited Skills enforcement, guardrail lock density calibration, and master audit deep research report.

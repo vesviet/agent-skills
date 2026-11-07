@@ -40,9 +40,12 @@ python3 core/scripts/validate-all.py --fail-fast
 - `validate-indexes.py` — every skill, schema, role, workflow, overlay, pack is listed in its index
 - `validate-policy-consistency.py` — `action-boundaries.yaml` vs role files and MCP tool map
 - `validate-skill-ownership.py` — every skill has a Primary owner; workflow steps resolve to tagged-role toolboxes
+- `validate-skill-sections.py` — required markdown sections across all skill definitions
 - `validate-contract-coverage.py` — contract-to-skill emission coverage (advisory warnings)
 - `validate-golden-evals.py` — golden prompt test cases, manifests, and rubric definitions
 - `validate-thirdparty-skills.py` — zero-execution static AST security vetting and third-party skill provenance (OWASP AST01-AST10)
+- `validate-skill-security.py` — zero-execution AST Lethal Trifecta scanner (OWASP AST01-AST10)
+- `validate-discovery-manifests.py` — agentskills.io discovery manifest schema and asset integrity validator (`adapters/antigravity/INDEX_TIER1.json`)
 
 ### Which validator catches which drift
 
@@ -55,6 +58,8 @@ python3 core/scripts/validate-all.py --fail-fast
 | Workflow step names a skill nobody on that step can run | `validate-skill-ownership.py` |
 | New workflow added but not listed in README or root index | `validate-indexes.py` |
 | Agent coordinator missing A2A delegation section | `validate-2026-compliance.py` |
+| Lethal trifecta pattern or shell escape in skill definition | `validate-skill-security.py` |
+| Discovery manifest stale, corrupted, or digest mismatch | `validate-discovery-manifests.py` |
 
 ## Generator Scripts
 

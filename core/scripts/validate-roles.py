@@ -63,6 +63,16 @@ ROLE_SLUG_ALIASES = {
     "site-reliability-engineer": {"sre"},
 }
 
+REQUIRED_UNIVERSAL_LOCKS = (
+    ("BOUNDARY", re.compile(r"-\s+\*\*BOUNDARY(?:\s+LOCK|-LOCK)?\*\*", re.I)),
+    ("SECURITY", re.compile(r"-\s+\*\*(?:AGENTIC-)?SECURITY(?:\s+LOCK|-LOCK)?\*\*", re.I)),
+    ("AST10-SKILL-SECURITY", re.compile(r"-\s+\*\*AST10-SKILL-SECURITY(?:\s+LOCK|-LOCK)?\*\*", re.I)),
+    ("LETHAL-TRIFECTA", re.compile(r"-\s+\*\*LETHAL[- ]TRIFECTA(?:\s+LOCK|-LOCK)?\*\*", re.I)),
+    ("IRREVERSIBLE-ACTION", re.compile(r"-\s+\*\*IRREVERSIBLE[- ]ACTION(?:\s+LOCK|-LOCK)?\*\*", re.I)),
+    ("MINIMAL-FOOTPRINT", re.compile(r"-\s+\*\*MINIMAL[- ]FOOTPRINT(?:\s+LOCK|-LOCK)?\*\*", re.I)),
+    ("LEAST-AGENCY", re.compile(r"-\s+\*\*LEAST[- ]AGENCY(?:\s+LOCK|-LOCK)?\*\*", re.I)),
+)
+
 
 def equivalent_role_slug(left: str, right: str) -> bool:
     return left == right or right in ROLE_SLUG_ALIASES.get(left, set())
@@ -117,6 +127,19 @@ def validate_role(path: Path, known_skills: set[str]) -> list[str]:
         content = section_text(body, section, level_aware=True)
         if content and bullet_count(content) < minimum:
             errors.append(f"{section} should contain at least {minimum} bullet items")
+
+    guardrails_text = section_text(body, "## Guardrails", level_aware=True)
+    if "## Guardrails" in body and guardrails_text:
+        locks = re.findall(r"(?m)^-\s+\*\*([A-Z0-9_\-\s\(\)]+LOCK)\*\*:", guardrails_text)
+        lock_count = len(locks)
+        if lock_count < 12:
+            errors.append(f"Guardrails lock count {lock_count} < 12 (minimum density violation)")
+        elif lock_count > 24:
+            errors.append(f"Guardrails lock count {lock_count} > 24 (maximum density violation)")
+
+        for lock_name, pattern in REQUIRED_UNIVERSAL_LOCKS:
+            if not pattern.search(guardrails_text):
+                errors.append(f"missing universal guardrail lock: {lock_name} LOCK")
 
     output_template = section_text(body, "## Output Template", level_aware=True)
     if "## Output Template" in body and "```markdown" not in output_template:
