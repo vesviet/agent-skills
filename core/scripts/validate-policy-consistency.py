@@ -26,7 +26,9 @@ NEVER_ALLOWED = {
     "delete_branch_main",
     "drop_database",
     "drop_storage_volume",
+    "export_data_egress",
     "force_push",
+    "load_jit_skill",
     "modify_dns_production",
     "modify_secrets",
     "purge_cache_zone",
@@ -34,7 +36,9 @@ NEVER_ALLOWED = {
     "rollback_deployment",
     "rotate_agent_credentials",
     "run_deployment",
+    "git_push",
     "run_migration",
+    "run_migrations",
     "terminate_instance",
 }
 
@@ -115,6 +119,10 @@ def main() -> int:
     for entry in tool_map.get("destructive_patterns") or []:
         if isinstance(entry, dict) and entry.get("action"):
             mapped.add(entry["action"])
+    for entry in (tool_map.get("mcp_tool_routing") or {}).get("prefix_patterns") or []:
+        if isinstance(entry, dict) and entry.get("action"):
+            mapped.add(entry["action"])
+
     for action in sorted(mapped - known):
         errors.append(
             f"{TOOL_MAP_PATH.relative_to(ROOT)}: maps to action '{action}'"

@@ -139,20 +139,64 @@ def map_tool_to_action(tool_name: str, command: str, mcp_map: dict) -> str:
     Order:
       1. destructive_patterns (command substring match — highest priority)
       2. tool_actions lookup by tool_name
-      3. Keyword fallback
+      3. Dynamic regex patterns in mcp_tool_routing.prefix_patterns
+      4. Generic remote MCP call fallback
+      5. Keyword fallback heuristics
+      6. Fail-closed default action (mcp_tool_routing.default_action or 'requires_approval')
     """
-    cmd_lower = (command or "").lower()
+    cmd_lower = (command or "").strip().lower()
+    tool_lower = (tool_name or "").strip().lower()
+
+    # 1. Check destructive patterns in command line (highest priority)
+    if any(p in cmd_lower for p in ("rm -rf", "rm -r", "rmdir", "del /f", "del /s")):
+        return "delete_file"
 
     for entry in mcp_map.get("destructive_patterns", []):
         pattern = entry.get("pattern", "").lower()
         if pattern and pattern in cmd_lower:
+            # If the pattern is coarse "git push", but the tool is an explicit git_push prefix tool
+            # and not a force push, defer to the prefix pattern action (git_push)
+            if pattern == "git push" and tool_lower.startswith("git_push_") and not any(
+                p in cmd_lower for p in ("--force", "-f", ":main", ":master")
+            ):
+                continue
             return entry.get("action", "run_build")
 
+    # 2. Direct tool_actions lookup
     tool_actions = mcp_map.get("tool_actions", {})
-    tool_lower = (tool_name or "").lower()
     if tool_lower in tool_actions:
         return tool_actions[tool_lower]
 
+    # Direct action verb check if tool name is already a policy action
+    known_actions = mcp_map.get("known_actions")
+    if known_actions and tool_lower in known_actions:
+        return tool_lower
+    if tool_lower in {
+        "verify_svid_token",
+        "execute_stateless_mcp",
+        "export_data_egress",
+        "load_jit_skill",
+        "spill_context_disk",
+        "emit_ocsf_audit",
+    }:
+        return tool_lower
+
+    # 3. Dynamic <domain>_<action> prefix resolution
+    routing = mcp_map.get("mcp_tool_routing", {})
+    for entry in routing.get("prefix_patterns", []):
+        regex = entry.get("pattern", "")
+        if regex:
+            try:
+                if re.search(regex, tool_lower):
+                    return entry.get("action", "requires_approval")
+            except re.error:
+                continue
+
+    # 4. Remote MCP generic call fallback
+    if tool_lower in ("mcp_call", "call_mcp_tool", "execute_stateless_mcp"):
+        return routing.get("default_action", "requires_approval")
+
+    # 5. Keyword heuristics
     if any(kw in tool_lower for kw in ("read", "grep", "search", "find", "fetch", "get")):
         return "read_file"
     if any(kw in tool_lower for kw in ("delete", "remove", "rm")):
@@ -162,7 +206,18 @@ def map_tool_to_action(tool_name: str, command: str, mcp_map: dict) -> str:
     if any(kw in tool_lower for kw in ("write", "edit", "update", "save")):
         return "write_file"
 
-    return "write_file"
+    # 6. Fail-closed default action
+    return routing.get("default_action", "requires_approval")
+
+
+READ_ONLY_ACTIONS = {
+    "read_file",
+    "search_code",
+    "read_database",
+    "emit_ocsf_audit",
+    "query_db",
+    "verify_svid_token",
+}
 
 
 def check_action(role: str, action: str, boundaries: dict, role_level: str = "supervised") -> tuple:
@@ -171,6 +226,7 @@ def check_action(role: str, action: str, boundaries: dict, role_level: str = "su
 
     AGENT_ACTIVE_ROLE_LEVEL semantics (2026):
         read_only      - any verdict other than 'allowed' is downgraded to 'denied'.
+                         Also, any write/mutating action is downgraded to 'denied'.
                          This is for sessions that may only observe, not act.
         supervised     - no change. Requires_approval stays requires_approval.
         unsupervised   - no change. Same as supervised (kept for explicitness).
@@ -185,8 +241,9 @@ def check_action(role: str, action: str, boundaries: dict, role_level: str = "su
     else:
         decision = "requires_approval"
 
-    if role_level == "read_only" and decision != "allowed":
-        return ("denied", "downgraded_to_denied")
+    if role_level == "read_only":
+        if decision != "allowed" or action not in READ_ONLY_ACTIONS:
+            return ("denied", "downgraded_to_denied")
     return (decision, "none")
 
 
@@ -236,47 +293,94 @@ def emit_sarif(result: dict, decision: str) -> None:
     print(json.dumps(sarif))
 
 
-def emit_audit_event(result: dict, decision: str, level_modifier: str, audit_path: Path) -> None:
-    """Write a single OCSF 99001 audit event to the configured path.
+def resolve_rule_id(role: str, action: str, level_modifier: str) -> str:
+    """Determine the policy rule_id for OCSF metadata."""
+    env_rule = os.environ.get("AGENT_POLICY_RULE_ID")
+    if env_rule:
+        return env_rule
+    if level_modifier == "downgraded_to_denied":
+        return "policy.level.read_only_downgrade"
+    if action == "bypass_ai_guardrail":
+        return "compliance.safety.always_denied"
+    return f"policy.action_boundary.{action}"
 
-    Best-effort: failures are reported to stderr but do not change the exit code,
-    because the policy decision is the primary signal and the audit is a side effect.
+
+def emit_audit_event(result: dict, decision: str, level_modifier: str, audit_path: Path) -> None:
+    """Write a single OCSF Class UID 99001 audit event to the configured path.
+
+    Best-effort: failures are reported to stderr with 'WARN:' but do not change
+    the exit code, preserving policy decision as the primary signal.
     """
     try:
         audit_path.parent.mkdir(parents=True, exist_ok=True)
         import hashlib
+        import time
+
+        role = result.get("role", "agent-coordinator")
+        actor_name = os.environ.get("AGENT_ACTOR_NAME") or role
+        actor_uid = (
+            os.environ.get("AGENT_SVID_UID")
+            or os.environ.get("AGENT_SVID_TOKEN_ID")
+            or os.environ.get("AGENT_ACTOR_UID")
+            or f"spiffe://agent-skills/role/{role}"
+        )
+        mapped_action = result.get("mapped_action", "")
         cmd_hash = hashlib.sha256((result.get("command") or "").encode("utf-8")).hexdigest()[:16]
+        severity_id = 1 if decision == "allowed" else 3 if decision == "requires_approval" else 4
+        status_code = (
+            "ALLOWED" if decision == "allowed"
+            else "HITL_TRIGGERED" if decision == "requires_approval"
+            else "POLICY_DENIED"
+        )
+        rule_id = resolve_rule_id(role, mapped_action, level_modifier)
+
         event = {
-            "ocsf_class": "policy_decision",
             "class_uid": 99001,
-            "activity": "evaluate",
-            "type_uid": 99001,
-            "severity": "error" if decision == "denied" else "warning" if decision == "requires_approval" else "info",
+            "category_uid": 9,
+            "activity_id": 1,
+            "time": int(time.time()),
+            "severity_id": severity_id,
             "actor": {
-                "type": "agent",
-                "role": result.get("role", ""),
+                "user": {
+                    "name": actor_name,
+                    "type": "Non-Human Identity",
+                    "uid": actor_uid,
+                }
+            },
+            "action": {
+                "name": mapped_action,
+                "command_sha256_16": cmd_hash,
+            },
+            "status": decision,
+            "status_code": status_code,
+            "message": result.get("message", ""),
+            "metadata": {
+                "policy_version": "2.0.0",
+                "rule_id": rule_id,
             },
             "resource": {
                 "type": "tool",
                 "name": result.get("tool", ""),
             },
-            "action": {
-                "name": result.get("mapped_action", ""),
-                "command_sha256_16": cmd_hash,
-            },
             "decision": decision,
             "level_modifier": level_modifier,
-            "message": result.get("message", ""),
         }
+
         if result.get("trace_id"):
             event["trace"] = {"id": result["trace_id"]}
+
         with open(audit_path, "a", encoding="utf-8") as f:
             f.write(json.dumps(event) + "\n")
-    except OSError as exc:
+    except Exception as exc:
         print(f"WARN: failed to write audit event: {exc}", file=sys.stderr)
 
 
 def main() -> int:
+    default_audit_path = pack_root() / ".agent" / "audit" / "policy-events.jsonl"
+    env_audit_path = os.environ.get("AGENT_AUDIT_LOG_PATH")
+    if env_audit_path:
+        default_audit_path = Path(env_audit_path)
+
     parser = argparse.ArgumentParser(
         description="Check agent tool action against action-boundaries.yaml."
     )
@@ -294,16 +398,25 @@ def main() -> int:
     parser.add_argument(
         "--audit-path",
         type=Path,
-        default=Path("policy_decision.jsonl"),
-        help="Path for --emit-audit (default: policy_decision.jsonl in the working directory).",
+        default=default_audit_path,
+        help="Path for --emit-audit (default: .agent/audit/policy-events.jsonl in pack root).",
     )
     args = parser.parse_args()
 
-    role = os.environ.get("AGENT_ACTIVE_ROLE", "agent-coordinator")
+    raw_role = os.environ.get("AGENT_ACTIVE_ROLE")
+    role = raw_role.strip() if raw_role else "agent-coordinator"
+    if not role:
+        role = "agent-coordinator"
+
     role_level = os.environ.get("AGENT_ACTIVE_ROLE_LEVEL", "supervised").strip().lower()
     if role_level not in {"read_only", "supervised", "unsupervised"}:
         role_level = "supervised"
-    tool = os.environ.get("CURSOR_TOOL_NAME", os.environ.get("TOOL_NAME", "write"))
+
+    raw_tool = os.environ.get("CURSOR_TOOL_NAME")
+    if raw_tool is None:
+        raw_tool = os.environ.get("TOOL_NAME", "write")
+    tool = raw_tool.strip()
+
     command = os.environ.get("CURSOR_COMMAND", "")
     trace_id = os.environ.get("AGENT_TRACE_ID", "")
 
@@ -316,9 +429,18 @@ def main() -> int:
     try:
         boundaries = load_boundaries(root)
         mcp_map = load_mcp_tool_map(root)
+        known = set()
+        for prof in boundaries.values():
+            if isinstance(prof, dict):
+                for t in ("allowed", "requires_approval", "denied"):
+                    known.update(prof.get(t) or [])
+        mcp_map["known_actions"] = known
     except Exception as exc:  # noqa: BLE001
         print(f"ERROR loading policy files: {exc}", file=sys.stderr)
         return 2
+
+    if role not in boundaries and role.lower() in boundaries:
+        role = role.lower()
 
     action = map_tool_to_action(tool, command, mcp_map)
     decision, level_modifier = check_action(role, action, boundaries, role_level)

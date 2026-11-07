@@ -1,10 +1,39 @@
 # MCP / IDE tool name → policy action id for action-boundaries.yaml checks.
 # Used by agent-tool-orchestration and Cursor hooks.template.json.
 #
-# Resolution order for shell/terminal commands:
+# Resolution order for shell/terminal commands and MCP tools:
 #   1. Check destructive_patterns (matched by substring, highest priority)
-#   2. Fall back to tool_actions mapping
-#   3. Default: requires_approval (per default_policy in action-boundaries.yaml)
+#   2. Check mcp_tool_routing (dynamic prefix patterns)
+#   3. Fall back to tool_actions mapping
+#   4. Default: requires_approval (per default_policy in action-boundaries.yaml)
+
+mcp_tool_routing:
+  default_action: requires_approval
+  prefix_patterns:
+    - pattern: "^db_drop_.*"
+      action: drop_database
+      risk: critical
+    - pattern: "^db_migrate_.*"
+      action: run_migrations
+      risk: high
+    - pattern: "^db_query_.*"
+      action: read_file
+      risk: low
+    - pattern: "^fs_write_.*"
+      action: write_file
+      risk: medium
+    - pattern: "^fs_read_.*"
+      action: read_file
+      risk: low
+    - pattern: "^git_push_.*"
+      action: git_push
+      risk: high
+    - pattern: "^sec_rotate_.*"
+      action: modify_secrets
+      risk: critical
+    - pattern: "^agent_delegate_.*"
+      action: delegate_task
+      risk: medium
 
 tool_actions:
   # File operations
@@ -41,7 +70,7 @@ tool_actions:
   read_database: read_database
 
   # Network / MCP
-  mcp_call: read_file
+  mcp_call: execute_stateless_mcp
   fetch: read_file
   http_get: read_file
   http_post: write_file

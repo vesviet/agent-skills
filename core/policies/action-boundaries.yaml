@@ -3,7 +3,7 @@
 # Enforcement: agent-tool-orchestration checks this before state-changing actions.
 # Runtime hook: core/scripts/hooks/check-policy.py (text/json/sarif output, OCSF 99001 audit).
 #
-# 2026 coverage: 39 delivery roles x 59 action verbs. Roles that have no explicit entry for a
+# 2026 coverage: 39 delivery roles x 65 action verbs. Roles that have no explicit entry for a
 # given action fall through to `default_policy: requires_approval` (zero-trust fail-closed).
 # Unclassified actions in infra/deploy verbs (apply_iac, drop_storage_volume, terminate_instance,
 # modify_iam_policy, modify_network_topology_production, modify_payment_gateway_config,
@@ -29,6 +29,12 @@
 #                            bot-fingerprint normalization, which is not a policy action.
 #   export_data              Move or copy data out of the trusted boundary. Irreversible for
 #                            restricted data; requires approval even for owners.
+#   verify_svid_token        Cryptographic NHI SPIFFE/SVID token verification for delegation.
+#   execute_stateless_mcp    Remote stateless MCP tool invocation without persistent session cookies.
+#   export_data_egress       External network egress of internal datasets beyond trust perimeter.
+#   load_jit_skill           Runtime JIT dynamic skill ingestion verified against index digest.
+#   spill_context_disk       Writing truncated outputs (>4KB) to .agent/outputs/ (TOC).
+#   emit_ocsf_audit          Emitting structured security audit events conforming to OCSF 99001.
 
 schema_version: "2"
 
@@ -45,6 +51,10 @@ compliance:
     - deploy_ai_model
     - apply_iac
     - rotate_agent_credentials
+    - export_data_egress
+    - load_jit_skill
+    - git_push
+    - run_migrations
   nist_ai_rmf:
     govern: roles structure documents who owns each action category
     map: requires_approval list = identified risk surface; denied list = unacceptable risks
@@ -69,11 +79,14 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
         - install_dependency
         - modify_public_api_contract
+        - spill_context_disk
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -97,6 +110,11 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     agent-coordinator:
       allowed:
         - create_file
@@ -108,6 +126,10 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - verify_svid_token
+        - execute_stateless_mcp
+        - spill_context_disk
       requires_approval:
         - delete_file
         - export_data
@@ -115,6 +137,8 @@ roles:
         - modify_environment_config
         - run_deployment
         - run_migration
+        - load_jit_skill
+        - run_migrations
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -135,16 +159,23 @@ roles:
         - shipping_label_generation
         - terminate_instance
         - write_database
+        - export_data_egress
+        - git_push
     agent-discovery-engineer:
       allowed:
         - create_file
         - read_file
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - verify_svid_token
       requires_approval:
         - delegate_task
         - delete_file
         - run_build
+        - execute_stateless_mcp
+        - spill_context_disk
+        - load_jit_skill
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -171,6 +202,9 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - export_data_egress
+        - run_migrations
+        - git_push
     ai-systems-engineer:
       allowed:
         - configure_ai_infra
@@ -185,6 +219,8 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - apply_iac
         - delegate_task
@@ -205,6 +241,10 @@ roles:
         - run_migration
         - terminate_instance
         - write_database
+        - spill_context_disk
+        - load_jit_skill
+        - run_migrations
+        - git_push
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -217,6 +257,8 @@ roles:
         - modify_payment_gateway_config
         - self_approve_iam
         - shipping_label_generation
+        - verify_svid_token
+        - export_data_egress
     ecommerce-engineer:
       allowed:
         - create_file
@@ -228,6 +270,8 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
@@ -238,6 +282,8 @@ roles:
         - modify_public_api_contract
         - run_migration
         - shipping_label_generation
+        - spill_context_disk
+        - run_migrations
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -255,6 +301,10 @@ roles:
         - modify_network_topology_production
         - self_approve_iam
         - terminate_instance
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - git_push
     backend-developer:
       allowed:
         - create_file
@@ -265,6 +315,8 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
@@ -272,6 +324,9 @@ roles:
         - modify_environment_config
         - modify_public_api_contract
         - run_migration
+        - verify_svid_token
+        - spill_context_disk
+        - run_migrations
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -293,6 +348,9 @@ roles:
         - write_database
         - apply_iac
         - export_data
+        - load_jit_skill
+        - export_data_egress
+        - git_push
     business-analyst:
       allowed:
         - create_file
@@ -300,10 +358,12 @@ roles:
         - read_file
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delete_file
         - export_data
         - run_build
+        - execute_stateless_mcp
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -328,6 +388,12 @@ roles:
         - shipping_label_generation
         - terminate_instance
         - write_database
+        - verify_svid_token
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     cloudflare-engineer:
       allowed:
         - create_file
@@ -338,6 +404,8 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_cloudflare_resource
@@ -348,6 +416,8 @@ roles:
         - push_to_production
         - rollback_deployment
         - run_deployment
+        - spill_context_disk
+        - git_push
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -368,6 +438,10 @@ roles:
         - delete_file
         - run_migration
         - export_data
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
     content-writer:
       allowed:
         - create_file
@@ -375,6 +449,7 @@ roles:
         - read_file
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delegate_task
         - delete_file
@@ -403,6 +478,13 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - execute_stateless_mcp
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     data-analyst:
       allowed:
         - create_file
@@ -411,6 +493,7 @@ roles:
         - run_query
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delegate_task
         - delete_file
@@ -418,6 +501,8 @@ roles:
         - run_build
         - run_migration
         - write_database
+        - execute_stateless_mcp
+        - run_migrations
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -438,12 +523,18 @@ roles:
         - self_approve_iam
         - shipping_label_generation
         - terminate_instance
+        - verify_svid_token
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - git_push
     vietnam-accounting-specialist:
       allowed:
         - create_file
         - read_file
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delegate_task
         - delete_file
@@ -475,6 +566,13 @@ roles:
         - self_approve_iam
         - shipping_label_generation
         - terminate_instance
+        - verify_svid_token
+        - execute_stateless_mcp
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     data-engineer:
       allowed:
         - create_file
@@ -484,6 +582,8 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
@@ -491,6 +591,9 @@ roles:
         - run_build
         - run_migration
         - write_database
+        - spill_context_disk
+        - export_data_egress
+        - run_migrations
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -510,6 +613,9 @@ roles:
         - shipping_label_generation
         - apply_iac
         - drop_storage_volume
+        - verify_svid_token
+        - load_jit_skill
+        - git_push
     devops-engineer:
       allowed:
         - create_file
@@ -520,6 +626,8 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - modify_environment_config
@@ -531,6 +639,10 @@ roles:
         - run_migration
         - deploy_ai_model
         - modify_prompt_template
+        - verify_svid_token
+        - spill_context_disk
+        - run_migrations
+        - git_push
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -549,6 +661,8 @@ roles:
         - write_database
         - delete_file
         - export_data
+        - load_jit_skill
+        - export_data_egress
     frontend-developer:
       allowed:
         - create_file
@@ -559,11 +673,14 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
         - install_dependency
         - modify_public_api_contract
+        - spill_context_disk
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -587,6 +704,11 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     game-developer:
       allowed:
         - create_file
@@ -597,11 +719,14 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
         - install_dependency
         - modify_public_api_contract
+        - spill_context_disk
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -625,6 +750,11 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     mobile-engineer:
       allowed:
         - create_file
@@ -635,11 +765,14 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
         - install_dependency
         - modify_public_api_contract
+        - spill_context_disk
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -663,6 +796,11 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     mmo-engineer:
       allowed:
         - create_file
@@ -674,12 +812,15 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delete_file
         - install_dependency
         - modify_environment_config
         - run_deployment
         - rotate_agent_credentials
+        - spill_context_disk
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -703,6 +844,11 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     product-manager:
       allowed:
         - create_file
@@ -710,9 +856,11 @@ roles:
         - read_file
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delete_file
         - run_build
+        - execute_stateless_mcp
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -738,6 +886,12 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     project-manager:
       allowed:
         - create_file
@@ -746,6 +900,7 @@ roles:
         - read_logs
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delegate_task
         - delete_file
@@ -774,6 +929,13 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - execute_stateless_mcp
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     prompt-engineer:
       allowed:
         - create_file
@@ -783,11 +945,14 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
         - modify_prompt_template
         - run_build
+        - spill_context_disk
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -811,6 +976,11 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     qa-engineer:
       allowed:
         - create_file
@@ -821,8 +991,11 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delete_file
+        - spill_context_disk
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -847,6 +1020,11 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     researcher:
       allowed:
         - create_file
@@ -855,12 +1033,14 @@ roles:
         - read_logs
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delegate_task
         - delete_file
         - export_data
         - install_dependency
         - run_build
+        - execute_stateless_mcp
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -883,6 +1063,12 @@ roles:
         - shipping_label_generation
         - terminate_instance
         - write_database
+        - verify_svid_token
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     reverse-engineer:
       allowed:
         - create_file
@@ -893,10 +1079,13 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
         - modify_environment_config
+        - spill_context_disk
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -919,6 +1108,11 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     reviewer:
       allowed:
         - create_file
@@ -928,6 +1122,8 @@ roles:
         - run_linter
         - run_tests
         - search_code
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - write_file
       denied:
@@ -956,6 +1152,12 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     sdet:
       allowed:
         - create_file
@@ -966,9 +1168,12 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
+        - spill_context_disk
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -992,6 +1197,11 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     security-engineer:
       allowed:
         - create_file
@@ -1002,6 +1212,9 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - verify_svid_token
+        - execute_stateless_mcp
       requires_approval:
         - delete_file
         - modify_environment_config
@@ -1009,6 +1222,9 @@ roles:
         - run_migration
         - deploy_ai_model
         - modify_prompt_template
+        - spill_context_disk
+        - export_data_egress
+        - run_migrations
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -1029,12 +1245,15 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - load_jit_skill
+        - git_push
     seo-analyst:
       allowed:
         - create_file
         - read_file
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delegate_task
         - delete_file
@@ -1062,6 +1281,13 @@ roles:
         - shipping_label_generation
         - terminate_instance
         - export_data
+        - verify_svid_token
+        - execute_stateless_mcp
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     sre:
       allowed:
         - create_file
@@ -1073,6 +1299,8 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - modify_environment_config
         - rollback_deployment
@@ -1080,6 +1308,8 @@ roles:
         - run_migration
         - deploy_ai_model
         - modify_prompt_template
+        - spill_context_disk
+        - run_migrations
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -1101,16 +1331,22 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - git_push
     task-planner:
       allowed:
         - create_file
         - read_file
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delete_file
         - install_dependency
         - run_build
+        - execute_stateless_mcp
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -1135,12 +1371,19 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     teacher:
       allowed:
         - create_file
         - read_file
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delegate_task
         - delete_file
@@ -1160,6 +1403,7 @@ roles:
         - push_to_production
         - run_migration
         - apply_iac
+        - run_deployment
         - delete_cloudflare_resource
         - drop_storage_volume
         - modify_iam_policy
@@ -1169,6 +1413,13 @@ roles:
         - shipping_label_generation
         - terminate_instance
         - write_database
+        - verify_svid_token
+        - execute_stateless_mcp
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     technical-architect:
       allowed:
         - create_file
@@ -1178,12 +1429,16 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
         - install_dependency
         - modify_public_api_contract
         - run_migration
+        - spill_context_disk
+        - run_migrations
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -1206,6 +1461,10 @@ roles:
         - write_database
         - modify_environment_config
         - export_data
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
+        - git_push
     technical-lead:
       allowed:
         - create_file
@@ -1216,6 +1475,8 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
@@ -1225,6 +1486,9 @@ roles:
         - run_migration
         - deploy_ai_model
         - modify_prompt_template
+        - verify_svid_token
+        - spill_context_disk
+        - run_migrations
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -1244,12 +1508,16 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - load_jit_skill
+        - export_data_egress
+        - git_push
     technical-writer:
       allowed:
         - create_file
         - read_file
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delegate_task
         - delete_file
@@ -1279,6 +1547,13 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - execute_stateless_mcp
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     ui-ux-designer:
       allowed:
         - create_file
@@ -1286,6 +1561,7 @@ roles:
         - run_dev_server
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delegate_task
         - delete_file
@@ -1315,6 +1591,13 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - execute_stateless_mcp
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     content-manager:
       allowed:
         - create_file
@@ -1322,6 +1605,7 @@ roles:
         - read_file
         - search_code
         - write_file
+        - emit_ocsf_audit
       requires_approval:
         - delegate_task
         - delete_file
@@ -1350,6 +1634,13 @@ roles:
         - terminate_instance
         - write_database
         - export_data
+        - verify_svid_token
+        - execute_stateless_mcp
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
     system-engineer:
       allowed:
         - create_file
@@ -1364,6 +1655,8 @@ roles:
         - configure_ai_infra
         - configure_network
         - configure_os
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - apply_iac
         - delegate_task
@@ -1382,6 +1675,10 @@ roles:
         - run_deployment
         - run_migration
         - terminate_instance
+        - verify_svid_token
+        - spill_context_disk
+        - run_migrations
+        - git_push
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -1394,6 +1691,8 @@ roles:
         - self_approve_iam
         - shipping_label_generation
         - write_database
+        - load_jit_skill
+        - export_data_egress
     aws-engineer:
       allowed:
         - create_file
@@ -1406,6 +1705,8 @@ roles:
         - search_code
         - write_file
         - configure_network
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - apply_iac
         - delegate_task
@@ -1424,6 +1725,9 @@ roles:
         - run_deployment
         - run_migration
         - terminate_instance
+        - spill_context_disk
+        - run_migrations
+        - git_push
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -1436,6 +1740,9 @@ roles:
         - shipping_label_generation
         - write_database
         - modify_prompt_template
+        - verify_svid_token
+        - load_jit_skill
+        - export_data_egress
     solution-architect:
       allowed:
         - create_file
@@ -1445,12 +1752,17 @@ roles:
         - run_tests
         - search_code
         - write_file
+        - emit_ocsf_audit
+        - execute_stateless_mcp
       requires_approval:
         - delegate_task
         - delete_file
         - install_dependency
         - modify_public_api_contract
         - run_migration
+        - verify_svid_token
+        - spill_context_disk
+        - run_migrations
       denied:
         - bypass_ai_guardrail
         - clear_agent_memory
@@ -1473,6 +1785,9 @@ roles:
         - write_database
         - modify_environment_config
         - export_data
+        - load_jit_skill
+        - export_data_egress
+        - git_push
     vietnam-legal-counsel:
       allowed:
         - create_file
@@ -1485,6 +1800,7 @@ roles:
         - regulatory risk assessment
         - DPIA compliance auditing
         - statutory interpretation
+        - emit_ocsf_audit
       requires_approval:
         - delegate_task
         - delete_file
@@ -1525,4 +1841,11 @@ roles:
         - executing binding corporate contracts without legal representative authorization
         - committing commercial transactions
         - waiving corporate rights or statutory protections unilaterally
+        - verify_svid_token
+        - execute_stateless_mcp
+        - spill_context_disk
+        - load_jit_skill
+        - export_data_egress
+        - run_migrations
+        - git_push
 default_policy: requires_approval
