@@ -2,7 +2,7 @@
 """Agent Trace Runner for agent-skills (OpenTelemetry GenAI 2026/2027 SOTA).
 
 Provides end-to-end distributed tracing, causal span tree tracking,
-FinOps token cost attribution, and schema validation for multi-agent workflows.
+FinOps token cost attribution, schema validation, and OTLP export for multi-agent workflows.
 
 Capabilities:
 1. W3C Trace Context generation & propagation (trace_id: 32 hex, span_id: 16 hex).
@@ -10,21 +10,27 @@ Capabilities:
 3. OTel GenAI Semantic Conventions (gen_ai.request.model, gen_ai.usage.*, cost_usd).
 4. Automated schema validation against `core/contracts/schemas/agent-trace-span.json`.
 5. ASCII trace tree visualization with latency, token usage, and status indicators.
-6. Multi-role A2A delegation demo and CLI inspection tools (run, demo, list, view, validate).
+6. Execution wrapper (`exec`) to trace real shell commands and scripts in real time.
+7. FinOps analytics dashboard (`stats`) aggregating costs, tokens, and model distribution.
+8. Standard OpenTelemetry OTLP JSON export (`export`) for telemetry collectors.
+9. Python programmatic API with `@traced` function decorator and ContextVar propagation.
 """
 
 from __future__ import annotations
 
 import argparse
+import contextvars
+import functools
 import json
 import os
+import subprocess
 import sys
 import time
 import uuid
 from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Generator
+from typing import Any, Callable, Generator
 
 try:
     import jsonschema
@@ -50,6 +56,10 @@ MODEL_PRICING: dict[str, dict[str, float]] = {
     "deepseek-v3": {"input": 0.27, "output": 1.10, "cache_read": 0.07, "reasoning": 1.10},
     "gemini-2.0-flash": {"input": 0.10, "output": 0.40, "cache_read": 0.025, "reasoning": 0.40},
 }
+
+_active_runner_ctx: contextvars.ContextVar[TraceRunner | None] = contextvars.ContextVar(
+    "active_trace_runner", default=None
+)
 
 
 def get_pack_version() -> str:
@@ -79,7 +89,6 @@ def calculate_cost_usd(
     """Calculate token cost in USD based on standard model pricing."""
     pricing = MODEL_PRICING.get(model.lower())
     if not pricing:
-        # Default fallback to mid-tier pricing
         pricing = MODEL_PRICING["claude-3-5-haiku"]
 
     input_cost = (input_tokens / 1_000_000) * pricing["input"]
@@ -108,6 +117,7 @@ class TraceRunner:
         self.spans: list[dict[str, Any]] = []
         self._span_stack: list[str] = []
         self._validator: Any = None
+        self._token: contextvars.Token[TraceRunner | None] | None = None
 
         if self.validate_schema and Draft202012Validator and SCHEMA_PATH.is_file():
             try:
@@ -117,6 +127,20 @@ class TraceRunner:
                 self._validator = None
 
         SPANS_DIR.mkdir(parents=True, exist_ok=True)
+
+    @classmethod
+    def get_active(cls) -> TraceRunner | None:
+        """Return the current active TraceRunner in context."""
+        return _active_runner_ctx.get()
+
+    def __enter__(self) -> TraceRunner:
+        self._token = _active_runner_ctx.set(self)
+        return self
+
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
+        if self._token:
+            _active_runner_ctx.reset(self._token)
+            self._token = None
 
     @property
     def current_parent_span_id(self) -> str | None:
@@ -148,7 +172,6 @@ class TraceRunner:
 
         self._span_stack.append(span_id)
 
-        # Mutable container that the caller can mutate inside the `with` block
         span_data: dict[str, Any] = {
             "trace_id": self.trace_id,
             "span_id": span_id,
@@ -190,7 +213,6 @@ class TraceRunner:
             span_data["end_time"] = datetime.now(timezone.utc).isoformat()
             span_data["attributes"]["duration_ms"] = duration_ms
 
-            # Compute cost attribution
             attrs = span_data["attributes"]
             cost = calculate_cost_usd(
                 model=attrs.get("model", model),
@@ -201,7 +223,6 @@ class TraceRunner:
             )
             attrs["cost_usd"] = cost
 
-            # Validate against contract schema if enabled
             if self._validator:
                 errors = list(self._validator.iter_errors(span_data))
                 if errors:
@@ -210,6 +231,13 @@ class TraceRunner:
             self.spans.append(span_data)
             self._persist_span(span_data)
             self._span_stack.pop()
+
+    def validate_span_schema(self, span: dict[str, Any]) -> tuple[bool, list[str]]:
+        """Validate an individual span against agent-trace-span schema."""
+        if not self._validator:
+            return True, []
+        errors = [e.message for e in self._validator.iter_errors(span)]
+        return len(errors) == 0, errors
 
     def _persist_span(self, span_data: dict[str, Any]) -> None:
         """Append span to the session's JSONL trace file."""
@@ -243,9 +271,111 @@ class TraceRunner:
             },
         }
 
+    def to_otlp_json(self) -> dict[str, Any]:
+        """Convert recorded spans to standard OpenTelemetry OTLP JSON (v1/traces)."""
+        otlp_spans: list[dict[str, Any]] = []
+
+        for span in self.spans:
+            attrs = span.get("attributes", {})
+            otlp_attrs = []
+            for k, v in attrs.items():
+                if isinstance(v, bool):
+                    val_node = {"boolValue": v}
+                elif isinstance(v, int):
+                    val_node = {"intValue": v}
+                elif isinstance(v, float):
+                    val_node = {"doubleValue": v}
+                elif isinstance(v, list):
+                    val_node = {"arrayValue": {"values": [{"stringValue": str(x)} for x in v]}}
+                else:
+                    val_node = {"stringValue": str(v)}
+                otlp_attrs.append({"key": k, "value": val_node})
+
+            # Map to OTel GenAI standard conventions
+            otlp_attrs.extend([
+                {"key": "gen_ai.operation.name", "value": {"stringValue": span.get("operation", "")}},
+                {"key": "gen_ai.agent.name", "value": {"stringValue": span.get("role", "")}},
+            ])
+
+            start_iso = span.get("start_time", "")
+            end_iso = span.get("end_time", "")
+            try:
+                start_dt = datetime.fromisoformat(start_iso)
+                start_nano = str(int(start_dt.timestamp() * 1_000_000_000))
+            except Exception:
+                start_nano = "0"
+
+            try:
+                end_dt = datetime.fromisoformat(end_iso)
+                end_nano = str(int(end_dt.timestamp() * 1_000_000_000))
+            except Exception:
+                end_nano = start_nano
+
+            status_code = 1 if span.get("status") == "ok" else 2
+
+            otlp_span: dict[str, Any] = {
+                "traceId": span["trace_id"],
+                "spanId": span["span_id"],
+                "name": span["operation"],
+                "kind": 1,  # SPAN_KIND_INTERNAL
+                "startTimeUnixNano": start_nano,
+                "endTimeUnixNano": end_nano,
+                "attributes": otlp_attrs,
+                "status": {"code": status_code},
+            }
+            if span.get("parent_span_id"):
+                otlp_span["parentSpanId"] = span["parent_span_id"]
+
+            otlp_spans.append(otlp_span)
+
+        return {
+            "resourceSpans": [
+                {
+                    "resource": {
+                        "attributes": [
+                            {"key": "service.name", "value": {"stringValue": self.service_name}},
+                            {"key": "service.version", "value": {"stringValue": self.service_version}},
+                        ]
+                    },
+                    "scopeSpans": [
+                        {
+                            "scope": {
+                                "name": "agent-skills.trace-runner",
+                                "version": self.service_version,
+                            },
+                            "spans": otlp_spans,
+                        }
+                    ],
+                }
+            ]
+        }
+
     def print_trace_tree(self) -> None:
         """Render a formatted ASCII causal tree of all spans in the current trace."""
         print_spans_tree(self.spans, self.export_summary())
+
+
+def traced(
+    role: str = "agent-coordinator",
+    operation: str = "execute_tool",
+    tool_name: str | None = None,
+    model: str = "claude-3-7-sonnet",
+) -> Callable:
+    """Decorator to trace a Python function execution inside a TraceRunner span."""
+    def decorator(fn: Callable) -> Callable:
+        @functools.wraps(fn)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            runner = TraceRunner.get_active()
+            name = tool_name or fn.__name__
+            if runner:
+                with runner.span(operation=operation, role=role, tool_name=name, model=model):
+                    return fn(*args, **kwargs)
+            else:
+                with TraceRunner() as new_runner:
+                    with new_runner.span(operation=operation, role=role, tool_name=name, model=model):
+                        return fn(*args, **kwargs)
+        return wrapper
+    return decorator
 
 
 def print_spans_tree(spans: list[dict[str, Any]], summary: dict[str, Any] | None = None) -> None:
@@ -254,7 +384,6 @@ def print_spans_tree(spans: list[dict[str, Any]], summary: dict[str, Any] | None
         print("No spans recorded in this trace.")
         return
 
-    # Build adjacency tree (parent_span_id -> children)
     by_id: dict[str, dict[str, Any]] = {s["span_id"]: s for s in spans}
     children_map: dict[str | None, list[dict[str, Any]]] = {}
     for s in spans:
@@ -289,7 +418,6 @@ def print_spans_tree(spans: list[dict[str, Any]], summary: dict[str, Any] | None
         for idx, child in enumerate(children):
             render_node(child, new_prefix, idx == len(children) - 1)
 
-    # Render from root nodes (nodes without parent_span_id or parent not in this trace)
     roots = [s for s in spans if not s.get("parent_span_id") or s.get("parent_span_id") not in by_id]
     for idx, root in enumerate(roots):
         render_node(root, "", idx == len(roots) - 1)
@@ -345,9 +473,8 @@ def run_demo_trace() -> int:
             input_tokens=2100,
             output_tokens=680,
             cache_read_tokens=1500,
-        ) as arch_span:
+        ):
             time.sleep(0.01)
-            # Tool call inside architect span
             with runner.span(
                 operation="execute_tool",
                 role="technical-architect",
@@ -369,7 +496,6 @@ def run_demo_trace() -> int:
             cache_read_tokens=2400,
         ):
             time.sleep(0.015)
-            # Tool call 1: Edit code
             with runner.span(
                 operation="execute_tool",
                 role="backend-developer",
@@ -380,7 +506,6 @@ def run_demo_trace() -> int:
             ):
                 time.sleep(0.005)
 
-            # Tool call 2: Run tests
             with runner.span(
                 operation="execute_tool",
                 role="backend-developer",
@@ -413,6 +538,75 @@ def run_demo_trace() -> int:
     runner.print_trace_tree()
     print(f"\nTrace log saved to: {SPANS_DIR / f'{runner.trace_id}.jsonl'}")
     return 0
+
+
+def exec_command_trace(
+    cmd_args: list[str],
+    role: str = "backend-developer",
+    tool: str = "execute_command",
+    model: str = "claude-3-7-sonnet",
+) -> int:
+    """Execute a real shell command, capturing timing and output under a traced span."""
+    if not cmd_args:
+        print("Error: No command provided to exec.")
+        return 1
+
+    runner = TraceRunner(service_name="agent-skills-exec")
+    cmd_str = " ".join(cmd_args)
+    print(f"Tracing Execution: {cmd_str} (Role: {role}, Tool: {tool})...\n")
+
+    exit_code = 0
+    with runner.span(
+        operation="invoke_agent",
+        role=role,
+        model=model,
+        task_id=f"exec-{uuid.uuid4().hex[:6]}",
+    ):
+        with runner.span(
+            operation="execute_tool",
+            role=role,
+            tool_name=tool,
+            tool_action=cmd_str,
+            model=model,
+        ) as tool_span:
+            t0 = time.monotonic()
+            try:
+                proc = subprocess.run(
+                    cmd_args,
+                    shell=False,
+                    text=True,
+                    capture_output=True,
+                )
+                exit_code = proc.returncode
+                stdout_len = len(proc.stdout)
+                stderr_len = len(proc.stderr)
+
+                if proc.stdout:
+                    print(proc.stdout, end="")
+                if proc.stderr:
+                    print(proc.stderr, file=sys.stderr, end="")
+
+                # Approximate token usage based on command output characters
+                approx_tokens = max(10, (stdout_len + stderr_len) // 4)
+                tool_span["attributes"]["input_tokens"] = 150
+                tool_span["attributes"]["output_tokens"] = approx_tokens
+                tool_span["attributes"]["exit_code"] = exit_code
+
+                if exit_code != 0:
+                    tool_span["status"] = "error"
+                    tool_span["attributes"]["error_type"] = "ProcessExecutionError"
+                    tool_span["attributes"]["error_message"] = f"Command exited with code {exit_code}"
+            except Exception as exc:
+                exit_code = 1
+                tool_span["status"] = "error"
+                tool_span["attributes"]["error_type"] = type(exc).__name__
+                tool_span["attributes"]["error_message"] = str(exc)
+                print(f"Execution error: {exc}", file=sys.stderr)
+
+    print("\n" + "=" * 80)
+    runner.print_trace_tree()
+    print(f"Trace recorded to: {SPANS_DIR / f'{runner.trace_id}.jsonl'}")
+    return exit_code
 
 
 def list_traces() -> int:
@@ -452,11 +646,84 @@ def list_traces() -> int:
     return 0
 
 
+def stats_traces() -> int:
+    """Aggregate FinOps and observability metrics across all recorded trace sessions."""
+    if not SPANS_DIR.exists():
+        print(f"No traces directory found at {SPANS_DIR}.")
+        return 0
+
+    trace_files = list(SPANS_DIR.glob("*.jsonl"))
+    if not trace_files:
+        print("No trace sessions found in core/observability/spans/.")
+        return 0
+
+    all_spans: list[dict[str, Any]] = []
+    for p in trace_files:
+        for line in p.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                try:
+                    all_spans.append(json.loads(line))
+                except Exception:
+                    pass
+
+    total_sessions = len(trace_files)
+    total_spans = len(all_spans)
+    total_cost = sum(s.get("attributes", {}).get("cost_usd", 0.0) for s in all_spans)
+    total_input = sum(s.get("attributes", {}).get("input_tokens", 0) for s in all_spans)
+    total_output = sum(s.get("attributes", {}).get("output_tokens", 0) for s in all_spans)
+    total_reasoning = sum(s.get("attributes", {}).get("reasoning_tokens", 0) for s in all_spans)
+    total_cache = sum(s.get("attributes", {}).get("cache_read_tokens", 0) for s in all_spans)
+
+    ok_spans = sum(1 for s in all_spans if s.get("status") == "ok")
+    err_spans = sum(1 for s in all_spans if s.get("status") == "error")
+    success_rate = (ok_spans / total_spans * 100) if total_spans else 100.0
+
+    # Role breakdown
+    role_metrics: dict[str, dict[str, Any]] = {}
+    for s in all_spans:
+        r = s.get("role", "unknown")
+        entry = role_metrics.setdefault(r, {"spans": 0, "tokens": 0, "cost": 0.0})
+        entry["spans"] += 1
+        entry["tokens"] += s.get("attributes", {}).get("input_tokens", 0) + s.get("attributes", {}).get("output_tokens", 0)
+        entry["cost"] += s.get("attributes", {}).get("cost_usd", 0.0)
+
+    # Model breakdown
+    model_metrics: dict[str, dict[str, Any]] = {}
+    for s in all_spans:
+        m = s.get("attributes", {}).get("model", "unknown")
+        entry = model_metrics.setdefault(m, {"spans": 0, "tokens": 0, "cost": 0.0})
+        entry["spans"] += 1
+        entry["tokens"] += s.get("attributes", {}).get("input_tokens", 0) + s.get("attributes", {}).get("output_tokens", 0)
+        entry["cost"] += s.get("attributes", {}).get("cost_usd", 0.0)
+
+    print("=" * 80)
+    print(" AGENT TRACE RUNNER — OBSERVABILITY & FINOPS DASHBOARD")
+    print("=" * 80)
+    print(f"Total Sessions    : {total_sessions}")
+    print(f"Total Spans       : {total_spans} (OK: {ok_spans}, ERROR: {err_spans}, Success: {success_rate:.1f}%)")
+    print(f"Total Tokens      : {total_input + total_output:,} (Input: {total_input:,}, Output: {total_output:,}, Cache: {total_cache:,})")
+    print(f"Aggregate Cost    : ${total_cost:.5f}")
+    print("-" * 80)
+    print("FINOPS ATTRIBUTION BY ROLE:")
+    print(f"{'Role':<30} | {'Spans':<6} | {'Tokens':<10} | {'Cost ($)':<10}")
+    print("-" * 80)
+    for r, data in sorted(role_metrics.items(), key=lambda x: x[1]["cost"], reverse=True):
+        print(f"{r:<30} | {data['spans']:<6} | {data['tokens']:<10} | ${data['cost']:<9.5f}")
+
+    print("-" * 80)
+    print("MODEL DISTRIBUTION:")
+    print(f"{'Model':<30} | {'Spans':<6} | {'Tokens':<10} | {'Cost ($)':<10}")
+    print("-" * 80)
+    for m, data in sorted(model_metrics.items(), key=lambda x: x[1]["cost"], reverse=True):
+        print(f"{m:<30} | {data['spans']:<6} | {data['tokens']:<10} | ${data['cost']:<9.5f}")
+    print("=" * 80)
+    return 0
+
+
 def view_trace(trace_id: str) -> int:
     """Read and visualize a stored trace by ID."""
     trace_file = SPANS_DIR / f"{trace_id}.jsonl"
     if not trace_file.is_file():
-        # Try searching by prefix
         matches = list(SPANS_DIR.glob(f"{trace_id}*.jsonl"))
         if len(matches) == 1:
             trace_file = matches[0]
@@ -469,7 +736,6 @@ def view_trace(trace_id: str) -> int:
         if line.strip():
             spans.append(json.loads(line))
 
-    # Compute summary
     total_input = sum(s.get("attributes", {}).get("input_tokens", 0) for s in spans)
     total_output = sum(s.get("attributes", {}).get("output_tokens", 0) for s in spans)
     total_cost = sum(s.get("attributes", {}).get("cost_usd", 0.0) for s in spans)
@@ -490,6 +756,41 @@ def view_trace(trace_id: str) -> int:
     }
 
     print_spans_tree(spans, summary)
+    return 0
+
+
+def export_trace(trace_id: str, format_type: str = "otlp", output_path: str | None = None) -> int:
+    """Export a stored trace into standard OpenTelemetry OTLP JSON or summary JSON."""
+    trace_file = SPANS_DIR / f"{trace_id}.jsonl"
+    if not trace_file.is_file():
+        matches = list(SPANS_DIR.glob(f"{trace_id}*.jsonl"))
+        if len(matches) == 1:
+            trace_file = matches[0]
+        else:
+            print(f"Error: Trace '{trace_id}' not found.")
+            return 1
+
+    spans = [json.loads(line) for line in trace_file.read_text(encoding="utf-8").splitlines() if line.strip()]
+    runner = TraceRunner(trace_id=trace_file.stem, validate_schema=False)
+    runner.spans = spans
+
+    if format_type.lower() == "otlp":
+        data = runner.to_otlp_json()
+    else:
+        data = {
+            "summary": runner.export_summary(),
+            "spans": runner.spans,
+        }
+
+    formatted = json.dumps(data, indent=2, ensure_ascii=False)
+    if output_path:
+        out_file = Path(output_path)
+        out_file.parent.mkdir(parents=True, exist_ok=True)
+        out_file.write_text(formatted, encoding="utf-8")
+        print(f"Exported trace {trace_file.stem} ({format_type.upper()}) to: {out_file.resolve()}")
+    else:
+        print(formatted)
+
     return 0
 
 
@@ -543,6 +844,9 @@ def main() -> int:
     # list
     subparsers.add_parser("list", help="List all stored trace sessions")
 
+    # stats
+    subparsers.add_parser("stats", help="Aggregate FinOps & observability metrics across all traces")
+
     # view
     view_p = subparsers.add_parser("view", help="View ASCII span tree for a given trace ID")
     view_p.add_argument("trace_id", help="W3C trace ID or prefix")
@@ -551,16 +855,38 @@ def main() -> int:
     val_p = subparsers.add_parser("validate", help="Validate trace spans against agent-trace-span schema")
     val_p.add_argument("trace_id", help="W3C trace ID or prefix")
 
+    # export
+    exp_p = subparsers.add_parser("export", help="Export trace to standard OTel OTLP JSON or summary")
+    exp_p.add_argument("trace_id", help="W3C trace ID or prefix")
+    exp_p.add_argument("--format", choices=["otlp", "json"], default="otlp", help="Export format")
+    exp_p.add_argument("--output", help="Output file path (default stdout)")
+
+    # exec
+    exec_p = subparsers.add_parser("exec", help="Execute a shell command with live span tracing")
+    exec_p.add_argument("--role", default="backend-developer", help="Agent role executing the command")
+    exec_p.add_argument("--tool", default="execute_command", help="Tool name")
+    exec_p.add_argument("--model", default="claude-3-7-sonnet", help="Model used")
+    exec_p.add_argument("cmd", nargs=argparse.REMAINDER, help="Command and arguments to execute")
+
     args = parser.parse_args()
 
     if args.command == "demo" or not args.command:
         return run_demo_trace()
     elif args.command == "list":
         return list_traces()
+    elif args.command == "stats":
+        return stats_traces()
     elif args.command == "view":
         return view_trace(args.trace_id)
     elif args.command == "validate":
         return validate_trace(args.trace_id)
+    elif args.command == "export":
+        return export_trace(args.trace_id, format_type=args.format, output_path=args.output)
+    elif args.command == "exec":
+        cmd = args.cmd
+        if cmd and cmd[0] == "--":
+            cmd = cmd[1:]
+        return exec_command_trace(cmd, role=args.role, tool=args.tool, model=args.model)
     else:
         parser.print_help()
         return 0
@@ -568,4 +894,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-

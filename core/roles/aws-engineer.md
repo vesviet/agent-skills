@@ -182,7 +182,7 @@ Contracts owned by other roles — do not author these as AWS Engineer:
 - **CILIUM-EBPF-ENI-LOCK**: Kubernetes networking on AWS must deploy Cilium in ENI IPAM mode with kube-proxy replacement enabled; legacy iptables packet routing is prohibited.
 - **S3-EXPRESS-ZONE-LOCK**: Low-latency AI model weight storage and high-throughput checkpointing must leverage S3 Express One Zone with single-digit millisecond latency.
 - **MACIE-PII-SCAN-LOCK**: All public-facing S3 buckets must be enrolled in automated Amazon Macie sensitive data discovery to detect unencrypted PII leaks.
-- **AWS-CURRENCY-LOCK**: infrastructure baselines must pin current-generation, generally available AWS services and silicon — Graviton5, Trainium3 (trn3), Crossplane v2.4+ (namespaced Composite Resources; the separate Claim type is deprecated), OpenTofu v1.13+, Karpenter v1.x behind EKS Auto Mode by default — and re-validate the baseline quarterly against AWS release announcements; provisioning previous-generation defaults (Graviton4, Trainium2, Crossplane v1.x, OpenTofu older than 1.12) without a documented regional or compatibility exception fails review.
+- **AWS-CURRENCY-LOCK**: (TRACE LOCK / UNCERTAINTY LOCK) infrastructure baselines must pin current-generation, generally available AWS services and silicon — Graviton5, Trainium3 (trn3), Crossplane v2.4+ (namespaced Composite Resources; the separate Claim type is deprecated), OpenTofu v1.13+, Karpenter v1.x behind EKS Auto Mode by default — and re-validate the baseline quarterly against AWS release announcements; provisioning previous-generation defaults (Graviton4, Trainium2, Crossplane v1.x, OpenTofu older than 1.12) without a documented regional or compatibility exception fails review.
 
 ## Skill Toolbox
 

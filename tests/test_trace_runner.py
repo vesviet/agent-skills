@@ -19,6 +19,7 @@ sys.modules["trace_runner"] = trace_module
 spec.loader.exec_module(trace_module)
 
 TraceRunner = trace_module.TraceRunner
+traced = trace_module.traced
 generate_trace_id = trace_module.generate_trace_id
 generate_span_id = trace_module.generate_span_id
 calculate_cost_usd = trace_module.calculate_cost_usd
@@ -107,8 +108,8 @@ class TestTraceRunnerSpanLifecycle:
         # Validate schema compliance for all generated spans
         if runner._validator:
             for span in runner.spans:
-                errors = list(runner._validator.iter_errors(span))
-                assert not errors, f"Span failed schema validation: {[e.message for e in errors]}"
+                valid, errors = runner.validate_span_schema(span)
+                assert valid, f"Span failed schema validation: {errors}"
 
     def test_span_error_handling(self):
         runner = TraceRunner(validate_schema=True)
@@ -127,6 +128,43 @@ class TestTraceRunnerSpanLifecycle:
         assert "Simulated tool error" in span["attributes"]["error_message"]
         assert span["attributes"]["error_type"] == "ValueError"
 
+    def test_traced_decorator(self):
+        @traced(role="technical-architect", operation="execute_tool", tool_name="compute_arch")
+        def sample_calculation(a: int, b: int) -> int:
+            return a + b
+
+        runner = TraceRunner(service_name="test-decorator", validate_schema=True)
+        with runner:
+            with runner.span(operation="invoke_agent", role="agent-coordinator"):
+                result = sample_calculation(10, 32)
+                assert result == 42
+
+        assert len(runner.spans) == 2
+        tool_span = runner.spans[0]
+        agent_span = runner.spans[1]
+
+        assert tool_span["operation"] == "execute_tool"
+        assert tool_span["role"] == "technical-architect"
+        assert tool_span["attributes"]["tool_name"] == "compute_arch"
+        assert tool_span["parent_span_id"] == agent_span["span_id"]
+
+    def test_otlp_json_export_structure(self):
+        runner = TraceRunner(service_name="test-otlp", validate_schema=False)
+        with runner.span(operation="invoke_agent", role="agent-coordinator", model="gpt-4o"):
+            with runner.span(operation="execute_tool", role="agent-coordinator", tool_name="test_tool"):
+                pass
+
+        otlp = runner.to_otlp_json()
+        assert "resourceSpans" in otlp
+        resource_spans = otlp["resourceSpans"]
+        assert len(resource_spans) == 1
+        scope_spans = resource_spans[0]["scopeSpans"][0]["spans"]
+        assert len(scope_spans) == 2
+
+        # Check attributes and traceId
+        assert scope_spans[0]["traceId"] == runner.trace_id
+        assert any(attr["key"] == "gen_ai.operation.name" for attr in scope_spans[0]["attributes"])
+
 
 class TestTraceRunnerCLI:
     """Validate CLI execution and commands."""
@@ -142,7 +180,6 @@ class TestTraceRunnerCLI:
         assert "AGENT TRACE RUNNER" in result.stdout
         assert "SUMMARY: 9 Spans" in result.stdout
 
-        # Extract trace_id from output
         lines = result.stdout.splitlines()
         trace_id = None
         for line in lines:
@@ -161,3 +198,66 @@ class TestTraceRunnerCLI:
         )
         assert val_result.returncode == 0
         assert "All 9 spans conform strictly to agent-trace-span schema Draft 2020-12" in val_result.stdout
+
+    def test_cli_stats(self):
+        result = subprocess.run(
+            [sys.executable, str(TRACE_RUNNER_PATH), "stats"],
+            capture_output=True,
+            text=True,
+            cwd=str(REPO_ROOT),
+        )
+        assert result.returncode == 0
+        assert "OBSERVABILITY & FINOPS DASHBOARD" in result.stdout
+        assert "FINOPS ATTRIBUTION BY ROLE:" in result.stdout
+        assert "MODEL DISTRIBUTION:" in result.stdout
+
+    def test_cli_exec(self):
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(TRACE_RUNNER_PATH),
+                "exec",
+                "--role",
+                "backend-developer",
+                "--tool",
+                "echo_test",
+                "--",
+                sys.executable,
+                "-c",
+                "print('hello trace runner')",
+            ],
+            capture_output=True,
+            text=True,
+            cwd=str(REPO_ROOT),
+        )
+        assert result.returncode == 0
+        assert "hello trace runner" in result.stdout
+        assert "AGENT TRACE RUNNER:" in result.stdout
+        assert "SUMMARY: 2 Spans" in result.stdout
+
+    def test_cli_export(self):
+        # Run demo first to ensure we have a fresh trace
+        demo_res = subprocess.run(
+            [sys.executable, str(TRACE_RUNNER_PATH), "demo"],
+            capture_output=True,
+            text=True,
+            cwd=str(REPO_ROOT),
+        )
+        lines = demo_res.stdout.splitlines()
+        trace_id = None
+        for line in lines:
+            if "AGENT TRACE RUNNER:" in line:
+                trace_id = line.split(":")[-1].strip()
+                break
+
+        assert trace_id is not None
+
+        exp_result = subprocess.run(
+            [sys.executable, str(TRACE_RUNNER_PATH), "export", trace_id, "--format", "otlp"],
+            capture_output=True,
+            text=True,
+            cwd=str(REPO_ROOT),
+        )
+        assert exp_result.returncode == 0
+        parsed = json.loads(exp_result.stdout)
+        assert "resourceSpans" in parsed
