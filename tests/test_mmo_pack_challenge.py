@@ -4,6 +4,7 @@ Validates: Manifest schema v2, README depth, MMO Campaign Lifecycle workflow,
 modernized MMO skills (<200 lines), fast aliases, contract schemas, and test suite zero-drift.
 """
 
+import copy
 import unittest
 from pathlib import Path
 import json
@@ -225,6 +226,76 @@ class TestMMOResearchPersistence(unittest.TestCase):
         self.assertIn("Cluster 3", text)
         self.assertIn("Cluster 4", text)
         self.assertIn("Cluster 5", text)
+
+
+class TestMMOCampaignSpecSchemaAdversarial(unittest.TestCase):
+    """Adversarial stress testing for mmo-campaign-spec.json schema."""
+
+    def setUp(self):
+        schema_path = SCHEMAS_DIR / "mmo-campaign-spec.json"
+        self.assertTrue(schema_path.exists())
+        self.schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        Draft202012Validator.check_schema(self.schema)
+        self.validator = Draft202012Validator(self.schema)
+        self.valid_payload = copy.deepcopy(self.schema["examples"][0])
+
+    def test_missing_top_level_and_nested_required_fields(self):
+        for field in self.schema.get("required", []):
+            corrupted = copy.deepcopy(self.valid_payload)
+            del corrupted[field]
+            self.assertGreater(len(list(self.validator.iter_errors(corrupted))), 0)
+
+        nested_checks = [
+            ("network_platform", "platform_name"),
+            ("tracking_architecture", "tracker_type"),
+            ("infrastructure_and_stealth", "proxy_type"),
+            ("budget_and_economics", "daily_ad_spend_cap"),
+            ("risk_and_guardrails", "review_system_lock"),
+        ]
+        for section, key in nested_checks:
+            corrupted = copy.deepcopy(self.valid_payload)
+            del corrupted[section][key]
+            self.assertGreater(len(list(self.validator.iter_errors(corrupted))), 0)
+
+    def test_invalid_consts_bounds_and_patterns(self):
+        corrupted = copy.deepcopy(self.valid_payload)
+        corrupted["risk_and_guardrails"]["review_system_lock"] = False
+        self.assertGreater(len(list(self.validator.iter_errors(corrupted))), 0)
+
+        corrupted_roas = copy.deepcopy(self.valid_payload)
+        corrupted_roas["budget_and_economics"]["target_blended_roas"] = 0.5
+        self.assertGreater(len(list(self.validator.iter_errors(corrupted_roas))), 0)
+
+        corrupted_id = copy.deepcopy(self.valid_payload)
+        corrupted_id["campaign_id"] = "INVALID_ID"
+        self.assertGreater(len(list(self.validator.iter_errors(corrupted_id))), 0)
+
+
+class TestMMOROIReportSchemaAdversarial(unittest.TestCase):
+    """Adversarial stress testing for mmo-roi-report.json schema."""
+
+    def setUp(self):
+        schema_path = SCHEMAS_DIR / "mmo-roi-report.json"
+        self.assertTrue(schema_path.exists())
+        self.schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        Draft202012Validator.check_schema(self.schema)
+        self.validator = Draft202012Validator(self.schema)
+        self.valid_payload = copy.deepcopy(self.schema["examples"][0])
+
+    def test_missing_fields_and_negative_metrics_rejected(self):
+        for field in self.schema.get("required", []):
+            corrupted = copy.deepcopy(self.valid_payload)
+            del corrupted[field]
+            self.assertGreater(len(list(self.validator.iter_errors(corrupted))), 0)
+
+        for key in ["proxy_bandwidth_cost", "ai_token_api_cost", "account_die_rate_amortized_cost"]:
+            corrupted = copy.deepcopy(self.valid_payload)
+            del corrupted["financial_metrics"]["operational_costs"][key]
+            self.assertGreater(len(list(self.validator.iter_errors(corrupted))), 0)
+
+        corrupted_die = copy.deepcopy(self.valid_payload)
+        corrupted_die["account_health_and_infra"]["die_rate_percentage"] = 110.0
+        self.assertGreater(len(list(self.validator.iter_errors(corrupted_die))), 0)
 
 
 if __name__ == "__main__":

@@ -518,6 +518,56 @@ class TestAdversarialEdgeCaseCoverage(unittest.TestCase):
             )
 
 
+class TestAISystemsModernization202610(unittest.TestCase):
+    """2026-10 AI Systems Engineer modernization gates (model lineage, engine currency, transport, context, evals)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.role = (ROLES_DIR / "ai-systems-engineer.md").read_text(encoding="utf-8")
+        cls.checklist = (ROLES_DIR / "references" / "ai-systems-engineer-review-checklist.md").read_text(encoding="utf-8")
+        cls.skill_vllm = (SKILLS_DIR / "ai" / "deploy-vllm-inference" / "SKILL.md").read_text(encoding="utf-8")
+        cls.skill_eval = (SKILLS_DIR / "ai-agent" / "agent-evaluation" / "SKILL.md").read_text(encoding="utf-8")
+        cls.skill_ctx = (SKILLS_DIR / "ai-agent" / "context-optimization" / "SKILL.md").read_text(encoding="utf-8")
+        cls.skill_risk = (SKILLS_DIR / "foundation" / "ai-risk-assessment" / "SKILL.md").read_text(encoding="utf-8")
+
+    def test_01_model_lineage_and_open_weights(self):
+        self.assertNotIn("Claude 3.5", self.role)
+        self.assertNotIn("GPT-4o", self.role)
+        self.assertNotIn("Claude 3.5", self.checklist)
+        self.assertNotIn("GPT-4o", self.checklist)
+        for model in ("Claude Opus 5.5", "GPT-6", "Gemini 4", "GLM-5", "DeepSeek-V4", "Qwen3.8", "gpt-oss", "DeepSeek-R1"):
+            self.assertIn(model, self.role, msg=f"missing model lineage pin: {model}")
+
+    def test_02_engine_currency_and_dra_ga(self):
+        self.assertIn("v0.32+", self.role)
+        self.assertIn("default since early 2025", self.role)
+        self.assertIn("v0.32+", self.skill_vllm)
+        self.assertIn("apiVersion: resource.k8s.io/v1", self.skill_vllm)
+        self.assertNotIn("apiVersion: resource.k8s.io/v1alpha3", self.skill_vllm)
+        self.assertIn("GA v1.34", self.role)
+        self.assertIn("KEDA-NOT-HPA", self.role)
+
+    def test_03_streamable_http_and_context_engineering(self):
+        self.assertIn("Streamable HTTP", self.role)
+        self.assertIn("2025-03-26", self.role)
+        self.assertNotIn("over Server-Sent Events (SSE) or stdio", self.role)
+        self.assertIn("Pillar 8: Context Engineering & Agent Memory (2026)", self.role)
+        for term in ("compaction", "Just-in-Time Retrieval", "context rot", "Sub-Agent Context Isolation", "CONTEXT-ENGINEERING-LOCK"):
+            self.assertIn(term, self.role)
+        self.assertIn("version: 2.0.0", self.skill_ctx)
+        self.assertIn("Anthropic-aligned", self.skill_ctx)
+
+    def test_04_eval_calibration_and_modernization_gates(self):
+        for term in ("τ²-bench", "Terminal-Bench 2.0", "pass^k"):
+            self.assertIn(term, self.role)
+            self.assertIn(term, self.skill_eval)
+        self.assertIn("### 16. 2026-10 Modernization Gates", self.checklist)
+        for gate in ("Model-Lineage Gate", "Engine-Currency Gate", "Transport Gate", "Context-Engineering Gate", "Eval-Calibration Gate"):
+            self.assertIn(gate, self.checklist)
+        self.assertIn("Article 50", self.skill_risk)
+        self.assertIn("2 August 2026", self.skill_risk)
+
+
 if __name__ == "__main__":
     unittest.main()
 

@@ -49,7 +49,7 @@ def compute_canonical_digest(raw_bytes: bytes) -> str:
 def collect_skills() -> list[dict[str, str]]:
     """Scan all 183 unique skills across core and overlays.
 
-    Overlay skills override core skills on name collision (e.g. reverse-engineer-binary).
+    Overlay skills override core skills on name collision.
     Returns skills sorted alphabetically by name.
     """
     skills_dict: dict[str, dict[str, str]] = {}
@@ -74,7 +74,7 @@ def collect_skills() -> list[dict[str, str]]:
             "digest": digest,
         }
 
-    # 2. Overlay skills (15 files) - overlays override core entries
+    # 2. Overlay skills (14 files) - overlays override core entries
     for s_file in sorted(ROOT.glob("overlays/*/skills/*/SKILL.md")):
         raw = s_file.read_bytes()
         digest = compute_canonical_digest(raw)

@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "contracts/schemas/seo-content-brief.json",
   "title": "SEO Content Brief",
   "description": "Pre-draft handoff from SEO Analyst to Content Writer. Produced by the optimize-seo skill. Validates against seo-analyst.md Output Template and Review Checklist.",

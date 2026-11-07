@@ -393,12 +393,17 @@ class TestTier2BoundaryAndCornerCases(unittest.TestCase):
         self.assertTrue(re.match(r"^sha256:[a-f0-9]{64}$", hash_lf))
 
     def test_t2_duplicate_skill_reverse_engineer_binary_resolution(self):
-        """T2.2: Verify duplicate reverse-engineer-binary is resolved with overlay overriding core."""
+        """T2.2: Verify reverse-engineer-binary resolves uniquely to core with zero core/overlay skill name collisions."""
         core_file = REPO_ROOT / "core" / "skills" / "security-data" / "reverse-engineer-binary" / "SKILL.md"
         overlay_file = REPO_ROOT / "overlays" / "security-research" / "skills" / "reverse-engineer-binary" / "SKILL.md"
 
-        self.assertTrue(core_file.is_file(), f"Core duplicate file missing: {core_file}")
-        self.assertTrue(overlay_file.is_file(), f"Overlay duplicate file missing: {overlay_file}")
+        self.assertTrue(core_file.is_file(), f"Core skill file missing: {core_file}")
+        self.assertFalse(overlay_file.is_file(), f"Duplicate overlay skill file must not exist: {overlay_file}")
+
+        # Verify zero duplicate skill names across core/skills and overlays/*/skills
+        core_names = {p.parent.name for p in (REPO_ROOT / "core" / "skills").glob("*/*/SKILL.md")}
+        overlay_names = {p.parent.name for p in REPO_ROOT.glob("overlays/*/skills/*/SKILL.md")}
+        self.assertEqual(core_names & overlay_names, set(), "Core and overlay skill names must be disjoint")
 
         manifest = load_json_file(INDEX_TIER1_PATH)
         matches = [s for s in manifest.get("skills", []) if s["name"] == "reverse-engineer-binary"]
@@ -406,19 +411,17 @@ class TestTier2BoundaryAndCornerCases(unittest.TestCase):
         self.assertEqual(len(matches), 1, "Exactly one reverse-engineer-binary entry must exist in manifest")
         reb_entry = matches[0]
 
-        # The overlay path must prevail over core path
         self.assertEqual(
             reb_entry["url"],
-            "overlays/security-research/skills/reverse-engineer-binary/SKILL.md",
-            "Overlay version must override core version for reverse-engineer-binary",
+            "core/skills/security-data/reverse-engineer-binary/SKILL.md",
+            "reverse-engineer-binary must resolve to canonical core skill path",
         )
 
-        # The digest must match the overlay asset
-        expected_digest = compute_normalized_sha256(overlay_file.read_bytes())
+        expected_digest = compute_normalized_sha256(core_file.read_bytes())
         self.assertEqual(
             reb_entry["digest"],
             expected_digest,
-            "Manifest digest for reverse-engineer-binary must match the overlay asset bytes",
+            "Manifest digest for reverse-engineer-binary must match the core asset bytes",
         )
 
     def test_t2_token_budget_and_footprint_threshold(self):
@@ -667,7 +670,7 @@ class TestTier4RealWorldAcceptanceScenarios(unittest.TestCase):
     def test_t4_validate_all_script_passes(self):
         """T4.3: Real-world acceptance: python core/scripts/validate-all.py passes with exit code 0."""
         result = subprocess.run(
-            [sys.executable, str(VALIDATE_ALL_SCRIPT)],
+            [sys.executable, str(VALIDATE_ALL_SCRIPT), "--parallel"],
             cwd=str(REPO_ROOT),
             capture_output=True,
             text=True,

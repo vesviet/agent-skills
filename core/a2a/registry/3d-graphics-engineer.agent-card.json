@@ -28,11 +28,33 @@
   ],
   "skills": [
     {
+      "id": "render-webgl-threejs",
+      "name": "Render Webgl Threejs",
+      "description": "Architect interactive WebGL2 and WebGPU 3D scenes using Three.js or React Three Fiber with compressed GLTF streaming, PBR materials, and post-processing pipelines. Use when building browser 3D games, WebGPU render loops, or EffectComposer pipelines.",
+      "tags": [
+        "gamedev",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
       "id": "debug-3d-scene",
       "name": "Debug 3D Scene",
-      "description": "Skill debug-3d-scene.",
+      "description": "Debug 3D scene behavior by tracing scene graph structure, transforms, raycasting, decals, materials, camera logic, render loops, and WebGL lifecycle issues. Use when a Three.js, React Three Fiber, WebGL, or WebGPU scene has rendering bugs, interaction bugs, clipping problems, context instability, or suspicious visual math.",
       "tags": [
-        "pack",
+        "overlay/r3f-stack",
         "pack"
       ],
       "inputModes": [
@@ -52,9 +74,9 @@
     {
       "id": "integrate-r3f-three-legacy",
       "name": "Integrate R3F Three Legacy",
-      "description": "Skill integrate-r3f-three-legacy.",
+      "description": "Integrate or migrate between React Three Fiber and legacy imperative Three.js code by controlling scene ownership, render loops, loaders, interaction state, and cleanup boundaries. Use when a 3D web app mixes R3F with older Three.js modules, global bridge state, or imperative scene utilities and needs safe coexistence or staged migration.",
       "tags": [
-        "pack",
+        "overlay/r3f-stack",
         "pack"
       ],
       "inputModes": [
@@ -74,9 +96,9 @@
     {
       "id": "optimize-3d-assets",
       "name": "Optimize 3D Assets",
-      "description": "Skill optimize-3d-assets.",
+      "description": "Optimize 3D assets and rendering inputs by reviewing model formats, geometry density, texture memory, material strategy, compression, and loading behavior. Use when a 3D web experience suffers from heavy OBJ/GLTF assets, texture bloat, long load times, frame drops, or unnecessary GPU and memory pressure.",
       "tags": [
-        "pack",
+        "overlay/r3f-stack",
         "pack"
       ],
       "inputModes": [

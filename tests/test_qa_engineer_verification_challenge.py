@@ -528,5 +528,36 @@ class TestQAEngineerAgentCardAndRegistry(unittest.TestCase):
         self.assertEqual(aliases.get("test-engineer"), "qa-engineer", "@test-engineer alias must resolve to qa-engineer")
 
 
+class TestQAEngineerModernization202610(unittest.TestCase):
+    """2026-10 QA Engineer / SDET modernization gates (Go 1.27+, PostgreSQL 18, Playwright v1.64+, official ASI titles)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.role = (ROLES_DIR / "qa-engineer.md").read_text(encoding="utf-8")
+        cls.sdet = (ROLES_DIR / "sdet.md").read_text(encoding="utf-8")
+        cls.checklist = (ROLES_DIR / "references" / "qa-engineer-review-checklist.md").read_text(encoding="utf-8")
+        cls.skill = (SKILLS_DIR / "foundation" / "write-tests" / "SKILL.md").read_text(encoding="utf-8")
+
+    def test_01_stack_and_playwright_currency(self):
+        for text in (self.role, self.checklist, self.skill):
+            self.assertIn("Go 1.27+", text)
+            self.assertNotIn("Go 1.25", text)
+            self.assertIn("PostgreSQL 18", text)
+            self.assertNotIn("PostgreSQL 16", text)
+        for text in (self.role, self.checklist):
+            self.assertIn("Playwright v1.64+", text)
+            self.assertNotIn("Playwright v1.48", text)
+
+    def test_02_write_tests_asi_titles_and_checklist_gates(self):
+        for title in ("ASI01 Agent Goal Hijack", "ASI04 Agentic Supply Chain", "ASI05 Unexpected Code Execution", "ASI07 Insecure Inter-Agent Communication"):
+            self.assertIn(title, self.skill)
+        self.assertIn("### 14. 2026-10 Modernization Gates", self.checklist)
+        for gate in ("Stack-Currency Gate", "Playwright-Currency Gate", "Toolchain-Alignment Gate"):
+            self.assertIn(gate, self.checklist)
+        self.assertNotIn("Go 1.25", self.sdet)
+        self.assertNotIn("PostgreSQL 16", self.sdet)
+        self.assertNotIn("Playwright v1.48", self.sdet)
+
+
 if __name__ == "__main__":
     unittest.main()

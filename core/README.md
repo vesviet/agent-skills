@@ -2,7 +2,7 @@
 
 This directory is the portable source of truth for the global engineering pack.
 
-> **Core Catalog**: **39 Roles** | **168 Portable Core Skills** (across 22 categories) | **25 Workflows** | **60 Data Contract Schemas**  
+> **Core Catalog**: **39 Roles** | **169 Portable Core Skills** (across 22 categories) | **25 Workflows** | **63 Data Contract Schemas**  
 > **Master Index & Discovery**: [`INDEX.md`](../INDEX.md) | **Machine Registry**: [`a2a/.well-known/role-skill-index.json`](a2a/.well-known/role-skill-index.json)  
 > **Authoritative SOTA Audit**: [`reports/role-skill-matrix-sota-audit-2026-2027.md`](../reports/role-skill-matrix-sota-audit-2026-2027.md)
 
@@ -18,13 +18,13 @@ Everything in `core/` satisfies these invariants:
 
 - [rules](rules/README.md): global always-on engineering rules and code guidelines
 - [roles](roles/README.md): 39 principal-level role definitions with 39 dedicated review checklists
-- [skills](skills/README.md): 168 portable skills across 22 categories
+- [skills](skills/README.md): 169 portable skills across 22 categories
 - [workflows](workflows/README.md): 25 end-to-end multi-agent operating procedures
-- [contracts](contracts/README.md): 60 JSON Schema Draft 2020-12 data contract specifications
+- [contracts](contracts/README.md): 63 JSON Schema Draft 2020-12 data contract specifications
 - [policies](policies/README.md): machine-readable action boundaries and data classification
 - [a2a](a2a/README.md): Agent-to-Agent 1.0 JSON-RPC/SSE protocol and agent registry
 - [prompts](prompts/README.md): prompt engineering assets and PromptOps evals
-- [scripts](scripts/README.md): 18 automated core validators and registry generators
+- [scripts](scripts/README.md): 21 automated core validators and registry generators
 - [config](config/README.md): optional environment helpers
 - [adapter-parity](adapter-parity.md): multi-agent adapter parity tracking
 

@@ -2,9 +2,9 @@
 
 This guide defines the contribution standards and verification protocols for the `agent-skills` engineering pack.
 
-The pack operates at SOTA 2026–2027 standards with **39 Roles**, **183 Skills** (168 portable core + 15 overlays across 22 categories), **25 Workflows**, **60 JSON Contract Schemas**, **39 Dedicated Review Checklists** (in `core/roles/references/`), **17 Packs**, **21 Overlays**, and **19 Core Pack Validators**. It is engineered for autonomous multi-agent swarms, native A2A 1.0 (JSON-RPC 2.0 / SSE) orchestration, and runtime adapters including Google Antigravity (AGY).
+The pack operates at SOTA 2026–2027 standards with **39 Roles**, **183 Skills** (169 portable core + 14 overlays across 22 categories), **25 Workflows**, **63 JSON Contract Schemas**, **39 Dedicated Review Checklists** (in `core/roles/references/`), **17 Packs**, **21 Overlays**, and **21 Core Pack Validators**. It is engineered for autonomous multi-agent swarms, native A2A 1.0 (JSON-RPC 2.0 / SSE) orchestration, and runtime adapters including Google Antigravity (AGY).
 
-Every component has a strict structural standard, non-negotiable architectural guardrail locks, and automated validators. **Changes are not complete until all 18 core validators pass and dual indexes are synchronized with zero drift.**
+Every component has a strict structural standard, non-negotiable architectural guardrail locks, and automated validators. **Changes are not complete until all 21 core validators pass and dual indexes are synchronized with zero drift.**
 
 ---
 
@@ -24,10 +24,10 @@ Every component has a strict structural standard, non-negotiable architectural g
 | **Golden Prompt Evals** | `core/prompts/README.md` | `validate-golden-evals.py` | Valid `manifest.yaml`, $\ge 10$ case pairs (`cases/`), rubric-based expected outputs |
 | **Platform Challenge** | `tests/test_*_platform_challenge.py` | `python -m unittest tests/test_<name>.py` | Empirical verification of SOTA 2026–2027 invariants, locks, and DoD |
 
-Run all 18 core validators and check index synchronization:
+Run all 21 core validators and check index synchronization:
 
 ```bash
-# Run all 18 core pack validators
+# Run all 21 core pack validators
 python core/scripts/validate-all.py
 
 # Check index synchronization across INDEX.md and role-skill indices
@@ -336,7 +336,7 @@ Golden prompt evaluations ensure agent instructions produce deterministic, high-
 
 ---
 
-## The 18 Core Pack Validators
+## The 21 Core Pack Validators
 
 All changes are validated by the centralized test runner `core/scripts/validate-all.py`:
 
@@ -353,17 +353,20 @@ python core/scripts/validate-all.py [--parallel] [--fail-fast] [--format text|js
 | 5 | `validate-packs.py` | Enforces pack manifest integrity, overlays, and skill lists across all 17 packs. |
 | 6 | `validate-overlays.py` | Enforces overlay README, rules, skills, and dependencies across all 21 overlays. |
 | 7 | `validate-2026-compliance.py` | Enforces A2A/contract coverage, coordinator wiring, full policy coverage, and graph orchestration. |
-| 8 | `validate-contracts.py` | Validates all 60 JSON schemas against Draft 2020-12 and tests bundled examples. |
+| 8 | `validate-contracts.py` | Validates all 63 JSON schemas against Draft 2020-12 and tests bundled examples. |
 | 9 | `validate-a2a-compliance.py` | Enforces A2A 1.0 JSON-RPC 2.0 / SSE compliance and Antigravity adapter alignment. |
 | 10 | `validate-agent-cards.py` | Validates agent cards in `core/a2a/registry/` and `.well-known/agent-registry.json`. |
 | 11 | `validate-standardization.py` | Validates $\ge 90\%$ standardization target, adapter mentions, and orphan agent skills check. |
-| 12 | `validate-version-sync.py` | Validates consistent semantic version across 7 authoritative repository files. |
+| 12 | `validate-version-sync.py` | Validates consistent semantic version across authoritative repository files. |
 | 13 | `validate-indexes.py` | Validates exact count parity between disk and documentation for roles, skills, workflows, schemas, and packs. |
 | 14 | `validate-policy-consistency.py` | Validates `action-boundaries.yaml` against role files, MCP tool map, and irreversible-action gates. |
-| 15 | `validate-skill-ownership.py` | Validates exactly one Primary owner per core skill, zero duplicate ownership, and workflow step role resolution. |
-| 16 | `validate-contract-coverage.py` | Validates that all contracts emitted by roles or skills exist and match schema definitions. |
-| 17 | `validate-golden-evals.py` | Validates golden prompt test cases, manifests, and rubric definitions across all prompt assets. |
-| 18 | `validate-thirdparty-skills.py` | Validates zero-execution static AST security vetting and third-party skill provenance (OWASP AST01-AST10). |
+| 15 | `validate-skill-ownership.py` | Validates Primary owner coverage for every core skill, zero duplicate Primary/Supporting entries, and workflow step role resolution. |
+| 16 | `validate-skill-sections.py` | Validates mandatory skill sections (`Failure Modes`, `Output Contracts`, `Security Guardrails (OWASP ASI)`). |
+| 17 | `validate-contract-coverage.py` | Validates that all contracts emitted by roles or skills exist and match schema definitions. |
+| 18 | `validate-golden-evals.py` | Validates golden prompt test cases, manifests, and rubric definitions across all prompt assets. |
+| 19 | `validate-thirdparty-skills.py` | Validates zero-execution static AST security vetting and third-party skill provenance (OWASP AST01-AST10). |
+| 20 | `validate-skill-security.py` | Validates skill scripts and manifests against the OWASP AST10 lethal trifecta and static security rules. |
+| 21 | `validate-discovery-manifests.py` | Validates `/auth.md`, `INDEX_TIER1.json`, and discovery manifests across the repository. |
 
 ---
 

@@ -158,6 +158,7 @@ Contracts owned by other roles — do not author these as 3D Graphics Engineer:
 
 ### Primary Skills
 
+- `render-webgl-threejs`
 - `debug-3d-scene`
 - `integrate-r3f-three-legacy`
 - `optimize-3d-assets`
@@ -302,6 +303,7 @@ See [references/3d-graphics-engineer-review-checklist.md](references/3d-graphics
 
 | Overlay | When |
 | ------- | ---- |
+| overlays/r3f-stack | React Three Fiber, Three.js, WebGL/WebGPU scenes, shaders, and asset optimization |
 | overlays/obj-configurator | OBJ/GLTF configurator features and scene conventions |
 | overlays/ui-design-system | When 3D is embedded in a flow that uses UX spec handoff |
 

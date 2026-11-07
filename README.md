@@ -2,7 +2,7 @@
 
 **Version 5.8.0** · Portable engineering standards, principal-level agent roles, modular skills, structured data contracts, and end-to-end workflows for AI coding assistants and autonomous multi-agent swarms.
 
-> **Catalog**: **39 Roles** · **183 Skills** (168 Core + 15 Overlays) · **25 Workflows** · **60 JSON Schemas** · **17 Team Packs** · **21 Overlays**  
+> **Catalog**: **39 Roles** · **183 Skills** (169 Core + 14 Overlays) · **25 Workflows** · **63 JSON Schemas** · **17 Team Packs** · **21 Overlays**  
 > **Navigation**: [Master Index (`INDEX.md`)](INDEX.md) · [Machine Registry (`role-skill-index.json`)](core/a2a/.well-known/role-skill-index.json) · [Contributing Guide](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
 ---
@@ -12,7 +12,7 @@
 Modern AI-assisted engineering shifts from ad-hoc prompting to **Context Engineering**, **PromptOps**, and **Autonomous Multi-Agent Swarms**:
 
 - **Strict Role & Skill Boundaries**: 39 specialized roles with enforced Primary/Supporting Skill Toolboxes, architectural `*-LOCK` guardrails, and dedicated review checklists.
-- **Contract-First Handoffs (A2A 1.0)**: Native Agent-to-Agent (JSON-RPC 2.0 / SSE) discovery and handoffs validated against 60 JSON Schema (Draft 2020-12) contracts.
+- **Contract-First Handoffs (A2A 1.0)**: Native Agent-to-Agent (JSON-RPC 2.0 / SSE) discovery and handoffs validated against 63 JSON Schema (Draft 2020-12) contracts.
 - **Fail-Closed Policy Governance**: Machine-readable action boundaries (`core/policies/action-boundaries.yaml`), data classification, and OWASP ASI01–ASI10 guardrails.
 - **Portable Core + Modular Overlays**: Keep `core/` 100% stack- and brand-agnostic while layering project- or domain-specific rules via `overlays/` and `packs/`.
 
@@ -59,20 +59,20 @@ git submodule add <repo-url> agent-skills
 |---|---|---|
 | [`core/rules/`](core/rules/README.md) | Always-on engineering rules, code standards, and commit/release safety gates | [Rules Guide](core/rules/README.md) |
 | [`core/roles/`](core/roles/README.md) | 39 principal-level role definitions and 39 dedicated review checklists | [Roles Catalog](core/roles/README.md) |
-| [`core/skills/`](core/skills/README.md) | 168 portable core skills organized across 22 engineering & domain categories | [Skills Inventory](core/skills/README.md) |
+| [`core/skills/`](core/skills/README.md) | 169 portable core skills organized across 22 engineering & domain categories | [Skills Inventory](core/skills/README.md) |
 | [`core/workflows/`](core/workflows/README.md) | 25 multi-step, role-tagged standard operating procedures | [Workflows Index](core/workflows/README.md) |
-| [`core/contracts/`](core/contracts/README.md) | 60 JSON Schema (Draft 2020-12) specifications for structured agent outputs | [Contracts Catalog](core/contracts/README.md) |
+| [`core/contracts/`](core/contracts/README.md) | 63 JSON Schema (Draft 2020-12) specifications for structured agent outputs | [Contracts Catalog](core/contracts/README.md) |
 | [`core/policies/`](core/policies/README.md) | Zero-trust action boundaries, data classification, and execution sandbox specs | [Policies Guide](core/policies/README.md) |
 | [`core/a2a/`](core/a2a/README.md) | A2A 1.0 JSON-RPC/SSE protocol specs, `.well-known` discovery, and 39 Agent Cards | [A2A Architecture](core/a2a/README.md) |
 | [`core/prompts/`](core/prompts/README.md) | Golden prompt evaluation suites and PromptOps lifecycle assets | [PromptOps Guide](core/prompts/README.md) |
-| [`overlays/`](overlays/README.md) | 21 optional stack, project, and domain extensions (15 overlay skills) | [Overlays Index](overlays/README.md) |
+| [`overlays/`](overlays/README.md) | 21 optional stack, project, and domain extensions (14 overlay skills) | [Overlays Index](overlays/README.md) |
 | [`packs/`](packs/README.md) | 17 ready-to-deploy team manifests combining `core/` with targeted `overlays/` | [Team Packs](packs/README.md) |
 
 ---
 
 ## Core Catalog Overview
 
-### 1. Skills by Domain (183 Total: 168 Core + 15 Overlays)
+### 1. Skills by Domain (183 Total: 169 Core + 14 Overlays)
 
 Full searchable inventory: [`core/skills/README.md`](core/skills/README.md)
 
@@ -80,7 +80,7 @@ Full searchable inventory: [`core/skills/README.md`](core/skills/README.md)
 |---|---|
 | **Agent & AI Systems** | **`agent`** (24), **`ai`** (1), **`ai-agent`** (3) — A2A 1.0 protocol, graph orchestration, context compaction, semantic memory, MCP server architecture, vLLM v1 inference (`deploy-vllm-inference`) |
 | **Software Engineering** | **`foundation`** (22), **`backend`** (8), **`frontend`** (16), **`mobile`** (4), **`repo-ops`** (5) — API endpoints, auth, Postgres optimization, UI components, design systems, systematic debugging, code/service review |
-| **Cloud & Platform** | **`platform`** (18), **`security-data`** (10) — AWS OpenTofu/Crossplane (`aws-infrastructure`), EKS Karpenter (`deploy-aws-eks-workloads`), Cloudflare Workers/DO, GPU FinOps, LLM gateway, OWASP ASI security audits |
+| **Cloud & Platform** | **`platform`** (18), **`security-data`** (11) — AWS OpenTofu/Crossplane (`aws-infrastructure`), EKS Karpenter (`deploy-aws-eks-workloads`), Cloudflare Workers/DO, GPU FinOps, LLM gateway, OWASP ASI security audits |
 | **Product, Business & QA** | **`product`** (4), **`business`** (3), **`meetings-analysis`** (5) — RICE/WSJF roadmaps, SaaS metrics, BABOK requirements elicitation, story mapping, 6-round panel reviews |
 | **Specialized Verticals** | **`gamedev`** (20), **`commerce`** (6), **`content`** (6), **`seo`** (2), **`mmo`** (8), **`legal-compliance`** (3), **`education`** (5), **`document`** (4), **`documentation`** (3) |
 
@@ -112,14 +112,14 @@ Full overlay documentation: [`overlays/README.md`](overlays/README.md)
 Run the automated validation suite after modifying rules, roles, skills, workflows, schemas, or overlays:
 
 ```bash
-# Run all 18 core pack validators (rules, skills, roles, workflows, packs, overlays, A2A, schemas, policies, indexes)
+# Run all 21 core pack validators (rules, skills, roles, workflows, packs, overlays, A2A, schemas, policies, indexes, discovery)
 python3 core/scripts/validate-all.py
 
 # Regenerate A2A Agent Cards and Master Index after role or version updates
 python3 core/scripts/generate-a2a-registry.py
 python3 core/scripts/generate-index.py --check
 
-# Run the empirical pytest challenge suite (700 tests)
+# Run the empirical pytest challenge suite
 pytest tests/ -q
 ```
 

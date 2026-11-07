@@ -25,7 +25,8 @@ Phase 6 release: Automated Testing, Golden Evals & Release Cut — expansion of 
 - Clean pass for `python learn/tests/verify_knowledge_base_sota.py` (6/6 checks).
 
 ### Release Cut & Version Synchronization
-- Atomic version bump to `5.8.0` across `VERSION`, `package.json`, `INDEX.md`, `README.md`, `pyproject.toml`, and all pinned config files (`adapters/antigravity/a2a-config.template.yaml`, `adapters/claude/CLAUDE_ADAPTER.md`, `AGENTS.md`, `USER_GUIDE_v2.md`, `CLAUDE.md`, `.cursorrules`, `core/codex/.a2a-config.json`).
+- Atomic version bump to `5.8.0` across `VERSION`, `package.json`, `INDEX.md`, `README.md`, `PACK_STATUS.md`, `pyproject.toml`, and all pinned config files (`adapters/antigravity/a2a-config.template.yaml`, `adapters/claude/CLAUDE_ADAPTER.md`, `AGENTS.md`, `USER_GUIDE_v2.md`, `CLAUDE.md`, `.cursorrules`, `core/codex/.a2a-config.json`).
+- Eliminated duplicate `reverse-engineer-binary` overlay collision (`169 Core + 14 Overlays = 183 unique skills`), decoupled `3d-graphics-engineer` from overlay-only primary skills (`render-webgl-threejs`), upgraded all 63 JSON Schemas to Draft 2020-12 with 100% unit/adversarial test coverage, and consolidated `tests/` from 51 down to 32 canonical pytest suites.
 - Regenerated machine registries via `python core/scripts/generate-a2a-registry.py` updating 39 agent cards, `agent-registry.json`, `agent-card.json`, `ai-catalog.json`, and `capability-role-map.generated.yaml`.
 - Verified zero drift with `python core/scripts/validate-version-sync.py` (exit code 0).
 

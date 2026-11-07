@@ -1034,9 +1034,9 @@
     {
       "name": "reverse-engineer-binary",
       "type": "skill-md",
-      "description": "Use when deconstructing compiled binaries, Electron bundles, and firmware images in air-gapped sa...",
-      "url": "overlays/security-research/skills/reverse-engineer-binary/SKILL.md",
-      "digest": "sha256:7eedb2dfee31c97ca6964092f8f0fcabf14c6adf324635fc8701637089d8be2d"
+      "description": "Deconstruct compiled binaries, proprietary protocols, and obfuscated bytecode in air-gapped sandb...",
+      "url": "core/skills/security-data/reverse-engineer-binary/SKILL.md",
+      "digest": "sha256:5d210bfa125b06e2223f4b4ce502fa6a3db60569aae8e014837f3f4e6b74db95"
     },
     {
       "name": "review-code",

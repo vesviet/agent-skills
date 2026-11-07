@@ -27,10 +27,27 @@ from typing import Any, Callable
 from dateutil import parser
 import jsonschema
 from jsonschema import Draft202012Validator
+from referencing import Registry, Resource
+from referencing.jsonschema import DRAFT202012
 
 
 ROOT = Path(__file__).resolve().parent.parent
 SCHEMAS_DIR = ROOT / "core" / "contracts" / "schemas"
+
+
+def build_schema_registry() -> Registry:
+    resources = []
+    for p in sorted(SCHEMAS_DIR.glob("*.json")):
+        data = json.loads(p.read_text(encoding="utf-8"))
+        res = Resource.from_contents(data, default_specification=DRAFT202012)
+        resources.append((p.name, res))
+        resources.append((f"pack://agent-skills/core/contracts/schemas/{p.name}", res))
+        if "$id" in data:
+            resources.append((data["$id"], res))
+    return Registry().with_resources(resources)
+
+
+SCHEMA_REGISTRY = build_schema_registry()
 
 
 def build_format_checker() -> jsonschema.FormatChecker:
@@ -56,7 +73,12 @@ def load_schema(schema_name: str) -> tuple[dict, Draft202012Validator]:
     path = SCHEMAS_DIR / schema_name
     assert path.is_file(), f"Schema file not found: {path}"
     schema_dict = json.loads(path.read_text(encoding="utf-8"))
-    validator = Draft202012Validator(schema_dict, format_checker=FORMAT_CHECKER)
+    Draft202012Validator.check_schema(schema_dict)
+    validator = Draft202012Validator(
+        schema_dict,
+        format_checker=FORMAT_CHECKER,
+        registry=SCHEMA_REGISTRY,
+    )
     return schema_dict, validator
 
 
@@ -581,7 +603,56 @@ def test_deep_edge_case_attacks():
     assert len(validate_payload(v_asmt, mut_float_interval)) > 0, "Float in current_interval_days must fail integer schema"
 
 
+def test_all_63_contract_schemas_comprehensive_coverage() -> None:
+    """Empirically verify all 63 JSON Schemas in core/contracts/schemas/*.json (Draft 2020-12, examples, and negative mutations)."""
+    schema_files = sorted(SCHEMAS_DIR.glob("*.json"))
+    assert len(schema_files) == 63, f"Expected 63 JSON schemas in {SCHEMAS_DIR}, found {len(schema_files)}"
+
+    for schema_path in schema_files:
+        schema_name = schema_path.name
+        schema, validator = load_schema(schema_name)
+
+        # 1. Meta-schema & structural headers
+        assert schema.get("$schema") == "https://json-schema.org/draft/2020-12/schema", (
+            f"{schema_name}: invalid $schema {schema.get('$schema')!r}"
+        )
+        assert schema.get("title"), f"{schema_name}: missing non-empty 'title'"
+        assert schema.get("type") == "object", f"{schema_name}: root 'type' must be 'object'"
+
+        required_fields = schema.get("required", [])
+        properties = schema.get("properties", {})
+        for req_field in required_fields:
+            assert req_field in properties, f"{schema_name}: required field '{req_field}' missing from properties"
+
+        # 2. Bundled examples validation & adversarial negative mutations
+        examples = schema.get("examples", [])
+        for idx, example in enumerate(examples):
+            errs = validate_payload(validator, example)
+            assert len(errs) == 0, f"{schema_name} example[{idx}] failed validation: {errs}"
+
+            # Negative test A: omitting each top-level required field must fail validation
+            for req_field in required_fields:
+                if req_field in example:
+                    corrupted = copy.deepcopy(example)
+                    del corrupted[req_field]
+                    neg_errs = validate_payload(validator, corrupted)
+                    assert len(neg_errs) > 0, (
+                        f"{schema_name}: omitting required field '{req_field}' from example[{idx}] did not fail validation"
+                    )
+
+            # Negative test B: corrupting contract_type discriminator must fail validation
+            ct_prop = properties.get("contract_type", {})
+            if "const" in ct_prop or "enum" in ct_prop:
+                corrupted_ct = copy.deepcopy(example)
+                corrupted_ct["contract_type"] = "__invalid_contract_discriminator__"
+                ct_errs = validate_payload(validator, corrupted_ct)
+                assert len(ct_errs) > 0, (
+                    f"{schema_name}: invalid contract_type discriminator in example[{idx}] was not rejected"
+                )
+
+
 ALL_TESTS: list[tuple[str, Callable[[], None]]] = [
+    ("all 63 contract schemas: meta-schema, examples, and adversarial mutations", test_all_63_contract_schemas_comprehensive_coverage),
     ("period-end-closing-report: valid bundled example", test_period_end_closing_report_valid_example),
     ("period-end-closing-report: missing required fields", test_period_end_closing_report_missing_required),
     ("period-end-closing-report: invalid enums", test_period_end_closing_report_invalid_enums),

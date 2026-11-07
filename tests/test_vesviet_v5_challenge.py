@@ -4,6 +4,7 @@ Author: challenger_authority_1 (teamwork_preview_challenger)
 Target: packs/hugo-authority-team, overlays/hugo-authority-content, live Hugo twin sites
 """
 
+import copy
 import os
 import re
 import glob
@@ -493,6 +494,45 @@ class TestGovernanceAndContractDefects(unittest.TestCase):
         self.assertIn("deploying-astro-on-cloudflare-full-stack-edge-architecture.md", topology_rule_path)
         # README table replaced deploying-astro with conceptual series/ebpf/_index.md
         self.assertIn("series/ebpf/_index.md", readme_path)
+
+
+# ==============================================================================
+# CHALLENGE 6: 100-ROUND DEEP RESEARCH PROTOCOL & DUAL AUDIT BOUNDARIES
+# ==============================================================================
+
+class TestDeepResearchProtocolAndDualAuditBoundaries(unittest.TestCase):
+    """Verifies the 100-Round Deep Research Protocol, A2A contract boundaries, and Dual Audit Stream isolation."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.manifest = yaml.safe_load(MANIFEST_PATH.read_text(encoding="utf-8"))
+        cls.wf_pack_text = (AUTHORITY_PACK_DIR / "workflows" / "article-creation-and-upgrade-lifecycle.md").read_text(encoding="utf-8")
+        cls.wf_overlay_text = (HUGO_OVERLAY_DIR / "workflows" / "article-creation-and-upgrade-lifecycle.md").read_text(encoding="utf-8")
+
+    def test_manifest_and_workflow_cluster_breakdown_integrity(self):
+        proto = self.manifest.get("deep_research_protocol", {})
+        self.assertEqual(proto.get("rounds"), 100)
+        self.assertEqual(proto.get("clusters"), 5)
+        self.assertEqual(proto.get("rounds_per_cluster"), 20)
+        self.assertTrue(proto.get("mandatory_before_action"))
+        breakdown = proto.get("cluster_breakdown", {})
+        self.assertEqual(len(breakdown), 5)
+
+        for wf_text in [self.wf_pack_text, self.wf_overlay_text]:
+            for idx in range(1, 6):
+                self.assertIn(f"Cluster {idx}", wf_text)
+
+    def test_explicit_negative_boundaries_and_dual_signoff(self):
+        self.assertIn("Negative Boundary**: `@content-manager` does NOT", self.wf_pack_text)
+        self.assertIn("Negative Boundary**: `@technical-writer` does NOT", self.wf_pack_text)
+        self.assertIn("Negative Boundary**: `@seo-analyst` does NOT", self.wf_pack_text)
+        self.assertIn("`@content-writer` Does NOT", self.wf_pack_text)
+
+    def test_seo_audit_report_bundled_example_validates(self):
+        schema_path = PROJECT_ROOT / "core" / "contracts" / "schemas" / "seo-audit-report.json"
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        bundled_example = schema["examples"][0]
+        jsonschema.validate(instance=bundled_example, schema=schema)
 
 
 if __name__ == "__main__":

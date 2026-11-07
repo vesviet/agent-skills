@@ -72,7 +72,9 @@ def parse_mission(body: str) -> str:
 
 def skill_description(skill_id: str) -> str:
     """Look up the skill description from SKILL.md frontmatter."""
-    for skill_path in SKILLS_ROOT.glob(f"*/{skill_id}/SKILL.md"):
+    for skill_path in list(SKILLS_ROOT.glob(f"*/{skill_id}/SKILL.md")) + list(
+        ROOT.glob(f"overlays/*/skills/{skill_id}/SKILL.md")
+    ):
         metadata, _body, _errors = parse_frontmatter(skill_path.read_text(encoding="utf-8"))
         desc = metadata.get("description", "")
         if desc:
@@ -84,6 +86,8 @@ def skill_category(skill_id: str) -> str:
     """Return the taxonomy category folder for a skill."""
     for skill_path in SKILLS_ROOT.glob(f"*/{skill_id}/SKILL.md"):
         return CANONICAL_TAGS.get(skill_path.parent.parent.name, "pack")
+    for skill_path in ROOT.glob(f"overlays/*/skills/{skill_id}/SKILL.md"):
+        return f"overlay/{skill_path.parent.parent.parent.name}"
     return "pack"
 
 

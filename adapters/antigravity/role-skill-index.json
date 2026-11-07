@@ -1477,6 +1477,7 @@
       "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGPU/WebGL implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility. In 2026–2027, this mandates WebGPU-first architectures with WebGL2 fallback, WGSL (WebGPU Shading Language) compute shader pipelines, Three.js WebGPURenderer / TSL (Three Shading Language), 3D Gaussian Splatting (3DGS) real-time rasterization within strict VRAM ceilings ($VRAM_{\\text{textures}} = \\sum (W_i \\times H_i \\times Bpp_i \\times 1.333)$), Meshopt/Draco asset delivery ($\\le 2\\text{MB}$ payload), and governing AI-generated 3D assets with automated memory and fidelity gates.",
       "file": "core/roles/3d-graphics-engineer.md",
       "skills": [
+        "render-webgl-threejs",
         "debug-3d-scene",
         "integrate-r3f-three-legacy",
         "optimize-3d-assets",
@@ -1490,6 +1491,7 @@
         "agent-delegation"
       ],
       "primary_skills": [
+        "render-webgl-threejs",
         "debug-3d-scene",
         "integrate-r3f-three-legacy",
         "optimize-3d-assets"
@@ -4246,10 +4248,10 @@
     },
     "reverse-engineer-binary": {
       "name": "reverse-engineer-binary",
-      "category": "overlay/security-research",
-      "type": "overlay",
-      "file": "overlays/security-research/skills/reverse-engineer-binary/SKILL.md",
-      "description": "Use when deconstructing compiled binaries, Electron bundles, and firmware images in air-gapped sandboxes to produce structured REA evidence ledgers."
+      "category": "security-data",
+      "type": "core",
+      "file": "core/skills/security-data/reverse-engineer-binary/SKILL.md",
+      "description": "Deconstruct compiled binaries, proprietary protocols, and obfuscated bytecode in air-gapped sandboxes to recover logic, discover vulnerabilities, and produce verifiable REA evidence ledgers. Use when analyzing untrusted binaries, auditing closed-source dependencies, inspecting firmware, or reverse engineering protocols."
     },
     "security-audit": {
       "name": "security-audit",

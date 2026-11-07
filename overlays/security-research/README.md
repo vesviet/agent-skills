@@ -16,7 +16,7 @@ This overlay establishes strict ethical and legal boundaries, Tier 2/3 sandbox c
 ## Included
 
 - `rules/reverse-engineering-rules.md` — Ethical boundaries, sandbox containment, and evidence logging rules
-- `skills/reverse-engineer-binary/SKILL.md` — Binary disassembly, decompilation, and REA ledger skill
+- Uses core skill `core/skills/security-data/reverse-engineer-binary/SKILL.md` — Binary disassembly, decompilation, and REA ledger skill
 
 ## Activation
 

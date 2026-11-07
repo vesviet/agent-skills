@@ -434,5 +434,55 @@ class TestAWSEngineerAgentCardAndRegistry(unittest.TestCase):
             self.assertEqual(skill_aliases.get("aws_infrastructure"), ["aws-infrastructure"])
 
 
+class TestAWSEngineerModernization202610(unittest.TestCase):
+    """2026-10 AWS Engineer modernization gates (Graviton5, Trainium3, OpenTofu 1.13+, Crossplane 2.4+, EKS Auto Mode, AgentCore, DSQL)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.role = (ROLES_DIR / "aws-engineer.md").read_text(encoding="utf-8")
+        cls.checklist = (ROLES_DIR / "references" / "aws-engineer-review-checklist.md").read_text(encoding="utf-8")
+        cls.skill = (SKILLS_DIR / "platform" / "aws-infrastructure" / "SKILL.md").read_text(encoding="utf-8")
+
+    def test_01_silicon_currency(self):
+        self.assertIn("GRAVITON5-FIRST-LOCK", self.role)
+        self.assertIn("c9g, m9g, r9g", self.role)
+        self.assertIn("GRAVITON5-FIRST-LOCK", self.skill)
+        self.assertNotIn("GRAVITON4-FIRST-LOCK", self.role)
+        self.assertNotIn("GRAVITON4-FIRST-LOCK", self.skill)
+        self.assertIn("Trainium3 (trn3)", self.role)
+        self.assertIn("4.4x", self.role)
+        self.assertIn("Inferentia2 (inf2)", self.role)
+        for text in (self.role, self.skill, self.checklist):
+            self.assertNotIn("Trainium2 (trn2)", text)
+
+    def test_02_toolchain_currency(self):
+        for text in (self.role, self.skill, self.checklist):
+            self.assertIn("OpenTofu v1.13+", text)
+            self.assertNotIn("OpenTofu v1.8", text)
+            self.assertIn("Crossplane v2.4+", text)
+            self.assertNotIn("Crossplane v1.16", text)
+            self.assertNotIn("Karpenter v1.0+", text)
+        self.assertIn("namespaced Composite Resources", self.role)
+        self.assertIn("Claim type is deprecated", self.role)
+
+    def test_03_eks_auto_mode_and_services(self):
+        self.assertIn("default new clusters to EKS Auto Mode", self.role)
+        self.assertIn("EKS Auto Mode", self.skill)
+        self.assertIn('"c9g", "m9g", "r9g"', self.checklist)
+        self.assertNotIn('"c8g", "m8g", "r8g"', self.checklist)
+        self.assertIn("Bedrock AgentCore (GA since 2025-10)", self.role)
+        self.assertIn("Nova 2", self.role)
+        self.assertIn("Amazon Aurora DSQL (GA since 2025-05)", self.role)
+        self.assertIn("Database Savings Plans", self.role)
+        self.assertIn("AWS-CURRENCY-LOCK", self.role)
+
+    def test_04_skill_asi_titles_and_checklist_gates(self):
+        for title in ("ASI04 Agentic Supply Chain", "ASI05 Unexpected Code Execution", "ASI07 Insecure Inter-Agent Communication"):
+            self.assertIn(title, self.skill)
+        self.assertIn("### 16. 2026-10 Modernization Gates", self.checklist)
+        for gate in ("Silicon-Currency Gate", "Crossplane-2.x Gate", "OpenTofu-1.13 Gate", "Auto-Mode-Aware Autoscaling Gate", "Bedrock-AgentCore Gate", "Aurora-DSQL Gate"):
+            self.assertIn(gate, self.checklist)
+
+
 if __name__ == "__main__":
     unittest.main()

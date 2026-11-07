@@ -1,7 +1,7 @@
 # Agent-Skills Master Index & Router
 
 > **Location:** `core/` & `overlays/` | **Version:** `5.8.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **39 Roles** | **183 Skills** (168 Core + 15 Overlays) | **25 Workflows** | **63 Data Contracts**
+> **Total Catalog:** **39 Roles** | **183 Skills** (169 Core + 14 Overlays) | **25 Workflows** | **63 Data Contracts**
 
 ---
 
@@ -36,7 +36,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 | Role Slug | Title | Common Aliases | Primary Skills | Role File |
 |:---|:---|:---|:---|:---|
-| **`@3d-graphics-engineer`** | 3D Graphics Engineer | `@3d`, `@r3f`, `@threejs` | `debug-3d-scene`, `integrate-r3f-three-legacy`, `optimize-3d-assets` | [`core/roles/3d-graphics-engineer.md`](./core/roles/3d-graphics-engineer.md) |
+| **`@3d-graphics-engineer`** | 3D Graphics Engineer | `@3d`, `@r3f`, `@threejs` | `render-webgl-threejs`, `debug-3d-scene`, `integrate-r3f-three-legacy` *(+1 more)* | [`core/roles/3d-graphics-engineer.md`](./core/roles/3d-graphics-engineer.md) |
 | **`@agent-coordinator`** | Agent Coordinator | `@coordinator`, `@swarm-coordinator` | `agent-a2a-protocol`, `agent-delegation`, `agent-graph-orchestration` *(+10 more)* | [`core/roles/agent-coordinator.md`](./core/roles/agent-coordinator.md) |
 | **`@agent-discovery-engineer`** | Agent Discovery Engineer | `@discovery`, `@agent-discovery` | `manage-auth-md`, `configure-oauth-metadata`, `debug-identity-provider` *(+5 more)* | [`core/roles/agent-discovery-engineer.md`](./core/roles/agent-discovery-engineer.md) |
 | **`@ai-systems-engineer`** | AI Systems Engineer | `@ai`, `@ml`, `@llm` | `deploy-vllm-inference`, `openrouter-task`, `setup-llm-gateway` *(+3 more)* | [`core/roles/ai-systems-engineer.md`](./core/roles/ai-systems-engineer.md) |
@@ -363,12 +363,6 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 |:---|:---|:---|
 | **`@write-real-estate-astro-data`** | Draft or update Astro Content Collection Markdown/MDX for the Real Estate and HVAC portals. Use when... | [`overlays/real-estate-content/skills/write-real-estate-astro-data/SKILL.md`](./overlays/real-estate-content/skills/write-real-estate-astro-data/SKILL.md) |
 
-### Category: `overlay/security-research` (1 skills)
-
-| Skill Slug | Description | File |
-|:---|:---|:---|
-| **`@reverse-engineer-binary`** | Use when deconstructing compiled binaries, Electron bundles, and firmware images in air-gapped sandb... | [`overlays/security-research/skills/reverse-engineer-binary/SKILL.md`](./overlays/security-research/skills/reverse-engineer-binary/SKILL.md) |
-
 ### Category: `platform` (19 skills)
 
 | Skill Slug | Description | File |
@@ -412,7 +406,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@review-service`** | Review an entire service for release readiness. Use for full-service audits, production-readiness ch... | [`core/skills/repo-ops/review-service/SKILL.md`](./core/skills/repo-ops/review-service/SKILL.md) |
 | **`@troubleshoot-service`** | Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the failing ... | [`core/skills/repo-ops/troubleshoot-service/SKILL.md`](./core/skills/repo-ops/troubleshoot-service/SKILL.md) |
 
-### Category: `security-data` (9 skills)
+### Category: `security-data` (10 skills)
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
@@ -423,6 +417,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@optimize-olap-database`** | Design high-throughput OLAP schemas for Iceberg v3, tune ClickHouse/DuckDB columnar engines, configu... | [`core/skills/security-data/optimize-olap-database/SKILL.md`](./core/skills/security-data/optimize-olap-database/SKILL.md) |
 | **`@prompt-injection-defense`** | Use when safeguarding AI agents against direct and indirect prompt injection attacks, implementing b... | [`core/skills/security-data/prompt-injection-defense/SKILL.md`](./core/skills/security-data/prompt-injection-defense/SKILL.md) |
 | **`@query-analytical-engine`** | Execute in-process analytical SQL with chDB and DuckDB v1.5+, orchestrate multi-step stateful pipeli... | [`core/skills/security-data/query-analytical-engine/SKILL.md`](./core/skills/security-data/query-analytical-engine/SKILL.md) |
+| **`@reverse-engineer-binary`** | Deconstruct compiled binaries, proprietary protocols, and obfuscated bytecode in air-gapped sandboxe... | [`core/skills/security-data/reverse-engineer-binary/SKILL.md`](./core/skills/security-data/reverse-engineer-binary/SKILL.md) |
 | **`@security-audit`** | Review code, configuration, and service behavior for security risks by checking trust boundaries, se... | [`core/skills/security-data/security-audit/SKILL.md`](./core/skills/security-data/security-audit/SKILL.md) |
 | **`@skill-preflight-ast-check`** | Use when performing zero-execution static AST security vetting of third-party agent skills, enforcin... | [`core/skills/security-data/skill-preflight-ast-check/SKILL.md`](./core/skills/security-data/skill-preflight-ast-check/SKILL.md) |
 
@@ -903,7 +898,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`obj-configurator`** | Skill Overlay | Project-specific conventions for the 3D Product Configurator — an interactive WebGL application for ... | 1 rule | 1 skill | [`overlays/obj-configurator/README.md`](./overlays/obj-configurator/README.md) |
 | **`r3f-stack`** | Skill Overlay | React Three Fiber / Three.js / WebGL+WebGPU skill cluster. Provides 3D rendering skills for projects... | 1 rule | 3 skills | [`overlays/r3f-stack/README.md`](./overlays/r3f-stack/README.md) |
 | **`real-estate-content`** | Skill Overlay | This overlay contains content-specific extensions for the Real Estate Portal and HVAC Portal Astro c... | 3 rules | 1 skill | [`overlays/real-estate-content/README.md`](./overlays/real-estate-content/README.md) |
-| **`security-research`** | Skill Overlay | Composable overlay for the `security-engineer` role when conducting binary disassembly, decompilatio... | 1 rule | 1 skill | [`overlays/security-research/README.md`](./overlays/security-research/README.md) |
+| **`security-research`** | Rule-Only | Composable overlay for the `security-engineer` role when conducting binary disassembly, decompilatio... | 1 rule | 0 skills | [`overlays/security-research/README.md`](./overlays/security-research/README.md) |
 | **`seo-publishing`** | Rule-Only | Publishing overlay for recurring SEO content on **Real Estate Portal** and **HVAC Authority Portal**... | 4 rules | 0 skills | [`overlays/seo-publishing/README.md`](./overlays/seo-publishing/README.md) |
 | **`ui-design-system`** | Rule-Only | Composable overlay for the `ui-ux-designer` role when work must follow a **brand or project design s... | 1 rule | 0 skills | [`overlays/ui-design-system/README.md`](./overlays/ui-design-system/README.md) |
 

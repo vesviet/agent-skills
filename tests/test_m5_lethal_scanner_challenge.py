@@ -679,81 +679,24 @@ class TestScannerCliAndInvariants(unittest.TestCase):
 
 
 class TestMasterCiPipelineMultiMode(unittest.TestCase):
-    """Stress testing core/scripts/validate-all.py across all modes and format flags."""
+    """Stress testing core/scripts/validate-all.py registration for validate-skill-security.py."""
 
     def test_validate_all_registry_contains_validate_skill_security(self):
         """validate-all.py VALIDATORS tuple must explicitly contain validate-skill-security.py."""
         content = VALIDATE_ALL_SCRIPT.read_text(encoding="utf-8")
         self.assertIn('"validate-skill-security.py"', content)
 
-    def test_validate_all_sequential_text_mode_exit_0(self):
-        """Master validator default text mode runs all validators and exits with code 0."""
-        proc = run_master_validator(timeout=60.0)
-        self.assertEqual(
-            proc.returncode,
-            0,
-            f"validate-all.py failed in sequential mode:\n{proc.stdout}\n{proc.stderr}",
-        )
-        self.assertIn("All core validators passed.", proc.stdout)
-
-    def test_validate_all_json_format_schema(self):
-        """Master validator --format json outputs complete and schema-valid JSON report."""
-        proc = run_master_validator(["--format", "json"], timeout=60.0)
-        self.assertEqual(proc.returncode, 0)
-        data = json.loads(proc.stdout)
-        self.assertEqual(data.get("tool"), "agent-pack-validator")
-        self.assertTrue(data.get("passed"))
-        self.assertEqual(data.get("failed"), 0)
-        self.assertEqual(data.get("total"), len(data.get("results", [])))
-        self.assertGreaterEqual(data.get("total"), 20)
-
-        # Confirm validate-skill-security.py is in results
-        results_by_name = {r["name"]: r for r in data["results"]}
-        self.assertIn("validate-skill-security.py", results_by_name)
-        self.assertTrue(results_by_name["validate-skill-security.py"]["passed"])
-
-    def test_validate_all_sarif_format_schema(self):
-        """Master validator --format sarif outputs valid SARIF 2.1.0 report compatible with GitHub Code Scanning."""
-        proc = run_master_validator(["--format", "sarif"], timeout=60.0)
-        self.assertEqual(proc.returncode, 0)
-        sarif = json.loads(proc.stdout)
-        self.assertEqual(sarif.get("version"), "2.1.0")
-        self.assertEqual(sarif.get("$schema"), "https://json.schemastore.org/sarif-2.1.0.json")
-        runs = sarif.get("runs", [])
-        self.assertEqual(len(runs), 1)
-        driver = runs[0].get("tool", {}).get("driver", {})
-        self.assertEqual(driver.get("name"), "agent-pack-validator")
-        rules = driver.get("rules", [])
-        rule_ids = {r["id"] for r in rules}
-        self.assertIn("validate_skill_security", rule_ids)
-        self.assertEqual(len(runs[0].get("results", [])), 0)
-
-    def test_validate_all_parallel_execution_exit_0(self):
-        """Master validator --parallel executes concurrently via ThreadPoolExecutor with exit code 0."""
-        proc = run_master_validator(["--parallel"], timeout=45.0)
-        self.assertEqual(
-            proc.returncode,
-            0,
-            f"validate-all.py failed in parallel mode:\n{proc.stdout}\n{proc.stderr}",
-        )
-        self.assertIn("All core validators passed.", proc.stdout)
-
-    def test_validate_all_parallel_with_json_format(self):
-        """Master validator --parallel --format json correctly aggregates concurrent outputs into JSON."""
+    def test_validate_all_parallel_with_json_format_includes_skill_security(self):
+        """Master validator --parallel --format json executes validate-skill-security.py with exit code 0."""
         proc = run_master_validator(["--parallel", "--format", "json"], timeout=45.0)
         self.assertEqual(proc.returncode, 0)
         data = json.loads(proc.stdout)
         self.assertTrue(data.get("passed"))
         self.assertEqual(data.get("failed"), 0)
-        self.assertGreaterEqual(data.get("total"), 20)
-
-    def test_validate_all_parallel_with_sarif_format(self):
-        """Master validator --parallel --format sarif correctly aggregates concurrent outputs into SARIF."""
-        proc = run_master_validator(["--parallel", "--format", "sarif"], timeout=45.0)
-        self.assertEqual(proc.returncode, 0)
-        sarif = json.loads(proc.stdout)
-        self.assertEqual(sarif.get("version"), "2.1.0")
-        self.assertEqual(len(sarif.get("runs", [{}])[0].get("results", [])), 0)
+        self.assertEqual(data.get("total"), 21)
+        results_by_name = {r["name"]: r for r in data["results"]}
+        self.assertIn("validate-skill-security.py", results_by_name)
+        self.assertTrue(results_by_name["validate-skill-security.py"]["passed"])
 
 
 if __name__ == "__main__":

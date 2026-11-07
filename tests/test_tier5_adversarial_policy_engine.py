@@ -577,5 +577,71 @@ class TestSarifOutputAndCliModes(unittest.TestCase):
         self.assertIn("POLICY DENIED:", res.stderr)
 
 
+class TestValidatePoliciesValidatorAndMutations(unittest.TestCase):
+    """Adversarial stress-testing of core/scripts/validate-policies.py CLI and synthetic YAML mutations."""
+
+    def setUp(self):
+        self.original_policy_data = yaml.safe_load(ACTION_BOUNDARIES_PATH.read_text(encoding="utf-8"))
+        self.original_tool_map_data = yaml.safe_load(MCP_TOOL_MAP_PATH.read_text(encoding="utf-8"))
+        self.temp_files: List[Path] = []
+
+    def tearDown(self):
+        for path in self.temp_files:
+            if path.exists():
+                path.unlink()
+
+    def _run_validator(self, args: Optional[List[str]] = None) -> subprocess.CompletedProcess:
+        cmd = [sys.executable, str(VALIDATE_POLICIES_SCRIPT)] + (args or [])
+        return subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            cwd=str(REPO_ROOT),
+            timeout=30.0,
+            check=False,
+        )
+
+    def _write_temp_yaml(self, data: Dict[str, Any]) -> Path:
+        with tempfile.NamedTemporaryFile("w", suffix=".yaml", delete=False, encoding="utf-8") as f:
+            yaml.safe_dump(data, f, sort_keys=False)
+            tmp_path = Path(f.name)
+        self.temp_files.append(tmp_path)
+        return tmp_path
+
+    def test_validate_policies_cli_baseline_text_and_json(self):
+        proc_txt = self._run_validator()
+        self.assertEqual(proc_txt.returncode, 0)
+        self.assertIn("39 role profiles checked", proc_txt.stdout)
+
+        proc_json = self._run_validator(["--format", "json"])
+        self.assertEqual(proc_json.returncode, 0)
+        data = json.loads(proc_json.stdout)
+        self.assertTrue(data.get("passed"))
+        self.assertEqual(data.get("role_profiles_checked"), 39)
+
+    def test_validate_policies_rejects_irreversible_and_overlaps_and_unclassified(self):
+        # 1. Irreversible drop_database in allowed
+        p1 = yaml.safe_load(yaml.safe_dump(self.original_policy_data))
+        p1["roles"]["backend-developer"]["denied"].remove("drop_database")
+        p1["roles"]["backend-developer"]["allowed"].append("drop_database")
+        proc1 = self._run_validator(["--policy-path", str(self._write_temp_yaml(p1))])
+        self.assertEqual(proc1.returncode, 1)
+        self.assertIn("'drop_database' is irreversible", proc1.stdout)
+
+        # 2. Tier overlap allowed + denied
+        p2 = yaml.safe_load(yaml.safe_dump(self.original_policy_data))
+        p2["roles"]["backend-developer"]["denied"].append("search_code")
+        proc2 = self._run_validator(["--policy-path", str(self._write_temp_yaml(p2))])
+        self.assertEqual(proc2.returncode, 1)
+        self.assertIn("allowed+denied", proc2.stdout)
+
+        # 3. Unclassified tool map action
+        tm = yaml.safe_load(yaml.safe_dump(self.original_tool_map_data))
+        tm["tool_actions"]["fictitious_tool"] = "completely_unknown_action_xyz"
+        proc3 = self._run_validator(["--tool-map-path", str(self._write_temp_yaml(tm))])
+        self.assertEqual(proc3.returncode, 1)
+        self.assertIn("completely_unknown_action_xyz", proc3.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

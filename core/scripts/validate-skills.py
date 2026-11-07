@@ -44,7 +44,6 @@ OVERLAY_SKILL_ROLES: dict[str, list[str]] = {
     "write-hvac-authority-content": ["content-writer"],
     "isometric-svg-projection": ["3d-graphics-engineer"],
     "build-credit-scorecard": ["data-analyst"],
-    "reverse-engineer-binary": ["security-engineer"],
 }
 
 _TOOL_MAP_CACHE: dict[str, str] | None = None

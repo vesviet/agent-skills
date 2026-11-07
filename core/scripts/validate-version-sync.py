@@ -63,6 +63,7 @@ PINNED = [
     ("CLAUDE.md", r"Pack version:\s*\*\*([0-9.]+)\*\*"),
     (".cursorrules", r"pack\s+([0-9]+\.[0-9]+\.[0-9]+)\)"),
     ("core/codex/.a2a-config.json", r"\"pack_version\":\s*\"([0-9.]+)\""),
+    ("PACK_STATUS.md", r"VERSION \| `([0-9]+\.[0-9]+\.[0-9]+)`"),
 ]
 
 

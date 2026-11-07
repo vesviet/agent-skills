@@ -228,6 +228,98 @@ class TestTier3AdversarialOracles(unittest.TestCase):
         self.assertLess(len(lines_120), 150, "Should detect agent-coordinator under 150 lines")
 
 
+class TestAll39RolesChecklistsAndUniversalLocks(unittest.TestCase):
+    """Consolidated cross-role governance checks (formerly test_sprint2_modernization_challenge, test_p5_m2_locks_challenge, test_tier3_roles_upgrade_challenge)."""
+
+    REQUIRED_UNIVERSAL_LOCKS = (
+        ("BOUNDARY", re.compile(r"^-\s+\*\*BOUNDARY(?:\s+LOCK|-LOCK)?\*\*:", re.M | re.I)),
+        ("SECURITY", re.compile(r"^-\s+\*\*(?:AGENTIC-)?SECURITY(?:\s+LOCK|-LOCK)?\*\*:", re.M | re.I)),
+        ("AST10-SKILL-SECURITY", re.compile(r"^-\s+\*\*AST10-SKILL-SECURITY(?:\s+LOCK|-LOCK)?\*\*:", re.M | re.I)),
+        ("LETHAL-TRIFECTA", re.compile(r"^-\s+\*\*LETHAL[- ]TRIFECTA(?:\s+LOCK|-LOCK)?\*\*:", re.M | re.I)),
+        ("IRREVERSIBLE-ACTION", re.compile(r"^-\s+\*\*IRREVERSIBLE[- ]ACTION(?:\s+LOCK|-LOCK)?\*\*:", re.M | re.I)),
+        ("MINIMAL-FOOTPRINT", re.compile(r"^-\s+\*\*MINIMAL[- ]FOOTPRINT(?:\s+LOCK|-LOCK)?\*\*:", re.M | re.I)),
+        ("LEAST-AGENCY", re.compile(r"^-\s+\*\*LEAST[- ]AGENCY(?:\s+LOCK|-LOCK)?\*\*:", re.M | re.I)),
+    )
+
+    def _role_files(self) -> list[Path]:
+        return sorted(p for p in ROLES_DIR.glob("*.md") if p.name not in {"README.md", "role-standard.md"})
+
+    def test_01_all_39_roles_exist_and_link_to_dedicated_checklists(self) -> None:
+        roles = self._role_files()
+        self.assertEqual(len(roles), 39, f"Expected 39 roles, found {len(roles)}")
+        for r_path in roles:
+            chk_path = REFERENCES_DIR / f"{r_path.stem}-review-checklist.md"
+            self.assertTrue(chk_path.is_file(), f"Missing checklist for {r_path.stem}")
+            content = r_path.read_text(encoding="utf-8")
+            self.assertIn(f"references/{r_path.stem}-review-checklist.md", content)
+
+    def test_02_all_39_roles_lock_density_and_universal_locks(self) -> None:
+        lock_pat = re.compile(r"^-\s+\*\*([A-Z0-9_\-\s\(\)]+LOCK)\*\*:", re.M)
+        for r_path in self._role_files():
+            content = r_path.read_text(encoding="utf-8")
+            m = re.search(r"## Guardrails\s*\n(.*?)(?=\n## |\Z)", content, re.DOTALL)
+            self.assertIsNotNone(m, f"{r_path.name}: missing ## Guardrails")
+            gtext = m.group(1)
+            locks = lock_pat.findall(gtext)
+            self.assertTrue(12 <= len(locks) <= 24, f"{r_path.name}: lock count {len(locks)} outside [12, 24]")
+            for lock_name, u_pat in self.REQUIRED_UNIVERSAL_LOCKS:
+                self.assertIsNotNone(u_pat.search(gtext), f"{r_path.name}: missing universal lock {lock_name}")
+
+
+class TestDomainRoles202610ModernizationGates(unittest.TestCase):
+    """Consolidated 2026-10 modernization gates for Backend, Content Manager, Security, Solution Architect, System Engineer, and UI/UX."""
+
+    def test_01_backend_modernization_currency(self) -> None:
+        role = (ROLES_DIR / "backend-developer.md").read_text(encoding="utf-8")
+        chk = (REFERENCES_DIR / "backend-developer-review-checklist.md").read_text(encoding="utf-8")
+        combined = role + "\n" + chk
+        for pin in ("Go 1.27+", "Python 3.14+", "PHP 8.5+", "Node.js 26 LTS", "PostgreSQL 18", "Stack Currency (2026-10 baseline)"):
+            self.assertIn(pin, combined)
+        self.assertNotIn("Go 1.25+", role)
+        self.assertIn("### Modern Authentication & Session Security (implement-auth)", chk)
+        self.assertIn("### Serverless PostgreSQL & Database Optimization (optimize-postgres)", chk)
+
+    def test_02_content_manager_modernization_currency(self) -> None:
+        role = (ROLES_DIR / "content-manager.md").read_text(encoding="utf-8")
+        chk = (REFERENCES_DIR / "content-manager-review-checklist.md").read_text(encoding="utf-8")
+        combined = role + "\n" + chk
+        for pin in ("Article-50-Live Gate", "GEO-Engine-Currency Gate", "SoM-Metric Gate", "ASI-Title Gate", "C2PA", "2026-08-02"):
+            self.assertIn(pin, combined)
+        self.assertIn("### 2026-10 Modernization Gates", chk)
+
+    def test_03_security_engineer_modernization_currency(self) -> None:
+        role = (ROLES_DIR / "security-engineer.md").read_text(encoding="utf-8")
+        chk = (REFERENCES_DIR / "security-engineer-review-checklist.md").read_text(encoding="utf-8")
+        combined = role + "\n" + chk
+        for pin in ("CRA-REPORTING LOCK", "PQC-TRANSITION LOCK", "2026-09-11", "X25519MLKEM768", "NIST IR 8547"):
+            self.assertIn(pin, combined)
+        self.assertIn("### 10. 2026-10 Modernization Gates", chk)
+
+    def test_04_solution_architect_modernization_currency(self) -> None:
+        role = (ROLES_DIR / "solution-architect.md").read_text(encoding="utf-8")
+        chk = (REFERENCES_DIR / "solution-architect-review-checklist.md").read_text(encoding="utf-8")
+        combined = role + "\n" + chk
+        for pin in ("Stack-Currency Gate", "MCP-Transport Gate", "GPU-Sizing-Currency Gate", "Streamable HTTP", "2025-03-26+"):
+            self.assertIn(pin, combined)
+        self.assertIn("### 10. 2026-10 Modernization Gates", chk)
+
+    def test_05_system_engineer_modernization_currency(self) -> None:
+        role = (ROLES_DIR / "system-engineer.md").read_text(encoding="utf-8")
+        chk = (REFERENCES_DIR / "system-engineer-review-checklist.md").read_text(encoding="utf-8")
+        combined = role + "\n" + chk
+        for pin in ("KV-Cache Tiering", "Speculative Decoding", "DRA GPU Allocation", "Inference Routing", "EAGLE-3/MTP"):
+            self.assertIn(pin, combined)
+        self.assertIn("### 2026-10 Modernization Gates", chk)
+
+    def test_06_uiux_designer_modernization_currency(self) -> None:
+        role = (ROLES_DIR / "ui-ux-designer.md").read_text(encoding="utf-8")
+        chk = (REFERENCES_DIR / "ui-ux-designer-review-checklist.md").read_text(encoding="utf-8")
+        combined = role + "\n" + chk
+        for pin in ("2025.10", "$value", "$type", "WCAG 2.2 AA", "Dark-Pattern Review", "ADA Title II", "Agents-as-Users Operability"):
+            self.assertIn(pin, combined)
+        self.assertIn("### 12. 2026-10 Modernization Gates", chk)
+
+
 if __name__ == "__main__":
     unittest.main()
 

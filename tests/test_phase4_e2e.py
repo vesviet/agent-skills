@@ -729,7 +729,7 @@ class TestTier1FeatureCoverage(unittest.TestCase):
 
     def test_t1_f10_validate_all_runs_with_exit_code_0(self):
         """F10.5: validate-all.py runs and exits with code 0."""
-        res = run_python_script(VALIDATE_ALL_SCRIPT, timeout=60.0)
+        res = run_python_script(VALIDATE_ALL_SCRIPT, ["--parallel"], timeout=60.0)
         self.assertEqual(res.returncode, 0, f"validate-all.py failed:\n{res.stdout}\n{res.stderr}")
 
 

@@ -409,5 +409,47 @@ class TestResearchDossierIntegrity(unittest.TestCase):
         self.assertIn("FastMCP", text)
 
 
+class TestDataEngineerModernization202610(unittest.TestCase):
+    """2026-10 Data Engineer modernization gates (Iceberg v3 vs roadmap v4, Delta 4.4, Spark 4.2+, Flink 2.3, dbt 2.0, DuckDB 1.5+/2.0 LTS, ODCS v3.2.0, PG 18)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.role = (ROLES_DIR / "data-engineer.md").read_text(encoding="utf-8")
+        cls.checklist = (ROLES_DIR / "references" / "data-engineer-review-checklist.md").read_text(encoding="utf-8")
+        cls.sec_data_dir = SKILLS_DIR / "security-data"
+        cls.pipeline_skill = (cls.sec_data_dir / "build-data-pipeline" / "SKILL.md").read_text(encoding="utf-8")
+        cls.olap_skill = (cls.sec_data_dir / "optimize-olap-database" / "SKILL.md").read_text(encoding="utf-8")
+        cls.query_skill = (cls.sec_data_dir / "query-analytical-engine" / "SKILL.md").read_text(encoding="utf-8")
+
+    def test_01_iceberg_v3_and_v4_roadmap_guard(self):
+        self.assertIn("**Iceberg v4 is roadmap, not current**", self.role)
+        self.assertIn("never create v4-format tables", self.role)
+        self.assertIn("Apache Iceberg v3", self.role)
+        self.assertIn("1.11+/1.12", self.role)
+        self.assertIn("Support for Variant is added in Iceberg v3", self.checklist)
+        for banned in ("standardize on Apache Iceberg v4", "Iceberg v4 as the primary", "Iceberg v4 / v3"):
+            self.assertNotIn(banned, self.role)
+            self.assertNotIn(banned, self.pipeline_skill)
+
+    def test_02_engine_line_and_odcs_currency(self):
+        self.assertIn("SPEC-CURRENCY-LOCK", self.role)
+        for pin in ("Iceberg v3 (1.11+/1.12 line)", "Delta Lake 4.4", "Spark 4.2+", "Flink 2.3", "dbt Core 2.0 (1.12 floor", "DuckDB 1.5+/2.0 LTS", "ODCS v3.2.0"):
+            self.assertIn(pin, self.role)
+        for text in (self.role, self.checklist, self.pipeline_skill):
+            self.assertIn("v3.2.0", text)
+            self.assertNotIn("ODCS v3.1.0", text)
+        relational = (self.sec_data_dir / "database-maintenance" / "references" / "relational-and-vector-maintenance.md").read_text(encoding="utf-8")
+        self.assertIn("PostgreSQL 18 Zero-Downtime Upgrades", relational)
+
+    def test_03_skill_asi_titles_and_modernization_gates(self):
+        for title in ("ASI04 Agentic Supply Chain", "ASI05 Unexpected Code Execution", "ASI06 Memory & Context Poisoning", "ASI07 Insecure Inter-Agent Communication"):
+            for text in (self.pipeline_skill, self.olap_skill, self.query_skill):
+                self.assertIn(title, text)
+        self.assertIn("### 11. 2026-10 Modernization Gates", self.checklist)
+        for gate in ("Spec-Currency Gate", "Variant-Spec Gate", "Engine-Currency Gate", "ODCS-Currency Gate", "PostgreSQL-Baseline Gate", "Semantic-Layer Gate"):
+            self.assertIn(gate, self.checklist)
+        self.assertIn("Apache Ossie (Incubating, ASF since 2026-07)", self.role)
+
+
 if __name__ == "__main__":
     unittest.main()

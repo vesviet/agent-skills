@@ -710,6 +710,7 @@ class TestVietnamLegalRegistryConsistency:
         # Strip bold asterisks for uniform matching
         stripped = content.replace("**", "")
         expected_headers = [
+            "Total Catalog: 39 Roles | 183 Skills (169 Core + 14 Overlays) | 25 Workflows | 63 Data Contracts",
             "Total Catalog: 39 Roles | 183 Skills (168 Core + 15 Overlays) | 25 Workflows | 63 Data Contracts",
             "Total Catalog: 39 Roles | 184 Skills (169 Core + 15 Overlays) | 25 Workflows | 63 Data Contracts",
             "Total Catalog: 39 Roles | 184 Skills (169 Core + 15 Overlays) | 25 Workflows | 60 Data Contracts",
@@ -760,11 +761,11 @@ class TestVietnamLegalRegistryConsistency:
         assert adapter_index["stats"]["roles"] >= 35
         assert len(adapter_index["roles"]) >= 35
 
-        # 5. Total skills: at least 121 core skills + 12 overlay skills
+        # 5. Total skills: at least 121 core skills + 12/14/15 overlay skills
         core_skill_files = list(SKILLS_DIR.glob("**/SKILL.md"))
         assert len(core_skill_files) >= 121, f"Expected >= 121 core skills, got {len(core_skill_files)}"
         overlay_skill_files = list(REPO_ROOT.glob("overlays/**/SKILL.md"))
-        assert len(overlay_skill_files) in (12, 15), f"Expected 12 or 15 overlay skills, got {len(overlay_skill_files)}"
+        assert len(overlay_skill_files) in (12, 14, 15), f"Expected 12, 14, or 15 overlay skills, got {len(overlay_skill_files)}"
 
         assert core_index["stats"]["skills"] >= 133
         assert len(core_index["skills"]) >= 133
@@ -1102,3 +1103,65 @@ class TestVietnamLegalArtifactStructure:
         schemas_index = (SCHEMAS_DIR / "INDEX.md").read_text(encoding="utf-8")
         assert "legal-compliance-review.json" in schemas_index
         assert "legal-opinion-contract.json" in schemas_index
+
+
+# ==============================================================================
+# 7. STATUTORY 2025 UPGRADE & SPECIALIZED SKILLS (AI LAW 134/2025 & PDPL 91/2025)
+# ==============================================================================
+
+class TestVietnamLegalStatutory2025Upgrade:
+    """Verifies AI Law 134/2025/QH15, PDPL 91/2025/QH15, Decree 356/2025/ND-CP, and specialized skills."""
+
+    def test_statutory_2025_role_content_and_guardrails(self):
+        text = (ROLES_DIR / "vietnam-legal-counsel.md").read_text(encoding="utf-8")
+        assert "Law on Artificial Intelligence No. 134/2025/QH15" in text
+        assert "Personal Data Protection Law No. 91/2025/QH15" in text
+        assert "Decree 356/2025/ND-CP" in text
+        assert "AI-LAW-RISK-TIER LOCK" in text
+        assert "PDPL-2025-CONSENT LOCK" in text
+        assert "72 hours" in text
+        assert "5 working days" in text
+        assert "- `audit-ai-compliance`" in text
+        assert "- `draft-legal-opinion`" in text
+
+    def test_audit_ai_compliance_and_draft_legal_opinion_skills(self):
+        for skill_name, expected_schema, guide_name in [
+            ("audit-ai-compliance", "legal-compliance-review.json", "ai-law-compliance-guide.md"),
+            ("draft-legal-opinion", "legal-opinion-contract.json", "legal-opinion-guide.md"),
+        ]:
+            skill_dir = SKILLS_DIR / "legal-compliance" / skill_name
+            skill_file = skill_dir / "SKILL.md"
+            assert skill_file.is_file(), f"Missing {skill_file}"
+            lines = skill_file.read_text(encoding="utf-8").splitlines()
+            assert len(lines) < 200, f"{skill_name} exceeds 200 lines"
+            text = "\n".join(lines)
+            assert expected_schema in text
+            assert "produced_by_role: vietnam-legal-counsel" in text
+            assert (skill_dir / "agents" / "openai.yaml").is_file()
+            assert (skill_dir / "references" / guide_name).is_file()
+
+    def test_specialized_legal_skill_aliases_and_card_bindings(self):
+        index = load_json(WELL_KNOWN_DIR / "role-skill-index.json")
+        skill_aliases = index.get("skill_aliases", {})
+        expected_aliases = {
+            "audit-ai-compliance": ["audit-ai-compliance"],
+            "audit_ai_compliance": ["audit-ai-compliance"],
+            "ai_law_audit": ["audit-ai-compliance"],
+            "ai_risk_classification": ["audit-ai-compliance"],
+            "vietnam_ai_compliance": ["audit-ai-compliance"],
+            "draft-legal-opinion": ["draft-legal-opinion"],
+            "draft_legal_opinion": ["draft-legal-opinion"],
+            "legal_opinion": ["draft-legal-opinion"],
+            "legal_opinion_drafting": ["draft-legal-opinion"],
+        }
+        for alias, target in expected_aliases.items():
+            assert skill_aliases.get(alias) == target
+
+        card = load_json(REGISTRY_DIR / "vietnam-legal-counsel.agent-card.json")
+        skills = {s["id"]: s for s in card.get("skills", [])}
+        for skill_id in ["manage-vietnam-legal", "audit-ai-compliance", "draft-legal-opinion"]:
+            assert skill_id in skills
+            refs = skills[skill_id].get("output_schema_refs", [])
+            assert "legal-compliance-review.json" in refs
+            assert "legal-opinion-contract.json" in refs
+

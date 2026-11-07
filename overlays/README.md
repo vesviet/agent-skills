@@ -45,7 +45,7 @@ Use an overlay when:
 | [data-warehouse](data-warehouse/README.md) | Omnichannel retail platform (DuckDB 1.5+, MISA AMIS, VAS 14, PWA) | DuckDB Single-Writer, MISA AMIS VAS 14 voucher splitting, blind recount physical stocktaking, Decree 13/2023/ND-CP PII masking, plus `learning/` data-engineering track (merged from `data-engineer-learning`: Iceberg, dbt 1.9, Kafka, Spark) |
 | [cad-projection](cad-projection/README.md) | Computer-Aided Design (CAD) & technical drawing | Millimeter coordinate system ($1\text{ unit} = 1\text{mm}$), Landscape A3 sheet, 4-tier ISO stroke hierarchy, $\pm 30^\circ$ isometric projection matrix, `isometric-svg-projection` skill |
 | [fintech-compliance](fintech-compliance/README.md) | Financial technology & credit risk modeling | Basel/Fair Lending compliance, monotonic Weight of Evidence (WOE) binning, Information Value (IV) thresholds, scorecard point scaling (PDO), Population Stability Index (PSI) drift monitoring, `build-credit-scorecard` skill |
-| [security-research](security-research/README.md) | Binary analysis & security research | Ethical and legal boundaries, Tier 2/3 container/microVM sandbox isolation, decompiler triage coordination (Ghidra, radare2, Electron unpackers), REA evidence ledger, `reverse-engineer-binary` skill |
+| [security-research](security-research/README.md) | Binary analysis & security research | Ethical and legal boundaries, Tier 2/3 container/microVM sandbox isolation, decompiler triage coordination (Ghidra, radare2, Electron unpackers), REA evidence ledger (`reverse-engineer-binary` core skill) |
 
 ## 2026 Critical Migration Notes
 
