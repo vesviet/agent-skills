@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "circuit breaker open",
+    "fallback response",
+    "metrics recorded",
+    "timeout"
+  ],
+  "must_not_include": [
+    "hang indefinitely on slow response"
+  ],
+  "required_tokens": [
+    "circuit breaker open",
+    "fallback response",
+    "metrics recorded",
+    "timeout"
+  ],
+  "forbidden_tokens": [
+    "hang indefinitely on slow response"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/test-report.json",
+    "contract_type": "test-report"
+  }
+}

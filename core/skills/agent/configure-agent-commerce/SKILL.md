@@ -142,6 +142,8 @@ The dynamic negotiation between agent and service follows a strict programmatic 
 - **configure-oauth-metadata**: Configure agentic authorization metadata — often prerequisite for UCP token validation.
 - **manage-api-catalog**: Wire up linkset endpoints for commerce discovery alongside ACP.
 - **configure-agent-headers**: Expose commerce discovery surfaces via HTTP Link headers.
+- Companion reference: `references/acp-ucp-agent-commerce-manifest-specs.md`
+- Companion example: `examples/ucp-commerce-manifest-and-endpoints.json`
 
 ## Output Contracts
 

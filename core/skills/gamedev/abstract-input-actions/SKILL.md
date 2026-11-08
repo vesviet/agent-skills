@@ -78,3 +78,5 @@ When completing input action abstraction, emit:
 - **develop-gameplay-systems**: consuming semantic action states in character controllers
 - **tune-game-feel**: integrating input buffering and coyote time windows with action maps
 - **build-game-ui-ux**: updating dynamic controller glyph prompts and focus navigation
+- Companion reference: `references/action-mapping-and-analog-deadzones.md`
+- Companion example: `examples/input-action-manager.ts`

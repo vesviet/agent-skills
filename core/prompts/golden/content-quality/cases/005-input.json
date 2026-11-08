@@ -1,0 +1,26 @@
+{
+  "case_id": "CQ-005",
+  "name": "Outbound Link Integrity and Dead Citation Verification",
+  "work_type": "audit",
+  "role": "content-manager",
+  "skill": "audit-content",
+  "user_request": "Audit external references and citations in this tutorial for HTTP integrity and factual validity. Classify decay tier based on dead link findings.",
+  "target": "tutorials/setup-kafka-event-streaming",
+  "context": {
+    "site": "authority-blog",
+    "citations": [
+      {
+        "anchor_text": "Apache Kafka 3.0 Migration Guide",
+        "url": "https://kafka.apache.org/documentation/3.0/deprecated-subpage",
+        "probe_status": 404
+      },
+      {
+        "anchor_text": "Schema Registry Best Practices",
+        "url": "https://fake-confluent-schema-registry-examples.org/schemas",
+        "probe_status": "DNS_NXDOMAIN"
+      }
+    ],
+    "traffic_trend": "declining",
+    "staleness_months": 20
+  }
+}

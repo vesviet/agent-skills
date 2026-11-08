@@ -1,0 +1,13 @@
+{
+  "case_id": "SA-006",
+  "name": "Thundering herd problem mitigation during cache invalidation event",
+  "work_type": "implementation",
+  "role": "technical-architect",
+  "skill": "system-design",
+  "user_request": "Architect cache stampede prevention for high-traffic product catalog invalidations.",
+  "target": "docs/architecture/caching-strategy.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/system-design-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

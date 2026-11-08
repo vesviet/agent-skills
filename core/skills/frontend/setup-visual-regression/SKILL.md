@@ -111,5 +111,7 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 - **add-ui-component**: Validate new or modified UI components against visual snapshot baselines
 - **design-review**: Review visual snapshot diffs against design specifications and design tokens
 - **review-code**: Audit visual test coverage and snapshot approval evidence during code review
+- Companion reference: `references/visual-regression-docker-and-masking-specs.md`
+- Companion example: `examples/visual-regression-playwright.config.ts`
 
-Last updated: 2026-09-25
+Last updated: 2026-11-08

@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "Z-Order",
+    "min/max dictionary pruning",
+    "data skipping",
+    "sort strategy"
+  ],
+  "must_not_include": [
+    "single column sort when queries filter across three dimensions"
+  ],
+  "required_tokens": [
+    "Z-Order",
+    "min/max dictionary pruning",
+    "data skipping",
+    "sort strategy"
+  ],
+  "forbidden_tokens": [
+    "single column sort when queries filter across three dimensions"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/data-pipeline-spec.json",
+    "contract_type": "data-pipeline-spec"
+  }
+}

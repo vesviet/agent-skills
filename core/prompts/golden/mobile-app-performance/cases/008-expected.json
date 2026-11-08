@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "Hermes bytecode",
+    "bundle splitting",
+    "lazy loading non-critical imports",
+    "TTI < 1.5s"
+  ],
+  "must_not_include": [
+    "monolithic synchronous require at app boot"
+  ],
+  "required_tokens": [
+    "Hermes bytecode",
+    "bundle splitting",
+    "lazy loading non-critical imports",
+    "TTI < 1.5s"
+  ],
+  "forbidden_tokens": [
+    "monolithic synchronous require at app boot"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "MOB-009",
+  "name": "Hardcoded API secret keys found in React Native JS bundle",
+  "work_type": "implementation",
+  "role": "mobile-engineer",
+  "skill": "develop-mobile-app",
+  "user_request": "Refactor client-side code that hardcodes third-party API secret tokens into secure backend proxy.",
+  "target": "src/api/client.ts",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "CQ-009",
+  "name": "Keyword Cannibalization Triage and 301 Consolidation Strategy",
+  "work_type": "audit",
+  "role": "content-manager",
+  "skill": "audit-content",
+  "user_request": "Audit these two URLs for search intent cannibalization. Assess overlapping keyword rankings and recommend whether to consolidate, redirect, or keep separate.",
+  "target": "articles/docker-container-security-best-practices",
+  "context": {
+    "site": "authority-blog",
+    "competing_url": "posts/how-to-secure-docker-containers-in-production",
+    "search_intent": "hardened docker container security checklist",
+    "target_metrics": {
+      "traffic_trend": "declining",
+      "backlinks": 42,
+      "staleness_months": 15
+    },
+    "competing_metrics": {
+      "traffic_trend": "stable",
+      "backlinks": 5,
+      "staleness_months": 4
+    }
+  }
+}

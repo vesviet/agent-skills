@@ -1,0 +1,31 @@
+{
+  "must_include": [
+    "decay_tier",
+    "tier3_factual_temporal",
+    "refresh",
+    "broken",
+    "content-audit-report"
+  ],
+  "must_not_include": [
+    "keep_as_is",
+    "all links verified",
+    "zero dead links"
+  ],
+  "required_tokens": [
+    "decay_tier",
+    "tier3_factual_temporal",
+    "refresh",
+    "broken",
+    "content-audit-report"
+  ],
+  "forbidden_tokens": [
+    "keep_as_is",
+    "all links verified",
+    "zero dead links"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/content-audit-report.json",
+    "contract_type": "content-audit-report"
+  }
+}

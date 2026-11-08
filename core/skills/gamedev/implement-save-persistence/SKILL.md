@@ -82,3 +82,5 @@ When completing save persistence implementation, emit:
 - **manage-scene-lifecycle**: hydrating and persisting scene state across level transitions
 - **integrate-game-engine**: configuring platform user directories and headless test runners
 - **integrate-dialogue-narrative**: persisting narrative condition flags and branching choices
+- Companion reference: `references/versioned-save-schemas-and-checksums.md`
+- Companion example: `examples/versioned-save-manager.ts`

@@ -1,0 +1,13 @@
+{
+  "case_id": "AI-002",
+  "name": "Dynamic chunked prefill configuration balancing TTFT (Time-To-First-Token) vs ITL (Inter-Token Latency)",
+  "work_type": "implementation",
+  "role": "ai-systems-engineer",
+  "skill": "deploy-vllm-inference",
+  "user_request": "Configure dynamic chunked prefill parameters to maintain < 50ms inter-token latency during long prompt bursts.",
+  "target": "deploy/ai/vllm-config.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/edge-deployment-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

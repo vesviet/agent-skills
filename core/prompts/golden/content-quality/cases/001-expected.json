@@ -1,0 +1,33 @@
+{
+  "must_include": [
+    "ai_semantic_flaw_score",
+    "delve",
+    "tapestry",
+    "game-changer",
+    "slop_risk_flagged",
+    "refresh"
+  ],
+  "must_not_include": [
+    "keep_as_is",
+    "zero flaws detected",
+    "ready to publish"
+  ],
+  "required_tokens": [
+    "ai_semantic_flaw_score",
+    "delve",
+    "tapestry",
+    "game-changer",
+    "slop_risk_flagged",
+    "refresh"
+  ],
+  "forbidden_tokens": [
+    "keep_as_is",
+    "zero flaws detected",
+    "ready to publish"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/content-audit-report.json",
+    "contract_type": "content-audit-report"
+  }
+}

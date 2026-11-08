@@ -1,6 +1,6 @@
 ---
 name: write-documentation
-description: Draft or update technical documentation by following the repo's existing doc structure, audience needs, and source-of-truth boundaries. Use for README updates, service docs, runbooks, integration notes, or change explanations.
+description: Draft or update technical documentation by following the repo's existing doc structure, audience needs, Diátaxis framework, and source-of-truth boundaries. Use when writing or updating README files, service docs, runbooks, architecture overviews, integration notes, or change explanations.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---
 
@@ -141,3 +141,5 @@ To align with modern AI-assisted engineering and automated API publishing:
 - **troubleshoot-service**: Turn learned recovery steps into runbook updates
 - **write-tech-radar**: Draft higher-level technology assessments
 - **commit-code**: Prepare doc updates for delivery
+- Companion reference: `references/diataxis-framework-and-doc-standards.md`
+- Companion example: `examples/microservice-production-readme-and-api-docs.md`

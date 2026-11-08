@@ -1,0 +1,13 @@
+{
+  "case_id": "PM-007",
+  "name": "High-churn enterprise customer requesting non-standard SLA and feature modification",
+  "work_type": "implementation",
+  "role": "product-manager",
+  "skill": "write-product-brief",
+  "user_request": "Assess an at-risk enterprise customer request demanding custom breaking changes to core search filtering.",
+  "target": "docs/product/briefs/enterprise-custom-sla.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/solution-brief.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

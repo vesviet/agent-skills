@@ -1,0 +1,16 @@
+{
+  "case_id": "CQ-007",
+  "name": "YMYL Financial Content Human Editorial Signoff Gate",
+  "work_type": "audit",
+  "role": "content-manager",
+  "skill": "audit-content",
+  "user_request": "Audit this draft article on cryptocurrency tax reporting and staking yield deductions. Evaluate whether this content falls under YMYL policy gates and requires certified human editorial signoff.",
+  "target": "guides/crypto-tax-deductions-staking-yields",
+  "context": {
+    "site": "authority-blog",
+    "topic_domain": "taxation_and_investing",
+    "ymyl_classification": "financial_legal_advice",
+    "content_claims": "Claims that liquid staking derivatives are exempt from capital gains taxation under specific token-wrapping maneuvers.",
+    "staleness_months": 1
+  }
+}

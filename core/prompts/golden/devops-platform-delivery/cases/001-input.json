@@ -1,0 +1,13 @@
+{
+  "case_id": "DO-001",
+  "name": "Production microservice deployment with Kustomize base/overlay structure",
+  "work_type": "implementation",
+  "role": "devops-engineer",
+  "skill": "setup-deployment",
+  "user_request": "Structure a production Kubernetes deployment for an order service using Kustomize overlays.",
+  "target": "deploy/k8s/overlays/production/",
+  "context": {
+    "schema_contract": "core/contracts/schemas/deployment-plan.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

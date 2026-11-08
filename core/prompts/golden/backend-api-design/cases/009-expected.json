@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "parameterized query",
+    "input validation",
+    "InvalidArgument",
+    "sanitization"
+  ],
+  "must_not_include": [
+    "string concatenation in SQL",
+    "raw SQL injection"
+  ],
+  "required_tokens": [
+    "parameterized query",
+    "input validation",
+    "InvalidArgument",
+    "sanitization"
+  ],
+  "forbidden_tokens": [
+    "string concatenation in SQL",
+    "raw SQL injection"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

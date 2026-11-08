@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "CAC",
+    "LTV",
+    "payback period",
+    "conversion rate",
+    "pricing tier"
+  ],
+  "must_not_include": [
+    "speculative numbers without calculation basis"
+  ],
+  "required_tokens": [
+    "CAC",
+    "LTV",
+    "payback period",
+    "conversion rate",
+    "pricing tier"
+  ],
+  "forbidden_tokens": [
+    "speculative numbers without calculation basis"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/solution-brief.json",
+    "contract_type": "solution-brief"
+  }
+}

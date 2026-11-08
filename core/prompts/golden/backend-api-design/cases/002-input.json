@@ -1,0 +1,13 @@
+{
+  "case_id": "BE-002",
+  "name": "Idempotent order creation endpoint with PostgreSQL transactional outbox",
+  "work_type": "implementation",
+  "role": "backend-developer",
+  "skill": "add-api-endpoint",
+  "user_request": "Implement an order creation handler that guarantees idempotency and persists events via transactional outbox.",
+  "target": "internal/biz/order.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/api-contract-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

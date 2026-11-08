@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "look_ahead",
+    "deadzone",
+    "dampening",
+    "confinement",
+    "implementation-result"
+  ],
+  "must_not_include": [
+    "rigid 1:1 camera snap causing motion sickness",
+    "frame-dependent lerp factor without delta"
+  ],
+  "required_tokens": [
+    "look_ahead",
+    "deadzone",
+    "dampening",
+    "confinement",
+    "implementation-result"
+  ],
+  "forbidden_tokens": [
+    "rigid 1:1 camera snap causing motion sickness",
+    "frame-dependent lerp factor without delta"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

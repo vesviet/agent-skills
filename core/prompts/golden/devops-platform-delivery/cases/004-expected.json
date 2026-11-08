@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "HorizontalPodAutoscaler",
+    "minReplicas",
+    "maxReplicas",
+    "scaling policy"
+  ],
+  "must_not_include": [
+    "minReplicas: 1 in production"
+  ],
+  "required_tokens": [
+    "HorizontalPodAutoscaler",
+    "minReplicas",
+    "maxReplicas",
+    "scaling policy"
+  ],
+  "forbidden_tokens": [
+    "minReplicas: 1 in production"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/deployment-plan.json",
+    "contract_type": "deployment-plan"
+  }
+}

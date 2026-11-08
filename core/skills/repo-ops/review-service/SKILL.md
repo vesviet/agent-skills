@@ -1,6 +1,6 @@
 ---
 name: review-service
-description: Review an entire service for release readiness. Use for full-service audits, production-readiness checks, pre-release hardening, and broad reviews that should cover code, contracts, dependencies, rollout safety, and documentation.
+description: Review an entire service for release readiness, evaluating code, contracts, data migrations, dependencies, operational exposure, SLO budgets, and rollout safety. Use when conducting full-service audits, production-readiness reviews, pre-release hardening, or broad release verification.
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
 

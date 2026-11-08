@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "structured outputs",
+    "guided_decoding_backend",
+    "JSON schema regex constraint",
+    "finite state machine"
+  ],
+  "must_not_include": [
+    "post-generation regex parsing fallback"
+  ],
+  "required_tokens": [
+    "structured outputs",
+    "guided_decoding_backend",
+    "JSON schema regex constraint",
+    "finite state machine"
+  ],
+  "forbidden_tokens": [
+    "post-generation regex parsing fallback"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/edge-deployment-spec.json",
+    "contract_type": "edge-deployment-spec"
+  }
+}

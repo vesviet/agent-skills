@@ -76,3 +76,5 @@ When completing game AI implementation, emit:
 - **develop-gameplay-systems**: integrating AI movement intents with shared character controllers
 - **configure-physics-collision**: executing non-allocating vision cone and obstacle raycasts
 - **architect-ecs-systems**: batch-updating large AI crowds and boid steering in contiguous arrays
+- Companion reference: `references/behavior-trees-and-utility-ai-curves.md`
+- Companion example: `examples/modular-behavior-tree-ai.ts`

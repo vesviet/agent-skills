@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "PermissionDenied",
+    "role validation",
+    "strip restricted fields",
+    "audit log"
+  ],
+  "must_not_include": [
+    "allow admin role assignment",
+    "trust client input for role"
+  ],
+  "required_tokens": [
+    "PermissionDenied",
+    "role validation",
+    "strip restricted fields",
+    "audit log"
+  ],
+  "forbidden_tokens": [
+    "allow admin role assignment",
+    "trust client input for role"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

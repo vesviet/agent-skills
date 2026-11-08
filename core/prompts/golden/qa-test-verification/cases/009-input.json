@@ -1,0 +1,13 @@
+{
+  "case_id": "QA-009",
+  "name": "Assertion Theater detection where test passes with empty assertion body",
+  "work_type": "implementation",
+  "role": "qa-engineer",
+  "skill": "write-tests",
+  "user_request": "Audit existing test suite to flag and eliminate tests that lack concrete assertions on returned state.",
+  "target": "tests/audit/anti_theater_test.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/test-report.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

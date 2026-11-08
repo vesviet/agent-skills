@@ -69,3 +69,5 @@ When completing a gameplay system implementation, emit:
 - **tune-game-feel**: layered audiovisual responsiveness and timing buffers
 - **integrate-game-engine**: engine lifecycle integration and headless runner execution
 - **optimize-3d-assets**: mesh and texture budget conformance
+- Companion reference: `references/deterministic-gameplay-state-machines.md`
+- Companion example: `examples/kinematic-character-controller.gd`

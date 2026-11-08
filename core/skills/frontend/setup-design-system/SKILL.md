@@ -175,5 +175,7 @@ Documentation: [Storybook / none]
 - **frontend-testing**: Add visual regression or interaction tests for the design system primitives.
 - **accessibility-review**: Audit the foundational primitives to ensure they meet WCAG criteria.
 - **design-review**: Validate design token choices against brand guidelines and user needs before implementation.
+- Companion reference: `references/tailwind-v4-oklch-and-dtcg-tokens.md`
+- Companion example: `examples/tailwind-v4-theme-and-dtcg-tokens.css`
 
-Last updated: 2026-09-25
+Last updated: 2026-11-08

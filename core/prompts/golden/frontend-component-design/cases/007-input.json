@@ -1,0 +1,13 @@
+{
+  "case_id": "FE-007",
+  "name": "Primary CTA with dynamic long localized translation string",
+  "work_type": "implementation",
+  "role": "frontend-developer",
+  "skill": "add-ui-component",
+  "user_request": "Design an internationalized call-to-action button that handles lengthy German translations cleanly.",
+  "target": "src/components/cta-button.tsx",
+  "context": {
+    "schema_contract": "core/contracts/schemas/ui-component-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

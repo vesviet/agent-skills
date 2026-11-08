@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "tenant isolation",
+    "noisy neighbor",
+    "partition key",
+    "shared tier with dedicated high-tier"
+  ],
+  "must_not_include": [
+    "unbounded tenant resource hogging"
+  ],
+  "required_tokens": [
+    "tenant isolation",
+    "noisy neighbor",
+    "partition key",
+    "shared tier with dedicated high-tier"
+  ],
+  "forbidden_tokens": [
+    "unbounded tenant resource hogging"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/system-design-spec.json",
+    "contract_type": "system-design-spec"
+  }
+}

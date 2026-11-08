@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "approved icon library only",
+    "reject raw SVG markup",
+    "lucide or radix or phosphor"
+  ],
+  "must_not_include": [
+    "hand-rolled SVG with onload handler",
+    "script injection"
+  ],
+  "required_tokens": [
+    "approved icon library only",
+    "reject raw SVG markup",
+    "lucide or radix or phosphor"
+  ],
+  "forbidden_tokens": [
+    "hand-rolled SVG with onload handler",
+    "script injection"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/ui-component-spec.json",
+    "contract_type": "ui-component-spec"
+  }
+}

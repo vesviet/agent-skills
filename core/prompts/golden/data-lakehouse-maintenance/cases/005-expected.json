@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "remove_orphan_files",
+    "72h safety threshold",
+    "in-flight write protection",
+    "S3 cleanup"
+  ],
+  "must_not_include": [
+    "vacuum files newer than 24 hours",
+    "corrupt live write"
+  ],
+  "required_tokens": [
+    "remove_orphan_files",
+    "72h safety threshold",
+    "in-flight write protection",
+    "S3 cleanup"
+  ],
+  "forbidden_tokens": [
+    "vacuum files newer than 24 hours",
+    "corrupt live write"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/data-pipeline-spec.json",
+    "contract_type": "data-pipeline-spec"
+  }
+}

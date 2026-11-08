@@ -1,0 +1,13 @@
+{
+  "case_id": "MOB-002",
+  "name": "High-performance gesture-driven swipe-to-dismiss using React Native Reanimated worklets",
+  "work_type": "implementation",
+  "role": "mobile-engineer",
+  "skill": "develop-mobile-app",
+  "user_request": "Implement an interactive dismissible modal using Reanimated 3 worklets running purely on the UI thread.",
+  "target": "src/components/swipeable-modal.tsx",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "BE-003",
+  "name": "Paginated audit event log stream with cursor-based pagination",
+  "work_type": "implementation",
+  "role": "backend-developer",
+  "skill": "add-api-endpoint",
+  "user_request": "Implement a cursor-based pagination query for high-volume audit logs adhering to RFC 9457.",
+  "target": "internal/service/audit.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/api-contract-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

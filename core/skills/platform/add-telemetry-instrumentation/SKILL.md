@@ -91,3 +91,5 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 - **incident-report**: Connect telemetry evidence and trace IDs to incident postmortems
 - **setup-deployment**: Wire telemetry config into runtime source of truth
 - **performance-profiling**: Measure latency, throughput, or resource bottlenecks
+- Companion reference: `references/opentelemetry-semantic-conventions-2026.md`
+- Companion example: `examples/kratos-otel-middleware-instrumentation.go`

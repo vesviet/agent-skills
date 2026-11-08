@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "singleflight",
+    "probabilistic early expiration",
+    "stale-while-revalidate",
+    "cache stampede"
+  ],
+  "must_not_include": [
+    "uncached direct database hit on cache miss"
+  ],
+  "required_tokens": [
+    "singleflight",
+    "probabilistic early expiration",
+    "stale-while-revalidate",
+    "cache stampede"
+  ],
+  "forbidden_tokens": [
+    "uncached direct database hit on cache miss"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/system-design-spec.json",
+    "contract_type": "system-design-spec"
+  }
+}

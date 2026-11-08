@@ -179,5 +179,7 @@ Skip emission for local sandbox experiments that do not cross a role boundary.
 - **security-audit**: Review payment integration for PCI exposure
 - **add-api-endpoint**: Scaffold the payment and webhook controller endpoints
 - **configure-agent-commerce**: Implement x402 HTTP billing, MPP endpoints, and agent commerce registration
+- Companion reference: `references/mpp-x402-and-webhook-security-specs.md`
+- Companion example: `examples/resilient-webhook-and-mpp-handler.ts`
 
-Last updated: 2026-09-25
+Last updated: 2026-11-08

@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "speculative-model",
+    "draft model",
+    "acceptance rate",
+    "latency reduction"
+  ],
+  "must_not_include": [
+    "larger draft model than target model"
+  ],
+  "required_tokens": [
+    "speculative-model",
+    "draft model",
+    "acceptance rate",
+    "latency reduction"
+  ],
+  "forbidden_tokens": [
+    "larger draft model than target model"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/edge-deployment-spec.json",
+    "contract_type": "edge-deployment-spec"
+  }
+}

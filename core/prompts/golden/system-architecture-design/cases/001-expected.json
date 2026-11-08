@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "system-design-spec",
+    "Kafka",
+    "partitioning",
+    "backpressure",
+    "throughput calculation"
+  ],
+  "must_not_include": [
+    "single point of failure",
+    "synchronous REST in hot path"
+  ],
+  "required_tokens": [
+    "system-design-spec",
+    "Kafka",
+    "partitioning",
+    "backpressure",
+    "throughput calculation"
+  ],
+  "forbidden_tokens": [
+    "single point of failure",
+    "synchronous REST in hot path"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/system-design-spec.json",
+    "contract_type": "system-design-spec"
+  }
+}

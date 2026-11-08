@@ -1,0 +1,13 @@
+{
+  "case_id": "GAME-009",
+  "name": "Headless Godot engine CI test runner export",
+  "work_type": "implementation",
+  "role": "game-developer",
+  "skill": "develop-gameplay-systems",
+  "user_request": "Configure headless CI automated test execution and cross-platform export pipeline for Godot 4.x using GUT (Godot Unit Testing) with JUnit XML report output.",
+  "target": ".github/workflows/game-ci.yml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

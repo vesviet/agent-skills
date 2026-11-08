@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "blackboard",
+    "behavior_tree",
+    "sequence",
+    "selector",
+    "implementation-result"
+  ],
+  "must_not_include": [
+    "hardcoded infinite while loop for AI ticks",
+    "global un-namespaced blackboard state pollution"
+  ],
+  "required_tokens": [
+    "blackboard",
+    "behavior_tree",
+    "sequence",
+    "selector",
+    "implementation-result"
+  ],
+  "forbidden_tokens": [
+    "hardcoded infinite while loop for AI ticks",
+    "global un-namespaced blackboard state pollution"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

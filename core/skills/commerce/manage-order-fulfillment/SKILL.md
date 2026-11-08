@@ -193,5 +193,7 @@ Skip emission for single-order experiments that do not cross a role boundary.
 - **add-event-handler**: Handle carrier tracking webhooks and order state events
 - **add-api-endpoint**: Expose fulfillment status and return endpoints
 - **incident-report**: Escalate lost packages, carrier failures, and refund disputes
+- Companion reference: `references/event-sourced-fulfillment-and-carrier-webhooks.md`
+- Companion example: `examples/temporal-fulfillment-saga.ts`
 
-Last updated: 2026-09-25
+Last updated: 2026-11-08

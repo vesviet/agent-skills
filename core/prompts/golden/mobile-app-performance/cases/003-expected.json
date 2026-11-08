@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "MMKV",
+    "WatermelonDB",
+    "offline sync",
+    "encryption key"
+  ],
+  "must_not_include": [
+    "AsyncStorage for high-frequency writes"
+  ],
+  "required_tokens": [
+    "MMKV",
+    "WatermelonDB",
+    "offline sync",
+    "encryption key"
+  ],
+  "forbidden_tokens": [
+    "AsyncStorage for high-frequency writes"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

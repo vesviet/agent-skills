@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "emptyDir",
+    "medium: Memory",
+    "/dev/shm mount",
+    "IPC budget"
+  ],
+  "must_not_include": [
+    "default 64MB /dev/shm crash"
+  ],
+  "required_tokens": [
+    "emptyDir",
+    "medium: Memory",
+    "/dev/shm mount",
+    "IPC budget"
+  ],
+  "forbidden_tokens": [
+    "default 64MB /dev/shm crash"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/deployment-plan.json",
+    "contract_type": "deployment-plan"
+  }
+}

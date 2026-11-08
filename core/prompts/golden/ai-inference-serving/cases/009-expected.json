@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "rate limiting",
+    "max-model-len validation",
+    "request queue depth guard",
+    "429 response"
+  ],
+  "must_not_include": [
+    "accept all requests until Kubernetes node OOMKilled"
+  ],
+  "required_tokens": [
+    "rate limiting",
+    "max-model-len validation",
+    "request queue depth guard",
+    "429 response"
+  ],
+  "forbidden_tokens": [
+    "accept all requests until Kubernetes node OOMKilled"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/edge-deployment-spec.json",
+    "contract_type": "edge-deployment-spec"
+  }
+}

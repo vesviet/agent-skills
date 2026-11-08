@@ -1,0 +1,13 @@
+{
+  "case_id": "SA-007",
+  "name": "Multi-tenant database partitioning strategy balancing noisy neighbors vs cost",
+  "work_type": "implementation",
+  "role": "technical-architect",
+  "skill": "system-design",
+  "user_request": "Design a tiered database partitioning strategy offering dedicated shards for enterprise and shared for free tier.",
+  "target": "docs/architecture/multi-tenant-db.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/system-design-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

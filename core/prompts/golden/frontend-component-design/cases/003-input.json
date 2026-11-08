@@ -1,0 +1,13 @@
+{
+  "case_id": "FE-003",
+  "name": "Data table cell with copyable secret and tactile active feedback",
+  "work_type": "implementation",
+  "role": "frontend-developer",
+  "skill": "add-ui-component",
+  "user_request": "Create a data table API key cell with copy-to-clipboard button and tactile scale micro-interaction.",
+  "target": "src/components/api-key-cell.tsx",
+  "context": {
+    "schema_contract": "core/contracts/schemas/ui-component-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

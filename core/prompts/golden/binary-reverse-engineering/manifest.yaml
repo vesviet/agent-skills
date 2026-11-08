@@ -1,0 +1,27 @@
+schema_version: '2026.1'
+prompt_id: binary-reverse-engineering
+name: Air-Gapped Binary Analysis & Reverse Engineering Assurance (REA)
+domain: security
+role: reverse-engineer
+target_role: reverse-engineer
+skill: reverse-engineer-binary
+target_skill: reverse-engineer-binary
+version: 1.0.0
+description: Evaluates whether the reverse-engineer deconstructs compiled binaries
+  in air-gapped sandboxes, identifies obfuscated control flow and buffer vulnerabilities,
+  produces verifiable REA evidence ledgers, and outputs valid validation-result contracts.
+tags:
+- reverse-engineer
+- reverse-engineer-binary
+- ghidra
+- radare2
+- rea-ledger
+- air-gap
+author: agent-skills-pack
+created_at: '2026-11-08'
+updated_at: '2026-11-08'
+min_pass_rate: 0.9
+governance:
+  min_pass_rate: 0.9
+  contract_schema: core/contracts/schemas/validation-result.json
+cases_dir: cases/

@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "validation-result",
+    "Ghidra or Radare2",
+    "ELF",
+    "entry point",
+    "symbol recovery",
+    "REA ledger"
+  ],
+  "must_not_include": [
+    "run untrusted binary on host OS"
+  ],
+  "required_tokens": [
+    "validation-result",
+    "Ghidra or Radare2",
+    "ELF",
+    "entry point",
+    "symbol recovery",
+    "REA ledger"
+  ],
+  "forbidden_tokens": [
+    "run untrusted binary on host OS"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/validation-result.json",
+    "contract_type": "validation-result"
+  }
+}

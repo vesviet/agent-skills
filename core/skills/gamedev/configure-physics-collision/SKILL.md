@@ -78,3 +78,5 @@ When completing physics and collision configuration, emit:
 - **develop-gameplay-systems**: kinematic character controllers and fixed-tick movement loops
 - **architect-ecs-systems**: batching spatial queries across contiguous component buffers
 - **profile-game-performance**: profiling physics broadphase and solver frame budgets
+- Companion reference: `references/continuous-collision-detection-and-substepping.md`
+- Companion example: `examples/kinematic-physics-substepping.cpp`

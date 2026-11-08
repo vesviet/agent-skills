@@ -1,0 +1,15 @@
+{
+  "case_id": "CQ-003",
+  "name": "Information Gain Score Check Against Top-10 SERP Competitors",
+  "work_type": "audit",
+  "role": "content-manager",
+  "skill": "audit-content",
+  "user_request": "Audit this comparative article against the top 10 search results for Information Gain. Determine if the article provides net-new data, firsthand benchmarks, or merely rehashes public documentation.",
+  "target": "benchmarks/postgres-vs-duckdb-olap-performance",
+  "context": {
+    "site": "authority-blog",
+    "serp_competitor_analysis": "All top-10 ranking articles describe DuckDB columnar storage and Postgres row-oriented tables. This article restates the same definitions without providing actual query execution times, TPC-H benchmark tables, or reproducible scripts.",
+    "traffic_trend": "stable",
+    "staleness_months": 6
+  }
+}

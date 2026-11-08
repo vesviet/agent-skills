@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "testcontainers",
+    "real database",
+    "schema migration",
+    "teardown"
+  ],
+  "must_not_include": [
+    "mock database repository in db test"
+  ],
+  "required_tokens": [
+    "testcontainers",
+    "real database",
+    "schema migration",
+    "teardown"
+  ],
+  "forbidden_tokens": [
+    "mock database repository in db test"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/test-report.json",
+    "contract_type": "test-report"
+  }
+}

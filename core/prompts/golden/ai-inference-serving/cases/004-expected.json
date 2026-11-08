@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "kv-cache-dtype",
+    "CPU offload",
+    "FP8 KV cache",
+    "memory management"
+  ],
+  "must_not_include": [
+    "OOM crash when KV cache fills"
+  ],
+  "required_tokens": [
+    "kv-cache-dtype",
+    "CPU offload",
+    "FP8 KV cache",
+    "memory management"
+  ],
+  "forbidden_tokens": [
+    "OOM crash when KV cache fills"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/edge-deployment-spec.json",
+    "contract_type": "edge-deployment-spec"
+  }
+}

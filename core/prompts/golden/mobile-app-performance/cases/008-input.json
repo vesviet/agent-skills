@@ -1,0 +1,13 @@
+{
+  "case_id": "MOB-008",
+  "name": "App launch cold-start time optimization with Hermes bytecode precompilation",
+  "work_type": "implementation",
+  "role": "mobile-engineer",
+  "skill": "develop-mobile-app",
+  "user_request": "Optimize app cold start to achieve TTI < 1.5s using Hermes bytecode and deferred bundle loading.",
+  "target": "src/index.js",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

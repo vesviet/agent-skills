@@ -1,0 +1,13 @@
+{
+  "case_id": "DE-003",
+  "name": "Manifest file rewriting and metadata tree compaction",
+  "work_type": "implementation",
+  "role": "data-engineer",
+  "skill": "database-maintenance",
+  "user_request": "Optimize Iceberg metadata scan performance by rewriting small manifest files and pruning metadata trees.",
+  "target": "pipelines/maintenance/rewrite_manifests.py",
+  "context": {
+    "schema_contract": "core/contracts/schemas/data-pipeline-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

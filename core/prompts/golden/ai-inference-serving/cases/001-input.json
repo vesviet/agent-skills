@@ -1,0 +1,13 @@
+{
+  "case_id": "AI-001",
+  "name": "vLLM V1 deployment serving Qwen 2.5 / DeepSeek model on Kubernetes with Dynamic Resource Allocation (DRA)",
+  "work_type": "implementation",
+  "role": "ai-systems-engineer",
+  "skill": "deploy-vllm-inference",
+  "user_request": "Deploy vLLM V1 serving a 70B open model on Kubernetes with Dynamic Resource Allocation.",
+  "target": "deploy/ai/vllm-deployment.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/edge-deployment-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

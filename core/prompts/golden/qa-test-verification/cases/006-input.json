@@ -1,0 +1,13 @@
+{
+  "case_id": "QA-006",
+  "name": "Downstream service latency spike triggering circuit breaker open state",
+  "work_type": "implementation",
+  "role": "qa-engineer",
+  "skill": "write-tests",
+  "user_request": "Verify that a 5-second downstream latency spike trips the circuit breaker and triggers fallback response.",
+  "target": "internal/client/resilience_test.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/test-report.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

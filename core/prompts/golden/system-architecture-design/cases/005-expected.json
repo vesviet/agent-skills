@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "RPO",
+    "RTO",
+    "multi-region replication",
+    "DNS failover",
+    "split-brain protection"
+  ],
+  "must_not_include": [
+    "assume zero downtime without cross-region sync"
+  ],
+  "required_tokens": [
+    "RPO",
+    "RTO",
+    "multi-region replication",
+    "DNS failover",
+    "split-brain protection"
+  ],
+  "forbidden_tokens": [
+    "assume zero downtime without cross-region sync"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/system-design-spec.json",
+    "contract_type": "system-design-spec"
+  }
+}

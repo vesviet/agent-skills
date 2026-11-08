@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "edge-deployment-spec",
+    "vLLM V1",
+    "gpu-memory-utilization",
+    "DRA",
+    "prefix caching"
+  ],
+  "must_not_include": [
+    "legacy vLLM v0 engine flags",
+    "unbounded memory allocation"
+  ],
+  "required_tokens": [
+    "edge-deployment-spec",
+    "vLLM V1",
+    "gpu-memory-utilization",
+    "DRA",
+    "prefix caching"
+  ],
+  "forbidden_tokens": [
+    "legacy vLLM v0 engine flags",
+    "unbounded memory allocation"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/edge-deployment-spec.json",
+    "contract_type": "edge-deployment-spec"
+  }
+}

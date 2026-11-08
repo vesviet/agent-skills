@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "background upload",
+    "NetInfo",
+    "retry queue",
+    "resumable chunk upload"
+  ],
+  "must_not_include": [
+    "fatal upload crash on disconnect"
+  ],
+  "required_tokens": [
+    "background upload",
+    "NetInfo",
+    "retry queue",
+    "resumable chunk upload"
+  ],
+  "forbidden_tokens": [
+    "fatal upload crash on disconnect"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

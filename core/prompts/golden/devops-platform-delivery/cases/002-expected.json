@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "canary",
+    "analysis template",
+    "metric check",
+    "automated rollback"
+  ],
+  "must_not_include": [
+    "instant 100% rollout without health gate"
+  ],
+  "required_tokens": [
+    "canary",
+    "analysis template",
+    "metric check",
+    "automated rollback"
+  ],
+  "forbidden_tokens": [
+    "instant 100% rollout without health gate"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/deployment-plan.json",
+    "contract_type": "deployment-plan"
+  }
+}

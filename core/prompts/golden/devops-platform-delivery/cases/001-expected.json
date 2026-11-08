@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "deployment-plan",
+    "Kustomize",
+    "resource limits",
+    "requests",
+    "PodDisruptionBudget"
+  ],
+  "must_not_include": [
+    ":latest tag",
+    "missing memory limits"
+  ],
+  "required_tokens": [
+    "deployment-plan",
+    "Kustomize",
+    "resource limits",
+    "requests",
+    "PodDisruptionBudget"
+  ],
+  "forbidden_tokens": [
+    ":latest tag",
+    "missing memory limits"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/deployment-plan.json",
+    "contract_type": "deployment-plan"
+  }
+}

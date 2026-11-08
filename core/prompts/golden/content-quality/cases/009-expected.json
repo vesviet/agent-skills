@@ -1,0 +1,31 @@
+{
+  "must_include": [
+    "action",
+    "consolidate",
+    "rot_classification",
+    "redundant",
+    "content-audit-report"
+  ],
+  "must_not_include": [
+    "keep_as_is",
+    "distinct intent",
+    "no conflict"
+  ],
+  "required_tokens": [
+    "action",
+    "consolidate",
+    "rot_classification",
+    "redundant",
+    "content-audit-report"
+  ],
+  "forbidden_tokens": [
+    "keep_as_is",
+    "distinct intent",
+    "no conflict"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/content-audit-report.json",
+    "contract_type": "content-audit-report"
+  }
+}

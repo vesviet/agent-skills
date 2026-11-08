@@ -119,3 +119,5 @@ Skip emission for local sandbox experimentation where no cloud resources are pro
 - **manage-secrets**: For configuring AWS Secrets Manager and External Secrets Operator (ESO) integration.
 - **security-audit**: For auditing IAM policies, SCPs, and CIS AWS Foundations benchmarks.
 - **system-design**: For cross-cloud architecture and hardware capacity modeling.
+- Companion reference: `references/opentofu-aws-zero-trust-and-irsa.md`
+- Companion example: `examples/opentofu-eks-pod-identity-vpc.tf`

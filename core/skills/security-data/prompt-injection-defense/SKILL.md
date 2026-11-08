@@ -104,3 +104,5 @@ When auditing prompt security or detecting injection anomalies, emit `contracts/
 - **skill-preflight-ast-check**: Static AST analysis of skills to prevent malicious tool execution.
 - **context-optimization**: Structuring context windows to maximize defense-in-depth separation.
 - **agent-evaluation**: Evaluating agent robustness against automated prompt injection benchmarks.
+- Companion reference: `references/prompt-injection-taxonomy-and-delimiters.md`
+- Companion example: `examples/bounded-tool-execution-wrapper.py`

@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "cell-based architecture",
+    "shuffle sharding",
+    "blast radius containment",
+    "cell router"
+  ],
+  "must_not_include": [
+    "monolithic shared database across all tenants"
+  ],
+  "required_tokens": [
+    "cell-based architecture",
+    "shuffle sharding",
+    "blast radius containment",
+    "cell router"
+  ],
+  "forbidden_tokens": [
+    "monolithic shared database across all tenants"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/system-design-spec.json",
+    "contract_type": "system-design-spec"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "FE-006",
+  "name": "Continuous cursor tracking card avoiding re-render storms",
+  "work_type": "implementation",
+  "role": "frontend-developer",
+  "skill": "add-ui-component",
+  "user_request": "Build a spotlight card tracking mouse coordinates using off-thread motion values to avoid re-renders.",
+  "target": "src/components/spotlight-card.tsx",
+  "context": {
+    "schema_contract": "core/contracts/schemas/ui-component-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

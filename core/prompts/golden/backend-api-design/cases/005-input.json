@@ -1,0 +1,13 @@
+{
+  "case_id": "BE-005",
+  "name": "Endpoint receiving massive payload exceeding gRPC max message size",
+  "work_type": "implementation",
+  "role": "backend-developer",
+  "skill": "add-api-endpoint",
+  "user_request": "Configure gRPC stream handling and chunking for file upload requests exceeding 4MB default limit.",
+  "target": "internal/service/upload.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/api-contract-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

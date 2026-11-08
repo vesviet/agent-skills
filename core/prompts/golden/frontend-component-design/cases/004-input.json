@@ -1,0 +1,13 @@
+{
+  "case_id": "FE-004",
+  "name": "Hero banner enforcing viewport stability on mobile devices",
+  "work_type": "implementation",
+  "role": "frontend-developer",
+  "skill": "add-ui-component",
+  "user_request": "Build a responsive mobile landing hero section that prevents address-bar resize layout shifts.",
+  "target": "src/components/hero-banner.tsx",
+  "context": {
+    "schema_contract": "core/contracts/schemas/ui-component-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

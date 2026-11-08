@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "autovacuum_vacuum_scale_factor: 0.05",
+    "autovacuum_vacuum_cost_limit",
+    "dead tuples",
+    "prevent wraparound"
+  ],
+  "must_not_include": [
+    "run VACUUM FULL during peak production traffic"
+  ],
+  "required_tokens": [
+    "autovacuum_vacuum_scale_factor: 0.05",
+    "autovacuum_vacuum_cost_limit",
+    "dead tuples",
+    "prevent wraparound"
+  ],
+  "forbidden_tokens": [
+    "run VACUUM FULL during peak production traffic"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/data-pipeline-spec.json",
+    "contract_type": "data-pipeline-spec"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "SA-005",
+  "name": "Regional cloud outage failover with RPO < 1min and RTO < 5min",
+  "work_type": "implementation",
+  "role": "technical-architect",
+  "skill": "system-design",
+  "user_request": "Specify a multi-region active-passive disaster recovery architecture meeting strict 1-min RPO / 5-min RTO SLAs.",
+  "target": "docs/architecture/disaster-recovery.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/system-design-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

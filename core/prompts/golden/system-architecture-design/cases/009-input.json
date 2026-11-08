@@ -1,0 +1,13 @@
+{
+  "case_id": "SA-009",
+  "name": "Architecture proposal ignoring data sovereignty and cross-border transfer laws",
+  "work_type": "implementation",
+  "role": "technical-architect",
+  "skill": "system-design",
+  "user_request": "Evaluate an architecture proposal replicating European customer PII to US cloud regions.",
+  "target": "docs/architecture/data-sovereignty-review.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/system-design-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

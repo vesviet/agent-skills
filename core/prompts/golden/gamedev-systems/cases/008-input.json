@@ -1,0 +1,13 @@
+{
+  "case_id": "GAME-008",
+  "name": "Camera velocity look-ahead with framing bounds",
+  "work_type": "implementation",
+  "role": "game-developer",
+  "skill": "develop-gameplay-systems",
+  "user_request": "Implement a 2D/3D follow camera with smooth frame-rate independent dampening, velocity look-ahead lead targeting, deadzone framing, and room confinement boundaries.",
+  "target": "scripts/camera/follow_camera.gd",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

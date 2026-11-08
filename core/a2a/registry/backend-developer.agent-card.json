@@ -53,7 +53,7 @@
     {
       "id": "add-event-handler",
       "name": "Add Event Handler",
-      "description": "Add or modify event publishers, consumers, or subscriber flows by following the repo's event contract, delivery semantics, idempotency rules, and rollout constraints. Use for event-driven service work.",
+      "description": "Add or modify event publishers, consumers, or subscriber flows by following the repo's event contract, delivery semantics, idempotency rules, and rollout constraints. Use when publishing or consuming events, implementing Transactional Outbox patterns, enforcing deduplication, or extending event-driven service workflows.",
       "tags": [
         "backend",
         "pack"

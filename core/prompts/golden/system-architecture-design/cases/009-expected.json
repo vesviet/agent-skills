@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "data sovereignty",
+    "regional data residency",
+    "GDPR or PDPL compliance",
+    "local storage"
+  ],
+  "must_not_include": [
+    "unrestricted global data replication"
+  ],
+  "required_tokens": [
+    "data sovereignty",
+    "regional data residency",
+    "GDPR or PDPL compliance",
+    "local storage"
+  ],
+  "forbidden_tokens": [
+    "unrestricted global data replication"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/system-design-spec.json",
+    "contract_type": "system-design-spec"
+  }
+}

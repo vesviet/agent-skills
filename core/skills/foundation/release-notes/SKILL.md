@@ -158,6 +158,8 @@ Before publishing, verify:
 - **commit-code**: Prepare the release commit and tag
 - **review-service**: Confirm release readiness before communication goes out
 - **write-tech-radar**: Document longer-term technology direction changes
+- Companion reference: `references/keep-a-changelog-and-semver-governance.md`
+- Companion example: `examples/enterprise-platform-release-notes.md`
 
 ## Output Contracts
 
@@ -187,6 +189,3 @@ Skip emission for internal-only release notes that are never consumed by another
 - **ASI04 Supply Chain**: when a release bundles third-party dependencies, the notes must list behavioral changes that affect users; treat undisclosed upstream changes as a release-blocking issue.
 - **ASI07 Inter-Agent Communication**: release notes are consumed by downstream agents (adoption trackers, migration bots, customer comms); emit a structured contract so each consumer can validate.
 - **ASI09 Human-Agent Trust Exploitation**: do not soften a breaking change or omit a known regression to obtain a faster publish; surface every material risk honestly.
-
-
-

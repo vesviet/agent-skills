@@ -1,0 +1,13 @@
+{
+  "case_id": "SA-001",
+  "name": "High-throughput streaming analytics platform handling 100k events/sec",
+  "work_type": "implementation",
+  "role": "technical-architect",
+  "skill": "system-design",
+  "user_request": "Architect a distributed event ingestion pipeline handling 100k events/sec with sub-second analytical latency.",
+  "target": "docs/architecture/analytics-platform.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/system-design-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

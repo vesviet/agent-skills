@@ -1,0 +1,13 @@
+{
+  "case_id": "BE-009",
+  "name": "SQL injection attempt via unsanitized search filter query parameter",
+  "work_type": "implementation",
+  "role": "backend-developer",
+  "skill": "add-api-endpoint",
+  "user_request": "Audit and sanitize search filter parameters against SQL injection attempts.",
+  "target": "internal/data/search.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/api-contract-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

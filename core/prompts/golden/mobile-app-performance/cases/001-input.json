@@ -1,0 +1,13 @@
+{
+  "case_id": "MOB-001",
+  "name": "120 FPS infinite feed list using Shopify FlashList with recycled view cells",
+  "work_type": "implementation",
+  "role": "mobile-engineer",
+  "skill": "develop-mobile-app",
+  "user_request": "Build a smooth 120 FPS virtualized social feed list replacing a laggy ScrollView.",
+  "target": "src/screens/feed-list.tsx",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

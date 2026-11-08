@@ -1,0 +1,13 @@
+{
+  "case_id": "SA-002",
+  "name": "Cell-based architecture design isolating customer blast radius via shuffle sharding",
+  "work_type": "implementation",
+  "role": "technical-architect",
+  "skill": "system-design",
+  "user_request": "Design a cell-based multi-tenant topology utilizing shuffle sharding to contain outage blast radius.",
+  "target": "docs/architecture/cell-based-architecture.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/system-design-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

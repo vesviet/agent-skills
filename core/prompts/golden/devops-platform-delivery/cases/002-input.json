@@ -1,0 +1,13 @@
+{
+  "case_id": "DO-002",
+  "name": "Progressive blue-green / canary rollout specification with Argo Rollouts",
+  "work_type": "implementation",
+  "role": "devops-engineer",
+  "skill": "setup-deployment",
+  "user_request": "Configure an automated canary release strategy with step-wise traffic shifting and Prometheus analysis.",
+  "target": "deploy/rollouts/canary.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/deployment-plan.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

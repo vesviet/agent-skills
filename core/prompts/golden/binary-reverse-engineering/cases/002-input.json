@@ -1,0 +1,13 @@
+{
+  "case_id": "RE-002",
+  "name": "Identification of format string vulnerability in decompiled C network daemon",
+  "work_type": "implementation",
+  "role": "reverse-engineer",
+  "skill": "reverse-engineer-binary",
+  "user_request": "Decompile a network daemon binary and identify the root cause of an unauthenticated memory leak crash.",
+  "target": "reports/re/vulnerability-dossier.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/validation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

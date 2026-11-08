@@ -1,0 +1,13 @@
+{
+  "case_id": "DE-002",
+  "name": "Merging Iceberg v2 position and equality deletion vectors into read-optimized data files",
+  "work_type": "implementation",
+  "role": "data-engineer",
+  "skill": "database-maintenance",
+  "user_request": "Schedule a maintenance job to merge accumulated Iceberg v2 deletion vectors back into base Parquet files.",
+  "target": "pipelines/maintenance/merge_deletes.py",
+  "context": {
+    "schema_contract": "core/contracts/schemas/data-pipeline-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

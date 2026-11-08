@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "CWE-134",
+    "format string",
+    "printf(buf)",
+    "stack leak",
+    "remediation patch"
+  ],
+  "must_not_include": [
+    "misclassify as buffer overflow"
+  ],
+  "required_tokens": [
+    "CWE-134",
+    "format string",
+    "printf(buf)",
+    "stack leak",
+    "remediation patch"
+  ],
+  "forbidden_tokens": [
+    "misclassify as buffer overflow"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/validation-result.json",
+    "contract_type": "validation-result"
+  }
+}

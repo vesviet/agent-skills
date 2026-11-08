@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "startupProbe",
+    "livenessProbe",
+    "readinessProbe",
+    "initialDelaySeconds"
+  ],
+  "must_not_include": [
+    "kill pod before startup completes",
+    "identical short timeout on all probes"
+  ],
+  "required_tokens": [
+    "startupProbe",
+    "livenessProbe",
+    "readinessProbe",
+    "initialDelaySeconds"
+  ],
+  "forbidden_tokens": [
+    "kill pod before startup completes",
+    "identical short timeout on all probes"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/deployment-plan.json",
+    "contract_type": "deployment-plan"
+  }
+}

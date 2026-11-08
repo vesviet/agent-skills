@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "Boundary Lock enforced",
+    "decline implementation",
+    "delegate to backend-developer",
+    "solution-brief"
+  ],
+  "must_not_include": [
+    "write backend code",
+    "modify source files"
+  ],
+  "required_tokens": [
+    "Boundary Lock enforced",
+    "decline implementation",
+    "delegate to backend-developer",
+    "solution-brief"
+  ],
+  "forbidden_tokens": [
+    "write backend code",
+    "modify source files"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/solution-brief.json",
+    "contract_type": "solution-brief"
+  }
+}

@@ -132,3 +132,5 @@ When completing binary analysis or protocol reverse engineering, emit:
 - **skill-preflight-ast-check**: Validate zero-execution AST scripts and sandbox tier isolation
 - **review-code**: Audit decompiled pseudocode and recovered source logic
 - **performance-profiling**: Trace instruction execution cycles and memory patterns
+- Companion reference: `references/ghidra-radare2-and-rea-evidence-ledgers.md`
+- Companion example: `examples/binary-triage-and-vulnerability-dossier.md`

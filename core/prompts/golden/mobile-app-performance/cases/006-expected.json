@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "SafeAreaView",
+    "allowFontScaling: false on fixed icons",
+    "responsive text scaling",
+    "layout preservation"
+  ],
+  "must_not_include": [
+    "clipped text in fixed container"
+  ],
+  "required_tokens": [
+    "SafeAreaView",
+    "allowFontScaling: false on fixed icons",
+    "responsive text scaling",
+    "layout preservation"
+  ],
+  "forbidden_tokens": [
+    "clipped text in fixed container"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

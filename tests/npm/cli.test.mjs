@@ -86,3 +86,14 @@ test("unknown skill names fail with exit 1", async () => {
 test("missing destination is a usage error (exit 2)", async () => {
   await assert.rejects(run(["install"]), (error) => error.code === 2);
 });
+
+test("npm pack excludes reports directory and scratch artifacts", async () => {
+  const { stdout } = await exec("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], { cwd: ROOT });
+  const jsonStart = stdout.indexOf("[");
+  const jsonText = jsonStart >= 0 ? stdout.slice(jsonStart) : stdout;
+  const [packInfo] = JSON.parse(jsonText);
+  const files = packInfo.files.map((f) => f.path);
+  assert.ok(!files.some((f) => f.startsWith("reports/")), "reports/ must be cleanly excluded from npm package");
+  assert.ok(!files.some((f) => f.startsWith("tests/")), "tests/ must be cleanly excluded from npm package");
+});
+

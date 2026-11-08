@@ -1,0 +1,13 @@
+{
+  "case_id": "GAME-002",
+  "name": "Continuous Collision Detection (CCD) fast-mover tunneling guard",
+  "work_type": "implementation",
+  "role": "game-developer",
+  "skill": "develop-gameplay-systems",
+  "user_request": "Configure Continuous Collision Detection (CCD) raycasting and substepping to eliminate projectile and high-velocity entity tunneling through thin barrier walls.",
+  "target": "scripts/physics/projectile_collision.gd",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

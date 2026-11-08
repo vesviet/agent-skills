@@ -402,8 +402,8 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 |:---|:---|:---|
 | **`@commit-code`** | Validate and package a finished change into a clean commit by following repo-local validation, gener... | [`core/skills/repo-ops/commit-code/SKILL.md`](./core/skills/repo-ops/commit-code/SKILL.md) |
 | **`@navigate-service`** | Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, ... | [`core/skills/repo-ops/navigate-service/SKILL.md`](./core/skills/repo-ops/navigate-service/SKILL.md) |
-| **`@review-code`** | Review a diff since a fixed point along two separate axes — Standards (does the code follow this rep... | [`core/skills/repo-ops/review-code/SKILL.md`](./core/skills/repo-ops/review-code/SKILL.md) |
-| **`@review-service`** | Review an entire service for release readiness. Use for full-service audits, production-readiness ch... | [`core/skills/repo-ops/review-service/SKILL.md`](./core/skills/repo-ops/review-service/SKILL.md) |
+| **`@review-code`** | Review a diff since a fixed point along two separate axes — Standards (conformance to documented sta... | [`core/skills/repo-ops/review-code/SKILL.md`](./core/skills/repo-ops/review-code/SKILL.md) |
+| **`@review-service`** | Review an entire service for release readiness, evaluating code, contracts, data migrations, depende... | [`core/skills/repo-ops/review-service/SKILL.md`](./core/skills/repo-ops/review-service/SKILL.md) |
 | **`@troubleshoot-service`** | Troubleshoot build, startup, runtime, dependency, and configuration issues by isolating the failing ... | [`core/skills/repo-ops/troubleshoot-service/SKILL.md`](./core/skills/repo-ops/troubleshoot-service/SKILL.md) |
 
 ### Category: `security-data` (10 skills)

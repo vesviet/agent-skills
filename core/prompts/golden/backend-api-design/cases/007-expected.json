@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "ctx.Done()",
+    "context.Canceled",
+    "abort processing",
+    "release connection"
+  ],
+  "must_not_include": [
+    "goroutine leak",
+    "continue database write after client disconnect"
+  ],
+  "required_tokens": [
+    "ctx.Done()",
+    "context.Canceled",
+    "abort processing",
+    "release connection"
+  ],
+  "forbidden_tokens": [
+    "goroutine leak",
+    "continue database write after client disconnect"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

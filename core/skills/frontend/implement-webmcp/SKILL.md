@@ -117,5 +117,7 @@ Skip emission for trivial local experiments that do not cross a role boundary.
 - **integrate-api-client**: Wire frontend client state and API communication behind WebMCP actions
 - **frontend-testing**: Test WebMCP context emission and client-side action execution
 - **security-audit**: Audit client-side context exposure and verify PII/secret protection
+- Companion reference: `references/webmcp-architecture-and-hitl-security.md`
+- Companion example: `examples/webmcp-provider-and-hitl-modal.tsx`
 
-Last updated: 2026-09-25
+Last updated: 2026-11-08

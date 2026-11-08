@@ -1,0 +1,15 @@
+{
+  "case_id": "CQ-008",
+  "name": "Passive Voice and Vague Attribution Detection",
+  "work_type": "audit",
+  "role": "content-manager",
+  "skill": "audit-content",
+  "user_request": "Audit this security article for attribution rigor and authoritative sourcing. Identify passive voice hedging and ungrounded 'expert' claims that inflate the semantic flaw score.",
+  "target": "articles/zero-trust-architecture-adoption-trends",
+  "context": {
+    "site": "authority-blog",
+    "text_sample": "It is widely believed that zero-trust architectures represent the pinnacle of defense in depth. Experts often suggest that traditional perimeter defenses are becoming obsolete. Many observers note that organizations struggle with identity governance.",
+    "traffic_trend": "stable",
+    "staleness_months": 4
+  }
+}

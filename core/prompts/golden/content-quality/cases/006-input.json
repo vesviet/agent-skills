@@ -1,0 +1,17 @@
+{
+  "case_id": "CQ-006",
+  "name": "ROT Content Classification for Zero-Traffic Ephemeral Page",
+  "work_type": "audit",
+  "role": "content-manager",
+  "skill": "audit-content",
+  "user_request": "Audit this legacy event post for ROT (Redundant, Outdated, Trivial) classification. Propose a lifecycle action (retire vs keep) and justify with traffic and staleness metrics.",
+  "target": "news/2021-quarterly-update-meetup-announcement",
+  "context": {
+    "site": "authority-blog",
+    "traffic_trend": "zero_traffic",
+    "staleness_months": 38,
+    "page_type": "event_announcement",
+    "monthly_unique_visitors": 0,
+    "backlink_count": 0
+  }
+}

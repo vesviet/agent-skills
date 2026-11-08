@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "ducking",
+    "sidechain",
+    "audio_bus",
+    "crossfade",
+    "implementation-result"
+  ],
+  "must_not_include": [
+    "instantiating unbounded AudioStreamPlayers per frame",
+    "hardcoded volume values without bus mixer"
+  ],
+  "required_tokens": [
+    "ducking",
+    "sidechain",
+    "audio_bus",
+    "crossfade",
+    "implementation-result"
+  ],
+  "forbidden_tokens": [
+    "instantiating unbounded AudioStreamPlayers per frame",
+    "hardcoded volume values without bus mixer"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

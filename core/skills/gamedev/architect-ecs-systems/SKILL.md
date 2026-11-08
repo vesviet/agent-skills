@@ -78,3 +78,5 @@ When completing ECS architecture implementation, emit:
 
 - **develop-gameplay-systems**: kinematic gameplay systems and hierarchical state machines
 - **profile-game-performance**: CPU cache line profiling and memory bandwidth monitoring
+- Companion reference: `references/data-oriented-design-and-archetype-ecs.md`
+- Companion example: `examples/bevy-flecs-combat-system.rs`

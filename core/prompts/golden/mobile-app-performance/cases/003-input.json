@@ -1,0 +1,13 @@
+{
+  "case_id": "MOB-003",
+  "name": "Offline-first local state storage using MMKV and WatermelonDB sync",
+  "work_type": "implementation",
+  "role": "mobile-engineer",
+  "skill": "develop-mobile-app",
+  "user_request": "Implement local state persistence with synchronous MMKV storage and WatermelonDB SQLite sync.",
+  "target": "src/storage/local-store.ts",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

@@ -4,7 +4,7 @@ This directory is the portable source of truth for the global engineering pack.
 
 > **Core Catalog**: **39 Roles** | **169 Portable Core Skills** (across 22 categories) | **25 Workflows** | **63 Data Contract Schemas**  
 > **Master Index & Discovery**: [`INDEX.md`](../INDEX.md) | **Machine Registry**: [`a2a/.well-known/role-skill-index.json`](a2a/.well-known/role-skill-index.json)  
-> **Authoritative SOTA Audit**: [`reports/role-skill-matrix-sota-audit-2026-2027.md`](../reports/role-skill-matrix-sota-audit-2026-2027.md)
+> **Authoritative SOTA Audit**: [`reports/agent-skills-round-2-audit-report.md`](../reports/agent-skills-round-2-audit-report.md)
 
 Everything in `core/` satisfies these invariants:
 

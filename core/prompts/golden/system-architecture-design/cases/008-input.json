@@ -1,0 +1,13 @@
+{
+  "case_id": "SA-008",
+  "name": "Distributed ID generator supporting 50k writes/sec with monotonic sortability",
+  "work_type": "implementation",
+  "role": "technical-architect",
+  "skill": "system-design",
+  "user_request": "Design a distributed 64-bit ID generator ensuring global monotonicity without centralized database locks.",
+  "target": "docs/architecture/id-generator.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/system-design-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

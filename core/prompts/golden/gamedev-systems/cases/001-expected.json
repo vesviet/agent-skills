@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "coyote_time",
+    "jump_buffer",
+    "delta",
+    "move_and_slide",
+    "implementation-result"
+  ],
+  "must_not_include": [
+    "frame-rate dependent velocity addition without delta",
+    "blocking physics sleep in main thread"
+  ],
+  "required_tokens": [
+    "coyote_time",
+    "jump_buffer",
+    "delta",
+    "move_and_slide",
+    "implementation-result"
+  ],
+  "forbidden_tokens": [
+    "frame-rate dependent velocity addition without delta",
+    "blocking physics sleep in main thread"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

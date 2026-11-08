@@ -110,3 +110,5 @@ When auditing or pruning memory stores, emit:
 - **agent-semantic-memory**: Managing long-term temporal knowledge graphs and cross-session associative memory.
 - **prompt-injection-defense**: Sanitizing untrusted inputs and enforcing delimiter isolation.
 - **agent-evaluation**: Evaluating agent decision accuracy and reasoning drift across pruned memory states.
+- Companion reference: `references/owasp-asi06-and-memory-poisoning-defense.md`
+- Companion example: `examples/memory-audit-and-compaction-routine.py`

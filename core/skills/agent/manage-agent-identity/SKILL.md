@@ -155,6 +155,8 @@ Produce an audit record for every production agent session:
 - **manage-secrets**: Securely store and rotate agent credentials in secret managers.
 - **security-audit**: Full security posture audit including NHI inventory review.
 - **agent-observability**: Trace spans for session monitoring — NHI session ID is a required span attribute.
+- Companion reference: `references/nhi-lifecycle-and-token-rotation.md`
+- Companion example: `examples/agent-identity-spire-workload.yaml`
 
 ## Output Contracts
 

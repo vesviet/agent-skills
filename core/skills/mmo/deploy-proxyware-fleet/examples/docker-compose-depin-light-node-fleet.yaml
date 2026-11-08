@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  residential-gateway:
+    image: wireguard/client:latest
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - WG_CONFIG_FILE=/etc/wireguard/wg0.conf
+    volumes:
+      - ./wireguard/wg0.conf:/etc/wireguard/wg0.conf:ro
+    restart: always
+
+  grass-node-01:
+    image: depin/grass-light-node:v2.4.0
+    network_mode: "service:residential-gateway"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,size=512M
+      - /dev/shm:rw,size=512M
+    environment:
+      - WALLET_PUBLIC_KEY=7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+      - NODE_SIGNATURE=3N8vKjW_Sample_Ed25519_Delegated_Signature_Base64==
+      - TELEMETRY_WS_URL=wss://telemetry.wynd.network/v1
+      - LOG_LEVEL=warn
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 256M
+        reservations:
+          cpus: "0.05"
+          memory: 64M
+    restart: unless-stopped
+
+  nodepay-node-01:
+    image: depin/nodepay-light-node:v1.8.2
+    network_mode: "service:residential-gateway"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,size=512M
+      - /dev/shm:rw,size=512M
+    environment:
+      - WALLET_PUBLIC_KEY=7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+      - NODE_SIGNATURE=4M9wLkX_Sample_Ed25519_Delegated_Signature_Base64==
+      - TELEMETRY_WS_URL=wss://network.nodepay.ai/v1
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 256M
+    restart: unless-stopped

@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "deprecation timeline",
+    "migration path",
+    "affected user communication",
+    "telemetry check"
+  ],
+  "must_not_include": [
+    "abruptly kill feature without replacement"
+  ],
+  "required_tokens": [
+    "deprecation timeline",
+    "migration path",
+    "affected user communication",
+    "telemetry check"
+  ],
+  "forbidden_tokens": [
+    "abruptly kill feature without replacement"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/solution-brief.json",
+    "contract_type": "solution-brief"
+  }
+}

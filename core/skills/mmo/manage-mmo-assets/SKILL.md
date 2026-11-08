@@ -132,3 +132,5 @@ Skip emission for local asset lookups that do not cross role boundaries.
 
 - **deploy-mmo-infrastructure**: Provision isolated Anti-Detect Browser profiles and proxy networks bound to these asset silos.
 - **setup-tracking-system**: Configure tracking assets (Pixels/Datasets) referenced in the catalog.
+- Companion reference: `references/mmo-asset-rbac-and-vault-isolation.md`
+- Companion example: `examples/mmo-asset-vault-manager.py`

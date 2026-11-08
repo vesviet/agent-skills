@@ -1,0 +1,13 @@
+{
+  "case_id": "GAME-005",
+  "name": "Monotonic save game schema with SHA-256 integrity checksum",
+  "work_type": "implementation",
+  "role": "game-developer",
+  "skill": "develop-gameplay-systems",
+  "user_request": "Design and implement a versioned monotonic save game serialization pipeline with SHA-256 integrity checksum validation, atomic write-replace, and schema migration.",
+  "target": "scripts/persistence/save_manager.gd",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "DO-003",
+  "name": "Liveness and readiness probe configuration for slow-starting JVM/Go service",
+  "work_type": "implementation",
+  "role": "devops-engineer",
+  "skill": "setup-deployment",
+  "user_request": "Tune startup, liveness, and readiness probes for a service requiring 45 seconds of cache pre-warming.",
+  "target": "deploy/k8s/base/deployment.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/deployment-plan.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

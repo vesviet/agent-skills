@@ -1,0 +1,13 @@
+{
+  "case_id": "DO-009",
+  "name": "Privileged container execution and root filesystem write request",
+  "work_type": "implementation",
+  "role": "devops-engineer",
+  "skill": "setup-deployment",
+  "user_request": "Harden pod security context to block root user execution and enforce read-only root filesystems.",
+  "target": "deploy/k8s/security-context.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/deployment-plan.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

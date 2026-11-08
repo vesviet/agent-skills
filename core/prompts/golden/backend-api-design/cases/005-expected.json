@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "ResourceExhausted",
+    "max message size",
+    "streaming",
+    "chunking"
+  ],
+  "must_not_include": [
+    "panic",
+    "unbounded memory buffer"
+  ],
+  "required_tokens": [
+    "ResourceExhausted",
+    "max message size",
+    "streaming",
+    "chunking"
+  ],
+  "forbidden_tokens": [
+    "panic",
+    "unbounded memory buffer"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

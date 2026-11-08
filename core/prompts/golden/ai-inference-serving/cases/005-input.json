@@ -1,0 +1,13 @@
+{
+  "case_id": "AI-005",
+  "name": "NVIDIA MIG (Multi-Instance GPU) slice allocation for multi-model co-location",
+  "work_type": "implementation",
+  "role": "ai-systems-engineer",
+  "skill": "deploy-vllm-inference",
+  "user_request": "Configure Kubernetes resource requests for multi-tenant serving across 1g.10gb MIG slices on an A100.",
+  "target": "deploy/ai/mig-slices.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/edge-deployment-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

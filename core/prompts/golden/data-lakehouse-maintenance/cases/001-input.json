@@ -1,0 +1,13 @@
+{
+  "case_id": "DE-001",
+  "name": "Apache Iceberg small-file bin-pack compaction merging into 256MB target Parquet files",
+  "work_type": "implementation",
+  "role": "data-engineer",
+  "skill": "database-maintenance",
+  "user_request": "Implement an automated compaction job merging millions of 10KB files into 256MB target Parquet files.",
+  "target": "pipelines/maintenance/iceberg_compaction.py",
+  "context": {
+    "schema_contract": "core/contracts/schemas/data-pipeline-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

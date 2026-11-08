@@ -1,0 +1,13 @@
+{
+  "case_id": "SA-003",
+  "name": "Exact GPU VRAM sizing model for hosting 70B parameter model with KV cache",
+  "work_type": "implementation",
+  "role": "technical-architect",
+  "skill": "system-design",
+  "user_request": "Calculate exact VRAM requirements to serve a 70B FP16 model under 4k context and 64 concurrent requests.",
+  "target": "docs/architecture/gpu-capacity-model.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/system-design-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

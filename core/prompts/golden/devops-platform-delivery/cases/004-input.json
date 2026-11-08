@@ -1,0 +1,13 @@
+{
+  "case_id": "DO-004",
+  "name": "Horizontal Pod Autoscaler (HPA) definition based on CPU and custom queue metrics",
+  "work_type": "implementation",
+  "role": "devops-engineer",
+  "skill": "setup-deployment",
+  "user_request": "Configure HPA v2 to scale consumer pods dynamically based on SQS queue depth and CPU utilization.",
+  "target": "deploy/k8s/base/hpa.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/deployment-plan.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

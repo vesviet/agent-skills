@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "strip secrets from bundle",
+    "secure backend proxy",
+    "BFF pattern",
+    "env vars at build"
+  ],
+  "must_not_include": [
+    "hardcode API_SECRET in client code"
+  ],
+  "required_tokens": [
+    "strip secrets from bundle",
+    "secure backend proxy",
+    "BFF pattern",
+    "env vars at build"
+  ],
+  "forbidden_tokens": [
+    "hardcode API_SECRET in client code"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

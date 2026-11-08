@@ -158,5 +158,7 @@ Skip emission for solo exploratory UI work with no planned handoff.
 - **design-ux-flow**: Upstream ux-flow-spec and ui-component-spec from UI/UX Designer
 - **commit-code**: Prepare the component change for delivery
 - **develop-mobile-app**: Build high-performance React Native / Expo UI components with FlashList virtualization and Reanimated motion
+- Companion reference: `references/react19-component-standards-and-anti-slop.md`
+- Companion example: `examples/compound-dialog-and-form-actions.tsx`
 
-Last updated: 2026-09-25
+Last updated: 2026-11-08

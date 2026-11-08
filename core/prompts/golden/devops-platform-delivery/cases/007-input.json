@@ -1,0 +1,13 @@
+{
+  "case_id": "DO-007",
+  "name": "Graceful termination handling with preStop hook and terminationGracePeriodSeconds",
+  "work_type": "implementation",
+  "role": "devops-engineer",
+  "skill": "setup-deployment",
+  "user_request": "Configure pod lifecycle hooks to allow 30 seconds for in-flight requests to complete during rolling update.",
+  "target": "deploy/k8s/base/lifecycle.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/deployment-plan.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

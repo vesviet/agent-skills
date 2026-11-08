@@ -137,3 +137,5 @@ Skip emission for local scratch testing of browser selectors.
 
 - **deploy-mmo-infrastructure**: Provision and manage the Anti-Detect Browser profiles and proxy networks that scripts connect to.
 - **turnstile-spin**: Handle Cloudflare Turnstile deployment and verification challenges in automation pipelines.
+- Companion reference: `references/stealth-cdp-and-behavioral-mimicry.md`
+- Companion example: `examples/stealth-browser-automation-flow.ts`

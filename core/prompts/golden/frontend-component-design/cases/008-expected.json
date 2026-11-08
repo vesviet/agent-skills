@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "@media (prefers-reduced-motion: reduce)",
+    "contrast ratio >= 4.5:1",
+    "forced-colors"
+  ],
+  "must_not_include": [
+    "ignore reduced motion",
+    "hardcoded invisible borders"
+  ],
+  "required_tokens": [
+    "@media (prefers-reduced-motion: reduce)",
+    "contrast ratio >= 4.5:1",
+    "forced-colors"
+  ],
+  "forbidden_tokens": [
+    "ignore reduced motion",
+    "hardcoded invisible borders"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/ui-component-spec.json",
+    "contract_type": "ui-component-spec"
+  }
+}

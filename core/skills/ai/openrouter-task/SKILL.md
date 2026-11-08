@@ -1,6 +1,6 @@
 ---
 name: openrouter-task
-description: Offload lightweight tasks, boilerplate code generation, unit tests, summarization, and data transformations to OpenRouter FREE LLMs pool (:free) using the local environment key at D:\myproject\.agents\.env to preserve Google Gemini quota. Use when running secondary, repetitive, or lightweight coding and data transformation tasks via free model rotation.
+description: Offload lightweight tasks, boilerplate code generation, unit tests, summarization, and data transformations to OpenRouter FREE LLMs pool (:free) using the local environment key configured via OPENROUTER_ENV_FILE (or local .env) to preserve Google Gemini quota. Use when running secondary, repetitive, or lightweight coding and data transformation tasks via free model rotation.
 allowed-tools: [execute_command, read_file, write_file]
 version: "1.1.0"
 ---
@@ -19,7 +19,7 @@ Use this skill when you need to run secondary, repetitive, or lightweight tasks 
 ## Core Rules
 
 - **Free Tier Enforcement (`:free`)**: only invoke models ending with `:free` or `openrouter/free` to guarantee zero token expenditure.
-- **Zero Hardcoded Secrets**: load `OPENROUTER_API_KEY` exclusively from the local environment file (`D:\myproject\.agents\.env`); never hardcode or log API keys in source files or outputs.
+- **Zero Hardcoded Secrets**: load `OPENROUTER_API_KEY` exclusively from environment variables or a local environment file (via `$OPENROUTER_ENV_FILE` or `.env`); never hardcode or log API keys in source files or outputs.
 - **Round-Robin & Failover Resilience**: rotate across the free model pool and automatically fail over when an upstream provider returns HTTP 429 or 5xx.
 - **Untrusted Output Validation**: treat all generated code and transformed data from external free models as untrusted; validate syntax, types, and tests locally before integration.
 
@@ -39,13 +39,13 @@ The default execution mode automatically rotates (Round-Robin) and fails over ac
 ### 1. Verify Pool Readiness
 Check the free model rotation pool and environment key configuration:
 ```bash
-python D:\myproject\tools\openrouter_worker.py --check
+python tools/openrouter_worker.py --check
 ```
 
 ### 2. Execute Task via CLI Runner or MCP Server
 Invoke the Python CLI runner (automatically rotates and falls back across free models without needing `--model`):
 ```bash
-python D:\myproject\tools\openrouter_worker.py --prompt "<task_description>"
+python tools/openrouter_worker.py --prompt "<task_description>"
 ```
 Or call the `call_openrouter` tool registered under the `openrouter` MCP server (`~/.gemini/config/mcp_config.json`).
 
@@ -71,7 +71,7 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 
 - **Upstream provider rate-limiting (HTTP 429)**: free tier endpoints experience burst throttling. Mitigation: rely on the built-in round-robin pool and automatic failover across the 7 registered `:free` models.
 - **Truncated or malformed code generation**: smaller free models may emit incomplete syntax blocks. Mitigation: parse and lint all generated artifacts locally before applying edits.
-- **Missing local `.env` key**: `OPENROUTER_API_KEY` is absent or expired in `D:\myproject\.agents\.env`. Mitigation: run `--check` preflight and surface configuration errors immediately without falling back to paid endpoints.
+- **Missing local `.env` key**: `OPENROUTER_API_KEY` is absent or expired in the configured environment file (`$OPENROUTER_ENV_FILE` / `.env`). Mitigation: run `--check` preflight and surface configuration errors immediately without falling back to paid endpoints.
 
 ## Security Guardrails (OWASP ASI)
 

@@ -1,0 +1,28 @@
+schema_version: '2026.1'
+prompt_id: system-architecture-design
+name: Evolutionary System Architecture & Cell-Based Fault Isolation
+domain: platform
+role: technical-architect
+target_role: technical-architect
+skill: system-design
+target_skill: system-design
+version: 1.0.0
+description: Evaluates whether the technical-architect translates NFRs into structured
+  system topologies, applies Cell-Based Architecture with shuffle sharding, calculates
+  mathematical capacity and GPU VRAM budgets, and outputs valid system-design-spec
+  contracts.
+tags:
+- technical-architect
+- system-design
+- cell-based
+- nfr
+- capacity-planning
+- vram
+author: agent-skills-pack
+created_at: '2026-11-08'
+updated_at: '2026-11-08'
+min_pass_rate: 0.9
+governance:
+  min_pass_rate: 0.9
+  contract_schema: core/contracts/schemas/system-design-spec.json
+cases_dir: cases/

@@ -5,7 +5,7 @@ Use this adapter when running **Google Antigravity IDE v2.5.5+** (or Antigravity
 > **Master Discovery**: **39 Roles** | **183 Skills** (169 Core + 14 Overlays) | **25 Workflows** | **63 Data Contract Schemas**  
 > **Antigravity Registry**: [`adapters/antigravity/role-skill-index.json`](role-skill-index.json)  
 > **Master Index & Router**: [`../../INDEX.md`](../../INDEX.md)  
-> **Authoritative SOTA Audit**: [`../../reports/role-skill-matrix-sota-audit-2026-2027.md`](../../reports/role-skill-matrix-sota-audit-2026-2027.md)
+> **Authoritative SOTA Audit**: [`../../reports/agent-skills-round-2-audit-report.md`](../../reports/agent-skills-round-2-audit-report.md)
 
 ## Quick Start
 

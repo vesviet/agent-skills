@@ -1,0 +1,13 @@
+{
+  "case_id": "FE-002",
+  "name": "React 19 Server Action form component with useActionState and optimistic feedback",
+  "work_type": "implementation",
+  "role": "frontend-developer",
+  "skill": "add-ui-component",
+  "user_request": "Implement an interactive newsletter form using React 19 Server Actions and useOptimistic hook.",
+  "target": "src/components/newsletter-form.tsx",
+  "context": {
+    "schema_contract": "core/contracts/schemas/ui-component-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

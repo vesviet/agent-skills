@@ -1,0 +1,13 @@
+{
+  "case_id": "QA-003",
+  "name": "Race condition test using Go -race detector on concurrent worker pool",
+  "work_type": "implementation",
+  "role": "qa-engineer",
+  "skill": "write-tests",
+  "user_request": "Write a concurrent test with the race detector verifying thread-safety of an in-memory token bucket rate limiter.",
+  "target": "internal/pkg/ratelimit/limiter_test.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/test-report.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

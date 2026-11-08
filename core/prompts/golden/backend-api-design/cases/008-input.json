@@ -1,0 +1,13 @@
+{
+  "case_id": "BE-008",
+  "name": "Partial batch write failure with per-item status response",
+  "work_type": "implementation",
+  "role": "backend-developer",
+  "skill": "add-api-endpoint",
+  "user_request": "Implement batch ingestion returning granular success and failure diagnostics for each item.",
+  "target": "internal/service/batch.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/api-contract-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

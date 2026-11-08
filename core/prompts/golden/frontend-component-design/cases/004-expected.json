@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "min-h-[100dvh]",
+    "prevent layout shift",
+    "responsive viewport",
+    "CLS protection"
+  ],
+  "must_not_include": [
+    "h-screen",
+    "viewport jump"
+  ],
+  "required_tokens": [
+    "min-h-[100dvh]",
+    "prevent layout shift",
+    "responsive viewport",
+    "CLS protection"
+  ],
+  "forbidden_tokens": [
+    "h-screen",
+    "viewport jump"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/ui-component-spec.json",
+    "contract_type": "ui-component-spec"
+  }
+}

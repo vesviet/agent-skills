@@ -1,0 +1,38 @@
+# Development and test suites
+tests/
+reports/
+docs/
+scripts/
+output/
+audit/
+.agents/
+.github/
+
+# Python and virtual environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+pyproject.toml
+
+# Node.js and packages
+node_modules/
+*.tgz
+.npmrc
+
+# Local secrets and env files
+.env
+.env.*
+.dev.vars
+
+# Local configuration, IDE, and caches
+.pytest_cache/
+.DS_Store
+**/.DS_Store
+*.swp
+*.swo
+*.bak
+*.log
+.vscode/
+.idea/
+.cursorrules

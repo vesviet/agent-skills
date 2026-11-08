@@ -1,0 +1,15 @@
+{
+  "case_id": "CQ-004",
+  "name": "Burstiness and Sentence Length Cadence Monotony Audit",
+  "work_type": "audit",
+  "role": "content-manager",
+  "skill": "audit-content",
+  "user_request": "Analyze the sentence length distribution and rhythm cadence of this technical article. Check for synthetic uniformity vs the 20/60/20 burstiness standard.",
+  "target": "articles/modern-api-design-principles",
+  "context": {
+    "site": "authority-blog",
+    "text_sample": "APIs allow different software systems to communicate with each other effectively. REST represents the most common architectural style used across web services today. Developers must design clear endpoints that follow predictable naming conventions consistently. Each resource should have dedicated representations that describe the underlying entity accurately.",
+    "traffic_trend": "stable",
+    "staleness_months": 2
+  }
+}

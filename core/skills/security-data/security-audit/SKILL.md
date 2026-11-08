@@ -1,6 +1,6 @@
 ---
 name: security-audit
-description: Review code, configuration, and service behavior for security risks by checking trust boundaries, secret handling, auth, validation, and operational exposure. For AI/ML systems, apply OWASP ASI Top 10 2026 (ASI01–ASI10), NIST AI RMF Measure function, and ISO/IEC 42001:2023 controls assessment. Use for focused security review of changes or full-service risk assessment.
+description: Review code, configuration, and service behavior for security risks by checking trust boundaries, secret handling, auth, validation, and operational exposure, applying OWASP ASI Top 10 2026, NIST AI RMF, and CVSS 4.0 triage. Use when conducting focused security reviews of changes, pre-deployment audits, or full-service risk assessments.
 version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_tests, run_linter, run_build, execute_command]
 ---
@@ -128,6 +128,8 @@ When an active CVE is identified:
 - **manage-secrets**: Fix secret-handling issues safely
 - **meeting-review**: Run a broader multi-role risk review
 - **commit-code**: Prepare remediation changes for delivery
+- Companion reference: `references/owasp-asi-and-cvss4-threat-modeling.md`
+- Companion example: `examples/enterprise-service-security-audit-report.md`
 
 ## Output Contracts
 

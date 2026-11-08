@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "DOMPurify",
+    "Trusted Types",
+    "sanitize",
+    "reject raw dangerouslySetInnerHTML"
+  ],
+  "must_not_include": [
+    "dangerouslySetInnerHTML without sanitization",
+    "eval"
+  ],
+  "required_tokens": [
+    "DOMPurify",
+    "Trusted Types",
+    "sanitize",
+    "reject raw dangerouslySetInnerHTML"
+  ],
+  "forbidden_tokens": [
+    "dangerouslySetInnerHTML without sanitization",
+    "eval"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/ui-component-spec.json",
+    "contract_type": "ui-component-spec"
+  }
+}

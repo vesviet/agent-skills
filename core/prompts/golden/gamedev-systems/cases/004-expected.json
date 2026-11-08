@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "deadzone",
+    "rebind",
+    "action_map",
+    "chord",
+    "implementation-result"
+  ],
+  "must_not_include": [
+    "hardcoded WASD inputs without remapping layer",
+    "axial-only truncation causing diagonal speed boost"
+  ],
+  "required_tokens": [
+    "deadzone",
+    "rebind",
+    "action_map",
+    "chord",
+    "implementation-result"
+  ],
+  "forbidden_tokens": [
+    "hardcoded WASD inputs without remapping layer",
+    "axial-only truncation causing diagonal speed boost"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

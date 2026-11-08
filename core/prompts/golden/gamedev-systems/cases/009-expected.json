@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "headless",
+    "gut",
+    "junit",
+    "export_templates",
+    "implementation-result"
+  ],
+  "must_not_include": [
+    "requiring interactive display server in CI",
+    "unversioned Godot binary download"
+  ],
+  "required_tokens": [
+    "headless",
+    "gut",
+    "junit",
+    "export_templates",
+    "implementation-result"
+  ],
+  "forbidden_tokens": [
+    "requiring interactive display server in CI",
+    "unversioned Godot binary download"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

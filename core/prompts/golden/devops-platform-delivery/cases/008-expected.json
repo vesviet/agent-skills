@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "NetworkPolicy",
+    "default-deny",
+    "ingress allowlist",
+    "egress namespaceSelector"
+  ],
+  "must_not_include": [
+    "unrestricted cluster-wide egress"
+  ],
+  "required_tokens": [
+    "NetworkPolicy",
+    "default-deny",
+    "ingress allowlist",
+    "egress namespaceSelector"
+  ],
+  "forbidden_tokens": [
+    "unrestricted cluster-wide egress"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/deployment-plan.json",
+    "contract_type": "deployment-plan"
+  }
+}

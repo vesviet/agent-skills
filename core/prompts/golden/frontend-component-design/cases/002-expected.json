@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "useActionState",
+    "useOptimistic",
+    "progressive enhancement",
+    "form action"
+  ],
+  "must_not_include": [
+    "unnecessary useState for form submit",
+    "client-side fetch in useEffect"
+  ],
+  "required_tokens": [
+    "useActionState",
+    "useOptimistic",
+    "progressive enhancement",
+    "form action"
+  ],
+  "forbidden_tokens": [
+    "unnecessary useState for form submit",
+    "client-side fetch in useEffect"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/ui-component-spec.json",
+    "contract_type": "ui-component-spec"
+  }
+}

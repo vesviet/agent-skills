@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "regulatory compliance",
+    "non-negotiable deadline",
+    "scope reduction to must-haves",
+    "legal audit"
+  ],
+  "must_not_include": [
+    "defer legal requirement to post-launch"
+  ],
+  "required_tokens": [
+    "regulatory compliance",
+    "non-negotiable deadline",
+    "scope reduction to must-haves",
+    "legal audit"
+  ],
+  "forbidden_tokens": [
+    "defer legal requirement to post-launch"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/solution-brief.json",
+    "contract_type": "solution-brief"
+  }
+}

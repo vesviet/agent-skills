@@ -1,0 +1,13 @@
+{
+  "case_id": "RE-005",
+  "name": "Analysis of binary protected with Control Flow Flattening (OLLVM)",
+  "work_type": "implementation",
+  "role": "reverse-engineer",
+  "skill": "reverse-engineer-binary",
+  "user_request": "Deconstruct a control-flow-flattened function to recover original basic block state machine logic.",
+  "target": "reports/re/deflattening-analysis.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/validation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

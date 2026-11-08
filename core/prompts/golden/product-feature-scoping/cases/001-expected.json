@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "solution-brief",
+    "user value",
+    "success metrics",
+    "preserved behavior",
+    "scope boundary"
+  ],
+  "must_not_include": [
+    "write implementation code",
+    "prescribe database schema"
+  ],
+  "required_tokens": [
+    "solution-brief",
+    "user value",
+    "success metrics",
+    "preserved behavior",
+    "scope boundary"
+  ],
+  "forbidden_tokens": [
+    "write implementation code",
+    "prescribe database schema"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/solution-brief.json",
+    "contract_type": "solution-brief"
+  }
+}

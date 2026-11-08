@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "VRAM calculation",
+    "KV cache allocation",
+    "tensor parallel",
+    "weights calculation"
+  ],
+  "must_not_include": [
+    "guess memory requirement",
+    "ignore KV cache growth"
+  ],
+  "required_tokens": [
+    "VRAM calculation",
+    "KV cache allocation",
+    "tensor parallel",
+    "weights calculation"
+  ],
+  "forbidden_tokens": [
+    "guess memory requirement",
+    "ignore KV cache growth"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/system-design-spec.json",
+    "contract_type": "system-design-spec"
+  }
+}

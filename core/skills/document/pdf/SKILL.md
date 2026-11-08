@@ -58,6 +58,7 @@ allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 - **write-documentation**: Author technical specifications converted to executive PDF manuals.
 - **release-notes**: Compiles release artifacts into customer-facing PDF documentation.
 - **docx**: Converts source Word manuscripts into finalized PDF publications.
+- Companion reference: `references/pdf-acroforms-and-pdfplumber-specs.md`
 
 ## Output Contracts
 

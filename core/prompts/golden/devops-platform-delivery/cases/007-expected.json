@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "preStop",
+    "SIGTERM",
+    "terminationGracePeriodSeconds",
+    "drain active connections"
+  ],
+  "must_not_include": [
+    "SIGKILL immediately without draining"
+  ],
+  "required_tokens": [
+    "preStop",
+    "SIGTERM",
+    "terminationGracePeriodSeconds",
+    "drain active connections"
+  ],
+  "forbidden_tokens": [
+    "SIGKILL immediately without draining"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/deployment-plan.json",
+    "contract_type": "deployment-plan"
+  }
+}

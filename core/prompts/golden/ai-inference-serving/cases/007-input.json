@@ -1,0 +1,13 @@
+{
+  "case_id": "AI-007",
+  "name": "Guided / structured JSON decoding using Outlines / XGrammar with precompiled schemas",
+  "work_type": "implementation",
+  "role": "ai-systems-engineer",
+  "skill": "deploy-vllm-inference",
+  "user_request": "Configure vLLM grammar-guided decoding backend to guarantee 100% JSON schema conformance without retries.",
+  "target": "deploy/ai/guided-decoding.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/edge-deployment-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "PM-003",
+  "name": "SaaS unit economics model evaluating free-to-paid conversion tier adjustments",
+  "work_type": "implementation",
+  "role": "product-manager",
+  "skill": "write-product-brief",
+  "user_request": "Model unit economics and payback period for a proposal lowering the entry paid tier from $29 to $19.",
+  "target": "docs/product/economics/pricing-tier-model.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/solution-brief.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

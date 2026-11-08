@@ -1,0 +1,29 @@
+schema_version: '2026.1'
+prompt_id: mobile-app-performance
+name: React Native New Architecture & 120 FPS Mobile Optimization
+domain: mobile
+role: mobile-engineer
+target_role: mobile-engineer
+skill: develop-mobile-app
+target_skill: develop-mobile-app
+version: 1.0.0
+description: Evaluates whether the mobile-engineer architectures 60/120 FPS mobile
+  apps using React Native New Architecture (Hermes, TurboModules, Bridgeless), FlashList
+  virtualization, Reanimated worklets, offline MMKV sync, and outputs valid implementation-result
+  contracts.
+tags:
+- mobile-engineer
+- develop-mobile-app
+- react-native
+- hermes
+- flashlist
+- reanimated
+- mmkv
+author: agent-skills-pack
+created_at: '2026-11-08'
+updated_at: '2026-11-08'
+min_pass_rate: 0.9
+governance:
+  min_pass_rate: 0.9
+  contract_schema: core/contracts/schemas/implementation-result.json
+cases_dir: cases/

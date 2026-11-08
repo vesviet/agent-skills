@@ -168,3 +168,5 @@ Skip emission for trivial manifest updates that do not cross a role boundary.
 - **manage-api-catalog**: RFC 9727 API catalog should be linked from `llms.txt`
 - **optimize-seo**: GEO/AEO strategy depends on `llms.txt` as a discoverability primitive
 - **configure-agent-headers**: `agent-card.json` endpoint referenced in `llms.txt`
+- Companion reference: `references/llms-txt-and-llms-full-txt-standard.md`
+- Companion example: `examples/canonical-llms-txt-and-full-txt.md`

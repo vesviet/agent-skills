@@ -132,3 +132,5 @@ Skip emission for single-asset local experiments that do not cross role boundari
 
 - **setup-deployment**: Deploy generated programmatic landing pages to CDNs or hosting infrastructure.
 - **analyze-campaign-roi**: Measure conversion rates, organic search traffic, and CPA of generated content.
+- Companion reference: `references/pseo-landing-pages-and-social-video-hooks.md`
+- Companion example: `examples/pseo-programmatic-page-generator.ts`

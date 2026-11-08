@@ -1,0 +1,13 @@
+{
+  "case_id": "DE-006",
+  "name": "PostgreSQL autovacuum tuning for high-update transaction table suffering table bloat",
+  "work_type": "implementation",
+  "role": "data-engineer",
+  "skill": "database-maintenance",
+  "user_request": "Tune PostgreSQL autovacuum settings for a high-churn table accumulating 50GB of dead tuples daily.",
+  "target": "deploy/postgres/tuning.sql",
+  "context": {
+    "schema_contract": "core/contracts/schemas/data-pipeline-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

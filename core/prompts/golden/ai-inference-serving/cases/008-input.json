@@ -1,0 +1,13 @@
+{
+  "case_id": "AI-008",
+  "name": "Disaggregated prefill and decode architecture across separate GPU pools",
+  "work_type": "implementation",
+  "role": "ai-systems-engineer",
+  "skill": "deploy-vllm-inference",
+  "user_request": "Architect a disaggregated vLLM cluster separating compute-heavy prefill instances from memory-bound decode workers.",
+  "target": "deploy/ai/disaggregated-vllm.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/edge-deployment-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

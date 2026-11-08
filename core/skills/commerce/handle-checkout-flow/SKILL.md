@@ -185,5 +185,7 @@ Skip emission for single-checkout experiments that do not cross a role boundary.
 - **manage-order-fulfillment**: Hand off the confirmed order for packing and shipping
 - **add-ui-component**: Build the cart and checkout UI components
 - **write-tests**: Write integration tests for the purchase funnel
+- Companion reference: `references/pci-dss-v4-and-agentic-checkout-specs.md`
+- Companion example: `examples/production-checkout-orchestrator.ts`
 
-Last updated: 2026-09-25
+Last updated: 2026-11-08

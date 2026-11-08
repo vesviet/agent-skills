@@ -1,0 +1,13 @@
+{
+  "case_id": "GAME-001",
+  "name": "Kinematic character controller with jump buffering and coyote time",
+  "work_type": "implementation",
+  "role": "game-developer",
+  "skill": "develop-gameplay-systems",
+  "user_request": "Implement a responsive kinematic character controller incorporating jump buffering, coyote time, and variable jump height without frame-rate dependent drift.",
+  "target": "scripts/player/character_controller.gd",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

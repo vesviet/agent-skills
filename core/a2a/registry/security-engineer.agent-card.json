@@ -30,7 +30,7 @@
     {
       "id": "security-audit",
       "name": "Security Audit",
-      "description": "Review code, configuration, and service behavior for security risks by checking trust boundaries, secret handling, auth, validation, and operational exposure. For AI/ML systems, apply OWASP ASI Top 10 2026 (ASI01–ASI10), NIST AI RMF Measure function, and ISO/IEC 42001:2023 controls assessment. Use for focused security review of changes or full-service risk assessment.",
+      "description": "Review code, configuration, and service behavior for security risks by checking trust boundaries, secret handling, auth, validation, and operational exposure, applying OWASP ASI Top 10 2026, NIST AI RMF, and CVSS 4.0 triage. Use when conducting focused security reviews of changes, pre-deployment audits, or full-service risk assessments.",
       "tags": [
         "security",
         "pack"

@@ -103,3 +103,5 @@ When context optimization produces structured task dispatches or plans, emit:
 - **agent-evaluation**: Evaluating agent reasoning performance under varying context lengths.
 - **prompt-injection-defense**: Sanitizing and delimiting untrusted inputs within optimized context boundaries.
 - **systematic-debugging**: Diagnosing context leakage and token exhaustion failures.
+- Companion reference: `references/token-budgeting-and-attention-allocation.md`
+- Companion example: `examples/context-pruner-and-reorderer.py`

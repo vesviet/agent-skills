@@ -1,0 +1,13 @@
+{
+  "case_id": "QA-007",
+  "name": "Clock skew and leap second handling in time-sensitive token verification",
+  "work_type": "implementation",
+  "role": "qa-engineer",
+  "skill": "write-tests",
+  "user_request": "Test token expiration validation when client clock drifts by +/- 120 seconds.",
+  "target": "internal/pkg/auth/token_test.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/test-report.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

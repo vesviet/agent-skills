@@ -1,0 +1,31 @@
+{
+  "must_include": [
+    "geo_readiness_score",
+    "preamble",
+    "refresh",
+    "slop_risk_flagged",
+    "content-audit-report"
+  ],
+  "must_not_include": [
+    "keep_as_is",
+    "exceptional",
+    "preamble acceptable"
+  ],
+  "required_tokens": [
+    "geo_readiness_score",
+    "preamble",
+    "refresh",
+    "slop_risk_flagged",
+    "content-audit-report"
+  ],
+  "forbidden_tokens": [
+    "keep_as_is",
+    "exceptional",
+    "preamble acceptable"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/content-audit-report.json",
+    "contract_type": "content-audit-report"
+  }
+}

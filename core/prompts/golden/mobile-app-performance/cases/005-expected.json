@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "leak detection",
+    "event listener removal",
+    "detach native views",
+    "screen disposal"
+  ],
+  "must_not_include": [
+    "leave subscription active after unmount"
+  ],
+  "required_tokens": [
+    "leak detection",
+    "event listener removal",
+    "detach native views",
+    "screen disposal"
+  ],
+  "forbidden_tokens": [
+    "leave subscription active after unmount"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

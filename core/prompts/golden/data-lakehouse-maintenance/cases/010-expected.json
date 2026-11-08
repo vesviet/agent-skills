@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "PII masking mandatory",
+    "reject unmasked export",
+    "compliance with PDPL/GDPR",
+    "column hashing"
+  ],
+  "must_not_include": [
+    "export plaintext customer PII"
+  ],
+  "required_tokens": [
+    "PII masking mandatory",
+    "reject unmasked export",
+    "compliance with PDPL/GDPR",
+    "column hashing"
+  ],
+  "forbidden_tokens": [
+    "export plaintext customer PII"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/data-pipeline-spec.json",
+    "contract_type": "data-pipeline-spec"
+  }
+}

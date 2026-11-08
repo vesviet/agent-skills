@@ -1,0 +1,13 @@
+{
+  "case_id": "GAME-007",
+  "name": "Dynamic game audio mixer with ducking bus sidechain",
+  "work_type": "implementation",
+  "role": "game-developer",
+  "skill": "develop-gameplay-systems",
+  "user_request": "Configure dynamic game audio bus hierarchy with sidechain ducking, lowering music and ambient stems during dialogue or high-priority combat SFX playback.",
+  "target": "scripts/audio/audio_manager.gd",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

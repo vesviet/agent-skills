@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "enable-prefix-caching",
+    "radix tree cache",
+    "shared system prompt",
+    "cache hit rate"
+  ],
+  "must_not_include": [
+    "recompute static system prompt tokens every turn"
+  ],
+  "required_tokens": [
+    "enable-prefix-caching",
+    "radix tree cache",
+    "shared system prompt",
+    "cache hit rate"
+  ],
+  "forbidden_tokens": [
+    "recompute static system prompt tokens every turn"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/edge-deployment-spec.json",
+    "contract_type": "edge-deployment-spec"
+  }
+}

@@ -147,3 +147,5 @@ Skip emission for local tracking experiments that do not cross role boundaries.
 
 - **analyze-campaign-roi**: Ingest and evaluate conversion and attribution data collected by this tracking system.
 - **integrate-api-client**: Implement client-side click-capture and event dispatch snippets on custom landing pages.
+- Companion reference: `references/server-to-server-postback-and-capi-specs.md`
+- Companion example: `examples/meta-capi-s2s-event-dispatcher.ts`

@@ -1,0 +1,13 @@
+{
+  "case_id": "GAME-003",
+  "name": "Behavior Tree AI Blackboard condition evaluator",
+  "work_type": "implementation",
+  "role": "game-developer",
+  "skill": "develop-gameplay-systems",
+  "user_request": "Architect a modular Behavior Tree evaluator with local and global blackboards for enemy squad combat tactics, supporting sequence, selector, and decorator nodes.",
+  "target": "scripts/ai/behavior_tree_evaluator.gd",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

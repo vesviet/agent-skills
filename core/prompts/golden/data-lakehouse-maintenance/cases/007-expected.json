@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "partition evolution",
+    "hidden partitioning",
+    "zero historical rewrite",
+    "backward compatibility"
+  ],
+  "must_not_include": [
+    "full table reload to change partition key"
+  ],
+  "required_tokens": [
+    "partition evolution",
+    "hidden partitioning",
+    "zero historical rewrite",
+    "backward compatibility"
+  ],
+  "forbidden_tokens": [
+    "full table reload to change partition key"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/data-pipeline-spec.json",
+    "contract_type": "data-pipeline-spec"
+  }
+}

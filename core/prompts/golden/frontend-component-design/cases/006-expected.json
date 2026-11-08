@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "useMotionValue",
+    "motion/react",
+    "useTransform",
+    "off-thread animation"
+  ],
+  "must_not_include": [
+    "useState for mousemove",
+    "re-render storm"
+  ],
+  "required_tokens": [
+    "useMotionValue",
+    "motion/react",
+    "useTransform",
+    "off-thread animation"
+  ],
+  "forbidden_tokens": [
+    "useState for mousemove",
+    "re-render storm"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/ui-component-spec.json",
+    "contract_type": "ui-component-spec"
+  }
+}

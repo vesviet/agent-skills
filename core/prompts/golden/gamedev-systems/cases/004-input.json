@@ -1,0 +1,13 @@
+{
+  "case_id": "GAME-004",
+  "name": "Radial analog deadzones and input action chord rebinding",
+  "work_type": "implementation",
+  "role": "game-developer",
+  "skill": "develop-gameplay-systems",
+  "user_request": "Implement an input action abstraction layer supporting radial/axial stick deadzones, chorded inputs (e.g. shift+dash), and runtime keyboard/gamepad remapping.",
+  "target": "scripts/input/input_manager.gd",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

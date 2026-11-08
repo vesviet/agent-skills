@@ -3278,7 +3278,7 @@
       "category": "ai",
       "type": "core",
       "file": "core/skills/ai/openrouter-task/SKILL.md",
-      "description": "Offload lightweight tasks, boilerplate code generation, unit tests, summarization, and data transformations to OpenRouter FREE LLMs pool (:free) using the local environment key at D:\\myproject\\.agents\\.env to preserve Google Gemini quota. Use when running secondary, repetitive, or lightweight coding and data transformation tasks via free model rotation."
+      "description": "Offload lightweight tasks, boilerplate code generation, unit tests, summarization, and data transformations to OpenRouter FREE LLMs pool (:free) using the local environment key configured via OPENROUTER_ENV_FILE (or local .env) to preserve Google Gemini quota. Use when running secondary, repetitive, or lightweight coding and data transformation tasks via free model rotation."
     },
     "agent-evaluation": {
       "name": "agent-evaluation",
@@ -3313,7 +3313,7 @@
       "category": "backend",
       "type": "core",
       "file": "core/skills/backend/add-event-handler/SKILL.md",
-      "description": "Add or modify event publishers, consumers, or subscriber flows by following the repo's event contract, delivery semantics, idempotency rules, and rollout constraints. Use for event-driven service work."
+      "description": "Add or modify event publishers, consumers, or subscriber flows by following the repo's event contract, delivery semantics, idempotency rules, and rollout constraints. Use when publishing or consuming events, implementing Transactional Outbox patterns, enforcing deduplication, or extending event-driven service workflows."
     },
     "add-service-client": {
       "name": "add-service-client",
@@ -3439,7 +3439,7 @@
       "category": "content",
       "type": "core",
       "file": "core/skills/content/write-article/SKILL.md",
-      "description": "Plan, research, outline, and draft long-form articles and blog posts with explicit evidence discipline, answer-first structure, GEO/AEO execution, non-commodity (unique POV/first-hand evidence) quality gates, E-E-A-T experience signals, and SEO-brief alignment. Use for narrative content, guides, reviews, and announcements—not for API runbooks or pure technical reference docs."
+      "description": "Plan, research, outline, and draft long-form articles and blog posts with explicit evidence discipline, answer-first structure, GEO/AEO execution, non-commodity quality gates, E-E-A-T experience signals, and SEO-brief alignment. Use when writing narrative long-form content, guides, reviews, or announcements—not for API runbooks or pure technical reference docs."
     },
     "write-copy": {
       "name": "write-copy",
@@ -3488,7 +3488,7 @@
       "category": "documentation",
       "type": "core",
       "file": "core/skills/documentation/write-documentation/SKILL.md",
-      "description": "Draft or update technical documentation by following the repo's existing doc structure, audience needs, and source-of-truth boundaries. Use for README updates, service docs, runbooks, integration notes, or change explanations."
+      "description": "Draft or update technical documentation by following the repo's existing doc structure, audience needs, Diátaxis framework, and source-of-truth boundaries. Use when writing or updating README files, service docs, runbooks, architecture overviews, integration notes, or change explanations."
     },
     "write-tech-radar": {
       "name": "write-tech-radar",
@@ -3544,7 +3544,7 @@
       "category": "foundation",
       "type": "core",
       "file": "core/skills/foundation/conduct-research/SKILL.md",
-      "description": "Execute iterative, deeply-verified research to discover, validate, and synthesize complex information. Use for deep (10+ round) or scoped (3+ round with waiver) investigation before architecture, product, or content decisions. Applies AI-era source discipline (primary source hierarchy, Chain-of-Verification, hallucination mitigation, grounding protocol) and delivers information gain assessment for SEO/content handoffs. Primary skill for the Researcher role."
+      "description": "Execute iterative, deeply-verified research to discover, validate, and synthesize complex information applying AI-era source discipline, Citation DAG topology, and Chain-of-Verification. Use when conducting deep (10+ round) or scoped (3+ round with waiver) investigations before architecture, product, or content decisions. Primary skill for the Researcher role."
     },
     "create-migration": {
       "name": "create-migration",
@@ -4181,14 +4181,14 @@
       "category": "repo-ops",
       "type": "core",
       "file": "core/skills/repo-ops/review-code/SKILL.md",
-      "description": "Review a diff since a fixed point along two separate axes — Standards (does the code follow this repo's documented standards plus a fixed smell baseline?) and Spec (does it faithfully implement the originating issue or spec?). Runs both axes as parallel sub-agents and reports them side by side without reranking. Use for PR reviews, \"review since X\", local change reviews, and pre-merge audits."
+      "description": "Review a diff since a fixed point along two separate axes — Standards (conformance to documented standards and smell baseline) and Spec (faithful requirement delivery) — reported side by side without reranking. Use when performing PR reviews, 'review since X' audits, local change reviews, adversarial anti-slop checks, or pre-merge gates."
     },
     "review-service": {
       "name": "review-service",
       "category": "repo-ops",
       "type": "core",
       "file": "core/skills/repo-ops/review-service/SKILL.md",
-      "description": "Review an entire service for release readiness. Use for full-service audits, production-readiness checks, pre-release hardening, and broad reviews that should cover code, contracts, dependencies, rollout safety, and documentation."
+      "description": "Review an entire service for release readiness, evaluating code, contracts, data migrations, dependencies, operational exposure, SLO budgets, and rollout safety. Use when conducting full-service audits, production-readiness reviews, pre-release hardening, or broad release verification."
     },
     "troubleshoot-service": {
       "name": "troubleshoot-service",
@@ -4209,7 +4209,7 @@
       "category": "security-data",
       "type": "core",
       "file": "core/skills/security-data/database-maintenance/SKILL.md",
-      "description": "Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/Delta 256MB bin-pack compaction merging Deletion Vectors, manifest rewriting, 7-day/50-snapshot expiration, 72h orphan vacuuming, and FinOps cost attribution. Use for cleanup, compaction, repair, and operational performance tasks."
+      "description": "Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceberg/Delta 256MB bin-pack compaction merging Deletion Vectors, manifest rewriting, snapshot expiration, 72h orphan vacuuming, and FinOps cost attribution. Use when performing cleanup, compaction, repair, index reindexing, or operational performance tuning."
     },
     "manage-secrets": {
       "name": "manage-secrets",
@@ -4258,7 +4258,7 @@
       "category": "security-data",
       "type": "core",
       "file": "core/skills/security-data/security-audit/SKILL.md",
-      "description": "Review code, configuration, and service behavior for security risks by checking trust boundaries, secret handling, auth, validation, and operational exposure. For AI/ML systems, apply OWASP ASI Top 10 2026 (ASI01–ASI10), NIST AI RMF Measure function, and ISO/IEC 42001:2023 controls assessment. Use for focused security review of changes or full-service risk assessment."
+      "description": "Review code, configuration, and service behavior for security risks by checking trust boundaries, secret handling, auth, validation, and operational exposure, applying OWASP ASI Top 10 2026, NIST AI RMF, and CVSS 4.0 triage. Use when conducting focused security reviews of changes, pre-deployment audits, or full-service risk assessments."
     },
     "skill-preflight-ast-check": {
       "name": "skill-preflight-ast-check",

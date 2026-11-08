@@ -132,3 +132,5 @@ Skip emission for single-campaign one-off queries that do not cross role boundar
 
 - **setup-tracking-system**: Configure the S2S and postback tracking architecture analyzed by this skill.
 - **analyze-data**: Perform exploratory statistical and cohort data analysis outside MMO performance contexts.
+- Companion reference: `references/multi-touch-attribution-and-cpa-analytics.md`
+- Companion example: `examples/campaign-roi-and-roas-dashboard.py`

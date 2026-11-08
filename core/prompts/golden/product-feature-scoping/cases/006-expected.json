@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "RICE scoring",
+    "trade-off analysis",
+    "opportunity cost",
+    "generalizable feature design"
+  ],
+  "must_not_include": [
+    "blindly accept custom one-off fork"
+  ],
+  "required_tokens": [
+    "RICE scoring",
+    "trade-off analysis",
+    "opportunity cost",
+    "generalizable feature design"
+  ],
+  "forbidden_tokens": [
+    "blindly accept custom one-off fork"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/solution-brief.json",
+    "contract_type": "solution-brief"
+  }
+}

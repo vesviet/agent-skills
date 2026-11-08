@@ -1,0 +1,13 @@
+{
+  "case_id": "QA-005",
+  "name": "Test case asserting behavior under disk full / I/O write error condition",
+  "work_type": "implementation",
+  "role": "qa-engineer",
+  "skill": "write-tests",
+  "user_request": "Write a fault injection test verifying safe transaction rollback when disk runs out of space during save.",
+  "target": "tests/integration/disk_full_test.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/test-report.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

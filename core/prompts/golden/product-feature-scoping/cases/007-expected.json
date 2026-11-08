@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "blast radius evaluation",
+    "supportability",
+    "contractual boundary",
+    "technical debt impact"
+  ],
+  "must_not_include": [
+    "compromise platform stability for one customer"
+  ],
+  "required_tokens": [
+    "blast radius evaluation",
+    "supportability",
+    "contractual boundary",
+    "technical debt impact"
+  ],
+  "forbidden_tokens": [
+    "compromise platform stability for one customer"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/solution-brief.json",
+    "contract_type": "solution-brief"
+  }
+}

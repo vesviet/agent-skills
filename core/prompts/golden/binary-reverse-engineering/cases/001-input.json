@@ -1,0 +1,13 @@
+{
+  "case_id": "RE-001",
+  "name": "Triage and static disassembly of an unknown ELF x86_64 stripped binary",
+  "work_type": "implementation",
+  "role": "reverse-engineer",
+  "skill": "reverse-engineer-binary",
+  "user_request": "Triage an unknown stripped x86_64 ELF binary in an air-gapped sandbox and recover symbols.",
+  "target": "reports/re/binary-triage.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/validation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

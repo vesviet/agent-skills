@@ -1,0 +1,13 @@
+{
+  "case_id": "PM-001",
+  "name": "Solution brief for B2B self-serve team billing and seat management",
+  "work_type": "implementation",
+  "role": "product-manager",
+  "skill": "write-product-brief",
+  "user_request": "Author a solution brief for adding self-serve seat management and prorated invoicing for enterprise teams.",
+  "target": "docs/product/briefs/team-billing.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/solution-brief.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "DE-007",
+  "name": "Partition evolution in Iceberg without rewriting historical table data",
+  "work_type": "implementation",
+  "role": "data-engineer",
+  "skill": "database-maintenance",
+  "user_request": "Evolve table partitioning from daily to hourly without executing costly full-table data rewrites.",
+  "target": "pipelines/migrations/partition_evolution.sql",
+  "context": {
+    "schema_contract": "core/contracts/schemas/data-pipeline-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "disaggregated serving",
+    "prefill node",
+    "decode node",
+    "KV transfer network"
+  ],
+  "must_not_include": [
+    "co-locate high-prefill with latency-critical decode without isolation"
+  ],
+  "required_tokens": [
+    "disaggregated serving",
+    "prefill node",
+    "decode node",
+    "KV transfer network"
+  ],
+  "forbidden_tokens": [
+    "co-locate high-prefill with latency-critical decode without isolation"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/edge-deployment-spec.json",
+    "contract_type": "edge-deployment-spec"
+  }
+}

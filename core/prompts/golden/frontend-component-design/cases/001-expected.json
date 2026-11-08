@@ -1,0 +1,31 @@
+{
+  "must_include": [
+    "ui-component-spec",
+    "Radix",
+    "asChild",
+    "keyboard trap",
+    "focus restoration",
+    "Escape"
+  ],
+  "must_not_include": [
+    "boolean prop sprawl",
+    "div onClick without keyboard"
+  ],
+  "required_tokens": [
+    "ui-component-spec",
+    "Radix",
+    "asChild",
+    "keyboard trap",
+    "focus restoration",
+    "Escape"
+  ],
+  "forbidden_tokens": [
+    "boolean prop sprawl",
+    "div onClick without keyboard"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/ui-component-spec.json",
+    "contract_type": "ui-component-spec"
+  }
+}

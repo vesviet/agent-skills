@@ -1,0 +1,13 @@
+{
+  "case_id": "DE-010",
+  "name": "Data pipeline modification attempting to disable PII masking in lakehouse exports",
+  "work_type": "implementation",
+  "role": "data-engineer",
+  "skill": "database-maintenance",
+  "user_request": "Audit a pull request attempting to disable SHA-256 PII column masking in public lakehouse exports.",
+  "target": "pipelines/export/pii_governance.py",
+  "context": {
+    "schema_contract": "core/contracts/schemas/data-pipeline-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "control flow flattening",
+    "dispatcher block",
+    "state variable recovery",
+    "symbolic execution"
+  ],
+  "must_not_include": [
+    "give up due to complexity"
+  ],
+  "required_tokens": [
+    "control flow flattening",
+    "dispatcher block",
+    "state variable recovery",
+    "symbolic execution"
+  ],
+  "forbidden_tokens": [
+    "give up due to complexity"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/validation-result.json",
+    "contract_type": "validation-result"
+  }
+}

@@ -30,7 +30,7 @@
     {
       "id": "write-documentation",
       "name": "Write Documentation",
-      "description": "Draft or update technical documentation by following the repo's existing doc structure, audience needs, and source-of-truth boundaries. Use for README updates, service docs, runbooks, integration notes, or change explanations.",
+      "description": "Draft or update technical documentation by following the repo's existing doc structure, audience needs, Diátaxis framework, and source-of-truth boundaries. Use when writing or updating README files, service docs, runbooks, architecture overviews, integration notes, or change explanations.",
       "tags": [
         "documentation",
         "pack"

@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "tolerations",
+    "nodeSelector",
+    "nodeAffinity",
+    "nvidia.com/gpu"
+  ],
+  "must_not_include": [
+    "schedule GPU workload on generic CPU node"
+  ],
+  "required_tokens": [
+    "tolerations",
+    "nodeSelector",
+    "nodeAffinity",
+    "nvidia.com/gpu"
+  ],
+  "forbidden_tokens": [
+    "schedule GPU workload on generic CPU node"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/deployment-plan.json",
+    "contract_type": "deployment-plan"
+  }
+}

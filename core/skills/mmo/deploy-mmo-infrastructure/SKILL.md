@@ -135,3 +135,5 @@ Skip emission for local sandbox experiments that do not cross role boundaries.
 
 - **deploy-proxyware-fleet**: Orchestrate decentralized bandwidth monetization nodes on provisioned network infrastructure.
 - **setup-deployment**: Generic CI/CD and cloud deployment workflows outside MMO performance environments.
+- Companion reference: `references/proxy-pool-rotation-and-anti-detect-specs.md`
+- Companion example: `examples/proxy-health-probe-and-rotation-daemon.py`

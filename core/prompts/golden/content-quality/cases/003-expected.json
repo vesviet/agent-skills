@@ -1,0 +1,31 @@
+{
+  "must_include": [
+    "information_gain_rating",
+    "moderate",
+    "expand",
+    "firsthand",
+    "content-audit-report"
+  ],
+  "must_not_include": [
+    "exceptional",
+    "keep_as_is",
+    "sufficient information gain"
+  ],
+  "required_tokens": [
+    "information_gain_rating",
+    "moderate",
+    "expand",
+    "firsthand",
+    "content-audit-report"
+  ],
+  "forbidden_tokens": [
+    "exceptional",
+    "keep_as_is",
+    "sufficient information gain"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/content-audit-report.json",
+    "contract_type": "content-audit-report"
+  }
+}

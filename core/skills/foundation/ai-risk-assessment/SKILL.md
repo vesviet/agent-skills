@@ -145,10 +145,7 @@ ai_risk_register:
       responsible: "[who monitors]"
 
   residual_risks:
-    - risk: ""
-      accepted_by: ""
-      accepted_date: ""
-      review_date: ""
+    - { risk: "", accepted_by: "", review_date: "" }
 ```
 
 ## Checklist
@@ -195,4 +192,5 @@ Skip emission for non-AI software delivery slices.
 - **security-audit**: full security review that incorporates AI risk register findings
 - **conduct-research**: domain research on AI risk context, regulations, and comparable systems
 - **agent-tool-orchestration**: agentic action inventory required by this assessment
-
+- Companion reference: `references/nist-ai-rmf-and-eu-ai-act-taxonomy.md`
+- Companion example: `examples/genai-system-risk-register.md`

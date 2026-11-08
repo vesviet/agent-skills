@@ -1,0 +1,13 @@
+{
+  "case_id": "PM-008",
+  "name": "Low-bandwidth, offline-first mobile product brief for emerging market workers",
+  "work_type": "implementation",
+  "role": "product-manager",
+  "skill": "write-product-brief",
+  "user_request": "Draft requirements for an inventory scanning mobile tool operating in warehouses with zero cellular coverage.",
+  "target": "docs/product/briefs/offline-warehouse-scanner.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/solution-brief.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

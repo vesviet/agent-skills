@@ -180,5 +180,7 @@ Clarify before building:
 - **build-data-pipeline**: Synchronize product data from ERP, supplier feeds, or PIM systems
 - **add-api-endpoint**: Expose catalog CRUD endpoints for admin and storefront consumers
 - **database-maintenance**: Maintain catalog indexes and handle bulk data operations
+- Companion reference: `references/semantic-vector-catalog-and-graphrag.md`
+- Companion example: `examples/hybrid-search-and-governance-pipeline.ts`
 
-Last updated: 2026-09-25
+Last updated: 2026-11-08

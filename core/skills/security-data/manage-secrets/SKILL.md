@@ -138,3 +138,5 @@ Confirm without exposing values:
 - **debug-runtime-platform**: Diagnose secret injection or permission issues
 - **review-service**: Check release readiness for secret changes
 - **commit-code**: Prepare safe, non-sensitive changes for delivery
+- Companion reference: `references/zero-trust-secret-rotation-and-eso.md`
+- Companion example: `examples/external-secrets-vault-crds.yaml`

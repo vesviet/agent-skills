@@ -1,0 +1,15 @@
+{
+  "case_id": "CQ-001",
+  "name": "AI Cliché Cluster Detection and Semantic Flaw Threshold Scoring",
+  "work_type": "audit",
+  "role": "content-manager",
+  "skill": "audit-content",
+  "user_request": "Audit the introductory section of this draft post for AI semantic flaw clichés, compute the AI Semantic Flaw Score, and determine whether it meets the maximum threshold of 15.",
+  "target": "posts/cloud-native-observability-guide",
+  "context": {
+    "site": "authority-blog",
+    "content_snippet": "In today's fast-paced digital landscape, let us delve into the intricate tapestry of modern observability. It serves as a shining testament to cloud-native evolution and will unlock the true potential of your engineering velocity. This transformative paradigm is truly a game-changer.",
+    "traffic_trend": "stable",
+    "staleness_months": 3
+  }
+}

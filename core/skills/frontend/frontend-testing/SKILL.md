@@ -192,5 +192,7 @@ Skip emission for solo refactor work with no downstream handoff.
 - **commit-code**: Prepare test changes for delivery
 - **combinatorial-testing**: Pairwise matrices
 - **systematic-debugging**: Isolate flaky browser interactions
+- Companion reference: `references/playwright-msw-and-a11y-testing-standards.md`
+- Companion example: `examples/playwright-e2e-with-msw-and-axe.spec.ts`
 
-Last updated: 2026-09-25
+Last updated: 2026-11-08

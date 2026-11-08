@@ -150,5 +150,7 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **accessibility-review**: Check route-level a11y (focus management, navigation announcements)
 - **navigate-service**: Understand existing frontend structure before wiring routes
 - **commit-code**: Prepare the route change for delivery
+- Companion reference: `references/rsc-routing-and-view-transitions.md`
+- Companion example: `examples/streaming-rsc-page-with-view-transition.tsx`
 
-Last updated: 2026-09-25
+Last updated: 2026-11-08

@@ -1,0 +1,33 @@
+{
+  "must_include": [
+    "rot_classification",
+    "trivial",
+    "retire",
+    "zero_traffic",
+    "content-audit-report"
+  ],
+  "must_not_include": [
+    "keep_as_is",
+    "refresh",
+    "high value",
+    "evergreen"
+  ],
+  "required_tokens": [
+    "rot_classification",
+    "trivial",
+    "retire",
+    "zero_traffic",
+    "content-audit-report"
+  ],
+  "forbidden_tokens": [
+    "keep_as_is",
+    "refresh",
+    "high value",
+    "evergreen"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/content-audit-report.json",
+    "contract_type": "content-audit-report"
+  }
+}

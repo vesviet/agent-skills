@@ -1,0 +1,31 @@
+{
+  "must_include": [
+    "governance_action_needed",
+    "handoff",
+    "status",
+    "action_required",
+    "content-audit-report"
+  ],
+  "must_not_include": [
+    "keep_as_is",
+    "auto-publish",
+    "skip human review"
+  ],
+  "required_tokens": [
+    "governance_action_needed",
+    "handoff",
+    "status",
+    "action_required",
+    "content-audit-report"
+  ],
+  "forbidden_tokens": [
+    "keep_as_is",
+    "auto-publish",
+    "skip human review"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/content-audit-report.json",
+    "contract_type": "content-audit-report"
+  }
+}

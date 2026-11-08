@@ -208,8 +208,8 @@ def validate_skill(path: Path, known_skills: set[str]) -> list[str]:
     else:
         if len(description) > 1024:
             errors.append("description exceeds 1024 characters")
-        if "Use when " not in description and "Use for " not in description:
-            errors.append('description must include a trigger phrase such as "Use when" or "Use for"')
+        if "Use when " not in description:
+            errors.append('description must include a "Use when" clause')
         if description.startswith(("I ", "You ")):
             errors.append("description must be written in third person")
         if XML_TAG_RE.search(description):

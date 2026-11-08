@@ -1,0 +1,13 @@
+{
+  "case_id": "GAME-010",
+  "name": "Texture atlas packing and UV normalization",
+  "work_type": "implementation",
+  "role": "game-developer",
+  "skill": "develop-gameplay-systems",
+  "user_request": "Automate dynamic 2D/3D sprite texture atlas bin-packing with power-of-two padding, Bleed/Extrude border margins, and normalized UV coordinate mapping to prevent texture bleeding.",
+  "target": "scripts/pipeline/atlas_packer.py",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

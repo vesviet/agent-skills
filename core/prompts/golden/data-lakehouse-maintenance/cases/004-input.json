@@ -1,0 +1,13 @@
+{
+  "case_id": "DE-004",
+  "name": "Expiring historical snapshots older than 30 days while preserving point-in-time recovery",
+  "work_type": "implementation",
+  "role": "data-engineer",
+  "skill": "database-maintenance",
+  "user_request": "Configure an automated snapshot expiration routine enforcing 30-day retention without breaking live queries.",
+  "target": "pipelines/maintenance/expire_snapshots.py",
+  "context": {
+    "schema_contract": "core/contracts/schemas/data-pipeline-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

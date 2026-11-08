@@ -1,0 +1,31 @@
+{
+  "must_include": [
+    "ai_semantic_flaw_score",
+    "attribution",
+    "refresh",
+    "slop_risk_flagged",
+    "content-audit-report"
+  ],
+  "must_not_include": [
+    "keep_as_is",
+    "well-sourced",
+    "rigorous citations"
+  ],
+  "required_tokens": [
+    "ai_semantic_flaw_score",
+    "attribution",
+    "refresh",
+    "slop_risk_flagged",
+    "content-audit-report"
+  ],
+  "forbidden_tokens": [
+    "keep_as_is",
+    "well-sourced",
+    "rigorous citations"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/content-audit-report.json",
+    "contract_type": "content-audit-report"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "FE-005",
+  "name": "Dropdown menu overflowing near viewport bottom boundary",
+  "work_type": "implementation",
+  "role": "frontend-developer",
+  "skill": "add-ui-component",
+  "user_request": "Implement a context menu that automatically flips orientation when opened near bottom screen edge.",
+  "target": "src/components/dropdown-menu.tsx",
+  "context": {
+    "schema_contract": "core/contracts/schemas/ui-component-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

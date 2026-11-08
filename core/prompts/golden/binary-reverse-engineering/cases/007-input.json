@@ -1,0 +1,13 @@
+{
+  "case_id": "RE-007",
+  "name": "Stack canary bypass analysis and ROP chain vulnerability assessment",
+  "work_type": "implementation",
+  "role": "reverse-engineer",
+  "skill": "reverse-engineer-binary",
+  "user_request": "Analyze a stack buffer overflow binary to assess if memory layout enables control flow hijacking.",
+  "target": "reports/re/rop-assessment.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/validation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

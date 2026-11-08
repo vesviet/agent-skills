@@ -1,0 +1,13 @@
+{
+  "case_id": "PM-002",
+  "name": "User story map and MVP walking skeleton for in-app customer referral program",
+  "work_type": "implementation",
+  "role": "product-manager",
+  "skill": "write-product-brief",
+  "user_request": "Construct a Jeff Patton story map defining the walking skeleton for an in-app customer referral program.",
+  "target": "docs/product/story-maps/referral-program.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/solution-brief.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "BE-007",
+  "name": "Slow downstream client timeout and context cancellation handling",
+  "work_type": "implementation",
+  "role": "backend-developer",
+  "skill": "add-api-endpoint",
+  "user_request": "Ensure database queries immediately abort and clean up resources when client cancels HTTP/gRPC context.",
+  "target": "internal/data/client.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/api-contract-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

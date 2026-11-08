@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "fault injection",
+    "disk full",
+    "clean rollback",
+    "error handling"
+  ],
+  "must_not_include": [
+    "assume write always succeeds"
+  ],
+  "required_tokens": [
+    "fault injection",
+    "disk full",
+    "clean rollback",
+    "error handling"
+  ],
+  "forbidden_tokens": [
+    "assume write always succeeds"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/test-report.json",
+    "contract_type": "test-report"
+  }
+}

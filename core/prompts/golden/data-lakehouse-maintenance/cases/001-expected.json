@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "data-pipeline-spec",
+    "rewrite_data_files",
+    "bin-pack",
+    "256MB target size",
+    "Parquet"
+  ],
+  "must_not_include": [
+    "leave millions of 1KB files",
+    "table lock during compaction"
+  ],
+  "required_tokens": [
+    "data-pipeline-spec",
+    "rewrite_data_files",
+    "bin-pack",
+    "256MB target size",
+    "Parquet"
+  ],
+  "forbidden_tokens": [
+    "leave millions of 1KB files",
+    "table lock during compaction"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/data-pipeline-spec.json",
+    "contract_type": "data-pipeline-spec"
+  }
+}

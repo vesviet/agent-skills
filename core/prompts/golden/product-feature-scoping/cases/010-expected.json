@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "reject dark pattern",
+    "transparent renewal notification",
+    "consumer protection compliance",
+    "clear cancel path"
+  ],
+  "must_not_include": [
+    "approve deceptive cancellation friction"
+  ],
+  "required_tokens": [
+    "reject dark pattern",
+    "transparent renewal notification",
+    "consumer protection compliance",
+    "clear cancel path"
+  ],
+  "forbidden_tokens": [
+    "approve deceptive cancellation friction"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/solution-brief.json",
+    "contract_type": "solution-brief"
+  }
+}

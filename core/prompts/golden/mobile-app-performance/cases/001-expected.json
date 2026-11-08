@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "FlashList",
+    "estimatedItemSize",
+    "recycle",
+    "Hermes",
+    "implementation-result"
+  ],
+  "must_not_include": [
+    "ScrollView for large list",
+    "legacy FlatList without memo"
+  ],
+  "required_tokens": [
+    "FlashList",
+    "estimatedItemSize",
+    "recycle",
+    "Hermes",
+    "implementation-result"
+  ],
+  "forbidden_tokens": [
+    "ScrollView for large list",
+    "legacy FlatList without memo"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

@@ -7,7 +7,7 @@
       "type": "skill-md",
       "description": "Abstracts hardware-agnostic input action mappings, chorded and buffered inputs, radial analog dea...",
       "url": "core/skills/gamedev/abstract-input-actions/SKILL.md",
-      "digest": "sha256:4dee90f4c1840fae1e79fb351ca1829d0d1f0a8cfde4fe621183d6298875d200"
+      "digest": "sha256:b5f178ae3cfbb77be725e432171bc71ec3504672c8aef43f8e48de10140c1306"
     },
     {
       "name": "accessibility-review",
@@ -28,14 +28,14 @@
       "type": "skill-md",
       "description": "Add or modify event publishers, consumers, or subscriber flows by following the repo's event cont...",
       "url": "core/skills/backend/add-event-handler/SKILL.md",
-      "digest": "sha256:c5116f60e1a2cde8fa6a2f21f9b5fb4d7a8ba060ccd6f59980088a02bb31449c"
+      "digest": "sha256:74d2dbf4812be53d9d92d88a52133eaa3871a95a379e25a8b30bf41b0b9495af"
     },
     {
       "name": "add-page-route",
       "type": "skill-md",
       "description": "Add or modify a page, screen, or route by following the repo's navigation, data-loading, layout,...",
       "url": "core/skills/frontend/add-page-route/SKILL.md",
-      "digest": "sha256:b591c806b0d6d7be32bb39408344318286735ea5f472a369fd7bb3ce1765f304"
+      "digest": "sha256:0061c5cfd1f829db28db078398a942a9c66dff7c820fe437f9530efdf4cd2083"
     },
     {
       "name": "add-service-client",
@@ -49,14 +49,14 @@
       "type": "skill-md",
       "description": "Add or update logging, metrics, and tracing by following the repo's observability patterns and Op...",
       "url": "core/skills/platform/add-telemetry-instrumentation/SKILL.md",
-      "digest": "sha256:a35faec8e6b7103a7b57cca19fbb6ae4aa02ce7d9d73e5706b726dad6f3305be"
+      "digest": "sha256:d765f257659a57096f3abfb7f4518df9b0d8f23c0a37251a68a342d176771469"
     },
     {
       "name": "add-ui-component",
       "type": "skill-md",
       "description": "Add or evolve a reusable UI component by following the repo's design system, composition patterns...",
       "url": "core/skills/frontend/add-ui-component/SKILL.md",
-      "digest": "sha256:5e67f60cbc9e1aefb35c8e5e8eb98bc011f23f55d63d59fcd9b688479ffcfb2d"
+      "digest": "sha256:49db3bf05ac1f6dd55b1973a55e277a5725a29613dd08a8b63bb3b7cfa940b20"
     },
     {
       "name": "agent-a2a-protocol",
@@ -168,7 +168,7 @@
       "type": "skill-md",
       "description": "Assess AI/ML system risks using NIST AI RMF 1.0 (Govern/Map/Measure/Manage) and NIST AI 600-1 Gen...",
       "url": "core/skills/foundation/ai-risk-assessment/SKILL.md",
-      "digest": "sha256:fe41fdd4c0f2222e02aba1cd93576354d1e1f117d5a3da3a8724916e5e4c8d57"
+      "digest": "sha256:edd293f6e12169779c40804727e476bd284469b576ba2f9dcbc86861e7b582c7"
     },
     {
       "name": "analyze-business-requirements",
@@ -182,7 +182,7 @@
       "type": "skill-md",
       "description": "Measure conversion rates, organic search traffic, and CPA of generated content. Use when launchin...",
       "url": "core/skills/mmo/analyze-campaign-roi/SKILL.md",
-      "digest": "sha256:d00efde768c7aac46b86b1670abb44f6c43248f9813105c77fde96fed1a9b965"
+      "digest": "sha256:2b28f58cd92558fb380fb4d6e7f9c051ef262413a32ac68b268a04e3f253b3bf"
     },
     {
       "name": "analyze-data",
@@ -203,7 +203,7 @@
       "type": "skill-md",
       "description": "Architect data-oriented Entity Component System (ECS) architectures, archetype storages, and cach...",
       "url": "core/skills/gamedev/architect-ecs-systems/SKILL.md",
-      "digest": "sha256:fe38a9c28c825aca727478b5630770ff062ebefadff43d789f2a7aa888b61914"
+      "digest": "sha256:9e45506908ecdabbb54199314f1ab9eb29a234c0af5a65bf5597efa5b86d282e"
     },
     {
       "name": "architect-mcp-server",
@@ -245,7 +245,7 @@
       "type": "skill-md",
       "description": "Authors modular game AI architectures using Behavior Trees (BT), shared and local blackboards, Ut...",
       "url": "core/skills/gamedev/author-game-ai/SKILL.md",
-      "digest": "sha256:7ef12870444a508c87c0f84d48b65b9a49e08f305c0fabfad68195ba7d4060ce"
+      "digest": "sha256:99b47532de6c0733404fca522907e39c4edffec2bdc56db70cbd709a7a1acf7f"
     },
     {
       "name": "automate-game-publishing",
@@ -259,7 +259,7 @@
       "type": "skill-md",
       "description": "Provision, configure, and optimize AWS cloud infrastructure via OpenTofu state KMS encryption, Cr...",
       "url": "core/skills/platform/aws-infrastructure/SKILL.md",
-      "digest": "sha256:6b921eb4a0b2d5587dec802059a506eefa198d9eb95f17b8cdc96271d7ccbdfa"
+      "digest": "sha256:09bc80a0726ac89c1bb0546a5bb7106ec7d7d946b82663bcdb1664897441ee61"
     },
     {
       "name": "build-credit-scorecard",
@@ -322,21 +322,21 @@
       "type": "skill-md",
       "description": "Architect scalable UI components using compound components, Radix-style asChild slot delegation,...",
       "url": "core/skills/frontend/component-composition/SKILL.md",
-      "digest": "sha256:ebe74e272e455041e22d7ac397e743d5fb9300695f3e889322ef4a2051c7b16f"
+      "digest": "sha256:e50bab46fd71164f1d4c5283352a1a6df213fb6dfa3aa5833f941c99fe7b392b"
     },
     {
       "name": "conduct-research",
       "type": "skill-md",
       "description": "Execute iterative, deeply-verified research to discover, validate, and synthesize complex informa...",
       "url": "core/skills/foundation/conduct-research/SKILL.md",
-      "digest": "sha256:9ed61570b394f5f662385e245b2efceb1af9c0c85e2b395fc1f29f747f6d87ec"
+      "digest": "sha256:5d36a0234416bc852cee53698d3d866e5cbcce2a4363c4ee95e1c5248f475a0d"
     },
     {
       "name": "configure-agent-commerce",
       "type": "skill-md",
       "description": "Implements agentic commerce standards — x402 and Stripe's Machine Payments Protocol (MPP) for HTT...",
       "url": "core/skills/agent/configure-agent-commerce/SKILL.md",
-      "digest": "sha256:a8b348e4447e4ecf8139fe4045a247746fc4b3ec04306631375f7a32a792b336"
+      "digest": "sha256:5fd8fbab5988894f93d419cd2d41cf4517fbc68999142145cb110c16c79ec856"
     },
     {
       "name": "configure-agent-headers",
@@ -357,7 +357,7 @@
       "type": "skill-md",
       "description": "Create and maintain the llms.txt and llms-full.txt files for a domain or project, making document...",
       "url": "core/skills/documentation/configure-llms-txt/SKILL.md",
-      "digest": "sha256:ff09c967a92f7a1f71f031898c54b6df57de67e14b8adf3a7f0a99a364acb201"
+      "digest": "sha256:0aff7faea188192d53b876cdb0ef933e7a30f5568975c73f7fe5b97b53048ad4"
     },
     {
       "name": "configure-mcp",
@@ -378,21 +378,21 @@
       "type": "skill-md",
       "description": "Configures deterministic fixed timestep tuning, Continuous Collision Detection (CCD), spatial que...",
       "url": "core/skills/gamedev/configure-physics-collision/SKILL.md",
-      "digest": "sha256:b77c15c6d5c63bcf1d1c7d7c719410abb264fc0cdfbe5dea27480a6e3273c160"
+      "digest": "sha256:ce81332e62a0ac572f39aaf3af07e4e8d2e9b5373568a64218d04e70d31f06f6"
     },
     {
       "name": "context-optimization",
       "type": "skill-md",
       "description": "Use when optimizing LLM agent context windows, allocating token budgets, pruning semantic duplica...",
       "url": "core/skills/ai-agent/context-optimization/SKILL.md",
-      "digest": "sha256:48bd2f5715766943d256a381e176e0c5d0c7efc049cc5ffbb110d22cf6f215eb"
+      "digest": "sha256:35c031a2fff86af90e9649d4cb24defc079f573840c6ae3e27df575a0986b852"
     },
     {
       "name": "create-automation-script",
       "type": "skill-md",
       "description": "Generate stealth automation scripts using Playwright/Puppeteer over CDP, C++ patched browsers (Ca...",
       "url": "core/skills/mmo/create-automation-script/SKILL.md",
-      "digest": "sha256:39d3832bc33190b0e79a9d0abe22767d2d7cc65e3e7a56415a8f92f266a32372"
+      "digest": "sha256:a0656bd798ba53bfa94c9e9f98da38996047bfc55f30737a621cd05ab0f666fc"
     },
     {
       "name": "create-exercises",
@@ -413,7 +413,7 @@
       "type": "skill-md",
       "description": "Plan and execute operational data store and modern lakehouse maintenance, including Apache Iceber...",
       "url": "core/skills/security-data/database-maintenance/SKILL.md",
-      "digest": "sha256:a0fce0a825fa72fb1fc39d97db9af3dceb7804364e12b3b4278d09fc5f4cfb4b"
+      "digest": "sha256:b6bcd6602881075898772aba1608eef4fd0211bdaa47045bca87b7aca2cadcec"
     },
     {
       "name": "debug-3d-scene",
@@ -469,7 +469,7 @@
       "type": "skill-md",
       "description": "Deploy and manage proxy pools (Residential/4G) with dynamic health probes and Anti-Detect Browser...",
       "url": "core/skills/mmo/deploy-mmo-infrastructure/SKILL.md",
-      "digest": "sha256:16c2a53f8e831037f1bf635cbf64f4dbac1c8f2fffff7b064cd3717db8012f32"
+      "digest": "sha256:0c3006e762470f784d62d19f6d4927ac8bf3d8d8f2972b4e9c65df1e8d144ead"
     },
     {
       "name": "deploy-mobile-app",
@@ -483,7 +483,7 @@
       "type": "skill-md",
       "description": "Containerize and orchestrate modern DePIN bandwidth monetization light nodes (Grass, Dawn, Nodepa...",
       "url": "core/skills/mmo/deploy-proxyware-fleet/SKILL.md",
-      "digest": "sha256:ca27a386107c1b3efd111fa346655425849bc0f7593d111500346ae88c77b896"
+      "digest": "sha256:fad6001e735f41a70047773167c3573f17dec7265380a06d8ffa678d614ef002"
     },
     {
       "name": "deploy-vllm-inference",
@@ -560,7 +560,7 @@
       "type": "skill-md",
       "description": "Build deterministic, high-performance gameplay systems, character controllers, state machines, an...",
       "url": "core/skills/gamedev/develop-gameplay-systems/SKILL.md",
-      "digest": "sha256:521f80ac923824ad509915a257f9e48672260b2c46dc45b41742519046e7f63e"
+      "digest": "sha256:fe3dad9e46675584518b2aaed58513a793babfaee48ec61dbf290926930a16c3"
     },
     {
       "name": "develop-laravel-ecommerce-feature",
@@ -644,7 +644,7 @@
       "type": "skill-md",
       "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling,...",
       "url": "core/skills/frontend/frontend-testing/SKILL.md",
-      "digest": "sha256:3b858879f30362e01d4d11960e0ad8ff99355f6f7c3ef0df8a7f6e0025cd72a8"
+      "digest": "sha256:030a620c4520db5a171b4efd2159adf5dc225ac3b8960f5fac513de0d85bdb5a"
     },
     {
       "name": "generate-game-assets-pipeline",
@@ -658,7 +658,7 @@
       "type": "skill-md",
       "description": "Generate Programmatic SEO (pSEO) Answer-First landing pages with JSON-LD schemas and multimodal s...",
       "url": "core/skills/mmo/generate-mmo-content/SKILL.md",
-      "digest": "sha256:bf4f3d8a64e7450375510ad4f2c855e35e7f3a260ca37d0223472f3304cab047"
+      "digest": "sha256:91e36ba50695af3f52f855cb0245b39a1ded81f9a2eba88f763f3588d588cc8e"
     },
     {
       "name": "grade-and-review",
@@ -672,7 +672,7 @@
       "type": "skill-md",
       "description": "Design and implement the end-to-end checkout flow including cart management, tax and shipping cal...",
       "url": "core/skills/commerce/handle-checkout-flow/SKILL.md",
-      "digest": "sha256:bbc832efc378a9e53906142208b0e1c9be3802ee8e4480c2e9385f283cdb86df"
+      "digest": "sha256:61f060b401cdbf5cea96dd6be537c11c3a81b74bc6f5ea16e1776c5df593832e"
     },
     {
       "name": "hostile-component-stress-testing",
@@ -693,7 +693,7 @@
       "type": "skill-md",
       "description": "Implements monotonic save schemas, version migration pipelines, cryptographic integrity checksums...",
       "url": "core/skills/gamedev/implement-save-persistence/SKILL.md",
-      "digest": "sha256:e64f5455a555d23d046c0561705d478e436831bb3fd7214c3506f01430cc447c"
+      "digest": "sha256:645c7a648d101b65b5bb49a9cfb28cbdc4171b2e2726fa091450de03ae3cefac"
     },
     {
       "name": "implement-schema-markup",
@@ -721,7 +721,7 @@
       "type": "skill-md",
       "description": "Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when ena...",
       "url": "core/skills/frontend/implement-webmcp/SKILL.md",
-      "digest": "sha256:c5f0806cccdae5ee836ae526b41ff1e3fa65f219a0a5936f4dd7b097a9400f2e"
+      "digest": "sha256:6bf13012762ae95254f0bd8b534d7fa036f2dcba0cdd9a57783c7066685c80ff"
     },
     {
       "name": "incident-report",
@@ -742,7 +742,7 @@
       "type": "skill-md",
       "description": "Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handl...",
       "url": "core/skills/frontend/integrate-api-client/SKILL.md",
-      "digest": "sha256:d2f7953ce53a1e113eaf97980feca71d7a26966dbb159abb550decacbd467da3"
+      "digest": "sha256:3b6c0d2484cbfa9645e70a08c57be2f3b92454a3304c0c9ee4b0933e55d6ede5"
     },
     {
       "name": "integrate-dialogue-narrative",
@@ -763,7 +763,7 @@
       "type": "skill-md",
       "description": "Integrate or extend a payment gateway (Stripe, VNPay, PayPal, Momo, etc.) into an e-commerce appl...",
       "url": "core/skills/commerce/integrate-payment-gateway/SKILL.md",
-      "digest": "sha256:0cac901454cd7807e6954c2962d590d397c6114e116f5348a4bee2ca597f9b3f"
+      "digest": "sha256:621071b1deb2f3efcdc74f8ce3e18f8803fcf2318d8daa9efae00b20f6ae3932"
     },
     {
       "name": "integrate-r3f-three-legacy",
@@ -791,7 +791,7 @@
       "type": "skill-md",
       "description": "Manages the full lifecycle of Non-Human Identities (NHI) for AI agent sessions — including provis...",
       "url": "core/skills/agent/manage-agent-identity/SKILL.md",
-      "digest": "sha256:8e771688774c7cf77e08847e079c009eb4e33b2314c32fd07a3482bb7da08559"
+      "digest": "sha256:f6828e248cfdf1da33de210538ba20291fe97f2a240f22c88dae47d8e931c5b4"
     },
     {
       "name": "manage-api-catalog",
@@ -812,21 +812,21 @@
       "type": "skill-md",
       "description": "Manage and share MMO assets (Business Managers, Via, Pixels/Datasets, Anti-Detect profiles) using...",
       "url": "core/skills/mmo/manage-mmo-assets/SKILL.md",
-      "digest": "sha256:0fcd3436d42241c01ae3c726625c78a7b3993e456b50f5702cb996dd8488886a"
+      "digest": "sha256:9c9a9ae19cc6fc85e101d41ed08b8853b9d15a5c8fe7a93ddc0ff198b7a60b19"
     },
     {
       "name": "manage-order-fulfillment",
       "type": "skill-md",
       "description": "Implement and manage the post-purchase order lifecycle including order status management, packing...",
       "url": "core/skills/commerce/manage-order-fulfillment/SKILL.md",
-      "digest": "sha256:f895dac94a85d8cd08485c1c3ca1198619643ed32d7467865e1a74e66c8b9d42"
+      "digest": "sha256:645e875d231d5e695ae2bc0e65600bf0ec3c97ed47a54c99c1f702c34bfc8ec8"
     },
     {
       "name": "manage-product-catalog",
       "type": "skill-md",
       "description": "Build or maintain a product catalog including product creation, variant management (size, color,...",
       "url": "core/skills/commerce/manage-product-catalog/SKILL.md",
-      "digest": "sha256:414b9080614ea58e8d13dfdac62d36db3f23e8b9093d2c3bce880f734b98bb9c"
+      "digest": "sha256:26f2dc5c9977bf5f715a446c5ca2a271a4bffe14dbc5d195f92b32d2c70f9135"
     },
     {
       "name": "manage-scene-lifecycle",
@@ -840,7 +840,7 @@
       "type": "skill-md",
       "description": "Add, update, rotate, or review secret handling by following the repo's source-of-truth, access-co...",
       "url": "core/skills/security-data/manage-secrets/SKILL.md",
-      "digest": "sha256:6b8ad6e8b3ed458cdb09b5bb79700e6e897c3ed472a8653beae21c3a66f24c9f"
+      "digest": "sha256:832c4ad2d0d4d91be8e294dff6576a4700391d17c01148f2629f8b3ea7b183e7"
     },
     {
       "name": "manage-vietnam-accounting",
@@ -868,7 +868,7 @@
       "type": "skill-md",
       "description": "Use when auditing, triaging, compacting, and archiving agent persistent memory stores (MEMORY.md,...",
       "url": "core/skills/ai-agent/memory-hygiene/SKILL.md",
-      "digest": "sha256:611378f26aa7c9298532bc40c8fffb55c17670cb78733bae346ab145f78f9214"
+      "digest": "sha256:a395527c9c88f6fa873ff7b1269cae61128b0312f8b6407f8a7de2c63093577c"
     },
     {
       "name": "mix-dynamic-game-audio",
@@ -903,7 +903,7 @@
       "type": "skill-md",
       "description": "Offload lightweight tasks, boilerplate code generation, unit tests, summarization, and data trans...",
       "url": "core/skills/ai/openrouter-task/SKILL.md",
-      "digest": "sha256:6ed9286d7253450b79c9d346c2cc6ef3f15fd6713028c8625c423353f164bbbf"
+      "digest": "sha256:4070710982010ab5ef366889ce66a63948e8d8bfaf3d319fdc614211af5968b5"
     },
     {
       "name": "optimize-3d-assets",
@@ -945,7 +945,7 @@
       "type": "skill-md",
       "description": "Use when reading, extracting, creating, or modifying PDF documents, parsing text and tables via p...",
       "url": "core/skills/document/pdf/SKILL.md",
-      "digest": "sha256:e2a853fef2e453d9163b8501c057758b48444f5223c01ad817dde7615fa1128b"
+      "digest": "sha256:023456ef773f264d261f778d2825b9b47b6b52a7328964a53e5ce041327a4ca5"
     },
     {
       "name": "performance-profiling",
@@ -1001,7 +1001,7 @@
       "type": "skill-md",
       "description": "Use when safeguarding AI agents against direct and indirect prompt injection attacks, implementin...",
       "url": "core/skills/security-data/prompt-injection-defense/SKILL.md",
-      "digest": "sha256:15afd0bd4ad8e30c9998b9df1203b1d5702917a5e8f2c5764330f0742d7dad79"
+      "digest": "sha256:b791e4b828d087b3aef8b94c0af9d02d1e56f6c69e2a8539258d7b92e23aad2a"
     },
     {
       "name": "query-analytical-engine",
@@ -1015,14 +1015,14 @@
       "type": "skill-md",
       "description": "Draft, structure, and review release notes for a software change so that users, operators, and do...",
       "url": "core/skills/foundation/release-notes/SKILL.md",
-      "digest": "sha256:60243716ed90f3f9f34f68fe59cbbc3cf0128eeee7a524b500de2d928ed51765"
+      "digest": "sha256:b47fd2610cd4c0805c9d30635ef62a24f215e139e9dedcf4a505d4e0196810bd"
     },
     {
       "name": "render-webgl-threejs",
       "type": "skill-md",
       "description": "Architect interactive WebGL2 and WebGPU 3D scenes using Three.js or React Three Fiber with compre...",
       "url": "core/skills/gamedev/render-webgl-threejs/SKILL.md",
-      "digest": "sha256:f223977e486cbaf4e2c435844bb96744ab9e3a39822a30f587fa743c5a7fa81f"
+      "digest": "sha256:b291d11b2c4db90581f6bbb6f9d23fb8539e674bab5ddbdf5ae883d4a683fc4b"
     },
     {
       "name": "repurpose-content",
@@ -1036,21 +1036,21 @@
       "type": "skill-md",
       "description": "Deconstruct compiled binaries, proprietary protocols, and obfuscated bytecode in air-gapped sandb...",
       "url": "core/skills/security-data/reverse-engineer-binary/SKILL.md",
-      "digest": "sha256:5d210bfa125b06e2223f4b4ce502fa6a3db60569aae8e014837f3f4e6b74db95"
+      "digest": "sha256:8fa5eb634117716b9ac44d71dceb0d6171ad296b142282274723ecc5f8fe85ca"
     },
     {
       "name": "review-code",
       "type": "skill-md",
-      "description": "Review a diff since a fixed point along two separate axes — Standards (does the code follow this...",
+      "description": "Review a diff since a fixed point along two separate axes — Standards (conformance to documented...",
       "url": "core/skills/repo-ops/review-code/SKILL.md",
-      "digest": "sha256:87279ab758360e75dd233d8d46854a078d333d113216490680a96df48f9487a1"
+      "digest": "sha256:7e9c7d6187347e74f1cd4b928155fbe90fbad779d93b9459e662ba8b7f5d24cb"
     },
     {
       "name": "review-service",
       "type": "skill-md",
-      "description": "Review an entire service for release readiness. Use for full-service audits, production-readiness...",
+      "description": "Review an entire service for release readiness, evaluating code, contracts, data migrations, depe...",
       "url": "core/skills/repo-ops/review-service/SKILL.md",
-      "digest": "sha256:fba8def74dc1959913f560553ef40352aff8f130190ae5a64a2e6c69529ffa49"
+      "digest": "sha256:8ef6d2659fa247ec078c09f0b8afe0963a9008c98fcbc52ef411999b9ebbbe42"
     },
     {
       "name": "sandbox-sdk",
@@ -1071,21 +1071,21 @@
       "type": "skill-md",
       "description": "Review code, configuration, and service behavior for security risks by checking trust boundaries,...",
       "url": "core/skills/security-data/security-audit/SKILL.md",
-      "digest": "sha256:095980103c708bbf687c3b788eaf271c1e75d4137a53b54df1206fbfc3c584dc"
+      "digest": "sha256:163ff1eee6d4067d8c2bef45bc3a4452bf50d3712bfb5d0ad0d98004e6984414"
     },
     {
       "name": "setup-deployment",
       "type": "skill-md",
       "description": "Add or update deployment source-of-truth configuration for a service or component. Use when a cha...",
       "url": "core/skills/platform/setup-deployment/SKILL.md",
-      "digest": "sha256:6f815dcd8ebb8699e710e2e2b85ee4dfdf7a0ac49f5c2a7a2766a2149f9f4baa"
+      "digest": "sha256:379166db996b325d8f53630eb7ff2255e4ac9d7f81e41cb2475e5c35c6d129b7"
     },
     {
       "name": "setup-design-system",
       "type": "skill-md",
       "description": "Configure a scalable design system, styling framework, and component architecture for a frontend...",
       "url": "core/skills/frontend/setup-design-system/SKILL.md",
-      "digest": "sha256:532803722c332d02dd73ec2d73424caef490936ed6b92551456adf39d1b521ab"
+      "digest": "sha256:64f127bfc2914e324547c6e880c4473f7914bd6aecb6f1348f3a87d07a57c180"
     },
     {
       "name": "setup-gpu-finops",
@@ -1106,28 +1106,28 @@
       "type": "skill-md",
       "description": "Configure advanced privacy-first tracking including Server-to-Server (S2S) postbacks, Meta CAPI v...",
       "url": "core/skills/mmo/setup-tracking-system/SKILL.md",
-      "digest": "sha256:8357c6c5414f3d136e77990c17e5cff31d3d2521be01593815825c0533d5f94a"
+      "digest": "sha256:ad5fe6bd4cd4c8cef8ce9b8258d408604cdf08122c8220b634825ca2e60c4363"
     },
     {
       "name": "setup-visual-regression",
       "type": "skill-md",
       "description": "Configure automated visual diffing for UI components and pages. Use when establishing pixel-level...",
       "url": "core/skills/frontend/setup-visual-regression/SKILL.md",
-      "digest": "sha256:2ba3703826c701d912b3e627ad2e3ee4943a309e1f3b4773bc65965f60fbe35a"
+      "digest": "sha256:4657c2e1d41c15f1340f1a99274cee1b21e43566618603ba38bb0a1e0dd287fc"
     },
     {
       "name": "skill-preflight-ast-check",
       "type": "skill-md",
       "description": "Use when performing zero-execution static AST security vetting of third-party agent skills, enfor...",
       "url": "core/skills/security-data/skill-preflight-ast-check/SKILL.md",
-      "digest": "sha256:8cd55d8346a25aef80c64253f9b0364425eea5244ccd421bb796144b0064da51"
+      "digest": "sha256:1a53844a530e55004cc3607f579dbc92d287017359ed377251afafe10796a410"
     },
     {
       "name": "supply-chain-security",
       "type": "skill-md",
       "description": "Implement software supply chain security by generating SBOMs (CycloneDX/SPDX), enforcing SLSA bui...",
       "url": "core/skills/platform/supply-chain-security/SKILL.md",
-      "digest": "sha256:fcc7eb669691309c2c132fbd4f4ce572380d8f8491f3d5aaf06db4b325e020ba"
+      "digest": "sha256:a4a770cb212f7b77d27bd4ebca2a20e190e3e5486f3e6a47783fc50013f06840"
     },
     {
       "name": "system-design",
@@ -1211,7 +1211,7 @@
       "type": "skill-md",
       "description": "Plan, research, outline, and draft long-form articles and blog posts with explicit evidence disci...",
       "url": "core/skills/content/write-article/SKILL.md",
-      "digest": "sha256:2705f65b1e75afb8ee434b80a34da381d34d822545d86cfc222b425a980f47ef"
+      "digest": "sha256:88b1327b491ad8395931d95d0f225d497a019dd89be7f2b9f9619a48cbd3c65c"
     },
     {
       "name": "write-copy",
@@ -1225,7 +1225,7 @@
       "type": "skill-md",
       "description": "Draft or update technical documentation by following the repo's existing doc structure, audience...",
       "url": "core/skills/documentation/write-documentation/SKILL.md",
-      "digest": "sha256:b6eacc4d21e110c0c613679b09167d1d871c5bbcd250ca59c640c538a4a7b329"
+      "digest": "sha256:4e7ed64b7646976ed5b28ae3a6318480592916a8fddf0befdbfee9a922086ddf"
     },
     {
       "name": "write-hugo-twin-content",

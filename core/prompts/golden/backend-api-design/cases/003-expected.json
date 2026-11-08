@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "cursor",
+    "limit",
+    "RFC 9457",
+    "keyset pagination"
+  ],
+  "must_not_include": [
+    "OFFSET query without limit",
+    "OOM vulnerability"
+  ],
+  "required_tokens": [
+    "cursor",
+    "limit",
+    "RFC 9457",
+    "keyset pagination"
+  ],
+  "forbidden_tokens": [
+    "OFFSET query without limit",
+    "OOM vulnerability"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

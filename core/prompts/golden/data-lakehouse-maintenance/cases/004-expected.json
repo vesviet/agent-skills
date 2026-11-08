@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "expire_snapshots",
+    "retention policy",
+    "clean obsolete files",
+    "commit integrity"
+  ],
+  "must_not_include": [
+    "expire active snapshot referenced by running query"
+  ],
+  "required_tokens": [
+    "expire_snapshots",
+    "retention policy",
+    "clean obsolete files",
+    "commit integrity"
+  ],
+  "forbidden_tokens": [
+    "expire active snapshot referenced by running query"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/data-pipeline-spec.json",
+    "contract_type": "data-pipeline-spec"
+  }
+}

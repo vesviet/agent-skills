@@ -1,6 +1,6 @@
 # Agent Skills - Global Engineering Pack
 
-This repository contains a reusable, language-agnostic engineering skill pack for software delivery.
+This repository contains a reusable, language-agnostic engineering skill pack for software delivery (**39 Roles** | **183 Skills** [169 Core + 14 Overlays] | **25 Workflows** | **63 Data Contract Schemas** | **17 Packs** | **21 Overlays**).
 
 ## Mandatory Rules (Always-On)
 
@@ -46,7 +46,7 @@ When operating as an AI agent (like **Antigravity**) under this pack, you MUST:
 
 ## Skills
 
-Core skills are organized under `core/skills/` by taxonomy:
+Core skills (169 across 22 categories) are organized under `core/skills/` by taxonomy:
 
 - `core/skills/agent/`
 - `core/skills/foundation/`
@@ -62,7 +62,7 @@ Core skills are organized under `core/skills/` by taxonomy:
 - `core/skills/documentation/`
 - `core/skills/education/`
 
-Optional repo-specific skills live under `overlays/` and should only be loaded when the active repository actually needs them.
+Optional repo-specific skills (14 across 21 overlays) live under `overlays/` and should only be loaded when the active repository actually needs them.
 
 ## Workflows
 

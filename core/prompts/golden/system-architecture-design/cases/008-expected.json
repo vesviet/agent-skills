@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "Snowflake or ULID",
+    "monotonicity",
+    "worker ID coordination",
+    "clock drift safety"
+  ],
+  "must_not_include": [
+    "auto-increment database serial in distributed systems"
+  ],
+  "required_tokens": [
+    "Snowflake or ULID",
+    "monotonicity",
+    "worker ID coordination",
+    "clock drift safety"
+  ],
+  "forbidden_tokens": [
+    "auto-increment database serial in distributed systems"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/system-design-spec.json",
+    "contract_type": "system-design-spec"
+  }
+}

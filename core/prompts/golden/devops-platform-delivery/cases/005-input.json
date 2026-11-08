@@ -1,0 +1,13 @@
+{
+  "case_id": "DO-005",
+  "name": "Pod scheduling on dedicated tainted GPU nodes with tolerations and affinity",
+  "work_type": "implementation",
+  "role": "devops-engineer",
+  "skill": "setup-deployment",
+  "user_request": "Define pod placement rules to schedule inference containers strictly on dedicated NVIDIA H100 nodes.",
+  "target": "deploy/k8s/inference-pod.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/deployment-plan.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

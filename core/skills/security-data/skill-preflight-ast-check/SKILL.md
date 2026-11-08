@@ -130,3 +130,5 @@ When completing AST security preflight analysis, emit `contracts/schemas/securit
 - **security-audit**: Full security evaluation and vulnerability auditing.
 - **supply-chain-security**: Package integrity, SBOM tracking, and dependency pinning.
 - **ai-risk-assessment**: Threat modeling for AI agent systems.
+- Companion reference: `references/ast-lethal-trifecta-and-static-vetting.md`
+- Companion scanner script: `scripts/scan-skill-ast.py`

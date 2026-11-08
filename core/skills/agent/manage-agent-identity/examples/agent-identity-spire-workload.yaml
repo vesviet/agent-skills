@@ -1,0 +1,72 @@
+apiVersion: spire.spiffe.io/v1alpha1
+kind: ClusterSPIFFEID
+metadata:
+  name: agent-backend-developer-entry
+spec:
+  spiffeIDTemplate: "spiffe://prod.internal/ns/{{ .PodMeta.Namespace }}/sa/{{ .PodSpec.ServiceAccountName }}/agent/{{ .PodMeta.Labels.agent_role }}"
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: ai-agent-worker
+      agent_role: backend-developer
+  workloadSelectorTemplates:
+    - "k8s:container-name:agent-runtime"
+    - "k8s:ns:autonomous-agents"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agent-sts-exchange-config
+  namespace: autonomous-agents
+data:
+  sts-config.json: |
+    {
+      "sts_endpoint": "https://auth.internal.example.com/oauth/v2/token",
+      "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+      "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
+      "requested_token_type": "urn:ietf:params:oauth:token-type:access_token",
+      "audience": "https://api.internal.example.com/v1",
+      "ttl_seconds": 1800,
+      "enforce_rfc8707_resource": true,
+      "revocation_webhook": "https://auth.internal.example.com/oauth/v2/revoke"
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-backend-worker
+  namespace: autonomous-agents
+  labels:
+    app.kubernetes.io/component: ai-agent-worker
+    agent_role: backend-developer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: ai-agent-worker
+      agent_role: backend-developer
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: ai-agent-worker
+        agent_role: backend-developer
+    spec:
+      serviceAccountName: backend-developer-sa
+      containers:
+        - name: agent-runtime
+          image: ghcr.io/org/agent-runtime:v2.12.0
+          env:
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: unix:///run/spire/sockets/agent.sock
+            - name: AGENT_ROLE
+              value: backend-developer
+            - name: TOKEN_TTL_SECONDS
+              value: "1800"
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+              readOnly: true
+      volumes:
+        - name: spire-agent-socket
+          csi:
+            driver: "csi.spiffe.io"
+            readOnly: true

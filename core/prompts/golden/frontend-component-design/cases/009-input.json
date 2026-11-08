@@ -1,0 +1,13 @@
+{
+  "case_id": "FE-009",
+  "name": "XSS attempt via unescaped user-controlled HTML string in component prop",
+  "work_type": "implementation",
+  "role": "frontend-developer",
+  "skill": "add-ui-component",
+  "user_request": "Sanitize and render user-submitted markdown bio while preventing cross-site scripting attacks.",
+  "target": "src/components/user-bio.tsx",
+  "context": {
+    "schema_contract": "core/contracts/schemas/ui-component-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

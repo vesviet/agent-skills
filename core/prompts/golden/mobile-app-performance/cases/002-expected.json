@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "useAnimatedStyle",
+    "runOnUI",
+    "GestureHandler",
+    "worklet",
+    "native thread"
+  ],
+  "must_not_include": [
+    "run continuous gesture on JS thread",
+    "useState in gesture"
+  ],
+  "required_tokens": [
+    "useAnimatedStyle",
+    "runOnUI",
+    "GestureHandler",
+    "worklet",
+    "native thread"
+  ],
+  "forbidden_tokens": [
+    "run continuous gesture on JS thread",
+    "useState in gesture"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

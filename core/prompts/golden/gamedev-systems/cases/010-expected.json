@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "atlas",
+    "uv_normalization",
+    "padding",
+    "texture_bleed",
+    "implementation-result"
+  ],
+  "must_not_include": [
+    "individual unbatched draw calls per sprite",
+    "non-power-of-two unpadded atlas allocation"
+  ],
+  "required_tokens": [
+    "atlas",
+    "uv_normalization",
+    "padding",
+    "texture_bleed",
+    "implementation-result"
+  ],
+  "forbidden_tokens": [
+    "individual unbatched draw calls per sprite",
+    "non-power-of-two unpadded atlas allocation"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

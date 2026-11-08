@@ -1,0 +1,13 @@
+{
+  "case_id": "PM-004",
+  "name": "Feature deprecation brief for legacy export tool with customer migration plan",
+  "work_type": "implementation",
+  "role": "product-manager",
+  "skill": "write-product-brief",
+  "user_request": "Write a deprecation plan for a legacy XML export feature with 800 active weekly users.",
+  "target": "docs/product/briefs/xml-export-deprecation.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/solution-brief.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

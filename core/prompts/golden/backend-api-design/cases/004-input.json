@@ -1,0 +1,13 @@
+{
+  "case_id": "BE-004",
+  "name": "Multi-tenant resource update with tenant ID boundary validation",
+  "work_type": "implementation",
+  "role": "backend-developer",
+  "skill": "add-api-endpoint",
+  "user_request": "Implement an update handler enforcing tenant isolation and validating boundaries across organizational tenants.",
+  "target": "internal/biz/tenant.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/api-contract-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

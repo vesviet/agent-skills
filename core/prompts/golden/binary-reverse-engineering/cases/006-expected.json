@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "anti-debugging",
+    "ptrace(PTRACE_TRACEME)",
+    "RDTSC timing check",
+    "bypass patch"
+  ],
+  "must_not_include": [
+    "trigger anti-debug abort"
+  ],
+  "required_tokens": [
+    "anti-debugging",
+    "ptrace(PTRACE_TRACEME)",
+    "RDTSC timing check",
+    "bypass patch"
+  ],
+  "forbidden_tokens": [
+    "trigger anti-debug abort"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/validation-result.json",
+    "contract_type": "validation-result"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "-race",
+    "sync.WaitGroup",
+    "data race detection",
+    "goroutine safety"
+  ],
+  "must_not_include": [
+    "time.Sleep to sync goroutines"
+  ],
+  "required_tokens": [
+    "-race",
+    "sync.WaitGroup",
+    "data race detection",
+    "goroutine safety"
+  ],
+  "forbidden_tokens": [
+    "time.Sleep to sync goroutines"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/test-report.json",
+    "contract_type": "test-report"
+  }
+}

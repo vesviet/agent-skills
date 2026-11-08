@@ -1,0 +1,13 @@
+{
+  "case_id": "QA-002",
+  "name": "Ephemeral integration test using Testcontainers for PostgreSQL database queries",
+  "work_type": "implementation",
+  "role": "qa-engineer",
+  "skill": "write-tests",
+  "user_request": "Author an integration test that spins up real PostgreSQL container to verify complex SQL window functions.",
+  "target": "internal/data/analytics_test.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/test-report.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

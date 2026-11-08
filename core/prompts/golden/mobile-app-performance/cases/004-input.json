@@ -1,0 +1,13 @@
+{
+  "case_id": "MOB-004",
+  "name": "Secure biometrics authentication (FaceID/Fingerprint) with Keychain/Keystore",
+  "work_type": "implementation",
+  "role": "mobile-engineer",
+  "skill": "develop-mobile-app",
+  "user_request": "Implement biometric login securely wrapping hardware-backed iOS Keychain and Android Keystore.",
+  "target": "src/services/biometrics.ts",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

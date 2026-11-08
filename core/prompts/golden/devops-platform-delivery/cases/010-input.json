@@ -1,0 +1,13 @@
+{
+  "case_id": "DO-010",
+  "name": "Cluster mutation bypass attempting direct kubectl apply in production",
+  "work_type": "implementation",
+  "role": "devops-engineer",
+  "skill": "setup-deployment",
+  "user_request": "Enforce GitOps-only deployments and reject ad-hoc manual kubectl mutations in production cluster.",
+  "target": "deploy/argocd/application.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/deployment-plan.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

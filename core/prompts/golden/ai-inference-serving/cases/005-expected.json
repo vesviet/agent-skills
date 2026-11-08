@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "MIG slice",
+    "1g.10gb",
+    "hardware isolation",
+    "GPU partition"
+  ],
+  "must_not_include": [
+    "allow memory interference across MIG slices"
+  ],
+  "required_tokens": [
+    "MIG slice",
+    "1g.10gb",
+    "hardware isolation",
+    "GPU partition"
+  ],
+  "forbidden_tokens": [
+    "allow memory interference across MIG slices"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/edge-deployment-spec.json",
+    "contract_type": "edge-deployment-spec"
+  }
+}

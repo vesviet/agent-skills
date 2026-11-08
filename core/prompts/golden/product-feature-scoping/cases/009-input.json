@@ -1,0 +1,13 @@
+{
+  "case_id": "PM-009",
+  "name": "Request prompting the Product Manager to write backend API code and commit changes",
+  "work_type": "implementation",
+  "role": "product-manager",
+  "skill": "write-product-brief",
+  "user_request": "A stakeholder asks the PM to directly write Go handlers and commit code to speed up delivery.",
+  "target": "docs/product/briefs/pm-boundary-response.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/solution-brief.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

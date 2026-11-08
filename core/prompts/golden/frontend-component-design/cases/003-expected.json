@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "tactile feedback",
+    "scale-[0.98]",
+    "aria-label",
+    "toast notification"
+  ],
+  "must_not_include": [
+    "hardcoded hex colors",
+    "missing screen reader label"
+  ],
+  "required_tokens": [
+    "tactile feedback",
+    "scale-[0.98]",
+    "aria-label",
+    "toast notification"
+  ],
+  "forbidden_tokens": [
+    "hardcoded hex colors",
+    "missing screen reader label"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/ui-component-spec.json",
+    "contract_type": "ui-component-spec"
+  }
+}

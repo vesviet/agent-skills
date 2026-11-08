@@ -1,0 +1,35 @@
+{
+  "case_id": "CQ-010",
+  "name": "Full Portfolio Audit Schema Conformance and Role Handoff",
+  "work_type": "audit",
+  "role": "content-manager",
+  "skill": "audit-content",
+  "user_request": "Execute a portfolio audit across these technical architecture URLs, calculate aggregated summary scores, and generate a validated content-audit-report contract handoff for downstream writers and SEO analysts.",
+  "target": "portfolio/quarterly-q4-technical-architecture",
+  "context": {
+    "site": "authority-blog",
+    "audit_scope": "Technical Architecture Cluster (5 URLs)",
+    "urls": [
+      {
+        "url_or_path": "posts/microservices-event-sourcing-patterns",
+        "action": "refresh",
+        "traffic_trend": "declining",
+        "staleness_months": 14,
+        "decay_tier": "tier1_algorithmic_serp",
+        "ai_semantic_flaw_score": 28,
+        "cliches_present": ["delve", "tapestry"],
+        "information_gain_rating": "moderate"
+      },
+      {
+        "url_or_path": "posts/kubernetes-ingress-nginx-tls-termination",
+        "action": "keep_as_is",
+        "traffic_trend": "growing",
+        "staleness_months": 2,
+        "decay_tier": "none",
+        "ai_semantic_flaw_score": 5,
+        "cliches_present": [],
+        "information_gain_rating": "exceptional"
+      }
+    ]
+  }
+}

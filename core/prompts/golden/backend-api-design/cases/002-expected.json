@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "idempotency key",
+    "InTx",
+    "outbox",
+    "transaction",
+    "conflict handling"
+  ],
+  "must_not_include": [
+    "direct payment call inside db lock"
+  ],
+  "required_tokens": [
+    "idempotency key",
+    "InTx",
+    "outbox",
+    "transaction",
+    "conflict handling"
+  ],
+  "forbidden_tokens": [
+    "direct payment call inside db lock"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

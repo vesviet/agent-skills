@@ -1,0 +1,13 @@
+{
+  "case_id": "AI-006",
+  "name": "Speculative decoding configuration with draft model to double output token rate",
+  "work_type": "implementation",
+  "role": "ai-systems-engineer",
+  "skill": "deploy-vllm-inference",
+  "user_request": "Configure speculative decoding on vLLM using a lightweight draft model to achieve 2x generation speedup.",
+  "target": "deploy/ai/speculative-decoding.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/edge-deployment-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

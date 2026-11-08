@@ -1,0 +1,13 @@
+{
+  "case_id": "DO-006",
+  "name": "Shared memory /dev/shm IPC exhaustion in high-throughput AI container",
+  "work_type": "implementation",
+  "role": "devops-engineer",
+  "skill": "setup-deployment",
+  "user_request": "Mount a 16GB tmpfs shared memory volume to prevent PyTorch DataLoader IPC crashes.",
+  "target": "deploy/k8s/vllm-deployment.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/deployment-plan.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

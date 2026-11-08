@@ -1,0 +1,55 @@
+{
+  "$schema": "https://specs.ucp-commerce.org/2026-08-25/manifest.schema.json",
+  "spec_version": "2026-08-25",
+  "merchant": {
+    "id": "merch_enterprise_cloud_9021",
+    "name": "Global Tech Commerce",
+    "did": "did:web:commerce.example.com",
+    "contact": "agent-commerce@example.com"
+  },
+  "capabilities": [
+    "cart_management",
+    "atomic_checkout",
+    "dynamic_tax_calculation",
+    "delegated_ap2_mandates",
+    "machine_payments_mpp",
+    "x402_settlement"
+  ],
+  "supported_rails": [
+    {
+      "rail": "x402",
+      "version": "2.0",
+      "networks": ["base", "solana-mainnet", "polygon"],
+      "accepted_assets": [
+        { "symbol": "USDC", "decimals": 6, "min_amount": 10000 },
+        { "symbol": "SOL", "decimals": 9, "min_amount": 50000000 }
+      ]
+    },
+    {
+      "rail": "stripe_mpp",
+      "version": "1.0",
+      "supported_cards": ["visa", "mastercard", "amex"],
+      "shared_payment_tokens": true,
+      "settlement_currency": "usd"
+    }
+  ],
+  "endpoints": {
+    "session_init": "https://commerce.example.com/api/ucp/v1/sessions",
+    "cart_sync": "https://commerce.example.com/api/ucp/v1/sessions/{session_id}/items",
+    "shipping_rates": "https://commerce.example.com/api/ucp/v1/sessions/{session_id}/shipping-methods",
+    "checkout_commit": "https://commerce.example.com/api/ucp/v1/sessions/{session_id}/commit",
+    "order_status": "https://commerce.example.com/api/ucp/v1/orders/{order_id}",
+    "mpp_verify": "https://commerce.example.com/api/mpp/v1/verify_proof",
+    "jwks_uri": "https://commerce.example.com/.well-known/jwks.json"
+  },
+  "rate_limits": {
+    "max_requests_per_minute": 120,
+    "max_session_ttl_seconds": 1800
+  },
+  "security_policy": {
+    "require_agent_did": true,
+    "require_ap2_mandate_above_usd": 100.00,
+    "enforce_idempotency": true,
+    "replay_cache_ttl_seconds": 3600
+  }
+}

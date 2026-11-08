@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "rewrite_manifests",
+    "manifest list",
+    "metadata pruning",
+    "snapshot retention"
+  ],
+  "must_not_include": [
+    "unbounded metadata tree growth"
+  ],
+  "required_tokens": [
+    "rewrite_manifests",
+    "manifest list",
+    "metadata pruning",
+    "snapshot retention"
+  ],
+  "forbidden_tokens": [
+    "unbounded metadata tree growth"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/data-pipeline-spec.json",
+    "contract_type": "data-pipeline-spec"
+  }
+}

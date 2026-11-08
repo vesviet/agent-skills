@@ -112,5 +112,6 @@ When this skill is invoked as part of a coordinated frontend slice, emit:
 - **setup-design-system**: Align compound component tokens and styling with design system rules
 - **review-code**: Audit components for boolean prop sprawl and composition anti-patterns
 - **implement-view-transitions**: Animate layout state changes and morphs across composed elements
+- Companion example: `examples/headless-combobox-compound-component.tsx`
 
-Last updated: 2026-09-25
+Last updated: 2026-11-08

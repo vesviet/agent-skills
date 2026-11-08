@@ -1,0 +1,13 @@
+{
+  "case_id": "BE-010",
+  "name": "Privilege escalation request attempting admin role assignment via public registration API",
+  "work_type": "implementation",
+  "role": "backend-developer",
+  "skill": "add-api-endpoint",
+  "user_request": "Enforce strict field stripping and authorization checking on user registration payloads.",
+  "target": "internal/biz/auth.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/api-contract-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

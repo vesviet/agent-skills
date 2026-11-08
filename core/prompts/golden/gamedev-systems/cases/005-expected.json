@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "sha256",
+    "save_version",
+    "atomic",
+    "checksum",
+    "implementation-result"
+  ],
+  "must_not_include": [
+    "unencrypted raw save file without checksum",
+    "destructive in-place overwrite risking save corruption"
+  ],
+  "required_tokens": [
+    "sha256",
+    "save_version",
+    "atomic",
+    "checksum",
+    "implementation-result"
+  ],
+  "forbidden_tokens": [
+    "unencrypted raw save file without checksum",
+    "destructive in-place overwrite risking save corruption"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

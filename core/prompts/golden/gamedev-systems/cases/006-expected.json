@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "seed",
+    "mst",
+    "delaunay",
+    "corridor",
+    "implementation-result"
+  ],
+  "must_not_include": [
+    "unseeded random floating-point generation",
+    "disconnected orphan dungeon rooms"
+  ],
+  "required_tokens": [
+    "seed",
+    "mst",
+    "delaunay",
+    "corridor",
+    "implementation-result"
+  ],
+  "forbidden_tokens": [
+    "unseeded random floating-point generation",
+    "disconnected orphan dungeon rooms"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

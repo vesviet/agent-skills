@@ -79,3 +79,5 @@ When completing WebGL and Three.js rendering implementation, emit:
 
 - **program-game-shaders**: custom GLSL vertex/fragment shaders and post-processing effects
 - **profile-game-performance**: WebGL/WebGPU draw call batching and VRAM disposal profiling
+- Companion reference: `references/webgpu-threejs-pbr-pipeline.md`
+- Companion example: `examples/production-threejs-webgpu-scene.ts`

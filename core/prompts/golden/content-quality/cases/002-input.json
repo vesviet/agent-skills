@@ -1,0 +1,15 @@
+{
+  "case_id": "CQ-002",
+  "name": "Answer-First GEO/AEO Direct Synthesis and Preamble Stripping",
+  "work_type": "audit",
+  "role": "content-manager",
+  "skill": "audit-content",
+  "user_request": "Audit this technical guide for GEO/AEO Answer-First readiness. Check whether the leading paragraph delivers a direct factual answer under 60 words or wastes space with conversational preamble.",
+  "target": "guides/how-to-configure-redis-sentinel",
+  "context": {
+    "site": "authority-blog",
+    "leading_section": "Have you ever wondered how high-availability systems withstand sudden server failures? In this comprehensive, in-depth tutorial, we are going to explore the exciting world of Redis Sentinel. Before we begin, let us take a moment to look at the history of key-value stores...",
+    "traffic_trend": "declining",
+    "staleness_months": 8
+  }
+}

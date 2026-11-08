@@ -1,0 +1,13 @@
+{
+  "case_id": "DO-008",
+  "name": "NetworkPolicy zero-trust default-deny with explicit ingress/egress allowlists",
+  "work_type": "implementation",
+  "role": "devops-engineer",
+  "skill": "setup-deployment",
+  "user_request": "Implement strict Kubernetes NetworkPolicy isolating billing service from public internet and unauthorized pods.",
+  "target": "deploy/k8s/network-policy.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/deployment-plan.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

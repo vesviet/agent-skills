@@ -1,0 +1,23 @@
+{
+  "must_include": [
+    "whitespace-nowrap",
+    "text truncation or responsive wrap guard",
+    "CTA single-line"
+  ],
+  "must_not_include": [
+    "multi-line wrapping CTA button"
+  ],
+  "required_tokens": [
+    "whitespace-nowrap",
+    "text truncation or responsive wrap guard",
+    "CTA single-line"
+  ],
+  "forbidden_tokens": [
+    "multi-line wrapping CTA button"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/ui-component-spec.json",
+    "contract_type": "ui-component-spec"
+  }
+}

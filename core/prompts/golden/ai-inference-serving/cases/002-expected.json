@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "chunked-prefill",
+    "max-num-batched-tokens",
+    "TTFT",
+    "ITL",
+    "throughput"
+  ],
+  "must_not_include": [
+    "monolithic prefill blocking active token generation"
+  ],
+  "required_tokens": [
+    "chunked-prefill",
+    "max-num-batched-tokens",
+    "TTFT",
+    "ITL",
+    "throughput"
+  ],
+  "forbidden_tokens": [
+    "monolithic prefill blocking active token generation"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/edge-deployment-spec.json",
+    "contract_type": "edge-deployment-spec"
+  }
+}

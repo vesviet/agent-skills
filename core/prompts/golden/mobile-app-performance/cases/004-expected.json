@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "Keychain",
+    "Keystore",
+    "biometric prompt",
+    "hardware-backed security"
+  ],
+  "must_not_include": [
+    "store credentials in plain AsyncStorage"
+  ],
+  "required_tokens": [
+    "Keychain",
+    "Keystore",
+    "biometric prompt",
+    "hardware-backed security"
+  ],
+  "forbidden_tokens": [
+    "store credentials in plain AsyncStorage"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

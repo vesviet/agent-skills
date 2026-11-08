@@ -1,0 +1,31 @@
+{
+  "must_include": [
+    "api-contract-spec",
+    "context.Context",
+    "gRPC",
+    "HTTP",
+    "status code",
+    "protobuf"
+  ],
+  "must_not_include": [
+    "raw gorm.DB in service",
+    "leak internal error"
+  ],
+  "required_tokens": [
+    "api-contract-spec",
+    "context.Context",
+    "gRPC",
+    "HTTP",
+    "status code",
+    "protobuf"
+  ],
+  "forbidden_tokens": [
+    "raw gorm.DB in service",
+    "leak internal error"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

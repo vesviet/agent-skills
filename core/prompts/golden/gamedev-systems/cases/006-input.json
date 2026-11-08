@@ -1,0 +1,13 @@
+{
+  "case_id": "GAME-006",
+  "name": "Seeded procedural dungeon room graph generator",
+  "work_type": "implementation",
+  "role": "game-developer",
+  "skill": "develop-gameplay-systems",
+  "user_request": "Implement a deterministic procedural dungeon generator using seeded PRNG streams, Delaunay triangulation / Minimum Spanning Tree (MST) corridors, and room placement rules.",
+  "target": "scripts/pcg/dungeon_generator.gd",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

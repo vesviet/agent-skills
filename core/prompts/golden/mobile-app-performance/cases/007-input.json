@@ -1,0 +1,13 @@
+{
+  "case_id": "MOB-007",
+  "name": "Network transition from WiFi to cellular to offline during image upload",
+  "work_type": "implementation",
+  "role": "mobile-engineer",
+  "skill": "develop-mobile-app",
+  "user_request": "Implement background resumable multipart file upload handling network dropouts seamlessly.",
+  "target": "src/services/upload-manager.ts",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

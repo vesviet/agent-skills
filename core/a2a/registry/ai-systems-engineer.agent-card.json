@@ -53,7 +53,7 @@
     {
       "id": "openrouter-task",
       "name": "Openrouter Task",
-      "description": "Offload lightweight tasks, boilerplate code generation, unit tests, summarization, and data transformations to OpenRouter FREE LLMs pool (:free) using the local environment key at D:\\myproject\\.agents\\.env to preserve Google Gemini quota. Use when running secondary, repetitive, or lightweight coding and data transformation tasks via free model rotation.",
+      "description": "Offload lightweight tasks, boilerplate code generation, unit tests, summarization, and data transformations to OpenRouter FREE LLMs pool (:free) using the local environment key configured via OPENROUTER_ENV_FILE (or local .env) to preserve Google Gemini quota. Use when running secondary, repetitive, or lightweight coding and data transformation tasks via free model rotation.",
       "tags": [
         "ai",
         "pack"

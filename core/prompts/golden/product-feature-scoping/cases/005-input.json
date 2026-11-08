@@ -1,0 +1,13 @@
+{
+  "case_id": "PM-005",
+  "name": "Feature scoping under severe regulatory deadline (EU AI Act Article 50 disclosure)",
+  "work_type": "implementation",
+  "role": "product-manager",
+  "skill": "write-product-brief",
+  "user_request": "Scope an MVP disclosure banner and watermarking workflow to comply with EU AI Act Article 50 deadline.",
+  "target": "docs/product/briefs/ai-transparency-compliance.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/solution-brief.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

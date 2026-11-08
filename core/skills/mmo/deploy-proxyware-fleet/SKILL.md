@@ -131,3 +131,5 @@ Skip emission for local single-node test runs that do not cross role boundaries.
 
 - **deploy-mmo-infrastructure**: Provision the core residential proxy gateways and network tunnels powering the DePIN fleet.
 - **setup-deployment**: Generic cloud container orchestration and service lifecycle management.
+- Companion reference: `references/depin-bandwidth-monetization-node-specs.md`
+- Companion example: `examples/docker-compose-depin-light-node-fleet.yaml`

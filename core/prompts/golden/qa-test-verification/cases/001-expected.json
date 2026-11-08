@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "test-report",
+    "table-driven",
+    "boundary cases",
+    "exact decimal arithmetic"
+  ],
+  "must_not_include": [
+    "assert true == true",
+    "tautological assertion"
+  ],
+  "required_tokens": [
+    "test-report",
+    "table-driven",
+    "boundary cases",
+    "exact decimal arithmetic"
+  ],
+  "forbidden_tokens": [
+    "assert true == true",
+    "tautological assertion"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/test-report.json",
+    "contract_type": "test-report"
+  }
+}

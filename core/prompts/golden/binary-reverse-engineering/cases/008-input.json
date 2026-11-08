@@ -1,0 +1,13 @@
+{
+  "case_id": "RE-008",
+  "name": "Reconstructing C++ vtable hierarchy and virtual method dispatch",
+  "work_type": "implementation",
+  "role": "reverse-engineer",
+  "skill": "reverse-engineer-binary",
+  "user_request": "Recover class inheritance hierarchy and virtual function dispatch offsets from a stripped C++ binary.",
+  "target": "reports/re/vtable-recovery.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/validation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "QA-001",
+  "name": "Table-driven unit test suite for money math and tax rounding in Go",
+  "work_type": "implementation",
+  "role": "qa-engineer",
+  "skill": "write-tests",
+  "user_request": "Write table-driven unit tests verifying decimal monetary calculations across 10 currency edge cases.",
+  "target": "internal/pkg/money/money_test.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/test-report.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

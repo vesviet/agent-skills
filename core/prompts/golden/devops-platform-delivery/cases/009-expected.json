@@ -1,0 +1,27 @@
+{
+  "must_include": [
+    "readOnlyRootFilesystem: true",
+    "runAsNonRoot: true",
+    "drop ALL capabilities",
+    "securityContext"
+  ],
+  "must_not_include": [
+    "privileged: true",
+    "runAsUser: 0"
+  ],
+  "required_tokens": [
+    "readOnlyRootFilesystem: true",
+    "runAsNonRoot: true",
+    "drop ALL capabilities",
+    "securityContext"
+  ],
+  "forbidden_tokens": [
+    "privileged: true",
+    "runAsUser: 0"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/deployment-plan.json",
+    "contract_type": "deployment-plan"
+  }
+}

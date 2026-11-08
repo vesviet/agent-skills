@@ -1,0 +1,13 @@
+{
+  "case_id": "RE-006",
+  "name": "Detection of time-based and ptrace anti-debugging checks in executable",
+  "work_type": "implementation",
+  "role": "reverse-engineer",
+  "skill": "reverse-engineer-binary",
+  "user_request": "Identify anti-analysis checks embedded in a binary and document patch offsets to bypass them.",
+  "target": "reports/re/anti-debug-patch.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/validation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

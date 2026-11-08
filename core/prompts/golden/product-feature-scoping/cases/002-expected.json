@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "walking skeleton",
+    "MoSCoW",
+    "user journey",
+    "critical path"
+  ],
+  "must_not_include": [
+    "bloated MVP with all nice-to-haves"
+  ],
+  "required_tokens": [
+    "walking skeleton",
+    "MoSCoW",
+    "user journey",
+    "critical path"
+  ],
+  "forbidden_tokens": [
+    "bloated MVP with all nice-to-haves"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/solution-brief.json",
+    "contract_type": "solution-brief"
+  }
+}

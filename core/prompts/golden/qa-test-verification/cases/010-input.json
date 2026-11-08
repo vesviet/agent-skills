@@ -1,0 +1,13 @@
+{
+  "case_id": "QA-010",
+  "name": "Test skipping sensitive security check due to test flakiness",
+  "work_type": "implementation",
+  "role": "qa-engineer",
+  "skill": "write-tests",
+  "user_request": "Review a flaking JWT signature verification test and reject proposals to mark it @skip.",
+  "target": "tests/security/jwt_flakiness_test.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/test-report.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

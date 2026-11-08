@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "collision detection",
+    "flip boundary",
+    "portal",
+    "popper positioning"
+  ],
+  "must_not_include": [
+    "clipped by parent overflow-hidden"
+  ],
+  "required_tokens": [
+    "collision detection",
+    "flip boundary",
+    "portal",
+    "popper positioning"
+  ],
+  "forbidden_tokens": [
+    "clipped by parent overflow-hidden"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/ui-component-spec.json",
+    "contract_type": "ui-component-spec"
+  }
+}

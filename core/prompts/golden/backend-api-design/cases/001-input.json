@@ -1,0 +1,13 @@
+{
+  "case_id": "BE-001",
+  "name": "Dual gRPC/REST endpoint for user profile retrieval with Kratos proto definition",
+  "work_type": "implementation",
+  "role": "backend-developer",
+  "skill": "add-api-endpoint",
+  "user_request": "Design and implement a dual gRPC/REST user profile retrieval endpoint in Kratos ensuring clean layer separation.",
+  "target": "api/user/v1/user.proto",
+  "context": {
+    "schema_contract": "core/contracts/schemas/api-contract-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

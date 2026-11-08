@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "packet header structure",
+    "magic bytes",
+    "length field",
+    "checksum algorithm"
+  ],
+  "must_not_include": [
+    "guess protocol without disassembly evidence"
+  ],
+  "required_tokens": [
+    "packet header structure",
+    "magic bytes",
+    "length field",
+    "checksum algorithm"
+  ],
+  "forbidden_tokens": [
+    "guess protocol without disassembly evidence"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/validation-result.json",
+    "contract_type": "validation-result"
+  }
+}

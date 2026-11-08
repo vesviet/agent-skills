@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "partial success",
+    "item errors",
+    "batch response",
+    "atomic failure status"
+  ],
+  "must_not_include": [
+    "claim 200 OK when items failed"
+  ],
+  "required_tokens": [
+    "partial success",
+    "item errors",
+    "batch response",
+    "atomic failure status"
+  ],
+  "forbidden_tokens": [
+    "claim 200 OK when items failed"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/api-contract-spec.json",
+    "contract_type": "api-contract-spec"
+  }
+}

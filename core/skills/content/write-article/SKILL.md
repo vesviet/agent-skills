@@ -1,6 +1,6 @@
 ---
 name: write-article
-description: Plan, research, outline, and draft long-form articles and blog posts with explicit evidence discipline, answer-first structure, GEO/AEO execution, non-commodity (unique POV/first-hand evidence) quality gates, E-E-A-T experience signals, and SEO-brief alignment. Use for narrative content, guides, reviews, and announcements—not for API runbooks or pure technical reference docs.
+description: Plan, research, outline, and draft long-form articles and blog posts with explicit evidence discipline, answer-first structure, GEO/AEO execution, non-commodity quality gates, E-E-A-T experience signals, and SEO-brief alignment. Use when writing narrative long-form content, guides, reviews, or announcements—not for API runbooks or pure technical reference docs.
 version: 2.0.0
 allowed-tools: [read_file, write_file, edit_file, create_file, search_code]
 ---

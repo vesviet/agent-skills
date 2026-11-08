@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "CDC",
+    "Debezium",
+    "outbox pattern",
+    "reconciliation sweeper"
+  ],
+  "must_not_include": [
+    "dual synchronous writes without distributed transaction"
+  ],
+  "required_tokens": [
+    "CDC",
+    "Debezium",
+    "outbox pattern",
+    "reconciliation sweeper"
+  ],
+  "forbidden_tokens": [
+    "dual synchronous writes without distributed transaction"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/system-design-spec.json",
+    "contract_type": "system-design-spec"
+  }
+}

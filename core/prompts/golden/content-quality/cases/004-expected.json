@@ -1,0 +1,31 @@
+{
+  "must_include": [
+    "slop_risk_flagged",
+    "cadence",
+    "refresh",
+    "burstiness",
+    "content-audit-report"
+  ],
+  "must_not_include": [
+    "keep_as_is",
+    "varied cadence",
+    "high burstiness"
+  ],
+  "required_tokens": [
+    "slop_risk_flagged",
+    "cadence",
+    "refresh",
+    "burstiness",
+    "content-audit-report"
+  ],
+  "forbidden_tokens": [
+    "keep_as_is",
+    "varied cadence",
+    "high burstiness"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/content-audit-report.json",
+    "contract_type": "content-audit-report"
+  }
+}

@@ -182,5 +182,7 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **review-code**: Review data flow, auth, and error handling risk
 - **commit-code**: Prepare the integration for delivery
 - **develop-mobile-app**: Connect mobile clients with offline-first persistence (MMKV, WatermelonDB) and NetInfo synchronization
+- Companion reference: `references/orval-tanstack-query-and-streaming-specs.md`
+- Companion example: `examples/orval-query-and-streaming-mutation.ts`
 
-Last updated: 2026-09-25
+Last updated: 2026-11-08

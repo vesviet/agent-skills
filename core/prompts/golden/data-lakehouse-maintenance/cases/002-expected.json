@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "deletion vectors",
+    "position deletes",
+    "merge-on-read to copy-on-write",
+    "read performance"
+  ],
+  "must_not_include": [
+    "ignore deletion vector overhead in scans"
+  ],
+  "required_tokens": [
+    "deletion vectors",
+    "position deletes",
+    "merge-on-read to copy-on-write",
+    "read performance"
+  ],
+  "forbidden_tokens": [
+    "ignore deletion vector overhead in scans"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/data-pipeline-spec.json",
+    "contract_type": "data-pipeline-spec"
+  }
+}

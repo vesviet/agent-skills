@@ -134,3 +134,5 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **debug-runtime-platform**: Investigate rollout failures after config changes
 - **commit-code**: Prepare deployment changes for delivery
 - **deploy-mobile-app**: Deploy mobile applications via EAS Build, EAS Update (OTA), and App Store / Google Play submissions
+- Companion reference: `references/k8s-gitops-and-kustomize-invariants.md`
+- Companion example: `examples/kustomize-production-service-manifests.yaml`

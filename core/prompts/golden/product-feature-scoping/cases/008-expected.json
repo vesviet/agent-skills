@@ -1,0 +1,23 @@
+{
+  "must_include": [
+    "offline-first user journey",
+    "sync conflict resolution UX",
+    "bandwidth budget"
+  ],
+  "must_not_include": [
+    "assume always-on broadband connectivity"
+  ],
+  "required_tokens": [
+    "offline-first user journey",
+    "sync conflict resolution UX",
+    "bandwidth budget"
+  ],
+  "forbidden_tokens": [
+    "assume always-on broadband connectivity"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/solution-brief.json",
+    "contract_type": "solution-brief"
+  }
+}

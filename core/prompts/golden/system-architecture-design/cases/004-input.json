@@ -1,0 +1,13 @@
+{
+  "case_id": "SA-004",
+  "name": "Eventual consistency reconciliation engine between relational core and search store",
+  "work_type": "implementation",
+  "role": "technical-architect",
+  "skill": "system-design",
+  "user_request": "Design a CDC-based data replication architecture between PostgreSQL and OpenSearch with reconciliation sweeper.",
+  "target": "docs/architecture/search-indexing.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/system-design-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "MOB-006",
+  "name": "Dynamic font scaling and accessibility safe-area layout under extreme Android scaling",
+  "work_type": "implementation",
+  "role": "mobile-engineer",
+  "skill": "develop-mobile-app",
+  "user_request": "Harden mobile layout against 200% Android accessibility font scaling and notch safe-areas.",
+  "target": "src/components/profile-card.tsx",
+  "context": {
+    "schema_contract": "core/contracts/schemas/implementation-result.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

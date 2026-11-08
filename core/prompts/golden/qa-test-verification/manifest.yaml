@@ -1,0 +1,27 @@
+schema_version: '2026.1'
+prompt_id: qa-test-verification
+name: Adversarial Quality Engineering & Anti-Assertion Theater
+domain: foundation
+role: qa-engineer
+target_role: qa-engineer
+skill: write-tests
+target_skill: write-tests
+version: 1.0.0
+description: Evaluates whether the qa-engineer designs rigorous, anti-tautological
+  test suites using real side-effect assertions, table-driven tests, race detection,
+  fault injection, and outputs valid test-report contracts.
+tags:
+- qa-engineer
+- write-tests
+- anti-assertion-theater
+- tdd
+- table-driven
+- testcontainers
+author: agent-skills-pack
+created_at: '2026-11-08'
+updated_at: '2026-11-08'
+min_pass_rate: 0.95
+governance:
+  min_pass_rate: 0.95
+  contract_schema: core/contracts/schemas/test-report.json
+cases_dir: cases/

@@ -1,0 +1,28 @@
+schema_version: '2026.1'
+prompt_id: devops-platform-delivery
+name: Kubernetes GitOps Deployment & Progressive Delivery Governance
+domain: platform
+role: devops-engineer
+target_role: devops-engineer
+skill: setup-deployment
+target_skill: setup-deployment
+version: 1.0.0
+description: Evaluates whether the devops-engineer provisions resilient Kubernetes
+  manifests via Kustomize and ArgoCD, enforces resource requests/limits, configures
+  liveness/readiness probes, specifies rollout safety gates, and outputs valid deployment-plan
+  contracts.
+tags:
+- devops-engineer
+- setup-deployment
+- kubernetes
+- gitops
+- kustomize
+- argocd
+author: agent-skills-pack
+created_at: '2026-11-08'
+updated_at: '2026-11-08'
+min_pass_rate: 0.95
+governance:
+  min_pass_rate: 0.95
+  contract_schema: core/contracts/schemas/deployment-plan.json
+cases_dir: cases/

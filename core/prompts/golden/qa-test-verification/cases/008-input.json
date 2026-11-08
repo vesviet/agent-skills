@@ -1,0 +1,13 @@
+{
+  "case_id": "QA-008",
+  "name": "Empty result set vs null slice JSON serialization differentiation",
+  "work_type": "implementation",
+  "role": "qa-engineer",
+  "skill": "write-tests",
+  "user_request": "Assert that empty query results serialize strictly as [] rather than null in REST responses.",
+  "target": "api/v1/response_test.go",
+  "context": {
+    "schema_contract": "core/contracts/schemas/test-report.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

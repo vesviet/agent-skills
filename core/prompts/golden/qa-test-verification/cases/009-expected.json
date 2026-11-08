@@ -1,0 +1,23 @@
+{
+  "must_include": [
+    "Assertion Theater detected",
+    "verify real state mutation",
+    "reject mock that asserts nothing"
+  ],
+  "must_not_include": [
+    "pass test without asserting result"
+  ],
+  "required_tokens": [
+    "Assertion Theater detected",
+    "verify real state mutation",
+    "reject mock that asserts nothing"
+  ],
+  "forbidden_tokens": [
+    "pass test without asserting result"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/test-report.json",
+    "contract_type": "test-report"
+  }
+}

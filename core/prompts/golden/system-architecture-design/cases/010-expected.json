@@ -1,0 +1,25 @@
+{
+  "must_include": [
+    "Zero Trust",
+    "API Gateway",
+    "private VPC subnet",
+    "reject WAN exposure"
+  ],
+  "must_not_include": [
+    "expose port 5432 to public internet"
+  ],
+  "required_tokens": [
+    "Zero Trust",
+    "API Gateway",
+    "private VPC subnet",
+    "reject WAN exposure"
+  ],
+  "forbidden_tokens": [
+    "expose port 5432 to public internet"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/system-design-spec.json",
+    "contract_type": "system-design-spec"
+  }
+}

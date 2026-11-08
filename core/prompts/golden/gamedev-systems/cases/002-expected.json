@@ -1,0 +1,29 @@
+{
+  "must_include": [
+    "continuous_cd",
+    "raycast",
+    "substep",
+    "tunneling",
+    "implementation-result"
+  ],
+  "must_not_include": [
+    "ignoring swept volume collisions",
+    "unbounded raycast iterations"
+  ],
+  "required_tokens": [
+    "continuous_cd",
+    "raycast",
+    "substep",
+    "tunneling",
+    "implementation-result"
+  ],
+  "forbidden_tokens": [
+    "ignoring swept volume collisions",
+    "unbounded raycast iterations"
+  ],
+  "schema_validation": {
+    "enabled": true,
+    "schema_ref": "core/contracts/schemas/implementation-result.json",
+    "contract_type": "implementation-result"
+  }
+}

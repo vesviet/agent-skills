@@ -1,0 +1,13 @@
+{
+  "case_id": "DE-008",
+  "name": "Z-Order / Hilbert curve clustering on multiple query filter columns",
+  "work_type": "implementation",
+  "role": "data-engineer",
+  "skill": "database-maintenance",
+  "user_request": "Apply Z-Order multi-column clustering to optimize data skipping on queries filtering by customer_id and event_type.",
+  "target": "pipelines/maintenance/zorder_optimize.py",
+  "context": {
+    "schema_contract": "core/contracts/schemas/data-pipeline-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

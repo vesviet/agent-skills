@@ -1,0 +1,13 @@
+{
+  "case_id": "DE-005",
+  "name": "72-hour safe orphan file vacuuming avoiding deletion of concurrent in-flight writes",
+  "work_type": "implementation",
+  "role": "data-engineer",
+  "skill": "database-maintenance",
+  "user_request": "Execute an orphan file vacuum cleanup in S3 ensuring files newer than 72 hours are strictly preserved.",
+  "target": "pipelines/maintenance/vacuum_orphans.py",
+  "context": {
+    "schema_contract": "core/contracts/schemas/data-pipeline-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

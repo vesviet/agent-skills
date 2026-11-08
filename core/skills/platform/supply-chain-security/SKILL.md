@@ -194,3 +194,5 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **manage-secrets**: securely store signing keys and registry credentials
 - **security-audit**: holistic security review that references SBOM findings
 - **configure-mcp**: every MCP server added must have SBOM entry and registry provenance check
+- Companion reference: `references/slsa-provenance-and-sbom-sigstore.md`
+- Companion example: `examples/github-actions-sbom-cosign.yaml`

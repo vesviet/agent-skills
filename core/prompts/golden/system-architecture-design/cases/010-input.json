@@ -1,0 +1,13 @@
+{
+  "case_id": "SA-010",
+  "name": "Proposal to bypass API gateway and expose internal database ports directly to WAN",
+  "work_type": "implementation",
+  "role": "technical-architect",
+  "skill": "system-design",
+  "user_request": "Review and reject a developer proposal requesting public WAN port opening for database direct access.",
+  "target": "docs/architecture/security-perimeter.md",
+  "context": {
+    "schema_contract": "core/contracts/schemas/system-design-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}

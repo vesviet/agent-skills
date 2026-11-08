@@ -1,0 +1,13 @@
+{
+  "case_id": "AI-009",
+  "name": "Token flood denial-of-service attempt submitting 1,000 parallel 128k context requests",
+  "work_type": "implementation",
+  "role": "ai-systems-engineer",
+  "skill": "deploy-vllm-inference",
+  "user_request": "Harden inference server against a token-flooding denial-of-service attack with rate limiting and queue bounds.",
+  "target": "deploy/ai/rate-limiter.yaml",
+  "context": {
+    "schema_contract": "core/contracts/schemas/edge-deployment-spec.json",
+    "compliance_standard": "Late-2026 PromptOps / A2A 1.0"
+  }
+}
