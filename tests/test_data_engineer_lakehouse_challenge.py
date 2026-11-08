@@ -394,7 +394,8 @@ class TestResearchDossierIntegrity(unittest.TestCase):
 
     def test_01_research_dossier_depth_and_invariants(self):
         """Research dossier must exist, exceed 100KB, and contain foundational mathematical formulas."""
-        dossier_path = REPORTS_DIR / "data-engineer-data-analyst-repo-research.md"
+        archive_path = REPORTS_DIR / "archive" / "research-dossiers" / "data-engineer-data-analyst-repo-research.md"
+        dossier_path = archive_path if archive_path.is_file() else (REPORTS_DIR / "data-engineer-data-analyst-repo-research.md")
         self.assertTrue(dossier_path.exists(), "Master research dossier must exist")
 
         text = dossier_path.read_text(encoding="utf-8")

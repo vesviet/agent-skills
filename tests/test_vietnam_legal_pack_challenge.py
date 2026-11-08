@@ -973,7 +973,8 @@ class TestVietnamLegalArtifactStructure:
 
     def test_research_dossier_existence_and_size(self):
         """reports/vietnam-legal-counsel-repo-research.md must exist, be >= 100,000 bytes, and cite key laws."""
-        dossier_path = REPORTS_DIR / "vietnam-legal-counsel-repo-research.md"
+        archive_path = REPORTS_DIR / "archive" / "research-dossiers" / "vietnam-legal-counsel-repo-research.md"
+        dossier_path = archive_path if archive_path.is_file() else (REPORTS_DIR / "vietnam-legal-counsel-repo-research.md")
         assert dossier_path.is_file(), f"Research report missing at {dossier_path}"
 
         byte_size = dossier_path.stat().st_size

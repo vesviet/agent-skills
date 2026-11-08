@@ -488,8 +488,9 @@ class TestBusinessAnalystResearchDossier(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.dossier_path = REPORTS_DIR / "business-analyst-repo-research.md"
-        assert cls.dossier_path.exists(), "business-analyst-repo-research.md must exist in reports/"
+        archive_path = REPORTS_DIR / "archive" / "research-dossiers" / "business-analyst-repo-research.md"
+        cls.dossier_path = archive_path if archive_path.is_file() else (REPORTS_DIR / "business-analyst-repo-research.md")
+        assert cls.dossier_path.exists(), "business-analyst-repo-research.md must exist in reports/ or reports/archive/research-dossiers/"
         cls.dossier_text = cls.dossier_path.read_text(encoding="utf-8")
 
     def test_30_research_dossier_presence_and_depth(self):
