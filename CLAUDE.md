@@ -1,8 +1,18 @@
 # Agent Skills — Global Engineering Pack (Claude Code)
 
-Pack version: **5.8.0** | Protocol: **A2A 1.0** | Adapter: `adapters/claude/`
+Pack version: **5.9.0** | Protocol: **A2A 1.0** | Adapter: `adapters/claude/`
 
-This repository contains a reusable, language-agnostic engineering skill pack for software delivery (**39 Roles** | **183 Skills** [169 Core + 14 Overlays] | **25 Workflows** | **63 Data Contract Schemas** | **17 Packs** | **21 Overlays**).
+This repository contains a reusable, language-agnostic engineering skill pack for software delivery (**39 Roles** | **184 Skills** [170 Core + 14 Overlays] | **25 Workflows** | **63 Data Contract Schemas** | **17 Packs** | **21 Overlays**).
+
+## Standard 2026-2027 Compliance
+
+- **OWASP ASI01-10**: Agentic security standards
+- **OWASP AST01-10**: Skill security with lethal trifecta
+- **EU AI Act Article 50**: Transparency disclosure (AIDisclosureBanner, C2PA)
+- **A2A 1.0**: Agent-to-agent (Linux Foundation, stateless)
+- **MCP 2026-07-28**: Stateless protocol, OAuth 2.1 + PKCE
+- **WCAG 2.2**: New accessibility criteria
+- **Core Web Vitals**: INP < 200ms
 
 ---
 
@@ -91,7 +101,7 @@ Adapter reference: `adapters/claude/CLAUDE_ADAPTER.md`
 
 ## Skills
 
-Core skills (169 across 22 categories) live under `core/skills/` organized by taxonomy:
+Core skills (170 across 22 categories) live under `core/skills/` organized by taxonomy:
 
 - `core/skills/agent/` — A2A protocol, context management, memory, orchestration, quality gates
 - `core/skills/foundation/` — commit, review, test, navigate, troubleshoot, write

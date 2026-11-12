@@ -23,14 +23,19 @@ description: "Minimal global rules for commit and publish approval, user-visible
 - Do not mention agents, review labels, severity labels, or task trackers in code comments.
 - Keep each code comment within 3 lines unless a longer comment is required for doc comments, file headers, or tooling directives.
 
-## Standard 2026 Alignment
+## Standard 2026-2027 Alignment
 
-This file is part of the agent-skills engineering pack. The 2026 upgrade
+This file is part of the agent-skills engineering pack. The 2026-2027 upgrade
 pass added this footer so every prose file in the pack carries a
-consistent Standard 2026 pointer.
+consistent Standard pointer.
 
-- **OWASP ASI**: applied as described in `core/roles/role-standard.md`
-  (ASI01-ASI10) and the per-skill `## Security Guardrails (OWASP ASI)` sections.
+- **OWASP ASI01-10**: Agentic security standards applied per `core/roles/role-standard.md`
+- **OWASP AST01-10**: Skill security standards (malicious skills, lethal trifecta)
+- **EU AI Act Article 50**: Transparency disclosure requirements (effective Aug 2026)
+- **A2A Protocol 1.0**: Agent-to-agent communication (Linux Foundation)
+- **MCP 2026-07-28**: Stateless protocol with OAuth 2.1 + PKCE
+- **WCAG 2.2**: New accessibility criteria
+- **Core Web Vitals**: INP < 200ms performance budgets
 - **Failure Modes**: the rule in this file can be violated by drift, missing
   context, or untracked exceptions. Concrete failure scenarios belong in the
   related skill or workflow's `### Failure Modes` section.
@@ -43,4 +48,4 @@ consistent Standard 2026 pointer.
   follow the META-RULE in `core/rules/code.md` — no commit, no push, no
   publish without explicit user confirmation.
 
-Last updated: 2026-09-10
+Last updated: 2026-11-12

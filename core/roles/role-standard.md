@@ -6,6 +6,14 @@ Every role must follow this standard first, then apply its own domain-specific r
 
 In 2025–2026, this standard is extended with universal agentic AI principles: minimal footprint, fail-safe posture under uncertainty, irreversible action controls, and traceability. These apply to all roles regardless of domain.
 
+## Regulatory Compliance (Universal — 2025-2026)
+
+All roles must adhere to applicable regulatory requirements:
+
+- **EU AI Act Article 50** (effective 2 August 2026): When deploying user-facing AI features, ensure transparency disclosure (`<AIDisclosureBanner>`), machine-readable AI content marking (`data-ai-generated` attributes), and C2PA metadata for AI-generated media (deadline 2 December 2026). Article 50 obligations include: (1) AI interaction disclosure for chatbots/virtual assistants, (2) AI content marking in machine-readable format, (3) biometric/ emotion recognition notification, (4) deepfake disclosure.
+- **OWASP ASI01-10**: Agentic security standards (see Guardrails section).
+- **OWASP AST01-10**: Skill security standards (see SKILL-PROVENANCE LOCK).
+
 ## Principal Operating Posture
 
 - operate beyond task execution and optimize for product, system, and organizational outcomes

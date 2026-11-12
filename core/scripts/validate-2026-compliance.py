@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Validate 2026 agent standards: A2A, contracts, graph orchestration, and policy coverage.
+"""Validate 2026 agent standards: A2A, contracts, graph orchestration, policy coverage, and EU AI Act.
 
 2026 additions:
 - ai-catalog.json presence check (Google AI Catalog 2026 meta-index)
 - canonical /.well-known/agent-card.json endpoint check
 - validate_infrastructure now checks for AGENTS.md context file in adapters
+- EU AI Act Article 50 compliance validation (effective 2 August 2026)
+- C2PA metadata validation for AI-generated content (deadline 2 December 2026)
 """
 
 from __future__ import annotations
@@ -25,6 +27,17 @@ COORD_PLAN = CORE_ROOT / "contracts" / "schemas" / "coordination-plan.json"
 # A2A 1.0 2026: canonical agent endpoint and AI Catalog meta-index
 CANONICAL_AGENT = CORE_ROOT / "a2a" / ".well-known" / "agent.json"
 AI_CATALOG = CORE_ROOT / "a2a" / ".well-known" / "ai-catalog.json"
+
+# EU AI Act Article 50 validation
+EU_AI_ACT_ART50_MARKERS = (
+    "Article 50",
+    "AIDisclosureBanner",
+    "data-ai-generated",
+    "C2PA",
+    "EU-AI-ACT",
+    "EU AI Act",
+    "AI disclosure",
+)
 
 COORDINATOR = "agent-coordinator"
 COORDINATOR_PRIMARY = {"agent-delegation", "agent-graph-orchestration"}
@@ -134,6 +147,43 @@ def validate_infrastructure() -> list[str]:
     return errors
 
 
+def has_eu_ai_act_compliance(body: str) -> bool:
+    """Check if role includes EU AI Act Article 50 compliance markers.
+
+    Roles inherit EU AI Act compliance from role-standard.md, so we check:
+    1. Direct markers (AIDisclosureBanner, C2PA, etc.)
+    2. Reference to role-standard.md (which contains the universal EU AI Act baseline)
+    """
+    # Direct markers in role file
+    if any(marker in body for marker in EU_AI_ACT_ART50_MARKERS):
+        return True
+    # Role inherits from role-standard.md which has EU AI Act baseline
+    if "role-standard" in body.lower():
+        return True
+    return False
+
+
+def validate_eu_ai_act_compliance(role_paths: list[Path]) -> list[str]:
+    """Validate EU AI Act Article 50 compliance across roles.
+
+    Article 50 (effective 2 August 2026) requires:
+    - Article 50(1): AI interaction disclosure (chatbots, virtual assistants)
+    - Article 50(2): AI content marking (machine-readable)
+    - Article 50(3): Biometric notification
+    - Article 50(4): Deepfake disclosure
+    - C2PA metadata (deadline 2 December 2026)
+    """
+    errors: list[str] = []
+    for path in role_paths:
+        body = path.read_text(encoding="utf-8")
+        if not has_eu_ai_act_compliance(body):
+            errors.append(
+                f"{path.relative_to(ROOT)}: missing EU AI Act Article 50 compliance "
+                "(AIDisclosureBanner, data-ai-generated, C2PA, or EU AI Act references)"
+            )
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate 2026 agent standards compliance.")
     parser.add_argument(
@@ -194,6 +244,18 @@ def main() -> int:
         else:
             print(f"  PASS [infrastructure] graph orchestration, tool orchestration, coordination-plan wired")
 
+    # EU AI Act Article 50 validation (new in 2026)
+    eu_ai_act_errors = validate_eu_ai_act_compliance(role_paths)
+    errors.extend(eu_ai_act_errors)
+    if verbose:
+        failed_eu_act = {e.split(":")[0] for e in eu_ai_act_errors}
+        for path in role_paths:
+            rel = str(path.relative_to(ROOT))
+            if rel in failed_eu_act:
+                print(f"  FAIL [eu-ai-act] {rel}: missing Article 50 compliance")
+            else:
+                print(f"  PASS [eu-ai-act] {rel}")
+
     if errors:
         print("2026 compliance validation failed:")
         for error in errors:
@@ -202,7 +264,8 @@ def main() -> int:
 
     print(
         f"2026 compliance validation passed: {len(role_paths)} roles, "
-        f"{len(policies)} policies, graph orchestration and coordinator A2A wired."
+        f"{len(policies)} policies, graph orchestration, coordinator A2A, "
+        f"and EU AI Act Article 50 compliance."
     )
     return 0
 

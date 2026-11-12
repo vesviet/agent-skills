@@ -3,7 +3,7 @@
 > **Document Type:** Master SOTA Research Report & Architectural Gap Analysis  
 > **Target Repository:** `agent-skills` (`d:\myproject\agent-skills`)  
 > **Baseline Codebase:** `v5.7.3` (A2A 1.0 + Antigravity Adapter)  
-> **Target Release:** `v5.8.0` / `v6.0.0` (AAIF A2A v1.0.1+, MCP 2026-07-28 Stateless HTTP, Two-Tier JIT, Prefix-Cache Alignment)  
+> **Target Release:** `v5.9.0` / `v6.0.0` (AAIF A2A v1.0.1+, MCP 2026-07-28 Stateless HTTP, Two-Tier JIT, Prefix-Cache Alignment)  
 > **Author:** `worker_research_m1` (Technical Author & Systems Analyst)  
 > **Date:** November 2026  
 > **Status:** Authoritative / Milestone M1 Deliverable  
@@ -51,7 +51,7 @@ The **2026–2027 SOTA Agent Engineering Standards** resolve these challenges th
 
 The `agent-skills` repository at version **5.7.3** represents an exceptional foundation—featuring 39 roles, 183 skills, 25 workflows, 60 JSON Schema Draft 2020-12 data contracts, and an automated 19-suite test validator achieving 100% exit code 0. However, v5.7.3 operates primarily on an internal adapter layer (Antigravity bindings, monolithic skill pre-loading, line-based output trimming). 
 
-This research report provides the exhaustive technical foundation and empirical gap analysis required to modernize `agent-skills` to **v5.8.0 / v6.0.0**, aligning every role, skill, contract, and adapter with the authoritative 2026–2027 specifications.
+This research report provides the exhaustive technical foundation and empirical gap analysis required to modernize `agent-skills` to **v5.9.0 / v6.0.0**, aligning every role, skill, contract, and adapter with the authoritative 2026–2027 specifications.
 
 ---
 
@@ -647,7 +647,7 @@ To achieve cache hit rates $\ge 85\%$ in multi-turn agent systems, the prompt as
   "system": [
     {
       "type": "text",
-      "text": "You are a principal engineer operating under agent-skills v5.8.0. Core constraints: Fail-closed, minimal footprint, least-agency.",
+      "text": "You are a principal engineer operating under agent-skills v5.9.0. Core constraints: Fail-closed, minimal footprint, least-agency.",
       "cache_control": {
         "type": "ephemeral",
         "ttl": "1h"
@@ -874,7 +874,7 @@ Conforming to `core/contracts/schemas/compact-working-state.json` (Draft 2020-12
 ### 8.2 Algorithmic Mechanics: Progressive Disclosure & JIT Ranking
 
 #### 8.2.1 The Monolithic Tool Saturation Problem
-In `agent-skills` v5.8.0:
+In `agent-skills` v5.9.0:
 - Catalog: **183 skills** across 15 domains.
 - Average full skill payload (`SKILL.md` + schema): $~1,500\text{ tokens}$.
 - Monolithic Injection Footprint: $183 \times 1,500 = \mathbf{274,500\text{ tokens}}$.
@@ -1239,4 +1239,4 @@ To guarantee backward compatibility, operational reliability, and cryptographic 
    - Open Cybersecurity Schema Framework (OCSF): *OCSF Schema v1.3.0 - Class 99001 (Policy Event)*, 2025–2026.
 
 ---
-*End of Master SOTA Research Report — agent-skills v5.8.0 $\rightarrow$ v6.0.0 Modernization*
+*End of Master SOTA Research Report — agent-skills v5.9.0 $\rightarrow$ v6.0.0 Modernization*

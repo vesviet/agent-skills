@@ -127,6 +127,22 @@
       "version": "1.0.0"
     },
     {
+      "name": "implement-ai-disclosure",
+      "description": "Implement EU AI Act Article 50 transparency components — <AIDisclosureBanner>, data-ai-generated attributes, C2PA metadata embedding for AI media, and DOMPurify sanitization for AI-generated content. Use when deploying user-facing AI features, chatbots, generative content, or any system requiring AI disclosure per EU AI Act (effective 2 August 2026, C2PA deadline 2 December 2026).",
+      "allowed-tools": [
+        "read_file",
+        "write_file",
+        "edit_file",
+        "create_file",
+        "search_code",
+        "run_tests",
+        "run_linter",
+        "run_build",
+        "execute_command"
+      ],
+      "version": "1.0.0"
+    },
+    {
       "name": "implement-view-transitions",
       "description": "Implement fluid, native-feeling page and state transitions using CSS View Transitions API, React 19 ViewTransition, Next.js App Router transitions, and shared element morphing without degrading Core Web Vitals. Use when adding route animations, shared element transitions, or layout morphs.",
       "allowed-tools": [

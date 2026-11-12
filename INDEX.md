@@ -1,7 +1,8 @@
 # Agent-Skills Master Index & Router
 
-> **Location:** `core/` & `overlays/` | **Version:** `5.8.0` (A2A 1.0 + Antigravity)
-> **Total Catalog:** **39 Roles** | **183 Skills** (169 Core + 14 Overlays) | **25 Workflows** | **63 Data Contracts**
+> **Location:** `core/` & `overlays/` | **Version:** `5.9.0` (A2A 1.0 + Antigravity)
+> **Total Catalog:** **39 Roles** | **184 Skills** (170 Core + 14 Overlays) | **25 Workflows** | **63 Data Contracts**
+> **Standards:** OWASP ASI01-10 | OWASP AST01-10 | EU AI Act Article 50 | A2A 1.0 | MCP 2026-07-28 | WCAG 2.2 | Core Web Vitals INP
 
 ---
 

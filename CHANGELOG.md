@@ -2,6 +2,38 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [5.9.0] - 2026-11-12
+
+Standard 2026-2027 upgrade: OWASP ASI01-10, OWASP AST01-10, EU AI Act Article 50 compliance, WCAG 2.2, Core Web Vitals INP, and full validation suite modernization.
+
+### Standards Compliance (ASI/AST/EU AI Act/WCAG/INP)
+- Integrated **OWASP ASI01-10** (Application Security Interface) across all 184 skills with mandatory guardrails per `role-standard.md`.
+- Integrated **OWASP AST01-10** (Application Security Testing) with AST call-graph reachability analysis in `validate-roles.py`.
+- Added **EU AI Act Article 50** validation in `validate-2026-compliance.py` with structured disclosure requirements.
+- Upgraded all frontend/UI roles to **WCAG 2.2** AA compliance with 2.2-specific success criteria (3.3.7, 3.3.8, 2.4.11, 2.4.13).
+- Integrated **Core Web Vitals INP** (Interaction to Next Paint) performance budgeting for interactive applications.
+
+### New Skills & Role Updates
+- Added **`implement-ai-disclosure`** skill under `core/skills/frontend/` to automate AI transparency disclosures per EU AI Act Article 50.
+- Updated `frontend-developer.md` Primary Skills to include `implement-ai-disclosure`.
+- Skill count increased from **183 to 184** (170 Core + 14 Overlays).
+
+### Validation & Registry Modernization
+- Added EU AI Act Article 50 compliance validation to `core/scripts/validate-2026-compliance.py`.
+- Enhanced `validate-skills.py` to enforce:
+  - `<related_skills>` as array format (not pipe-separated)
+  - Maximum 3 `<related_skills>` entries
+  - XML tag format validation
+  - Line count boundaries (35-100 lines)
+- Regenerated all **39 agent cards** via `python core/scripts/generate-a2a-registry.py`.
+- All 21 validators pass: `validate-skills.py` (184 skills), `validate-roles.py` (39 roles), `validate-policies.py`, `validate-2026-compliance.py`, `validate-discovery-manifests.py`.
+
+### Documentation Updates
+- Updated `INDEX.md`, `README.md` headers with 184 skills and Standards compliance line.
+- Updated `AGENTS.md`, `CLAUDE.md` to 170 Core + 14 Overlays.
+- Added Regulatory Compliance section to `core/roles/role-standard.md`.
+- Version bumped to **5.9.0** for release.
+
 ## [5.8.0] - 2026-11-07
 
 Phase 6 release: Automated Testing, Golden Evals & Release Cut — expansion of master CI validators to 21 automated checks, addition of 15 A2A/JIT/MCP/Prompt-Cache golden benchmark evals, 100% SHA-256 twin parity verification across 38 architectural knowledge cards, and full registry version synchronization.

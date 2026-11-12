@@ -256,6 +256,7 @@ Contracts owned by other roles — do not author these as Frontend Developer:
 - `component-composition`
 - `frontend-micro-polish`
 - `frontend-testing`
+- `implement-ai-disclosure`
 - `implement-view-transitions`
 - `implement-webmcp`
 - `integrate-api-client`

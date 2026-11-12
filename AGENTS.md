@@ -1,6 +1,18 @@
 # Agent Skills - Global Engineering Pack
 
-This repository contains a reusable, language-agnostic engineering skill pack for software delivery (**39 Roles** | **183 Skills** [169 Core + 14 Overlays] | **25 Workflows** | **63 Data Contract Schemas** | **17 Packs** | **21 Overlays**).
+This repository contains a reusable, language-agnostic engineering skill pack for software delivery (**39 Roles** | **184 Skills** [170 Core + 14 Overlays] | **25 Workflows** | **63 Data Contract Schemas** | **17 Packs** | **21 Overlays**).
+
+## Standard 2026-2027 Compliance
+
+This pack is aligned with the latest standards (as of November 2026):
+
+- **OWASP ASI01-10**: Agentic security standards fully implemented
+- **OWASP AST01-10**: Skill security standards with lethal trifecta validation
+- **EU AI Act Article 50**: Transparency disclosure components (AIDisclosureBanner, C2PA)
+- **A2A Protocol 1.0**: Agent-to-agent communication (Linux Foundation)
+- **MCP 2026-07-28**: Stateless protocol with OAuth 2.1 + PKCE
+- **WCAG 2.2**: New accessibility criteria (2.4.11, 2.5.7, 2.5.8, 3.3.7, 3.3.8)
+- **Core Web Vitals**: INP < 200ms enforcement
 
 ## Mandatory Rules (Always-On)
 
@@ -31,7 +43,7 @@ When the user assigns you a Role, you MUST:
 
 Available roles: `core/roles/README.md`
 
-## A2A 1.0 & Antigravity (pack 5.8.0)
+## A2A 1.0 & Antigravity (pack 5.9.0)
 
 When operating as an AI agent (like **Antigravity**) under this pack, you MUST:
 
@@ -46,7 +58,7 @@ When operating as an AI agent (like **Antigravity**) under this pack, you MUST:
 
 ## Skills
 
-Core skills (169 across 22 categories) are organized under `core/skills/` by taxonomy:
+Core skills (170 across 22 categories) are organized under `core/skills/` by taxonomy:
 
 - `core/skills/agent/`
 - `core/skills/foundation/`
