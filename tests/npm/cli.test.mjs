@@ -87,11 +87,14 @@ test("missing destination is a usage error (exit 2)", async () => {
   await assert.rejects(run(["install"]), (error) => error.code === 2);
 });
 
-function extractJsonArray(text) {
-  const start = text.indexOf("[");
-  if (start < 0) {
-    throw new Error(`No JSON array found in npm pack output: ${text.slice(0, 200)}`);
+function extractTopLevelJson(text) {
+  const match = text.match(/^\s*[\[{]/m);
+  if (!match || match.index === undefined) {
+    throw new Error(`No JSON payload found in npm pack output: ${text.slice(0, 200)}`);
   }
+  const start = text.indexOf(match[0].trimStart(), match.index);
+  const openCh = text[start];
+  const closeCh = openCh === "[" ? "]" : "}";
   let depth = 0;
   let inString = false;
   let escaped = false;
@@ -110,13 +113,13 @@ function extractJsonArray(text) {
       continue;
     }
     if (!inString) {
-      if (ch === "[") depth++;
-      else if (ch === "]" && --depth === 0) {
+      if (ch === openCh) depth++;
+      else if (ch === closeCh && --depth === 0) {
         return text.slice(start, i + 1);
       }
     }
   }
-  throw new Error("Unterminated JSON array in npm pack output");
+  throw new Error("Unterminated JSON payload in npm pack output");
 }
 
 test("npm pack excludes reports directory and scratch artifacts", async () => {
@@ -126,7 +129,9 @@ test("npm pack excludes reports directory and scratch artifacts", async () => {
     ["pack", "--dry-run", "--json", "--ignore-scripts", "--loglevel=silent"],
     { cwd: ROOT, shell: process.platform === "win32", maxBuffer: 10 * 1024 * 1024 }
   );
-  const [packInfo] = JSON.parse(extractJsonArray(stdout));
+  const parsed = JSON.parse(extractTopLevelJson(stdout));
+  const packInfo = Array.isArray(parsed) ? parsed[0] : parsed;
+  assert.ok(packInfo && Array.isArray(packInfo.files), "expected files list in npm pack output");
   const files = packInfo.files.map((f) => f.path);
   assert.ok(!files.some((f) => f.startsWith("reports/")), "reports/ must be cleanly excluded from npm package");
   assert.ok(!files.some((f) => f.startsWith("tests/")), "tests/ must be cleanly excluded from npm package");
