@@ -2,7 +2,7 @@
 duckdb>=1.1.0
 filelock>=4.2.4
 jsonschema>=4.23.0
-pyarrow>=17.0.0
+pyarrow>=26.0.1
 pydantic>=2.14.1
 pre-commit>=4.6.0
 pytest>=9.1.1
