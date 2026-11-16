@@ -682,6 +682,13 @@
       "digest": "sha256:f9e8048d9b2e8437b45b9b0c2fd680820ee457cb25dabfc14a6a93348d694356"
     },
     {
+      "name": "implement-ai-disclosure",
+      "type": "skill-md",
+      "description": "Implement EU AI Act Article 50 transparency components - AIDisclosureBanner, data-ai-generated at...",
+      "url": "core/skills/frontend/implement-ai-disclosure/SKILL.md",
+      "digest": "sha256:2bd9dceb200857b1aaa802b8b4f4b04c558142db527982453c86b4c2fa7b4af5"
+    },
+    {
       "name": "implement-auth",
       "type": "skill-md",
       "description": "Implement secure authentication, OAuth2 PKCE flows, session lifecycles, JWT rotation with Redis r...",

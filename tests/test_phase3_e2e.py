@@ -287,10 +287,10 @@ class TestTier1FeatureCoverage(unittest.TestCase):
         self.assertEqual(len(errors), 0, f"INDEX_TIER1.json failed schema validation: {[e.message for e in errors]}")
 
     def test_t1_r4_manifest_contains_exact_183_skills(self):
-        """R4.4: Verify INDEX_TIER1.json contains exactly 183 skills with unique names."""
+        """R4.4: Verify INDEX_TIER1.json contains exactly 184 skills with unique names."""
         manifest_data = load_json_file(INDEX_TIER1_PATH)
         skills = manifest_data.get("skills", [])
-        self.assertEqual(len(skills), 183, f"Expected 183 skills in manifest, found {len(skills)}")
+        self.assertEqual(len(skills), 184, f"Expected 184 skills in manifest, found {len(skills)}")
 
         names = [s["name"] for s in skills]
         self.assertEqual(len(names), len(set(names)), "Skill names in manifest must be unique (no duplicates)")
@@ -568,7 +568,7 @@ class TestTier3CrossFeatureCombinations(unittest.TestCase):
         self.assertEqual(res_tier1.returncode, 0, f"generate-tier1-index.py --check failed: {res_tier1.stderr}")
 
     def test_t3_skill_catalog_parity_across_index_and_tier1(self):
-        """T3.2: Verify complete 183 skill catalog parity between INDEX_TIER1.json and role-skill-index.json."""
+        """T3.2: Verify complete 184 skill catalog parity between INDEX_TIER1.json and role-skill-index.json."""
         tier1_data = load_json_file(INDEX_TIER1_PATH)
         role_skill_data = load_json_file(ROLE_SKILL_INDEX_PATH)
 
@@ -580,7 +580,7 @@ class TestTier3CrossFeatureCombinations(unittest.TestCase):
 
         self.assertEqual(len(missing_in_tier1), 0, f"Skills missing in INDEX_TIER1.json: {missing_in_tier1}")
         self.assertEqual(len(extra_in_tier1), 0, f"Unexpected extra skills in INDEX_TIER1.json: {extra_in_tier1}")
-        self.assertEqual(len(tier1_skills), 183, "Catalog must contain exactly 183 skills")
+        self.assertEqual(len(tier1_skills), 184, "Catalog must contain exactly 184 skills")
 
     def test_t3_ast02_live_disk_sha256_digest_verification(self):
         """T3.3: Verify live SKILL.md assets on disk match recorded digests in INDEX_TIER1.json (AST02 supply chain)."""

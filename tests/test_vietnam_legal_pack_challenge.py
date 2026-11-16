@@ -710,6 +710,7 @@ class TestVietnamLegalRegistryConsistency:
         # Strip bold asterisks for uniform matching
         stripped = content.replace("**", "")
         expected_headers = [
+            "Total Catalog: 39 Roles | 184 Skills (170 Core + 14 Overlays) | 25 Workflows | 63 Data Contracts",
             "Total Catalog: 39 Roles | 183 Skills (169 Core + 14 Overlays) | 25 Workflows | 63 Data Contracts",
             "Total Catalog: 39 Roles | 183 Skills (168 Core + 15 Overlays) | 25 Workflows | 63 Data Contracts",
             "Total Catalog: 39 Roles | 184 Skills (169 Core + 15 Overlays) | 25 Workflows | 63 Data Contracts",

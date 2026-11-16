@@ -2,7 +2,6 @@
 
 > **Location:** `core/` & `overlays/` | **Version:** `5.9.0` (A2A 1.0 + Antigravity)
 > **Total Catalog:** **39 Roles** | **184 Skills** (170 Core + 14 Overlays) | **25 Workflows** | **63 Data Contracts**
-> **Standards:** OWASP ASI01-10 | OWASP AST01-10 | EU AI Act Article 50 | A2A 1.0 | MCP 2026-07-28 | WCAG 2.2 | Core Web Vitals INP
 
 ---
 
@@ -51,7 +50,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@data-engineer`** | Data Engineer | `@de`, `@data-eng` | `build-data-pipeline`, `database-maintenance`, `create-migration` *(+1 more)* | [`core/roles/data-engineer.md`](./core/roles/data-engineer.md) |
 | **`@devops-engineer`** | DevOps Engineer | `@devops`, `@infra`, `@infrastructure` | `setup-deployment`, `deploy-aws-eks-workloads`, `debug-runtime-platform` *(+5 more)* | [`core/roles/devops-engineer.md`](./core/roles/devops-engineer.md) |
 | **`@ecommerce-engineer`** | Ecommerce Engineer | `@ecommerce`, `@ecom` | `integrate-payment-gateway`, `handle-checkout-flow`, `manage-product-catalog` *(+2 more)* | [`core/roles/ecommerce-engineer.md`](./core/roles/ecommerce-engineer.md) |
-| **`@frontend-developer`** | Frontend Developer | `@frontend`, `@fe`, `@frontend-dev`, `@ui-developer` | `accessibility-review`, `add-page-route`, `add-ui-component` *(+12 more)* | [`core/roles/frontend-developer.md`](./core/roles/frontend-developer.md) |
+| **`@frontend-developer`** | Frontend Developer | `@frontend`, `@fe`, `@frontend-dev`, `@ui-developer` | `accessibility-review`, `add-page-route`, `add-ui-component` *(+13 more)* | [`core/roles/frontend-developer.md`](./core/roles/frontend-developer.md) |
 | **`@game-developer`** | Game Developer | `@game-dev`, `@gamedev`, `@game`, `@game-engineer`, `@gameplay-engineer` | `integrate-game-engine`, `develop-gameplay-systems`, `architect-ecs-systems` *(+17 more)* | [`core/roles/game-developer.md`](./core/roles/game-developer.md) |
 | **`@mmo-engineer`** | MMO Engineer | `@mmo`, `@affiliate`, `@growth`, `@growth-lead`, `@growth-engineer`, `@media-buyer`, `@affiliate-marketer` | `deploy-mmo-infrastructure`, `setup-tracking-system`, `create-automation-script` *(+4 more)* | [`core/roles/mmo-engineer.md`](./core/roles/mmo-engineer.md) |
 | **`@mobile-engineer`** | Mobile Engineer | `@mobile`, `@flutter`, `@react-native` | `develop-mobile-app`, `deploy-mobile-app`, `add-ui-component` *(+6 more)* | [`core/roles/mobile-engineer.md`](./core/roles/mobile-engineer.md) |
@@ -79,7 +78,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 
 ---
 
-## 🛠️ Skill Directory (183 Skills)
+## 🛠️ Skill Directory (184 Skills)
 
 ### Category: `agent` (24 skills)
 
@@ -214,7 +213,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@write-product-brief`** | Write or refine a product brief that makes user value, business outcome, preserved behavior, affecte... | [`core/skills/foundation/write-product-brief/SKILL.md`](./core/skills/foundation/write-product-brief/SKILL.md) |
 | **`@write-tests`** | Add or update tests by following repo-local test conventions, choosing the right test scope, isolati... | [`core/skills/foundation/write-tests/SKILL.md`](./core/skills/foundation/write-tests/SKILL.md) |
 
-### Category: `frontend` (16 skills)
+### Category: `frontend` (17 skills)
 
 | Skill Slug | Description | File |
 |:---|:---|:---|
@@ -226,6 +225,7 @@ When you mention `@<role>` and/or `@<skill>` in chat, Antigravity resolves them 
 | **`@design-system-engineering`** | Use when engineering design token architectures, calculating concentric border radii, establishing p... | [`core/skills/frontend/design-system-engineering/SKILL.md`](./core/skills/frontend/design-system-engineering/SKILL.md) |
 | **`@frontend-micro-polish`** | Use when applying micro-typographic polish, optical padding compensations, mobile input zoom guards,... | [`core/skills/frontend/frontend-micro-polish/SKILL.md`](./core/skills/frontend/frontend-micro-polish/SKILL.md) |
 | **`@frontend-testing`** | Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, an... | [`core/skills/frontend/frontend-testing/SKILL.md`](./core/skills/frontend/frontend-testing/SKILL.md) |
+| **`@implement-ai-disclosure`** | Implement EU AI Act Article 50 transparency components - AIDisclosureBanner, data-ai-generated attri... | [`core/skills/frontend/implement-ai-disclosure/SKILL.md`](./core/skills/frontend/implement-ai-disclosure/SKILL.md) |
 | **`@implement-view-transitions`** | Implement fluid, native-feeling page and state transitions using CSS View Transitions API, React 19 ... | [`core/skills/frontend/implement-view-transitions/SKILL.md`](./core/skills/frontend/implement-view-transitions/SKILL.md) |
 | **`@implement-webmcp`** | Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when enabli... | [`core/skills/frontend/implement-webmcp/SKILL.md`](./core/skills/frontend/implement-webmcp/SKILL.md) |
 | **`@integrate-api-client`** | Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handling... | [`core/skills/frontend/integrate-api-client/SKILL.md`](./core/skills/frontend/integrate-api-client/SKILL.md) |

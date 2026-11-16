@@ -94,6 +94,10 @@ const sanitized = DOMPurify.sanitize(aiOutput);
 - [ ] C2PA planned for media (Dec 2026)
 - [ ] Compliance documented
 
+## Output Contracts
+
+- **`contracts/schemas/implementation-result.json`** — Emit implementation summary, touched files, and verification evidence when delivering Article 50 disclosure components across roles.
+
 ## Failure Modes
 
 - Missing disclosure: Add CI/CD gate, verify before release
@@ -110,3 +114,5 @@ const sanitized = DOMPurify.sanitize(aiOutput);
 - **accessibility-review**: Verify banner accessibility
 - **implement-schema-markup**: Structured metadata for SEO
 - **design-ux-flow**: User experience around disclosure
+
+Last updated: 2026-11-16

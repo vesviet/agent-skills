@@ -388,7 +388,7 @@ class TestTier1FeatureCoverage(unittest.TestCase):
         content = skills_readme.read_text(encoding="utf-8")
 
         self.assertTrue(any(s in content for s in ["182 total", "183 total", "184 total"]))
-        self.assertTrue(any(s in content for s in ["167 portable core", "168 portable core", "169 portable core"]))
+        self.assertTrue(any(s in content for s in ["167 portable core", "168 portable core", "169 portable core", "170 portable core"]))
         self.assertIn("memory-hygiene", content)
 
     def test_t1_f5_dms_bundle_and_memory_sync(self):
@@ -726,8 +726,8 @@ class TestTier3CrossFeatureCombinations(unittest.TestCase):
         for doc_path in [index_doc, sync_doc]:
             if doc_path.is_file():
                 content = doc_path.read_text(encoding="utf-8")
-                self.assertTrue(any(v in content for v in ["5.4.0", "5.5.0", "5.6.0", "5.6.1", "5.7.0", "5.7.1", "5.7.2", "5.7.3", "5.8.0"]))
-                self.assertIn("182 skills", content)
+                self.assertTrue(any(v in content for v in ["5.4.0", "5.5.0", "5.6.0", "5.6.1", "5.7.0", "5.7.1", "5.7.2", "5.7.3", "5.8.0", "5.9.0"]))
+                self.assertTrue(any(s in content for s in ["182 skills", "183 skills", "184 skills"]))
                 self.assertTrue(any(c in content for c in ["59 contracts", "60 contracts", "60 data contracts", "63 contracts", "63 data contracts"]))
 
     def test_t3_dms_memory_pruner_audit_validates(self):

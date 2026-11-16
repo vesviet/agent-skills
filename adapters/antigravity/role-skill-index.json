@@ -1,10 +1,10 @@
 {
-  "version": "5.8.0",
+  "version": "5.9.0",
   "protocol": "A2A 1.0 + Antigravity",
   "root": ".",
   "stats": {
     "roles": 39,
-    "skills": 183,
+    "skills": 184,
     "workflows": 25,
     "schemas": 63
   },
@@ -2090,6 +2090,7 @@
         "component-composition",
         "frontend-micro-polish",
         "frontend-testing",
+        "implement-ai-disclosure",
         "implement-view-transitions",
         "implement-webmcp",
         "integrate-api-client",
@@ -2118,6 +2119,7 @@
         "component-composition",
         "frontend-micro-polish",
         "frontend-testing",
+        "implement-ai-disclosure",
         "implement-view-transitions",
         "implement-webmcp",
         "integrate-api-client",
@@ -3043,7 +3045,7 @@
     "vietnam-accounting-specialist": {
       "name": "vietnam-accounting-specialist",
       "title": "Vietnam Accounting Specialist",
-      "description": "govern Vietnam accounting-domain interpretation, evidence review, reconciliations, period-close controls, e-invoice data readiness, and retention classification so software, operations, and reporting workflows preserve a traceable accounting record without confusing accounting review with tax advice, legal advice, audit assurance, or authority to execute filings. In 2026-2027, this includes applying versioned Vietnam accounting regimes (Circular 200/2014, Circular 133/2016, Circular 132/2018), governing the VFRS roadmap (Decision 345/QD-BTC), enforcing e-invoice XML compliance (Decree 123/2020, Circular 78/2021, Decision 1450/QD-TCT), executing deterministic 3-way matching, monitoring Decree 132 related-party net interest caps, orchestrating Period-End Closing, and maintaining immutable WORM audit trails with human approval gates.",
+      "description": "govern Vietnam accounting-domain interpretation, evidence review, reconciliations, period-close controls, e-invoice data readiness, and retention classification so software, operations, and reporting workflows preserve a traceable accounting record without confusing accounting review with tax advice, legal advice, audit assurance, or authority to execute filings. In 2026-2027, this includes applying versioned Vietnam accounting regimes (Circular 200/2014, Circular 133/2016, **Circular 99/2025/TT-BTC (effective 01/01/2026), Circular 58/2026/TT-BTC (effective 01/07/2026)**), governing the VFRS roadmap (Decision 345/QD-BTC), enforcing e-invoice XML compliance (**Decree 254/2026/NĐ-CP, Circular 32/2025/TT-BTC, Decision 1450/QĐ-TCT**), executing deterministic 3-way matching, monitoring Decree 132 related-party net interest caps, orchestrating Period-End Closing, and maintaining immutable WORM audit trails with human approval gates.",
       "file": "core/roles/vietnam-accounting-specialist.md",
       "skills": [
         "manage-vietnam-accounting",
@@ -3699,6 +3701,13 @@
       "type": "core",
       "file": "core/skills/frontend/frontend-testing/SKILL.md",
       "description": "Add or improve frontend test coverage by choosing the right UI test scope, reusing local tooling, and validating rendering, interaction, accessibility, and network-driven states. Use when frontend behavior needs regression coverage or UI release confidence."
+    },
+    "implement-ai-disclosure": {
+      "name": "implement-ai-disclosure",
+      "category": "frontend",
+      "type": "core",
+      "file": "core/skills/frontend/implement-ai-disclosure/SKILL.md",
+      "description": "Implement EU AI Act Article 50 transparency components - AIDisclosureBanner, data-ai-generated attributes, C2PA metadata embedding for AI media, and DOMPurify sanitization. Use when deploying user-facing AI features, chatbots, generative content requiring EU AI Act compliance (effective 2 August 2026)."
     },
     "implement-view-transitions": {
       "name": "implement-view-transitions",

@@ -2,7 +2,7 @@
 
 This directory contains the **portable core** skill inventory for the global engineering pack.
 
-**Counts:** 169 portable core skills under `core/skills/` + 14 overlay skills under `overlays/*/skills/` = **183 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
+**Counts:** 170 portable core skills under `core/skills/` + 14 overlay skills under `overlays/*/skills/` = **184 total** (run `validate-skills.py` for the live total, and `validate-indexes.py` to confirm this line matches disk).
 
 ## Taxonomy
 
@@ -140,7 +140,7 @@ MMO/growth-ops skills with compliance notices; each maps to `REVIEW-SYSTEM LOCK`
 - `optimize-postgres`
 - `scaffold-new-service`
 
-### Frontend (16)
+### Frontend (17)
 
 - `add-page-route`
 - `add-ui-component`
@@ -149,6 +149,7 @@ MMO/growth-ops skills with compliance notices; each maps to `REVIEW-SYSTEM LOCK`
 - `design-system-engineering`
 - `frontend-micro-polish`
 - `frontend-testing`
+- `implement-ai-disclosure`
 - `implement-view-transitions`
 - `implement-webmcp`
 - `integrate-api-client`

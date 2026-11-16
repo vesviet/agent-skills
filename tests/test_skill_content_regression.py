@@ -53,11 +53,11 @@ class TestSkillContentRegression(unittest.TestCase):
         cls.skill_names = {s.parent.name for s in cls.skill_files}
 
     def test_01_core_skills_inventory_count(self):
-        """Must discover exactly 169 core skills across 22 categories."""
+        """Must discover exactly 170 core skills across 22 categories."""
         self.assertEqual(
             len(self.skill_files),
-            169,
-            f"Expected exactly 169 core skills, discovered {len(self.skill_files)}",
+            170,
+            f"Expected exactly 170 core skills, discovered {len(self.skill_files)}",
         )
 
     def test_02_valid_yaml_frontmatter(self):
