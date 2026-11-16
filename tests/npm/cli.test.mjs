@@ -130,7 +130,11 @@ test("npm pack excludes reports directory and scratch artifacts", async () => {
     { cwd: ROOT, shell: process.platform === "win32", maxBuffer: 10 * 1024 * 1024 }
   );
   const parsed = JSON.parse(extractTopLevelJson(stdout));
-  const packInfo = Array.isArray(parsed) ? parsed[0] : parsed;
+  const packInfo = Array.isArray(parsed)
+    ? parsed[0]
+    : Array.isArray(parsed?.files)
+      ? parsed
+      : parsed?.[pkg.name] ?? Object.values(parsed ?? {}).find((v) => v && Array.isArray(v.files));
   assert.ok(packInfo && Array.isArray(packInfo.files), "expected files list in npm pack output");
   const files = packInfo.files.map((f) => f.path);
   assert.ok(!files.some((f) => f.startsWith("reports/")), "reports/ must be cleanly excluded from npm package");
