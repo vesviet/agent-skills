@@ -31,7 +31,7 @@ This role must follow [role-standard](role-standard.md) first.
 
 ### Accounting Regime And VFRS Dual-Reporting Governance
 
-- determine candidate accounting regime from entity legal form, size criteria, accounting period, and internal policy: **Circular 200/2014 (standard enterprises), Circular 133/2016 (SMEs), Circular 99/2025/TT-BTC (effective 01/01/2026, replaces Circular 200 for enterprises), Circular 58/2026/TT-BTC (effective 01/07/2026, micro-enterprises), or Circular 132/2018 (non-profit organizations)**
+- determine candidate accounting regime from entity legal form, size criteria, accounting period, and internal policy: **Circular 200/2014 (standard enterprises, historical/comparative periods), Circular 133/2016 (SMEs), Circular 99/2025/TT-BTC (effective 01/01/2026, replaces Circular 200 for enterprises), Circular 58/2026/TT-BTC (effective 01/07/2026, replaces Circular 132/2018 for micro-enterprises), or Circular 132/2018 (legacy micro-enterprises prior to 01/07/2026)**
 - maintain a source-version register for every material accounting conclusion: official legal citation, effective date, relevant amendments, and verification status
 - enforce Chart of Accounts integrity: standard 4-digit accounts under Circular 200; **Circular 99/2025: 71 Level-1 accounts (removed TK 142, 144, 223; added TK 215, 2295, 2414, 332, 82112; TK 242 renamed "Chi phí chờ phân bổ" merging TK 142 content);** simplified 3-digit accounts under Circular 133 with strict prohibition of TK 621, 622, 623, 627, and 641
 - govern the Decision 345/QD-BTC VFRS transition dual-reporting architecture: preserve statutory VAS books while executing deterministic reconciliation adjustments for IFRS 16 (leases), IFRS 9 (ECL), and IFRS 15 (revenue)

@@ -2,6 +2,29 @@
 
 All notable changes to the agent-skills engineering pack.
 
+## [5.10.0] - 2026-11-16
+
+ECC v2.2.3 runtime hooks & memory vault, `mattpocock/skills` v1.3.2 engineering heuristics, and Vietnam Accounting 2025–2026 statutory alignment.
+
+### Runtime Hooks, Policy Enforcement & Memory Vault (ECC v2.2.3)
+- Added runtime hook profiles (`minimal`, `standard`, `strict`) via `AGENT_HOOK_PROFILE` and selective bypass via `AGENT_DISABLED_HOOKS` in `core/scripts/hooks/check-policy.py`, `adapters/claude/settings.template.json`, and `adapters/cursor/hooks.template.json`.
+- Enforced config-protection rules (blocking mutations to ESLint, Prettier, Biome, Ruff, Stylelint, Markdownlint, and ShellCheck configs with quote-aware shell target parsing) and git hook bypass protection (`--no-verify`, `-n`, clustered flags `-anm`/`-snm`/`-vnm`, `core.hooksPath`) in `check-policy.py`, `action-boundaries.yaml`, and `mcp-tool-map.yaml`.
+- Made `check_git_clean()` fail-closed in `strict` profile when `git status` errors or times out.
+- Added strategic context compaction hook `core/scripts/hooks/suggest-compact.py` with threshold/interval tracking and rate-limited `AGENT_CONTEXT_TOKENS` advisories.
+- Added unreviewed memory vault CLI `core/scripts/manage-memory-vault.py` (`init`, `save`, `search`, `read`, `doctor`) and `agent-memory-vault-spec.md` with fail-closed `.gitignore`, strict `trust: "unreviewed"` invariant, secret/high-entropy scanning, OWASP ASI06 prompt-injection screening, and validated document IDs against traversal/glob injection.
+- Added lightweight context profiles under `core/prompts/contexts/` (`dev.md`, `research.md`, `review.md`).
+
+### Engineering Craftsmanship Heuristics (`mattpocock/skills` v1.3.2)
+- Enriched core skills and roles with Ousterhout Deep Modules / Two-Adapter Rule / Deletion Test (`scaffold-new-service`, `technical-architect.md`, `references/deep-modules-and-seams.md`), two-axis code review + 12 Fowler smells (`review-code`), tight feedback-loop debugging (`systematic-debugging`), tracer-bullet DAG slicing (`plan-technical-delivery`, `build-story-map`), Socratic decision-tree grilling (`elicit-requirements`, `discernment-nudge`), and interactive HITL bash wizard (`setup-deployment`, `references/interactive-hitl-wizard.md`).
+- Added comparative technical report `reports/mattpocock-skills-research.md`.
+
+### Vietnam Accounting 2025–2026 Statutory Sync
+- Updated `vietnam-accounting-specialist.md`, `vietnam-accounting-specialist-review-checklist.md`, and `manage-vietnam-accounting/SKILL.md` for Circular 99/2025/TT-BTC (effective 01/01/2026, 71 Level-1 accounts), Circular 58/2026/TT-BTC (effective 01/07/2026 replacing Circular 132/2018 for micro-enterprises), Decree 254/2026/NĐ-CP & Circular 32/2025/TT-BTC, VAT Law 48/2024 ($\ge$ 5M VND non-cash payment threshold from 01/07/2025), and Decree 236/2025 (15% Global Minimum Tax, TK 82112).
+
+### Testing & Registry Synchronization
+- Added `tests/test_ecc_integration_m1.py` (43 tests covering hook profiles, config/bypass defense, strategic compact, memory vault anti-poisoning, and craftsmanship heuristics).
+- Synchronized `INDEX.md`, `INDEX_TIER1.json`, `role-skill-index.json`, `agent-registry.json`, all 39 agent cards, and adapters to **5.10.0**.
+
 ## [5.9.0] - 2026-11-12
 
 Standard 2026-2027 upgrade: OWASP ASI01-10, OWASP AST01-10, EU AI Act Article 50 compliance, WCAG 2.2, Core Web Vitals INP, and full validation suite modernization.

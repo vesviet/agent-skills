@@ -726,7 +726,7 @@ class TestTier3CrossFeatureCombinations(unittest.TestCase):
         for doc_path in [index_doc, sync_doc]:
             if doc_path.is_file():
                 content = doc_path.read_text(encoding="utf-8")
-                self.assertTrue(any(v in content for v in ["5.4.0", "5.5.0", "5.6.0", "5.6.1", "5.7.0", "5.7.1", "5.7.2", "5.7.3", "5.8.0", "5.9.0"]))
+                self.assertTrue(any(v in content for v in ["5.4.0", "5.5.0", "5.6.0", "5.6.1", "5.7.0", "5.7.1", "5.7.2", "5.7.3", "5.8.0", "5.9.0", "5.10.0"]))
                 self.assertTrue(any(s in content for s in ["182 skills", "183 skills", "184 skills"]))
                 self.assertTrue(any(c in content for c in ["59 contracts", "60 contracts", "60 data contracts", "63 contracts", "63 data contracts"]))
 

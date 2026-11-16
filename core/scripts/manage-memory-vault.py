@@ -64,7 +64,10 @@ INJECTION_PATTERNS = [
     re.compile(r"<\s*\|\s*im_end\s*\|>", re.IGNORECASE),
     re.compile(r"IGNORE\s+(ALL\s+)?PREVIOUS\s+(INSTRUCTIONS|PROMPTS|RULES)", re.IGNORECASE),
     re.compile(r"DISREGARD\s+(ALL\s+)?PRIOR\s+RULES", re.IGNORECASE),
-    re.compile(r"YOU\s+ARE\s+NOW\s+(A\s+|AN\s+)?", re.IGNORECASE),
+    re.compile(
+        r"YOU\s+ARE\s+NOW\s+(?:AN?\s+(?:UNRESTRICTED|JAILBROKEN|DIFFERENT|NEW)\b|ACTING\s+AS\b|IN\s+DEVELOPER\s+MODE\b|DAN\b)",
+        re.IGNORECASE,
+    ),
     re.compile(r"SYSTEM\s+PROMPT\s+OVERRIDE", re.IGNORECASE),
     re.compile(r"NEW\s+ROLE\s+ASSIGNMENT", re.IGNORECASE),
     re.compile(r"BYPASS\s+SAFETY\s+GUARDRAIL", re.IGNORECASE),
@@ -351,6 +354,7 @@ def cmd_save(args: argparse.Namespace) -> int:
         tmp_file.write_text(doc_text, encoding="utf-8")
         tmp_file.replace(dest_file)
     except Exception as exc:
+        tmp_file.unlink(missing_ok=True)
         print(f"ERROR writing memory file: {exc}", file=sys.stderr)
         return 1
 
@@ -439,6 +443,12 @@ def cmd_read(args: argparse.Namespace) -> int:
     if not doc_id:
         print("ERROR: Memory document ID is required.", file=sys.stderr)
         return 1
+    if not re.fullmatch(r"[A-Za-z0-9_-]+", doc_id):
+        print(
+            f"ERROR: Invalid memory document ID '{doc_id}'. Only alphanumeric characters, '-', and '_' are allowed.",
+            file=sys.stderr,
+        )
+        return 1
 
     vault_root = resolve_vault_root(args.vault_root)
     scopes = [args.scope] if args.scope != "all" else list(VALID_SCOPES)
@@ -448,12 +458,14 @@ def cmd_read(args: argparse.Namespace) -> int:
         scope_dir = resolve_scope_dir(vault_root, scope)
         if not scope_dir.is_dir():
             continue
-        # Direct check
-        for md_file in scope_dir.glob(f"*/*{doc_id}*.md"):
+        scope_resolved = scope_dir.resolve()
+        # Exact filename match within scope subdirectories, verified against traversal
+        for md_file in scope_dir.glob(f"*/{doc_id}.md"):
             if md_file.name.startswith("."):
                 continue
-            target_file = md_file
-            break
+            if md_file.resolve().is_relative_to(scope_resolved):
+                target_file = md_file
+                break
         if target_file:
             break
 

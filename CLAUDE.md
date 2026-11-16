@@ -1,6 +1,6 @@
 # Agent Skills — Global Engineering Pack (Claude Code)
 
-Pack version: **5.9.0** | Protocol: **A2A 1.0** | Adapter: `adapters/claude/`
+Pack version: **5.10.0** | Protocol: **A2A 1.0** | Adapter: `adapters/claude/`
 
 This repository contains a reusable, language-agnostic engineering skill pack for software delivery (**39 Roles** | **184 Skills** [170 Core + 14 Overlays] | **25 Workflows** | **63 Data Contract Schemas** | **17 Packs** | **21 Overlays**).
 

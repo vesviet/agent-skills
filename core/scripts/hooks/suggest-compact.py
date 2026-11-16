@@ -135,17 +135,22 @@ def check_and_increment(
         )
         state["last_advised_count"] = count
 
-    # Context pressure signal check if AGENT_CONTEXT_TOKENS is set
+    # Context pressure signal check if AGENT_CONTEXT_TOKENS is set (rate-limited)
     ctx_tokens_str = os.environ.get("AGENT_CONTEXT_TOKENS")
     if ctx_tokens_str and not advisory:
         try:
             tokens = int(ctx_tokens_str)
             token_threshold = int(os.environ.get("COMPACT_CONTEXT_THRESHOLD", "160000"))
-            if tokens >= token_threshold:
+            last_token_adv = int(state.get("last_advised_tokens_count", 0))
+            should_advise_tokens = last_token_adv == 0 or (
+                interval > 0 and (count - last_token_adv) >= interval
+            )
+            if tokens >= token_threshold and should_advise_tokens:
                 advisory = (
                     f"[STRATEGIC-COMPACT] Context pressure ~{tokens // 1000}k tokens reached.\n"
                     "Consider persisting working state to compact-working-state.json and running /compact."
                 )
+                state["last_advised_tokens_count"] = count
         except ValueError:
             pass
 

@@ -647,7 +647,7 @@ To achieve cache hit rates $\ge 85\%$ in multi-turn agent systems, the prompt as
   "system": [
     {
       "type": "text",
-      "text": "You are a principal engineer operating under agent-skills v5.9.0. Core constraints: Fail-closed, minimal footprint, least-agency.",
+      "text": "You are a principal engineer operating under agent-skills v5.10.0. Core constraints: Fail-closed, minimal footprint, least-agency.",
       "cache_control": {
         "type": "ephemeral",
         "ttl": "1h"
@@ -1239,4 +1239,4 @@ To guarantee backward compatibility, operational reliability, and cryptographic 
    - Open Cybersecurity Schema Framework (OCSF): *OCSF Schema v1.3.0 - Class 99001 (Policy Event)*, 2025–2026.
 
 ---
-*End of Master SOTA Research Report — agent-skills v5.9.0 $\rightarrow$ v6.0.0 Modernization*
+*End of Master SOTA Research Report — agent-skills v5.10.0 $\rightarrow$ v6.0.0 Modernization*

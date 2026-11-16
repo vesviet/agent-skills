@@ -429,37 +429,86 @@ def is_lethal_operation(action: str, command: str) -> bool:
     return False
 
 
+def _tokenize_shell_segment(segment: str) -> list[str]:
+    """Tokenize a shell command segment, stripping surrounding quotes safely."""
+    spaced = re.sub(r"(>>?)", r" \1 ", segment)
+    try:
+        return shlex.split(spaced)
+    except Exception:
+        return [tok.strip("\"'") for tok in spaced.split() if tok.strip("\"'")]
+
+
 def check_config_protection(tool: str, command: str, file_path: str = "") -> str | None:
     """Return the name of the protected config file being modified, or None."""
-    candidates: list[str] = []
-    if file_path:
-        candidates.append(Path(file_path).name)
-
-    if command:
-        for token in re.split(r"[\s>=<|;&]+", command):
-            if token:
-                name = Path(token).name
-                candidates.append(name)
-
     protected_lookup = {f.lower(): f for f in PROTECTED_CONFIG_BASENAMES}
     tool_lower = (tool or "").lower()
-    cmd_lower = (command or "").lower()
-    is_mutation = tool_lower in {
-        "write", "write_file", "edit_file", "delete_file", "create_file", "modify_file"
-    } or any(p in cmd_lower for p in (
-        "rm ", "rm -", "del ", "del/", ">", "sed ", "echo ", "cat >", "tee ", "truncate", "unlink",
-        "cp ", "cp -", "mv ", "mv -",
-    )) or bool(
-        re.search(r"\b(cp|mv|rm|truncate|unlink)\b", cmd_lower)
-        or re.search(r"\bcurl\b.*(?:\s-o\b|\s-O\b|\s--output\b)", cmd_lower, re.IGNORECASE)
-        or re.search(r"\bwget\b.*(?:\s-o\b|\s--output-document\b)", cmd_lower, re.IGNORECASE)
-    )
 
-    for candidate in candidates:
-        cand_lower = candidate.lower()
-        if cand_lower in protected_lookup:
-            if is_mutation or tool_lower in {"write", "write_file", "edit_file", "delete_file"}:
-                return protected_lookup[cand_lower]
+    if file_path and tool_lower in {
+        "write", "write_file", "edit_file", "delete_file", "create_file", "modify_file"
+    }:
+        cand = Path(file_path).name.lower()
+        if cand in protected_lookup:
+            return protected_lookup[cand]
+
+    if not command:
+        return None
+
+    mutating_cmds = {"rm", "del", "mv", "cp", "sed", "truncate", "unlink"}
+    for segment in re.split(r"(?:&&|\|\||[;|])", command):
+        tokens = _tokenize_shell_segment(segment)
+        if not tokens:
+            continue
+        cmd_idx = 0
+        while cmd_idx < len(tokens) and (
+            "=" in tokens[cmd_idx]
+            or Path(tokens[cmd_idx]).name.lower() in {"env", "sudo", "command"}
+        ):
+            cmd_idx += 1
+        cmd_name = Path(tokens[cmd_idx]).name.lower() if cmd_idx < len(tokens) else ""
+
+        # 1. Explicit output redirection targets (> file, >> file, >file)
+        for idx, tok in enumerate(tokens):
+            if tok in {">", ">>", "1>", "1>>"} and idx + 1 < len(tokens):
+                target = Path(tokens[idx + 1]).name.lower()
+                if target in protected_lookup:
+                    return protected_lookup[target]
+            elif tok.startswith((">", ">>")) and len(tok) > 1:
+                target = Path(tok.lstrip(">")).name.lower()
+                if target in protected_lookup:
+                    return protected_lookup[target]
+
+        # 2. tee writes directly to all non-flag file arguments
+        if cmd_name == "tee":
+            for tok in tokens[1:]:
+                if not tok.startswith("-"):
+                    target = Path(tok).name.lower()
+                    if target in protected_lookup:
+                        return protected_lookup[target]
+
+        # 3. curl / wget explicit output flags
+        if cmd_name in {"curl", "wget"}:
+            expect_target = False
+            for tok in tokens[1:]:
+                if expect_target:
+                    target = Path(tok).name.lower()
+                    if target in protected_lookup:
+                        return protected_lookup[target]
+                    expect_target = False
+                    continue
+                if tok in {"-o", "-O", "--output", "--output-document"}:
+                    expect_target = True
+                elif tok.startswith(("--output=", "--output-document=")):
+                    target = Path(tok.split("=", 1)[1]).name.lower()
+                    if target in protected_lookup:
+                        return protected_lookup[target]
+
+        # 4. File-mutating commands referencing a protected config
+        if cmd_name in mutating_cmds:
+            for tok in tokens[1:]:
+                target = Path(tok).name.lower()
+                if target in protected_lookup:
+                    return protected_lookup[target]
+
     return None
 
 
@@ -542,7 +591,7 @@ def check_doc_warning(file_path: str, command: str) -> str | None:
 
 
 def check_git_clean() -> bool:
-    """Return True if git working tree is clean, False otherwise."""
+    """Return True if git working tree is clean, False otherwise (fail-closed)."""
     try:
         proc = subprocess.run(
             ["git", "status", "--porcelain"],
@@ -553,7 +602,7 @@ def check_git_clean() -> bool:
         )
         return proc.returncode == 0 and len(proc.stdout.strip()) == 0
     except Exception:
-        return True
+        return False
 
 
 def resolve_rule_id(role: str, action: str, level_modifier: str, rule_override: str = "") -> str:

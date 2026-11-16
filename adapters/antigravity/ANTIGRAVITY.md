@@ -2,7 +2,7 @@
 
 Use this adapter when running **Google Antigravity IDE v2.5.5+** (or Antigravity-compatible IDEs) with the agent-skills engineering pack.
 
-> **Master Discovery**: **39 Roles** | **183 Skills** (169 Core + 14 Overlays) | **25 Workflows** | **63 Data Contract Schemas**  
+> **Master Discovery**: **39 Roles** | **184 Skills** (170 Core + 14 Overlays) | **25 Workflows** | **63 Data Contract Schemas**  
 > **Antigravity Registry**: [`adapters/antigravity/role-skill-index.json`](role-skill-index.json)  
 > **Master Index & Router**: [`../../INDEX.md`](../../INDEX.md)  
 > **Authoritative SOTA Audit**: [`../../reports/agent-skills-round-2-audit-report.md`](../../reports/agent-skills-round-2-audit-report.md)
