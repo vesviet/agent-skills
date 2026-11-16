@@ -87,11 +87,46 @@ test("missing destination is a usage error (exit 2)", async () => {
   await assert.rejects(run(["install"]), (error) => error.code === 2);
 });
 
+function extractJsonArray(text) {
+  const start = text.indexOf("[");
+  if (start < 0) {
+    throw new Error(`No JSON array found in npm pack output: ${text.slice(0, 200)}`);
+  }
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  for (let i = start; i < text.length; i++) {
+    const ch = text[i];
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+    if (ch === "\\" && inString) {
+      escaped = true;
+      continue;
+    }
+    if (ch === '"') {
+      inString = !inString;
+      continue;
+    }
+    if (!inString) {
+      if (ch === "[") depth++;
+      else if (ch === "]" && --depth === 0) {
+        return text.slice(start, i + 1);
+      }
+    }
+  }
+  throw new Error("Unterminated JSON array in npm pack output");
+}
+
 test("npm pack excludes reports directory and scratch artifacts", async () => {
-  const { stdout } = await exec("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], { cwd: ROOT });
-  const jsonStart = stdout.indexOf("[");
-  const jsonText = jsonStart >= 0 ? stdout.slice(jsonStart) : stdout;
-  const [packInfo] = JSON.parse(jsonText);
+  const npmBin = process.platform === "win32" ? "npm.cmd" : "npm";
+  const { stdout } = await exec(
+    npmBin,
+    ["pack", "--dry-run", "--json", "--ignore-scripts", "--loglevel=silent"],
+    { cwd: ROOT, shell: process.platform === "win32", maxBuffer: 10 * 1024 * 1024 }
+  );
+  const [packInfo] = JSON.parse(extractJsonArray(stdout));
   const files = packInfo.files.map((f) => f.path);
   assert.ok(!files.some((f) => f.startsWith("reports/")), "reports/ must be cleanly excluded from npm package");
   assert.ok(!files.some((f) => f.startsWith("tests/")), "tests/ must be cleanly excluded from npm package");

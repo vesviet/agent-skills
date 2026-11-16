@@ -490,8 +490,8 @@ class TestManageMemoryVault(unittest.TestCase):
 
         gitignore = project_dir / ".gitignore"
         self.assertTrue(gitignore.is_file())
-        self.assertIn("*", gitignore.read_text())
-        self.assertIn("!.gitignore", gitignore.read_text())
+        self.assertIn("*", gitignore.read_text(encoding="utf-8"))
+        self.assertIn("!.gitignore", gitignore.read_text(encoding="utf-8"))
 
     def test_save_writes_unreviewed_frontmatter_atomically(self):
         subprocess.run(
@@ -523,7 +523,7 @@ class TestManageMemoryVault(unittest.TestCase):
         self.assertEqual(data["trust"], "unreviewed")
         doc_file = Path(data["path"])
         self.assertTrue(doc_file.is_file())
-        content = doc_file.read_text()
+        content = doc_file.read_text(encoding="utf-8")
         self.assertIn('schema: "agent.memory.v1"', content)
         self.assertIn('trust: "unreviewed"', content)
         self.assertIn('status: "active"', content)
@@ -655,8 +655,8 @@ class TestManageMemoryVault(unittest.TestCase):
         path = Path(json.loads(save_res.stdout)["path"])
 
         # Tamper with the trust field (simulate malicious promotion to "trusted")
-        tampered_content = path.read_text().replace('trust: "unreviewed"', 'trust: "trusted"')
-        path.write_text(tampered_content)
+        tampered_content = path.read_text(encoding="utf-8").replace('trust: "unreviewed"', 'trust: "trusted"')
+        path.write_text(tampered_content, encoding="utf-8")
 
         doctor_res = subprocess.run(
             [sys.executable, str(MANAGE_VAULT_SCRIPT), "--vault-root", str(self.vault_root), "doctor"],
@@ -802,7 +802,10 @@ class TestManageMemoryVault(unittest.TestCase):
         )
         path = Path(json.loads(save_res.stdout)["path"])
         # Inject secret directly into file
-        path.write_text(path.read_text() + "\nleaked: ghp_111122223333444455556666777788889999\n")
+        path.write_text(
+            path.read_text(encoding="utf-8") + "\nleaked: ghp_111122223333444455556666777788889999\n",
+            encoding="utf-8",
+        )
 
         doctor_res = subprocess.run(
             [sys.executable, str(MANAGE_VAULT_SCRIPT), "--vault-root", str(self.vault_root), "doctor"],
@@ -938,12 +941,12 @@ class TestContextProfilesAndGovernance(unittest.TestCase):
         for name in ("dev.md", "research.md", "review.md"):
             p = contexts_dir / name
             self.assertTrue(p.is_file(), f"Missing context profile: {p}")
-            content = p.read_text()
+            content = p.read_text(encoding="utf-8")
             self.assertIn("Behavioral Invariants", content)
 
     def test_agent_memory_compaction_has_ecc_tables(self):
         skill_path = REPO_ROOT / "core" / "skills" / "agent" / "agent-memory-compaction" / "SKILL.md"
-        content = skill_path.read_text()
+        content = skill_path.read_text(encoding="utf-8")
         self.assertIn("Phase Transition Compaction Decision Table", content)
         self.assertIn("Research → Planning", content)
         self.assertIn("What Survives Compaction", content)
@@ -960,7 +963,7 @@ class TestContextProfilesAndGovernance(unittest.TestCase):
             / "agent-memory-vault-spec.md"
         )
         self.assertTrue(spec_path.is_file())
-        content = spec_path.read_text()
+        content = spec_path.read_text(encoding="utf-8")
         self.assertIn("agent.memory.v1", content)
         self.assertIn("trust: \"unreviewed\"", content)
 
