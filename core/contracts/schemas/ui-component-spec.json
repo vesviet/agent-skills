@@ -169,9 +169,35 @@
         "type": "string"
       }
     },
+    "composition_anatomy": {
+      "type": "object",
+      "description": "Composition-first component structure (vercel-composition-patterns / component-composition) preventing boolean prop explosion.",
+      "properties": {
+        "pattern": {
+          "type": "string",
+          "enum": ["compound", "primitive", "explicit-variant", "slot-delegated"],
+          "description": "Architectural composition model."
+        },
+        "subcomponents": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Compound parts (e.g., Root, Trigger, Content, Close)."
+        },
+        "slots": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Named composition slots or Base UI render / Radix asChild delegation points."
+        },
+        "style_boolean_count": {
+          "type": "integer",
+          "maximum": 2,
+          "description": "Strictly <= 2 purely stylistic booleans; layout-toggling boolean sprawl is prohibited."
+        }
+      }
+    },
     "design_tokens": {
       "type": "array",
-      "description": "W3C-compliant three-tier design tokens used by this component. No hardcoded values allowed.",
+      "description": "W3C DTCG 2025.10 two-tier semantic design tokens used by this component (max <= 3 optional component exceptions). No hardcoded values allowed.",
       "items": {
         "type": "object",
         "required": [
@@ -254,7 +280,7 @@
         },
         "tactile_feedback": {
           "type": "string",
-          "description": "Active state transform simulation, e.g. scale-[0.98] or -translate-y-[1px]."
+          "description": "Active state transform simulation, e.g. scale-[0.96] (150ms ease-out, disabled excluded)."
         },
         "cta_wrap_prevention": {
           "type": "boolean",

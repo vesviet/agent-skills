@@ -22,9 +22,10 @@ Use this skill with **UI/UX Designer** or **Reviewer** when the deliverable is d
 - consume `ux-flow-spec.json` and `ui-component-spec.json` when present; do not invent missing states
 - separate blocking UX defects from polish or preference; classify findings as blocking | should-fix | suggestion
 - every screen spec must define all 5 critical UI states: Empty, Loading/Skeleton, Populated, Error (with actionable recovery), and Unauthorized/Permission — specs missing any of these states are incomplete
-- verify design-system tokens — all styles must reference tokens; zero hardcoded hex colors, magic spacing numbers, or raw typography values are acceptable (DTCG Design Tokens Format Module 2025.10, `$value`/`$type` syntax)
-- for AI-generated UI (v0.dev, Galileo, Builder.io, Copilot): run token conformance check (no hardcoded values), axe-core accessibility scan, and style namespace pollution check before development handoff
-- require interactive Figma prototype links for flows with more than 2 screens before Frontend implementation begins
+- verify design-system tokens — all styles must reference Two-Tier semantic tokens (`DESIGN.md` `MASTER` + page overrides); zero hardcoded hex colors, magic spacing numbers, or raw typography values are acceptable (DTCG Design Tokens Format Module 2025.10, `$value`/`$type` syntax)
+- for AI-generated UI (v0.dev, Galileo, Builder.io, Copilot): run token conformance check (no hardcoded values), composition hygiene (`<= 2` stylistic booleans, compound anatomy), axe-core accessibility scan, and style namespace pollution check before development handoff
+- require an interactive Figma prototype link OR an `interactive-component-workbench` scratch-route verification for flows with more than 2 screens before Frontend implementation begins
+- apply **Web Interface Micro-Craft checks (`web-design-guidelines`)** during UI/spec audits and emit concise `file:line` findings when reviewing UI markup/specs: URL-as-state persistence, hydration-safe inputs (no paste blocking, valid `autocomplete`), focus restoration + `Esc` close on dialogs, `overscroll-behavior: contain` on scrollable overlays, `scroll-margin-top` under sticky headers, true Unicode ellipsis (`…`) on `"Action…"` / `"Loading…"` labels, `tabular-nums` on comparable/live figures, `min-w-0` flex truncation safety, and `color-scheme: dark` on dark surfaces
 - do not implement UI; emit findings for Frontend or UI/UX to fix
 - route code-level bugs to `review-code`; route a11y conformance gaps to `accessibility-review`
 - treat AI-generated UI outputs (v0.dev, Galileo, Builder.io, Copilot) as untrusted artifacts: validate tokens, accessibility, and namespace conformance before any handoff to Frontend
@@ -91,13 +92,11 @@ Note spec gaps (missing state, missing api_field, ambiguous transition).
 - Review transitions, timing animations, and edge-case state responses (such as validation errors and loading loops) inside the interactive prototype.
 - Verify that touch targets and hover states behave as expected across various screen dimensions.
 
-### 2026: Anti-Slop & Taste Skill Audit Checklist
-- Check for Brief Inference: verify the spec provides a 1-line Design Read and defines the Three Dials (`DESIGN_VARIANCE`, `MOTION_INTENSITY`, `VISUAL_DENSITY`).
-- Audit Hero Viewport Discipline: verify headline <= 2 lines, subtext <= 20 words, CTAs visible without scrolling, and top padding <= 6rem (pt-24).
-- Audit Eyebrow Restraint: verify no more than 1 eyebrow per 3 sections (blocking defect if exceeded).
-- Audit Typography & Color: verify no default Fraunces/Instrument_Serif; verify word emphasis uses the same font family; verify no AI-purple glow gradients; verify single accent hue.
-- Audit Section Variety & Bento Grids: verify at least 4 layout families across 8 sections; verify no more than 2 consecutive alternating zigzag sections; verify bento grids have no blank filler tiles.
-- Audit CTA & Copy Discipline: verify unified CTA labels per intent; verify primary desktop CTAs do not wrap; verify zero em-dashes in UI copy.
+### 2026: Domain Aesthetic & Web Interface Micro-Craft Audit
+- **Anti-Monoculture Aesthetic Check**: verify the spec provides a domain-grounded Design Read and Archetype-calibrated Three Dials (`DESIGN_VARIANCE`, `MOTION_INTENSITY`, `VISUAL_DENSITY`) — flag both legacy AI tropes (purple glow, `Fraunces`/`Instrument_Serif`, `Inter`/`Space Grotesk` unprompted) and unprompted Linear-dark-Geist-Emerald cloning when the domain calls for daylight/editorial/enterprise craft.
+- **Mode A vs Mode B Check**: for Mode A (In-App Product UI), verify surface selection (Inline/Drawer/Modal/Route), URL-as-state, destructive confirmation tiers, and `composition_anatomy` (`<= 2` stylistic booleans). For Mode B (Landing/Showcase), verify hero `<= 100dvh` (`headline <= 2 lines`, `subtext <= 20 words`, `pt-24` max), `<= 1` eyebrow per 3 sections, `>= 4` layout families per 8 sections, and zero blank bento tiles.
+- **Web Interface Micro-Craft (`web-design-guidelines`)**: check unicode `…` (never `...`), `"Action…"` on dialog triggers, `tabular-nums` on numeric tables, `color-scheme: dark` on dark themes, `overscroll-behavior: contain` inside modals/drawers, `scroll-margin-top` on anchor targets, focus restoration on modal close, hydration-safe inputs without paste blocking, `min-w-0` truncation, unified CTA labels, and zero em-dashes (`—`).
+- **Terse Findings Format**: when auditing UI files or specs, emit actionable `file:line` (or `spec_path#field`) findings grouped by `blocking | should-fix | suggestion`.
 
 ## Checklist
 

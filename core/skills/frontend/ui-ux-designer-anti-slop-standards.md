@@ -1,8 +1,8 @@
-# Master Design Standard: UI/UX Anti-Slop Specification
+# Master Design Standard: UI/UX Anti-Slop Specification & Reference
 
 This document establishes the unified **Master Design Standard** for all UI/UX design, frontend architecture, and component engineering across `agent-skills`. It consolidates and codifies the 9 S-Rank Design & UI/UX skills into an authoritative, enforceable design governance specification.
 
-Every agent assuming the `@designer` (`ui-ux-designer`) or `@frontend` (`frontend-developer`) role MUST strictly comply with these rules.
+This reference is linked from [`ui-ux-designer.md`](../ui-ux-designer.md) and mirrored at `core/skills/frontend/ui-ux-designer-anti-slop-standards.md`. Every agent assuming the `@designer` (`ui-ux-designer`) or `@frontend` (`frontend-developer`) role MUST strictly comply with these rules.
 
 ---
 
@@ -12,27 +12,25 @@ The Master Design Standard synthesizes nine domain-leading design engineering me
 
 | # | S-Rank Skill | Core Focus & Authority | Integrated Sections |
 |---|--------------|------------------------|---------------------|
-| 1 | **Taste Skill** | Aesthetic direction, 3-dial engine, archetype calibration, mandatory pre-code Design Read statement | §2 (Taste Engine), §3 (Design Read) |
-| 2 | **Anthropic Frontend Design** | Layout family diversity, anti-center bias, hero viewport discipline, responsive grid orchestration | §4 (Layout & Composition), §10 (Copy & CTA) |
-| 3 | **shadcn/ui (v4)** | Compound component composition, `FieldGroup` + `Field`, `InputGroup`, semantic tokens, Base UI vs Radix | §5 (Component Composition), §6 (Token System) |
-| 4 | **Impeccable** | Micro-typography triad, perceptual contrast compliance, whitespace mathematics, visual polish | §3 (Design Read), §6 (Token System), §10 (Copy) |
-| 5 | **Emil Design Engineering** | Tactile interactions, gesture feedback, physical state models, fluid component dynamics | §5 (Component Composition), §7 (Motion Physics) |
-| 6 | **Animate** | Choreographed micro-interactions, transition curves, easing token governance, viewport reveals | §7 (Motion Physics & Skeletons) |
-| 7 | **Emil Kowalski's Bundle** | Frequency-based animation budget (0ms Cmd+K, 150-250ms modals), harmonic oscillator spring physics | §7 (Motion Physics & Timing Table) |
-| 8 | **Web Design Guidelines** | Bounded 2-pass QA protocol (Desktop 1280px+ & Mobile 375-430px simultaneously), single smooth-scroll engine | §7 (Smooth Scroll), §8 (Bounded Visual QA) |
-| 9 | **Build Awwwards-Quality Sites** | Editorial typography, negative asset constraints (ban fake SVG logos / synthetic testimonials / ungrounded metrics) | §4 (Layout), §9 (Negative Asset Constraints) |
+| 1 | **Taste Skill** | Aesthetic direction, 3-dial engine, archetype calibration, mandatory pre-code Design Read statement | §2 (Taste Engine & Domain Matrix), §3 (Design Read) |
+| 2 | **Anthropic Frontend Design** | Context-first intentional aesthetic commitment across varied visual poles (brutalist, editorial, luxury, tactile, industrial), avoiding any single AI template | §2.2 (Domain Matrix), §3 (Design Read), §4 (Layout) |
+| 3 | **UI/UX Pro Max** | Domain-grounded lookup (styles, palettes, typography, charts, stack rules), `MASTER.md` + page override token hierarchy | §2.2 (Domain Matrix), §11.2 (Master + Page Overrides) |
+| 4 | **Vercel Web Design Guidelines** | Deterministic UI craft & micro-audit rules (`file:line` findings, URL-as-state, unicode `…`, `tabular-nums`, `color-scheme`, focus restoration, hydration-safe inputs) | §8 (Visual QA), §10.3 (Web Interface Micro-Craft) |
+| 5 | **Vercel Composition Patterns** | Compound components, `{ state, actions, meta }`, `FieldGroup` + `Field`, `InputGroup`, Base UI `render` vs Radix `asChild`, `<= 2` stylistic booleans | §5 (Component Composition) |
+| 6 | **Impeccable & Emil Design Engineering** | Perceptual OKLCH ramps, APCA contrast + WCAG 2.2 AA floor, frequency-based motion budget (`0ms` hotkeys, `150–250ms` overlays), harmonic spring physics | §6 (Token System), §7 (Motion Physics) |
+| 7 | **Build Awwwards-Quality Sites** | Negative asset constraints (ban fake SVG logos, synthetic testimonials, ungrounded precision metrics) | §9 (Negative Asset Constraints), §10 (Copy & CTA) |
 
 ---
 
-## 2. Taste Engine & Three-Dial Calibration
+## 2. Taste Engine, Three-Dial Calibration & Domain-to-Aesthetic Matrix
 
-The Taste Engine governs design execution via three numeric dials on a 1–10 scale. Baseline default across all projects is **`8 / 6 / 4`**. These are global variables — cross-references must use these exact names, never aliases like `LAYOUT_VARIANCE` or `ANIM_LEVEL`.
+The Taste Engine governs design execution via three numeric dials on a 1–10 scale. These are global variables — cross-references must use these exact names, never aliases like `LAYOUT_VARIANCE` or `ANIM_LEVEL`. **There is no universal visual look**: start from the project's **Domain Archetype** below rather than defaulting to dark-slate + `Geist` + Emerald.
 
 ```
                         TASTE ENGINE THREE DIALS
 ┌─────────────────────────┬─────────────────────────┬─────────────────────────┐
 │     DESIGN_VARIANCE     │    MOTION_INTENSITY     │     VISUAL_DENSITY      │
-│      (Default: 8)       │      (Default: 6)       │      (Default: 4)       │
+│   (Archetype-driven)    │   (Archetype-driven)    │   (Archetype-driven)    │
 ├─────────────────────────┼─────────────────────────┼─────────────────────────┤
 │ 1: Perfect Symmetry     │ 1: Static / No Motion   │ 1: Art Gallery / Ultra  │
 │ 5: Balanced Bento Grid  │ 5: Snappy Micro-Springs │ 4: Modern SaaS Baseline │
@@ -96,16 +94,22 @@ The Taste Engine governs design execution via three numeric dials on a 1–10 sc
 
 ---
 
-### 2.2 Dial Calibration Across Core Archetypes
+### 2.2 Domain-to-Aesthetic Lookup Matrix (Anti-Monoculture)
 
-| Archetype | VARIANCE | MOTION | DENSITY | Key Characteristics & Guidelines |
-|:---|:---:|:---:|:---:|:---|
-| **B2B Enterprise / Regulated / Gov** | **3** | **2** | **6** | Rigid 12-col grid, zero decorative whimsy, instantaneous transitions (0-150ms), high data density, WCAG AAA compliance. |
-| **Modern Developer Tool (Linear/Supabase style)** | **6** | **5** | **5** | Dark-mode precision, monospace accents, keyboard shortcuts (0ms), structured bento grids, snappy Kowalski springs. |
-| **Premium Consumer / Luxury Brand** | **7** | **6** | **3** | Cold luxury palette (slate/cobalt/monochrome), generous negative space, high-craft typography, tactile physical springs. |
-| **Editorial / Creative Portfolio** | **8** | **6** | **3** | Asymmetrical split screens, oversized typography, curated editorial pacing, staggered reveals, high whitespace. |
-| **Awwwards / Experiential Agency** | **9** | **8** | **3** | Broken grids, scroll-pinned sticky stacks, kinetic typography, magnetic interactions, bold expressive visual depth. |
-| **Universal SaaS Marketing Baseline** | **8** | **6** | **4** | Default anti-slop baseline. Asymmetric split hero, fluid micro-interactions, generous breathing room, semantic tokens. |
+Select the matching domain archetype before proposing typography, colors, or layout. Never apply the **Modern Developer Tool** dark-slate + emerald aesthetic to Fintech, Healthcare, Editorial, or Retail unless the brief explicitly demands it.
+
+| Domain Archetype | VARIANCE | MOTION | DENSITY | Aesthetic Pole, Typography & Palette Direction | Avoided Domain Cliché |
+|:---|:---:|:---:|:---:|:---|:---|
+| **Fintech / Core Banking / Ledger** | **3** | **2** | **6** | Crisp light-first paper (`oklch(0.985 0.004 250)`), deep navy/forest/slate ink, `tabular-nums` mandatory, high-contrast semantic status badges, institutional clarity. | Neon crypto dark glow, playful bouncy springs |
+| **Healthcare / Clinical / Regulated** | **3** | **2** | **5** | Calm daylight surfaces, soft mineral teal or cobalt accent (`sat < 70%`), COGA-compliant plain labels, persistent field instructions, WCAG AAA text contrast. | Harsh high-contrast dark mode, ambiguous icons |
+| **B2B Ops / WMS / Telemetry / ERP** | **4** | **3** | **7–8** | High-density data grids, sticky table headers, URL-persisted filters, keyboard shortcuts (`0ms`), crisp 1px borders, monospace IDs & `tabular-nums`. | Marketing bento cards, excessive whitespace padding |
+| **Modern Developer Tool / Infra** | **6** | **5** | **5** | Choose between **Daylight Technical Docs** (warm stone/paper + sharp mono) OR **Dark Precision** (tinted slate + 1 restrained accent); `Cmd+K` at `0ms`. | Unprompted Linear-dark + Emerald + fake terminal clone |
+| **Editorial / Publishing / Knowledge** | **7–8** | **4** | **3** | Expressive typographic hierarchy (permitted heritage serif pairing when brief aligns), `60–68ch` reading measure, asymmetric pull quotes, generous margins. | Generic SaaS 3-column feature card grid |
+| **Premium Consumer / Luxury / Craft** | **7** | **6** | **3** | Rotate purposefully: **Cold Luxury** (ice grey + obsidian), **Botanical Forest** (pine + alabaster), **Terracotta + Slate**, or **Cobalt + Cream**; tactile transitions. | Warm-beige (`#f5f1ea`) + brass (`#b08947`) + espresso (`#1a1714`) |
+| **E-Commerce / High-Velocity Retail** | **5** | **5** | **5** | Product-photography-first grid, sticky thumb-zone mobile CTA, clear 2D variant matrix (size × color), zero dark-pattern urgency tricks. | Cluttered badge spam, low-contrast ghost buttons on photos |
+| **AI Agentic Workspace** | **5** | **4** | **6** | Visible Trust Ladder tier badge, streaming skeletons (`CLS = 0`), calibrated confidence badges, Red Path recovery, upfront `<AIDisclosureBanner>`. | Confident chat bubble with no undo, provenance, or fallback |
+| **Public Sector / Gov / Education** | **2–3** | **2** | **5** | Official `govuk-frontend` / `uswds` grammar when applicable, linear single-column forms, WCAG 2.1/2.2 AA+, zero decorative animation. | Experimental split heroes, hidden navigation |
+| **General SaaS Baseline (Mode A/B)** | **7** | **5** | **4** | Balanced modern SaaS when no specialist domain dominates; distinct brand accent (`sat < 80%`), `DESIGN.md` master tokens. | Purple/indigo AI mesh gradient, `Inter` + 3 identical cards |
 
 ### 2.3 Dial Clamping & Conflict Resolution Rules
 When user briefs contain conflicting requirements (e.g., "We want an experimental Awwwards look, but for a Swiss private wealth management portal"):
@@ -173,7 +177,7 @@ export default function Hero() {
 - **Mood & Intent**: Utilitarian Monospace Precision, High-Signal Developer Tool
 - **Dial Calibration**:
   - `DESIGN_VARIANCE`: 8 — Asymmetric 60/40 desktop split hero with terminal visual anchor
-  - `MOTION_INTENSITY`: 6 — Tactile scale-[0.98] active spring on CTA; 0ms on keyboard shortcuts
+  - `MOTION_INTENSITY`: 6 — Tactile scale-[0.96] active spring on CTA; 0ms on keyboard shortcuts
   - `VISUAL_DENSITY`: 4 — Generous SaaS whitespace (min-h-[100dvh], py-24, gap-12)
 - **Composition Archetype**: Asymmetrical Split Hero (60/40) with Live Interactive Preview
 - **Typography System**: Display: Geist Sans (tracking-tight), Body: Geist Sans (leading-relaxed), Mono: Geist Mono
@@ -209,7 +213,7 @@ export default function Hero() {
           </p>
           
           <div className="flex flex-wrap items-center gap-4 pt-2">
-            <Button size="lg" className="active:scale-[0.98] transition-transform">
+            <Button size="lg" className="active:scale-[0.96] transition-transform">
               Deploy Cluster
             </Button>
             <Button variant="outline" size="lg">
@@ -237,11 +241,20 @@ export default function Hero() {
 ```
 
 #### 💡 WHY
-Pre-code commitments anchor the LLM to specific tokens, layout archetypes, and negative constraints before generating tokens. Without this anchor, code defaults to generic centered AI slop with pure black backgrounds and hardcoded hex colors.
+Pre-code commitments anchor the LLM to specific tokens, layout archetypes, and negative constraints before generating markup. **Crucial rule**: the dark-slate + Emerald example above is valid *only* for a Developer Tool brief; for Fintech, Healthcare, Retail, or B2B Ops, derive a completely different daylight/editorial/high-density Design Read from Section 2.2 so the system never collapses into a single dark-mode SaaS look.
 
 ---
 
-## 4. Anti-Slop Layout & Composition Directives
+## 4. Layout & Composition Directives (Mode A: Product UI vs Mode B: Showcase)
+
+Apply **Mode A** to in-app product UIs (dashboards, CRUD tables, settings, AI workspaces) and **Mode B** only to marketing, product landing, or storefront showcase pages. Never force Mode B landing rules (zigzags, marketing hero stacks) onto Mode A operational tools.
+
+### Mode A: In-App Product UI Grammar
+- **Surface Hierarchy**: select Inline vs Popover vs Drawer/Sheet vs Modal Dialog vs Dedicated Route based on reversibility and context-preservation needs.
+- **URL as State**: serialize active tabs, filters, sort order, pagination, and selected inspection drawers into URL query parameters (`?tab=`, `?status=`, `?selected=`).
+- **Data-Dense Scannability**: align numeric/currency/time columns with `tabular-nums`, pin sticky table headers (`scroll-margin-top` set), and provide keyboard-accessible full-value reveal for truncated cells.
+
+### Mode B: Landing & Showcase Composition Directives
 
 ### 4.1 Anti-Center Bias
 Centered Hero / H1 sections are avoided when `DESIGN_VARIANCE > 4`. Use split screen (50/50, 60/40), left-aligned copy with right-aligned visual asset, asymmetric whitespace, or scroll-pinned compositions. Centered heroes are permitted only for manifesto/editorial launch pages.
@@ -605,12 +618,15 @@ export function GoodCard({ title, description }: { title: string; description: s
 2. **Perceptual Contrast Uniformity**: OKLCH ensures mathematically consistent perceived contrast across light and dark palettes, guaranteeing WCAG AA compliance.
 3. **Clean Codebases**: Eliminates repetitive `dark:*` class strings, reducing CSS bundle size and developer cognitive load.
 
-### 6.2 Typography & Color Discipline Rules
-- **Serif Discipline**: Serif display fonts are banned as the default for creative or premium briefs. Default to high-craft sans display (`Geist Display`, `Cabinet Grotesk`, `Satoshi`, `Outfit`). Specifically banned default serifs: `Fraunces` and `Instrument_Serif`.
+### 6.2 Typography, Contrast Dual-Gate & Color Discipline Rules
+- **Domain-Calibrated Typography Voice**: avoid lazy unprompted defaults (`Inter`, `Roboto`, `Space Grotesk`, `Fraunces`, `Instrument_Serif`), AND avoid defaulting every SaaS/app to `Geist`/`Satoshi` when the domain calls for warmth, authority, or editorial character. Select display + body + monospace fonts from the Domain Archetype Matrix (§2.2).
 - **Word Emphasis**: Word emphasis in display type must use bold or italic of the **same font family**; never inject a foreign serif word into a sans headline.
-- **Color Discipline & Lila Ban**: Maximum 1 accent color with saturation < 80%. Ban generic AI-purple/blue glow gradients on dark buttons and backgrounds. Use neutral bases with singular high-contrast accents.
-- **Palette Rotation**: Ban the default reach for warm-beige (`#f5f1ea`), brass/clay, and espresso text. Rotate to cold luxury, forest green, terracotta+slate, cobalt+cream, or sharp monochrome.
-- **Shape Consistency Lock**: Enforce a single corner-radius scale across the page (all-sharp, all-soft 12-16px, or documented pill buttons + soft cards).
+- **Contrast Dual-Gate (Unified)**:
+  - **WCAG 2.2 AA (Legal & Accessibility Floor)**: $CR \ge 4.5:1$ normal text, $\ge 3.0:1$ large text, UI controls, and focus indicators.
+  - **APCA (Perceptual Design-Token Target)**: $L_c \ge 75$ body text, $L_c \ge 60$ headlines/controls, verified independently in both light and dark modes.
+- **Color Discipline & Lila Ban**: Maximum 1 dominant accent color with saturation $< 80\%$ (unless domain semantics require status colors). Ban generic AI-purple/blue glow gradients on dark buttons and backgrounds.
+- **Palette Rotation**: Ban the default reach for warm-beige (`#f5f1ea`), brass/clay, and espresso text, as well as repeating the same dark-slate + emerald palette across unrelated domains.
+- **Shape Consistency Lock**: Enforce a single corner-radius scale across the page (all-sharp, all-soft 12-16px, or documented pill buttons + soft cards) and concentric corner math ($R_{\text{outer}} = R_{\text{inner}} + P + B$).
 
 ---
 
@@ -688,7 +704,7 @@ export function BadPalette({ isOpen }: { isOpen: boolean }) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.35 }} // ❌ Sluggish 350ms delay on hotkey!
+          transition={{ duration: 0.35 }}
           className="fixed top-24 left-1/2 -translate-x-1/2 w-[500px] bg-card p-4"
         >
           <input placeholder="Search..." autoFocus />
@@ -861,7 +877,7 @@ AI-generated interfaces frequently suffer from recognizable "vibe-slop" visual a
      NovaPulse
    </span>
    ```
-2. **Generic Functional Iconography**: Icons must be drawn strictly from approved packages (`lucide-react`, `@phosphor-icons/react`, `@radix-ui/react-icons`) and represent **functional UI actions** (`<Terminal />`, `<Database />`, `<ChevronRight />`), NEVER masquerading as corporate brand marks.
+2. **Unified Functional Iconography**: Icons must be drawn strictly from one consistent icon library per codebase (`@phosphor-icons/react`, `hugeicons-react`, `@radix-ui/react-icons`, or `lucide-react` when aligning with an existing shadcn/ui or Base UI repo) and represent **functional UI actions** (`<Terminal />`, `<Database />`, `<ChevronRight />`), NEVER masquerading as corporate brand marks or mixed across libraries in the same component tree. Standardize stroke width globally.
 3. **Verified Social Proof Marks**: When real brand integration is required, use verified official monochrome marks via Simple Icons (`https://cdn.simpleicons.org/{slug}`) with the Logo-Only rule.
 4. **Factual Structural Placeholders**: If customer logos or testimonials are requested but real assets are not provided, render honest structural placeholders (`[Client Logo Slot: Monochrome SVG]`).
 5. **Verifiable Technical Highlights**: Replace fake testimonials with factual architecture benchmarks (latency measurements, uptime SLA, concurrent connection benchmarks).
@@ -874,12 +890,10 @@ AI-generated interfaces frequently suffer from recognizable "vibe-slop" visual a
 export function BadAssets() {
   return (
     <div>
-      {/* Fake SVG swirl */}
       <svg className="h-8 w-8 text-indigo-500" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="40" stroke="url(#g)" strokeWidth="8" fill="none" />
         <defs><linearGradient id="g"><stop stopColor="#6366f1"/><stop offset="1" stopColor="#a855f7"/></linearGradient></defs>
       </svg>
-      {/* Fake testimonial */}
       <blockquote>
         "NovaPulse doubled our engineering velocity by 340% in 14 days!"
         <footer>Sarah Miller, VP of Cloud at HyperScale</footer>
@@ -895,7 +909,6 @@ export function BadAssets() {
 export function GoodAssets() {
   return (
     <div className="space-y-8">
-      {/* Authentic wordmark */}
       <div className="flex items-center gap-2.5">
         <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground font-mono text-xs font-semibold">
           NP
@@ -905,7 +918,6 @@ export function GoodAssets() {
         </span>
       </div>
 
-      {/* Verifiable Technical Benchmark */}
       <div className="rounded-xl border border-border bg-card p-6">
         <div className="flex items-center justify-between pb-4 border-b border-border">
           <h4 className="text-xs font-mono font-semibold uppercase text-muted-foreground">
@@ -951,6 +963,15 @@ Audit all visible UI strings before handoff. Reject:
 - Do not mix "Get in touch", "Contact us", and "Let's talk" on one page.
 - Primary CTA labels must never wrap to multiple lines on desktop (maximum 3 words, ideally 1–2 words).
 
+### 10.3 Web Interface Micro-Craft Rules (Vercel Web Design Guidelines)
+- **Unicode Ellipsis & Trigger Punctuation**: always use the true Unicode ellipsis (`…`), never three ASCII dots (`...`). Append `…` to async progress states (`Loading…`, `Saving…`) and menu/button labels that open a secondary dialog or flow (`Rename…`, `Export…`).
+- **Tabular Numerals**: enforce `font-variant-numeric: tabular-nums` on all numeric tables, prices, KPIs, counters, and live telemetry so columns never jitter horizontally.
+- **Dark Mode Native Integration**: declare `color-scheme: dark` on dark-theme root containers so native scrollbars, date pickers, and form controls match the theme without white flashes.
+- **Tactile `:active` Press Feedback**: unify interactive press scaling at `scale-[0.96]` (`150ms ease-out`), excluding disabled controls, and guard hover styles inside `@media (hover: hover)`.
+- **Scroll & Modal Containment**: set `overscroll-behavior: contain` inside scrollable modals/drawers to prevent background scroll chaining; set `scroll-margin-top` on anchored headings under sticky headers; always restore focus to the triggering element when closing dialogs/popovers.
+- **Hydration-Safe & Frictionless Inputs**: never block paste in email/password/OTP fields; provide accurate `autocomplete` and `inputMode` attributes; keep mobile input `font-size >= 16px` (`text-base sm:text-sm`) to prevent iOS Safari auto-zoom.
+- **Flex Truncation Safety**: set `min-w-0` on flex parents containing truncated (`truncate` / `text-ellipsis`) children, and pair truncated text with an accessible full-value reveal.
+
 ---
 
 ## 11. Design System Selection Map & Living Infrastructure
@@ -973,10 +994,11 @@ When the design read points to a known system, reach for the official package �
 - **One system per project**: Do not mix Fluent with Carbon in the same tree.
 - When the brief is an aesthetic (glassmorphism, bento, brutalism, dark tech), build with native CSS + Tailwind + maintained primitives, clearly documenting approximations.
 
-### 11.2 Living Infrastructure & Dual-Audience Documentation
-- **W3C DTCG Token Architecture**: Primitive -> Semantic -> Component. Components reference semantic tokens exclusively.
-- **Automated Pipeline**: Tokens Studio -> PR -> Style Dictionary.
-- **Dual-Audience Token Documentation**: When design systems serve AI agents, token definitions and specs must be authored in strict Markdown hierarchy (H1->H2->H3) for LLM parse efficiency.
+### 11.2 Living Infrastructure, `DESIGN.md` Master + Page Overrides & Dual-Audience Docs
+- **Two-Tier DTCG 2025.10 Token Architecture**: `Tier 1 (Primitive) -> Tier 2 (Semantic)`, with optional `Tier 3 (Component)` strictly capped at `<= 3` documented exceptions per component. Components reference semantic tokens exclusively in DTCG `$value`/`$type` format.
+- **Master + Page Override Pattern**: maintain `DESIGN.md` (`design-tokens-spec.json`) as the single **MASTER** system specification; document route-specific density or surface overrides in explicit **Page Overrides** without forking base palettes.
+- **Automated Pipeline**: Figma Variables / `DESIGN.md` -> PR -> Style Dictionary v4 DTCG mode / Terrazzo.
+- **Dual-Audience Token Documentation**: When design systems serve AI agents, token definitions and specs must be authored in strict Markdown hierarchy (`H1->H2->H3`) for LLM parse efficiency (`llms.txt` as scope map only).
 
 ---
 

@@ -29,7 +29,10 @@ Use this skill with the **UI/UX Designer** role when user-facing behavior must b
 - do not implement production UI — hand off specs to Frontend Developer
 - apply progressive disclosure to hide secondary options until primary actions are taken
 - design agent UX flows to include delegation confirmations, progress indicators, and recoverable interrupts — users must always have a cancel/undo path for agent-initiated state changes
-- use Figma Variables (linked to DTCG Design Tokens Format Module 2025.10 tokens via Tokens Studio, `$value`/`$type` syntax) to prototype dynamic, real-world data states including empty states and error messages; require interactive prototype for any flow with more than 2 screens
+- classify every scope as **Mode A (In-App Product UI)** or **Mode B (Landing & Showcase)** before layouting; never impose Mode B marketing hero/zigzag rules onto Mode A operational tools
+- select interaction surfaces deliberately (**Inline** vs **Popover** vs **Drawer/Sheet** vs **Modal Dialog** vs **Dedicated Route**) and serialize filter, tab, pagination, and drawer state into URL query params (`URL-as-state`)
+- specify composition-ready component contracts (`composition_anatomy`: compound subcomponents `Root/Trigger/Content`, slots, explicit variants, `<= 2` stylistic booleans) aligned with `component-composition`
+- use Figma Variables (linked to DTCG Design Tokens Format Module 2025.10 tokens via Tokens Studio, `$value`/`$type` syntax) OR an `interactive-component-workbench` scratch route to validate dynamic real-data states (long names, empty states, errors); require an interactive prototype or workbench verification for any flow with more than 2 screens
 - design dual-audience operability when AI agents operate the UI alongside human users: declare `agent_operability` (agent entry points, machine-readable affordances, agent courtesy rules) in ux-flow-spec.json (Agents-as-Users, NN/g 2026)
 - run a dark-pattern compliance review on every flow: check nagging, obstruction, sneaking, forced action, confirmshaming, and trick questions against DSA Art 25/26 and FTC standards; record findings in ux-flow-spec.json `dark_pattern_review`
 
@@ -98,13 +101,12 @@ Publish UX handoff manifest (flow path + component paths) for Frontend and QA.
 - Disclose advanced options, settings, and complex configuration contextually after the primary action is selected.
 - Avoid cognitive overload by grouping advanced settings into collapsible panels or secondary screens.
 
-### 2026: Brief Inference & Anti-Slop Flow Governance (Taste Skill)
+### 2026: Domain-Grounded Aesthetic Direction & Dual-Mode Flow Governance
 
-- Infer user and brand signals (page kind, audience, vibe words, quiet constraints) to output a 1-line Design Read before drafting screens.
-- Calibrate the Three Dials (`DESIGN_VARIANCE`, `MOTION_INTENSITY`, `VISUAL_DENSITY`) to configure layout risk, animation depth, and information density.
-- Enforce hero viewport containment: headline max 2 lines, subtext max 20 words, CTAs visible above the fold, top padding <= 6rem (pt-24).
-- Restrict uppercase tracking eyebrows to at most 1 per 3 sections; prohibit repeating section layout families.
-- Unify CTA labels per user intent across all screens in the flow.
+- Select the **Domain Archetype** (`Fintech`, `Healthcare`, `B2B Ops`, `DevTool`, `Editorial`, `Luxury`, `E-Commerce`, `AI Workspace`, `Public Sector`, `General SaaS`) from `core/roles/references/ui-ux-designer-anti-slop-standards.md` and emit a 1-line Design Read committing to a distinct aesthetic pole (avoiding both legacy purple-glow slop and unprompted Linear-dark-Geist-Emerald cloning).
+- Calibrate the Three Dials (`DESIGN_VARIANCE`, `MOTION_INTENSITY`, `VISUAL_DENSITY`) from the Domain Archetype Matrix.
+- **Mode A (In-App Product UI)**: define navigation topology, URL-persisted state, surface selection (Inline/Popover/Drawer/Modal/Route), destructive action tiers (Undo Toast vs Named Confirm vs Typed Confirm), and `tabular-nums` for numeric columns.
+- **Mode B (Landing & Showcase)**: enforce hero viewport containment (`min-h-[100dvh]`, headline `<= 2` lines, subtext `<= 20` words, primary CTA above fold, `pt-24` max top padding), `<= 1` eyebrow per 3 sections, `>= 4` layout families per 8 sections, and unified CTA labels per intent.
 
 ## Output Format
 

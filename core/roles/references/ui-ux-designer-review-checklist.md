@@ -1,126 +1,71 @@
 ## UI/UX Designer Review Checklist
 
-This reference checklist provides operational design governance, anti-slop aesthetic restraint, AI interaction design, accessibility compliance, and design-system token criteria to meet SOTA 2026–2027 standards. It establishes non-negotiable verification gates across anti-slop visual restraint (The Three Dials), eyebrow label rationing, hero section viewport fitting, unified call-to-action intent, comprehensive AI state design, European Accessibility Act (EAA) compliance, Generative UI (GenUI) palette governance, and automated design token export pipelines.
+Operational verification gates for `@ui-ux-designer` deliverables (`DESIGN.md`, `ux-flow-spec.json`, `ui-component-spec.json`, `design-tokens-spec.json`).
 
-### 1. Anti-Slop Aesthetic Restraint & The Three Dials (`ANTI-SLOP-DESIGN LOCK`)
-- **Mandatory 1-Line Design Read**:
-  - every design specification begins with an explicit 1-line Design Read articulating page kind, target audience, brand tone, and visual family
-  - generic AI clichés strictly rejected fail-closed: centered heroes on dark mesh gradients, oversaturated neon purple/blue glows, three identical feature cards with generic icons, and unbranded rounded cards
-- **Quantitative Calibration of The Three Dials**:
-  - design specifications explicitly calibrate the three aesthetic parameters:
-    1. `DESIGN_VARIANCE` (1–10, recommended 3–6): degree of layout divergence from standard grid conventions
-    2. `MOTION_INTENSITY` (1–10, recommended 2–5): animation velocity, spring stiffness, and transition frequency; animations must strictly obey `prefers-reduced-motion`
-    3. `VISUAL_DENSITY` (1–10, recommended 5–8): information density, typography scale ratio, and whitespace rationing
-  - accent saturation capped ($< 80\%$ HSL saturation) with a single dominant accent hue; multi-color neon palettes prohibited
+---
 
-### 2. Eyebrow Label Rationing & Restraint (`EYEBROW-RESTRAINT LOCK`)
-- **Strict Eyebrow Label Frequency Cap**:
-  - uppercase, wide-tracking eyebrow badges/labels restricted to at most 1 out of every 3 page sections (e.g. a 9-section landing page may possess at most 3 eyebrows total, with hero counting as 1)
-  - redundant or decorative category tags eliminated in favor of clean, self-explanatory section headlines
+### 1. Domain-Grounded Aesthetic & Anti-Slop Gate (`AESTHETIC-DIRECTION LOCK`)
 
-### 3. Hero Section Viewport Fitting & Typography Limits (`HERO-VIEWPORT LOCK`)
-- **Initial Viewport Accessibility**:
-  - hero section on desktop viewports ($\ge 1280\text{px}$) must fit entirely within the initial viewport fold ($100\text{vh}$) without requiring user scroll
-  - headline strictly capped at 2 lines maximum; subtext capped at 20 words across 3–4 lines; top container padding capped at `6rem` (`pt-24`)
-- **Above-the-Fold Actionability**:
-  - primary call-to-action (CTA) buttons must be immediately visible and clickable above the fold on all standard display resolutions
+- [ ] **Context-First Design Read**: 1-line Design Read explicitly states page/app kind, audience, committed aesthetic pole, and avoided cliché.
+- [ ] **No AI Monoculture**: neither legacy AI slop (centered purple-glow dark mesh, `Fraunces`/`Instrument_Serif`, `Inter`/`Roboto`/`Space Grotesk` unprompted, warm-beige/brass cookware default) nor unprompted **Linear-dark-slate + `Geist` + Emerald** cloning when the domain calls for another visual voice.
+- [ ] **Domain Archetype & Three Dials**: `DESIGN_VARIANCE`, `MOTION_INTENSITY`, and `VISUAL_DENSITY` (`1–10`) calibrated directly from the **Domain Archetype Matrix** in [`ui-ux-designer-anti-slop-standards.md`](ui-ux-designer-anti-slop-standards.md) (regulated/finance/public-sector clamped to `variance <= 4`, `motion <= 3`).
+- [ ] **Palette & Shape Lock**: single dominant accent (`saturation < 80%`) unless domain explicitly requires multi-status semantics; consistent shape scale; no `#000000` pure black; tinted neutral off-black/off-white surfaces.
 
-### 4. Call-to-Action (CTA) Intent Unification (`CTA-INTENT LOCK`)
-- **Single Label Per User Intent**:
-  - buttons driving the same conversion action across the page must use an identical, unified label (e.g. consistently "Start Free Trial", not alternating between "Try Now", "Get Started", and "Sign Up Free")
-  - desktop button text fits on a single line (maximum 3 words); ambiguous or jargon-heavy labels prohibited
+---
 
-### 5. Comprehensive AI State Design (`AI-STATE LOCK` / `TRUST-DESIGN LOCK`)
-- **Five AI-Specific Component States**:
-  - every AI-powered interface component specifies explicit visual treatments for all five non-standard states:
-    ```tsx
-    // POSITIVE: Five Mandatory States in Component Specification
-    export function AIActionContainer({ state, output, confidence, onOverride }: AIActionProps) {
-      switch (state) {
-        case 'generating':  return <SkeletonStreamingIndicator text="Synthesizing plan..." />;
-        case 'uncertain':   return <UncertaintyBanner confidence={confidence} explain="Model flagged boundary case" />;
-        case 'fallback':    return <DeterministicManualInputForm error="AI service unavailable" />;
-        case 'overridden':  return <UserOverrideDiffView original={output} onRevert={onOverride} />;
-        case 'corrected':   return <FeedbackSavedToast message="Calibration recorded for future runs" />;
-        default:            return <VerifiedOutputCard data={output} />;
-      }
-    }
-    ```
-  - probabilistic outputs never presented as absolute facts; confidence ranges and "Why am I seeing this?" explanatory hooks provided for automated recommendations
+### 2. Mode A (Product UI) vs Mode B (Landing / Showcase) Gate
 
-### 6. Accessibility Compliance (WCAG 2.2 Level AA / EAA 2025 / EN 301 549)
-- **Mathematical Contrast Ratio Formulation**:
-  - all text and interactive UI elements must satisfy the relative luminance contrast ratio invariant:
-    $$CR = \frac{L_1 + 0.05}{L_2 + 0.05} \ge 4.5:1 \text{ (normal text)}, \ge 3.0:1 \text{ (large text / UI controls)}$$
-    where relative luminance $L$ is calculated per sRGB definition:
-    $$L = 0.2126 \cdot R + 0.7152 \cdot G + 0.0722 \cdot B$$
-  - dark mode and light mode palettes tested independently across all surface elevation tokens
-- **Touch Target & Keyboard Navigation**:
-  - touch targets enforce minimum $24\times 24\text{px}$ bounding box with $\ge 8\text{px}$ spacing (or minimum $44 \times 44\text{px}$ without spacing)
-  - keyboard focus indicators must be explicitly styled (`outline: 2px solid var(--color-focus-ring)`); CSS rules removing outline (`outline: none`) without custom focus styles are strictly rejected
+#### Mode A: In-App Product UI
+- [ ] **IA & URL-as-State**: filters, tabs, pagination, and deep-linkable drawers specify URL search-param persistence.
+- [ ] **Surface Selection**: Inline vs Popover vs Drawer vs Modal vs Route justified; modals specify focus trap, `Esc` close, focus restoration, and `overscroll-behavior: contain`.
+- [ ] **Destructive & Async Ergonomics**: reversible actions use optimistic UI + Undo Toast; scoped deletes name the exact object; irreversible actions require typed confirmation.
+- [ ] **Data-Dense Scannability**: numeric/monetary/live columns specify `tabular-nums`, sticky headers, `scroll-margin-top`, and accessible truncation disclosure.
 
-### 7. Generative UI (GenUI) Component Governance (`GENUI-GOVERNANCE LOCK`)
-- **Strict Component Palette Boundaries**:
-  - AI-assembled dynamic interfaces restricted to an approved allowlist of design system components; unapproved raw HTML or rogue layout combinations rejected fail-closed:
-    ```json
-    {
-      "allowed_components": [
-        "Card", "MetricCard", "TimeSeriesChart", "DataTable", "AlertBanner"
-      ],
-      "forbidden_combinations": [
-        ["AlertBanner", "HeroHeadline"]
-      ],
-      "max_dynamic_depth": 3
-    }
-    ```
-  - deterministic fallback UI renders immediately if generative assembly violates layout constraints or fails client validation
+#### Mode B: Landing & Showcase Surfaces
+- [ ] **Hero Viewport Containment**: desktop (`>= 1280px`) hero fits within `100dvh` (`min-h-[100dvh]`), top padding `<= 6rem` (`pt-24`), headline `<= 2` lines, subtext `<= 20` words, primary CTA visible without scroll; anti-center bias respected when `DESIGN_VARIANCE > 4`.
+- [ ] **Section & Eyebrow Discipline**: at most `1` uppercase tracking eyebrow per `3` sections; `>= 4` distinct layout families per `8` sections; max `2` consecutive zigzag blocks; no blank bento tiles; logo wall separated below hero (Logo-Only rule).
 
-### 8. Automated Design Token Export Pipeline (`TOKEN-EXPORT LOCK`)
-- **Single Source of Truth via Style Dictionary**:
-  - design tokens (colors, typography, spacing, shadows, radii) exported through an automated build pipeline (Figma Tokens / Style Dictionary $\rightarrow$ CSS/Tailwind variables):
-    ```css
-    :root {
-      --color-primary-500: #1a56db;
-      --color-surface-base: #ffffff;
-      --color-text-primary: #111827;
-      --color-focus-ring: #3b82f6;
-      --spacing-grid-base: 4px;
-      --radius-interactive: 8px;
-    }
-    ```
-  - manual hardcoding of hex values or arbitrary pixel margins into component styles is strictly prohibited
+---
 
-### 9. Interaction Performance & Frame Budgets
-- **Web Vitals & Interaction Latency**:
-  - Interaction to Next Paint (INP) targeted at $\le 200\text{ms}$; visual feedback on click/tap rendered within $\le 100\text{ms}$
-  - CSS transitions and animations constrained to GPU-accelerated properties (`transform`, `opacity`); layout-triggering animations (`width`, `height`, `top`) prohibited in hover/active states
+### 3. Component Anatomy, Copy & Web Micro-Craft Gate (`STATE-AND-SURFACE LOCK`)
 
-### 10. Operational Failure Modes & Escalation Protocols
-- **Layout Shift Prevention**:
-  - skeleton loaders and image containers must reserve explicit aspect ratios (`aspect-ratio: 16/9`) to maintain Cumulative Layout Shift ($CLS \le 0.1$)
-- **Streaming UI Stalls**:
-  - client timeouts detected if SSE token stream drops for $> 5\text{s}$; fallback banner with retry button presented
+- [ ] **Complete 5 Core States**: `Default`, `Loading` (geometry-matched skeleton, `CLS = 0`), `Empty` (clear copy + primary action), `Error` (factual diagnosis, zero `!`, actionable retry/recovery), and `Unauthorized` defined for every screen/widget.
+- [ ] **Composition Anatomy (`vercel-composition-patterns`)**: `ui-component-spec.json` models compound subcomponents (`Root`, `Trigger`, `Content`), slot delegation, and explicit variants (`<= 2` stylistic booleans; zero layout-toggling boolean sprawl).
+- [ ] **Copy & Punctuation Craft (`web-design-guidelines`)**:
+  - True Unicode ellipsis (`…`) used on async states (`Loading…`) and triggers opening secondary flows (`Rename…`, `Export…`).
+  - Unified CTA label per user intent across nav, hero, and footer; desktop CTAs fit on 1 line (`<= 3` words).
+  - Zero em-dashes (`—`) in UI strings; zero ungrounded metrics (`92%`, `4.1×`), fake testimonials, or fabricated SVG brand swirls.
+- [ ] **Touch, Input & Dark Mode Polish**: mobile inputs `>= 16px` (prevent iOS Safari zoom); touch targets `>= 44×44px` (`>= 24×24px` WCAG 2.2 AA minimum with spacing); `:active` unified at `scale-[0.96]` (150ms `ease-out`, disabled excluded); hover guarded in `@media (hover: hover)`; `color-scheme: dark` declared on dark themes.
 
-### 11. Gate Review & Contract Conformance Verification Table
-| Verification Gate | Target Invariant | Required Tool / Command | Pass Criteria |
+---
+
+### 4. Tokens, Accessibility & Legal Compliance Gate
+
+- [ ] **Two-Tier DTCG 2025.10 Tokens**: `DESIGN.md` (`MASTER` + page overrides) uses Two-Tier tokens (`Primitive -> Semantic`, max `<= 3` component exceptions) in `$value`/`$type` syntax; zero raw hex/px values or manual `dark:` surface overrides in component specs.
+- [ ] **Contrast Dual Gate**:
+  - *Legal Floor (WCAG 2.2 AA)*: $CR \ge 4.5:1$ normal text, $\ge 3.0:1$ large text and UI controls/focus rings.
+  - *Perceptual Target (APCA)*: $L_c \ge 75$ body text, $L_c \ge 60$ headlines/controls, verified in both light and dark modes.
+- [ ] **Accessibility & Regulatory Scope**: EAA (`WCAG 2.2 AA / EN 301 549`) and US ADA Title II (`WCAG 2.1 AA`, `2027-04-26` / `2028-04-26` / HHS May 2026) targets flagged when in scope; focus ring visible (`>= 2px` offset, 2.4.11 Focus Not Obscured); WCAG 3.0 never claimed as conformance target.
+- [ ] **Dark-Pattern Review**: `dark_pattern_review` recorded in `ux-flow-spec.json` checking all 6 classes (nagging, obstruction, sneaking, forced action, confirmshaming, trick questions) per DSA Art 25/26 & FTC.
+
+---
+
+### 5. AI, Agentic UX & GenUI Gate (when in scope)
+
+- [ ] **5 AI States & Red Path**: `Generating`, `Uncertain`, `Fallback`, `Overridden`, `Corrected` specified; calibrated microcopy + `"Why am I seeing this?"` provenance + preview-before-apply + primary undo.
+- [ ] **EU AI Act Article 50**: upfront `<AIDisclosureBanner>` before first meaningful interaction (live 2 Aug 2026) and C2PA metadata spec for AI media (2 Dec 2026).
+- [ ] **Trust Ladder & Background UX**: `agentic_autonomy.autonomy_tier` declared (`<=` earned user trust); status surface, notification contract, async interrupt, and completion handoff specified for background agents.
+- [ ] **GenUI & Dual-Audience**: component allowlist + forbidden combinations + deterministic fallback defined on stateless MCP 2026-07-28; `agent_operability` declared when browser agents operate the UI (WebMCP).
+
+---
+
+### 6. Machine Verification Gate Table
+
+| Gate | Invariant | Verification Method / Tool | Pass Criteria |
 | :--- | :--- | :--- | :--- |
-| **Three Dials Setting** | Dials within calibrated bounds | Design spec review | Explicit ratings 1–10 declared |
-| **Contrast Ratio** | $CR \ge 4.5:1$ (normal text) | Axe / Lighthouse Accessibility | 0 WCAG 2.2 AA contrast violations |
-| **Eyebrow Ratio** | $\le 1 \text{ eyebrow} / 3 \text{ sections}$ | Section count audit | Cap strictly respected |
-| **Hero Viewport** | Height $\le 100\text{vh}$ on desktop | Viewport inspector at 1280px | 0 scroll required for CTA |
-| **Focus Indicator** | Visible outline on focus | Keyboard tab traversal test | Non-zero visible focus ring |
-| **Touch Target Size** | Size $\ge 24\text{px}$ + $8\text{px}$ margin| Chrome DevTools Elements audit | 0 sub-size tap targets |
-| **Design Tokens** | 0 hardcoded hex codes | `rg -i "#[0-9a-f]{3,6}" src/components/` | 0 direct hex codes |
-| **UI Spec Contract** | Valid `ui-spec.json` | `python3 core/scripts/validate-contracts.py` | 100% schema compliant |
-
-### 12. 2026-10 Modernization Gates (DTCG 2025.10, Dark Patterns, ADA Title II, Agents-as-Users)
-
-| Verification Gate | Target Invariant | Required Tool / Command | Pass Criteria |
-| :--- | :--- | :--- | :--- |
-| **DTCG Format Conformance** | Token files use Format Module 2025.10 `$value`/`$type` | DTCG format validator / Style Dictionary v4 DTCG mode | 0 legacy `{value}` syntax mixed in; files validate before pipeline adoption |
-| **Dark-Pattern Review** | Consent / cancellation / subscription / upsell flows reviewed | ux-flow-spec.json `dark_pattern_review` | 6 classes checked (nagging, obstruction, sneaking, forced action, confirmshaming, trick questions); findings recorded |
-| **ADA Title II (US public sector)** | WCAG 2.1 AA target + deadline stated | Flow spec accessibility notes | 2027-04-26 (≥50k) / 2028-04-26 (<50k) / HHS May-2026 flagged when in scope |
-| **Agents-as-Users Operability** | `agent_operability` declared when agents operate the UI | ux-flow-spec.json `agent_operability` | Entry points + machine-readable affordances + courtesy rules present |
-| **Autonomy Tier Declaration** | `agentic_autonomy.autonomy_tier` enum-conformant | ux-flow-spec.json `agentic_autonomy` | Tier declared for every agentic feature; tier ≤ earned trust (Autopilot Trap guard) |
-| **Usability Evidence Source** | Real-participant evidence for blocking decisions | Review notes / research-report.json | Synthetic-user results marked hypothesis-only; AI-moderated interviews admissible with tool + participant count recorded |
-| **WCAG 3.0 Readiness** | Findings phrased for future scoring conformance | Accessibility notes wording | WCAG 2.2 AA remains the target; no claims of "WCAG 3.0 conformance" |
+| **Design Contracts** | Schema valid & `flow_id` linked | `python3 core/scripts/validate-contracts.py` | 100% pass across `ux-flow-spec`, `ui-component-spec`, `design-tokens-spec` |
+| **Token Hygiene** | Zero raw hex or Tier-1 leakage | `rg -i "#[0-9a-f]{3,6}" src/components/` | 0 hardcoded hex in component markup |
+| **WCAG 2.2 AA + APCA** | Legal contrast + perceptual $L_c$ | Axe / Lighthouse / APCA check | 0 WCAG 2.2 AA violations; $L_c \ge 75 / 60$ |
+| **Composition Hygiene** | `<= 2` stylistic booleans | Prop surface & `composition_anatomy` audit | Compound subcomponents used for multi-region UI |
+| **Multi-Viewport & INP** | Zero overflow at `320px`, INP `<= 200ms` | Bounded 2-pass visual QA (`1280px` & `390px`) | 0 horizontal overflow, `CLS <= 0.1`, `INP <= 200ms` |
+| **Prototype / Workbench** | Multi-screen (`> 2`) flow exercised | Figma prototype or `interactive-component-workbench` | All transitions + 5/6 states verified |

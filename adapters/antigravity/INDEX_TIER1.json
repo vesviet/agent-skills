@@ -511,7 +511,7 @@
       "type": "skill-md",
       "description": "Use when generating machine-readable DESIGN.md documents, specifying YAML frontmatter design toke...",
       "url": "core/skills/frontend/design-md-specification/SKILL.md",
-      "digest": "sha256:b8b867206a326a66c56b20df6f6a4fc46640989781c45693d8cfaaaa04974786"
+      "digest": "sha256:b06efb80c3c5c4267a2a425fac0128f41b824f2de0d3e34f038dee6feb001c09"
     },
     {
       "name": "design-procedural-generation",
@@ -525,21 +525,21 @@
       "type": "skill-md",
       "description": "Review UX flows, visual hierarchy, interaction patterns, and design-system alignment against spec...",
       "url": "core/skills/foundation/design-review/SKILL.md",
-      "digest": "sha256:af1b7411e8526667f3486d72d0df5a3da190fc037e40fa9768166013102b95a1"
+      "digest": "sha256:0665b7fd343e29cd5f04f94ca759689815aadbf518d225bb1284f1c31dd6831b"
     },
     {
       "name": "design-system-engineering",
       "type": "skill-md",
       "description": "Use when engineering design token architectures, calculating concentric border radii, establishin...",
       "url": "core/skills/frontend/design-system-engineering/SKILL.md",
-      "digest": "sha256:337288279d39fc35c174372cd4387c7cc86aee9f6e65589f2a4d28df1af8dcb6"
+      "digest": "sha256:439f198c13ef31ca80b690a19cf89740fc840dd086e83ba2c32af6779849b7e3"
     },
     {
       "name": "design-ux-flow",
       "type": "skill-md",
       "description": "Design or refine a UX flow by defining user goals, preserved behavior, screen states, interaction...",
       "url": "core/skills/foundation/design-ux-flow/SKILL.md",
-      "digest": "sha256:768584d0247d99317c3cf62d1b4d578024bc1d439db7a5a517ce4de7a35b92f4"
+      "digest": "sha256:976187a655c57b4b0d07f5751826b5475d48efb2dbc8c53d08452ec2ca2d3939"
     },
     {
       "name": "develop-b2b-catalog-feature",

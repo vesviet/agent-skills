@@ -55,8 +55,8 @@ Engineer scalable design token architectures, calculate concentric border radii 
   - *Constant hue angle*: Hold hue angle strictly constant ($\Delta H = 0^\circ$) across each functional color ramp.
   - *Chroma profile*: Taper to near-zero chroma at endpoints (`50` and `950`); peak chroma mid-ramp (`500`–`600`).
   - *Contrast adjustments*: Adjust OKLCH Lightness ($L$) while holding hue angle and chroma steady.
-- **APCA (Advanced Perceptual Contrast Algorithm) Standards**:
-  - Contrast is evaluated using APCA Lightness Contrast ($L_c$) based on visual mass:
+- **Contrast Dual-Gate (WCAG 2.2 AA Legal Floor + APCA Perceptual Target)**:
+  - Every semantic foreground/background token pair must clear **WCAG 2.2 AA** ($CR \ge 4.5:1$ normal text, $\ge 3.0:1$ large text/controls/focus rings) as the non-negotiable legal baseline AND calibrate visual weight under **APCA Lightness Contrast ($L_c$)**:
     - *Body text* (columns, dense reading, $< 24\text{px}$): $L_c \ge 75$ (preferred $L_c \ge 90$).
     - *Non-body text* (headlines, navigation labels, button labels): $L_c \ge 60$.
     - *Large text* ($\ge 36\text{px}$ regular or $\ge 24\text{px}$ bold): $L_c \ge 45$.
@@ -64,6 +64,8 @@ Engineer scalable design token architectures, calculate concentric border radii 
     - *Solid icons and interactive UI component boundaries*: $L_c \ge 30$.
     - *Discernible non-text dividers and subtle borders*: $L_c \ge 15$.
     - *Placeholder / disabled text target*: $L_c \approx 30$.
+- **Domain-Grounded Palette Diversity**:
+  - Select base surfaces and accent hue from the project's Domain Archetype (`core/roles/references/ui-ux-designer-anti-slop-standards.md` §2.2); never ship the same dark-slate + emerald or beige + brass palette blindly across unrelated domains. Declare `color-scheme: dark` on dark-theme roots.
 - **Token Portability & Syntax**:
   - Tokens must be exported to CSS variables and DTCG Design Tokens Format Module 2025.10 JSON (first stable release; `$value`/`$type` syntax) for seamless Figma Variables synchronization; Style Dictionary v4 DTCG mode, Tokens Studio, and Terrazzo are the reference interchange consumers.
   - Validate every token file against the DTCG format before pipeline adoption; reject files that mix legacy `{value}` syntax with DTCG `$value`.

@@ -37,6 +37,11 @@ Author authoritative, machine-readable `DESIGN.md` architecture files and YAML f
   - All numerical data tables, order counts, and financial summaries must enforce OpenType tabular figures:
     `font-variant-numeric: tabular-nums;` (or `font-feature-settings: "tnum" 1;`).
   - This prevents horizontal column jitter during live data polling and stream updates.
+- **MASTER + Page Override Hierarchy (`ui-ux-pro-max` pattern)**:
+  - Author `DESIGN.md` as the authoritative **MASTER** token, typography, palette, and component contract grounded in the project's **Domain Archetype** (avoiding unprompted dark-slate/emerald or purple-glow defaults).
+  - When specific routes require localized adjustments (e.g., high-density telemetry view vs onboarding flow), document explicit **Page Overrides** inside `DESIGN.md` (or `design-system/pages/<slug>.md`) without forking Tier 1 primitive ramps.
+- **Contrast Dual-Gate**:
+  - Verify both the **WCAG 2.2 AA legal floor** ($CR \ge 4.5:1$ normal text, $\ge 3.0:1$ large text/controls) and the **APCA perceptual target** ($L_c \ge 75$ body text, $L_c \ge 60$ headlines/controls) across light and dark modes.
 - **Mobile Touch Affordance Guard**:
   - All interactive buttons, inputs, and touch targets must provide a minimum bounding hit area of $\ge 44\text{px} \times 44\text{px}$ on touch-enabled viewports.
 
