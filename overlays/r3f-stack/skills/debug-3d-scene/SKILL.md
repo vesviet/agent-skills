@@ -22,9 +22,10 @@ Use this skill when a 3D experience behaves incorrectly and the fix depends on u
 - isolate whether the bug lives in assets, scene graph, interaction math, materials, or lifecycle
 - treat shared materials, shaders, merged geometry, and reused interaction hooks as blast-radius multipliers
 - verify the original issue and nearby scene regressions before closing the fix
-- Utilize Chrome DevTools Shader Editor tab to inspect WebGPU pipelines and shader compilation errors natively.
-- Use Spector.js in development to capture and replay WebGL draw calls frame-by-frame while disabling it in production.
+- Utilize Chrome DevTools Shader Editor tab to inspect **WebGPU** pipelines and WGSL/TSL shader compilation errors natively.
+- Use **Spector.js** in development strictly for **WebGL2** pipelines (it does not capture WebGPU) to replay draw calls frame-by-frame, disabling it in production.
 - Leverage R3F DevTools to analyze scene graphs, geometry vertex counts, material types, and render call counts.
+- Inspect common AI-3D-slop root causes early: `new Vector3()`/`setState()` inside `useFrame`, `SRGBColorSpace` applied to normal/ORM maps, sloppy `near`/`far` Z-fighting, shadow acne bias, and `material.dispose()` leaking attached textures.
 
 ## Suggested Process
 

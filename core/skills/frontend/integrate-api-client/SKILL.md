@@ -32,11 +32,10 @@ Use this skill when frontend code needs to call a backend API or when an existin
 - use functional updater syntax in `setQueryData((old) => ...)` to prevent stale state captures
 - server state must stay in the query cache; do not duplicate server responses in local `useState`
 - if any code in this change was AI-generated, validate it per the risk tier defined in the frontend-developer role before accepting
-- **Orval pipeline mandatory**: OpenAPI → TanStack Query v5 + MSW v2 + TS types; `queryOptions` factories
-- **React 19 `use()` for RSC**: read promises in Server Components; TanStack Query for client interactivity
-- **React 19 `useActionState` for forms**: pending state, error handling, progressive enhancement
-- **`useMutation` only for complex**: cache manipulation, pagination, optimistic UI; simple forms → `useActionState`
-- **Streaming AI responses**: `ReadableStream` + `TextDecoderStream` + `useReducer` + cancellation hooks
+- **Stack-Adaptive Type-Safe Contract Pipeline**: match the repo's transport layer — use Orval (`OpenAPI -> TanStack Query v5 + MSW v2 + TS types`) when an OpenAPI spec exists, or tRPC / GraphQL codegen / typed Server Actions + Zod when matching the repo; never force Orval onto non-OpenAPI stacks or leave responses untyped
+- **React 19 `use()` vs Client Query Cache**: read promises with `use()` in Server Components when RSC applies; use TanStack Query (`queryOptions` factories) for interactive client caching, background refetch, and deduplication
+- **Form Actions vs Complex Mutations**: prefer React 19 `useActionState` + server validation for standard form submissions, and `useMutation` for cache-heavy/optimistic mutations
+- **Streaming AI responses**: `ReadableStream` + `TextDecoderStream` + `useReducer` + `AbortController` cancellation hooks
 
 ## Suggested Process
 
@@ -128,12 +127,10 @@ Cover:
 ## Checklist
 
 - [ ] local data-fetching pattern reviewed
-- [ ] Orval configured for OpenAPI → TanStack Query v5 + MSW v2 + TS types
-- [ ] `queryOptions` factories used for all query configurations (no magic string keys)
-- [ ] React 19 `use()` used in Server Components for initial data fetching
-- [ ] TanStack Query v5 used for client-side interactivity (cache invalidation, refetching, deduplication)
-- [ ] Simple form mutations use `useActionState` with `<form action={submitAction}>`
-- [ ] Complex mutations use `useMutation` with full optimistic lifecycle (`onMutate`/`onError`/`onSettled`)
+- [ ] Repo-aligned type-safe contract pipeline active (Orval for OpenAPI, or tRPC/GraphQL/Zod Server Actions)
+- [ ] `queryOptions` factories used when TanStack Query v5 is active (no magic string keys)
+- [ ] Server-rendered initial data hoisted to RSC `use()` / route loaders where applicable; client cache used for interactivity
+- [ ] Standard form mutations use `useActionState` / native form actions; complex cache/optimistic mutations use `useMutation` (`onMutate`/`onError`/`onSettled`)
 - [ ] Functional updater syntax: `setQueryData((old) => ...)` — no stale captures
 - [ ] Server state stays in query cache; no `useState` duplication
 - [ ] Streaming AI responses: `ReadableStream` + `TextDecoderStream` + `useReducer`

@@ -20,23 +20,24 @@ This reference checklist provides operational agentic web standards, protocol di
   - markdown structure strictly adheres to machine-parseable key-value blocks; ambiguous natural language descriptions in machine-read sections rejected
   - automated CI curl probes verify header casing and endpoint status before deployment
 
-### 2. RFC 8414 & RFC 8707 OAuth Discovery Endpoints (`SCHEMA-EXACT LOCK`)
+### 2. RFC 8414, RFC 9728 & RFC 8707 OAuth Discovery + CIMD (`SCHEMA-EXACT LOCK`)
 - **Protected Resource & Authorization Server Metadata**:
-  - `/.well-known/oauth-protected-resource` and `/.well-known/oauth-authorization-server` return valid JSON conforming to RFC 8414 and RFC 8707 schemas
-  - authorization metadata mandates PKCE support (`code_challenge_methods_supported` includes `S256`)
+  - `/.well-known/oauth-protected-resource` (RFC 9728) and `/.well-known/oauth-authorization-server` (RFC 8414) return valid JSON; protected APIs emit `WWW-Authenticate: Bearer resource_metadata="https://<domain>/.well-known/oauth-protected-resource"`
+  - `agent_auth.skill` points to canonical `https://<domain>/auth.md`; `register_uri` and `claim_uri` verified
+  - authorization metadata mandates PKCE support (`code_challenge_methods_supported` includes `S256`) and enables **Client ID Metadata Documents (CIMD)** (`client_id_metadata_document_supported: true` / `clientIdMetadataDocumentEnabled`) ahead of DCR (RFC 7591) deprecation
   - token endpoint auth methods (`token_endpoint_auth_methods_supported`) specify supported client authentication types explicitly (`private_key_jwt`, `tls_client_auth`)
   - rotating JWKS endpoints (`jwks_uri`) enforce cache TTL $\le 1\text{h}$ with automated zero-downtime key rotation
 - **Resource Indicators (RFC 8707) Enforcement**:
   - authorization requests must specify the exact `resource` URI parameter matching the intended target API
   - wildcards or omitted resource parameters in cross-domain agent delegations rejected fail-closed
 
-### 3. Model Context Protocol (MCP) Server Card Specification (`MCP-SERVER-INTEGRITY LOCK`)
-- **Standardized Server Card Manifest**:
-  - `/.well-known/mcp/server-card.json` validates against the official MCP server-card schema specification
-  - card accurately advertises supported transport types (stateless HTTP SSE), tool registry endpoints, and authentication requirements
-  - advertised capabilities match deployed MCP server endpoints with zero schema drift; unmapped tools rejected fail-closed
+### 3. Model Context Protocol (MCP) Server Card, Registry & AI Catalog (`MCP-SERVER-INTEGRITY LOCK`)
+- **Standardized Server Card Manifest & Registry**:
+  - remote servers expose `/.well-known/mcp-server-card` (SEP-2127 extension) alongside `/.well-known/mcp/server-card.json` (scanner compatibility), while installable packages register `server.json` on the Official MCP Registry with DNS/GitHub namespace verification
+  - card accurately advertises supported transport types (`http` streamable stateless HTTP + SSE response encoding), tool registry endpoints, and authentication requirements
+  - `/.well-known/ai-catalog.json` indexes typed `application/mcp-server-card+json` and `application/a2a-agent-card+json` entries without stale `/.well-known/agent.json` references
 - **Tool Schema Sandboxing**:
-  - tool input parameters must provide strict JSON Schema Draft 2020-12 definitions with complete descriptions
+  - tool input parameters must provide strict JSON Schema definitions with complete descriptions
   - parameter injections containing unescaped shell meta-characters (`$()`, `&&`, `;`, `|`) are filtered before tool execution
 
 ### 4. RFC 8288 HTTP Web Linking & Response Headers
@@ -88,18 +89,26 @@ This reference checklist provides operational agentic web standards, protocol di
     ```
   - maximum token TTL clamped to $\le 1\text{h}$; automatic key rotation verified
 
-### 7. Agentic Commerce Protocols (x402, UCP, MPP, ACP) Verification
+### 7. Agentic Commerce Protocols (`x402 v2`, `MPP`, `UCP`, `ACP`, `AP2`) Verification
 - **Machine-to-Machine Payment Standards**:
-  - payment endpoints implement x402 payment headers (`X-402-Payment-Required`) or Merchant Payment Protocol (MPP) schemas
-  - User Context Protocol (UCP) and Agentic Commerce Protocol (ACP) manifests return valid schemas or are explicitly marked `not_implemented` rather than returning broken payloads
+  - x402 v2 endpoints return HTTP `402 Payment Required` with challenge in `PAYMENT-REQUIRED` header + JSON body, accept signed proof in `PAYMENT-SIGNATURE`, and emit receipts in `PAYMENT-RESPONSE` (never emit legacy `X-PAYMENT` or `X-402-*` headers from server)
+  - Stripe **MPP** (Machine Payments Protocol) verifies cryptographic proofs with idempotency + velocity caps
+  - Google+Shopify **UCP** (**Universal Commerce Protocol**, `/.well-known/ucp`) handles product/checkout negotiation, OpenAI+Stripe **ACP** exposes REST checkout/payment feeds, and Google/FIDO **AP2** governs signed delegated purchase mandates (keep UCP checkout separate from AP2 authorization)
 
-### 8. Public Metadata Sanitization & Live Domain Integrity (`NO-SECRETS LOCK` / `NO-DUMMY-DOMAIN LOCK`)
+### 8. Content Negotiation, Content Signals & Web Bot Auth (RFC 9421)
+- **Markdown Negotiation & Content Signals**:
+  - pages supporting agent reading respond to `Accept: text/markdown` with `Content-Type: text/markdown; charset=utf-8`, `Vary: Accept`, and token counts (`x-markdown-tokens`)
+  - `robots.txt` declares explicit **Content Signals** (`ai-train`, `search`, `ai-input`) alongside `/llms.txt`
+- **Web Bot Auth (RFC 9421)**:
+  - authenticated bots sign HTTP requests via `Signature` / `Signature-Input` / `Signature-Agent` headers verified against JWKS directories published at `/.well-known/http-message-signatures-directory`
+
+### 9. Public Metadata Sanitization & Live Domain Integrity (`NO-SECRETS LOCK` / `NO-DUMMY-DOMAIN LOCK`)
 - **Zero Secrets in Public Discovery Files**:
   - discovery files (`auth.md`, well-known JSON, server cards) thoroughly audited to ensure zero private keys, API secrets, or OAuth client secrets are exposed
 - **Live Resolvable Domains Only**:
   - placeholder domains (`example.com`, `dummy.local`) strictly prohibited; all URLs in discovery files must be live, resolvable HTTPS endpoints owned by the deployment
 
-### 9. Registry Synchronization & Dual-Index SHA-256 Invariant (`ZERO-DRIFT-REGISTRY-LOCK`)
+### 10. Registry Synchronization & Dual-Index SHA-256 Invariant (`ZERO-DRIFT-REGISTRY-LOCK`)
 - **Zero-Drift Registry Parity**:
   - machine registry (`core/a2a/.well-known/agent-registry.json`) and Antigravity adapter index (`adapters/antigravity/role-skill-index.json`) must maintain exact 100% bitwise SHA-256 synchronization:
     $$H_{\text{core}} \equiv H_{\text{adapter}} = \text{SHA256}(\text{role-skill-index.json})$$
@@ -114,12 +123,12 @@ This reference checklist provides operational agentic web standards, protocol di
 - **DNS Record Validation**:
   - TXT and SRV discovery records verified with DNSSEC validation across authoritative nameservers (`dig +dnssec _agent._tcp.domain.internal SRV`)
 
-### 10. Gate Review & Contract Conformance Verification Table
+### 11. Gate Review & Contract Conformance Verification Table
 | Verification Gate | Target Invariant | Required Tool / Command | Pass Criteria |
 | :--- | :--- | :--- | :--- |
-| **Auth.md Syntax** | RFC-compliant headers | `curl -sS https://domain.internal/auth.md` | H1 `# Auth.md` present; endpoints valid |
-| **Scanner Check** | 19/19 checks passing | `agent-readiness-scanner --target domain.internal` | Score == 19/19 |
-| **Dual-Index Parity** | $H_{\text{core}} = H_{\text{adapter}}$ | `python3 core/scripts/generate-index.py --check` | 0 bitwise drift detected |
-| **A2A Schema Parity** | Structural Part validation | `python3 core/scripts/validate-contracts.py` | 100% schema compliant |
-| **Zero Secrets Gate** | Entropy $< 4.5$, 0 keys | `trufflehog filesystem core/a2a/` | 0 secret findings |
+| **Auth.md & Markdown Syntax** | `# Auth.md` & `Accept: text/markdown` | `curl -sS https://domain.internal/auth.md` | H1 `# Auth.md` & `"agentic registration"` present; `Vary: Accept` on markdown |
+| **Scanner Check** | 19/19 checks passing (L0–L5) | `curl -s "https://isitagentready.com/check?url=YOUR_DOMAIN"` | Score 19/19 or documented blockers with owner |
+| **Tier 1 Manifest & Parity** | Schema 0.2.0 + SHA-256 digests | `python core/scripts/validate-discovery-manifests.py` & `python core/scripts/generate-tier1-index.py --check` | Exit code 0; zero drift across 184+ skills |
+| **A2A Schema Parity** | Structural Part validation | `python core/scripts/validate-contracts.py` & `python core/scripts/validate-a2a-compliance.py` | 100% conforming to unified Part model |
+| **Zero Secrets Gate** | Entropy $\le 4.5$, 0 leaked keys | `python core/scripts/compact-context.py --validate` / TruffleHog | 0 secret findings in `core/a2a/` and well-known JSON |
 | **DNSSEC Integrity** | RRSIG authenticated | `dig +dnssec domain.internal TXT` | `ad` flag set in DNS response |

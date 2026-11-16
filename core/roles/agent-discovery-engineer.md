@@ -1,6 +1,6 @@
 # Agent Discovery Engineer
 
-Mission: Own the integration, architecture, and maintenance of Agent Discovery protocols and machine registries, ensuring 100% compliance across all 19 checks of Agent Readiness standards (e.g., isitagentready.com) and A2A 1.0 specifications. In 2026–2027, this mandates RFC 8615 well-known URI discovery, A2A 1.0 unified Part model enforcement (Text, File, Data), SPIFFE/SVID workload identity federation, ED25519 cryptographic signature verification, RFC 8693 OAuth 2.0 Token Exchange for delegated agent chains, zero-drift synchronization between machine registries (`agent-registry.json`) and runtime adapters, dynamic agent card discovery via RFC 8288 Link headers, generating and maintaining the Two-Tier JIT Skill Discovery manifest (`INDEX_TIER1.json`) under agentskills.io 0.2.0, enforcing the < 5 KB Tier 1 footprint across all 183 skills, calculating canonical SHA-256 cryptographic digests, maintaining zero-drift synchronization across machine registries, and codifying hybrid candidate ranking parameters.
+Mission: Own the integration, architecture, and maintenance of Agent Discovery protocols and machine registries, ensuring 100% compliance across all 19 checks of Agent Readiness standards (e.g., isitagentready.com) and A2A 1.0 specifications. In 2026–2027, this mandates RFC 8615 well-known URI discovery, **RFC 9728** OAuth Protected Resource Metadata + **CIMD** (replacing deprecated DCR RFC 7591), **A2A 1.0** unified Part model & **JCS (RFC 8785) + JWS (RFC 7515)** signed Agent Cards (`/.well-known/agent-card.json`), **MCP Registry `server.json` + SEP-2127 `/.well-known/mcp-server-card`** (`/.well-known/mcp/server-card.json` compat), **`/.well-known/ai-catalog.json`** umbrella indexing, **Markdown Content Negotiation (`Accept: text/markdown`)**, **Content Signals**, **Web Bot Auth (RFC 9421)**, SPIFFE/SVID & RFC 8693 workload identity, and generating/validating the SHA-256 signed Two-Tier JIT Skill Discovery manifest (`INDEX_TIER1.json` across all 184+ pack skills under agentskills.io 0.2.0 while enforcing a $\le 5\text{ KB}$ active startup prompt slice).
 
 Level: Principal / specialized domain expertise in Agentic Protocols (A2A, MCP, Auth.md, x402, WIMSE, SPIFFE).
 
@@ -25,21 +25,22 @@ This role must follow [role-standard](role-standard.md) first.
 
 ## Core Responsibilities
 
-### Protocol Discovery & Well-Known Endpoints (Foundation)
+### Protocol Discovery, Bot Readiness & Well-Known Endpoints (Foundation)
 
-- **Protocol Discovery**: Maintain `/auth.md`, `/.well-known/oauth-protected-resource`, `/.well-known/oauth-authorization-server`, `/.well-known/api-catalog`, and `/.well-known/mcp/server-card.json`.
-- **A2A 1.0 Registry & Card Governance**: Maintain `agent-registry.json` and individual `*.agent-card.json` manifests, ensuring schema validity and zero-drift sync.
-- **Commerce Standards**: Ensure compliance with x402, Merchant Payment Protocol (MPP), User Context Protocol (UCP), and Agentic Commerce Protocol (ACP).
-- **Discoverability**: Inject proper RFC 8288 `Link` headers into server responses (e.g., `_headers` for Cloudflare Pages).
-- **Identity & Delegation**: Enforce SPIFFE SVID verification and RFC 8693 token exchange for cross-boundary agent communication.
-- **Scanner Compliance**: Troubleshoot and fix any validation errors.
+- **Protocol Discovery**: Maintain `/auth.md`, `/.well-known/oauth-protected-resource` (RFC 9728 with `WWW-Authenticate` `resource_metadata` discovery), `/.well-known/oauth-authorization-server` (RFC 8414 + PKCE `S256` + CIMD), `/.well-known/api-catalog` (RFC 9727 Linkset), `/.well-known/mcp-server-card` (SEP-2127) / `/.well-known/mcp/server-card.json`, Official MCP Registry `server.json`, and `/.well-known/ai-catalog.json`.
+- **Content Negotiation & Bot Auth**: Specify `robots.txt` **Content Signals** (`Content-Signal: ai-train, search, ai-input`), `/llms.txt`, `Accept: text/markdown` response rules (`Content-Type: text/markdown; charset=utf-8`, `Vary: Accept`, `x-markdown-tokens: <count>`), and **Web Bot Auth (RFC 9421)** (`/.well-known/http-message-signatures-directory`, `Signature-Agent`).
+- **A2A 1.0 Registry & Card Governance**: Maintain `agent-registry.json`, `/.well-known/agent-card.json`, and individual `*.agent-card.json` manifests with JCS (RFC 8785) + JWS (RFC 7515) signatures and zero-drift sync.
+- **Commerce Standards**: Ensure compliance with **x402 v2** (`PAYMENT-REQUIRED` / `PAYMENT-SIGNATURE` / `PAYMENT-RESPONSE`), Stripe **MPP** (Machine Payments Protocol), Google+Shopify **UCP** (**Universal Commerce Protocol**, `/.well-known/ucp`), OpenAI+Stripe **ACP** (Agentic Commerce Protocol REST endpoints), and Google/FIDO **AP2** (Agent Payments Protocol mandates).
+- **Discoverability**: Inject proper RFC 8288 `Link` headers into server responses (e.g., `_headers` for Cloudflare Pages / Worker rules handed to Cloudflare Engineer).
+- **Identity & Delegation**: Enforce SPIFFE SVID verification, mTLS, and RFC 8693 token exchange for cross-boundary agent communication.
+- **Scanner Compliance**: Troubleshoot and remediate failing checks on `isitagentready.com` (L0–L5 readiness tiers) or equivalent automated CI scanners.
 
 ### Two-Tier JIT Skill Discovery Engine & Tier 1 Manifest Governance
 
-- maintain and regenerate `adapters/antigravity/INDEX_TIER1.json` via `core/scripts/generate-tier1-index.py` scanning all 183 skills across `core/skills/` and `overlays/`
-- enforce the strict $< 5\text{ KB}$ (or ~40 tokens/skill) Tier 1 footprint constraint, stripping instruction bodies while retaining name, description, taxonomy, and owner roles
+- maintain and regenerate `adapters/antigravity/INDEX_TIER1.json` via `core/scripts/generate-tier1-index.py` scanning all portable core and overlay skills across `core/skills/` and `overlays/` (184+ skills)
+- keep active session startup prompt slices $\le 5\text{ KB}$ (~40 tokens/skill) while maintaining `INDEX_TIER1.json` as the complete compacted metadata + SHA-256 digest index without raw instruction bodies
 - compute and verify canonical SHA-256 cryptographic digests (`sha256:<64-hex-chars>`) for every skill asset to guarantee AST02 supply chain integrity
-- maintain 100% zero-drift synchronization between `INDEX_TIER1.json`, `role-skill-index.json`, `INDEX.md`, and `agent-registry.json`
+- maintain 100% zero-drift synchronization between `INDEX_TIER1.json`, `role-skill-index.json`, `INDEX.md`, `ai-catalog.json`, and `agent-registry.json`
 - ensure candidate ranking parameters ($S_{\text{match}} = 0.45 \cdot \text{BM25} + 0.55 \cdot \text{Dense}$ with threshold $\tau = 0.72$) and progressive disclosure rules are documented in adapter specifications
 
 ## Inputs Required
@@ -114,18 +115,18 @@ Shared skills note: `configure-agent-headers` and `manage-api-catalog` appear in
 - **AGENT-OVERLAP LOCK**: do not approve a new agent role if its capabilities overlap more than 30% with an existing role without proposing a deprecation plan.
 - **NO-SECRETS LOCK**: never hardcode secrets, private keys, or OAuth client secrets in metadata files (`auth.md`, well-known JSON, server cards) — a secret embedded in a discovery document is a public disclosure, not a configuration bug
 - **NO-DUMMY-DOMAIN LOCK**: do not use dummy domains or placeholder URLs for `authorization_servers`, redirect URIs, or issuer fields — every URL in a discovery document must be live, resolvable, and owned by the target deployment
-- **SCHEMA-EXACT LOCK**: ensure all generated JSON matches official RFC/standard schemas (RFC 8414, RFC 8707, RFC 8288, MCP server-card spec) — "close enough" discovery metadata breaks agent interoperability silently
+- **SCHEMA-EXACT LOCK**: ensure all generated JSON matches official RFC/standard schemas (RFC 8414, RFC 9728, RFC 8707, RFC 8288, RFC 9727, RFC 9421, SEP-2127 MCP server-card, MCP Registry `server.json`, A2A v1.0 JCS+JWS) — "close enough" discovery metadata breaks agent interoperability silently
 - **SIGNATURE-VERIFY LOCK**: when consuming another agent's card or `auth.md`, verify signatures and resolve keys per the governing spec before trusting metadata content — unsigned or unverifiable peer metadata is untrusted input
-- **A2A-PART-UNIFIED-LOCK**: all emitted and consumed A2A 1.0 payloads must strictly conform to the unified Part model (Text, File, Data discriminated by structure); legacy "kind" discriminators are rejected fail-closed.
+- **A2A-PART-UNIFIED-LOCK**: all emitted and consumed A2A 1.0 payloads must strictly conform to the unified Part model (Text, File, Data discriminated by structure); legacy "kind" discriminators and `/.well-known/agent.json` URIs are rejected fail-closed.
 - **SPIFFE-WORKLOAD-IDENTITY-LOCK**: all inter-agent requests must include SPIFFE SVID X.509 certificates asserting cryptographically verified agent identity across trust boundaries.
 - **WIMSE-FEDERATION-LOCK**: federation across cloud domains must enforce WIMSE token claims and signature verifications, preventing cross-cloud token replay attacks.
 - **RFC-8693-TOKEN-EXCHANGE-LOCK**: subagent delegation chains crossing trust domains must perform RFC 8693 token exchange with explicit audience attenuation and scope down-scoping.
-- **DYNAMIC-CARD-DISCOVERY-LOCK**: agent cards (`*.agent-card.json`) must be dynamically resolvable over RFC 8288 `Link` headers with `rel="agent-card"` and validated against JSON Schema Draft 2020-12.
-- **ZERO-DRIFT-REGISTRY-LOCK**: machine registry (`agent-registry.json`) and Antigravity adapter index must achieve 100% SHA-256 bitwise synchronization before commit finalization.
+- **DYNAMIC-CARD-DISCOVERY-LOCK**: agent cards (`/.well-known/agent-card.json` and `*.agent-card.json`) must be dynamically resolvable over RFC 8288 `Link` headers with `rel="agent-card"` and validated against JSON Schema Draft 2020-12.
+- **ZERO-DRIFT-REGISTRY-LOCK**: machine registry (`agent-registry.json`), `ai-catalog.json`, and Antigravity adapter indexes must achieve 100% SHA-256 bitwise synchronization before commit finalization.
 - **MTLS-CERT-VALIDATION-LOCK**: autonomous agent-to-agent communication over public networks must mandate mutual TLS (mTLS) with TLS 1.3 and forward-secret cipher suites.
 - **ROTATING-JWKS-ENDPOINT-LOCK**: OAuth metadata `jwks_uri` endpoints must support automated key rotation without service restart, enforcing cache TTL $\le 1\text{h}$.
 - **REGISTRY-ALLOWLIST-LOCK**: MCP and tool registrations must be validated against `core/policies/mcp-tool-map.yaml`; unmapped tool endpoints are blocked fail-closed.
-- **TIER1-BUDGET-LOCK**: Tier 1 discovery index (`INDEX_TIER1.json`) MUST NOT exceed 5 KB total footprint (or ~40 tokens per skill) to ensure passive Layer 2 prefix cache efficiency ($97.3\%$ prompt bloat reduction).
+- **TIER1-BUDGET-LOCK**: Active startup prompt slices injected into context MUST NOT exceed 5 KB (~40 tokens/skill), while the full compacted `INDEX_TIER1.json` catalog strips raw markdown bodies to eliminate catalog bloat.
 - **JIT-DIGEST-VERIFY-LOCK**: Every skill entry in `INDEX_TIER1.json` MUST declare a lowercase hexadecimal SHA-256 digest prefixed with `sha256:` matching canonical asset bytes on disk for AST02 supply-chain integrity.
 
 ## Skill Toolbox
@@ -169,21 +170,26 @@ The following skills are strictly prohibited from execution by Agent Discovery E
 
 ## Protocol Discovery Status
 - `/auth.md`
-- `/.well-known/oauth-protected-resource`
-- `/.well-known/oauth-authorization-server`
-- `/.well-known/api-catalog`
-- `/.well-known/mcp/server-card.json`
+- `/.well-known/oauth-protected-resource` (RFC 9728)
+- `/.well-known/oauth-authorization-server` (RFC 8414 + CIMD)
+- `/.well-known/api-catalog` (RFC 9727)
+- `/.well-known/agent-card.json` (A2A v1.0 JCS+JWS) & `/.well-known/ai-catalog.json`
+- `/.well-known/mcp-server-card` / `/.well-known/mcp/server-card.json` + MCP Registry `server.json`
+- `/.well-known/http-message-signatures-directory` (Web Bot Auth RFC 9421)
 
 ## Commerce Standards
-- x402 endpoint: [compliant / not implemented / issue: ]
-- MPP (Merchant Payment Protocol): [compliant / not implemented / issue: ]
-- UCP (User Context Protocol): [compliant / not implemented / issue: ]
-- ACP (Agentic Commerce Protocol): [compliant / not implemented / issue: ]
+- x402 v2 (`PAYMENT-REQUIRED` / `PAYMENT-SIGNATURE` / `PAYMENT-RESPONSE`): [compliant / not implemented / issue: ]
+- MPP (Machine Payments Protocol): [compliant / not implemented / issue: ]
+- UCP (Universal Commerce Protocol, `/.well-known/ucp`): [compliant / not implemented / issue: ]
+- ACP (Agentic Commerce Protocol REST endpoints): [compliant / not implemented / issue: ]
+- AP2 (Agent Payments Protocol mandates): [compliant / not implemented / issue: ]
 
 ## Discoverability
 - RFC 8288 `Link` headers configured: [yes / no]
+- `Accept: text/markdown` negotiation (`Vary: Accept`): [yes / no]
+- Content Signals (`robots.txt`) & `/llms.txt`: [yes / no]
 - DNS-AID configured: [yes / no]
-- Bot access control (robots.txt): [allows required bots / blocked: ]
+- Bot access control (`robots.txt`): [allows required bots / blocked: ]
 
 ## Scanner Validation Log
 - Validation run at:
@@ -204,20 +210,20 @@ The following skills are strictly prohibited from execution by Agent Discovery E
 
 See [references/agent-discovery-engineer-review-checklist.md](references/agent-discovery-engineer-review-checklist.md) for the full operational review checklist.
 
-### Protocol Discovery
-- [ ] `# Auth.md` heading is used exactly.
-- [ ] OAuth `register_uri` and `claim_uri` syntax are correct.
-- [ ] All well-known endpoints (`oauth-protected-resource`, `oauth-authorization-server`, `api-catalog`, `mcp/server-card.json`) return valid JSON matching their governing schema.
-- [ ] DNS records are verified and resolvable.
-- [ ] Response headers match RFC 8288 link linksets with correct rel types.
+### Protocol Discovery, Auth & Content Readiness
+- [ ] `# Auth.md` heading and `"agentic registration"` phrase present at root `/auth.md`; MCP servers declare `transport: streamable-http`.
+- [ ] `agent_auth.skill` points to canonical `/auth.md`; `register_uri` and `claim_uri` verified; CIMD enabled alongside PKCE `S256`.
+- [ ] All well-known endpoints (`oauth-protected-resource` RFC 9728, `oauth-authorization-server` RFC 8414, `api-catalog` RFC 9727, `agent-card.json` A2A 1.0, `/.well-known/mcp-server-card` / `/.well-known/mcp/server-card.json`, `ai-catalog.json`) return valid payloads.
+- [ ] `Accept: text/markdown` negotiation (`Vary: Accept`, `Content-Type: text/markdown`), Content Signals, `/llms.txt`, and Web Bot Auth RFC 9421 (`/.well-known/http-message-signatures-directory`) verified where applicable.
+- [ ] DNS records and response headers match RFC 8288 linksets with correct IANA rel types.
 
 ### Two-Tier JIT Discovery Manifest
-- [ ] `INDEX_TIER1.json` generated and up to date across all 183 skills.
-- [ ] `INDEX_TIER1.json` file size is strictly $< 5\text{ KB}$ (or ~40 tokens/skill).
-- [ ] All 183 skills carry valid SHA-256 digests matching disk assets.
+- [ ] `INDEX_TIER1.json` generated and up to date across all portable pack skills (184+ skills).
+- [ ] Startup active prompt slice kept strictly $\le 5\text{ KB}$, and `INDEX_TIER1.json` omits full `SKILL.md` markdown bodies.
+- [ ] All indexed skills carry valid lowercase `sha256:` digests matching canonical LF-normalized disk assets.
 
 ### Commerce & Bot Access
-- [ ] x402 / MPP / UCP / ACP endpoints return spec-compliant responses (or are explicitly marked not-implemented rather than returning broken payloads).
+- [ ] x402 v2 (`PAYMENT-REQUIRED` / `PAYMENT-SIGNATURE` / `PAYMENT-RESPONSE`), MPP, UCP (Universal Commerce Protocol), ACP, and AP2 endpoints return spec-compliant responses (or are explicitly marked not-implemented).
 - [ ] robots.txt allows required agent crawlers without over-permitting.
 - [ ] No secrets, private keys, or OAuth client secrets present in any metadata file.
 - [ ] No dummy or placeholder domains in `authorization_servers`, redirect URIs, or issuer fields.
@@ -234,7 +240,8 @@ See [references/agent-discovery-engineer-review-checklist.md](references/agent-d
 - **Discovery path not served**: an external scanner hits a discovery path that returns 404. **Mitigation:** verify every discovery path with `curl -I` before each release; surface the 404 in the deploy report.
 - **Token leaked in card metadata**: an agent card references an internal hostname or a customer id. **Mitigation:** classify card metadata with `data-classification.yaml`; redact restricted fields before publish; reject cards with token patterns.
 - **OAuth metadata not PKCE**: an `oauth-authorization-server` metadata file lists `grant_types: ["client_credentials"]` without PKCE. **Mitigation:** validate the metadata against the current spec; reject any metadata file that lists client credentials without PKCE.
-- **Stale or Bloated Tier 1 Discovery Manifest**: `INDEX_TIER1.json` is not regenerated after adding/editing skills, or instruction bodies are inadvertently included, bloating Tier 1 beyond 5 KB. **Mitigation**: CI validation gate checks `INDEX_TIER1.json` freshness, size ($< 5\text{ KB}$), and SHA-256 digests against disk.
+- **Stale or Bloated Tier 1 Discovery Manifest**: `INDEX_TIER1.json` is not regenerated after adding/editing skills, or instruction bodies are inadvertently included. **Mitigation**: CI validation gate (`validate-discovery-manifests.py` & `generate-tier1-index.py --check`) verifies freshness, stripped metadata shape, and exact SHA-256 digests across all pack skills, while runtime startup prompt slices stay $\le 5\text{ KB}$.
+- **Commerce / Auth Protocol Conflation**: Mixing `x402 v1` legacy `X-PAYMENT` headers, confusing UCP with delegated mandates (AP2), or mis-linking `agent_auth.skill` to `/.well-known/auth.md` instead of `/auth.md`. **Mitigation**: Enforce RFC 9728 + `/auth.md` parity, enable CIMD over deprecated DCR, and validate x402 v2 + UCP + AP2 separation.
 ## Anti-Patterns To Reject
 
 - guessing JSON schemas instead of reading log details
@@ -261,14 +268,14 @@ See [references/agent-discovery-engineer-review-checklist.md](references/agent-d
 ## Definition Of Done
 
 - `auth.md` is published at the canonical path and validates against the governing spec
-- all well-known discovery JSON files are compliant with schemas (RFC 8414 / RFC 8707 / RFC 8288 / MCP server-card spec as applicable)
+- all well-known discovery JSON files are compliant with schemas (RFC 8414 / RFC 9728 / RFC 8707 / RFC 8288 / RFC 9727 / RFC 9421 / SEP-2127 / A2A 1.0 as applicable)
 - emitted contracts validated against schema with exit code 0
-- Edge response headers are configured and live (implementation executed by Cloudflare Engineer)
+- Edge response headers and Markdown negotiation (`Vary: Accept`) are configured and live (implementation executed by Cloudflare Engineer)
 - isitagentready.com validation returns 19/19 (or every failing check is documented with an owner and resolution plan)
 - OWASP ASI Top 10 (2026) and AST10 skill security boundaries verified fail-closed with zero lethal trifecta combinations
 - no secrets or placeholder domains in any metadata file
 - compliance report records previous vs current scan score
-- `INDEX_TIER1.json` is generated, validates under 5 KB, covers all 183 skills with exact SHA-256 digests, and passes CI index checks.
+- `INDEX_TIER1.json` is generated, omits raw instruction bodies, covers all portable pack skills (184+) with exact SHA-256 digests, and passes `validate-discovery-manifests.py` and `generate-tier1-index.py --check`.
 
 
 Last updated: 2026-11-06

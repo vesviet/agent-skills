@@ -23,6 +23,7 @@ Use this skill when a task should be broken into scoped sub-tasks and assigned t
 - validate the returned artifact against the output schema before accepting it
 - failed delegations trigger retry with clarified input, escalation, or explicit failure — never silent acceptance
 - track token usage and model used for every delegation for cost observability
+- **Swarm Shared-Board vs Cold A2A Dispatch**: When spawning workers on a shared Swarm board, state `owns`, `must-not-touch`, done verification commands, and peer `@mention` targets (using `@name` strictly as a wakeup doorbell, `#seq` for prior post citations, and `[done]` for completion). Pass `fork:"<member>"` when a worker needs existing warm exploration context rather than starting cold; isolate parallel editors with `workspace:"share"` (`inherit` for readers/verifiers) and never `kill` before landing edits.
 - respect the risk tier: vibe tasks need minimal oversight, engineering tasks need full validation
 - prevent Confused Deputy vulnerabilities (OWASP ASI03) by ensuring delegators never delegate or grant permissions beyond their own authorization scope, and validate scope constraints at handoff
 - issue only task-scoped, time-bound credentials for each delegation leg instead of using persistent shared tokens

@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/agent-coordinator",
   "contract_type": "agent-card",
   "name": "agent-coordinator",
-  "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality gates, and driving work from intake to validated handoff without losing context or skipping safety. In 2025–2026, this means treating multi-agent systems as distributed software: enforcing deterministic state transitions, applying runtime guardrails (not prompt-based trust), maintaining end-to-end trace observability, managing token budgets as a design constraint, and applying explicit HITL gates before irreversible actions. In 2026, this further extends to **MCP 2026-07-28 stateless protocol enforcement** in A2A delegation, **EU AI Act Article 50 disclosure gate** for AI feature deployments, **NHI lifecycle governance** per agent phase, and **agentic fitness function calibration** before CI gating. In 2026–2027, this mandates Two-Tier JIT Skill Discovery governance, progressive disclosure token budget enforcement (< 5 KB Tier 1 footprint, 97.3% catalog prompt reduction), hybrid candidate ranking threshold enforcement (S_match >= 0.72), and SHA-256 cryptographic asset verification before JIT sandbox activation.",
+  "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality gates, and driving work from intake to validated handoff without losing context or skipping safety. In 2025–2026, this means treating multi-agent systems as distributed software: enforcing deterministic state transitions, applying runtime guardrails (not prompt-based trust), maintaining end-to-end trace observability, managing token budgets as a design constraint, and applying explicit HITL gates before irreversible actions. In 2026, this further extends to **MCP 2026-07-28 stateless protocol enforcement** in A2A delegation, **EU AI Act Article 50 disclosure gate** for AI feature deployments, **NHI lifecycle governance** per agent phase, and **agentic fitness function calibration** before CI gating. In 2026–2027, this mandates **Dual-Mode Orchestration** (Antigravity Native **swarm** / `/teamwork` execution vs Distributed A2A 1.0 Graphs), **Two-Tier JIT Skill Discovery** ($\\le 5\\text{ KB}$ startup active prompt slice over the SHA-256 signed full `INDEX_TIER1.json` catalog across all 184+ skills), hybrid candidate ranking ($S_{\\text{match}} \\ge 0.72$), and verified diff-landing before worker teardown.",
   "url": "pack://agent-skills/core/roles/agent-coordinator.md",
   "version": "5.10.0",
   "protocol_version": "1.0",
@@ -214,7 +214,7 @@
     {
       "id": "agent-memory-compaction",
       "name": "Agent Memory Compaction",
-      "description": "Use when compacting long-running agent conversation context into an anchored 10-slot working state, applying 60/80 compaction triggers, Head-Tail Tool Output Truncation (TOC), and attention allocation to prevent context window degradation and goal drift.",
+      "description": "Use when compacting long-running agent conversation context into an anchored 10-slot working state via a 3-tier cascade (observation masking, iterative delta merge, hybrid 60/80 and token-ceiling triggers), 20/80 Head-Tail TOC truncation, git artifact reconciliation, and entropy secret redaction.",
       "tags": [
         "agent",
         "pack"

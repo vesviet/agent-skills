@@ -30,6 +30,13 @@ spec.loader.exec_module(compact_context)
 
 build_default_checkpoint = compact_context.build_default_checkpoint
 format_markdown_checkpoint = compact_context.format_markdown_checkpoint
+mask_old_observations = compact_context.mask_old_observations
+merge_anchored_state = compact_context.merge_anchored_state
+reconcile_modified_files = compact_context.reconcile_modified_files
+redact_checkpoint_secrets = compact_context.redact_checkpoint_secrets
+redact_secrets_in_text = compact_context.redact_secrets_in_text
+scan_checkpoint_secrets = compact_context.scan_checkpoint_secrets
+shannon_entropy = compact_context.shannon_entropy
 truncate_code_fences = compact_context.truncate_code_fences
 truncate_tool_output = compact_context.truncate_tool_output
 validate_checkpoint_data = compact_context.validate_checkpoint_data
@@ -265,3 +272,99 @@ class TestCLIIntegration:
         assert len(out_lines) == 6
         assert out_lines[0] == "Trace row 1"
         assert "Truncated 15 lines" in out_lines[5]
+
+
+class TestThreeTierCompactionAndSecurity:
+    """Tests for secret/entropy redaction, Tier 1 observation masking, and Tier 2 iterative merge."""
+
+    def test_secret_and_shannon_entropy_redaction(self):
+        high_ent = "aB9$kL2mP8qR4tV6xZ1cN3bM5yW7jH"
+        assert shannon_entropy("aaaaaaa") == 0.0
+        assert shannon_entropy(high_ent) > 4.5
+
+        raw = (
+            "token=ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
+            "hex=4f8a9c12d3e4567890abcdef1234567890abcdef12 "
+            "safe=core/skills/agent/agent-memory-compaction/SKILL.md"
+        )
+        scrubbed, count = redact_secrets_in_text(raw)
+        assert count >= 2
+        assert "ghp_" not in scrubbed
+        assert "4f8a9c12d3e4567890abcdef1234567890abcdef12" not in scrubbed
+        assert "core/skills/agent/agent-memory-compaction/SKILL.md" in scrubbed
+
+    def test_validate_cli_rejects_unredacted_secret(self, tmp_path):
+        ckpt = build_default_checkpoint(goal="Safe goal")
+        ckpt["active_constraints"].append("leak ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+        assert len(scan_checkpoint_secrets(ckpt)) == 1
+        ckpt_file = tmp_path / "leaky.json"
+        ckpt_file.write_text(json.dumps(ckpt), encoding="utf-8")
+
+        res = run_compact(["--validate", "-i", str(ckpt_file)])
+        assert res.returncode == 1
+        assert "Unredacted secret" in res.stderr
+
+    def test_tier1_observation_masking_cli(self, tmp_path):
+        turns_file = tmp_path / "turns.json"
+        turns = [
+            {"role": "user", "content": "Investigate failing build"},
+            {"role": "tool", "call_id": "call_old", "exit_code": 1, "content": "Z" * 1200},
+            {"role": "assistant", "content": "Found failing test"},
+            {"role": "tool", "call_id": "call_recent", "exit_code": 0, "content": "R" * 1200},
+        ]
+        turns_file.write_text(json.dumps(turns), encoding="utf-8")
+        res = run_compact([
+            "--mask-observations",
+            "--recent-turns", "2",
+            "--spill-dir", str(tmp_path / "spill"),
+            "-i", str(turns_file),
+        ])
+        assert res.returncode == 0
+        out_turns = json.loads(res.stdout)
+        assert out_turns[1]["observation_masked"] is True
+        assert "[OBSERVATION MASKED: 1200 bytes" in out_turns[1]["content"]
+        assert (tmp_path / "spill" / "call_old.log").exists()
+        assert out_turns[3]["content"] == "R" * 1200
+
+    def test_tier2_iterative_merge_cli_and_goal_lock(self, tmp_path):
+        prev = build_default_checkpoint(goal="Canonical root objective", next_action="Inspect step 1")
+        prev["files_modified_and_inspected"]["modified"] = ["core/a.py"]
+        prev["decisions_and_tradeoffs"] = [{"decision": "Keep API stable", "rationale": "Backcompat"}]
+        prev_file = tmp_path / "prev.json"
+        prev_file.write_text(json.dumps(prev), encoding="utf-8")
+
+        delta = {
+            "current_goal": "Replaced drifting objective",
+            "files_modified_and_inspected": {
+                "modified": ["core/a.py", "core/b.py"],
+                "inspected": ["core/c.py"],
+            },
+            "decisions_and_tradeoffs": [
+                {"decision": "Keep API stable", "rationale": "Backcompat"},
+                {"decision": "Add delta merge", "rationale": "Preserve prior slots"},
+            ],
+            "next_single_safe_action": "Run pytest suite",
+        }
+        delta_file = tmp_path / "delta.json"
+        delta_file.write_text(json.dumps(delta), encoding="utf-8")
+
+        res = run_compact(["--merge", str(prev_file), "-i", str(delta_file), "--format", "json"])
+        assert res.returncode == 0
+        merged = json.loads(res.stdout)
+        assert merged["current_goal"] == "Canonical root objective"
+        assert merged["files_modified_and_inspected"]["modified"] == ["core/a.py", "core/b.py"]
+        assert len(merged["decisions_and_tradeoffs"]) == 2
+        assert merged["next_single_safe_action"] == "Run pytest suite"
+        assert merged["compaction_metrics"]["compaction_tier"] == "iterative_delta_merge"
+        assert validate_checkpoint_data(merged) == []
+
+    def test_reconcile_modified_files_with_real_git_repo(self, tmp_path):
+        subprocess.run(["git", "init"], cwd=tmp_path, capture_output=True, check=True)
+        (tmp_path / "tracked.py").write_text("print('hi')\n", encoding="utf-8")
+        reconciled, git_ok = reconcile_modified_files(
+            {"modified": ["existing.py"], "inspected": ["read.py"]},
+            repo_root=tmp_path,
+        )
+        assert git_ok is True
+        assert reconciled["modified"] == ["existing.py", "tracked.py"]
+        assert reconciled["inspected"] == ["read.py"]

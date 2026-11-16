@@ -26,12 +26,11 @@ Use this skill when a frontend change needs a new page, screen, or route-level f
 - preserve navigation and deep-link behavior
 - update route-aware tests when the page contract changes
 - if any code in this change was AI-generated, validate it per the risk tier defined in the frontend-developer role before accepting
-- for TanStack Router v2 or React Router v7 codebases: validate all URL search parameters with Zod `.catch()` fallbacks in `validateSearch` — raw URL parameters are user-controlled input and must not be used without validation
-- **hoist route data loading to loader functions** — do not trigger primary data fetches in `useEffect` after mount (causes layout shift waterfalls)
-- **RSC leaf pattern**: push `"use client"` as deep as possible; RSC at top, interactive client components as children/props
-- **TanStack Start Server Functions**: `createServerFn` for route data, Flight stream rendering
-- use type-safe navigation primitives (`<Link to="..." />`, `navigate({ to: '...' })`); never use untyped URL string concatenation (`navigate('/users/' + userId)`)
-- for AI-generated routes: verify auth guard completeness (AI frequently omits auth wrappers), data loading pattern match, cache invalidation on mutations, and URL parameter validation before merging
+- validate all URL search parameters with Zod `.catch()` fallbacks at the route boundary (`validateSearch` in TanStack Router, `searchParams` parser in Next.js/React Router/Astro) — raw URL parameters are untrusted input
+- **hoist route data loading to server/route loaders** — do not trigger primary data fetches in `useEffect` after mount (causes layout shift waterfalls); use RSC/Next.js Server Components, TanStack Start `createServerFn`, or Astro SSR endpoints matching the repo stack
+- **RSC leaf pattern** (when using React Server Components): push `"use client"` as deep as possible and verify only JSON-serializable props cross the boundary
+- use type-safe navigation primitives matching the router (`<Link>`, `navigate({ to })`); never use untyped string concatenation
+- for AI-generated routes: verify auth guard completeness inside both route loaders and Server Actions, cache invalidation on mutations, and URL parameter validation before merging
 - for route animations and page morphs, leverage skill: `implement-view-transitions` using native CSS View Transitions or React 19 ViewTransition; ensure navigation transitions do not block the main thread or degrade INP (< 200ms)
 
 ## Suggested Process
@@ -105,7 +104,7 @@ Cover:
 - [ ] RSC leaf pattern enforced: `"use client"` pushed to leaves
 - [ ] data loading hoisted to loaders / Server Functions (no `useEffect` primary fetches)
 - [ ] type-safe navigation: `<Link to="..." />`, `navigate({ to: '...' })` only
-- [ ] URL search params validated with Zod `.catch()` fallbacks in `validateSearch`
+- [ ] URL search params validated with Zod `.catch()` fallbacks (via `validateSearch` or `searchParams` parser)
 - [ ] CSS View Transitions: composited properties only, INP < 200ms, reduced motion
 - [ ] React 19 `ViewTransition` boundaries: `default="none"`, wrap before DOM nodes, unique dynamic names
 - [ ] AI-generated route audit: auth guards complete, loader pattern matched, cache invalidation on mutations, URL params validated

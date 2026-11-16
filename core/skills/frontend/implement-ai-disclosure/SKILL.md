@@ -40,30 +40,29 @@ Implement EU AI Act Article 50 transparency components for legal compliance in E
 
 ## Implementation Patterns
 
-```jsx
-// AIDisclosureBanner component
-function ChatInterface() {
-  const [hasInteracted, setHasInteracted] = useState(false);
+```tsx
+import DOMPurify from 'dompurify';
+
+// Persistent, accessible EU AI Act Article 50 disclosure before first interaction
+export function ChatInterface({ aiOutputHtml }: { aiOutputHtml: string }) {
+  // Always keep an accessible AI label visible; allow collapsing details, never erasing AI identity
+  const sanitized = DOMPurify.sanitize(aiOutputHtml, {
+    RETURN_TRUSTED_TYPE: typeof window !== 'undefined' && 'trustedTypes' in window,
+  });
+
   return (
-    <div>
-      {!hasInteracted && (
-        <AIDisclosureBanner 
-          message="This is an AI-powered assistant"
-          onAcknowledge={() => setHasInteracted(true)}
-        />
-      )}
-    </div>
+    <section aria-label="AI Assistant Workspace">
+      <AIDisclosureBanner
+        role="status"
+        message="You are interacting with an AI system. Outputs may be inaccurate."
+      />
+      <article
+        data-ai-generated="true"
+        dangerouslySetInnerHTML={{ __html: sanitized as unknown as string }}
+      />
+    </section>
   );
 }
-
-// AI content marking
-<article data-ai-generated="true" data-ai-model={version}>
-  {sanitizedContent}
-</article>
-
-// DOMPurify sanitization
-import DOMPurify from 'dompurify';
-const sanitized = DOMPurify.sanitize(aiOutput);
 ```
 
 ## Compliance Matrix
@@ -111,8 +110,9 @@ const sanitized = DOMPurify.sanitize(aiOutput);
 
 ## Related Skills
 
-- **accessibility-review**: Verify banner accessibility
-- **implement-schema-markup**: Structured metadata for SEO
-- **design-ux-flow**: User experience around disclosure
+- **add-ui-component**: Build accessible reusable disclosure banners and content wrappers
+- **accessibility-review**: Verify ARIA live regions, focus behavior, and banner accessibility
+- **frontend-testing**: Test disclosure rendering before interaction and DOMPurify sanitization
+- **design-ux-flow**: Design transparent AI states and Article 50 user flows around disclosure
 
 Last updated: 2026-11-16

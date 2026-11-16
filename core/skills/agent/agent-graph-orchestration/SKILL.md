@@ -126,6 +126,11 @@ Dynamic routing and parallel operations require robust fan-out and merge control
 - **Reducer Functions**: Define reducer functions on state keys (e.g., combining lists of messages or merging dictionary attributes) to ensure parallel updates to the graph state do not overwrite each other.
 - **Join Gates**: Block downstream nodes until all parallel branch tasks complete and their results are consolidated via state reducers.
 
+### Antigravity Swarm & `/teamwork` Graph Mapping
+
+- **Swarm Channels & Worktrees**: Spawn parallel authoring nodes with `workspace:"share"` (or `"branch"`) and read-only/verifier nodes with `workspace:"inherit"` at 1 Verifier : 2–4 Authors; split graphs with $> 8$ workers into area `#channels`, coordinate cross-area asks via `@#channel`, and land/merge every `share`/`branch` change to root before `kill`.
+- **Dual-Ledger & `/teamwork` Phases**: Pair an Outer Task Ledger (`coordination-plan.json` / `compact-context.py --merge`) with an Inner Progress Tick checking `#seq` board progress; map `/teamwork` explorations sequentially through `explorer`/`spec_miner` (read-only) $\rightarrow$ `worker` (authoring) $\rightarrow$ `reviewer`/`challenger` (adversarial critique) $\rightarrow$ `auditor` (final verification).
+
 ## Checklist
 
 - [ ] work_type and risk_tier assigned

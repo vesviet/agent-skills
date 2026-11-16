@@ -7,9 +7,12 @@ Conforms to Draft 2020-12 data contract `compact-working-state.json` (schema #60
 from __future__ import annotations
 
 import argparse
+import copy
 import datetime
 import json
+import math
 import re
+import subprocess
 import sys
 import uuid
 from pathlib import Path
@@ -21,6 +24,22 @@ MAX_TOOL_OUTPUT_BYTES = 4096  # 4 KB threshold
 DEFAULT_TOKEN_BUDGET = 1000   # ~4,000 characters
 DEFAULT_HEAD_RATIO = 0.20
 DEFAULT_TAIL_RATIO = 0.80
+HIGH_ENTROPY_THRESHOLD = 4.5
+HEX_ENTROPY_THRESHOLD = 3.0
+
+SECRET_PATTERNS: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(r"AKIA[0-9A-Z]{16}"), "AWS Access Key"),
+    (re.compile(r"ghp_[A-Za-z0-9_]{36,}"), "GitHub PAT"),
+    (re.compile(r"github_pat_[A-Za-z0-9_]{22,}"), "GitHub Fine-Grained PAT"),
+    (re.compile(r"-----BEGIN (?:RSA|EC|OPENSSH|DSA|PGP) PRIVATE KEY-----"), "Private Key"),
+    (re.compile(r"(?:sk|rk)_live_[0-9a-zA-Z]{24,}"), "Live API Secret Key"),
+    (re.compile(r"sk-[A-Za-z0-9_-]{32,}"), "API Secret Key"),
+    (re.compile(r"Bearer\s+[A-Za-z0-9\-._~+/]{20,}=*"), "Bearer Token"),
+    (
+        re.compile(r"(?i)\b(?:api_key|apikey|secret_key|password|passwd|auth_token)\s*[:=]\s*['\"][^'\"]{8,}['\"]"),
+        "Credential Assignment",
+    ),
+]
 
 WORK_TYPES = {
     "feature",
@@ -494,6 +513,258 @@ def format_markdown_checkpoint(data: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def shannon_entropy(data: str) -> float:
+    """Compute Shannon entropy in bits per character."""
+    if not data:
+        return 0.0
+    counts: dict[str, int] = {}
+    for ch in data:
+        counts[ch] = counts.get(ch, 0) + 1
+    length = len(data)
+    return -sum((c / length) * math.log2(c / length) for c in counts.values())
+
+
+def _is_high_entropy_secret_token(token: str) -> bool:
+    """Detect non-path, non-identifier random tokens or hex secrets via Shannon entropy."""
+    if len(token) < 24 or "/" in token or "\\" in token:
+        return False
+    if re.fullmatch(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", token, re.IGNORECASE):
+        return False
+    if re.fullmatch(r"[a-z]+(?:[-_][a-z]+)+", token):
+        return False
+    # Ignore pure digits or repeated runs
+    if re.fullmatch(r"[0-9]+", token):
+        return False
+    entropy = shannon_entropy(token)
+    if re.fullmatch(r"[0-9a-fA-F]{32,}", token) and entropy > HEX_ENTROPY_THRESHOLD:
+        return True
+    has_mixed_entropy_classes = (
+        any(c.isdigit() for c in token)
+        and any(c.isalpha() for c in token)
+        and (any(c.isupper() for c in token) or any(c in "+/=_-" for c in token))
+    )
+    return has_mixed_entropy_classes and entropy > HIGH_ENTROPY_THRESHOLD
+
+
+def redact_secrets_in_text(text: str) -> tuple[str, int]:
+    """Scrub known credential patterns and high-entropy secret tokens from text."""
+    redactions = 0
+    cleaned = text
+    for pattern, _label in SECRET_PATTERNS:
+        cleaned, count = pattern.subn("[REDACTED:SECRET]", cleaned)
+        redactions += count
+
+    def _replace_token(match: re.Match[str]) -> str:
+        nonlocal redactions
+        tok = match.group(0)
+        if _is_high_entropy_secret_token(tok):
+            redactions += 1
+            return "[REDACTED:HIGH_ENTROPY]"
+        return tok
+
+    # Separate trailing base64 padding from key=value assignments and placeholders
+    cleaned = re.sub(r"(?<!\[REDACTED:)[A-Za-z0-9+/_-]{24,}={0,2}", _replace_token, cleaned)
+    return cleaned, redactions
+
+
+def redact_checkpoint_secrets(data: Any) -> tuple[Any, int]:
+    """Recursively redact secrets across all string leaves of a checkpoint structure."""
+    total_redactions = 0
+
+    def _walk(node: Any) -> Any:
+        nonlocal total_redactions
+        if isinstance(node, str):
+            scrubbed, count = redact_secrets_in_text(node)
+            total_redactions += count
+            return scrubbed
+        if isinstance(node, list):
+            return [_walk(item) for item in node]
+        if isinstance(node, dict):
+            return {k: _walk(v) for k, v in node.items()}
+        return node
+
+    sanitized = _walk(copy.deepcopy(data))
+    if isinstance(sanitized, dict) and total_redactions > 0:
+        metrics = sanitized.get("compaction_metrics")
+        if not isinstance(metrics, dict):
+            metrics = {}
+            sanitized["compaction_metrics"] = metrics
+        metrics["secrets_redacted_count"] = int(metrics.get("secrets_redacted_count", 0)) + total_redactions
+    return sanitized, total_redactions
+
+
+def scan_checkpoint_secrets(data: Any, path: str = "$") -> list[str]:
+    """Return paths containing unredacted secret patterns or high-entropy secret tokens."""
+    findings: list[str] = []
+    if isinstance(data, str):
+        _, count = redact_secrets_in_text(data)
+        if count > 0:
+            findings.append(f"Unredacted secret or high-entropy token detected at {path}")
+    elif isinstance(data, list):
+        for idx, item in enumerate(data):
+            findings.extend(scan_checkpoint_secrets(item, f"{path}[{idx}]"))
+    elif isinstance(data, dict):
+        for k, v in data.items():
+            findings.extend(scan_checkpoint_secrets(v, f"{path}.{k}"))
+    return findings
+
+
+def mask_old_observations(
+    turns: list[dict[str, Any]],
+    recent_turns: int = 4,
+    min_bytes: int = 512,
+    spill_dir: Path | None = None,
+) -> tuple[list[dict[str, Any]], int]:
+    """Tier 1 Observation Masking: retain recent_turns raw, spill older bulky tool outputs to pointers."""
+    if not turns or recent_turns < 0:
+        return copy.deepcopy(turns), 0
+
+    cutoff = max(0, len(turns) - recent_turns) if recent_turns > 0 else len(turns)
+    result: list[dict[str, Any]] = copy.deepcopy(turns)
+    masked_count = 0
+    target_dir = spill_dir or SPILLOVER_DIR
+
+    for idx in range(cutoff):
+        turn = result[idx]
+        if not isinstance(turn, dict):
+            continue
+        is_tool = turn.get("role") == "tool" or turn.get("type") == "tool_result" or "tool_output" in turn
+        if not is_tool:
+            continue
+        key = "tool_output" if "tool_output" in turn else "content"
+        raw_val = turn.get(key)
+        if not isinstance(raw_val, str):
+            continue
+        raw_bytes = len(raw_val.encode("utf-8"))
+        if raw_bytes <= min_bytes:
+            continue
+
+        cid = str(turn.get("call_id") or turn.get("id") or f"turn-{idx}").strip()
+        cid = re.sub(r"[^A-Za-z0-9._-]", "_", cid)
+        scrubbed, _ = redact_secrets_in_text(raw_val)
+        spill_path = target_dir / f"{cid}.log"
+        target_dir.mkdir(parents=True, exist_ok=True)
+        spill_path.write_text(scrubbed, encoding="utf-8")
+
+        exit_code = turn.get("exit_code", "unknown")
+        spill_rel = f".agent/outputs/{cid}.log" if target_dir == SPILLOVER_DIR else str(spill_path)
+        turn[key] = f"[OBSERVATION MASKED: {raw_bytes} bytes -> {spill_rel}; exit={exit_code}]"
+        turn["observation_masked"] = True
+        masked_count += 1
+
+    return result, masked_count
+
+
+def _dedupe_preserve_order(items: list[Any]) -> list[Any]:
+    """Deduplicate primitives or dicts while preserving insertion order."""
+    seen: set[str] = set()
+    out: list[Any] = []
+    for item in items:
+        key = item if isinstance(item, str) else json.dumps(item, sort_keys=True, ensure_ascii=False)
+        if key not in seen:
+            seen.add(key)
+            out.append(item)
+    return out
+
+
+def reconcile_modified_files(
+    files_obj: dict[str, Any],
+    repo_root: Path | None = None,
+) -> tuple[dict[str, list[str]], bool]:
+    """Deduplicate file tracking and optionally reconcile modified files against git status."""
+    modified = list(files_obj.get("modified", [])) if isinstance(files_obj, dict) else []
+    inspected = list(files_obj.get("inspected", [])) if isinstance(files_obj, dict) else []
+    git_reconciled = False
+
+    if repo_root is not None and (repo_root / ".git").exists():
+        try:
+            proc = subprocess.run(
+                ["git", "-C", str(repo_root), "status", "--porcelain"],
+                capture_output=True,
+                text=True,
+                timeout=5,
+                check=False,
+            )
+            if proc.returncode == 0:
+                git_reconciled = True
+                for line in proc.stdout.splitlines():
+                    if len(line) >= 4:
+                        rel_path = line[3:].strip().strip('"')
+                        if " -> " in rel_path:
+                            rel_path = rel_path.split(" -> ", 1)[1].strip('"')
+                        if rel_path:
+                            modified.append(rel_path)
+        except OSError:
+            git_reconciled = False
+
+    return {
+        "modified": _dedupe_preserve_order(modified),
+        "inspected": _dedupe_preserve_order(inspected),
+    }, git_reconciled
+
+
+def merge_anchored_state(
+    prev: dict[str, Any],
+    delta: dict[str, Any],
+    reconcile_git: bool = False,
+    repo_root: Path | None = None,
+) -> dict[str, Any]:
+    """Tier 2 Iterative Delta Merge: merge delta into prev while preserving root goal and artifacts."""
+    merged: dict[str, Any] = copy.deepcopy(prev)
+
+    # Preserve anchored root goal & work_type to prevent narrative drift across turns
+    if not str(merged.get("current_goal", "")).strip() and delta.get("current_goal"):
+        merged["current_goal"] = delta["current_goal"]
+    if not str(merged.get("work_type", "")).strip() and delta.get("work_type"):
+        merged["work_type"] = delta["work_type"]
+
+    merged["timestamp"] = delta.get("timestamp") or datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    if delta.get("checkpoint_id"):
+        merged["checkpoint_id"] = delta["checkpoint_id"]
+
+    if isinstance(delta.get("phase_control"), dict):
+        phase = dict(merged.get("phase_control") or {})
+        phase.update({k: v for k, v in delta["phase_control"].items() if v is not None})
+        merged["phase_control"] = phase
+
+    list_slots = (
+        "active_constraints",
+        "decisions_and_tradeoffs",
+        "verification_and_evidence",
+        "failed_attempts_and_antipatterns",
+        "preserved_invariants",
+    )
+    for slot in list_slots:
+        combined = list(merged.get(slot) or []) + list(delta.get(slot) or [])
+        merged[slot] = _dedupe_preserve_order(combined)
+
+    prev_files = merged.get("files_modified_and_inspected") or {}
+    delta_files = delta.get("files_modified_and_inspected") or {}
+    combined_files = {
+        "modified": list(prev_files.get("modified") or []) + list(delta_files.get("modified") or []),
+        "inspected": list(prev_files.get("inspected") or []) + list(delta_files.get("inspected") or []),
+    }
+    reconciled_files, git_ok = reconcile_modified_files(
+        combined_files,
+        repo_root=(repo_root or Path.cwd()) if reconcile_git else None,
+    )
+    merged["files_modified_and_inspected"] = reconciled_files
+
+    if delta.get("next_single_safe_action"):
+        merged["next_single_safe_action"] = delta["next_single_safe_action"]
+
+    metrics = dict(merged.get("compaction_metrics") or {})
+    if isinstance(delta.get("compaction_metrics"), dict):
+        metrics.update(delta["compaction_metrics"])
+    metrics["compaction_tier"] = "iterative_delta_merge"
+    if reconcile_git:
+        metrics["git_artifacts_reconciled"] = git_ok
+    merged["compaction_metrics"] = metrics
+
+    sanitized, _ = redact_checkpoint_secrets(merged)
+    return sanitized
+
+
 def build_default_checkpoint(
     goal: str = "Execute assigned milestone task",
     work_type: str = "feature",
@@ -502,7 +773,7 @@ def build_default_checkpoint(
 ) -> dict[str, Any]:
     """Build a default valid checkpoint structure conforming to compact-working-state."""
     now_iso = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    return {
+    checkpoint = {
         "contract_type": "compact-working-state",
         "checkpoint_id": f"CHK-{datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d-%H%M%S')}",
         "timestamp": now_iso,
@@ -537,6 +808,8 @@ def build_default_checkpoint(
             "tool_reinvocation_waste": 0.0,
         },
     }
+    sanitized, _ = redact_checkpoint_secrets(checkpoint)
+    return sanitized
 
 
 def test_spillover_on_large_payload() -> None:
@@ -681,8 +954,52 @@ def test_terminal_error_preservation() -> None:
     assert "Command failed with exit code 1" in res
 
 
+def test_secret_and_entropy_redaction() -> None:
+    checkpoint = build_default_checkpoint(
+        goal="Fix auth token ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+        next_action="Rotate secret abcd1234EFGH5678ijkl9012MNOP3456",
+    )
+    assert "ghp_" not in checkpoint["current_goal"]
+    assert "[REDACTED:SECRET]" in checkpoint["current_goal"]
+    assert "[REDACTED:HIGH_ENTROPY]" in checkpoint["next_single_safe_action"]
+    assert checkpoint["compaction_metrics"]["secrets_redacted_count"] >= 2
+    assert scan_checkpoint_secrets(checkpoint) == []
+
+
+def test_observation_masking_preserves_recent_turns() -> None:
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as tmp:
+        turns = [
+            {"role": "tool", "call_id": "old_call", "exit_code": 0, "content": "X" * 1024},
+            {"role": "assistant", "content": "Inspecting failure"},
+            {"role": "tool", "call_id": "recent_call", "exit_code": 1, "content": "Y" * 1024},
+        ]
+        masked, count = mask_old_observations(turns, recent_turns=2, min_bytes=512, spill_dir=Path(tmp))
+        assert count == 1
+        assert masked[0]["observation_masked"] is True
+        assert "[OBSERVATION MASKED: 1024 bytes" in masked[0]["content"]
+        assert masked[2]["content"] == "Y" * 1024
+
+
+def test_iterative_delta_merge_anchoring() -> None:
+    prev = build_default_checkpoint(goal="Original root goal")
+    prev["files_modified_and_inspected"]["modified"] = ["src/a.py"]
+    delta = {
+        "current_goal": "Drifted tangential goal",
+        "files_modified_and_inspected": {"modified": ["src/a.py", "src/b.py"], "inspected": ["src/c.py"]},
+        "decisions_and_tradeoffs": [{"decision": "Use Tier 2 merge", "rationale": "Prevent drift"}],
+        "next_single_safe_action": "Run pytest",
+    }
+    merged = merge_anchored_state(prev, delta, reconcile_git=False)
+    assert merged["current_goal"] == "Original root goal"
+    assert merged["files_modified_and_inspected"]["modified"] == ["src/a.py", "src/b.py"]
+    assert merged["next_single_safe_action"] == "Run pytest"
+    assert merged["compaction_metrics"]["compaction_tier"] == "iterative_delta_merge"
+
+
 def run_synthetic_toc_tests() -> int:
-    """Automated verification suite for Syntax-Aware TOC and 4 KB spillover."""
+    """Automated verification suite for Syntax-Aware TOC, 4 KB spillover, masking, redaction, and merge."""
     print("Running synthetic TOC verification tests...")
 
     test_spillover_on_large_payload()
@@ -700,7 +1017,16 @@ def run_synthetic_toc_tests() -> int:
     test_terminal_error_preservation()
     print("  [PASS] Test e: Terminal error preservation")
 
-    print("Synthetic TOC verification passed: all 5 tests verified.")
+    test_secret_and_entropy_redaction()
+    print("  [PASS] Test f: Secret and Shannon entropy redaction")
+
+    test_observation_masking_preserves_recent_turns()
+    print("  [PASS] Test g: Tier 1 observation masking preserves recent turns")
+
+    test_iterative_delta_merge_anchoring()
+    print("  [PASS] Test h: Tier 2 iterative delta merge anchors root goal")
+
+    print("Synthetic TOC verification passed: all 8 tests verified.")
     return 0
 
 
@@ -739,12 +1065,45 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--validate",
         action="store_true",
-        help="Validate the input JSON file against compact-working-state.json.",
+        help="Validate the input JSON file against compact-working-state.json and secret hygiene rules.",
     )
     parser.add_argument(
         "--create",
         action="store_true",
         help="Create a scaffolded valid compact-working-state JSON checkpoint.",
+    )
+    parser.add_argument(
+        "--merge",
+        default=None,
+        help="Path to prior compact-working-state JSON checkpoint for Tier 2 iterative delta merge.",
+    )
+    parser.add_argument(
+        "--reconcile-git",
+        action="store_true",
+        help="Reconcile files_modified_and_inspected.modified with git status --porcelain during merge.",
+    )
+    parser.add_argument(
+        "--mask-observations",
+        action="store_true",
+        help="Apply Tier 1 observation masking to a JSON array of conversation turns.",
+    )
+    parser.add_argument(
+        "--recent-turns",
+        type=int,
+        default=4,
+        help="Number of trailing turns kept raw during --mask-observations (default: 4).",
+    )
+    parser.add_argument(
+        "--redact",
+        action="store_true",
+        default=True,
+        help="Scrub credentials and high-entropy secret tokens from checkpoints (default: True).",
+    )
+    parser.add_argument(
+        "--no-redact",
+        action="store_false",
+        dest="redact",
+        help="Disable automatic secret redaction on checkpoint serialization.",
     )
     parser.add_argument(
         "--goal",
@@ -771,7 +1130,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--test-synthetic-toc",
         action="store_true",
-        help="Execute automated self-test suite verifying 20/80 Head-Tail TOC, 4 KB disk spillover, and syntax preservation.",
+        help="Execute automated self-test suite verifying 20/80 Head-Tail TOC, 4 KB spillover, masking, redaction, and merge.",
     )
     parser.add_argument(
         "--syntax-aware",
@@ -807,7 +1166,21 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         dest="spill",
         help="Disable disk spillover for outputs exceeding 4 KB.",
     )
+    parser.add_argument(
+        "--spill-dir",
+        default=None,
+        help="Override directory for masked observation spillover files (default: .agent/outputs).",
+    )
     return parser.parse_args(argv)
+
+
+def _write_output(out_str: str, output_path: str | None) -> None:
+    if output_path:
+        out_path = Path(output_path)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(out_str, encoding="utf-8")
+    else:
+        sys.stdout.write(out_str)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -824,17 +1197,12 @@ def main(argv: list[str] | None = None) -> int:
             work_type=args.work_type,
             next_action=args.next_action,
         )
-        if args.format == "json":
-            out_str = json.dumps(checkpoint, indent=2) + "\n"
-        else:
-            out_str = format_markdown_checkpoint(checkpoint) + "\n"
-
-        if args.output:
-            out_path = Path(args.output)
-            out_path.parent.mkdir(parents=True, exist_ok=True)
-            out_path.write_text(out_str, encoding="utf-8")
-        else:
-            sys.stdout.write(out_str)
+        out_str = (
+            json.dumps(checkpoint, indent=2) + "\n"
+            if args.format == "json"
+            else format_markdown_checkpoint(checkpoint) + "\n"
+        )
+        _write_output(out_str, args.output)
         return 0
 
     # Read input from file or stdin
@@ -851,6 +1219,45 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         raw_input = sys.stdin.read()
 
+    # Tier 1 Observation Masking mode
+    if args.mask_observations:
+        try:
+            turns = json.loads(raw_input)
+        except json.JSONDecodeError as exc:
+            sys.stderr.write(f"Error: invalid JSON turn list for --mask-observations: {exc}\n")
+            return 2
+        if not isinstance(turns, list):
+            sys.stderr.write("Error: --mask-observations expects a JSON array of turns.\n")
+            return 2
+        masked_turns, _ = mask_old_observations(
+            turns,
+            recent_turns=args.recent_turns,
+            spill_dir=Path(args.spill_dir) if args.spill_dir else None,
+        )
+        _write_output(json.dumps(masked_turns, indent=2) + "\n", args.output)
+        return 0
+
+    # Tier 2 Iterative Delta Merge mode
+    if args.merge:
+        prev_path = Path(args.merge)
+        if not prev_path.exists():
+            sys.stderr.write(f"Error: previous checkpoint file does not exist: {prev_path}\n")
+            return 2
+        try:
+            prev_data = json.loads(prev_path.read_text(encoding="utf-8"))
+            delta_data = json.loads(raw_input)
+        except json.JSONDecodeError as exc:
+            sys.stderr.write(f"Error: invalid JSON during --merge: {exc}\n")
+            return 2
+        merged = merge_anchored_state(prev_data, delta_data, reconcile_git=args.reconcile_git)
+        out_str = (
+            json.dumps(merged, indent=2) + "\n"
+            if args.format == "json"
+            else format_markdown_checkpoint(merged) + "\n"
+        )
+        _write_output(out_str, args.output)
+        return 0
+
     # Validation mode
     if args.validate:
         try:
@@ -860,6 +1267,7 @@ def main(argv: list[str] | None = None) -> int:
             return 1
 
         errors = validate_checkpoint_data(data)
+        errors.extend(scan_checkpoint_secrets(data))
         if errors:
             sys.stderr.write("Validation failed with errors:\n")
             for err in errors:
@@ -884,25 +1292,21 @@ def main(argv: list[str] | None = None) -> int:
         else:
             result = truncate_tool_output(raw_input, args.head_lines, args.tail_lines)
 
-        if args.output:
-            Path(args.output).write_text(result, encoding="utf-8")
-        else:
-            sys.stdout.write(result + ("\n" if not result.endswith("\n") else ""))
+        _write_output(result + ("\n" if not result.endswith("\n") else ""), args.output)
         return 0
 
     # If input is JSON checkpoint and user requested markdown or json format conversion
     try:
         data = json.loads(raw_input)
         if isinstance(data, dict) and data.get("contract_type") == "compact-working-state":
-            if args.format == "markdown":
-                out_str = format_markdown_checkpoint(data) + "\n"
-            else:
-                out_str = json.dumps(data, indent=2) + "\n"
-
-            if args.output:
-                Path(args.output).write_text(out_str, encoding="utf-8")
-            else:
-                sys.stdout.write(out_str)
+            if args.redact:
+                data, _ = redact_checkpoint_secrets(data)
+            out_str = (
+                format_markdown_checkpoint(data) + "\n"
+                if args.format == "markdown"
+                else json.dumps(data, indent=2) + "\n"
+            )
+            _write_output(out_str, args.output)
             return 0
     except Exception:
         pass
@@ -920,10 +1324,7 @@ def main(argv: list[str] | None = None) -> int:
     else:
         truncated = truncate_tool_output(raw_input, args.head_lines, args.tail_lines)
 
-    if args.output:
-        Path(args.output).write_text(truncated, encoding="utf-8")
-    else:
-        sys.stdout.write(truncated + ("\n" if not truncated.endswith("\n") else ""))
+    _write_output(truncated + ("\n" if not truncated.endswith("\n") else ""), args.output)
     return 0
 
 

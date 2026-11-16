@@ -18,6 +18,9 @@ Use this skill to expose well-known agentic endpoints natively via HTTP response
 - Do not expose internal-only endpoints via Link headers. Only publicly accessible discovery endpoints.
 - Verify that every URL in a Link header is on a domain the operator controls; third-party URLs in Link headers can enable agent phishing (OWASP ASI01)
 - Do not place credentials, tokens, or PII in Link header values; Link headers are publicly cacheable
+- `Link: </.well-known/mcp-server-card>; rel="mcp-server-card"` or `/.well-known/mcp/server-card.json` (plus `rel="agent-card"` for `/.well-known/agent-card.json` and `/.well-known/ai-catalog.json`).
+- **Markdown Content Negotiation & Content Signals**: Support `Accept: text/markdown` by returning `Content-Type: text/markdown; charset=utf-8`, `Vary: Accept`, and `x-markdown-tokens` alongside `robots.txt` Content Signals (`ai-train`, `search`, `ai-input`) to cut agent token overhead.
+- **Web Bot Auth (RFC 9421)**: When operating signed crawlers or verifier bots, advertise `/.well-known/http-message-signatures-directory` and validate `Signature` / `Signature-Input` / `Signature-Agent` headers.
 - Treat the Link header itself as a discovery contract: schema-drift between the declared `rel` and the served payload must be rejected by the scanner (OWASP ASI04)
 
 ## When to Use

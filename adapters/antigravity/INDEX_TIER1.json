@@ -35,7 +35,7 @@
       "type": "skill-md",
       "description": "Add or modify a page, screen, or route by following the repo's navigation, data-loading, layout,...",
       "url": "core/skills/frontend/add-page-route/SKILL.md",
-      "digest": "sha256:0061c5cfd1f829db28db078398a942a9c66dff7c820fe437f9530efdf4cd2083"
+      "digest": "sha256:586b8eaced08d80f28bd0b32bf29c759f463655ad632ddb0b547538dad131aa3"
     },
     {
       "name": "add-service-client",
@@ -77,7 +77,7 @@
       "type": "skill-md",
       "description": "Delegate scoped sub-tasks from a supervisor agent to specialist worker agents using structured A2...",
       "url": "core/skills/agent/agent-delegation/SKILL.md",
-      "digest": "sha256:d4bf36fd7fcecfc2ef602875f05fd75510bb147a514e68ab93e7d6e418acd4ad"
+      "digest": "sha256:2593158ff0a3cea3a59ea3f1687a0e12a17c315e017e9f1d6f40aaf9207faae0"
     },
     {
       "name": "agent-evaluation",
@@ -91,7 +91,7 @@
       "type": "skill-md",
       "description": "Model multi-phase delivery as a directed graph with parallel branches, phase gates, and A2A deleg...",
       "url": "core/skills/agent/agent-graph-orchestration/SKILL.md",
-      "digest": "sha256:8f1437d5c646e1372a466010027235ca442f0ccb49c108fa3b10230e81dbcd54"
+      "digest": "sha256:5ca7b7b8c06c72f2e4579ec4907431219bd40526e8387e0ee40a0f0825f6cd72"
     },
     {
       "name": "agent-handoff",
@@ -105,14 +105,14 @@
       "type": "skill-md",
       "description": "Use when compacting long-running agent conversation context into an anchored 10-slot working stat...",
       "url": "core/skills/agent/agent-memory-compaction/SKILL.md",
-      "digest": "sha256:73fc66c5a0d3d3c0d6c4fc1f9f941acc3660beb1eccd96a2338a56e078f5a3a1"
+      "digest": "sha256:567545496cae995603daa58037b3021ec65f8f84cde995671f5ef7f259439c97"
     },
     {
       "name": "agent-model-routing",
       "type": "skill-md",
       "description": "Select the most cost-effective model for each task or sub-task based on complexity, risk tier, an...",
       "url": "core/skills/agent/agent-model-routing/SKILL.md",
-      "digest": "sha256:98ad5a5b48e421502419150320bfb705f663820587ac3ee6c3fb728aee7fa02d"
+      "digest": "sha256:633eafc4bb6e0b590ecc2faa6dda7ba084089a0b7bbaafa79d34c6aab1e22686"
     },
     {
       "name": "agent-observability",
@@ -126,7 +126,7 @@
       "type": "skill-md",
       "description": "Orchestrate a 6-round, multi-role cross-examination panel meeting to debate architecture, code, o...",
       "url": "core/skills/agent/agent-panel-meeting/SKILL.md",
-      "digest": "sha256:67dc577f81f085987f73fc746c18fc9afcff35447cc02c02ab99abd2f08058c8"
+      "digest": "sha256:025e25f2c4db2ec3826a73b0a999f017df4d6a2f8659fc9d04e758aef126fefe"
     },
     {
       "name": "agent-prompt-lifecycle",
@@ -343,14 +343,14 @@
       "type": "skill-md",
       "description": "Exposes well-known agentic endpoints via RFC 8288 HTTP Link headers and optional DNS-AID SVCB rec...",
       "url": "core/skills/agent/configure-agent-headers/SKILL.md",
-      "digest": "sha256:3e87ee40e2871796fa3691ee5e54dad1fe77cd9d95df8cd5c63a12fe1e6650a8"
+      "digest": "sha256:5bfc3ed2af9da100e576e44c2e4633017b01d835053e8905dc2809fbde377f22"
     },
     {
       "name": "configure-agent-skills",
       "type": "skill-md",
       "description": "Creates and manages the agentskills.io manifest index at `/.well-known/agent-skills/index.json`,...",
       "url": "core/skills/agent/configure-agent-skills/SKILL.md",
-      "digest": "sha256:7cbb54de2183822d2920b978515736f3a8e393f4d37f490337762e5d411c41f8"
+      "digest": "sha256:5629b9535954b5324617f4b9b5cb3aadabe20daf4a9b0e26bfcfe1c87d12c271"
     },
     {
       "name": "configure-llms-txt",
@@ -371,7 +371,7 @@
       "type": "skill-md",
       "description": "Configures well-known OAuth 2.0 and OpenID Connect discovery endpoints (`oauth-protected-resource...",
       "url": "core/skills/agent/configure-oauth-metadata/SKILL.md",
-      "digest": "sha256:360a4aa496df7a76640f4604e0895ec8ca60ea39d435ad01d3601cf2fe3078d1"
+      "digest": "sha256:9d3cb65d488a507f8715489328fa7b4f0e6e376419a2e63978df102b5fcaddcb"
     },
     {
       "name": "configure-physics-collision",
@@ -420,7 +420,7 @@
       "type": "skill-md",
       "description": "Debug 3D scene behavior by tracing scene graph structure, transforms, raycasting, decals, materia...",
       "url": "overlays/r3f-stack/skills/debug-3d-scene/SKILL.md",
-      "digest": "sha256:40d6f824821f7b660b7fd587f5413ac6f17078ad0e025d65e11fc7a2ac675584"
+      "digest": "sha256:ffd4c8571e2a6a43d833d07fe686feaf9f99c72de33ea3910cedf39f83b1fbe1"
     },
     {
       "name": "debug-identity-provider",
@@ -686,7 +686,7 @@
       "type": "skill-md",
       "description": "Implement EU AI Act Article 50 transparency components - AIDisclosureBanner, data-ai-generated at...",
       "url": "core/skills/frontend/implement-ai-disclosure/SKILL.md",
-      "digest": "sha256:2bd9dceb200857b1aaa802b8b4f4b04c558142db527982453c86b4c2fa7b4af5"
+      "digest": "sha256:a467aeff1ccccc7813d04de42e4edfc5bca1bdf160669e05eedf87ebab7f1601"
     },
     {
       "name": "implement-auth",
@@ -728,7 +728,7 @@
       "type": "skill-md",
       "description": "Exposes browser context, DOM state, and client-side actions to AI agents via WebMCP. Use when ena...",
       "url": "core/skills/frontend/implement-webmcp/SKILL.md",
-      "digest": "sha256:6bf13012762ae95254f0bd8b534d7fa036f2dcba0cdd9a57783c7066685c80ff"
+      "digest": "sha256:016990da5fb250a1d5e7019416c913df9ea4a87cb5e3fbfb50eeb6c2d76a3c39"
     },
     {
       "name": "incident-report",
@@ -749,7 +749,7 @@
       "type": "skill-md",
       "description": "Connect frontend code to backend APIs by following the repo's request, caching, auth, error-handl...",
       "url": "core/skills/frontend/integrate-api-client/SKILL.md",
-      "digest": "sha256:3b6c0d2484cbfa9645e70a08c57be2f3b92454a3304c0c9ee4b0933e55d6ede5"
+      "digest": "sha256:177e2ecce8cda7db33a092944c8bd9e5669d7841e50ae047b75fd97ee09503dd"
     },
     {
       "name": "integrate-dialogue-narrative",
@@ -777,7 +777,7 @@
       "type": "skill-md",
       "description": "Integrate or migrate between React Three Fiber and legacy imperative Three.js code by controlling...",
       "url": "overlays/r3f-stack/skills/integrate-r3f-three-legacy/SKILL.md",
-      "digest": "sha256:56c6eb07b1d96c8c31230b68a224ef445e0e21bb396a46cde79ef686b47f5509"
+      "digest": "sha256:c5b68deff8c2d711f06770d43e24c22a6b07dc280546e4cd83581db67187aa0f"
     },
     {
       "name": "interactive-component-workbench",
@@ -917,7 +917,7 @@
       "type": "skill-md",
       "description": "Optimize 3D assets and rendering inputs by reviewing model formats, geometry density, texture mem...",
       "url": "overlays/r3f-stack/skills/optimize-3d-assets/SKILL.md",
-      "digest": "sha256:268db48544cb081b1ed1da0c61077028d97c83e2be12b39bc1096bd3ae92fc1d"
+      "digest": "sha256:240a81583d493f9e1fb47077c367bd3979fc7f719fd4eb0782dadfcfc8f32cef"
     },
     {
       "name": "optimize-olap-database",
@@ -1029,7 +1029,7 @@
       "type": "skill-md",
       "description": "Architect interactive WebGL2 and WebGPU 3D scenes using Three.js or React Three Fiber with compre...",
       "url": "core/skills/gamedev/render-webgl-threejs/SKILL.md",
-      "digest": "sha256:b291d11b2c4db90581f6bbb6f9d23fb8539e674bab5ddbdf5ae883d4a683fc4b"
+      "digest": "sha256:bbcdc3a764ac7ffd79b26d5fa11097ce04d1fe0f3d38d6d644d658b744670790"
     },
     {
       "name": "repurpose-content",
@@ -1120,7 +1120,7 @@
       "type": "skill-md",
       "description": "Configure automated visual diffing for UI components and pages. Use when establishing pixel-level...",
       "url": "core/skills/frontend/setup-visual-regression/SKILL.md",
-      "digest": "sha256:4657c2e1d41c15f1340f1a99274cee1b21e43566618603ba38bb0a1e0dd287fc"
+      "digest": "sha256:bedf73a24a6e0da2a2a10772cfaae4bf108d90d42780aef8cc188722e17f6a87"
     },
     {
       "name": "skill-preflight-ast-check",

@@ -27,10 +27,10 @@ Use this skill when a 3D frontend mixes React Three Fiber with older imperative 
 
 When AI tools generate R3F components or Three.js bridge code, apply these additional checks:
 
-- **Context ownership validation:** verify that AI-generated R3F components use `useThree()` context correctly and do not create a second renderer or canvas — AI tools frequently generate standalone `<Canvas>` wrappers that conflict with the existing scene context when dropped into an existing R3F tree.
-- **Disposal and cleanup correctness:** AI-generated 3D components frequently omit `useEffect` cleanup for geometries, materials, and textures — check that every `.dispose()` call is present in the cleanup function to prevent GPU memory leaks.
-- **Animation frame loop ownership:** verify AI-generated `useFrame` callbacks do not accumulate subscriptions across renders — confirm there is only one `useFrame` subscriber per concern, not one added per render cycle.
-- **Generative 3D asset pipeline gate (2025):** for workflows using AI-generated 3D assets (Meshy AI, TripoSR, Rodin), validate generated meshes for polygon density (target ≤10k triangles for interactive use), UV correctness, and material assignment before integrating into the R3F/Three.js scene — AI-generated meshes frequently have inverted normals, missing UVs, or topology errors.
+- **Context ownership & R3F v9 alignment:** verify that AI-generated R3F components use `useThree()` context correctly (`state.renderer` in R3F v9, not legacy `state.gl`) and do not create a second `<Canvas>` renderer that conflicts with the active scene context.
+- **Disposal and cleanup correctness:** AI-generated 3D components frequently omit `useEffect` cleanup or only call `material.dispose()` while leaking textures — verify geometries, materials, **all attached texture maps**, and render targets are disposed on unmount.
+- **Animation frame loop & zero-allocation ownership:** verify `useFrame` callbacks do not accumulate subscriptions across renders, never call React `setState()`, and never allocate `new THREE.Vector3()` / `.clone()` per frame.
+- **Generative 3D asset pipeline gate:** for AI-generated 3D meshes (Meshy AI, Tripo, Rodin), validate polygon density (`<= 10k` triangles per standard interactive prop; `> 50k` requires 3-tier LOD), UV correctness, `NoColorSpace` on normal/ORM maps, and material attribution before integrating into the R3F/Three.js scene.
 
 ## Suggested Process
 

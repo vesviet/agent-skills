@@ -20,9 +20,9 @@ Modern component architectures utilize native React 19 form actions and hooks, c
 To prevent unpolished "AI slop" in component interfaces, enforce the following five rules:
 1. **Dynamic Viewport Units**: Use `min-h-[100dvh]` rather than `100vh` on full-screen containers to avoid mobile address bar jumps.
 2. **Continuous Motion Isolation**: Never bind scroll, drag, or pointer movements to React `useState`. Use `motion/react` primitives (`useMotionValue`, `useTransform`) to update DOM nodes directly off the main thread.
-3. **Tactile Feedback**: Interactive buttons and card triggers must provide physical feedback via active transform scaling: `active:scale-[0.98]`.
+3. **Tactile Feedback**: Interactive buttons and card triggers must provide physical feedback via active transform scaling: `active:scale-[0.96]` (150ms `ease-out`, disabled controls excluded).
 4. **CTA Text Stability**: Primary Call-To-Action buttons on desktop must include `whitespace-nowrap` to prevent awkward line breaks on localized strings.
-5. **Icon Ecosystem Discipline**: Never inject raw, inline SVG markup. Only import vetted, accessible icon packages (`@radix-ui/react-icons`, `@phosphor-icons/react`, `hugeicons-react`).
+5. **Icon Ecosystem Discipline**: Never inject raw, inline SVG markup. Import from one consistent icon package per codebase (`@phosphor-icons/react`, `hugeicons-react`, `@radix-ui/react-icons`, or `lucide-react` when aligning with an existing shadcn/ui or Base UI repo).
 
 ---
 

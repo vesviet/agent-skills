@@ -20,6 +20,8 @@ Enable **`agent-model-routing`** (Supporting skill) when:
 
 Skip explicit routing when the task is a **single-phase** handoff to one specialist, or when the user pinned a model for the whole session.
 
+- **Antigravity Native Swarm Exception**: In `native_swarm`, leave `model` unset on `swarm{action:"add"}` so every worker runs on the coordinator's active model unless the user requests another model. Do not downgrade or diversify models proactively; reserve `swarm{action:"model"}` for user-directed overrides or live quota/capacity exhaustion (preserving the worker's conversation instead of `kill` + `add`).
+
 ## When to Use
 
 - orchestrating multi-step workflows with mixed complexity

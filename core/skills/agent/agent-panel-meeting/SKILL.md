@@ -98,12 +98,12 @@ Run `review-service` or `navigate-service` to produce a single context summary d
 Select 3-4 roles categorized into Builder (Dev/Architect), Defender (Security/QA), and Stakeholder (Product/Ops).
 
 ### 3. Execute 6-Round Debate
-- **Round 1 (Initial Thoughts)**: Roles produce independent initial perspectives.
-- **Round 2 (Rebuttal 1)**: Roles read all Round 1 outputs and cross-examine Builder assumptions.
+- **Round 1 (Initial Thoughts)**: Roles produce independent initial perspectives in isolated parallel workers/subagents (e.g., `/teamwork` Builder + Defender + Challenger tracks or Swarm `fork` branches).
+- **Round 2 (Rebuttal 1)**: Roles read all Round 1 outputs (via `#seq` board citations or coordinator packet) and cross-examine Builder assumptions.
 - **Round 3 (Refinement)**: Roles update their proposals based on Round 2 feedback.
 - **Round 4 (Rebuttal 2)**: Deep cross-examination targeting edge cases and residual risks.
 - **Round 5 (Final Consensus)**: Roles state final vote (Agree / Agree with reservations / Block).
-- **Round 6 (Synthesis & HITL)**: Agent Coordinator synthesizes trade-offs and escalates to HITL.
+- **Round 6 (Synthesis & HITL)**: Agent Coordinator synthesizes trade-offs and escalates to HITL (posting `[done]` when Swarm-backed).
 
 ## Checklist
 

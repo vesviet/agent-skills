@@ -2,7 +2,7 @@
   "id": "pack://agent-skills/core/roles/frontend-developer",
   "contract_type": "agent-card",
   "name": "frontend-developer",
-  "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to architecting scalable component systems via compound components and Radix-style slot delegation to eliminate boolean prop explosion, engineering fluid, native-feeling page and state transitions using the CSS View Transitions API and React 19 ViewTransition while strictly safeguarding Core Web Vitals (INP < 200ms) with off-thread composited motion, governing AI-generated UI code with tiered trust validation, enforcing Taste-Skill anti-slop frontend engineering standards (viewport stability with min-h-100dvh, continuous motion state isolation via Motion hooks, asset hygiene, and Big Bans enforcement), owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, architecting PWA service workers as agentic orchestration control-planes, implementing EU AI Act Article 50 disclosure UI components as a legal requirement (live from 2 August 2026), and sanitizing AI-generated content before DOM insertion using Trusted Types and DOMPurify.",
+  "description": "build reliable, accessible, high-craft user interfaces that faithfully implement product behavior and `DESIGN.md` / `ux-flow-spec.json` intent without AI engineering slop (no `useEffect` derived-state waterfalls, no boolean-prop soup, no unauthenticated Server Actions, no dead mock handlers, no layout-thrashing animations). In 2026–2027, this covers compound components (`Root`/`Trigger`/`Content`, `asChild` / Base UI 'render', React 19 'ref' prop + `use()`), intentional rendering strategies (SSR/CSR/ISR/Islands/Edge RSC), Core Web Vitals budgets (`INP < 200ms`, `LCP < 2.5s`, `CLS < 0.1`), native CSS/React 19 `<ViewTransition>`, sandboxed previews (OWASP ASI05), DOMPurify + Trusted Types sanitization, automated 'axe-core' WCAG 2.2 AA CI gates, and EU AI Act Article 50 disclosure UI.",
   "url": "pack://agent-skills/core/roles/frontend-developer.md",
   "version": "5.10.0",
   "protocol_version": "1.0",
@@ -292,6 +292,28 @@
       ]
     },
     {
+      "id": "motion-performance-engineering",
+      "name": "Motion Performance Engineering",
+      "description": "Use when engineering 60fps/120fps hardware-accelerated animations, restricting transitions to composite-only properties, calibrating spring physics, and enforcing prefers-reduced-motion accessibility guards.",
+      "tags": [
+        "frontend",
+        "pack"
+      ],
+      "inputModes": [
+        "text",
+        "json",
+        "data"
+      ],
+      "outputModes": [
+        "json",
+        "text"
+      ],
+      "output_schema_refs": [
+        "implementation-result.json",
+        "performance-audit.json"
+      ]
+    },
+    {
       "id": "navigate-service",
       "name": "Navigate Service",
       "description": "Navigate and understand an unfamiliar service by mapping its entrypoints, core flows, dependencies, and delivery boundaries. Use when exploring a service, locating behavior, or gathering context before a change, review, or debug session.",
@@ -339,28 +361,6 @@
       "id": "setup-visual-regression",
       "name": "Setup Visual Regression",
       "description": "Configure automated visual diffing for UI components and pages. Use when establishing pixel-level regression testing, cross-browser snapshot baselines, or CI visual gates.",
-      "tags": [
-        "frontend",
-        "pack"
-      ],
-      "inputModes": [
-        "text",
-        "json",
-        "data"
-      ],
-      "outputModes": [
-        "json",
-        "text"
-      ],
-      "output_schema_refs": [
-        "implementation-result.json",
-        "performance-audit.json"
-      ]
-    },
-    {
-      "id": "motion-performance-engineering",
-      "name": "Motion Performance Engineering",
-      "description": "Use when engineering 60fps/120fps hardware-accelerated animations, restricting transitions to composite-only properties, calibrating spring physics, and enforcing prefers-reduced-motion accessibility guards.",
       "tags": [
         "frontend",
         "pack"

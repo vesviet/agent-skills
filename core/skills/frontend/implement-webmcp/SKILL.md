@@ -10,7 +10,7 @@ Use this skill to integrate WebMCP into a frontend application, allowing AI agen
 
 ## Core Rules
 
-- **Feature Detection**: Guard WebMCP invocations with feature detection (`'modelContext' in document`) to support SSR and polyfilled environments safely — do not assume the API exists
+- **Feature Detection**: Guard WebMCP invocations with feature detection (`typeof navigator !== 'undefined' && 'modelContext' in navigator`) to support SSR and polyfilled environments safely — do not assume the API exists
 - **State Synchronization**: Expose critical application state (Redux/Zustand stores) securely to the WebMCP context; strip sensitive fields before exposure
 - **Action Allowlist (Default Deny)**: Define an explicit allowlist of which browser actions (clicks, navigation, form fills) are exposed to the agent — default deny; reject tools not on the allowlist
 - **Strict Input Schema Validation**: Every registered WebMCP tool must declare explicit property types, enums, and required fields in its `inputSchema` — empty `{ type: "object" }` schemas with no property descriptions are prohibited
@@ -68,7 +68,7 @@ Use skill: `frontend-testing`
 
 ## Checklist
 
-- [ ] WebMCP provider mounted in global root layout with SSR safety guards (`'modelContext' in document`)
+- [ ] WebMCP provider mounted in global root layout with SSR safety guards (`typeof navigator !== 'undefined' && 'modelContext' in navigator`)
 - [ ] Sanitized application state mapped to agent context without leaking credentials
 - [ ] Client-side actions and input schemas explicitly defined and registered (allowlist as code)
 - [ ] Security boundaries and permission checks enforced on all action handlers
@@ -98,7 +98,7 @@ Skip emission for trivial local experiments that do not cross a role boundary.
 - **Sensitive state exposed**: passwords, tokens, or PII are included in the WebMCP context. Mitigation: filter sensitive fields before `provideContext()`; never expose auth tokens or HttpOnly cookies.
 - **No HITL gate on financial action**: a payment or account-modification tool runs without explicit user confirmation. Mitigation: require HITL confirmation modal for any non-idempotent or financial action; fail-safe on dismiss or timeout.
 - **Raw stack trace in error response**: a tool handler returns the server stack trace in the error payload. Mitigation: return structured JSON error responses with codes; never expose raw stack traces.
-- **Browser feature not detected**: the code assumes `'modelContext' in navigator` is always true. Mitigation: feature-detect with `in document` checks; provide a fallback polyfill bridge.
+- **Browser feature not detected**: the code assumes `navigator.modelContext` is always defined. Mitigation: feature-detect with `typeof navigator !== 'undefined' && 'modelContext' in navigator`; provide a fallback polyfill bridge.
 - **Action bypasses UI permission rules**: an agent action triggers a transaction the user could not perform via UI. Mitigation: enforce the same permission rules the UI enforces; reject bypassed paths.
 - **Service Worker HITL failure**: push notification not delivered. Mitigation: fallback to in-app modal; offline queue for confirmations.
 

@@ -155,11 +155,25 @@ This reference checklist provides operational verification criteria for autonomo
   - LLM-as-Judge evaluation gates calibrated against at least 20–50 historical human ground-truth changes before gating production pipelines
   - calibrated agreement score verified at $\ge 85\%$ before promoting fitness functions to blocking status
 
-### 9. Gate Review & Contract Conformance Verification Table
+### 9. Antigravity Swarm, `/teamwork` & Dual-Ledger Verification (`SWARM-ISOLATION-LOCK`)
+- **Workspace Isolation & Pre-Kill Diff Landing**:
+  - concurrent editing workers MUST run in `workspace:"share"` or `workspace:"branch"` (never `inherit`); readers and verifiers keep `inherit`
+  - maintain **1 Verifier per 2–4 Authors**; verifiers diagnose and post to `@author` without editing the same files
+  - land, merge, or cherry-pick all accepted changes into the root working copy and run full root verification before calling `kill` (killing deletes worker workspaces permanently)
+- **Board Addressing, Channels & Quota Recovery**:
+  - enforce wakeup-only `@name` mentions (no unnecessary `@coordinator` CCs), `#seq` post citations instead of payload copy-paste, `[done]` terminal prefixes, and `#channel` splitting when $> 8$ workers are active
+  - leave `model` unset on `swarm{action:"add"}` so workers match the coordinator model unless the user specifies otherwise; resolve quota exhaustion via `swarm{action:"model"}` preserving conversation history
+  - spawn `narrator` and `monitor` watchdogs when present in the skill list; rehydrate interrupted swarms with `@<monitor> resume` and `read_board{since:0}`
+- **Dual-Ledger Outer/Inner Loop & `/teamwork` Phases**:
+  - maintain an **Outer Task Ledger** (goal, assumptions, role graph / `compact-context.py --merge --reconcile-git`) paired with an **Inner Progress Ledger** checking progress, stalls, and contradictions per turn
+  - for `/teamwork` flows, sequence isolated phases cleanly (`explorer`/`spec_miner` $\rightarrow$ `worker` $\rightarrow$ `reviewer`/`challenger` $\rightarrow$ `auditor`) in separate scratch directories
+
+### 10. Gate Review & Contract Conformance Verification Table
 | Verification Gate | Target Invariant | Required Tool / Command | Pass Criteria |
 | :--- | :--- | :--- | :--- |
-| **DAG Cycle Check** | $|L| = |V|$ | `python3 core/scripts/validate-graph.py` | 0 cycles detected; deterministic ordering |
+| **A2A & Graph Compliance** | $|L| = |V|$; valid cards/contracts | `python core/scripts/validate-2026-compliance.py` | Exit code 0 across all roles and graph rules |
+| **Token & Compaction Check** | Clean 10-slot state, 0 secret leaks | `python core/scripts/compact-context.py --validate -i checkpoint.json` | Schema #60 valid; zero secret findings |
 | **Token FinOps Ceiling** | $B_{\text{cum}} \le C_{\text{phase}}$ | Prometheus `llm_phase_tokens_used` | Token consumption within envelope |
-| **A2A Part Validation** | Structural discrimination | `python3 core/scripts/validate-contracts.py` | 100% conforming to unified Part model |
-| **HITL Tier 4 Sign-Off** | Cryptographic approval | `python3 core/scripts/hooks/check-policy.py` | Dual signature present for Tier 4 |
+| **A2A Part Validation** | Structural discrimination | `python core/scripts/validate-contracts.py` | 100% conforming to unified Part model |
+| **HITL Tier 4 Sign-Off** | Cryptographic approval | `python core/scripts/hooks/check-policy.py` | Dual signature present for Tier 4 |
 | **Checkpoints Saved** | Serializable state | `test -f coordination-plan.json` | Valid schema and hash verified |

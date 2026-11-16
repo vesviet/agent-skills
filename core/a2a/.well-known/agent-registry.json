@@ -8,7 +8,7 @@
       "role": "3d-graphics-engineer",
       "agent_card": "core/a2a/registry/3d-graphics-engineer.agent-card.json",
       "url": "pack://agent-skills/core/roles/3d-graphics-engineer.md",
-      "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGPU/WebGL impleme"
+      "description": "build, optimize, and maintain high-performance 3D web experiences and rendering pipelines that achieve genuine visual cr"
     },
     {
       "role": "agent-coordinator",
@@ -92,7 +92,7 @@
       "role": "frontend-developer",
       "agent_card": "core/a2a/registry/frontend-developer.agent-card.json",
       "url": "pack://agent-skills/core/roles/frontend-developer.md",
-      "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business "
+      "description": "build reliable, accessible, high-craft user interfaces that faithfully implement product behavior and `DESIGN.md` / `ux-"
     },
     {
       "role": "game-developer",

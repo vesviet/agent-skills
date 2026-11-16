@@ -1,116 +1,96 @@
 ## 3D Graphics Engineer Review Checklist
 
-This reference checklist provides operational 3D graphics engineering, WebGPU rendering, shader optimization, and asset pipeline criteria to meet SOTA 2026–2027 standards. It establishes non-negotiable verification gates across WebGPU-first architecture with WebGL2 fallback, Draco and Meshopt geometry compression, complete VRAM resource disposal, generative 3D asset governance (Gaussian Splatting / NeRF), 60 FPS frame budgets, WGSL shader numerical stability, DPR clamping, and R3F canvas lifecycle integration.
+Operational verification gates for `@3d-graphics-engineer` deliverables across Three.js, React Three Fiber v9, WebGPU/WebGL2, shaders (TSL/WGSL/GLSL), and 3D asset pipelines.
 
-### 1. WebGPU-First Modernization & Graceful WebGL2 Fallback (`WEBGPU-FALLBACK-LOCK`)
-- **Next-Generation WebGPU Pipeline**:
-  - rendering pipelines prioritize WebGPU (`navigator.gpu`) leveraging WGSL compute shaders, uniform buffer layouts, and asynchronous command encoding
-  - runtime capability detection implements automated, graceful fallback to WebGL2 for unsupported browsers or restricted mobile GPUs:
-    ```typescript
-    async function initRenderer(): Promise<RendererContext> {
-      if ('gpu' in navigator) {
-        const adapter = await navigator.gpu.requestAdapter({ powerPreference: 'high-performance' });
-        if (adapter) {
-          const device = await adapter.requestDevice({
-            requiredLimits: { maxBufferSize: 256 * 1024 * 1024 }
-          });
-          return new WebGPURendererContext(device);
-        }
-      }
-      return new WebGL2RendererFallback();
+---
+
+### 1. Archetype Alignment & Backend Pairing (`RENDER-BACKEND-LOCK`)
+
+- [ ] **Scene Archetype Classified**: explicitly tagged as `Product Configurator` (`frameloop="demand"`), `Spatial Showcase` (lazy-loaded + `MOTION_INTENSITY` synced), `Real-Time Game/Sim` (`frameloop="always"` + instancing), or `3DGS Scan Viewer`.
+- [ ] **Clean Backend & Post-Processing Pairing**:
+  - *WebGPU path*: `WebGPURenderer` + `MeshStandardNodeMaterial` / TSL + Three.js node `PostProcessing` + WGSL compute; inspected via **Chrome DevTools Shader Editor** (never WebGL-only `Spector.js`).
+  - *WebGL2 fallback/path*: `WebGLRenderer` + `pmndrs/postprocessing` `EffectComposer` + `Spector.js` (dev-only, stripped in prod).
+  - *R3F v9 alignment*: uses `useThree((s) => s.renderer)` instead of legacy `s.gl`.
+- [ ] **Deterministic Context Recovery**: `webglcontextlost`/`webglcontextrestored` and WebGPU `device.lost` handlers reinitialize GPU resources without requiring full page reload.
+
+---
+
+### 2. Anti-AI-3D-Slop Visual & Mathematical Craft (`AI-3D-CRAFT-LOCK`)
+
+- [ ] **Lighting & Tone Mapping**: calibrated PMREM HDRI environment lighting (`PMREMGenerator`) + intentional key/fill/rim hierarchy + `THREE.AgX` or `THREE.ACESFilmicToneMapping`; flat `ambientLight` + white `directionalLight` on `#000000` void rejected.
+- [ ] **Camera Framing & Frustum**: product views use `fov 35–45` with bounding-sphere fit ($d = r / \sin(\text{fov}/2)$), tight `near`/`far` ratio to avoid Z-fighting, and damped `OrbitControls` with polar/distance clamps.
+- [ ] **Grounding & Shadow Hygiene**: shadow bias calibrated (`bias` / `normalBias`) to prevent shadow acne and peter-panning; product scenes include contact grounding (`ContactShadows` or baked AO).
+- [ ] **Texture Color-Space Invariant**:
+  - `THREE.SRGBColorSpace` applied **only** to albedo/baseColor and emissive textures.
+  - `THREE.NoColorSpace` (Linear) enforced on normal, roughness, metalness, AO, and packed ORM (`R=AO, G=Roughness, B=Metalness`) maps; `flipY = false` preserved for glTF assets.
+- [ ] **Zero-Allocation Render Loop**: zero `new THREE.Vector3()`, `new THREE.Matrix4()`, `.clone()`, or React `setState()` inside `useFrame` / RAF loops; $\Delta t \le 0.1\text{s}$ clamped.
+
+---
+
+### 3. Complete VRAM Resource Lifecycle (`VRAM-DISPOSAL-LOCK`)
+
+JavaScript GC does not release GPU buffers or textures, and `material.dispose()` in Three.js does **not** dispose attached `Texture` instances:
+
+```typescript
+const TEXTURE_KEYS = [
+  'map', 'normalMap', 'roughnessMap', 'metalnessMap',
+  'aoMap', 'emissiveMap', 'alphaMap', 'bumpMap', 'displacementMap', 'envMap',
+] as const;
+
+function disposeMaterialAndTextures(mat: THREE.Material): void {
+  const record = mat as unknown as Record<string, unknown>;
+  for (const key of TEXTURE_KEYS) {
+    const tex = record[key];
+    if (tex && typeof (tex as THREE.Texture).dispose === 'function') {
+      (tex as THREE.Texture).dispose();
     }
-    ```
-  - feature tiering cleanly disables heavy compute effects (e.g., screen-space ambient occlusion, volumetric fog, GPU particle sorting) under WebGL2 fallback without throwing unhandled exceptions
-
-### 2. Draco & Meshopt Geometry Compression (`DRACO-MESHOPT-LOCK`)
-- **Strict Asset Size Ceilings & Quantization**:
-  - all glTF/GLB models must be compressed using Meshopt quantization (`EXT_meshopt_compression`) or Draco geometry compression; raw uncompressed `.obj` or unoptimized `.gltf` files are prohibited in production bundles
-  - mobile 3D asset transfer budgets are strictly capped at $\le 2\text{MB}$ compressed payload per scene
-  - textures encoded using KTX2 / Basis Universal (UASTC / ETC1S) for direct GPU VRAM transcoding (BC7 desktop, ASTC mobile, ETC2 fallback) without CPU decompression overhead:
-    ```bash
-    # Transcode and compress GLB assets using gltfpack with meshopt
-    gltfpack -i scene_raw.gltf -o scene_optimized.glb -cc -tc -kn
-    ```
-
-### 3. VRAM Resource Lifecycle & Memory Leak Elimination (`MEMORY-DISPOSAL-LOCK`)
-- **Comprehensive Scene Teardown & Disposal**:
-  - all geometries, textures, materials, shaders, and render targets must explicitly execute `.dispose()` upon component unmount or scene transition
-  - Three.js / R3F scenes audited with memory profiling tools to verify zero orphaned GPU VRAM allocations across page navigations:
-    ```typescript
-    function disposeSceneNode(node: THREE.Object3D): void {
-      if ((node as THREE.Mesh).geometry) {
-        (node as THREE.Mesh).geometry.dispose();
-      }
-      if ((node as THREE.Mesh).material) {
-        const mat = (node as THREE.Mesh).material;
-        if (Array.isArray(mat)) {
-          mat.forEach(m => m.dispose());
-        } else {
-          mat.dispose();
-        }
-      }
-    }
-    ```
-
-### 4. Generative 3D Asset & Gaussian Splatting (3DGS) Governance (`GEN-3D LOCK`)
-- **Mathematical VRAM Allocation Bounds**:
-  - 3D Gaussian Splatting scenes must enforce strict splat count ceilings ($\le 400\text{k}$ splats on mobile, $\le 1.2\text{M}$ on desktop) and adhere to the memory budget equation:
-    $$VRAM_{\text{3DGS}} = N_{\text{splats}} \times (12 \times \text{sizeof(float32)} + 48 \times \text{sizeof(float16)}) \le 250\text{MB}$$
-  - GPU texture memory consumption across all active mip levels must obey Little's Law VRAM bounds:
-    $$VRAM_{\text{textures}} = \sum_{i=1}^M \left( W_i \times H_i \times Bpp_i \times 1.333 \right) \le 180\text{MB}$$
-- **Procedural Geometry Collision Isolation**:
-  - AI-generated procedural geometry or Gaussian splat point clouds must never be used directly as physical collision meshes; simplified collision primitives (AABB / OBB / BVH) must wrap procedural assets
-
-### 5. Strict 60 FPS Frame Budget & Draw Call Caps (`FRAME-BUDGET-LOCK`)
-- **Frame Timing & Render Complexity Limits**:
-  - render loops must maintain steady 60 FPS ($16.6\text{ms}$ frame budget; $8.3\text{ms}$ for 120Hz displays) under standard device loads:
-    $$\Delta t_{\text{frame}} \le 16.6\text{ms}, \quad \text{Jitter} \le \pm 2.0\text{ms}$$
-  - draw calls strictly capped ($\le 100$ draw calls per frame on mobile, $\le 250$ on desktop) through material batching, texture atlasing, and geometry instancing (`InstancedMesh`)
-  - dynamic resolution scaling (DRS) automatically engages if frame delta exceeds $22\text{ms}$ ($<45\text{ FPS}$) for $\ge 3$ consecutive seconds
-
-### 6. WGSL Compute Shader Pipelines & Numerical Precision
-- **Compute Shader Particle & Sorting Passes**:
-  - high-concurrency particle systems and Gaussian splat depth sorting must execute in WGSL compute passes; CPU-blocking sort loops in the main thread are strictly prohibited:
-  ```wgsl
-  // POSITIVE: WGSL Workgroup Parallel Bitonic Sorting Step
-  @group(0) @binding(0) var<storage, read_write> splatIndices: array<u32>;
-  @compute @workgroup_size(64)
-  fn bitonicSortStep(@builtin(global_invocation_id) global_id: vec3<u32>) {
-    let index = global_id.x;
-    if (index >= arrayLength(&splatIndices)) { return; }
-    // Parallel sorting logic without thread blocking
   }
-  ```
-  - numerical precision specified explicitly (`precision highp float` vs `mediump`); division-by-zero guards must protect all vector normalizations
+  mat.dispose();
+}
 
-### 7. Responsive Viewport & Device Pixel Ratio (DPR) Clamping
-- **Mobile Thermal & Power Preservation**:
-  - Device Pixel Ratio (DPR) clamped to a maximum of `2.0` (`renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.0))`) to prevent 4K/Retina rendering stalls and GPU thermal throttling on high-DPI mobile devices
-  - animation delta time clamped ($\Delta t \le 0.1\text{s}$) to prevent physics tunneling or visual vertex exploding when tabs are backgrounded
+function disposeSceneNode(node: THREE.Object3D): void {
+  if ('geometry' in node && (node as THREE.Mesh).geometry) {
+    (node as THREE.Mesh).geometry.dispose();
+  }
+  if ('material' in node && (node as THREE.Mesh).material) {
+    const mat = (node as THREE.Mesh).material;
+    if (Array.isArray(mat)) mat.forEach(disposeMaterialAndTextures);
+    else disposeMaterialAndTextures(mat);
+  }
+}
+```
 
-### 8. Canvas / DOM Integration & Thread Synchronization
-- **Non-Blocking UI Thread Isolation**:
-  - heavy asset parsing, texture decompression, and physics computations offloaded to Web Workers via `OffscreenCanvas` or worker pools
-  - 3D canvas events pass through smoothly to DOM overlay elements without input lag or gesture hijacking
-  - canvas elements provide alternative text descriptions and ARIA labels for non-visual assistive technology
+- [ ] **Full Teardown Verified**: geometries, materials, **all attached texture maps**, `WebGLRenderTarget`s, and `PMREMGenerator`s disposed on unmount/scene switch.
 
-### 9. Context Loss Recovery & Lifecycle Management
-- **Deterministic Context Restoration**:
-  - WebGL `webglcontextlost` / `webglcontextrestored` and WebGPU `device.lost` listener lifecycles register automated asset rehydration without requiring full page reloads:
-  ```typescript
-  device.lost.then((info) => {
-    console.warn(`WebGPU device lost: ${info.message}. Reason: ${info.reason}`);
-    if (info.reason !== 'destroyed') {
-      reinitializeWebGPUScene();
-    }
-  });
-  ```
+---
 
-### 10. Gate Review & Contract Conformance Verification Table
+### 4. Asset Budgets, Compression & LOD Hierarchy (`ASSET-BUDGET-AND-LOD-LOCK`)
+
+- [ ] **Clear Per-Asset vs Per-Scene Ceilings**:
+  - *Compressed GLB transfer*: `<= 2 MB` per scene on mobile (Draco or Meshopt quantization; raw `.obj`/uncompressed `.gltf` rejected).
+  - *Per-prop interactive target*: `<= 10k` triangles for standard interactive props; meshes `> 50k` triangles require 3-tier LOD (`LOD0` / `LOD1` / `LOD2`).
+  - *Per-scene mobile frame ceiling*: `<= 500k` rendered triangles, `<= 100` draw calls (`<= 250` desktop web), `<= 25` shadow-casting draw calls, `DPR <= 2.0`.
+- [ ] **KTX2 / Basis Universal Textures**: all textures `> 1024×1024` use KTX2 (UASTC/ETC1S) capped at `<= 1K` mobile / `<= 2K` desktop; total mipmapped texture VRAM obeys the **Geometric-Series Mipmap VRAM Bound**:
+  $$VRAM_{\text{textures}} = \sum_{i=1}^M \left( W_i \times H_i \times Bpp_i \times 1.333 \right) \le 180\text{ MB}$$
+- [ ] **Bundled WASM Decoders**: Draco, Meshopt, and KTX2 decoders served from pinned local package assets, never unverified external CDNs.
+
+---
+
+### 5. Generative 3D & Gaussian Splatting (3DGS) Governance (`GEN-3D-PROVENANCE-LOCK`)
+
+- [ ] **Splat & VRAM Ceilings**: `<= 400k` splats on mobile (`<= 1.2M` desktop) and $VRAM_{\text{3DGS}} \le 250\text{ MB}$ (`N_splats * 32 bytes + radix_sort` or explicit covariance layout).
+- [ ] **Mesh & License Validation**: AI-generated meshes (Meshy, Tripo, Rodin, NeRF bakes) pass `gltf-validator`, UV/normal checks, simplified AABB/OBB/BVH collision proxies, and commercial license provenance logging.
+
+---
+
+### 6. Accessibility, Host Dials & Verification Gates
+
+- [ ] **A11y & Motion Compliance**: `prefers-reduced-motion` pauses/simplifies camera & particle motion; non-3D fallback (static render/image/summary) and canvas ARIA labels present; host `DESIGN_VARIANCE` / `MOTION_INTENSITY` / `VISUAL_DENSITY` honored.
+
 | Verification Gate | Target Invariant | Required Tool / Command | Pass Criteria |
 | :--- | :--- | :--- | :--- |
-| **Asset Size Ceiling** | Scene payload $\le 2\text{MB}$ | `gltf-transform inspect scene.glb` | Compressed transfer size $\le 2\text{MB}$ |
-| **VRAM Splat Budget** | $VRAM_{\text{3DGS}} \le 250\text{MB}$ | Chrome DevTools Memory / WebGPU Tracer | Zero allocation breaches |
-| **Frame Rate Floor** | $\Delta t_{\text{frame}} \le 16.6\text{ms}$ | Stats.js / `requestAnimationFrame` monitor | Steady 60 FPS ($\ge 95\%$ of frames) |
-| **VRAM Teardown** | 0 retained textures/buffers | Automated Jest/Puppeteer disposal test | Zero lingering GPU buffers |
-| **glTF Spec Validation** | 0 schema validation errors | `gltf-validator -i scene.glb` | 0 errors, 0 warnings |
+| **glTF / Asset Integrity** | 0 schema/normal/UV errors; GLB `<= 2 MB` | `gltf-validator` & `gltf-transform inspect` | 0 errors; payload `<= 2 MB` |
+| **Frame Pacing** | $\Delta t \le 16.6\text{ ms}$ (60 FPS); mobile draw calls `<= 100` | R3F DevTools / Chrome Performance / Stats.js | $\ge 95\%$ frames within budget on target tier |
+| **Shader & Draw Call Trace** | Valid WGSL/TSL/GLSL & batched draws | Chrome DevTools Shader Editor (WebGPU) / `Spector.js` dev (WebGL2) | 0 compile errors; instancing/batching active |
+| **VRAM Disposal** | 0 retained geometries/textures/targets | Chrome Memory / `renderer.info.memory` diff | Counts return to baseline after unmount |
+| **Delivery Contracts** | Schema-valid handoff | `python3 core/scripts/validate-contracts.py` | `implementation-result.json` (+ `performance-audit.json`) valid |

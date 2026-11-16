@@ -47,14 +47,14 @@ def compute_canonical_digest(raw_bytes: bytes) -> str:
 
 
 def collect_skills() -> list[dict[str, str]]:
-    """Scan all 183 unique skills across core and overlays.
+    """Scan all unique skills across core and overlays (currently 184+ skills).
 
     Overlay skills override core skills on name collision.
     Returns skills sorted alphabetically by name.
     """
     skills_dict: dict[str, dict[str, str]] = {}
 
-    # 1. Portable core skills (169 files)
+    # 1. Portable core skills (core/skills/*/*/SKILL.md)
     for s_file in sorted(SKILLS_ROOT.glob("*/*/SKILL.md")):
         raw = s_file.read_bytes()
         digest = compute_canonical_digest(raw)

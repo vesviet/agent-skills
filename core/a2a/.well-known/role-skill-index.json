@@ -1474,13 +1474,17 @@
     "3d-graphics-engineer": {
       "name": "3d-graphics-engineer",
       "title": "3D Graphics Engineer",
-      "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGPU/WebGL implementations that correctly execute product vision while preserving stable frame rates, memory constraints, and cross-device compatibility. In 2026–2027, this mandates WebGPU-first architectures with WebGL2 fallback, WGSL (WebGPU Shading Language) compute shader pipelines, Three.js WebGPURenderer / TSL (Three Shading Language), 3D Gaussian Splatting (3DGS) real-time rasterization within strict VRAM ceilings ($VRAM_{\\text{textures}} = \\sum (W_i \\times H_i \\times Bpp_i \\times 1.333)$), Meshopt/Draco asset delivery ($\\le 2\\text{MB}$ payload), and governing AI-generated 3D assets with automated memory and fidelity gates.",
+      "description": "build, optimize, and maintain high-performance 3D web experiences and rendering pipelines that achieve genuine visual craft (physically calibrated lighting, camera framing, material response, and spatial grounding) while guaranteeing stable frame rates, strict VRAM disposal, and cross-device reliability. In 2026–2027, this requires matching the right rendering architecture to the 3D Scene Archetype (Product Configurator, Spatial Showcase, Real-Time Game/Simulation, or 3DGS Scan Viewer), choosing intentionally between `WebGPURenderer` (TSL / WGSL) and `WebGLRenderer` (`pmndrs/postprocessing` + Draco/Meshopt/KTX2), governing AI-generated 3D assets with memory/LOD/provenance gates, and eliminating AI 3D slop (flat plastic lighting, fisheye cameras, per-frame GC allocations, and leaked textures).",
       "file": "core/roles/3d-graphics-engineer.md",
       "skills": [
         "render-webgl-threejs",
         "debug-3d-scene",
         "integrate-r3f-three-legacy",
         "optimize-3d-assets",
+        "program-game-shaders",
+        "profile-game-performance",
+        "interactive-component-workbench",
+        "accessibility-review",
         "navigate-service",
         "troubleshoot-service",
         "commit-code",
@@ -1497,6 +1501,10 @@
         "optimize-3d-assets"
       ],
       "supporting_skills": [
+        "program-game-shaders",
+        "profile-game-performance",
+        "interactive-component-workbench",
+        "accessibility-review",
         "navigate-service",
         "troubleshoot-service",
         "commit-code",
@@ -1511,7 +1519,7 @@
     "agent-coordinator": {
       "name": "agent-coordinator",
       "title": "Agent Coordinator",
-      "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality gates, and driving work from intake to validated handoff without losing context or skipping safety. In 2025–2026, this means treating multi-agent systems as distributed software: enforcing deterministic state transitions, applying runtime guardrails (not prompt-based trust), maintaining end-to-end trace observability, managing token budgets as a design constraint, and applying explicit HITL gates before irreversible actions. In 2026, this further extends to **MCP 2026-07-28 stateless protocol enforcement** in A2A delegation, **EU AI Act Article 50 disclosure gate** for AI feature deployments, **NHI lifecycle governance** per agent phase, and **agentic fitness function calibration** before CI gating. In 2026–2027, this mandates Two-Tier JIT Skill Discovery governance, progressive disclosure token budget enforcement (< 5 KB Tier 1 footprint, 97.3% catalog prompt reduction), hybrid candidate ranking threshold enforcement (S_match >= 0.72), and SHA-256 cryptographic asset verification before JIT sandbox activation.",
+      "description": "control the full lifecycle of a bug or feature by coordinating the right specialist roles, enforcing the right quality gates, and driving work from intake to validated handoff without losing context or skipping safety. In 2025–2026, this means treating multi-agent systems as distributed software: enforcing deterministic state transitions, applying runtime guardrails (not prompt-based trust), maintaining end-to-end trace observability, managing token budgets as a design constraint, and applying explicit HITL gates before irreversible actions. In 2026, this further extends to **MCP 2026-07-28 stateless protocol enforcement** in A2A delegation, **EU AI Act Article 50 disclosure gate** for AI feature deployments, **NHI lifecycle governance** per agent phase, and **agentic fitness function calibration** before CI gating. In 2026–2027, this mandates **Dual-Mode Orchestration** (Antigravity Native **swarm** / `/teamwork` execution vs Distributed A2A 1.0 Graphs), **Two-Tier JIT Skill Discovery** ($\\le 5\\text{ KB}$ startup active prompt slice over the SHA-256 signed full `INDEX_TIER1.json` catalog across all 184+ skills), hybrid candidate ranking ($S_{\\text{match}} \\ge 0.72$), and verified diff-landing before worker teardown.",
       "file": "core/roles/agent-coordinator.md",
       "skills": [
         "agent-a2a-protocol",
@@ -1566,7 +1574,7 @@
     "agent-discovery-engineer": {
       "name": "agent-discovery-engineer",
       "title": "Agent Discovery Engineer",
-      "description": "Own the integration, architecture, and maintenance of Agent Discovery protocols and machine registries, ensuring 100% compliance across all 19 checks of Agent Readiness standards (e.g., isitagentready.com) and A2A 1.0 specifications. In 2026–2027, this mandates RFC 8615 well-known URI discovery, A2A 1.0 unified Part model enforcement (Text, File, Data), SPIFFE/SVID workload identity federation, ED25519 cryptographic signature verification, RFC 8693 OAuth 2.0 Token Exchange for delegated agent chains, zero-drift synchronization between machine registries (`agent-registry.json`) and runtime adapters, dynamic agent card discovery via RFC 8288 Link headers, generating and maintaining the Two-Tier JIT Skill Discovery manifest (`INDEX_TIER1.json`) under agentskills.io 0.2.0, enforcing the < 5 KB Tier 1 footprint across all 183 skills, calculating canonical SHA-256 cryptographic digests, maintaining zero-drift synchronization across machine registries, and codifying hybrid candidate ranking parameters.",
+      "description": "Own the integration, architecture, and maintenance of Agent Discovery protocols and machine registries, ensuring 100% compliance across all 19 checks of Agent Readiness standards (e.g., isitagentready.com) and A2A 1.0 specifications. In 2026–2027, this mandates RFC 8615 well-known URI discovery, **RFC 9728** OAuth Protected Resource Metadata + **CIMD** (replacing deprecated DCR RFC 7591), **A2A 1.0** unified Part model & **JCS (RFC 8785) + JWS (RFC 7515)** signed Agent Cards (`/.well-known/agent-card.json`), **MCP Registry `server.json` + SEP-2127 `/.well-known/mcp-server-card`** (`/.well-known/mcp/server-card.json` compat), **`/.well-known/ai-catalog.json`** umbrella indexing, **Markdown Content Negotiation (`Accept: text/markdown`)**, **Content Signals**, **Web Bot Auth (RFC 9421)**, SPIFFE/SVID & RFC 8693 workload identity, and generating/validating the SHA-256 signed Two-Tier JIT Skill Discovery manifest (`INDEX_TIER1.json` across all 184+ pack skills under agentskills.io 0.2.0 while enforcing a $\\le 5\\text{ KB}$ active startup prompt slice).",
       "file": "core/roles/agent-discovery-engineer.md",
       "skills": [
         "manage-auth-md",
@@ -2080,7 +2088,7 @@
     "frontend-developer": {
       "name": "frontend-developer",
       "title": "Frontend Developer",
-      "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business logic, and avoid regressions when features or bug fixes change system behavior. In 2025–2026, this extends to architecting scalable component systems via compound components and Radix-style slot delegation to eliminate boolean prop explosion, engineering fluid, native-feeling page and state transitions using the CSS View Transitions API and React 19 ViewTransition while strictly safeguarding Core Web Vitals (INP < 200ms) with off-thread composited motion, governing AI-generated UI code with tiered trust validation, enforcing Taste-Skill anti-slop frontend engineering standards (viewport stability with min-h-100dvh, continuous motion state isolation via Motion hooks, asset hygiene, and Big Bans enforcement), owning rendering strategy decisions (SSR/CSR/partial hydration/islands/edge RSC) as architectural choices, treating Core Web Vitals (INP, LCP, CLS) as product quality requirements enforced by CI/CD performance budgets, enforcing automated accessibility gates (axe-core) in CI, architecting PWA service workers as agentic orchestration control-planes, implementing EU AI Act Article 50 disclosure UI components as a legal requirement (live from 2 August 2026), and sanitizing AI-generated content before DOM insertion using Trusted Types and DOMPurify.",
+      "description": "build reliable, accessible, high-craft user interfaces that faithfully implement product behavior and `DESIGN.md` / `ux-flow-spec.json` intent without AI engineering slop (no `useEffect` derived-state waterfalls, no boolean-prop soup, no unauthenticated Server Actions, no dead mock handlers, no layout-thrashing animations). In 2026–2027, this covers compound components (`Root`/`Trigger`/`Content`, `asChild` / Base UI 'render', React 19 'ref' prop + `use()`), intentional rendering strategies (SSR/CSR/ISR/Islands/Edge RSC), Core Web Vitals budgets (`INP < 200ms`, `LCP < 2.5s`, `CLS < 0.1`), native CSS/React 19 `<ViewTransition>`, sandboxed previews (OWASP ASI05), DOMPurify + Trusted Types sanitization, automated 'axe-core' WCAG 2.2 AA CI gates, and EU AI Act Article 50 disclosure UI.",
       "file": "core/roles/frontend-developer.md",
       "skills": [
         "accessibility-review",
@@ -2095,10 +2103,13 @@
         "implement-webmcp",
         "integrate-api-client",
         "interactive-component-workbench",
+        "motion-performance-engineering",
         "navigate-service",
         "setup-design-system",
         "setup-visual-regression",
-        "motion-performance-engineering",
+        "anti-ui-slop-finish-gate",
+        "design-md-specification",
+        "web-quality-audit",
         "performance-profiling",
         "write-tests",
         "troubleshoot-service",
@@ -2107,10 +2118,7 @@
         "configure-mcp",
         "web-perf",
         "add-telemetry-instrumentation",
-        "security-audit",
-        "design-md-specification",
-        "anti-ui-slop-finish-gate",
-        "web-quality-audit"
+        "security-audit"
       ],
       "primary_skills": [
         "accessibility-review",
@@ -2125,12 +2133,15 @@
         "implement-webmcp",
         "integrate-api-client",
         "interactive-component-workbench",
+        "motion-performance-engineering",
         "navigate-service",
         "setup-design-system",
-        "setup-visual-regression",
-        "motion-performance-engineering"
+        "setup-visual-regression"
       ],
       "supporting_skills": [
+        "anti-ui-slop-finish-gate",
+        "design-md-specification",
+        "web-quality-audit",
         "performance-profiling",
         "write-tests",
         "troubleshoot-service",
@@ -2139,10 +2150,7 @@
         "configure-mcp",
         "web-perf",
         "add-telemetry-instrumentation",
-        "security-audit",
-        "design-md-specification",
-        "anti-ui-slop-finish-gate",
-        "web-quality-audit"
+        "security-audit"
       ],
       "irreversible_actions": []
     },
@@ -3152,7 +3160,7 @@
       "category": "agent",
       "type": "core",
       "file": "core/skills/agent/agent-memory-compaction/SKILL.md",
-      "description": "Use when compacting long-running agent conversation context into an anchored 10-slot working state, applying 60/80 compaction triggers, Head-Tail Tool Output Truncation (TOC), and attention allocation to prevent context window degradation and goal drift."
+      "description": "Use when compacting long-running agent conversation context into an anchored 10-slot working state via a 3-tier cascade (observation masking, iterative delta merge, hybrid 60/80 and token-ceiling triggers), 20/80 Head-Tail TOC truncation, git artifact reconciliation, and entropy secret redaction."
     },
     "agent-model-routing": {
       "name": "agent-model-routing",

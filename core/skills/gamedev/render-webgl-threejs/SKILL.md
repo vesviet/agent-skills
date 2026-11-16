@@ -20,17 +20,18 @@ Build high-framerate WebGL2 and WebGPU interactive 3D scenes with compressed ass
 
 ## Core Rules
 
-- **WebGPU with Graceful WebGL2 Fallback**: Initialize `WebGPURenderer` when navigator capabilities permit, while providing seamless automatic fallback to `WebGLRenderer` and handling `webglcontextlost` / `webglcontextrestored` events without crashing.
-- **Compressed Asset Streaming**: Enforce Draco or Meshopt geometry compression alongside KTX2 / Basis Universal GPU-compressed textures so assets remain compressed in VRAM and decode off the main thread.
-- **Explicit VRAM Disposal**: Never rely on JavaScript garbage collection for GPU resources. Explicitly call `.dispose()` on every `BufferGeometry`, `Material`, `Texture`, and `WebGLRenderTarget` when unmounting scenes or despawning entities.
-- **Contract Adherence**: Emit `contracts/schemas/implementation-result.json` upon completing WebGL/Three.js rendering slices.
+- **Archetype & Backend Pairing**: Match renderer and post-processing to the scene archetype — `WebGPURenderer` + TSL (`MeshStandardNodeMaterial` / `THREE.PostProcessing`) for WebGPU-first pipelines, or `WebGLRenderer` + `pmndrs/postprocessing` `EffectComposer` for WebGL2 compatibility, handling `webglcontextlost`/`webglcontextrestored` and `device.lost` deterministically. Use `frameloop="demand"` + `invalidate()` for idle product configurators and `useThree((s) => s.renderer)` in R3F v9.
+- **Anti-AI-3D-Slop Visual & Loop Craft**: Never ship flat `ambientLight` + single white `directionalLight` on `#000000` voids or fisheye `fov 75` `[0,0,5]` cameras. Calibrate PMREM HDRI + 3-point lighting, `AgX`/`ACESFilmic` tone mapping, bounding-sphere camera framing (`fov 35–45`), tight `near`/`far` frustum, grounded contact shadows, and **zero per-frame heap allocations** (`new THREE.Vector3()`, `.clone()`, `setState()`) inside `useFrame`/RAF loops.
+- **Color-Space & Compressed Streaming**: Apply `THREE.SRGBColorSpace` strictly to albedo/emissive maps and `THREE.NoColorSpace` (Linear) to normal, roughness, metalness, AO, and packed ORM maps (`flipY = false` for glTF). Enforce Draco/Meshopt geometry compression + KTX2/Basis Universal GPU textures with local bundled WASM decoders.
+- **Explicit Full VRAM Disposal**: JavaScript GC and `material.dispose()` do NOT free attached textures. Traverse every node on unmount to dispose every `BufferGeometry`, `Material`, **all texture map properties** (`map`, `normalMap`, `roughnessMap`, `metalnessMap`, `aoMap`, `emissiveMap`), `RenderTarget`s, and `PMREMGenerator`s.
+- **Contract Adherence**: Emit `contracts/schemas/implementation-result.json` upon completing WebGL/WebGPU/Three.js rendering slices.
 
 ## Suggested Process
 
-### 1. Renderer, Color Space & Pixel Ratio Setup
-Configure the renderer for consistent cross-device fidelity and frame pacing:
-- Set `renderer.outputColorSpace = THREE.SRGBColorSpace` and `renderer.toneMapping = THREE.ACESFilmicToneMapping`.
-- Clamp device pixel ratio (`Math.min(window.devicePixelRatio, 2.0)`) to prevent fill-rate collapse on high-DPI mobile screens.
+### 1. Renderer, Color Space, Camera & Pixel Ratio Setup
+Configure the renderer, camera frustum, and tone mapping for consistent cross-device fidelity:
+- Set `renderer.toneMapping = THREE.AgXToneMapping` (or `ACESFilmicToneMapping`), `outputColorSpace = THREE.SRGBColorSpace`, and `NoColorSpace` on data/normal/ORM textures.
+- Frame product views with `fov 35–45`, bounding-sphere fit, tight `near`/`far` bounds, and `Math.min(window.devicePixelRatio, 2.0)`.
 
 ### 2. Asynchronous GLTF Streaming & Instancing
 Load 3D scenes via `GLTFLoader` configured with `DRACOLoader`, `MeshoptDecoder`, and `KTX2Loader`:
@@ -40,8 +41,9 @@ Load 3D scenes via `GLTFLoader` configured with `DRACOLoader`, `MeshoptDecoder`,
 Configure `MeshStandardMaterial` / `MeshPhysicalMaterial` using pre-filtered PMREM environment maps (`PMREMGenerator`):
 - Pack metallic, roughness, and ambient occlusion into a single ORM texture (`roughnessMap` = G, `metalnessMap` = B, `aoMap` = R) to halve texture sampler lookups.
 
-### 4. EffectComposer Post-Processing Consolidation
-Combine bloom, vignette, and color grading into a merged `EffectComposer` pass (`pmndrs/postprocessing` `EffectPass`) rather than chaining multiple full-screen render-target blits.
+### 4. Post-Processing Consolidation & Loop Hygiene
+- Merge WebGL2 bloom/vignette/grading into a single `pmndrs/postprocessing` `EffectPass`, or use Three.js node `PostProcessing` (TSL) on `WebGPURenderer` — never chain unmerged full-screen blits.
+- Hoist scratch vectors/matrices outside `useFrame`/RAF ticks (`frameloop="demand"` when idle) and respect `prefers-reduced-motion`.
 
 ## Output Contracts
 

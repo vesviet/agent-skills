@@ -20,7 +20,7 @@ Use this skill when exposing API capabilities or developer instructions through 
   - `url`: relative or absolute URI reference to the full SKILL.md or archive package.
   - `digest`: lowercase hexadecimal SHA-256 digest prefixed with `sha256:` (`^sha256:[a-f0-9]{64}$`).
 - **Progressive Disclosure**: Expose capabilities in two tiers:
-  - *Tier 1 (Passive Discovery Index)*: Compact manifest index strictly $< 5\text{ KB}$ containing metadata descriptors without instruction bodies, loaded into agent context at session startup.
+  - *Tier 1 (Passive Discovery Index & Startup Slice)*: Keep active startup prompt skill metadata strictly $\le 5\text{ KB}$ (role-scoped slice, ~40–100 tokens/skill) without instruction bodies; keep full catalog discovery (`/.well-known/agent-skills/index.json` or `INDEX_TIER1.json`) stripped of markdown bodies with `sha256:` digests.
   - *Tier 2 (JIT Asset Retrieval)*: Full `SKILL.md` instructions or unpacked tool archives fetched Just-In-Time (JIT) into the execution sandbox only when an active intent matches the skill trigger.
 - **Canonical Cryptographic Verification**: Compute SHA-256 digests using RFC 8785 JSON Canonicalization Scheme (JCS) or raw asset bytes; verify fetched asset digest before loading to prevent supply-chain tampering (OWASP AST02).
 - **Discovery Headers & CORS**: Manifest HTTP response MUST set `Content-Type: application/json` and `Access-Control-Allow-Origin: *` (with 204 response on CORS `OPTIONS` preflight).
@@ -56,7 +56,7 @@ Use this skill when exposing API capabilities or developer instructions through 
    ```
 4. **Deploy at Well-Known Path**: Place the manifest at `/.well-known/agent-skills/index.json`. For Cloudflare Pages, publish under `public/.well-known/agent-skills/index.json`; for Workers, handle on router.
 5. **Configure Response & Discovery Headers**: Set `Content-Type: application/json`, `Access-Control-Allow-Origin: *`, `ETag`, `Last-Modified`, and add `Link: </.well-known/agent-skills/index.json>; rel="agent-skills"` on the domain root.
-6. **Validate Progressive Disclosure**: Verify passive Tier 1 index payload remains $< 5\text{ KB}$ without instruction bodies; test JIT resolution and validate manifest against `contracts/schemas/agent-skills-discovery.json`.
+6. **Validate Progressive Disclosure**: Verify active startup prompt slices stay $\le 5\text{ KB}$ without instruction bodies; verify full manifest (`index.json` / `INDEX_TIER1.json`) strips bodies, computes valid digests, and passes `contracts/schemas/agent-skills-discovery.json`.
 
 ## Checklist
 
@@ -64,7 +64,7 @@ Use this skill when exposing API capabilities or developer instructions through 
 - [ ] Every skill declares `name`, `type` (`skill-md` or `archive`), `description`, `url`, and `digest`.
 - [ ] Skill descriptions include explicit "Use when..." or "Use for..." trigger clauses.
 - [ ] Canonical SHA-256 digests computed and formatted with `sha256:` prefix.
-- [ ] Passive Tier 1 discovery index size is strictly $< 5\text{ KB}$ without embedded instruction bodies.
+- [ ] Startup active prompt slice stays $\le 5\text{ KB}$ and full discovery index omits embedded instruction bodies.
 - [ ] Manifest endpoint served with `Content-Type: application/json` and `Access-Control-Allow-Origin: *`.
 - [ ] RFC 8288 Link header pointing to discovery manifest configured on domain root.
 - [ ] Manifest validated against `contracts/schemas/agent-skills-discovery.json`.
@@ -87,7 +87,7 @@ The manifest itself is the primary discovery contract. When communicating manife
 
 - **Schema Drift**: Manifest deployed without valid 0.2.0 `$schema` or missing mandatory fields. Mitigation: CI gate validates against `agent-skills-discovery.json`.
 - **Digest Mismatch**: Skill asset modified without updating `digest`. Mitigation: Runtime aborts with `E_DIGEST_MISMATCH` to prevent supply chain poisoning (AST02).
-- **Context Bloat**: Ingesting full markdown instruction bodies into `index.json`. Mitigation: Enforce Tier 1 passive discovery index $< 5\text{ KB}$; fetch full markdown JIT.
+- **Context Bloat**: Ingesting full markdown instruction bodies into `index.json`. Mitigation: Enforce role-scoped startup slices $\le 5\text{ KB}$ and strip markdown bodies from discovery manifests; fetch full `SKILL.md` assets JIT.
 - **CORS Blockade**: Browser orchestrator blocked from reading manifest. Mitigation: Return `Access-Control-Allow-Origin: *` and 204 on preflight `OPTIONS`.
 - **Stale Cache Execution**: Agent client executing cached manifest after capability changes. Mitigation: Set `ETag` and `Last-Modified` for conditional HTTP revalidation.
 

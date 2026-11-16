@@ -40,17 +40,33 @@ Modern browser 3D applications implement WebGPU as primary hardware abstraction 
 
 ## 4. Deterministic GPU Resource Lifecycle
 
-JavaScript garbage collection does not clean GPU allocations. The unmount protocol requires:
+JavaScript garbage collection and `material.dispose()` do not automatically free attached `Texture` instances. The unmount protocol must dispose geometries, materials, **and every texture map property**:
 ```typescript
+const TEXTURE_MAPS = [
+  'map', 'normalMap', 'roughnessMap', 'metalnessMap',
+  'aoMap', 'emissiveMap', 'alphaMap', 'bumpMap', 'displacementMap', 'envMap',
+] as const;
+
+function disposeMaterial(mat: THREE.Material) {
+  const record = mat as unknown as Record<string, unknown>;
+  for (const key of TEXTURE_MAPS) {
+    const tex = record[key];
+    if (tex && typeof (tex as THREE.Texture).dispose === 'function') {
+      (tex as THREE.Texture).dispose();
+    }
+  }
+  mat.dispose();
+}
+
 function disposeHierarchy(node: THREE.Object3D) {
   if (node instanceof THREE.Mesh) {
-    node.geometry.dispose();
+    node.geometry?.dispose();
     if (Array.isArray(node.material)) {
-      node.material.forEach((m) => disposeMaterial(m));
-    } else {
+      node.material.forEach(disposeMaterial);
+    } else if (node.material) {
       disposeMaterial(node.material);
     }
   }
 }
 ```
-All texture maps, render targets, and compute pipelines must execute `.dispose()`.
+All texture maps, render targets, `PMREMGenerator`s, and compute pipelines must execute `.dispose()`.

@@ -15,7 +15,7 @@ Use this skill to integrate Playwright or Chromatic into the CI pipeline to enfo
 - **Negative Asset Constraints**: Strictly prohibit generating fabricated inline SVG logos ("NovaCorp") and synthetic customer testimonials with unverified metrics; mandate authentic typography, system monograms, verified Simple Icons marks, or honest structural placeholders
 - **Animation Suppression**: All CSS animations, transitions, and cursor blinks must be disabled before snapshotting (`animations: 'disabled'`)
 - **Dynamic Content Masking**: Mask or stub dynamic content (dates, user avatars, random IDs, ads) before capturing snapshots using `mask: [page.locator('...')]`
-- **Explicit Tolerance Thresholds**: Set `maxDiffPixelRatio: 0.01` and `threshold: 0.2` to absorb sub-pixel text rendering while catching real layout regressions — unconfigured default thresholds are too loose
+- **Explicit Tolerance Thresholds**: Standardize `maxDiffPixelRatio: 0.002` (0.2%) for isolated font-stabilized component snapshots in Docker Linux, and allow up to `maxDiffPixelRatio: 0.01` (1%) with `threshold: 0.2` only for full-page route diffs with masked dynamic regions — unconfigured default thresholds are too loose
 - **Component Isolation**: Test UI components in isolation (Storybook + Chromatic with TurboSnap) alongside full-page Playwright visual regression tests
 - **Cross-Browser Coverage**: Configure the matrix across Chromium, WebKit, and Firefox at mobile and desktop viewports
 - **Hard CI Gate**: Visual regression failures must block merges unless explicitly approved by a `ui-ux-designer` or `frontend-developer`
@@ -29,7 +29,7 @@ Use this skill to integrate Playwright or Chromatic into the CI pipeline to enfo
 Choose and install the appropriate framework based on repo architecture:
 - Playwright Test (`@playwright/test`) with `toHaveScreenshot()` for full-page and integrated route diffs.
 - Chromatic / Storybook Test Runner for isolated design system component snapshot suites.
-- Configure snapshot storage directories and threshold tolerances (e.g., `maxDiffPixelRatio: 0.01`).
+- Configure snapshot storage directories and explicit tolerances (`maxDiffPixelRatio: 0.002` for isolated components, `0.01` max for masked full-page diffs).
 
 ### 2. Define Viewport and Browser Matrix
 
@@ -70,7 +70,7 @@ Document snapshot maintenance procedures:
 - **Baseline not captured for new component**: a new component ships without a visual baseline. Mitigation: require a Chromatic or Percy baseline at component registration; reject components without the baseline.
 - **Baseline drift undetected**: a visual baseline changes without a corresponding PR. Mitigation: lock the baseline to the component version; surface drift in the diff report.
 - **Driver version drift**: the visual driver (Chromatic, Percy) is updated without re-baselining. Mitigation: re-baseline every component on driver upgrades; surface the missing re-baseline in CI.
-- **Threshold too loose**: a visual regression below the threshold is allowed. Mitigation: set the threshold per component category; reject thresholds looser than 0.1% pixel delta.
+- **Threshold too loose**: a visual regression exceeds the calibrated tolerance without failing CI. Mitigation: enforce `maxDiffPixelRatio: 0.002` for isolated components and `<= 0.01` for masked full-page routes; reject unconfigured thresholds.
 
 ## Output Contracts
 
@@ -90,7 +90,7 @@ When this skill is invoked as part of a coordinated multi-role delivery, emit:
 - [ ] **Official Playwright Docker container** (`mcr.microsoft.com/playwright`) for baseline generation
 - [ ] **Bounded self-QA**: max 2 passes, dual viewport (Desktop + Mobile), defect-driven edits only
 - [ ] **Negative asset constraints**: no fabricated SVGs, no synthetic testimonials
-- [ ] **Explicit tolerance thresholds**: `maxDiffPixelRatio: 0.01`, `threshold: 0.2`
+- [ ] **Explicit tolerance thresholds**: `maxDiffPixelRatio: 0.002` (component) / `<= 0.01` (masked full-page), `threshold: 0.2`
 - [ ] **Component isolation**: Storybook + Chromatic TurboSnap + Playwright full-page
 - [ ] **Cross-browser matrix**: Chromium, WebKit, Firefox at mobile/desktop
 - [ ] **Hard CI gate**: visual failures block merges unless `ui-ux-designer`/`frontend-developer` approves

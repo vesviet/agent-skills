@@ -273,3 +273,11 @@ For micro-frontend architectures or large frontend applications with independent
 
 
 ---
+
+### React 19, `useEffect` Discipline & Server Action Boundary Security (2026)
+
+- **Zero `useEffect` Derived-State Slop**: compute filtered lists, totals, and formatted display values directly during render (`useMemo` only when profiling proves computational cost). Never mirror props into `useState` via `useEffect`, and never chain `useEffect` calls to simulate event flows — execute side effects directly inside event handlers or form actions.
+- **Server Action (`"use server"`) Security**: treat every Server Action as a public HTTP POST endpoint. Always re-authenticate the caller, check resource-level authorization, and validate payload inputs with Zod inside the action body — layout or middleware checks alone do not protect direct POST invocations.
+- **RSC Boundary Serialization**: pass only JSON-serializable primitives/plain objects across `"use client"` boundaries; never serialize secrets, internal DB models, or class instances into client props.
+
+Last updated: 2026-11-16

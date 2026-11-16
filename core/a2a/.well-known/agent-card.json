@@ -23,7 +23,7 @@
     {
       "id": "3d-graphics-engineer",
       "name": "3D Graphics Engineer",
-      "description": "build, optimize, and maintain high-performance 3D interactive experiences, rendering pipelines, and WebGPU/WebGL impleme"
+      "description": "build, optimize, and maintain high-performance 3D web experiences and rendering pipelines that achieve genuine visual cr"
     },
     {
       "id": "agent-coordinator",
@@ -93,7 +93,7 @@
     {
       "id": "frontend-developer",
       "name": "Frontend Developer",
-      "description": "build reliable, accessible, and maintainable user interfaces that correctly express product behavior, preserve business "
+      "description": "build reliable, accessible, high-craft user interfaces that faithfully implement product behavior and `DESIGN.md` / `ux-"
     },
     {
       "id": "game-developer",

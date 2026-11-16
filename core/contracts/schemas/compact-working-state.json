@@ -188,13 +188,54 @@
           "type": "number",
           "minimum": 0.0,
           "maximum": 1.0,
-          "description": "GDM semantic drift metric."
+          "description": "GDM = 1 - cos(v_original, v_compacted) (target <= 0.05, i.e., cosine similarity >= 0.95)."
         },
         "tool_reinvocation_waste": {
           "type": "number",
           "minimum": 0.0,
           "maximum": 1.0,
           "description": "TRW repeated tool call fraction."
+        },
+        "compaction_tier": {
+          "type": "string",
+          "enum": [
+            "observation_masking",
+            "iterative_delta_merge",
+            "full_anchored_checkpoint",
+            "reactive_recovery"
+          ],
+          "description": "Cascade tier applied during this compaction cycle."
+        },
+        "trigger_reason": {
+          "type": "string",
+          "enum": [
+            "context_60_warning",
+            "context_80_critical",
+            "token_ceiling",
+            "pre_compact_hook",
+            "reactive_413",
+            "manual"
+          ],
+          "description": "Hybrid threshold or hook event that initiated compaction."
+        },
+        "masked_observations_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of historical tool outputs replaced with spillover pointers in Tier 1 masking."
+        },
+        "tail_window_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Tokens preserved verbatim in the recent tail / sliding-window overlap."
+        },
+        "secrets_redacted_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of high-entropy tokens or secret literals scrubbed before checkpoint serialization."
+        },
+        "git_artifacts_reconciled": {
+          "type": "boolean",
+          "description": "Whether files_modified_and_inspected.modified was reconciled against live disk / git status."
         }
       }
     }

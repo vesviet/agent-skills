@@ -14,12 +14,19 @@ This reference checklist provides detailed engineering, validation, and security
 - user-facing copy, validation feedback, and error messaging are clear
 - unverified risk is called out explicitly instead of implied away
 
-### Red-Green TDD for UI
-- **Behavioral Test Authoring First**: Component interaction tests (using Testing Library, user-event, or Playwright component testing) are authored prior to JSX or CSS implementation.
-- **Verified Failing Assertion (Red)**: Tests initially fail with unambiguous expectation failures for unrendered states, missing handlers, or incomplete accessibility roles.
-- **Minimal JSX/State Implementation (Green)**: Minimal component logic and styling are added to satisfy the behavioral tests without over-engineering or adding untested side logic.
-- **Refactoring & Styling Isolation (Refactor)**: Component styles and layout are refined under active test coverage, ensuring visual enhancements do not break behavioral assertions.
-- **State Machine Test Coverage**: Tests explicitly assert all state transitions (idle, pending, fulfilled, rejected) rather than testing only static visual snapshots.
+### Behavioral TDD & Workbench Scope
+- **Behavioral Test Authoring First**: Author interaction tests (Testing Library, user-event, or Playwright component testing) before implementing **state machines, forms, permissions, and async workflows**.
+- **Verified Failing Assertion (Red) -> Minimal Implementation (Green) -> Refactor**: Assert unambiguous state transitions (`idle -> pending -> fulfilled / rejected`) and accessibility roles rather than brittle CSS snapshots.
+- **Visual / Motion Workbench**: Verify responsive layout, micro-polish, and 3-variant design exploration in `interactive-component-workbench` + Bounded 2-Pass QA (`>= 1280px` & `375–430px`).
+
+### React `useEffect` & Server Action Security
+- **Zero `useEffect` Derived State / Prop-Sync**: Confirm derived data is computed during render and user-initiated side effects live in event/form handlers rather than `useEffect` cascades.
+- **Server Action Authz & Validation**: Confirm every `"use server"` action independently verifies session authentication, object authorization, and Zod input schemas.
+- **RSC Serialization Boundary**: Confirm no server secrets, class instances, or non-serializable values cross `"use client"` props.
+
+### Web Interface Micro-Craft
+- **Dark Mode & Scroll Containment**: `color-scheme: dark` declared on dark theme roots; `overscroll-behavior: contain` set on scrollable drawers/modals; `scroll-margin-top` set on anchor targets under sticky headers.
+- **Focus, Input & Truncation Hygiene**: Modals/drawers trap focus, close on `Esc`, and restore focus to the triggering element; paste is never blocked; mobile inputs are `>= 16px`; flex truncation parents have `min-w-0`; tactile `:active` uses `scale-[0.96]` (`150 ms ease-out`, disabled excluded); numeric columns use `tabular-nums`; trigger/async labels use true `…`.
 
 ### Execution Sandbox Isolation (OWASP ASI05)
 - **Component Preview Sandboxing**: Dynamic previews of AI-generated components or third-party widgets execute inside sandboxed iframes (`sandbox="allow-scripts"` without `allow-same-origin`) to prevent access to session cookies, localStorage, or host DOM.

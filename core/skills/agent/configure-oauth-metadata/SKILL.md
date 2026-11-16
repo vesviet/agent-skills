@@ -13,7 +13,9 @@ Use this skill when configuring `/.well-known/oauth-protected-resource`, `/.well
 
 - Ensure `authorization_servers` lists a fully resolvable, operational domain — do not use dummy subdomains that are not bound in DNS; a 530 Origin DNS Error means the URL is unreachable.
 - The `agent_auth` block MUST exist in the `oauth-authorization-server` metadata file.
-- The `agent_auth` block MUST include a `"skill"` attribute pointing to the absolute URL of `auth.md`.
+- The `agent_auth` block MUST include a `"skill"` attribute pointing to the absolute URL of root `/auth.md` (matching `manage-auth-md`, e.g., `https://yourdomain.com/auth.md`).
+- Implement **RFC 9728** for `/.well-known/oauth-protected-resource`, and configure protected API `401` responses to emit `WWW-Authenticate: Bearer resource_metadata="https://yourdomain.com/.well-known/oauth-protected-resource"`.
+- Prefer **Client ID Metadata Documents (CIMD)** (`client_id_metadata_document_supported: true` / `clientIdMetadataDocumentEnabled`) over legacy RFC 7591 Dynamic Client Registration (scheduled for deprecation in MCP 2026–2027).
 - Use `"register_uri"` (not `identity_endpoint`) and `"claim_uri"` (not `claim_endpoint`) — the field names are exact; any deviation will fail scanner validation.
 - Define `credential_types_supported` nested inside the identity type blocks (e.g., `anonymous.credential_types_supported`), NOT at the root of `agent_auth`.
 - Both `anonymous` and `identity_assertion` credential paths must be documented if the service supports them.
@@ -44,8 +46,10 @@ Use this skill when configuring `/.well-known/oauth-protected-resource`, `/.well
      "issuer": "https://auth.yourdomain.com",
      "authorization_endpoint": "https://auth.yourdomain.com/authorize",
      "token_endpoint": "https://auth.yourdomain.com/token",
+     "code_challenge_methods_supported": ["S256"],
+     "client_id_metadata_document_supported": true,
      "agent_auth": {
-       "skill": "https://yourdomain.com/.well-known/auth.md",
+       "skill": "https://yourdomain.com/auth.md",
        "register_uri": "https://auth.yourdomain.com/agent/register",
        "claim_uri": "https://auth.yourdomain.com/agent/claim",
        "anonymous": {
@@ -81,12 +85,11 @@ To secure machine-to-machine interactions and prevent authorization code interce
 - **Authorized Presenter**: The token payload must contain the `azp` (Authorized Party) claim, which identifies the client agent that was issued the token.
 - **DID Token Binding**: The token must bind the agent's DID. The JWT claims include the agent's public key identifier or DID URI in custom claims to ensure only the holder of the agent's private key can present the token.
 
-### 2026: OIDC Dynamic Client Registration
+### 2026: Client ID Metadata Documents (CIMD) & Legacy Registration
 
-Dynamic registration allows new worker agents to register as OAuth clients on-the-fly:
-- **Registration Endpoint**: Expose a registration endpoint (`register_uri`) responding to POST requests.
-- **Payload Schema**: The endpoint accepts OIDC Dynamic Client Registration payloads containing client metadata or directly accepting the worker's signed Agent Card JSON.
-- **Client Credentials**: Upon validation of the Agent Card signature and capabilities, the server registers the client and returns a client identifier and registration access token.
+Prefer **Client ID Metadata Documents (CIMD)** so client agents identify via HTTPS URLs rather than stateful dynamic client registration:
+- **CIMD Metadata URL**: Agent presents its HTTPS URL as `client_id`, and the authorization server fetches client metadata/JWKS cleanly (`client_id_metadata_document_supported: true`).
+- **Legacy DCR Fallback (Transitional Only)**: Where older clients require `register_uri` / OIDC Dynamic Client Registration (RFC 7591), validate signed Agent Card payloads strictly and schedule removal once CIMD adoption completes.
 
 ## Checklist
 
