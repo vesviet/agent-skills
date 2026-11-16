@@ -29,6 +29,8 @@ import argparse
 import json
 import os
 import re
+import shlex
+import subprocess
 import sys
 from pathlib import Path
 
@@ -133,7 +135,12 @@ def load_mcp_tool_map(root: Path) -> dict:
     return load_yaml(path)
 
 
-def map_tool_to_action(tool_name: str, command: str, mcp_map: dict) -> str:
+def map_tool_to_action(
+    tool_name: str,
+    command: str,
+    mcp_map: dict,
+    disabled_hooks: set[str] | None = None,
+) -> str:
     """Resolve tool name + command to a policy action ID.
 
     Order:
@@ -146,14 +153,25 @@ def map_tool_to_action(tool_name: str, command: str, mcp_map: dict) -> str:
     """
     cmd_lower = (command or "").strip().lower()
     tool_lower = (tool_name or "").strip().lower()
+    dis = disabled_hooks or set()
 
     # 1. Check destructive patterns in command line (highest priority)
     if any(p in cmd_lower for p in ("rm -rf", "rm -r", "rmdir", "del /f", "del /s")):
         return "delete_file"
 
+    # Highest priority: check git hook bypass flags before standard actions
+    if not is_hook_disabled("block-no-verify", dis) and not is_hook_disabled("no-verify", dis):
+        if check_git_hook_bypass(command):
+            return "bypass_ai_guardrail"
+
     for entry in mcp_map.get("destructive_patterns", []):
         pattern = entry.get("pattern", "").lower()
         if pattern and pattern in cmd_lower:
+            # Skip hook bypass patterns if block-no-verify is explicitly disabled
+            if entry.get("action") == "bypass_ai_guardrail" and (
+                is_hook_disabled("block-no-verify", dis) or is_hook_disabled("no-verify", dis)
+            ):
+                continue
             # If the pattern is coarse "git push", but the tool is an explicit git_push prefix tool
             # and not a force push, defer to the prefix pattern action (git_push)
             if pattern == "git push" and tool_lower.startswith("git_push_") and not any(
@@ -293,8 +311,255 @@ def emit_sarif(result: dict, decision: str) -> None:
     print(json.dumps(sarif))
 
 
-def resolve_rule_id(role: str, action: str, level_modifier: str) -> str:
+VALID_HOOK_PROFILES = {"minimal", "standard", "strict"}
+
+PROTECTED_CONFIG_BASENAMES = {
+    # ESLint
+    ".eslintrc",
+    ".eslintrc.js",
+    ".eslintrc.cjs",
+    ".eslintrc.json",
+    ".eslintrc.yml",
+    ".eslintrc.yaml",
+    "eslint.config.js",
+    "eslint.config.mjs",
+    "eslint.config.cjs",
+    "eslint.config.ts",
+    "eslint.config.mts",
+    "eslint.config.cts",
+    # Prettier
+    ".prettierrc",
+    ".prettierrc.js",
+    ".prettierrc.cjs",
+    ".prettierrc.json",
+    ".prettierrc.yml",
+    ".prettierrc.yaml",
+    "prettier.config.js",
+    "prettier.config.cjs",
+    "prettier.config.mjs",
+    "prettier.config.ts",
+    # Biome
+    "biome.json",
+    "biome.jsonc",
+    ".biome.json",
+    ".biome.jsonc",
+    # Ruff
+    ".ruff.toml",
+    "ruff.toml",
+    # ShellCheck
+    ".shellcheckrc",
+    # Stylelint
+    ".stylelintrc",
+    ".stylelintrc.json",
+    ".stylelintrc.yml",
+    ".stylelintrc.yaml",
+    ".stylelintrc.js",
+    ".stylelintrc.cjs",
+    ".stylelintrc.mjs",
+    "stylelint.config.js",
+    "stylelint.config.cjs",
+    "stylelint.config.mjs",
+    "stylelint.config.ts",
+    # Markdownlint
+    ".markdownlint.json",
+    ".markdownlint.jsonc",
+    ".markdownlint.yaml",
+    ".markdownlint.yml",
+    ".markdownlint.cjs",
+    ".markdownlint.mjs",
+    ".markdownlintrc",
+    ".markdownlint-cli2.jsonc",
+    ".markdownlint-cli2.yaml",
+    # Ignore files
+    ".eslintignore",
+    ".prettierignore",
+    ".stylelintignore",
+    ".markdownlintignore",
+}
+
+ADHOC_DOC_PATTERN = re.compile(
+    r"^(NOTES|TODO|SCRATCH|TEMP|DRAFT|BRAINSTORM|SPIKE|DEBUG|WIP)\.(md|txt)$",
+    re.IGNORECASE,
+)
+STRUCTURED_DOC_DIRS = (
+    "docs/",
+    ".claude/",
+    "skills/",
+    "core/",
+    ".github/",
+    "benchmarks/",
+    "templates/",
+    ".agent/",
+    ".agents/",
+)
+
+
+def get_disabled_hooks() -> set[str]:
+    raw = os.environ.get("AGENT_DISABLED_HOOKS", "")
+    if not raw.strip():
+        return set()
+    disabled: set[str] = set()
+    for item in raw.split(","):
+        norm = item.strip().lower().replace("_", "-")
+        if norm:
+            disabled.add(norm)
+    return disabled
+
+
+def is_hook_disabled(hook_id: str, disabled_hooks: set[str]) -> bool:
+    norm = hook_id.strip().lower().replace("_", "-")
+    return norm in disabled_hooks or "all" in disabled_hooks
+
+
+def is_lethal_operation(action: str, command: str) -> bool:
+    """Check if action is a lethal operation (blocked under minimal profile)."""
+    if action in {"force_push", "drop_database", "terminate_instance", "drop_storage_volume"}:
+        return True
+    cmd_lower = (command or "").lower()
+    if "git push" in cmd_lower and any(
+        p in cmd_lower for p in ("--force", " -f ", " -f\n", " -f\t", "origin -f", "origin --force")
+    ):
+        return True
+    if any(p in cmd_lower for p in ("drop database", "drop table", "truncate table")):
+        return True
+    if any(p in cmd_lower for p in ("rm -rf /", "rm -rf /*", "rm -rf ~", "rm -rf ~/*", "rm -rf .", "rm -rf *")):
+        return True
+    if "migrate:fresh" in cmd_lower or "migrate:reset" in cmd_lower:
+        return True
+    return False
+
+
+def check_config_protection(tool: str, command: str, file_path: str = "") -> str | None:
+    """Return the name of the protected config file being modified, or None."""
+    candidates: list[str] = []
+    if file_path:
+        candidates.append(Path(file_path).name)
+
+    if command:
+        for token in re.split(r"[\s>=<|;&]+", command):
+            if token:
+                name = Path(token).name
+                candidates.append(name)
+
+    protected_lookup = {f.lower(): f for f in PROTECTED_CONFIG_BASENAMES}
+    tool_lower = (tool or "").lower()
+    cmd_lower = (command or "").lower()
+    is_mutation = tool_lower in {
+        "write", "write_file", "edit_file", "delete_file", "create_file", "modify_file"
+    } or any(p in cmd_lower for p in (
+        "rm ", "rm -", "del ", "del/", ">", "sed ", "echo ", "cat >", "tee ", "truncate", "unlink",
+        "cp ", "cp -", "mv ", "mv -",
+    )) or bool(
+        re.search(r"\b(cp|mv|rm|truncate|unlink)\b", cmd_lower)
+        or re.search(r"\bcurl\b.*(?:\s-o\b|\s-O\b|\s--output\b)", cmd_lower, re.IGNORECASE)
+        or re.search(r"\bwget\b.*(?:\s-o\b|\s--output-document\b)", cmd_lower, re.IGNORECASE)
+    )
+
+    for candidate in candidates:
+        cand_lower = candidate.lower()
+        if cand_lower in protected_lookup:
+            if is_mutation or tool_lower in {"write", "write_file", "edit_file", "delete_file"}:
+                return protected_lookup[cand_lower]
+    return None
+
+
+def check_git_hook_bypass(command: str) -> bool:
+    """Return True if command attempts to bypass git hooks (including clustered short flags)."""
+    if not command:
+        return False
+    cmd_lower = command.lower()
+    if "--no-verify" in cmd_lower or "--hooks-path" in cmd_lower or "core.hookspath" in cmd_lower:
+        return True
+
+    # Tokenized inspection to recognize clustered short flags (-anm, -snm, -vnm)
+    # and avoid false positives on flags inside commit messages (-m "fix -n bug")
+    try:
+        tokens = shlex.split(command)
+    except Exception:
+        tokens = command.split()
+
+    git_idx = None
+    for i, tok in enumerate(tokens):
+        if tok.lower() == "git":
+            git_idx = i
+            break
+
+    if git_idx is not None:
+        commit_found = False
+        commit_args: list[str] = []
+        for i in range(git_idx + 1, len(tokens)):
+            if not commit_found:
+                if tokens[i].lower() == "commit":
+                    commit_found = True
+            else:
+                commit_args.append(tokens[i])
+
+        if commit_found:
+            skip_next = False
+            for arg in commit_args:
+                if skip_next:
+                    skip_next = False
+                    continue
+                if arg == "--":
+                    break
+                if arg == "--no-verify":
+                    return True
+                if arg in ("-m", "-F", "-c", "-C", "--message", "--file", "-u", "-t", "--template", "--author"):
+                    skip_next = True
+                    continue
+                if arg.startswith("-m"):
+                    continue
+                if arg.startswith("-") and not arg.startswith("--"):
+                    if "n" in arg[1:]:
+                        return True
+            return False
+
+    # Regex fallback for complex shell pipelines/subshells (e.g. git commit -anm)
+    if re.search(r"\bgit\b.*?\bcommit\b.*(?:\s|^)-[a-zA-Z0-9]*n[a-zA-Z0-9]*(?:\s|$)", cmd_lower):
+        return True
+
+    return False
+
+
+def check_doc_warning(file_path: str, command: str) -> str | None:
+    candidate = file_path
+    if not candidate and command:
+        for token in command.split():
+            if re.search(r"\.(md|txt)$", token, re.IGNORECASE):
+                candidate = token
+                break
+    if not candidate:
+        return None
+    normalized = candidate.replace("\\", "/")
+    basename = Path(normalized).name
+    if ADHOC_DOC_PATTERN.match(basename):
+        if not any(s_dir in normalized for s_dir in STRUCTURED_DOC_DIRS):
+            return (
+                f"Ad-hoc documentation file detected: '{candidate}'. "
+                "Use structured directory (e.g. docs/, core/skills/)."
+            )
+    return None
+
+
+def check_git_clean() -> bool:
+    """Return True if git working tree is clean, False otherwise."""
+    try:
+        proc = subprocess.run(
+            ["git", "status", "--porcelain"],
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=5,
+        )
+        return proc.returncode == 0 and len(proc.stdout.strip()) == 0
+    except Exception:
+        return True
+
+
+def resolve_rule_id(role: str, action: str, level_modifier: str, rule_override: str = "") -> str:
     """Determine the policy rule_id for OCSF metadata."""
+    if rule_override:
+        return rule_override
     env_rule = os.environ.get("AGENT_POLICY_RULE_ID")
     if env_rule:
         return env_rule
@@ -305,7 +570,13 @@ def resolve_rule_id(role: str, action: str, level_modifier: str) -> str:
     return f"policy.action_boundary.{action}"
 
 
-def emit_audit_event(result: dict, decision: str, level_modifier: str, audit_path: Path) -> None:
+def emit_audit_event(
+    result: dict,
+    decision: str,
+    level_modifier: str,
+    audit_path: Path,
+    rule_override: str = "",
+) -> None:
     """Write a single OCSF Class UID 99001 audit event to the configured path.
 
     Best-effort: failures are reported to stderr with 'WARN:' but do not change
@@ -332,7 +603,7 @@ def emit_audit_event(result: dict, decision: str, level_modifier: str, audit_pat
             else "HITL_TRIGGERED" if decision == "requires_approval"
             else "POLICY_DENIED"
         )
-        rule_id = resolve_rule_id(role, mapped_action, level_modifier)
+        rule_id = resolve_rule_id(role, mapped_action, level_modifier, rule_override)
 
         event = {
             "class_uid": 99001,
@@ -391,6 +662,12 @@ def main() -> int:
         help="Output format (default: json). Use 'sarif' for GitHub Code Scanning.",
     )
     parser.add_argument(
+        "--profile",
+        choices=["minimal", "standard", "strict"],
+        default=None,
+        help="Hook execution profile: minimal (lethal only), standard (default), strict (with clean & doc checks).",
+    )
+    parser.add_argument(
         "--emit-audit",
         action="store_true",
         help="Append a policy_decision audit event in OCSF 99001 format to the audit path.",
@@ -412,6 +689,11 @@ def main() -> int:
     if role_level not in {"read_only", "supervised", "unsupervised"}:
         role_level = "supervised"
 
+    env_profile = os.environ.get("AGENT_HOOK_PROFILE", "").strip().lower()
+    profile = args.profile or (env_profile if env_profile in VALID_HOOK_PROFILES else "standard")
+
+    disabled_hooks = get_disabled_hooks()
+
     raw_tool = os.environ.get("CURSOR_TOOL_NAME")
     if raw_tool is None:
         raw_tool = os.environ.get("TOOL_NAME", "write")
@@ -419,6 +701,12 @@ def main() -> int:
 
     command = os.environ.get("CURSOR_COMMAND", "")
     trace_id = os.environ.get("AGENT_TRACE_ID", "")
+    file_path = (
+        os.environ.get("CURSOR_FILE_PATH")
+        or os.environ.get("FILE_PATH")
+        or os.environ.get("TARGET_FILE")
+        or ""
+    )
 
     root = pack_root()
     boundaries_path = root / "core" / "policies" / "action-boundaries.yaml"
@@ -442,11 +730,74 @@ def main() -> int:
     if role not in boundaries and role.lower() in boundaries:
         role = role.lower()
 
-    action = map_tool_to_action(tool, command, mcp_map)
-    decision, level_modifier = check_action(role, action, boundaries, role_level)
+    action = map_tool_to_action(tool, command, mcp_map, disabled_hooks)
+    warnings: list[str] = []
+    rule_override = ""
+
+    # Check if policy checking as a whole is disabled
+    if (
+        is_hook_disabled("policy-check", disabled_hooks)
+        or is_hook_disabled("check-policy", disabled_hooks)
+        or is_hook_disabled("action-boundaries", disabled_hooks)
+    ):
+        decision = "allowed"
+        level_modifier = "none"
+        message = f"Action '{action}' allowed (policy-check bypassed via AGENT_DISABLED_HOOKS)"
+    elif profile == "minimal":
+        # Minimal profile: block lethal operations only
+        if not is_hook_disabled("lethal-operations", disabled_hooks) and is_lethal_operation(action, command):
+            decision = "denied"
+            level_modifier = "none"
+            message = f"POLICY DENIED: Lethal operation '{action}' blocked by minimal policy profile"
+            rule_override = "compliance.safety.lethal_operation_denied"
+        else:
+            decision = "allowed"
+            level_modifier = "none"
+            message = f"Action '{action}' allowed by minimal policy profile"
+    else:
+        # Standard and Strict profiles
+        bypass_detected = False
+        if not is_hook_disabled("block-no-verify", disabled_hooks) and not is_hook_disabled("no-verify", disabled_hooks):
+            if check_git_hook_bypass(command):
+                bypass_detected = True
+                decision = "denied"
+                level_modifier = "none"
+                action = "bypass_ai_guardrail"
+                message = "POLICY DENIED: Git hook bypass flag detected (--no-verify / core.hooksPath). AI agents must not bypass verification hooks."
+                rule_override = "compliance.safety.always_denied"
+
+        config_violation = None
+        if not bypass_detected and not is_hook_disabled("config-protection", disabled_hooks):
+            config_violation = check_config_protection(tool, command, file_path)
+            if config_violation:
+                decision = "denied"
+                level_modifier = "none"
+                action = "modify_environment_config"
+                message = f"POLICY DENIED: Modification of protected linter/formatter config file '{config_violation}' is blocked by config-protection policy. Fix the code instead."
+                rule_override = "policy.config_protection.denied"
+
+        if not bypass_detected and not config_violation:
+            decision, level_modifier = check_action(role, action, boundaries, role_level)
+            message = f"Action '{action}' for role '{role}' (level={role_level}): {decision}"
+
+        # Strict profile additional checks
+        if profile == "strict":
+            if not is_hook_disabled("doc-warnings", disabled_hooks) and not is_hook_disabled("doc-warning", disabled_hooks):
+                doc_warn = check_doc_warning(file_path, command)
+                if doc_warn:
+                    warnings.append(doc_warn)
+
+            if not is_hook_disabled("git-status-clean", disabled_hooks) and not is_hook_disabled("git-clean", disabled_hooks):
+                if action in {"git_push", "push_to_production", "run_deployment"}:
+                    if not check_git_clean():
+                        decision = "denied"
+                        level_modifier = "none"
+                        message = "POLICY DENIED: Working tree has uncommitted changes in strict profile. Commit or stash changes before deployment/push."
+                        rule_override = "policy.strict.git_dirty"
 
     result = {
         "advisory": False,
+        "profile": profile,
         "role": role,
         "role_level": role_level,
         "tool": tool,
@@ -454,12 +805,14 @@ def main() -> int:
         "mapped_action": action,
         "decision": decision,
         "level_modifier": level_modifier,
-        "message": f"Action '{action}' for role '{role}' (level={role_level}): {decision}",
+        "message": message,
+        **({"disabled_hooks": sorted(list(disabled_hooks))} if disabled_hooks else {}),
+        **({"warnings": warnings} if warnings else {}),
         **({"trace_id": trace_id} if trace_id else {}),
     }
 
     if args.emit_audit:
-        emit_audit_event(result, decision, level_modifier, args.audit_path)
+        emit_audit_event(result, decision, level_modifier, args.audit_path, rule_override)
 
     if args.format == "json":
         print(json.dumps(result))

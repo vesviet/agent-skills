@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-settings.json",
-  "description": "Claude Code project settings template for the agent-skills pack. Copy to .claude/settings.json in your workspace root.",
+  "description": "Claude Code project settings template for the agent-skills pack. Copy to .claude/settings.json in your workspace root. Runtime hook profiles: AGENT_HOOK_PROFILE (minimal|standard|strict); bypass via AGENT_DISABLED_HOOKS.",
   "hooks": {
     "PreToolUse": [
       {
@@ -26,11 +26,15 @@
       "Bash(git push --force*)",
       "Bash(git push -f*)",
       "Bash(rm -rf /)",
-      "Bash(rm -rf ~*)"
+      "Bash(rm -rf ~*)",
+      "Bash(*--no-verify*)",
+      "Bash(*core.hooksPath*)"
     ]
   },
   "model": "claude-3-7-sonnet",
   "env": {
-    "AGENT_SKILLS_ROOT": "."
+    "AGENT_SKILLS_ROOT": ".",
+    "AGENT_HOOK_PROFILE": "standard",
+    "AGENT_DISABLED_HOOKS": ""
   }
 }

@@ -30,6 +30,7 @@ Use this skill when code changes need matching deployment or runtime configurati
 - **GITOPS-APPLICATIONSET-RECONCILE**: When defining multi-environment or multi-service deployments via GitOps, use ArgoCD `ApplicationSet` with matrix/list generators and explicit `ignoreDifferences` for dynamically mutated fields (e.g. replica count managed by HPA, webhook-injected annotations) to prevent reconciliation loops.
 - **ROLLOUTS-ANALYSIS-GATE**: For critical user-facing services, prefer Argo Rollouts or Flagger with automated Prometheus `MetricAnalysis` (P99 latency, 5xx error thresholds) over naive rolling updates; include empty vector coalescing (`or on() vector(0)`) to guard against false rollbacks during low-traffic windows.
 - **EXTERNAL-SECRETS-DECLARATIVE**: Never commit raw secrets or base64-encoded credentials to deployment repositories; use External Secrets Operator (`ExternalSecret` manifests referencing `ClusterSecretStore`) to synchronize credentials from HashiCorp Vault or AWS Secrets Manager into native Kubernetes secrets at runtime.
+- **INTERACTIVE-HITL-WIZARD**: For human-gated operational steps (OAuth grants, KMS secret injection, DB cutover), scaffold stage-checkpointed bash wizards (`set -euo pipefail`, silent `read -rsp`, `trap` cleanup for `Ctrl-C` resume) per [`references/interactive-hitl-wizard.md`](references/interactive-hitl-wizard.md).
 
 ## Suggested Process
 
@@ -135,4 +136,5 @@ Skip emission for solo refactor work where no downstream handoff is expected.
 - **commit-code**: Prepare deployment changes for delivery
 - **deploy-mobile-app**: Deploy mobile applications via EAS Build, EAS Update (OTA), and App Store / Google Play submissions
 - Companion reference: `references/k8s-gitops-and-kustomize-invariants.md`
+- Companion reference: `references/interactive-hitl-wizard.md`
 - Companion example: `examples/kustomize-production-service-manifests.yaml`

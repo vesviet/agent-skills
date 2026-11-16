@@ -24,6 +24,7 @@ Use this skill to extract, clarify, and validate business requirements from stak
   2. *Probing phase*: drill down into edge cases, volumes, exceptions, and business rules ("What happens when an approval exceeds 48 hours?")
   3. *Closed confirmation phase*: lock specific thresholds, states, and acceptance boundaries ("Is 50,000 USD the absolute hard ceiling for Level 2 approval?")
 - **Apply the Colombo Method for Tacit Knowledge**: adopt a deliberate, structured curiosity posture to surface hidden assumptions; ask "naive" boundary questions that force stakeholders to articulate unwritten organizational habits and tribal knowledge
+- **Socratic Decision-Tree Grilling & Repo-First Lookup**: model ambiguous scope as a design decision tree, resolve facts answerable from codebase/docs via search before asking stakeholders, compute the unresolved **Decision Frontier**, and present batched numbered questions with a clear `(Recommended)` default option
 - **Mandate 9 BABOK v3 Requirement Quality Criteria**: every requirement item must pass the 9 characteristics:
   - *Atomic*: captures a single requirement, never joined with compound "and/or" clauses
   - *Complete*: includes context, preconditions, error states, and measurable outcomes

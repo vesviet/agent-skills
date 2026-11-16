@@ -23,6 +23,31 @@ Use this skill when long-running conversation context causes attention degradati
 - preparing clean, bounded context transfers for subagent delegation (`a2a-task.json`)
 - resuming interrupted sessions or responding to manual compaction triggers (`@compact`, `@compact-memory`)
 
+## Phase Transition Compaction Decision Table
+
+Use this decision table to determine whether to execute context compaction:
+
+| Phase Transition | Compact? | Strategic Rationale |
+|---|---|---|
+| Research → Planning | YES | Research context is bulky; plan is the distilled actionable output. |
+| Planning → Implementation | YES | Plan is written down (a file or task list); free up context for implementation. |
+| Implementation → Testing | MAYBE | Keep context if tests reference recent code; compact if switching focus or test harness. |
+| Debugging → Next Feature | YES | Debug traces and error dumps pollute context for unrelated forward work. |
+| Mid-implementation | NO | Losing variable names, active file diffs, and partial state is costly. |
+| After a failed approach | YES | Clear dead-end reasoning before exploring a new hypothesis. |
+
+## What Survives Compaction
+
+Understanding what persists helps agents compact with confidence:
+
+| Persists Across Compaction | Lost Across Compaction |
+|---|---|
+| Steering instructions (`AGENTS.md`, `CLAUDE.md`, `.cursorrules`) | Intermediate reasoning and scratchpad chain-of-thought |
+| Files on disk and repository artifacts | File contents previously read into conversational memory |
+| Memory vault files (`.agent/memory/`, `.agents/vault/`) | Ephemeral tool invocation history and raw stdout/stderr logs |
+| Git state (commits, branches, unstaged diffs) | In-flight conversational turn count |
+| Anchored 10-slot state (`compact-working-state.json`) | Unpersisted verbal preferences or implicit assumptions |
+
 ## Core Rules
 
 - **Enforce the 10-Slot Anchored Schema**:
@@ -110,3 +135,5 @@ When compacting in-flight context or generating delegation snapshots, emit:
 - **agent-handoff**: packaging compact states into user-facing handover summaries
 - **agent-semantic-memory**: long-term episodic storage and knowledge graph persistence
 - **agent-quality-gate**: verifying quality gates before phase transition compaction
+
+Last updated: 2026-11-16

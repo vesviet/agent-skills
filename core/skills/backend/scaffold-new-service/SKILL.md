@@ -25,8 +25,9 @@ Use this skill to bootstrap new microservices, workers, or bounded components us
 - **Sandbox readiness**: generate a multi-stage rootless `Dockerfile` (`USER nonroot`, read-only rootfs compatibility) and local test harness compatible with Level 0 air-gapped sandboxes (`--network=none`) per `core/policies/execution-sandbox.md`
 - **Observability from commit 1**: implement `/health/live`, `/health/ready` probes and initialize OpenTelemetry tracer bootstrap with trace context propagation
 - **Dependency injection**: use compile-time DI (Wire, Fx, or repo standard) for all constructor injection; no global state or `init()` singletons
+- **Ousterhout Deep Modules & Seam Discipline**: design thin, stable public interfaces hiding deep implementations; apply *The Deletion Test*, *Design It Twice*, and the Two-Adapter rule (*1 adapter = hypothesis, 2+ adapters = proven seam*), keeping tests anchored to the public interface seam
 - **Zero secrets in scaffold**: declare environment configurations and secret bindings via external secret stores; reject hardcoded credentials
-- detailed directory layouts, Dockerfiles, and middleware guides: [`references/service-scaffolding-guide.md`](references/service-scaffolding-guide.md)
+- detailed directory layouts, Dockerfiles, and deep-module design guides: [`references/service-scaffolding-guide.md`](references/service-scaffolding-guide.md) and [`references/deep-modules-and-seams.md`](references/deep-modules-and-seams.md)
 
 ## Suggested Process
 

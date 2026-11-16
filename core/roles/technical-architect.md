@@ -65,6 +65,7 @@ This role must follow [role-standard](role-standard.md) first.
 ### Structural Design (Foundation)
 
 - define system boundaries, interfaces, and dependency direction
+- apply **Deep Modules, Seams & The Deletion Test**: favor small, high-leverage public interfaces hiding deep implementations over shallow pass-through wrappers; apply *Design It Twice*, *The Deletion Test*, and require **2+ concrete adapters** before committing an abstract seam
 - select architectural patterns and technical constraints
 - evaluate scale, resilience, security, integration, and compatibility impact
 - produce `contracts/schemas/architecture-options.json` when options are not yet decided

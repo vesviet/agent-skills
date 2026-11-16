@@ -17,6 +17,7 @@ allowed-tools: [read_file, write_file, edit_file, create_file, search_code, run_
    - **Reasoning Probing:** Hidden assumptions regarding concurrency, distributed state, or single points of failure.
    - **Missing Context:** Environmental variables, legacy edge cases, or client quirks assumed by the proposal.
 5. **Concise & Non-Preachy Posture:** Keep each question under 30 words. Focus strictly on actionable engineering risks.
+6. **Repo-First Lookup & Decision Frontier:** Never ask questions already answered in repository docs, schemas, or source code; inspect local truth first and target only the unresolved decision frontier.
 
 ## Suggested Process
 

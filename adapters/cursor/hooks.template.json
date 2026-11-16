@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "description": "Agent-skills pack policy hooks — copy to .cursor/hooks.json and adjust AGENT_SKILLS_ROOT. Uses core/policies/mcp-tool-map.yaml for tool-to-action resolution. Hooks enforce policy; .mdc rules only suggest.",
+  "description": "Agent-skills pack policy hooks — copy to .cursor/hooks.json and adjust AGENT_SKILLS_ROOT. Uses core/policies/mcp-tool-map.yaml for tool-to-action resolution. Runtime profile controlled via AGENT_HOOK_PROFILE (minimal|standard|strict); specific hooks bypassed via AGENT_DISABLED_HOOKS. Hooks enforce policy; .mdc rules only suggest.",
   "hooks": {
     "sessionStart": [
       {
@@ -65,6 +65,8 @@
   "environment": {
     "AGENT_SKILLS_ROOT": "/path/to/agent-skills",
     "AGENT_ACTIVE_ROLE": "agent-coordinator",
+    "AGENT_HOOK_PROFILE": "standard",
+    "AGENT_DISABLED_HOOKS": "",
     "AGENT_TRACE_ID": "",
     "OTEL_SEMCONV_STABILITY_OPT_IN": "genai"
   }

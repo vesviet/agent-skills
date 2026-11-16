@@ -140,6 +140,34 @@ tool_actions:
   astro_check: run_linter
 
 destructive_patterns:
+  # Git hook bypass operations (defense-in-depth)
+  - pattern: "--no-verify"
+    action: bypass_ai_guardrail
+  - pattern: "git commit -n"
+    action: bypass_ai_guardrail
+  - pattern: "git commit -anm"
+    action: bypass_ai_guardrail
+  - pattern: "git commit -nam"
+    action: bypass_ai_guardrail
+  - pattern: "git commit -snm"
+    action: bypass_ai_guardrail
+  - pattern: "git commit -vnm"
+    action: bypass_ai_guardrail
+  - pattern: "git commit -am -n"
+    action: bypass_ai_guardrail
+  - pattern: "git commit -an"
+    action: bypass_ai_guardrail
+  - pattern: "git commit -sn"
+    action: bypass_ai_guardrail
+  - pattern: "git commit -vn"
+    action: bypass_ai_guardrail
+  - pattern: "git commit -nm"
+    action: bypass_ai_guardrail
+  - pattern: "core.hookspath"
+    action: bypass_ai_guardrail
+  - pattern: "--hooks-path"
+    action: bypass_ai_guardrail
+
   # Git operations
   - pattern: "git push --force"
     action: force_push

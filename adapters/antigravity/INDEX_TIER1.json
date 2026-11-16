@@ -105,7 +105,7 @@
       "type": "skill-md",
       "description": "Use when compacting long-running agent conversation context into an anchored 10-slot working stat...",
       "url": "core/skills/agent/agent-memory-compaction/SKILL.md",
-      "digest": "sha256:d0810abe5d7898b6adde6b1f4559529ed1d73173b82e031b96a461539a4d4a58"
+      "digest": "sha256:73fc66c5a0d3d3c0d6c4fc1f9f941acc3660beb1eccd96a2338a56e078f5a3a1"
     },
     {
       "name": "agent-model-routing",
@@ -294,7 +294,7 @@
       "type": "skill-md",
       "description": "Structure and visualize product backlogs using Jeff Patton User Story Mapping, MoSCoW release swi...",
       "url": "core/skills/product/build-story-map/SKILL.md",
-      "digest": "sha256:f74e54c455961dcbdf2bf50767a0be846fb4de7b9df675cd46a75b03d2061512"
+      "digest": "sha256:0cabf7fdf5d85de5cdb074f6b4fab670d09fb29490a151decd1a3f53350d947b"
     },
     {
       "name": "cloudflare-email-service",
@@ -602,7 +602,7 @@
       "type": "skill-md",
       "description": "Use when evaluating high-stakes architectural plans, financial projections, or critical code revi...",
       "url": "core/skills/foundation/discernment-nudge/SKILL.md",
-      "digest": "sha256:f8e9bd355d252703eb35d7dedf90d77891b0f7f010e3ae6c61573a6844c2e95d"
+      "digest": "sha256:7b1bc2cac58c7e8cb03f4aa7d7b0e38efb68355169ba8a6a3909a7abb09c7ac3"
     },
     {
       "name": "docx",
@@ -630,7 +630,7 @@
       "type": "skill-md",
       "description": "Elicit business requirements from stakeholders using Funnel Questioning (Open, Probing, Closed),...",
       "url": "core/skills/business/elicit-requirements/SKILL.md",
-      "digest": "sha256:5ff9b1b89c7543beb04b36278a5c639ed5eca729faba34dada0e693f453525c2"
+      "digest": "sha256:b207238760a93279b398ed11c898ba20a736b93887aef88db18d16c4d2037f20"
     },
     {
       "name": "frontend-micro-polish",
@@ -875,7 +875,7 @@
       "type": "skill-md",
       "description": "Use when auditing, triaging, compacting, and archiving agent persistent memory stores (MEMORY.md,...",
       "url": "core/skills/ai-agent/memory-hygiene/SKILL.md",
-      "digest": "sha256:a395527c9c88f6fa873ff7b1269cae61128b0312f8b6407f8a7de2c63093577c"
+      "digest": "sha256:619b82771e9042871ffa6e45389991a3cbe2a0117bfefdc83defc50a00e63319"
     },
     {
       "name": "mix-dynamic-game-audio",
@@ -966,7 +966,7 @@
       "type": "skill-md",
       "description": "Turn architecture decisions and requirements into a delivery-ready technical plan with slices, qu...",
       "url": "core/skills/foundation/plan-technical-delivery/SKILL.md",
-      "digest": "sha256:3f3046b0135409a425bc6835f93470c096a0c91667223a69b8793fc95afc453a"
+      "digest": "sha256:d7fdf27153a2f93b486c8e4744bb3a164e05c07f5110a5017c6e7f72465d3ed9"
     },
     {
       "name": "playwright-evidence-qa",
@@ -1050,7 +1050,7 @@
       "type": "skill-md",
       "description": "Review a diff since a fixed point along two separate axes — Standards (conformance to documented...",
       "url": "core/skills/repo-ops/review-code/SKILL.md",
-      "digest": "sha256:7e9c7d6187347e74f1cd4b928155fbe90fbad779d93b9459e662ba8b7f5d24cb"
+      "digest": "sha256:615d7b4c349f63726b0e998a6f1a22747b7fa68a489c47c28e844e3c1c239f4f"
     },
     {
       "name": "review-service",
@@ -1071,7 +1071,7 @@
       "type": "skill-md",
       "description": "Bootstrap a new service or bounded component from repo-local templates and conventions. Use when...",
       "url": "core/skills/backend/scaffold-new-service/SKILL.md",
-      "digest": "sha256:81f2c333d8c0178aa7e211539eb3b83fb42ec93c6cb27df374160189b8b35fbf"
+      "digest": "sha256:b36f196872a9a72e3518ec104bd12f7c7be5b1d58a574d637eb7d06f7380601a"
     },
     {
       "name": "security-audit",
@@ -1085,7 +1085,7 @@
       "type": "skill-md",
       "description": "Add or update deployment source-of-truth configuration for a service or component. Use when a cha...",
       "url": "core/skills/platform/setup-deployment/SKILL.md",
-      "digest": "sha256:379166db996b325d8f53630eb7ff2255e4ac9d7f81e41cb2475e5c35c6d129b7"
+      "digest": "sha256:32d510a0a298fc8ae008ea6a72d695a892581e61d97b9329800730b7f3562e65"
     },
     {
       "name": "setup-design-system",
@@ -1148,7 +1148,7 @@
       "type": "skill-md",
       "description": "Apply 4-phase systematic root cause analysis (Observe, Hypothesize, Test, Fix) and verification-b...",
       "url": "core/skills/foundation/systematic-debugging/SKILL.md",
-      "digest": "sha256:38eabfab5bfec4175d3b7ae9cec0197ac234e79fa26a50aa3295ba145db7bd83"
+      "digest": "sha256:d510ed0117a9cf4f7a7a925a41d0cc9b3527529ca0a4db012699fbbb1f18a331"
     },
     {
       "name": "trace-requirements-impact",

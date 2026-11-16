@@ -25,7 +25,8 @@
 #   rotate_agent_credentials Revoke and reissue non-human-identity agent session tokens.
 #                            Irreversible for in-flight sessions, so it requires approval everywhere.
 #   bypass_ai_guardrail      Disable, circumvent, or degrade an AI safety, moderation, or content
-#                            guardrail. Denied for every role. This is NOT the same as client-side
+#                            guardrail, including git hook bypasses (--no-verify, core.hooksPath).
+#                            Denied for every role. This is NOT the same as client-side
 #                            bot-fingerprint normalization, which is not a policy action.
 #   export_data              Move or copy data out of the trusted boundary. Irreversible for
 #                            restricted data; requires approval even for owners.
@@ -64,6 +65,14 @@ compliance:
     log_format: ocsf-99001
     retention_days: 90
     policy_check_script: core/scripts/hooks/check-policy.py
+  hook_bypass_protection:
+    status: enabled
+    blocked_patterns:
+      - "--no-verify"
+      - "git commit -n"
+      - "core.hooksPath"
+      - "--hooks-path"
+    action: bypass_ai_guardrail
   access_control:
     default_posture: deny
     credential_type: short-lived-oidc

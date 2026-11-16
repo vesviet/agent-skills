@@ -37,6 +37,8 @@ Use this skill to structure product requirements into multidimensional User Stor
   - Map explicit dependency arrows between cross-functional delivery tasks
   - Calculate Early Start (ES), Early Finish (EF), Late Start (LS), and Late Finish (LF)
   - Identify the **Critical Path**: sequence of dependent tasks where $\text{Float} = \text{LS} - \text{ES} = 0$; any delay on this path directly delays project launch
+- **Tracer-Bullet Slice & Dependency Frontier (`Blocked by`)**:
+  - Size each active-swimlane story as an end-to-end tracer bullet fitted to one execution context and annotate explicit `Blocked by` edges so delivery coordinators can resolve the parallelizable frontier
 - **Structured A2A Delivery Handoff**:
   - Every mapped story must be ready for export into `core/contracts/schemas/feature-ticket.json`
 - Detailed worked examples, CPM calculations, and mermaid templates: [`references/story-mapping-and-cpm-scheduling.md`](references/story-mapping-and-cpm-scheduling.md)

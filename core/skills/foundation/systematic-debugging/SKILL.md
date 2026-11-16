@@ -56,6 +56,11 @@ Use this skill to investigate, isolate, and remediate defects using 4-Phase Syst
 - **Minimal Surgical Footprint**:
   - isolate fixes strictly to the root cause; do not bundle opportunistic refactoring with bug fixes.
   - execute full regression suites to guarantee zero collateral breakage across adjacent modules.
+- **Tight Feedback-Loop-First & Diagnostic Hygiene (`diagnosing-bugs`)**:
+  - establish the fastest deterministic red-capable feedback loop (in-process unit test $\rightarrow$ CLI harness $\rightarrow$ container integration test) before reading code to speculate on causes.
+  - minimise the reproduction input/configuration down to the smallest failing surface before hypothesizing.
+  - formulate 3–5 competing falsifiable hypotheses using `"If X is the root cause, changing Y will eliminate the defect"`.
+  - prefix any temporary diagnostic log lines with `[DEBUG-...]` and grep-purge all `[DEBUG-` markers prior to completion.
 - **Deep Reference Guide**:
   - advanced RCA patterns and verification contracts: `core/roles/references/qa-engineer-review-checklist.md`.
 

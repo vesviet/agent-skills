@@ -18,7 +18,8 @@ Use with the **Technical Lead** role after requirements and architecture inputs 
 ## Core Rules
 
 - **Spec-driven contract freeze**: interface contracts (OpenAPI 3.1, JSON Schema, Protobuf) must be validated and frozen before dispatching any implementation slice; slices must explicitly declare preserved invariants
-- **Vertical thin slicing**: decompose features into thin vertical slices (UI → API → DB) delivering independent user value — target ≤400 lines of diff per slice; horizontal layer slicing is prohibited
+- **Vertical thin slicing (Tracer Bullets & DAG Frontier)**: decompose features into thin vertical tracer-bullet slices (schema → API → UI → tests) delivering independent user value — sized for a single context window (≤400 lines diff); declare explicit `Blocked by` DAG dependencies to expose the parallelizable execution frontier; horizontal layer slicing is prohibited
+- **Expand-Contract Refactoring**: execute breaking interface or schema migrations via 3 safe phases (*Expand* parallel surface → *Migrate* callers in slices → *Contract* legacy surface) rather than big-bang rewrites
 - **Blast radius & regression risk matrix**: evaluate consumer fanout (High/Medium/Low), failure domain isolation, mutation vulnerability hotspots, and zero-downtime data migration rollback safety for every slice
 - **Sequential milestone gates**: progression between dependent slices requires passing automated gates: Gate 1 (Contract Freeze), Gate 2 (Red Test in Sandbox), Gate 3 (Green Impl in Sandbox), and Gate 4 (Mutation Score ≥75–80% & Blast Radius Check)
 - **Execution sandbox tier mapping**: map every slice to its required execution sandbox tier (Tier 1 Process, Tier 2 Docker container with `--network=none`, Tier 3 gVisor/MicroVM) per `core/policies/execution-sandbox.md`
