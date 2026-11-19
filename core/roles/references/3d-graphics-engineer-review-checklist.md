@@ -83,9 +83,20 @@ function disposeSceneNode(node: THREE.Object3D): void {
 
 ---
 
-### 6. Accessibility, Host Dials & Verification Gates
+### 6. Raycasting, Instancing & Device-Tier Calibration
+
+- [ ] **BVH-Accelerated Raycasting**: interactive meshes `> 10k` triangles use `three-mesh-bvh` (accelerated raycast bounds tree) or proxy collision meshes; raw per-triangle CPU raycasting inside `pointermove` is rejected.
+- [ ] **Draw-Call Batching & Instancing**: repeated geometry uses `THREE.InstancedMesh` or `THREE.BatchedMesh` with frustum culling verified; material permutations and shader recompilations are minimized via shared `NodeMaterial` / uniform updates.
+- [ ] **Shader Warm-Up & Pipeline Caching**: heavy custom shaders (TSL/WGSL/GLSL) pre-compile via `renderer.compileAsync(scene, camera)` behind a loading state so first interaction never stalls the main thread.
+- [ ] **Adaptive Device-Tier Scaling**: `PerformanceMonitor` / GPU tier detection dynamically steps DPR (`[1, 1.5]` mobile, `[1, 2]` desktop), shadow map resolution (`512`–`2048`), and post-processing passes when frame time exceeds $16.6\text{ ms}$ (60 FPS) or $11.1\text{ ms}$ (90 FPS XR).
+- [ ] **Decal & Z-Order Stability**: projected decals apply `polygonOffset` (`polygonOffsetFactor: -4`, `polygonOffsetUnits: -4`) and explicit `renderOrder` without Z-fighting against curved base geometry.
+
+---
+
+### 7. Accessibility, Host Dials & Verification Gates
 
 - [ ] **A11y & Motion Compliance**: `prefers-reduced-motion` pauses/simplifies camera & particle motion; non-3D fallback (static render/image/summary) and canvas ARIA labels present; host `DESIGN_VARIANCE` / `MOTION_INTENSITY` / `VISUAL_DENSITY` honored.
+- [ ] **Keyboard & Focus Navigation**: camera presets, hotspot selection, and configurator controls are reachable via keyboard without trapping focus inside the canvas element.
 
 | Verification Gate | Target Invariant | Required Tool / Command | Pass Criteria |
 | :--- | :--- | :--- | :--- |
@@ -93,4 +104,13 @@ function disposeSceneNode(node: THREE.Object3D): void {
 | **Frame Pacing** | $\Delta t \le 16.6\text{ ms}$ (60 FPS); mobile draw calls `<= 100` | R3F DevTools / Chrome Performance / Stats.js | $\ge 95\%$ frames within budget on target tier |
 | **Shader & Draw Call Trace** | Valid WGSL/TSL/GLSL & batched draws | Chrome DevTools Shader Editor (WebGPU) / `Spector.js` dev (WebGL2) | 0 compile errors; instancing/batching active |
 | **VRAM Disposal** | 0 retained geometries/textures/targets | Chrome Memory / `renderer.info.memory` diff | Counts return to baseline after unmount |
+| **Raycasting & Interaction** | Pointer hit-test `< 2 ms` on dense meshes | Chrome Performance / BVH profiler | Zero main-thread hitch during orbit/hover |
 | **Delivery Contracts** | Schema-valid handoff | `python3 core/scripts/validate-contracts.py` | `implementation-result.json` (+ `performance-audit.json`) valid |
+
+---
+
+### 8. Pre-Release Sign-Off & Escalation Triggers
+
+- [ ] **Escalation to `@frontend-developer` / `@ui-ux-designer`**: flag any DOM overlay Z-index collision, canvas pointer-event capture conflict, or missing `DESIGN.md` motion/density dial before merging.
+- [ ] **Escalation to `@qa-engineer` / `@sre`**: require cross-GPU verification (Apple Silicon WebGPU, Intel/AMD Windows WebGL2, mid-tier mobile GPU) whenever custom shaders, KTX2 transcoding, or 3DGS renderers change.
+- [ ] **Zero Production Debug Leaks**: verify `Stats.js`, `Spector.js`, `r3f-perf`, wireframe helpers, and `console.log` inside `useFrame` are stripped from production bundles.

@@ -105,7 +105,7 @@
       "type": "skill-md",
       "description": "Use when compacting long-running agent conversation context into an anchored 10-slot working stat...",
       "url": "core/skills/agent/agent-memory-compaction/SKILL.md",
-      "digest": "sha256:567545496cae995603daa58037b3021ec65f8f84cde995671f5ef7f259439c97"
+      "digest": "sha256:d6904e7b61c5ea282eea73b0005a279ed1a04bfba9fc7727a85e1275adcd7280"
     },
     {
       "name": "agent-model-routing",

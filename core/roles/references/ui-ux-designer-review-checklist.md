@@ -59,7 +59,24 @@ Operational verification gates for `@ui-ux-designer` deliverables (`DESIGN.md`, 
 
 ---
 
-### 6. Machine Verification Gate Table
+### 6. Responsive, Motion & Keyboard Ergonomics Gate
+
+- [ ] **Viewport & Reflow Integrity**: layout verified across `320px`, `390px` (mobile), `768px` (tablet), and `1280px+` (desktop) with zero horizontal overflow (`document.documentElement.scrollWidth <= window.innerWidth`) and `200%` text zoom survival.
+- [ ] **Motion Budget & Reduced Motion**: transitions animate composite-only properties (`transform`, `opacity`), match `MOTION_INTENSITY`, and specify a clean `prefers-reduced-motion: reduce` fallback (instant opacity crossfade or static state).
+- [ ] **Keyboard & Focus Continuity**: full Tab/Shift+Tab order, visible focus rings (`>= 2px` offset, WCAG 2.4.11 Focus Not Obscured), skip-to-content link, `Esc` dismissal for overlays, and deterministic focus restoration to the invoking trigger.
+- [ ] **Data & Form Ergonomics**: forms preserve user input on validation failure, place inline errors next to the offending control via `aria-describedby`, disable duplicate submission while pending, and show explicit save/unsaved state.
+
+---
+
+### 7. Research Evidence & Interactive Handoff Gate
+
+- [ ] **Evidence Provenance**: real-participant usability evidence is required for blocking product decisions; synthetic-user runs are tagged hypothesis-only, and AI-moderated interviews record tool + participant count.
+- [ ] **Cross-Contract Traceability**: every `ui-component-spec.json` shares the parent `flow_id` from `ux-flow-spec.json`, references semantic tokens defined in `DESIGN.md` / `design-tokens-spec.json`, and documents backend gaps in `api_needs`.
+- [ ] **Interactive Verification**: multi-screen flows (`> 2` screens) are exercised via interactive Figma prototype or `interactive-component-workbench` covering all state transitions before Frontend handoff.
+
+---
+
+### 8. Machine Verification Gate Table
 
 | Gate | Invariant | Verification Method / Tool | Pass Criteria |
 | :--- | :--- | :--- | :--- |
@@ -69,3 +86,27 @@ Operational verification gates for `@ui-ux-designer` deliverables (`DESIGN.md`, 
 | **Composition Hygiene** | `<= 2` stylistic booleans | Prop surface & `composition_anatomy` audit | Compound subcomponents used for multi-region UI |
 | **Multi-Viewport & INP** | Zero overflow at `320px`, INP `<= 200ms` | Bounded 2-pass visual QA (`1280px` & `390px`) | 0 horizontal overflow, `CLS <= 0.1`, `INP <= 200ms` |
 | **Prototype / Workbench** | Multi-screen (`> 2`) flow exercised | Figma prototype or `interactive-component-workbench` | All transitions + 5/6 states verified |
+
+---
+
+### 9. Pre-Handoff Rejection Triggers (Fail-Closed)
+
+- [ ] **No Ungrounded Copy or Fake Metrics**: reject fabricated testimonials, invented percentage claims (`92%`, `4.1×`), or unverified SVG brand marks before handoff to `@frontend-developer`.
+- [ ] **No Prop-Soup Regressions**: reject any `ui-component-spec.json` adding `> 2` layout-toggling booleans instead of compound `Root` / `Trigger` / `Content` slots.
+- [ ] **No Silent Destructive Flows**: reject any delete, revoke, cancel, or billing-altering action that lacks explicit resource naming, undo window, or typed confirmation.
+- [ ] **No Unverified Dark-Mode Contrast**: verify both light and dark semantic token pairs pass WCAG 2.2 AA (`4.5:1` / `3.0:1`) and APCA ($L_c \ge 75 / 60$) with `color-scheme: dark` declared.
+- [ ] **No Unmarked AI Autonomy**: reject any AI feature omitting upfront Article 50 disclosure, Red Path fallback, or declared `agentic_autonomy.autonomy_tier`.
+
+---
+
+### 12. 2026-10 Modernization Gates (DTCG 2025.10, Dark Patterns, ADA Title II, Agents-as-Users)
+
+| Verification Gate | Target Invariant | Required Tool / Command | Pass Criteria |
+| :--- | :--- | :--- | :--- |
+| **DTCG Format Conformance** | Token files use Format Module 2025.10 `$value`/`$type` | DTCG format validator / Style Dictionary v4 DTCG mode | 0 legacy `{value}` syntax mixed in; files validate before pipeline adoption |
+| **Dark-Pattern Review** | Consent / cancellation / subscription / upsell flows reviewed | `ux-flow-spec.json` `dark_pattern_review` | 6 classes checked (nagging, obstruction, sneaking, forced action, confirmshaming, trick questions); findings recorded |
+| **ADA Title II (US public sector)** | WCAG 2.1 AA target + deadline stated | Flow spec accessibility notes | `2027-04-26` (≥50k) / `2028-04-26` (<50k) / HHS May-2026 flagged when in scope |
+| **Agents-as-Users Operability** | `agent_operability` declared when agents operate the UI | `ux-flow-spec.json` `agent_operability` | Entry points + machine-readable affordances + courtesy rules present |
+| **Autonomy Tier Declaration** | `agentic_autonomy.autonomy_tier` enum-conformant | `ux-flow-spec.json` `agentic_autonomy` | Tier declared for every agentic feature; tier ≤ earned trust (Autopilot Trap guard) |
+| **Usability Evidence Source** | Real-participant evidence for blocking decisions | Review notes / `research-report.json` | Synthetic-user results marked hypothesis-only; AI-moderated interviews admissible with tool + participant count recorded |
+| **WCAG 3.0 Readiness** | Findings phrased for future scoring conformance | Accessibility notes wording | WCAG 2.2 AA remains the target; no claims of "WCAG 3.0 conformance" |

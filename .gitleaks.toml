@@ -8,5 +8,9 @@ description = "Synthetic secret-detection fixtures and research snippets, not li
 paths = [
   '''tests/test_prune_memory\.py''',
   '''tests/test_memory_hygiene_e2e\.py''',
+  '''tests/test_compact_context\.py''',
   '''reports/backend-developer-repo-research\.md''',
+]
+regexes = [
+  '''ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890''',
 ]

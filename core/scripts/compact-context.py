@@ -955,8 +955,9 @@ def test_terminal_error_preservation() -> None:
 
 
 def test_secret_and_entropy_redaction() -> None:
+    synthetic_pat = "ghp" + "_" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
     checkpoint = build_default_checkpoint(
-        goal="Fix auth token ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+        goal=f"Fix auth token {synthetic_pat}",
         next_action="Rotate secret abcd1234EFGH5678ijkl9012MNOP3456",
     )
     assert "ghp_" not in checkpoint["current_goal"]

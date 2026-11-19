@@ -282,8 +282,9 @@ class TestThreeTierCompactionAndSecurity:
         assert shannon_entropy("aaaaaaa") == 0.0
         assert shannon_entropy(high_ent) > 4.5
 
+        synthetic_pat = "ghp" + "_" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
         raw = (
-            "token=ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
+            f"token={synthetic_pat} "
             "hex=4f8a9c12d3e4567890abcdef1234567890abcdef12 "
             "safe=core/skills/agent/agent-memory-compaction/SKILL.md"
         )
@@ -294,8 +295,9 @@ class TestThreeTierCompactionAndSecurity:
         assert "core/skills/agent/agent-memory-compaction/SKILL.md" in scrubbed
 
     def test_validate_cli_rejects_unredacted_secret(self, tmp_path):
+        synthetic_pat = "ghp" + "_" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
         ckpt = build_default_checkpoint(goal="Safe goal")
-        ckpt["active_constraints"].append("leak ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+        ckpt["active_constraints"].append(f"leak {synthetic_pat}")
         assert len(scan_checkpoint_secrets(ckpt)) == 1
         ckpt_file = tmp_path / "leaky.json"
         ckpt_file.write_text(json.dumps(ckpt), encoding="utf-8")
