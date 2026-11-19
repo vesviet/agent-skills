@@ -2,6 +2,17 @@
   "$schema": "https://json.schemastore.org/claude-settings.json",
   "description": "Claude Code project settings template for the agent-skills pack. Copy to .claude/settings.json in your workspace root. Runtime hook profiles: AGENT_HOOK_PROFILE (minimal|standard|strict); bypass via AGENT_DISABLED_HOOKS.",
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 core/scripts/hooks/session-start.py --format json"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Bash",

@@ -134,6 +134,15 @@ Risk acceptance owner if needed:
 - [ ] final status reported with residual risk and explicit phase exit decision
 - [ ] human sign-off obtained for T3 high-risk changes before phase advancement
 
+## Red Flags
+
+| Rationalization Thought | Positive Corrective Action |
+|---|---|
+| "Targeted test passed, so full CI is fine." | Match gate scope to risk tier (`T1`–`T3`) and run the full repo validator and test suite before declaring done. |
+| "It is only a docs or checklist tweak." | Run repo validators and regression tests; docs and checklists are contract-tested in CI. |
+| "Lint is clean, so behavior is safe." | Verify runtime behavior, exit codes, and side effects directly before closing the phase. |
+| "Skip the failing test; it looks unrelated." | Reproduce and isolate root cause first; record any unresolvable blocker explicitly instead of hiding skips. |
+
 ## Failure Modes
 
 - **Gate bypassed under release pressure**: a release skips the gate to meet a deadline. **Mitigation:** release pipeline rejects unverified artifacts; surface bypass in postmortem.

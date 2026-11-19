@@ -100,6 +100,18 @@ Apply the **Dual-Ledger Coordination Loop** (Outer Task Ledger for goal/assumpti
 - **plan drift**: if the current execution deviates from the coordination-plan.json by more than one phase without a documented re-plan, pause and re-align
 - when a circuit breaker fires: document the trigger in coordination-plan.json (or via `compact-context.py --merge --reconcile-git`), surface to user with current state, and require explicit approval to resume or re-plan
 
+### Rulings, Not Stalls — Continuous Execution & 4 Hard Stop Conditions
+
+When executing an approved multi-step plan, keep forward momentum instead of parking the session on low-stakes check-ins ("Should I continue?"):
+
+- **Record Rulings, Keep Moving**: Resolve minor ambiguities, ordering choices, or recoverable plan gaps using the spec as binding authority, log each decision in the Outer Task Ledger as `Ruling: <what was decided> — <why> — <what it costs if wrong>`, and continue execution. A reversible ruling can be inspected and undone; a stalled session wastes the entire window.
+- **4 Hard Stop Conditions (and only these)**: Halt for human sign-off only when encountering:
+  1. **Irreversible or destructive operation** (schema drops, force push, production deletion, commit/push/tag/publish without explicit approval).
+  2. **Security-sensitive or privilege-escalating action** (credentials/secrets handling, IAM/auth policy edits, trust-boundary relaxation).
+  3. **Unapproved side effect outside the active workspace** (external API writes, public PRs/comments, third-party spend or deployment).
+  4. **Unresolvable blocker after bounded recovery** (contradictory spec requirements with high rework cost, missing credentials/dependencies, or 3+ repeated loop failures).
+- **Fresh Task-Scoped Review + Broad Final Review**: Dispatch a fresh task-scoped reviewer/verifier after each implementation slice (confirming covering tests, exact command run, and raw output before re-dispatching on fixes), then run one broad whole-branch final review before delivery.
+
 ### Token Budget Governance
 
 - estimate token budget for the entire coordination graph at intake; flag if estimated cost is unusually high for the work type

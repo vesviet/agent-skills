@@ -77,7 +77,7 @@
       "type": "skill-md",
       "description": "Delegate scoped sub-tasks from a supervisor agent to specialist worker agents using structured A2...",
       "url": "core/skills/agent/agent-delegation/SKILL.md",
-      "digest": "sha256:2593158ff0a3cea3a59ea3f1687a0e12a17c315e017e9f1d6f40aaf9207faae0"
+      "digest": "sha256:19c61f89a35bb3b065ca37f3c06743cc61ce43ad4895333c07e679796fb87515"
     },
     {
       "name": "agent-evaluation",
@@ -105,7 +105,7 @@
       "type": "skill-md",
       "description": "Use when compacting long-running agent conversation context into an anchored 10-slot working stat...",
       "url": "core/skills/agent/agent-memory-compaction/SKILL.md",
-      "digest": "sha256:d6904e7b61c5ea282eea73b0005a279ed1a04bfba9fc7727a85e1275adcd7280"
+      "digest": "sha256:3bd939584fc3dcb4a9a8eb0659e59e17ee4224238b79b93826df1c78470a2aeb"
     },
     {
       "name": "agent-model-routing",
@@ -119,7 +119,7 @@
       "type": "skill-md",
       "description": "Trace agent reasoning chains, tool call sequences, context injections, and token costs to enable...",
       "url": "core/skills/agent/agent-observability/SKILL.md",
-      "digest": "sha256:878042de61b21eb342460e55b904f027eeab8c378884cb721edcf0f26a0780fe"
+      "digest": "sha256:c6b37b872988c060e5f3d70c20be1ac183cd1804f5ce165dd3baa3f71419b12f"
     },
     {
       "name": "agent-panel-meeting",
@@ -140,7 +140,7 @@
       "type": "skill-md",
       "description": "Run and interpret repository quality gates for agent-delivered changes, including validators, lin...",
       "url": "core/skills/agent/agent-quality-gate/SKILL.md",
-      "digest": "sha256:93f81b71f9f1c495e59dcf5b0f256a9d44769f9ae617c2c9006693a1e917c891"
+      "digest": "sha256:dc64073ae246c0f0cb9852710147dd1da268042b6cffbe50c920d6cc56e5bdad"
     },
     {
       "name": "agent-semantic-memory",
@@ -1050,7 +1050,7 @@
       "type": "skill-md",
       "description": "Review a diff since a fixed point along two separate axes — Standards (conformance to documented...",
       "url": "core/skills/repo-ops/review-code/SKILL.md",
-      "digest": "sha256:615d7b4c349f63726b0e998a6f1a22747b7fa68a489c47c28e844e3c1c239f4f"
+      "digest": "sha256:6523a0701bc8f337399ec6618575bc10363e62ef9c6926428a8394bc1dd6a418"
     },
     {
       "name": "review-service",
@@ -1148,7 +1148,7 @@
       "type": "skill-md",
       "description": "Apply 4-phase systematic root cause analysis (Observe, Hypothesize, Test, Fix) and verification-b...",
       "url": "core/skills/foundation/systematic-debugging/SKILL.md",
-      "digest": "sha256:d510ed0117a9cf4f7a7a925a41d0cc9b3527529ca0a4db012699fbbb1f18a331"
+      "digest": "sha256:2958c39d1874ab40e7337a6636026d2416d9e335f8277af9b0190fecc7872981"
     },
     {
       "name": "trace-requirements-impact",
@@ -1274,7 +1274,7 @@
       "type": "skill-md",
       "description": "Add or update tests by following repo-local test conventions, choosing the right test scope, isol...",
       "url": "core/skills/foundation/write-tests/SKILL.md",
-      "digest": "sha256:e611ffe07f0868682cb8e5dc485697f95546133b38640caaddd872334ce509d6"
+      "digest": "sha256:855c4d59a2140f48383658c667415babd161d35cc0bc1096262dffa60e3d9575"
     },
     {
       "name": "write-use-cases",

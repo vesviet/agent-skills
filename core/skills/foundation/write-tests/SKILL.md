@@ -136,6 +136,15 @@ Use this skill to author independent, property-verified, contract-driven, and fa
 - [ ] tests executed inside isolated Level 0 air-gapped sandbox (--network=none, non-root user)
 - [ ] test-report.json emitted and validated against contracts/schemas/test-report.json
 
+## Red Flags
+
+| Rationalization Thought | Positive Corrective Action |
+|---|---|
+| "Too simple to need a Red-phase test first." | Author the spec-derived test first and watch it fail on baseline before editing production code. |
+| "I'll write the tests after the implementation works." | Tests written after mirror code bugs; derive assertions from the contract first. |
+| "100% line coverage proves assertions are strong." | Run mutation testing or verify negative paths actually fail when invariants break. |
+| "Mocking the core service makes this test faster." | Keep mocks strictly at external I/O boundaries; exercise real business logic and state mutations. |
+
 ## Output Contracts
 
 When executing or updating automated tests for behavior verification, emit:

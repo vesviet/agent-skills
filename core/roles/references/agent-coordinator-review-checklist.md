@@ -167,6 +167,10 @@ This reference checklist provides operational verification criteria for autonomo
 - **Dual-Ledger Outer/Inner Loop & `/teamwork` Phases**:
   - maintain an **Outer Task Ledger** (goal, assumptions, role graph / `compact-context.py --merge --reconcile-git`) paired with an **Inner Progress Ledger** checking progress, stalls, and contradictions per turn
   - for `/teamwork` flows, sequence isolated phases cleanly (`explorer`/`spec_miner` $\rightarrow$ `worker` $\rightarrow$ `reviewer`/`challenger` $\rightarrow$ `auditor`) in separate scratch directories
+- **Rulings, Not Stalls & Task-Scoped Review Loop**:
+  - mid-plan ambiguities are resolved and logged as `Ruling: <decision> — <why> — <rework cost>` rather than stalling on unnecessary user check-ins; execution halts only on the 4 hard stop conditions (irreversible, security-sensitive, external side-effect, unresolvable blocker)
+  - before re-dispatching a reviewer on a fix, confirm the fix report includes: covering tests, exact command run, and raw passing output
+  - when a session stalls, repeats work, or blows token budget, run `python3 core/scripts/diagnose-session.py` across the 7 forensic dimensions (`skill_timeline`, `plan_adherence`, `repeated_work`, `stumbles`, `quality_evidence`, `request_conflicts`, `cost_and_time`)
 
 ### 10. Gate Review & Contract Conformance Verification Table
 | Verification Gate | Target Invariant | Required Tool / Command | Pass Criteria |

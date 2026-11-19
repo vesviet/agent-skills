@@ -134,6 +134,15 @@ Use this skill to investigate, isolate, and remediate defects using 4-Phase Syst
 - [ ] permanent regression test committed alongside surgical code remediation
 - [ ] invariant reinforcement added to prevent architectural regression
 
+## Red Flags
+
+| Rationalization Thought | Positive Corrective Action |
+|---|---|
+| "This bug is obvious; I can patch it right away." | Write and run the failing Red reproduction test first to prove the causal mechanism. |
+| "It should work now — small one-line fix." | Execute `IDENTIFY -> RUN -> READ -> VERIFY -> REPORT` and quote fresh exit-code-0 output. |
+| "Tests passed in an earlier turn." | Re-run the exact test command against the current working tree before reporting success. |
+| "Let me add a defensive null check / try-catch to silence it." | Trace backward to the invariant violation and fix the source instead of masking symptoms. |
+
 ## Output Contracts
 
 When completing defect investigations and applying verified fixes, emit:

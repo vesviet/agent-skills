@@ -28,6 +28,8 @@ FORBIDDEN_TOOL_CHARS = set(";&|`$<>(){}[]*?\\\"'")
 # spec (agentskills.io) that skills.sh indexes against.
 RESERVED_NAME_WORDS = ("anthropic", "claude")
 RESERVED_TOOL_WORDS = ("anthropic", "claude")
+# Post-compaction re-attachment cap across harnesses (Claude Code truncates at 20,000 chars).
+MAX_SKILL_BYTES = 20_000
 
 OVERLAY_SKILL_ROLES: dict[str, list[str]] = {
     "develop-b2b-golf-feature": ["frontend-developer"],
@@ -269,6 +271,12 @@ def validate_skill(path: Path, known_skills: set[str]) -> list[str]:
     total_lines = len(text.splitlines())
     if total_lines >= 200:
         errors.append(f"SKILL.md exceeds maximum allowed length (< 200 lines, current: {total_lines})")
+
+    raw_bytes = len(text.encode("utf-8"))
+    if raw_bytes >= MAX_SKILL_BYTES:
+        errors.append(
+            f"SKILL.md exceeds maximum allowed size (< {MAX_SKILL_BYTES} bytes, current: {raw_bytes}); move detail into references/"
+        )
 
     body_without_fences = strip_fenced_blocks(body)
     h1_lines = [line for line in body_without_fences.splitlines() if line.startswith("# ")]

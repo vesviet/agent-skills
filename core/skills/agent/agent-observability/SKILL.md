@@ -112,14 +112,20 @@ In production:
 - sample 1-5% of successful traces
 - use tail-based sampling: decide whether to keep after the session completes, based on outcome
 
-### 5. Close The Loop
+### 5. Close The Loop & Run 7-Dimension Session Forensics
 
-Weekly:
+Weekly or whenever a session stalls, repeats work, drifts from plan, or burns unexpected tokens:
 
-- review flagged traces
-- extract input/output pairs for the golden dataset
-- update prompts or skills if patterns emerge
-- track metrics over time: format compliance, hallucination rate, user correction rate, average cost
+- execute `python3 core/scripts/diagnose-session.py <transcript.jsonl|spans.jsonl> --scrub --format markdown` to audit all 7 forensic dimensions (`skill_timeline`, `plan_adherence`, `repeated_work`, `stumbles`, `quality_evidence`, `request_conflicts`, `cost_and_time`) per [`references/session-forensics-7-dimensions.md`](references/session-forensics-7-dimensions.md)
+- discard any forensic claim lacking an exact `path:line` citation; extract verified failure pairs into the golden dataset and update prompts/skills
+
+## Red Flags
+
+| Rationalization Thought | Positive Corrective Action |
+|---|---|
+| "The session felt slow; I'll guess what went wrong." | Run `python3 core/scripts/diagnose-session.py` on the raw transcript or span log and cite exact `path:line` evidence. |
+| "Share the raw transcript directly for debugging." | Pass `--scrub` and verify zero residual secrets or PII before sharing any diagnostic report. |
+| "Token cost looks high, probably just a big prompt." | Inspect `repeated_work` and `stumbles` dimensions to separate retry loops from legitimate context size. |
 
 ## Checklist
 

@@ -178,6 +178,8 @@ For end-to-end delivery, assign **Agent Coordinator**:
 
 ## References
 
+- Antigravity tool mapping: [`adapters/antigravity/antigravity-tools.md`](antigravity-tools.md)
+- Post-compaction bootstrap hook: `core/scripts/hooks/session-start.py` (`startup|clear|compact`)
 - Pack contracts: `core/contracts/README.md`
 - A2A skill: `core/skills/agent/agent-a2a-protocol/SKILL.md`
 - User guide: `USER_GUIDE_v2.md` (full contract table and role examples)

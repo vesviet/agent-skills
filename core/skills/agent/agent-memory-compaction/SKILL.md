@@ -79,6 +79,15 @@ Prevents context rot, KV-cache busting, artifact amnesia, and goal drift in mult
 - **memory-hygiene**: Compaction, auditing, and poisoning checks for persistent memory stores.
 - **agent-semantic-memory**: Archiving resolved root causes from checkpoints into cross-session knowledge.
 
+## Red Flags
+
+| Rationalization Thought | Positive Corrective Action |
+|---|---|
+| "I'll write a quick prose summary instead of the 10-slot schema." | Always serialize into the anchored 10-slot `compact-working-state.json` via `--merge`. |
+| "Let me summarize mid-edit to free tokens right now." | Apply Tier 1 observation masking (`--mask-observations --recent-turns 4`) first; reserve Tier 2 merge for phase gates or 80% ceiling. |
+| "I already remember which files I edited." | Pass `--reconcile-git` so `files_modified_and_inspected.modified` unions live `git status --porcelain`. |
+| "Skip `--validate`; the checkpoint looks clean." | Always run `python3 core/scripts/compact-context.py --validate` to verify schema compliance and zero secret leaks. |
+
 ## Failure Modes
 
 - **Narrative Prose Decay**: Free-form summaries compound losses after 2–3 compactions. *Fix*: Always use `--merge` over the anchored 10-slot schema.

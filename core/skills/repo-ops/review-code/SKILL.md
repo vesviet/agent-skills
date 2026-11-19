@@ -66,6 +66,15 @@ Present findings side by side under `## Standards` and `## Spec` headings withou
 - [ ] supply chain security verified (no typosquatted packages, unpinned versions, or untrusted install hooks)
 - [ ] `code-review-finding.json` emitted for cross-role handoff when gating merge
 
+## Red Flags
+
+| Rationalization Thought | Positive Corrective Action |
+|---|---|
+| "Diff is small and CI is green — LGTM." | Probe for phantom validations, silent error swallowing, resource leaks, and spec drift before approving. |
+| "Merge Standards and Spec into one prioritized list." | Report `## Standards` and `## Spec` side by side with `file:line` citations and zero cross-axis reranking. |
+| "The reviewer suggested X, so I'll apply it blindly." | Verify every incoming review comment against live code and spec; push back with technical evidence if it breaks an invariant. |
+| "I'll narrate the diff instead of citing evidence." | Anchor every finding to exact `file:line`, violated rule/spec clause, and concrete remediation. |
+
 ## Output Contracts
 
 When the review produces a structured handoff (CI gate, pre-merge audit, or multi-role delivery), emit:

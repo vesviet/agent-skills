@@ -24,6 +24,7 @@ Use this skill when a task should be broken into scoped sub-tasks and assigned t
 - failed delegations trigger retry with clarified input, escalation, or explicit failure — never silent acceptance
 - track token usage and model used for every delegation for cost observability
 - **Swarm Shared-Board vs Cold A2A Dispatch**: When spawning workers on a shared Swarm board, state `owns`, `must-not-touch`, done verification commands, and peer `@mention` targets (using `@name` strictly as a wakeup doorbell, `#seq` for prior post citations, and `[done]` for completion). Pass `fork:"<member>"` when a worker needs existing warm exploration context rather than starting cold; isolate parallel editors with `workspace:"share"` (`inherit` for readers/verifiers) and never `kill` before landing edits.
+- **Rulings, Not Stalls & Fresh Task-Scoped Review**: During an approved multi-task plan, resolve minor ambiguities directly and log `Ruling: <what> — <why> — <rework cost>`; pause for human approval only on the 4 hard stop conditions (irreversible/destructive action, security/privilege change, external side-effect outside workspace, or unresolvable blocker). Dispatch a fresh context-isolated worker per independent task and confirm covering tests, command run, and output before re-dispatching a reviewer on a fix.
 - respect the risk tier: vibe tasks need minimal oversight, engineering tasks need full validation
 - prevent Confused Deputy vulnerabilities (OWASP ASI03) by ensuring delegators never delegate or grant permissions beyond their own authorization scope, and validate scope constraints at handoff
 - issue only task-scoped, time-bound credentials for each delegation leg instead of using persistent shared tokens
@@ -149,6 +150,15 @@ Skip emission for advisory conversations that do not cross a role boundary.
 - [ ] zero-trust inter-agent communication parameters configured and authenticated
 - [ ] data minimization applied (scope-restricted payloads)
 - [ ] attestation verified for high-risk specialized workers
+
+## Red Flags
+
+| Rationalization Thought | Positive Corrective Action |
+|---|---|
+| "Let me pause and ask the user if I should run task 2." | Continue executing the approved plan; log minor calls as `Ruling: <what> — <why> — <cost>` and stop only on the 4 hard stop conditions. |
+| "The worker can infer context from my full chat history." | Craft a fresh, self-contained task brief with exact files, spec excerpts, and verification commands. |
+| "Re-dispatch the reviewer immediately after the fix." | Confirm the fix report includes covering tests, the exact command executed, and raw exit-code-0 output first. |
+| "Kill the worker now to clean up; I'll grab its diff later." | Merge or cherry-pick edits from `share`/`branch` workspaces and verify on root before calling `kill`. |
 
 ## Security Guardrails (OWASP ASI)
 

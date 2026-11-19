@@ -4,7 +4,7 @@
   "hooks": {
     "sessionStart": [
       {
-        "command": "echo 'Load core/rules/code.md and active role from agent-skills pack'"
+        "command": "python3 AGENT_SKILLS_ROOT/core/scripts/hooks/session-start.py --format text"
       }
     ],
     "beforeReadFile": [
